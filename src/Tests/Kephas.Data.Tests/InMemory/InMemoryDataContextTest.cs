@@ -222,10 +222,11 @@ namespace Kephas.Data.Tests.InMemory
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             ISerializationService serializationService = null,
-            ISerializer serializer = null)
+            ISerializer serializer = null,
+            IRuntimeTypeRegistry typeRegistry = null)
         {
             return new InMemoryDataContext(
-                compositionContext ?? Substitute.For<ICompositionContext>(),
+                compositionContext ?? this.CreateCompositionContext(typeRegistry ?? new RuntimeTypeRegistry()),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
                 dataBehaviorProvider ?? Substitute.For<IDataBehaviorProvider>(),
                 serializationService ?? (serializer == null ? this.CreateSerializationServiceMock() : this.CreateSerializationServiceMock<JsonMediaType>(serializer)));
@@ -266,6 +267,13 @@ namespace Kephas.Data.Tests.InMemory
                             return typeInfo;
                         });
             return activator;
+        }
+
+        private ICompositionContext CreateCompositionContext(IRuntimeTypeRegistry typeRegistry)
+        {
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
+            return compositionContext;
         }
     }
 }

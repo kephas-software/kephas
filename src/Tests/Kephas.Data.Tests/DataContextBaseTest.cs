@@ -22,10 +22,10 @@ namespace Kephas.Data.Tests
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Transitions;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -137,17 +137,18 @@ namespace Kephas.Data.Tests
         [Test]
         public void Query_non_abstract_entity_queryable()
         {
+            var typeRegistry = new RuntimeTypeRegistry();
             var localCache = new DataContextCache();
-            var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
+            var dataContext = TestDataContext.CreateDataContext(localCache: localCache, typeRegistry: typeRegistry);
             var dataStore = Substitute.For<IDataStore>();
             var entityActivator = Substitute.For<IActivator>();
             entityActivator
-                .GetImplementationType(typeof(IEntity).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Entity).AsRuntimeTypeInfo());
+                .GetImplementationType(typeRegistry.GetTypeInfo(typeof(IEntity)), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeRegistry.GetTypeInfo(typeof(Entity)));
 
             entityActivator
-                .GetImplementationType(typeof(Entity).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Entity).AsRuntimeTypeInfo());
+                .GetImplementationType(typeRegistry.GetTypeInfo(typeof(Entity)), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeRegistry.GetTypeInfo(typeof(Entity)));
 
             dataStore.EntityActivator.Returns(entityActivator);
             dataContext.Initialize(dataContext.CreateDataInitializationContext(dataStore));

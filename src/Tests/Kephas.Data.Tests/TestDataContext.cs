@@ -31,8 +31,9 @@ namespace Kephas.Data.Tests
             ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
-            IDataContextCache localCache = null)
-            : base(GetTestCompositionContext(compositionContext), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
+            IDataContextCache localCache = null,
+            IRuntimeTypeRegistry typeRegistry = null)
+            : base(GetTestCompositionContext(compositionContext, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
         {
         }
 
@@ -40,9 +41,10 @@ namespace Kephas.Data.Tests
             ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
-            IDataContextCache localCache = null)
+            IDataContextCache localCache = null,
+            IRuntimeTypeRegistry typeRegistry = null)
         {
-            return new TestDataContext(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache);
+            return new TestDataContext(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
         }
 
         public static TestDataContext InitializeDataContext(
@@ -50,15 +52,15 @@ namespace Kephas.Data.Tests
             ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
-            IDataContextCache localCache = null)
+            IDataContextCache localCache = null,
+            IRuntimeTypeRegistry typeRegistry = null)
         {
-
-            var dataContext = new TestDataContext(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache);
+            var dataContext = new TestDataContext(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
             dataContext.Initialize(initializationContext ?? dataContext.CreateDataInitializationContext());
             return dataContext;
         }
 
-        public static IActivator CreateActivatorForInterfaces()
+        public static IActivator CreateActivatorForInterfaces(IRuntimeTypeRegistry typeRegistry)
         {
             var activator = Substitute.For<IActivator>();
             activator
@@ -71,7 +73,7 @@ namespace Kephas.Data.Tests
                             if (typeInfo.Type.IsInterface || typeInfo.Type.IsAbstract)
                             {
                                 var inst = Substitute.For(new[] { typeInfo.Type }, new object[0]);
-                                return inst.GetType().AsRuntimeTypeInfo();
+                                return typeRegistry.GetTypeInfo(inst.GetType());
                             }
 
                             return typeInfo;
@@ -112,12 +114,13 @@ namespace Kephas.Data.Tests
             return dataStore;
         }
 
-        private static ICompositionContext GetTestCompositionContext(ICompositionContext compositionContext)
-            => compositionContext ?? CreateCompositionContext();
+        private static ICompositionContext GetTestCompositionContext(ICompositionContext compositionContext, IRuntimeTypeRegistry typeRegistry)
+            => compositionContext ?? CreateCompositionContext(typeRegistry);
 
-        private static ICompositionContext CreateCompositionContext()
+        private static ICompositionContext CreateCompositionContext(IRuntimeTypeRegistry typeRegistry)
         {
             var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
             return compositionContext;
         }
 
