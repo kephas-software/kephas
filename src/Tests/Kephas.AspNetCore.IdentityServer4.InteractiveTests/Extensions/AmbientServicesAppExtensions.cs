@@ -21,6 +21,8 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using Serilog;
+    using Serilog.Core;
+    using Serilog.Events;
 
     public static class AmbientServicesAppExtensions
     {
@@ -51,7 +53,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
                 .WithDynamicAppRuntime(
                     assemblyFilter: asm => asm.Name.StartsWith("Kephas") || asm.Name.StartsWith("WebApp"),
                     isRoot: rootMode)
-                .WithSerilogManager(configuration.GetLoggerConfiguration(ambientServices.AppRuntime, args));
+                .WithSerilogManager(configuration);
 
             if (args.LogLevel.HasValue)
             {
@@ -83,22 +85,23 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         }
 
         /// <summary>
-        /// Gets the logger configuration.
+        /// Configures the Serilog logging infrastructure from the configuration.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="args">The application arguments.</param>
         /// <returns>
-        /// The logger configuration.
+        /// The provided ambient services.
         /// </returns>
-        internal static LoggerConfiguration GetLoggerConfiguration(this IConfiguration configuration, IAppRuntime appRuntime, IAppArgs args)
+        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration configuration)
         {
             var loggerConfig = new LoggerConfiguration();
             loggerConfig
                 .ReadFrom.Configuration(configuration)
-                .Enrich.With(new AppLogEventEnricher(appRuntime));
+                .Enrich.With(new AppLogEventEnricher(ambientServices.AppRuntime));
 
-            return loggerConfig;
+            var minimumLevel = configuration.GetValue<LogEventLevel?>("Serilog:MinimumLevel") ?? LogEventLevel.Information;
+
+            return ambientServices.WithSerilogManager(loggerConfig, minimumLevel, dynamicMinimumLevel: true);
         }
     }
 }

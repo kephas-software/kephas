@@ -7,10 +7,12 @@
 
 namespace Kephas.AspNetCore.InteractiveTests
 {
+    using System;
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.AspNetCore;
+    using Kephas.AspNetCore.InteractiveTests.Extensions;
+    using Kephas.Cryptography;
     using Kephas.Extensions.Hosting;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -26,24 +28,30 @@ namespace Kephas.AspNetCore.InteractiveTests
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var appArgs = new AppArgs(args);
             var ambientServices = new AmbientServices();
             return Host.CreateDefaultBuilder(args)
-                    .ConfigureAmbientServices(ambientServices, args, PreconfigureAmbientServices)
-                    .ConfigureWebHostDefaults(
-                        webBuilder => webBuilder
-                                        .UseUrls("http://*:5100", "https://*:5101")
-                                        .UseStartup<StartupApp>())
-                    .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"));
+                .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"))
+                .ConfigureAmbientServices(
+                    ambientServices,
+                    args,
+                    (ctx, b, svc) => svc.PreconfigureAmbientServices(CreateEncryptionService, ctx.Configuration))
+                .ConfigureWebHostDefaults(
+                    webBuilder => webBuilder
+                        .UseUrls("http://*:5100", "https://*:5101")
+                        .UseStartup<StartupApp>());
         }
 
-        private static void PreconfigureAmbientServices(HostBuilderContext context, IConfigurationBuilder configurationBuilder, IAmbientServices ambientServices)
+        private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
         {
-            var serilogConfig = new LoggerConfiguration()
-                .ReadFrom.Configuration(context.Configuration);
+            return new EncryptionService(() => new EncryptionContext(ambientServices.CompositionContainer));
+        }
 
-            ambientServices
-                .WithSerilogManager(serilogConfig)
-                .WithDynamicAppRuntime();
+        private class EncryptionService : AesEncryptionService
+        {
+            public EncryptionService(Func<IEncryptionContext> contextCtor) : base(contextCtor)
+            {
+            }
         }
     }
 }
