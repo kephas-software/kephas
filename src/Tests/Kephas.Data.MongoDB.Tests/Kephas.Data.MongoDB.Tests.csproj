@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net461</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <SignAssembly>true</SignAssembly>
@@ -9,15 +9,9 @@
         <UserSecretsId>24dd712d-ec06-4ae2-893b-6ef0c1496105</UserSecretsId>
     </PropertyGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    </ItemGroup>
 
     <ItemGroup>
         <Compile Remove="EntityModel\**" />

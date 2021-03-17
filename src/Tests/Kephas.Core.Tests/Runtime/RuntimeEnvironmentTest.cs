@@ -16,8 +16,6 @@ namespace Kephas.Core.Tests.Runtime
     [TestFixture]
     public class RuntimeEnvironmentTest
     {
-#if NET461
-#else
         [Test]
         public void IsNetFull()
         {
@@ -35,6 +33,5 @@ namespace Kephas.Core.Tests.Runtime
         {
             Assert.IsFalse(RuntimeEnvironment.IsNetNative);
         }
-#endif
     }
 }

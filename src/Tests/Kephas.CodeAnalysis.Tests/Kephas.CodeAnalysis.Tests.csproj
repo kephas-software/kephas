@@ -1,44 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-      <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net461</TargetFrameworks>
-      <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="stylecop.json" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="stylecop.json" />
+        <None Remove="stylecop.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSubstitute" Version="4.2.2" />
-        <PackageReference Include="NUnit" Version="3.12.0" />
+        <AdditionalFiles Include="stylecop.json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="4.2.2"/>
+        <PackageReference Include="NUnit" Version="3.12.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj" />
-    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj"/>
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj"/>
+    </ItemGroup>
 
 </Project>

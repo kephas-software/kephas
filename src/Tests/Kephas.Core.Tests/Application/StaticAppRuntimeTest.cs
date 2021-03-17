@@ -131,11 +131,7 @@ namespace Kephas.Core.Tests.Application
             var appRuntime = new StaticAppRuntime();
             var appFramework = appRuntime.GetAppFramework();
 
-#if NET461
-            Assert.AreEqual("net461", appFramework);
-#else
             Assert.IsTrue(appFramework.StartsWith("netcoreapp"), "Expected a .NET Core app framework.");
-#endif
         }
 
         [Test]

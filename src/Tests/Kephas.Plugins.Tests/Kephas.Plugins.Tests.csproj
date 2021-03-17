@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net461</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <SignAssembly>true</SignAssembly>
@@ -9,15 +9,9 @@
         <RootNamespace>Kephas.Tests</RootNamespace>
     </PropertyGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    </ItemGroup>
 
     <ItemGroup>
       <None Remove="stylecop.json" />
@@ -51,9 +45,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="net461\**\*.*">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
         <Content Include="netstandard2.0\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>

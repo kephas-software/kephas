@@ -1,20 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net461</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Remove="stylecop.json" />
