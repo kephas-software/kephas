@@ -89,8 +89,8 @@
         <PackageReference Include="IdentityServer4" Version="4.1.1" />
         <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.1" />
         <PackageReference Include="IdentityServer4.Storage" Version="4.1.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.12" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.12" />
     </ItemGroup>
 
     <ItemGroup>
