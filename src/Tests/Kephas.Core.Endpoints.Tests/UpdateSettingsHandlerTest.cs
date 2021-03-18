@@ -75,7 +75,7 @@ namespace Kephas.Core.Endpoints.Tests
 
             var settingsString = @"{""task"": {""defaultTimeout"": ""0:5:0""} }";
             var serializationService = Substitute.For<ISerializationService>();
-#if NETCORE3_1
+#if NETCOREAPP3_1
             serializationService.Deserialize(settingsString, Arg.Any<Action<ISerializationContext>>())
                 .Returns(ci => new CoreSettings { Task = new TaskSettings {DefaultTimeout = TimeSpan.FromMinutes(5) } });
 #else
