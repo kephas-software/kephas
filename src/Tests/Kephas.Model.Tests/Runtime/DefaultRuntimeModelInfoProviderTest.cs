@@ -10,6 +10,7 @@
 
 namespace Kephas.Model.Tests.Runtime
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -20,6 +21,7 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Runtime;
+    using Kephas.Services.Composition;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -48,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime
             var factory = Substitute.For<IRuntimeModelElementFactory>();
             factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo())).Returns(stringInfoMock);
 
-            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar }, this.typeRegistry);
+            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { new Lazy<IRuntimeModelRegistry, AppServiceMetadata>(() => registrar, new AppServiceMetadata()) }, this.typeRegistry);
 
             var elementInfos = (await provider.GetElementInfosAsync(Substitute.For<IModelConstructionContext>())).ToList();
 
