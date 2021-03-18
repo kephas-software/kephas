@@ -76,13 +76,12 @@ namespace Kephas
                                 && !t.IsAbstract
                                 && t.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null))
                 .Select(t => ambientServices.TypeRegistry.GetTypeInfo(t));
-            var configurators = configuratorTypes
+            var orderedConfiguratorTypes = configuratorTypes
                 .Select(t => new ExportFactory<IServicesConfigurator, AppServiceMetadata>(
                     () => (IServicesConfigurator)t.CreateInstance(),
                     GetAppServiceMetadata(t)))
-                .Order()
-                .Select(f => f.CreateExportedValue());
-            return configurators;
+                .Order();
+            return orderedConfiguratorTypes.Select(f => f.CreateExportedValue());
         }
     }
 }
