@@ -66,7 +66,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
 
-            var registry = new AppServicesRegistry(ambientServices);
+            var registry = new AppServicesRegistry(ambientServices, (sc, amb) => true);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
 
