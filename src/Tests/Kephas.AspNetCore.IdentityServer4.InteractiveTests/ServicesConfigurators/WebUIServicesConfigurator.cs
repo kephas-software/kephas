@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SpaServicesConfigurator.cs" company="Kephas Software SRL">
+// <copyright file="WebUIServicesConfigurator.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurato
     using Microsoft.AspNetCore.Mvc.ApplicationParts;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class SpaServicesConfigurator : IServicesConfigurator
+    public class WebUIServicesConfigurator : IServicesConfigurator
     {
         public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
         {
