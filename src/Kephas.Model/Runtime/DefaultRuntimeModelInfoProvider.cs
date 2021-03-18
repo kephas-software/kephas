@@ -26,6 +26,8 @@ namespace Kephas.Model.Runtime
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -44,13 +46,13 @@ namespace Kephas.Model.Runtime
         /// <param name="typeRegistry">The type registry.</param>
         public DefaultRuntimeModelInfoProvider(
             IRuntimeModelElementFactory runtimeModelElementFactory,
-            ICollection<IRuntimeModelRegistry> modelRegistries,
+            ICollection<Lazy<IRuntimeModelRegistry, AppServiceMetadata>> modelRegistries,
             IRuntimeTypeRegistry typeRegistry)
             : base(runtimeModelElementFactory)
         {
             Requires.NotNull(modelRegistries, nameof(modelRegistries));
 
-            this.modelRegistries = modelRegistries;
+            this.modelRegistries = modelRegistries.Order().Select(l => l.Value).ToList();
             this.TypeRegistry = typeRegistry;
         }
 
