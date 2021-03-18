@@ -73,5 +73,49 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             Assert.AreEqual(3, types.Count);
             Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t)));
         }
+
+        [Test]
+        public async Task GetRuntimeElementsAsync_with_filter()
+        {
+            var ambientServices = new AmbientServices();
+            var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
+            {
+                (typeof(int), Substitute.For<IAppServiceInfo>()),
+                (typeof(string), Substitute.For<IAppServiceInfo>()),
+                (typeof(bool), Substitute.For<IAppServiceInfo>()),
+            };
+
+            ambientServices.SetAppServiceInfos(appServicesInfos);
+
+            var registry = new AppServicesRegistry(ambientServices, (sc, amb) => sc.contractType == typeof(int));
+            var elements = await registry.GetRuntimeElementsAsync();
+            var types = elements.OfType<Type>().ToList();
+
+            Assert.AreEqual(1, types.Count);
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t)));
+        }
+
+        [Test]
+        public async Task GetRuntimeElementsAsync_with_default_filter()
+        {
+            var ambientServices = new AmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
+            var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
+            {
+                (typeof(int), Substitute.For<IAppServiceInfo>()),
+                (typeof(string), Substitute.For<IAppServiceInfo>()),
+                (typeof(bool), Substitute.For<IAppServiceInfo>()),
+                (typeof(IRuntimeModelRegistry), Substitute.For<IAppServiceInfo>()),
+                (typeof(IModelSpace), Substitute.For<IAppServiceInfo>()),
+            };
+
+            ambientServices.SetAppServiceInfos(appServicesInfos);
+
+            var registry = new AppServicesRegistry(ambientServices);
+            var elements = await registry.GetRuntimeElementsAsync();
+            var types = elements.OfType<Type>().ToList();
+
+            Assert.AreEqual(2, types.Count);
+            Assert.IsTrue(types.All(t => t.Assembly.GetName().Name.StartsWith("Kephas")));
+        }
     }
 }
