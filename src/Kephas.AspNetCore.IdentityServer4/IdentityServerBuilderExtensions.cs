@@ -52,6 +52,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         {
             builder.AddAspNetIdentity<TUser>()
                 .AddOperationalStores<TUser, TRole>()
+                .AddMessageStores()
                 .ConfigureReplacedServices()
                 .AddIdentityResources()
                 .AddApiResources()
@@ -62,6 +63,21 @@ namespace Kephas.AspNetCore.IdentityServer4
             {
                 builder.Services.Configure(configure);
             }
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Adds message stores.
+        /// </summary>
+        /// <param name="builder">The identity server builder.</param>
+        /// <returns>The provided identity server builder.</returns>
+        public static IIdentityServerBuilder AddMessageStores(this IIdentityServerBuilder builder)
+        {
+            var services = builder.Services;
+
+            // Identity Services
+            services.AddTransient<IAuthorizationParametersMessageStore>(sp => sp.GetRequiredService<IAuthorizationParametersMessageStoreService>());
 
             return builder;
         }
