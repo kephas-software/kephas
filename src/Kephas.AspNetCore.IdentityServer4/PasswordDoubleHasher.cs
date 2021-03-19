@@ -25,17 +25,17 @@ namespace Kephas.AspNetCore.IdentityServer4
     public class PasswordDoubleHasher<TUser> : IPasswordHasher<TUser>
         where TUser : class
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IHashingService hashingService;
         private readonly IConfiguration<CryptographySettings> cryptographyConfiguration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordDoubleHasher{TUser}"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="hashingService">The hashing service.</param>
         /// <param name="cryptographyConfiguration">The cryptography configuration.</param>
-        public PasswordDoubleHasher(IServiceProvider serviceProvider, IConfiguration<CryptographySettings> cryptographyConfiguration)
+        public PasswordDoubleHasher(IHashingService hashingService, IConfiguration<CryptographySettings> cryptographyConfiguration)
         {
-            this.serviceProvider = serviceProvider;
+            this.hashingService = hashingService;
             this.cryptographyConfiguration = cryptographyConfiguration;
         }
 
@@ -84,9 +84,8 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// <returns>The hash as a base 64 string.</returns>
         protected virtual string Hash(string value)
         {
-            var hasher = this.serviceProvider.GetRequiredService<IHashingService>();
-            var rawPasswordHash = hasher.Hash(value);
-            var hash = hasher.Hash(rawPasswordHash, this.cryptographyConfiguration.GetSettings().GetHashingSaltBytes());
+            var rawPasswordHash = this.hashingService.Hash(value);
+            var hash = this.hashingService.Hash(rawPasswordHash, this.cryptographyConfiguration.GetSettings().GetHashingSaltBytes());
             return Convert.ToBase64String(hash);
         }
     }
