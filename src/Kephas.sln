@@ -222,6 +222,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.IdentityS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.IdentityServer4.InteractiveTests", "Tests\Kephas.AspNetCore.IdentityServer4.InteractiveTests\Kephas.AspNetCore.IdentityServer4.InteractiveTests.csproj", "{84913883-4BEE-455E-B2F8-813B3741905D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Autofac", "Kephas.Extensions.Autofac\Kephas.Extensions.Autofac.csproj", "{ED5E1044-448D-42D2-979F-A1370DC0B311}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -612,6 +614,10 @@ Global
 		{84913883-4BEE-455E-B2F8-813B3741905D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84913883-4BEE-455E-B2F8-813B3741905D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84913883-4BEE-455E-B2F8-813B3741905D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED5E1044-448D-42D2-979F-A1370DC0B311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5E1044-448D-42D2-979F-A1370DC0B311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5E1044-448D-42D2-979F-A1370DC0B311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5E1044-448D-42D2-979F-A1370DC0B311}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
