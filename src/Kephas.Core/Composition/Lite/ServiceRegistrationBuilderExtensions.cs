@@ -11,7 +11,10 @@
 namespace Kephas.Composition.Lite
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// Extensions for the service registration builder.
@@ -66,6 +69,50 @@ namespace Kephas.Composition.Lite
             Requires.NotNull(builder, nameof(builder));
 
             return builder.Keyed(typeof(TContract));
+        }
+
+        /// <summary>
+        /// Sets the processing priority for the registered service.
+        /// </summary>
+        /// <param name="builder">The builder to act on.</param>
+        /// <param name="priority">The priority value.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public static IServiceRegistrationBuilder ProcessingPriority(this IServiceRegistrationBuilder builder, Priority priority)
+        {
+            Requires.NotNull(builder, nameof(builder));
+
+            return builder.AddMetadata(nameof(AppServiceMetadata.ProcessingPriority), (int)priority);
+        }
+
+        /// <summary>
+        /// Sets the override priority for the registered service.
+        /// </summary>
+        /// <param name="builder">The builder to act on.</param>
+        /// <param name="priority">The priority value.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public static IServiceRegistrationBuilder OverridePriority(this IServiceRegistrationBuilder builder, Priority priority)
+        {
+            Requires.NotNull(builder, nameof(builder));
+
+            return builder.AddMetadata(nameof(AppServiceMetadata.OverridePriority), (int)priority);
+        }
+
+        /// <summary>
+        /// Sets a flag indicating that the service provided should override its base service.
+        /// </summary>
+        /// <param name="builder">The builder to act on.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public static IServiceRegistrationBuilder IsOverride(this IServiceRegistrationBuilder builder)
+        {
+            Requires.NotNull(builder, nameof(builder));
+
+            return builder.AddMetadata(nameof(AppServiceMetadata.IsOverride), true);
         }
     }
 }
