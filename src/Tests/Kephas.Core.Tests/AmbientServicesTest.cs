@@ -343,11 +343,28 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void GetService_exportFactory_with_priority_metadata()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.Register(
+                typeof(IDependency),
+                b => b.WithFactory(() => Substitute.For<IDependency>())
+                    .ProcessingPriority(Priority.Low)
+                    .OverridePriority(Priority.AboveNormal)
+                    .IsOverride());
+
+            var service = ambientServices.GetService<Lazy<IDependency, AppServiceMetadata>>();
+            Assert.IsNotNull(service.Metadata);
+            Assert.AreEqual((int)Priority.Low, service.Metadata.ProcessingPriority);
+            Assert.AreEqual((int)Priority.AboveNormal, service.Metadata.OverridePriority);
+            Assert.IsTrue(service.Metadata.IsOverride);
+        }
+
+        [Test]
         public void GetService_exportFactory_with_metadata()
         {
             var ambientServices = new AmbientServices();
             ambientServices.Register<IService, DependentService>();
-            ambientServices.Register<IDependency>(Substitute.For<IDependency>());
 
             var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
