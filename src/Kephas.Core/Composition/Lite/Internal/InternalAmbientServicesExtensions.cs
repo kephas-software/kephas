@@ -13,9 +13,9 @@ namespace Kephas.Composition.Lite.Internal
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
+
+    using Kephas.Collections;
     using Kephas.Composition;
-    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services.Composition;
 
@@ -43,8 +43,12 @@ namespace Kephas.Composition.Lite.Internal
             if (serviceInfo.InstanceType != null)
             {
                 const string AppServiceMetadataKey = "__AppServiceMetadata";
+
+                // if multiple service infos are defined for the same type,
+                // make sure one does not override the other.
+                var metadataKey = $"{AppServiceMetadataKey}_{serviceInfo.GetHashCode()}";
                 var instanceTypeInfo = typeRegistry.GetTypeInfo(serviceInfo.InstanceType);
-                if (instanceTypeInfo[AppServiceMetadataKey] is IDictionary<string, object> savedMetadata)
+                if (instanceTypeInfo[metadataKey] is IDictionary<string, object> savedMetadata)
                 {
                     metadata = savedMetadata;
                 }
@@ -59,12 +63,17 @@ namespace Kephas.Composition.Lite.Internal
                     AddMetadataFromGenericServiceType(metadata, metadataResolver, serviceInfo.ServiceType, serviceInfo.InstanceType);
                     AddMetadataFromAttributes(metadata, typeRegistry, metadataResolver, serviceInfo.InstanceType);
 
-                    instanceTypeInfo[AppServiceMetadataKey] = metadata;
+                    if (serviceInfo.Metadata != null)
+                    {
+                        metadata.Merge(serviceInfo.Metadata);
+                    }
+
+                    instanceTypeInfo[metadataKey] = metadata;
                 }
             }
             else
             {
-                metadata = new Dictionary<string, object>();
+                metadata = serviceInfo.Metadata ?? new Dictionary<string, object>();
             }
 
             return (TMetadata)typeRegistry
