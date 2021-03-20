@@ -34,7 +34,7 @@ namespace Kephas.Composition.Lite.Internal
         /// <value>
         /// The metadata.
         /// </value>
-        IDictionary<string, object> Metadata { get; }
+        IDictionary<string, object>? Metadata { get; }
 
         /// <summary>
         /// Makes a generic service information with closed generic types.

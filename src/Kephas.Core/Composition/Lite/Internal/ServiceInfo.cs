@@ -28,7 +28,7 @@ namespace Kephas.Composition.Lite.Internal
     {
         private readonly LazyFactory lazyFactory;
 
-        private Func<object> instanceResolver;
+        private Func<object>? instanceResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
@@ -143,7 +143,7 @@ namespace Kephas.Composition.Lite.Internal
 
         public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
 
-        public IDictionary<string, object> Metadata { get; internal set; }
+        public IDictionary<string, object>? Metadata { get; internal set; }
 
         public void Dispose()
         {
@@ -179,8 +179,8 @@ namespace Kephas.Composition.Lite.Internal
                 .OrderByDescending(c => c.GetParameters().Length)
                 .ToList();
             var maxLength = -1;
-            ConstructorInfo maxCtor = null;
-            ParameterInfo[] maxCtorParams = null;
+            ConstructorInfo? maxCtor = null;
+            ParameterInfo[]? maxCtorParams = null;
             foreach (var ctor in ctors)
             {
                 var ctorParams = ctor.GetParameters();
