@@ -41,10 +41,6 @@ namespace Kephas.Application.AspNetCore
             var instanceSettings = appSettingsProvider.GetAppSettings();
             var appRuntime = ambientServices.AppRuntime;
 
-            // Workaround for fixing the Autofac/Kestrel issue regarding the DI registration order.
-            // https://github.com/aspnet/KestrelHttpServer/issues/1783
-            opts.ApplicationServices ??= container.ToServiceProvider();
-
             var logger = ambientServices.LogManager.GetLogger<StartupAppBase>();
             var urls = instanceSettings?.Host?.Urls;
             if (urls != null)
