@@ -41,7 +41,7 @@ namespace Kephas
     /// using the composition (the classical example is the unit testing, where the classes
     /// should be sandboxed as much as possible). However, there may be cases when this cannot be avoided,
     /// such as static classes or classes which get instantiated outside of the developer's control
-    /// (like in the case of the entities instatiated by the ORMs). Those are cases where the
+    /// (like in the case of the entities instantiated by the ORMs). Those are cases where the
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
     [ExcludeFromComposition]
@@ -76,8 +76,8 @@ namespace Kephas
 
                     .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>())
 
-                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithInstance(this))
-                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>());
+                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithInstance(this).ProcessingPriority(Priority.Highest))
+                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>().ProcessingPriority(Priority.High));
             }
 
             this.registry
