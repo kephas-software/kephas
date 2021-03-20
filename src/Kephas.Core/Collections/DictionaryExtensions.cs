@@ -36,8 +36,42 @@ namespace Kephas.Collections
             {
                 throw new ArgumentNullException(nameof(key));
             }
- 
+
             return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
+        }
+
+        /// <summary>
+        /// Tries to get the value for the provided key. If the requested item cannot be found, the default value is returned.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <typeparam name="TDictionary">The dictionary type.</typeparam>
+        /// <param name="target">The dictionary where the merge operation occurs.</param>
+        /// <param name="source">The source dictionary to merge.</param>
+        /// <returns>The merged dictionary.</returns>
+        public static TDictionary Merge<TDictionary, TKey, TValue>(this TDictionary target, IDictionary<TKey, TValue>? source)
+            where TDictionary : class, IDictionary<TKey, TValue>
+        {
+            Requires.NotNull(target, nameof(target));
+
+            if (source == null)
+            {
+                return target;
+            }
+
+#if NETSTANDARD2_0
+            foreach (var kv in source)
+            {
+                target[kv.Key] = kv.Value;
+            }
+#else
+            foreach (var (k, v) in source)
+            {
+                target[k] = v;
+            }
+#endif
+
+            return target;
         }
     }
 }
