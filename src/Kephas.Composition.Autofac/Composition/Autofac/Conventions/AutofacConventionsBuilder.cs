@@ -25,9 +25,7 @@ namespace Kephas.Composition.Autofac.Conventions
     {
         private readonly ContainerBuilder containerBuilder;
 
-        private readonly IList<ServiceDescriptorBuilder> descriptorBuilders = new List<ServiceDescriptorBuilder>();
-
-        private readonly IList<AutofacPartBuilder> factoryBuilders = new List<AutofacPartBuilder>();
+        private readonly IList<Action<IEnumerable<Type>>> builders = new List<Action<IEnumerable<Type>>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacConventionsBuilder"/> class.
@@ -73,7 +71,7 @@ namespace Kephas.Composition.Autofac.Conventions
             {
                 ImplementationTypePredicate = typePredicate,
             };
-            this.descriptorBuilders.Add(descriptorBuilder);
+            this.builders.Add(parts => descriptorBuilder.Build(parts));
 
             return new AutofacPartConventionsBuilder(descriptorBuilder);
         }
@@ -92,7 +90,7 @@ namespace Kephas.Composition.Autofac.Conventions
             {
                 ImplementationType = type,
             };
-            this.descriptorBuilders.Add(descriptorBuilder);
+            this.builders.Add(parts => descriptorBuilder.Build(parts));
 
             return new AutofacPartConventionsBuilder(descriptorBuilder);
         }
@@ -107,9 +105,9 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </returns>
         public IPartBuilder ForInstance(Type type, object instance)
         {
-            this.containerBuilder
+            this.builders.Add(_ => this.containerBuilder
                 .RegisterInstance(instance)
-                .As(type);
+                .As(type));
 
             return NullPartBuilder.Instance;
         }
@@ -132,7 +130,7 @@ namespace Kephas.Composition.Autofac.Conventions
                         return factory(serviceProvider);
                     });
             var partBuilder = new AutofacPartBuilder(this.containerBuilder, registrationBuilder);
-            this.factoryBuilders.Add(partBuilder);
+            this.builders.Add(parts => partBuilder.Build(parts));
 
             return partBuilder;
         }
@@ -154,14 +152,9 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </returns>
         public ContainerBuilder GetContainerBuilder(IEnumerable<Type> parts)
         {
-            foreach (var descriptorBuilder in this.descriptorBuilders)
+            foreach (var builder in this.builders)
             {
-                descriptorBuilder.Build(parts);
-            }
-
-            foreach (var factoryBuilder in this.factoryBuilders)
-            {
-                factoryBuilder.Build(parts);
+                builder(parts);
             }
 
             return this.containerBuilder;
