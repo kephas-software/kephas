@@ -38,7 +38,7 @@ namespace Kephas.Composition.Lite
 
         private object instancing;
 
-        private IDictionary<string, object> metadata;
+        private IDictionary<string, object>? metadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRegistrationBuilder"/> class.
@@ -69,6 +69,7 @@ namespace Kephas.Composition.Lite
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
                         ExternallyOwned = this.externallyOwned,
+                        Metadata = this.metadata,
                     };
                 case Func<ICompositionContext, object> factory:
                     return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime == AppServiceLifetime.Singleton)
@@ -76,6 +77,7 @@ namespace Kephas.Composition.Lite
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
                         ExternallyOwned = this.externallyOwned,
+                        Metadata = this.metadata,
                     };
                 default:
                     if (this.instancing == null)
@@ -93,6 +95,7 @@ namespace Kephas.Composition.Lite
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
                         ExternallyOwned = this.externallyOwned,
+                        Metadata = this.metadata,
                     };
             }
         }
