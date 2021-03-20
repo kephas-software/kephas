@@ -138,10 +138,11 @@ namespace Kephas.Services.Composition
             IList<Type> candidateTypes,
             ICompositionRegistrationContext registrationContext)
         {
-            var ambientServicesProviders = registrationContext.AmbientServices?.GetService<IEnumerable<IAppServiceInfoProvider>>();
+            var ambientServicesProviders = registrationContext.AmbientServices?.GetService<IEnumerable<Lazy<IAppServiceInfoProvider, AppServiceMetadata>>>();
             if (ambientServicesProviders != null)
             {
-                foreach (var provider in ambientServicesProviders)
+                var orderedProviders = ambientServicesProviders.Order().Select(p => p.Value);
+                foreach (var provider in orderedProviders)
                 {
                     yield return provider;
                 }
