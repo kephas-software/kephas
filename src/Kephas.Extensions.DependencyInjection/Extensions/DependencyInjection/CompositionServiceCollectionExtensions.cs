@@ -15,7 +15,7 @@ namespace Kephas.Extensions.DependencyInjection
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Lite;
     using Kephas.Diagnostics.Contracts;
-
+    using Kephas.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -37,9 +37,10 @@ namespace Kephas.Extensions.DependencyInjection
             Requires.NotNull(serviceCollection, nameof(serviceCollection));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
+            // make sure to register the service collection *BEFORE* the attributed service provider.
             ambientServices
                 .Register(serviceCollection)
-                .Register<IAppServiceInfoProvider>(b => b.WithType<ServiceCollectionAppServiceInfoProvider>().AllowMultiple());
+                .Register<IAppServiceInfoProvider>(b => b.WithType<ServiceCollectionAppServiceInfoProvider>().AllowMultiple().ProcessingPriority(Priority.High - 100));
             serviceCollection.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, CompositionServiceScopeFactory>());
             serviceCollection.TryAddSingleton<IServiceProvider>(provider => provider);
 
