@@ -5,9 +5,9 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
-        <Version>9.0.2</Version>
-        <AssemblyVersion>9.0.1.0</AssemblyVersion>
-        <FileVersion>9.0.2.0</FileVersion>
+        <Version>9.0.3</Version>
+        <AssemblyVersion>9.0.3.0</AssemblyVersion>
+        <FileVersion>9.0.3.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
