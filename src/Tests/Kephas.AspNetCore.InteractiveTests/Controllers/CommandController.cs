@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
+namespace Kephas.AspNetCore.InteractiveTests.Controllers
 {
     using System;
     using System.Linq;
@@ -13,13 +13,9 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application.AspNetCore.Controllers;
-    using Kephas.AspNetCore.IdentityServer4.Authentication;
     using Kephas.Commands;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
-    using Kephas.Logging;
-    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
@@ -31,8 +27,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
     [Route("api/cmd/{command}")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
-    [Authorize]
-    public class CommandController : AuthenticatedControllerBase
+    public class CommandController : ControllerBase
     {
         private readonly ICommandProcessor commandProcessor;
         private readonly IContextFactory contextFactory;
@@ -42,14 +37,9 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
         /// </summary>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="contextFactory">The context factory.</param>
-        /// <param name="authenticationService">The authentication service.</param>
-        /// <param name="logManager">Optional. Manager for log.</param>
         public CommandController(
             ICommandProcessor commandProcessor,
-            IContextFactory contextFactory,
-            IAuthenticationService authenticationService,
-            ILogManager? logManager = null)
-            : base(authenticationService, logManager)
+            IContextFactory contextFactory)
         {
             this.commandProcessor = commandProcessor;
             this.contextFactory = contextFactory;
@@ -91,9 +81,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
                                                  + $"Possible cause: an application component is not properly installed (missing plugin?).");
                 }
 
-                var identity = await this.GetSessionIdentityAsync(cancellationToken).PreserveThreadContext();
-                using var context = this.contextFactory.CreateContext<Context>()
-                                        .Impersonate(identity);
+                using var context = this.contextFactory.CreateContext<Context>();
                 var response = await this.commandProcessor.ProcessAsync(
                     command,
                     args,
