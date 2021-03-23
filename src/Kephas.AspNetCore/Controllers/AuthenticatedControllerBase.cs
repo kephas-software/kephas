@@ -22,7 +22,7 @@ namespace Kephas.Application.AspNetCore.Controllers
     /// <summary>
     /// Base class for authenticated controllers.
     /// </summary>
-    public abstract class AuthenticatedControllerBase : Controller, ILoggable
+    public abstract class AuthenticatedControllerBase : ControllerBase, ILoggable
     {
         private Lazy<ILogger> lazyLogger;
 
@@ -81,11 +81,6 @@ namespace Kephas.Application.AspNetCore.Controllers
 
             var identity = await this.AuthenticationService.GetIdentityAsync(this.User, cancellationToken: cancellationToken)
                                .PreserveThreadContext();
-            if (identity?.Name != this.User.Identity.Name)
-            {
-                // TODO localization
-                throw new AuthenticationException($"The user changed since last login, please logout and login again.");
-            }
 
             return identity;
         }
