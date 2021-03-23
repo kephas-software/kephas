@@ -62,6 +62,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.AspNetCore.IdentityServer4\Kephas.AspNetCore.IdentityServer4.csproj" />
     <ProjectReference Include="..\..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Kephas.Commands\Kephas.Commands.csproj" />
     <ProjectReference Include="..\..\Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj" />
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
     <ProjectReference Include="..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
