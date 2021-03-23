@@ -54,7 +54,7 @@ namespace Kephas.Security.Authentication
         /// </returns>
         public Task<IIdentity?> GetIdentityAsync(
             object token,
-            Action<IContext>? optionsConfig = null,
+            Action<IAuthenticationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IIdentity?>(null);
@@ -69,9 +69,8 @@ namespace Kephas.Security.Authentication
         /// <returns>
         /// An asynchronous result that yields the token.
         /// </returns>
-        public Task<object?> GetTokenAsync(
-            IIdentity identity,
-            Action<IContext>? optionsConfig = null,
+        public Task<object?> GetTokenAsync(IIdentity identity,
+            Action<IAuthenticationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<object?>(null);
@@ -98,7 +97,7 @@ namespace Kephas.Security.Authentication
         /// <returns>
         /// The identity.
         /// </returns>
-        public IIdentity? GetIdentity(object token, Action<IContext>? optionsConfig = null)
+        public IIdentity? GetIdentity(object token, Action<IAuthenticationContext>? optionsConfig = null)
         {
             return null;
         }
@@ -111,7 +110,7 @@ namespace Kephas.Security.Authentication
         /// <returns>
         /// The token.
         /// </returns>
-        public object? GetToken(IIdentity identity, Action<IContext>? optionsConfig = null)
+        public object? GetToken(IIdentity identity, Action<IAuthenticationContext>? optionsConfig = null)
         {
             return null;
         }

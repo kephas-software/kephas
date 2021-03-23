@@ -26,7 +26,7 @@ namespace Kephas.Security.Authentication
         /// <value>
         /// The credentials.
         /// </value>
-        ICredentials Credentials { get; }
+        ICredentials? Credentials { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw on failure.

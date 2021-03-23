@@ -23,6 +23,15 @@ namespace Kephas.Security.Authentication
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
         /// <param name="compositionContext">The context for the composition.</param>
+        public AuthenticationContext(ICompositionContext compositionContext)
+            : base(compositionContext)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
+        /// </summary>
+        /// <param name="compositionContext">The context for the composition.</param>
         /// <param name="credentials">The credentials.</param>
         public AuthenticationContext(ICompositionContext compositionContext, ICredentials credentials)
             : base(compositionContext)
@@ -41,11 +50,11 @@ namespace Kephas.Security.Authentication
         public bool ThrowOnFailure { get; set; } = true;
 
         /// <summary>
-        /// Gets the credentials.
+        /// Gets or sets the credentials.
         /// </summary>
         /// <value>
         /// The credentials.
         /// </value>
-        public ICredentials Credentials { get; }
+        public ICredentials? Credentials { get; set; }
     }
 }
