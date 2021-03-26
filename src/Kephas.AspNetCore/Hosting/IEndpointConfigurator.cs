@@ -14,7 +14,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// <summary>
     /// Service contract for configuring the endpoints.
     /// </summary>
-    [SingletonAppServiceContract]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IEndpointConfigurator
     {
         /// <summary>
