@@ -29,9 +29,9 @@ namespace Kephas.Plugins.Endpoints
         /// <summary>
         /// Gets or sets a value indicating whether license information should be included.
         /// </summary>
-        [Display(Description = "Optional. Indicates whether license information should be included (default: true).")]
-        [DefaultValue(true)]
-        public bool IncludeLicense { get; set; } = true;
+        [Display(ShortName = "lic", Description = "Optional. Indicates whether license information should be included (default: false).")]
+        [DefaultValue(false)]
+        public bool IncludeLicense { get; set; } = false;
     }
 
     /// <summary>
