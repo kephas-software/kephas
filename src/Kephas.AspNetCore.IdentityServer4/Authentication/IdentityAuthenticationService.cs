@@ -165,26 +165,25 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
         {
             using var context = this.ContextFactory.CreateContext<AuthenticationContext>().Merge(optionsConfig);
 
-            IIdentity? identity = null;
             var userId = this.ParseId(
                 token is ClaimsPrincipal appUserPrincipal
                     ? appUserPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                    : token)!;
+                    : token);
 
-            switch (userId)
+            IIdentity? identity = null;
+            identity = userId switch
             {
-                case long appUserIdLong:
-                    identity = await this.TryGetIdentityByIdAsync(appUserIdLong, context, cancellationToken).PreserveThreadContext();
-                    break;
-                case Guid appUserIdGuid:
-                    identity = await this.TryGetIdentityByGuidAsync(appUserIdGuid, context, cancellationToken).PreserveThreadContext();
-                    break;
-                case string appUserIdString:
-                    identity = appUserIdString.IndexOf('@') > 0
-                        ? await this.TryGetIdentityByEmailAsync(appUserIdString, context, cancellationToken).PreserveThreadContext()
-                        : await this.TryGetIdentityByNameAsync(appUserIdString, context, cancellationToken).PreserveThreadContext();
-                    break;
-            }
+                long appUserIdLong => await this.TryGetIdentityByIdAsync(appUserIdLong, context, cancellationToken)
+                    .PreserveThreadContext(),
+                Guid appUserIdGuid => await this.TryGetIdentityByGuidAsync(appUserIdGuid, context, cancellationToken)
+                    .PreserveThreadContext(),
+                string appUserIdString => appUserIdString.IndexOf('@') > 0
+                    ? await this.TryGetIdentityByEmailAsync(appUserIdString, context, cancellationToken)
+                        .PreserveThreadContext()
+                    : await this.TryGetIdentityByNameAsync(appUserIdString, context, cancellationToken)
+                        .PreserveThreadContext(),
+                _ => identity
+            };
 
             // add also the claims from the original identity.
             if (identity is ClaimsIdentity claimsIdentityValue && token is ClaimsPrincipal claimsPrincipal)
