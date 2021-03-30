@@ -16,6 +16,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
     using System.Threading.Tasks;
 
     using Kephas.AspNetCore.IdentityServer4.Stores;
+    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Security.Authentication;
     using Kephas.Services;
@@ -31,14 +32,17 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityAuthenticationService"/> class.
         /// </summary>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="contextFactory">The context factory.</param>
-        /// <param name="lazyPasswordHasher">The lazy password hasher.</param>
         /// <param name="lazyUserStore">The lazy user store.</param>
         public IdentityAuthenticationService(
+            ICompositionContext compositionContext,
             IContextFactory contextFactory,
-            Lazy<IPasswordHasher<IdentityUser>> lazyPasswordHasher,
             Lazy<IUserStoreService<IdentityUser>> lazyUserStore)
-            : base(contextFactory, lazyPasswordHasher, lazyUserStore)
+            : base(
+                contextFactory,
+                new Lazy<IPasswordHasher<IdentityUser>>(() => compositionContext.GetExport<IPasswordHasher<IdentityUser>>()),
+                lazyUserStore)
         {
         }
     }
@@ -129,8 +133,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
                 return null;
             }
 
-            var userStore = this.UserStore as IUserPasswordStore<TUser>;
-            if (userStore == null)
+            if (!(this.UserStore is IUserPasswordStore<TUser> userStore))
             {
                 throw new NotSupportedException($"The user store does not implement the {nameof(IUserPasswordStore<TUser>)} interface.");
             }
