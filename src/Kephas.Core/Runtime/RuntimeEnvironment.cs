@@ -43,7 +43,33 @@ namespace Kephas.Runtime
         /// </summary>
         public static readonly string UnixNewLine = "\n";
 
+        /// <summary>
+        /// Gets the name of the .NET Framework runtime.
+        /// </summary>
+        public const string NetFrameworkRuntime = ".NET Framework";
+
+        /// <summary>
+        /// Gets the name of the .NET Core runtime.
+        /// </summary>
+        public const string NetCoreRuntime = ".NET Core";
+
+        /// <summary>
+        /// Gets the name of the .NET Native runtime.
+        /// </summary>
+        public const string NetNativeRuntime = ".NET Native";
+
+        /// <summary>
+        /// Gets the name of the .NET runtime.
+        /// </summary>
+        public const string NetRuntime = ".NET";
+
+        /// <summary>
+        /// Gets the name of the Mono runtime.
+        /// </summary>
+        public const string MonoRuntime = "Mono";
+
         private static PlatformID? platform;
+        private static string? frameworkName;
 
         /// <summary>
         /// Gets the platform.
@@ -70,7 +96,7 @@ namespace Kephas.Runtime
         /// <value>
         /// True if the runtime is the full framework, false if not.
         /// </value>
-        public static bool IsNetFull => RuntimeInformation.FrameworkDescription.StartsWith(".NET Framework", StringComparison.OrdinalIgnoreCase);
+        public static bool IsNetFramework => RuntimeInformation.FrameworkDescription.StartsWith(NetFrameworkRuntime, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets a value indicating whether the runtime is the .NET native.
@@ -78,7 +104,7 @@ namespace Kephas.Runtime
         /// <value>
         /// True if the runtime is the .NET native, false if not.
         /// </value>
-        public static bool IsNetNative => RuntimeInformation.FrameworkDescription.StartsWith(".NET Native", StringComparison.OrdinalIgnoreCase);
+        public static bool IsNetNative => RuntimeInformation.FrameworkDescription.StartsWith(NetNativeRuntime, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets a value indicating whether the runtime is the .NET Core.
@@ -86,18 +112,41 @@ namespace Kephas.Runtime
         /// <value>
         /// True if the runtime is the .NET Core, false if not.
         /// </value>
-        public static bool IsNetCore => RuntimeInformation.FrameworkDescription.StartsWith(".NET Core", StringComparison.OrdinalIgnoreCase);
+        public static bool IsNetCore => RuntimeInformation.FrameworkDescription.StartsWith(NetCoreRuntime, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Indicates whether the application runs on the Mono runtime.
+        /// Gets a value indicating whether the runtime is the unified .NET (>= 5).
+        /// </summary>
+        /// <value>
+        /// True if the runtime is the unified .NET (>= 5), false if not.
+        /// </value>
+        public static bool IsNet =>
+            RuntimeInformation.FrameworkDescription.StartsWith(NetRuntime, StringComparison.OrdinalIgnoreCase) &&
+            "123456789".IndexOf(RuntimeInformation.FrameworkDescription[5]) > 0;
+
+        /// <summary>
+        /// Gets the name of the underlying framework runtime without the version. Check also the Net*Runtime constants.
+        /// </summary>
+        public static string FrameworkName =>
+            frameworkName ??= IsNet
+                ? NetRuntime
+                : IsNetCore
+                    ? NetCoreRuntime
+                    : IsNetFramework
+                        ? NetFrameworkRuntime
+                        : IsNetNative
+                            ? NetNativeRuntime
+                            : IsMonoRuntime
+                                ? MonoRuntime
+                                : RuntimeInformation.FrameworkDescription;
+
+        /// <summary>
+        /// Gets a value indicating whether the application runs on the Mono runtime.
         /// </summary>
         /// <returns>
         /// True if the application runs on the Mono runtime, false if not.
         /// </returns>
-        public static bool IsMonoRuntime()
-        {
-            return Type.GetType("Mono.Runtime") != null;
-        }
+        public static bool IsMonoRuntime => Type.GetType("Mono.Runtime") != null;
 
         /// <summary>
         /// Checks whether .NET is running on the Mono Platform by asking Environment.OSVersion.Platform. Can
@@ -142,9 +191,9 @@ namespace Kephas.Runtime
         private static PlatformID ComputePlatform()
         {
             var platform = Environment.OSVersion.Platform;
-            if (IsMonoRuntime() && platform == PlatformID.Unix)
+            if (IsMonoRuntime && platform == PlatformID.Unix)
             {
-                var isMacOSProperty = typeof(System.Environment)
+                var isMacOSProperty = typeof(Environment)
                     .GetProperty("IsMacOS", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
                 if (isMacOSProperty != null)
                 {

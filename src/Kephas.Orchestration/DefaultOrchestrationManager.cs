@@ -504,26 +504,18 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual (string executablePath, string? runtime) GetAppExecutableInfo(IAppInfo appInfo)
         {
-            var isNetCore = RuntimeEnvironment.IsNetCore;
             var entryAssemblyLocation = Assembly.GetEntryAssembly().Location;
             var currentProcess = Process.GetCurrentProcess();
-            if (isNetCore)
+            return RuntimeEnvironment.FrameworkName switch
             {
-                var isDotNet = currentProcess.ProcessName == "dotnet";
-                if (!isDotNet)
-                {
-                    return (currentProcess.MainModule.FileName, null);
-                }
-
-                return (entryAssemblyLocation, currentProcess.ProcessName);
-            }
-
-            if (RuntimeEnvironment.IsMonoRuntime())
-            {
-                return (entryAssemblyLocation, currentProcess.ProcessName);
-            }
-
-            return (entryAssemblyLocation, null);
+                RuntimeEnvironment.NetRuntime or RuntimeEnvironment.NetCoreRuntime
+                    => currentProcess.ProcessName == "dotnet"
+                        ? (entryAssemblyLocation, currentProcess.ProcessName)
+                        : (currentProcess.MainModule.FileName, null),
+                RuntimeEnvironment.MonoRuntime
+                    => (entryAssemblyLocation, currentProcess.ProcessName),
+                _ => (entryAssemblyLocation, null),
+            };
         }
 
         /// <summary>
