@@ -172,7 +172,7 @@
             return serializer;
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         private ISerializer CreateStringSyncDeserializerMock(string content)
         {
             var serializer = Substitute.For<ISerializer>(/*Behavior.Strict*/);
@@ -202,7 +202,7 @@
                     Arg.Is<ISerializationContext>(c => c != null),
                     Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult(result));
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
             serializer.Serialize(
                     Arg.Any<object>(),
                     Arg.Is<ISerializationContext>(c => c != null))

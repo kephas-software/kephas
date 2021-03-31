@@ -57,7 +57,7 @@ namespace Kephas.Core.Tests.Cryptography
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("password", "ZHJvd3NzYXA=")]
         [TestCase("123", "MzIx")]
@@ -100,7 +100,7 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreEqual(output, encrypted);
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
 #else
         [Test]
         [TestCase("ZHJvd3NzYXA=", "password")]
@@ -117,7 +117,7 @@ namespace Kephas.Core.Tests.Cryptography
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("ZHJvd3NzYXA=", "password")]
         [TestCase("MzIx", "123")]
@@ -164,7 +164,7 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreEqual(input, decrypted);
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("password")]
         [TestCase("123")]
@@ -200,7 +200,7 @@ namespace Kephas.Core.Tests.Cryptography
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("password")]
         [TestCase("123")]
