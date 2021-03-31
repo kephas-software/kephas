@@ -17,16 +17,48 @@ namespace Kephas.Core.Tests.Runtime
     public class RuntimeEnvironmentTest
     {
         [Test]
-        public void IsNetFull()
+        public void IsNetFramework()
         {
-            Assert.IsFalse(RuntimeEnvironment.IsNetFull);
+            Assert.IsFalse(RuntimeEnvironment.IsNetFramework);
         }
 
+#if NETCOREAPP2_1 || NETCOREAPP3_1
         [Test]
         public void IsNetCore()
         {
             Assert.IsTrue(RuntimeEnvironment.IsNetCore);
         }
+
+        [Test]
+        public void IsNet()
+        {
+            Assert.IsFalse(RuntimeEnvironment.IsNet);
+        }
+
+        [Test]
+        public void FrameworkName()
+        {
+            Assert.AreEqual(RuntimeEnvironment.NetCoreRuntime, RuntimeEnvironment.FrameworkName);
+        }
+#else
+        [Test]
+        public void IsNetCore()
+        {
+            Assert.IsFalse(RuntimeEnvironment.IsNetCore);
+        }
+
+        [Test]
+        public void IsNet()
+        {
+            Assert.IsTrue(RuntimeEnvironment.IsNet);
+        }
+
+        [Test]
+        public void FrameworkName()
+        {
+            Assert.AreEqual(RuntimeEnvironment.NetRuntime, RuntimeEnvironment.FrameworkName);
+        }
+#endif
 
         [Test]
         public void IsNetNative()
