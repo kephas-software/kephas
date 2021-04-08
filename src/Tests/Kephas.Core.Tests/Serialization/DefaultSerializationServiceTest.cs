@@ -132,7 +132,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_object_sync()
         {
@@ -160,7 +160,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_textreader()
         {
@@ -190,7 +190,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_textreader_sync()
         {
@@ -247,7 +247,7 @@ namespace Kephas.Core.Tests.Serialization
             Assert.AreEqual("234", result);
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Serialize_object()
         {
@@ -275,7 +275,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Serialize_object_sync()
         {
@@ -303,7 +303,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Serialize_textwriter()
         {
@@ -334,7 +334,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Serialize_textwriter_sync()
         {
