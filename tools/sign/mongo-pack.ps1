@@ -43,6 +43,14 @@ foreach ($package in $packages) {
 	$sourceAssemblyNetStandard20 = ".\$package.$version\lib\netstandard2.0\$package"
 	Copy-Item "$sourceAssemblyNetStandard20.signed.dll" "$targetAssemblyNetStandard20.dll"
 	Copy-Item "$sourceAssemblyNetStandard20.xml" "$targetAssemblyNetStandard20.xml"
+
+    $targetAssemblyNetStandard21 = "$targetNugetPath\$package.signed.$version\lib\netstandard2.1\$package"
+	Remove-Item -path "$targetAssemblyNetStandard21.dll"
+	Remove-Item -path "$targetAssemblyNetStandard21.xml"
+	
+	$sourceAssemblyNetStandard21 = ".\$package.$version\lib\netstandard2.1\$package"
+	Copy-Item "$sourceAssemblyNetStandard21.signed.dll" "$targetAssemblyNetStandard21.dll"
+	Copy-Item "$sourceAssemblyNetStandard21.xml" "$targetAssemblyNetStandard21.xml"
 	
 	.\NuGet.exe pack $targetNugetPath$package.signed.$version\$package.signed.nuspec -BasePath $targetNugetPath$package.signed.$version
 	

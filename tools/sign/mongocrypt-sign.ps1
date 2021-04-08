@@ -8,6 +8,8 @@ $editorPath = "$Env:ProgramFiles\Notepad++\notepad++.exe"
 $assemblies = @(
     "mongodb.libmongocrypt.$version\lib\net452\MongoDB.Libmongocrypt",
     "mongodb.libmongocrypt.$version\lib\netstandard1.5\MongoDB.Libmongocrypt"
+    "mongodb.libmongocrypt.$version\lib\netstandard2.0\MongoDB.Libmongocrypt"
+    "mongodb.libmongocrypt.$version\lib\netstandard2.1\MongoDB.Libmongocrypt"
 )
 
 foreach ($assembly in $assemblies) {
