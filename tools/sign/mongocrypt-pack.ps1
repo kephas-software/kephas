@@ -1,5 +1,5 @@
 param (
-    [string]$version = $( Read-Host "Please provide package version to sign" ),
+    [string]$version = $( Read-Host "Please provide package version to pack" ),
     [string]$CertificateSubjectName = "KEPHAS SOFTWARE SRL",
     [string]$Timestamper = "http://timestamp.digicert.com"
 )
@@ -30,24 +30,24 @@ foreach ($package in $packages) {
 #	Remove-Item -path "$targetAssemblyNetStandard15.xml"
 	
 	$sourceAssemblyNetStandard15 = ".\$package.$version\lib\netstandard1.5\$package"
-	Copy-Item "$sourceAssemblyNetStandard.signed.dll" "$targetAssemblyNetStandard15.dll"
-#	Copy-Item "$sourceAssemblyNetStandard.xml" "$targetAssemblyNetStandard15.xml"
+	Copy-Item "$sourceAssemblyNetStandard15.signed.dll" "$targetAssemblyNetStandard15.dll"
+#	Copy-Item "$sourceAssemblyNetStandard15.xml" "$targetAssemblyNetStandard15.xml"
 
     $targetAssemblyNetStandard20 = "$targetNugetPath\$package.signed.$version\lib\netstandard2.0\$package"
 	Remove-Item -path "$targetAssemblyNetStandard20.dll"
 #	Remove-Item -path "$targetAssemblyNetStandard20.xml"
 	
 	$sourceAssemblyNetStandard20 = ".\$package.$version\lib\netstandard2.0\$package"
-	Copy-Item "$sourceAssemblyNetStandard.signed.dll" "$targetAssemblyNetStandard20.dll"
-#	Copy-Item "$sourceAssemblyNetStandard.xml" "$targetAssemblyNetStandard20.xml"
+	Copy-Item "$sourceAssemblyNetStandard20.signed.dll" "$targetAssemblyNetStandard20.dll"
+#	Copy-Item "$sourceAssemblyNetStandard20.xml" "$targetAssemblyNetStandard20.xml"
 
     $targetAssemblyNetStandard21 = "$targetNugetPath\$package.signed.$version\lib\netstandard2.1\$package"
 	Remove-Item -path "$targetAssemblyNetStandard21.dll"
 #	Remove-Item -path "$targetAssemblyNetStandard21.xml"
 	
 	$sourceAssemblyNetStandard21 = ".\$package.$version\lib\netstandard2.1\$package"
-	Copy-Item "$sourceAssemblyNetStandard.signed.dll" "$targetAssemblyNetStandard21.dll"
-#	Copy-Item "$sourceAssemblyNetStandard.xml" "$targetAssemblyNetStandard21.xml"
+	Copy-Item "$sourceAssemblyNetStandard21.signed.dll" "$targetAssemblyNetStandard21.dll"
+#	Copy-Item "$sourceAssemblyNetStandard21.xml" "$targetAssemblyNetStandard21.xml"
 	
 	.\NuGet.exe pack $targetNugetPath$package.signed.$version\$package.signed.nuspec -BasePath $targetNugetPath$package.signed.$version
 	
