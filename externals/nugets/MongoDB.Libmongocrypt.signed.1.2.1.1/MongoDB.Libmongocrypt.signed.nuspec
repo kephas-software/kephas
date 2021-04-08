@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>MongoDB.Libmongocrypt.signed</id>
-    <version>1.2.1</version>
+    <version>1.2.1.1</version>
 	<title>MongoDB.Libmongocrypt.signed (Unofficial)</title>
     <authors>markbenvenuto,vincentkam,dmitry_lukyanov,rstam,Kephas Framework</authors>
     <owners>markbenvenuto,vincentkam,dmitry_lukyanov,rstam,Kephas Framework</owners>
@@ -38,6 +38,8 @@
   <files>
     <file src="License.txt" target="License.txt"/>
     <file src="build\*.*" target="build"/>
+    <file src="content\**\*.*" target="content"/>
+    <file src="contentFiles\**\*.*" target="contentFiles"/>
     <file src="lib\**\*.*" target="lib"/>
     <file src="runtimes\**\*.*" target="runtimes"/>
   </files>
