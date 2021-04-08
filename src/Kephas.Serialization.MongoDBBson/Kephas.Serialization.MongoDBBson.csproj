@@ -99,7 +99,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MongoDB.Bson.signed" Version="2.11.0" />
+        <PackageReference Include="MongoDB.Bson.signed" Version="2.12.2" />
     </ItemGroup>
 
     <ItemGroup>

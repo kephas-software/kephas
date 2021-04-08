@@ -91,9 +91,9 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MongoDB.Bson.signed" Version="2.11.0" />
-        <PackageReference Include="MongoDB.Driver.Core.signed" Version="2.11.0" />
-        <PackageReference Include="MongoDB.Driver.signed" Version="2.11.0" />
+        <PackageReference Include="MongoDB.Bson.signed" Version="2.12.2" />
+        <PackageReference Include="MongoDB.Driver.Core.signed" Version="2.12.2" />
+        <PackageReference Include="MongoDB.Driver.signed" Version="2.12.2" />
     </ItemGroup>
 
     <ItemGroup>

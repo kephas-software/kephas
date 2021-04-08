@@ -83,7 +83,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Quartz" Version="3.2.3" />
-        <PackageReference Include="MongoDB.Driver.signed" Version="2.11.0" />
+        <PackageReference Include="MongoDB.Driver.signed" Version="2.12.2" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

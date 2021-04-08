@@ -6,20 +6,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json"/>
+        <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="stylecop.json"/>
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSubstitute" Version="4.2.2"/>
-        <PackageReference Include="NUnit" Version="3.12.0"/>
+        <PackageReference Include="NSubstitute" Version="4.2.2" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,8 +31,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj"/>
-        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj"/>
+        <ProjectReference Include="..\..\Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj" />
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>
 
 </Project>
