@@ -231,6 +231,8 @@ _Pvt_Extensions
 /src/.idea/
 /src/Deployment/SetNuGetApiKey.bat
 /externals/local-package-source
+!/externals/nugets/**/*.signed.targets
+!/externals/nugets/**/*.dll
 !/TestAdapter/NUnit3TestAdapter.3.10.0/**/*.*
 *.snk
 *.snupkg
