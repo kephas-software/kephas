@@ -6,19 +6,22 @@
         <Nullable>enable</Nullable>
 
         <Version>9.1.0-dev.1</Version>
-        <AssemblyVersion>9.0.0.0</AssemblyVersion>
-        <FileVersion>9.0.0.0</FileVersion>
+        <AssemblyVersion>9.1.0.0</AssemblyVersion>
+        <FileVersion>9.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides the IdentityServer4 integration with Kephas based ASP.NET Core applications.
-            Typically used areas and classes/interfaces/services:
+			Provides the IdentityServer4 integration with Kephas based ASP.NET Core applications.
+			Typically used areas and classes/interfaces/services:
+			    - Services: IIdentityAppIdProvider.
+			    - Stores: IUserStoreService, IRoleStoreService.
+			    - IIdentityServerBuilder.AddApiAuthorization.
 
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+			Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+		</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

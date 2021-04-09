@@ -220,7 +220,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.NuGet.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.IdentityServer4", "Kephas.AspNetCore.IdentityServer4\Kephas.AspNetCore.IdentityServer4.csproj", "{153B1EE4-BB6C-457A-8C79-2E66F6314726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.IdentityServer4.InteractiveTests", "Tests\Kephas.AspNetCore.IdentityServer4.InteractiveTests\Kephas.AspNetCore.IdentityServer4.InteractiveTests.csproj", "{84913883-4BEE-455E-B2F8-813B3741905D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.IdentityServer4.InteractiveTests", "Tests\Kephas.AspNetCore.IdentityServer4.InteractiveTests\Kephas.AspNetCore.IdentityServer4.InteractiveTests.csproj", "{84913883-4BEE-455E-B2F8-813B3741905D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.SignalR", "Kephas.AspNetCore.SignalR\Kephas.AspNetCore.SignalR.csproj", "{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -612,6 +614,10 @@ Global
 		{84913883-4BEE-455E-B2F8-813B3741905D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84913883-4BEE-455E-B2F8-813B3741905D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84913883-4BEE-455E-B2F8-813B3741905D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
