@@ -18,7 +18,7 @@ namespace Kephas.AspNetCore.InteractiveTests.Extensions
 
     public static class AmbientServicesAppExtensions
     {
-        public static void PreconfigureAmbientServices(
+        public static void SetupAmbientServices(
             this IAmbientServices ambientServices,
             Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
             IConfiguration? configuration)

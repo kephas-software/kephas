@@ -35,7 +35,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         /// <param name="configuration">The configuration.</param>
         /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices PreConfigureAmbientServices(
+        public static IAmbientServices SetupAmbientServices(
             this IAmbientServices ambientServices,
             IAppArgs args,
             Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,

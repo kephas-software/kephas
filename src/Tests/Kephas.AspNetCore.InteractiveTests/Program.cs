@@ -35,7 +35,7 @@ namespace Kephas.AspNetCore.InteractiveTests
                 .ConfigureAmbientServices(
                     ambientServices,
                     args,
-                    (services, ambient) => ambient.PreconfigureAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
+                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder
                         .UseUrls("http://*:5100", "https://*:5101")
