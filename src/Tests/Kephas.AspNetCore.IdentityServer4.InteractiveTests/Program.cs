@@ -57,21 +57,11 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests
                                 .ConfigureAppConfiguration((hostingContext, config) =>
                                     {
                                         var env = hostingContext.HostingEnvironment;
-
-                                        config.Sources.Clear();
-                                        config
-                                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                                            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                                            .AddEnvironmentVariables();
-                                        if (args != null)
-                                        {
-                                            config.AddCommandLine(args);
-                                        }
                                     })
                                 .ConfigureAmbientServices(
                                     ambientServices,
                                     args,
-                                    (ctx, b, svc) => svc.PreConfigureAmbientServices(appArgs, CreateEncryptionService, b, appLifetimeTokenSource))
+                                    (services, ambient) => ambient.PreConfigureAmbientServices(appArgs, CreateEncryptionService, services.TryGetStartupService<IConfiguration>(), appLifetimeTokenSource))
                                 .ConfigureWebHostDefaults(
                                     webBuilder => webBuilder
                                                     .UseStartup<Startup>()

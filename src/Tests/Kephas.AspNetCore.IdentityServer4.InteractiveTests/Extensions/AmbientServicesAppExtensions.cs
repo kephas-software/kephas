@@ -32,19 +32,17 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">The application arguments.</param>
         /// <param name="encryptionServiceFactory">The encryption service factory.</param>
-        /// <param name="configurationBuilder">The configuration.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
         /// <returns>The provided ambient services.</returns>
         public static IAmbientServices PreConfigureAmbientServices(
             this IAmbientServices ambientServices,
             IAppArgs args,
             Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
-            IConfigurationBuilder configurationBuilder,
+            IConfiguration? configuration,
             CancellationTokenSource? appLifetimeTokenSource = null)
         {
             var rootMode = args.RunAsRoot;
-
-            var configuration = configurationBuilder.Build();
 
             // leave the serilog last, because only so it can take advantage of the
             // assembly resolution from the KisAppRuntime
@@ -62,14 +60,6 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
 
             return ambientServices;
         }
-
-        /// <summary>
-        /// Gets the application assemblies.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>An enumeration of application assemblies.</returns>
-        public static IEnumerable<Assembly> GetAppAssemblies(this IAmbientServices ambientServices)
-            => ambientServices!.AppRuntime.GetAppAssemblies();
 
         /// <summary>
         /// Configures the JSON serialization.
@@ -92,7 +82,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         /// <returns>
         /// The provided ambient services.
         /// </returns>
-        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration configuration)
+        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration? configuration)
         {
             var loggerConfig = new LoggerConfiguration();
             loggerConfig

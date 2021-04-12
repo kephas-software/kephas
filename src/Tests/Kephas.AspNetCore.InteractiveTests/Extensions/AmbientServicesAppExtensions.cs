@@ -21,7 +21,7 @@ namespace Kephas.AspNetCore.InteractiveTests.Extensions
         public static void PreconfigureAmbientServices(
             this IAmbientServices ambientServices,
             Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
-            IConfiguration configuration)
+            IConfiguration? configuration)
         {
             ambientServices
                 .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
@@ -37,7 +37,7 @@ namespace Kephas.AspNetCore.InteractiveTests.Extensions
         /// <returns>
         /// The provided ambient services.
         /// </returns>
-        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration configuration)
+        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration? configuration)
         {
             var loggerConfig = new LoggerConfiguration();
             loggerConfig

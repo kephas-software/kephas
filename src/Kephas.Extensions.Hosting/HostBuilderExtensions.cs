@@ -13,7 +13,7 @@ namespace Kephas.Extensions.Hosting
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
     /// <summary>
@@ -28,11 +28,11 @@ namespace Kephas.Extensions.Hosting
         /// For ASP.NET Core applications, do not create the container here, but instead in the Startup.ConfigureAmbientServices method.
         /// </remarks>
         /// <param name="hostBuilder">The host builder.</param>
-        /// <param name="optionsConfig">Optional. The ambient services configuration delegate.</param>
+        /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
         /// <returns>The provided host builder.</returns>
-        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, Action<HostBuilderContext, IConfigurationBuilder, IAmbientServices>? optionsConfig = null)
+        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
-            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), null, optionsConfig);
+            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), null, setupAction);
         }
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace Kephas.Extensions.Hosting
         /// </remarks>
         /// <param name="hostBuilder">The host builder.</param>
         /// <param name="args">The application arguments.</param>
-        /// <param name="optionsConfig">Optional. The ambient services configuration delegate.</param>
+        /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
         /// <returns>The provided host builder.</returns>
-        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IEnumerable<string>? args, Action<HostBuilderContext, IConfigurationBuilder, IAmbientServices>? optionsConfig = null)
+        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IEnumerable<string>? args, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
-            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), args, optionsConfig);
+            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), args, setupAction);
         }
 
         /// <summary>
@@ -59,21 +59,24 @@ namespace Kephas.Extensions.Hosting
         /// <param name="hostBuilder">The host builder.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">The application arguments.</param>
-        /// <param name="optionsConfig">Optional. The ambient services configuration delegate.</param>
+        /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
         /// <returns>The provided host builder.</returns>
-        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IEnumerable<string>? args, Action<HostBuilderContext, IConfigurationBuilder, IAmbientServices>? optionsConfig = null)
+        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IEnumerable<string>? args, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
             Requires.NotNull(hostBuilder, nameof(hostBuilder));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             hostBuilder
                 .UseServiceProviderFactory(new CompositionServiceProviderFactory(ambientServices))
-                .ConfigureServices(services => services.AddAmbientServices(ambientServices))
+                .ConfigureServices(services =>
+                {
+                    services.AddAmbientServices(ambientServices);
+                    setupAction?.Invoke(services, ambientServices);
+                })
                 .ConfigureAppConfiguration(
                     (ctx, cfg) =>
                     {
                         ambientServices.RegisterAppArgs(args);
-                        optionsConfig?.Invoke(ctx, cfg, ambientServices);
                     });
 
             hostBuilder.Properties[nameof(IAmbientServices)] = ambientServices;
