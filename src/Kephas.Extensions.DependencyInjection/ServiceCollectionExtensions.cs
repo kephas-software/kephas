@@ -56,6 +56,35 @@ namespace Kephas
             return descriptor.AmbientServices;
         }
 
+        /// <summary>
+        /// Tries to get a service inside the startup pipeline.
+        /// </summary>
+        /// <param name="serviceCollection">The service collection.</param>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <returns>The service instance, if one could be found.</returns>
+        public static T? TryGetStartupService<T>(this IServiceCollection serviceCollection)
+        {
+            Requires.NotNull(serviceCollection, nameof(serviceCollection));
+
+            var serviceDescriptor = serviceCollection.FirstOrDefault(s => s.ServiceType == typeof(T));
+            if (serviceDescriptor == null)
+            {
+                return default;
+            }
+
+            if (serviceDescriptor.ImplementationInstance != null)
+            {
+                return (T)serviceDescriptor.ImplementationInstance;
+            }
+
+            if (serviceDescriptor.ImplementationFactory != null)
+            {
+                return (T)serviceDescriptor.ImplementationFactory(null);
+            }
+
+            return default;
+        }
+
         private class AmbientServicesServiceDescriptor : ServiceDescriptor
         {
             public AmbientServicesServiceDescriptor(IAmbientServices ambientServices)
