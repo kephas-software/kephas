@@ -14,9 +14,14 @@ namespace Kephas.AspNetCore.SignalR.Hosting.ServicesConfigurators
     /// <summary>
     /// Services configurator for SignalR.
     /// </summary>
-    [ProcessingPriority(Priority.High + 300)]
+    [ProcessingPriority(ProcessingPriority)]
     public class SignalRServicesConfigurator : IServicesConfigurator
     {
+        /// <summary>
+        /// The processing priority of <see cref="SignalRServicesConfigurator"/>.
+        /// </summary>
+        public const Priority ProcessingPriority = Priority.High + 300;
+
         /// <summary>
         /// Configure the services.
         /// </summary>

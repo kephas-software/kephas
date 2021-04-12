@@ -15,9 +15,14 @@ namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
     /// <summary>
     /// Services configurator
     /// </summary>
-    [ProcessingPriority(Priority.Lowest)]
+    [ProcessingPriority(ProcessingPriority)]
     public class HttpContextAccessorServicesConfigurator : IServicesConfigurator
     {
+        /// <summary>
+        /// The processing priority of <see cref="HttpContextAccessorServicesConfigurator"/>.
+        /// </summary>
+        public const Priority ProcessingPriority = Priority.Lowest;
+
         /// <summary>
         /// Configure the services.
         /// </summary>

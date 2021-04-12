@@ -21,9 +21,14 @@ namespace Kephas.Application.AspNetCore.Hosting.MiddlewareConfigurators
     /// <summary>
     /// Middleware configurator for endpoints.
     /// </summary>
-    [ProcessingPriority(Priority.BelowNormal)]
+    [ProcessingPriority(ProcessingPriority)]
     public class EndpointsMiddlewareConfigurator : Loggable, IMiddlewareConfigurator
     {
+        /// <summary>
+        /// The processing priority of <see cref="EndpointsMiddlewareConfigurator"/>.
+        /// </summary>
+        public const Priority ProcessingPriority = Priority.BelowNormal;
+
         private readonly ICollection<Lazy<IEndpointConfigurator, AppServiceMetadata>> lazyConfigurators;
 
         /// <summary>

@@ -16,9 +16,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Hosting.MiddlewareConfigurators
     /// Middleware configurator for authentication.
     /// </summary>
     /// <seealso cref="IMiddlewareConfigurator" />
-    [ProcessingPriority(Priority.High)]
+    [ProcessingPriority(ProcessingPriority)]
     public class AuthMiddlewareConfigurator : IMiddlewareConfigurator
     {
+        /// <summary>
+        /// The processing priority of <see cref="AuthMiddlewareConfigurator"/>.
+        /// </summary>
+        public const Priority ProcessingPriority = Priority.High;
+
         /// <summary>
         /// Configures a specific middleware using the given application context.
         /// </summary>

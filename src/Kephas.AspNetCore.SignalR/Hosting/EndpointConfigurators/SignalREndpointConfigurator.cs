@@ -23,9 +23,14 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
     /// <summary>
     /// SignalR endpoint configurator registering all declared hubs.
     /// </summary>
-    [ProcessingPriority(Priority.BelowNormal)]
+    [ProcessingPriority(ProcessingPriority)]
     public class SignalREndpointConfigurator : IEndpointConfigurator
     {
+        /// <summary>
+        /// The processing priority of <see cref="SignalREndpointConfigurator"/>.
+        /// </summary>
+        public const Priority ProcessingPriority = Priority.BelowNormal;
+
         private static readonly MethodInfo MapHubMethod = ReflectionHelper.GetGenericMethodOf(_ => ((SignalREndpointConfigurator)null!).MapHub<Hub>(null!, null!, null!));
         private readonly ICollection<Lazy<IHubService, Composition.HubMetadata>> lazyHubs;
 

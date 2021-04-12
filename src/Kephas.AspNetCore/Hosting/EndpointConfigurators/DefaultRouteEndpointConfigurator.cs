@@ -8,14 +8,21 @@
 namespace Kephas.Application.AspNetCore.Hosting.EndpointConfigurators
 {
     using Kephas.Application.AspNetCore;
+    using Kephas.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;
 
     /// <summary>
     /// The endpoint configurator for the default route.
     /// </summary>
+    [ProcessingPriority(ProcessingPriority)]
     public class DefaultRouteEndpointConfigurator : IEndpointConfigurator
     {
+        /// <summary>
+        /// The processing priority of <see cref="DefaultRouteEndpointConfigurator"/>.
+        /// </summary>
+        public const Priority ProcessingPriority = Priority.Normal;
+
         /// <summary>
         /// Configures the endpoints using the given application context.
         /// </summary>
