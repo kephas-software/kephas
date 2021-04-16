@@ -19,7 +19,7 @@ namespace Kephas.Commands
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Settings retrieved from the application command line arguments.
+    /// Arguments used in command line execution.
     /// </summary>
     public class Args : Expando, IArgs
     {

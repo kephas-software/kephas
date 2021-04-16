@@ -14,40 +14,33 @@ namespace Kephas.Messaging.Runtime
 
     using Kephas.Messaging.Events;
     using Kephas.Runtime;
+    using Kephas.Runtime.Factories;
 
     /// <summary>
     /// A messaging type information factory.
     /// </summary>
-    public class MessagingTypeInfoFactory : IRuntimeTypeInfoFactory
+    public class MessagingTypeInfoFactory : RuntimeTypeInfoFactoryBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingTypeInfoFactory"/> class.
+        /// Tries to create the runtime element information for the provided raw reflection element.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public MessagingTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="args">Additional arguments.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
         {
+            var type = reflectInfo;
             if (typeof(IEvent).IsAssignableFrom(type))
             {
-                return new RuntimeEventInfo(this.typeRegistry, type);
+                return new RuntimeEventInfo(registry, type);
             }
 
             if (typeof(IMessage).IsAssignableFrom(type))
             {
-                return new RuntimeMessageInfo(this.typeRegistry, type);
+                return new RuntimeMessageInfo(registry, type);
             }
 
             return null;

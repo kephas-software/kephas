@@ -5,13 +5,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+using Kephas.Runtime.Factories;
+
 namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Xml;
+
+    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -19,23 +23,16 @@ namespace Kephas.Runtime
     /// <summary>
     /// Provides methods for accessing runtime type information.
     /// </summary>
-    public class RuntimeTypeRegistry : Expando, IRuntimeTypeRegistry
+    [ExcludeFromComposition]
+    public class RuntimeTypeRegistry : Expando, IRuntimeTypeRegistry, IRuntimeElementInfoFactory
     {
         private readonly ITypeLoader? typeLoader;
         private readonly ConcurrentDictionary<Type, IRuntimeTypeInfo> runtimeTypeInfosCache;
+        private readonly ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo> runtimeAssemblyInfosCache = new ();
 
-        private readonly IList<IRuntimeTypeInfoFactory> typeFactories
-            = new List<IRuntimeTypeInfoFactory>();
-
-        private readonly ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo> runtimeAssemblyInfosCache
-            = new ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo>();
+        private readonly ConcurrentDictionary<Type, List<IRuntimeElementInfoFactory>> factoriesByElementType = new ();
 
         private Func<Assembly, IRuntimeAssemblyInfo> createRuntimeAssemblyInfoFunc;
-
-        /// <summary>
-        /// The function for creating the type info.
-        /// </summary>
-        private Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeRegistry"/> class.
@@ -47,7 +44,10 @@ namespace Kephas.Runtime
             this.typeLoader = typeLoader;
             this.runtimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>();
 
-            this.createRuntimeTypeInfoFunc = this.CreateRuntimeTypeInfoCore;
+            this.factoriesByElementType.TryAdd(
+                typeof(Type),
+                new List<IRuntimeElementInfoFactory>() { new DefaultRuntimeTypeInfoFactory() });
+
             this.createRuntimeAssemblyInfoFunc = a => new RuntimeAssemblyInfo(this, a, this.typeLoader);
         }
 
@@ -55,22 +55,6 @@ namespace Kephas.Runtime
         /// Gets the static instance of the type serviceRegistry.
         /// </summary>
         public static IRuntimeTypeRegistry Instance { get; } = new RuntimeTypeRegistry(DefaultTypeLoader.Instance);
-
-        /// <summary>
-        /// Gets or sets the function for creating the runtime type information.
-        /// </summary>
-        /// <value>
-        /// The function for creating the runtime type information.
-        /// </value>
-        public Func<Type, IRuntimeTypeInfo> CreateRuntimeTypeInfo
-        {
-            get => this.createRuntimeTypeInfoFunc;
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-                this.createRuntimeTypeInfoFunc = value;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the function for creating the runtime assembly information.
@@ -86,6 +70,36 @@ namespace Kephas.Runtime
                 Requires.NotNull(value, nameof(value));
                 this.createRuntimeAssemblyInfoFunc = value;
             }
+        }
+
+        /// <summary>
+        /// Tries to create the runtime element information for the provided raw reflection element.
+        /// </summary>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="args">Additional arguments.</param>
+        /// <returns>
+        /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
+        /// </returns>
+        IRuntimeElementInfo? IRuntimeElementInfoFactory.TryCreateElementInfo(IRuntimeTypeRegistry registry, MemberInfo reflectInfo, params object[] args)
+        {
+            if (this != registry)
+            {
+                throw new ArgumentException($"The '{nameof(registry)}' parameter must match the calling registry.");
+            }
+
+            var memberType = reflectInfo.GetType();
+            var factoryType = this.factoriesByElementType.GetOrAdd(memberType, mt =>
+            {
+                var compatibleType = this.factoriesByElementType.Keys.FirstOrDefault(t => t.IsAssignableFrom(memberType));
+                return compatibleType == null
+                    ? new List<IRuntimeElementInfoFactory>()
+                    : this.factoriesByElementType[compatibleType];
+            });
+
+            return factoryType
+                .Select(factory => factory.TryCreateElementInfo(this, reflectInfo, args))
+                .FirstOrDefault(elementInfo => elementInfo != null);
         }
 
         /// <inheritdoc/>
@@ -114,7 +128,10 @@ namespace Kephas.Runtime
         {
             Requires.NotNull(type, nameof(type));
 
-            return this.runtimeTypeInfosCache.GetOrAdd(type, _ => this.CreateRuntimeTypeInfo(type) ?? new RuntimeTypeInfo(this, type));
+            return this.runtimeTypeInfosCache.GetOrAdd(
+                type,
+                _ => (IRuntimeTypeInfo?)((IRuntimeElementInfoFactory)this).TryCreateElementInfo(this, type)
+                     ?? new RuntimeTypeInfo(this, type));
         }
 
         /// <summary>
@@ -126,40 +143,47 @@ namespace Kephas.Runtime
         {
             Requires.NotNull(assembly, nameof(assembly));
 
-            return this.runtimeAssemblyInfosCache.GetOrAdd(assembly, _ => this.CreateRuntimeAssemblyInfo(assembly) ?? new RuntimeAssemblyInfo(this, assembly, this.typeLoader));
+            return this.runtimeAssemblyInfosCache.GetOrAdd(
+                assembly,
+                _ => this.CreateRuntimeAssemblyInfo(assembly)
+                     ?? new RuntimeAssemblyInfo(this, assembly, this.typeLoader));
         }
 
         /// <summary>
-        /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
+        /// Registers a factory used to create specialized <see cref="IElementInfo"/> instances.
         /// </summary>
+        /// <typeparam name="TFactory">The factory type.</typeparam>
         /// <remarks>
         /// Factories are called in the inverse order of their addition, meaning that the last added factory
         /// is invoked first. This is by design, so that the non-framework code has a change to override the
         /// default behavior.
         /// </remarks>
         /// <param name="factory">The factory.</param>
-        public void RegisterFactory(IRuntimeTypeInfoFactory factory)
+        public void RegisterFactory<TFactory>(TFactory factory)
+            where TFactory : class, IRuntimeElementInfoFactory
         {
             Requires.NotNull(factory, nameof(factory));
 
-            this.typeFactories.Insert(0, factory);
-        }
-
-        private IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
-        {
-            if (this.typeFactories.Count > 0)
+            var factoryType = typeof(TFactory);
+            var elementType = factoryType.GetInterfaces()
+                .FirstOrDefault(i => i.IsConstructedGenericOf(typeof(IRuntimeElementInfoFactory<,>)))
+                ?.GenericTypeArguments[1];
+            if (elementType == null)
             {
-                foreach (var factory in this.typeFactories)
-                {
-                    var typeInfo = factory.TryCreateRuntimeTypeInfo(rawType);
-                    if (typeInfo != null)
-                    {
-                        return typeInfo;
-                    }
-                }
+                throw new NotSupportedException($"The factory {factory.GetType()} must implement the generic {typeof(IRuntimeElementInfoFactory<,>).FullName} interface.");
             }
 
-            return new RuntimeTypeInfo(this, rawType);
+            var listByElementType = this.factoriesByElementType.GetOrAdd(elementType, t => new List<IRuntimeElementInfoFactory>());
+            lock (listByElementType)
+            {
+                listByElementType.Insert(0, factory);
+            }
+        }
+
+        private class DefaultRuntimeTypeInfoFactory : RuntimeTypeInfoFactoryBase
+        {
+            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
+                => new RuntimeTypeInfo(registry, reflectInfo);
         }
     }
 }

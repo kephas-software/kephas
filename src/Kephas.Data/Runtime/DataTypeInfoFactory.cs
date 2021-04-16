@@ -13,35 +13,27 @@ namespace Kephas.Data.Runtime
     using System;
 
     using Kephas.Runtime;
+    using Kephas.Runtime.Factories;
 
     /// <summary>
     /// A data type information factory.
     /// </summary>
-    public class DataTypeInfoFactory : IRuntimeTypeInfoFactory
+    public class DataTypeInfoFactory : RuntimeTypeInfoFactoryBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTypeInfoFactory"/> class.
+        /// Tries to create the runtime element information for the provided raw reflection element.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public DataTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="args">Additional arguments.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
         {
-            if (typeof(IEntity).IsAssignableFrom(type))
+            if (typeof(IEntity).IsAssignableFrom(reflectInfo))
             {
-                return new RuntimeEntityInfo(this.typeRegistry, type);
+                return new RuntimeEntityInfo(registry, reflectInfo);
             }
 
             return null;

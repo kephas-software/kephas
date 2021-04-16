@@ -45,7 +45,7 @@ namespace Kephas.Security.Authorization.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory(this.typeRegistry));
+            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

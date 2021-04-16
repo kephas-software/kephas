@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime.Factories;
+
 namespace Kephas.Security.Authorization.Runtime
 {
     using System;
@@ -14,31 +16,22 @@ namespace Kephas.Security.Authorization.Runtime
     /// <summary>
     /// The <see cref="IRuntimeTypeInfoFactory"/> for the authorization subsystem.
     /// </summary>
-    public class AuthorizationTypeInfoFactory : IRuntimeTypeInfoFactory
+    public class AuthorizationTypeInfoFactory : RuntimeTypeInfoFactoryBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorizationTypeInfoFactory"/> class.
+        /// Tries to create the runtime element information for the provided raw reflection element.
         /// </summary>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        public AuthorizationTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="args">Additional arguments.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
         {
-            if (typeof(IPermission).IsAssignableFrom(type) && typeof(IPermission) != type)
+            if (typeof(IPermission).IsAssignableFrom(reflectInfo) && typeof(IPermission) != reflectInfo)
             {
-                return new RuntimePermissionInfo(this.typeRegistry, type);
+                return new RuntimePermissionInfo(registry, reflectInfo);
             }
 
             return null;

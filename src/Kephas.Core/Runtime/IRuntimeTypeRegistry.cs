@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime.Factories;
+
 namespace Kephas.Runtime
 {
     using System;
@@ -48,6 +50,25 @@ namespace Kephas.Runtime
         IRuntimeAssemblyInfo GetAssemblyInfo(Assembly assembly);
 
         /// <summary>
+        /// Registers a factory used to create specialized <see cref="IElementInfo"/> instances.
+        /// </summary>
+        /// <typeparam name="TFactory">The factory type.</typeparam>
+        /// <remarks>
+        /// Factories are called in the inverse order of their addition, meaning that the last added factory
+        /// is invoked first. This is by design, so that the non-framework code has a change to override the
+        /// default behavior.
+        /// </remarks>
+        /// <param name="factory">The factory.</param>
+        void RegisterFactory<TFactory>(TFactory factory)
+            where TFactory : class, IRuntimeElementInfoFactory;
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IRuntimeTypeRegistry"/>.
+    /// </summary>
+    public static class RuntimeTypeRegistryExtensions
+    {
+        /// <summary>
         /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
         /// </summary>
         /// <remarks>
@@ -55,16 +76,12 @@ namespace Kephas.Runtime
         /// is invoked first. This is by design, so that the non-framework code has a change to override the
         /// default behavior.
         /// </remarks>
+        /// <param name="registry">The type registry.</param>
         /// <param name="factory">The factory.</param>
-        void RegisterFactory(IRuntimeTypeInfoFactory factory);
-    }
+        public static void RegisterFactory(this IRuntimeTypeRegistry registry, IRuntimeTypeInfoFactory factory)
+            => registry.RegisterFactory<IRuntimeTypeInfoFactory>(factory);
 
 #if NETSTANDARD2_0
-    /// <summary>
-    /// Extension methods for <see cref="IRuntimeTypeRegistry"/>.
-    /// </summary>
-    public static class RuntimeTypeRegistryExtensions
-    {
         /// <summary>
         /// Gets the runtime type information.
         /// </summary>
@@ -77,6 +94,6 @@ namespace Kephas.Runtime
 
             return typeRegistry.GetTypeInfo(typeInfo.AsType());
         }
-    }
 #endif
+    }
 }

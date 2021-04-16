@@ -13,40 +13,33 @@ namespace Kephas.Workflow.Runtime
     using System;
 
     using Kephas.Runtime;
+    using Kephas.Runtime.Factories;
 
     /// <summary>
     /// A workflow type information factory.
     /// </summary>
-    public class WorkflowTypeInfoFactory : IRuntimeTypeInfoFactory
+    public class WorkflowTypeInfoFactory : RuntimeTypeInfoFactoryBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowTypeInfoFactory"/> class.
+        /// Tries to create the runtime element information for the provided raw reflection element.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public WorkflowTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="args">Additional arguments.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
         {
+            var type = reflectInfo;
             if (typeof(IActivity).IsAssignableFrom(type) && typeof(IActivity) != type)
             {
-                return new RuntimeActivityInfo(this.typeRegistry, type);
+                return new RuntimeActivityInfo(registry, type);
             }
 
             if (typeof(IStateMachine).IsAssignableFrom(type) && typeof(IStateMachine) != type)
             {
-                return new RuntimeStateMachineInfo(this.typeRegistry, type);
+                return new RuntimeStateMachineInfo(registry, type);
             }
 
             return null;

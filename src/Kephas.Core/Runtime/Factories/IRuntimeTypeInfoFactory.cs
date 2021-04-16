@@ -8,22 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime
+namespace Kephas.Runtime.Factories
 {
     using System;
 
     /// <summary>
     /// Contract for factories creating <see cref="IRuntimeTypeInfo"/> instances.
     /// </summary>
-    public interface IRuntimeTypeInfoFactory
+    public interface IRuntimeTypeInfoFactory : IRuntimeElementInfoFactory<IRuntimeTypeInfo, Type>
     {
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
-        /// <returns>
-        /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
-        /// </returns>
-        IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type);
+    }
+
+    /// <summary>
+    /// Base class for <see cref="IRuntimeTypeInfoFactory"/> implementations.
+    /// </summary>
+    public abstract class RuntimeTypeInfoFactoryBase : RuntimeElementInfoFactoryBase<IRuntimeTypeInfo, Type>, IRuntimeTypeInfoFactory
+    {
     }
 }

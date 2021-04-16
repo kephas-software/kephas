@@ -22,7 +22,7 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
         public RuntimePermissionInfoTest()
         {
             this.typeRegistry = new RuntimeTypeRegistry();
-            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory(this.typeRegistry));
+            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory());
         }
 
         [Test]

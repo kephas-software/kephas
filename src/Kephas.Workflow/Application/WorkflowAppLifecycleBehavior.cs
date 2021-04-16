@@ -17,7 +17,6 @@ namespace Kephas.Workflow.Application
     using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
     using Kephas.Workflow.Runtime;
 
     /// <summary>
@@ -49,7 +48,7 @@ namespace Kephas.Workflow.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory(this.typeRegistry));
+            this.typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
