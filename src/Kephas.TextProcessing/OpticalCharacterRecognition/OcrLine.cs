@@ -9,10 +9,12 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
     using System;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// A line within a scanned document's region.
     /// </summary>
-    public class OcrLine
+    public class OcrLine : Expando
     {
         /// <summary>
         /// Gets or sets the bounding box.
