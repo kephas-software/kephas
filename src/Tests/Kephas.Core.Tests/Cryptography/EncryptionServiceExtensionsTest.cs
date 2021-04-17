@@ -40,8 +40,7 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreEqual(output, encrypted);
         }
 
-#if NETCOREAPP3_1
-#else
+#if NETCOREAPP2_1
         [Test]
         [TestCase("password", "ZHJvd3NzYXA=")]
         [TestCase("123", "MzIx")]

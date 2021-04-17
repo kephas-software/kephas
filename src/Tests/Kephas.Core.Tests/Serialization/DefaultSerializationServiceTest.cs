@@ -62,7 +62,7 @@ namespace Kephas.Core.Tests.Serialization
             Assert.AreSame(context.MediaType, typeof(JsonMediaType));
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void GetSerializer_proper_serializer_override()
         {
@@ -104,7 +104,7 @@ namespace Kephas.Core.Tests.Serialization
         }
 #endif
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_object()
         {
