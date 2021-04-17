@@ -49,7 +49,7 @@ namespace Kephas.Data.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new DataTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new RuntimeEntityInfoFactory());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

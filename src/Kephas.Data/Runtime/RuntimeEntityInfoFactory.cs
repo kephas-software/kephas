@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTypeInfoFactory.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeEntityInfoFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace Kephas.Data.Runtime
     /// <summary>
     /// A data type information factory.
     /// </summary>
-    public class DataTypeInfoFactory : RuntimeTypeInfoFactoryBase
+    public class RuntimeEntityInfoFactory : RuntimeTypeInfoFactoryBase
     {
         /// <summary>
         /// Tries to create the runtime element information for the provided raw reflection element.
