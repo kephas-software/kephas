@@ -61,5 +61,21 @@ namespace Kephas.Net.Mime
             /// </summary>
             public const string Ini = "x-text/ini";
         }
+
+        /// <summary>
+        /// The image group.
+        /// </summary>
+        public static class Image
+        {
+            /// <summary>
+            /// The PNG media type.
+            /// </summary>
+            public const string Png = "image/png";
+
+            /// <summary>
+            /// The JPEG 2000 media type.
+            /// </summary>
+            public const string Jpeg2000 = "image/jp2";
+        }
     }
 }
