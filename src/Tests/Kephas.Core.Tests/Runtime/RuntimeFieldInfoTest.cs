@@ -21,7 +21,7 @@ namespace Kephas.Core.Tests.Runtime
         public void ToString_name_and_type()
         {
             var registry = new RuntimeTypeRegistry();
-            var fieldInfo = new RuntimeFieldInfo<TestField, string>(registry, typeof(TestField).GetField(nameof(TestField.OnlyGet)));
+            var fieldInfo = new RuntimeFieldInfo(registry, typeof(TestField).GetField(nameof(TestField.OnlyGet)));
 
             var toString = fieldInfo.ToString();
             Assert.AreEqual("OnlyGet: System.String", toString);
@@ -31,7 +31,7 @@ namespace Kephas.Core.Tests.Runtime
         public void GetValue()
         {
             var registry = new RuntimeTypeRegistry();
-            var fieldInfo = new RuntimeFieldInfo<TestField, string>(registry, typeof(TestField).GetField(nameof(TestField.OnlyGet)));
+            var fieldInfo = new RuntimeFieldInfo(registry, typeof(TestField).GetField(nameof(TestField.OnlyGet)));
 
             var obj = new TestField();
             Assert.AreEqual("get me", fieldInfo.GetValue(obj));
@@ -41,7 +41,7 @@ namespace Kephas.Core.Tests.Runtime
         public void SetValue()
         {
             var registry = new RuntimeTypeRegistry();
-            var fieldInfo = new RuntimeFieldInfo<TestField, string>(registry, typeof(TestField).GetField(nameof(TestField.ReadWrite)));
+            var fieldInfo = new RuntimeFieldInfo(registry, typeof(TestField).GetField(nameof(TestField.ReadWrite)));
 
             var obj = new TestField();
             fieldInfo.SetValue(obj, "read and write");

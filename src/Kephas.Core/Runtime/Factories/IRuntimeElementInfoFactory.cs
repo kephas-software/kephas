@@ -9,6 +9,7 @@ namespace Kephas.Runtime.Factories
 {
     using System.Reflection;
 
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
@@ -21,11 +22,12 @@ namespace Kephas.Runtime.Factories
         /// </summary>
         /// <param name="registry">The root type registry.</param>
         /// <param name="reflectInfo">The raw reflection element.</param>
-        /// <param name="args">Additional arguments.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        IRuntimeElementInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, MemberInfo reflectInfo, params object[] args);
+        IRuntimeElementInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, MemberInfo reflectInfo, int position = -1, ILogger? logger = null);
     }
 
     /// <summary>
@@ -49,11 +51,12 @@ namespace Kephas.Runtime.Factories
         /// </summary>
         /// <param name="registry">The root type registry.</param>
         /// <param name="reflectInfo">The raw reflection element.</param>
-        /// <param name="args">Additional arguments.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        TElement? TryCreateElementInfo(IRuntimeTypeRegistry registry, TReflectElement reflectInfo, params object[] args);
+        TElement? TryCreateElementInfo(IRuntimeTypeRegistry registry, TReflectElement reflectInfo, int position = -1, ILogger? logger = null);
     }
 
     /// <summary>
@@ -61,31 +64,34 @@ namespace Kephas.Runtime.Factories
     /// </summary>
     /// <typeparam name="TElement">The runtime element type.</typeparam>
     /// <typeparam name="TReflectElement">The reflection element type.</typeparam>
-    public abstract class RuntimeElementInfoFactoryBase<TElement, TReflectElement> : IRuntimeElementInfoFactory<TElement, TReflectElement>
+    public abstract class
+        RuntimeElementInfoFactoryBase<TElement, TReflectElement> : IRuntimeElementInfoFactory<TElement, TReflectElement>
         where TElement : class, IRuntimeElementInfo
         where TReflectElement : MemberInfo
     {
-    /// <summary>
-    /// Tries to create the runtime element information for the provided raw reflection element.
-    /// </summary>
-    /// <param name="registry">The root type registry.</param>
-    /// <param name="reflectInfo">The raw reflection element.</param>
-    /// <param name="args">Additional arguments.</param>
-    /// <returns>
-    /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
-    /// </returns>
-    public abstract TElement? TryCreateElementInfo(IRuntimeTypeRegistry registry, TReflectElement reflectInfo, params object[] args);
+        /// <summary>
+        /// Tries to create the runtime element information for the provided raw reflection element.
+        /// </summary>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        /// <returns>
+        /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
+        /// </returns>
+        public abstract TElement? TryCreateElementInfo(IRuntimeTypeRegistry registry, TReflectElement reflectInfo, int position = -1, ILogger? logger = null);
 
-    /// <summary>
-    /// Tries to create the runtime element information for the provided raw reflection element.
-    /// </summary>
-    /// <param name="registry">The root type registry.</param>
-    /// <param name="reflectInfo">The raw reflection element.</param>
-    /// <param name="args">Additional arguments.</param>
-    /// <returns>
-    /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
-    /// </returns>
-    public virtual IRuntimeElementInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, MemberInfo reflectInfo, params object[] args)
-        => this.TryCreateElementInfo(registry, (TReflectElement)reflectInfo, args);
+        /// <summary>
+        /// Tries to create the runtime element information for the provided raw reflection element.
+        /// </summary>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        /// <returns>
+        /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
+        /// </returns>
+        public virtual IRuntimeElementInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, MemberInfo reflectInfo, int position = -1, ILogger? logger = null)
+            => this.TryCreateElementInfo(registry, (TReflectElement) reflectInfo, position);
     }
 }

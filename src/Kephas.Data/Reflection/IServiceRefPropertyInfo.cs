@@ -14,6 +14,9 @@ namespace Kephas.Data.Reflection
     /// </summary>
     public interface IServiceRefPropertyInfo : IPropertyInfo
     {
-        
+        /// <summary>
+        /// Gets the service reference type.
+        /// </summary>
+        ITypeInfo ServiceRefType { get; }
     }
 }

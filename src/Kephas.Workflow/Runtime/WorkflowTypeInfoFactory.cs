@@ -12,6 +12,7 @@ namespace Kephas.Workflow.Runtime
 {
     using System;
 
+    using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Runtime.Factories;
 
@@ -25,21 +26,22 @@ namespace Kephas.Workflow.Runtime
         /// </summary>
         /// <param name="registry">The root type registry.</param>
         /// <param name="reflectInfo">The raw reflection element.</param>
-        /// <param name="args">Additional arguments.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
         {
             var type = reflectInfo;
             if (typeof(IActivity).IsAssignableFrom(type) && typeof(IActivity) != type)
             {
-                return new RuntimeActivityInfo(registry, type);
+                return new RuntimeActivityInfo(registry, type, logger);
             }
 
             if (typeof(IStateMachine).IsAssignableFrom(type) && typeof(IStateMachine) != type)
             {
-                return new RuntimeStateMachineInfo(registry, type);
+                return new RuntimeStateMachineInfo(registry, type, logger);
             }
 
             return null;

@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
 using Kephas.Runtime.Factories;
 
 namespace Kephas.Security.Authorization.Runtime
@@ -23,11 +24,12 @@ namespace Kephas.Security.Authorization.Runtime
         /// </summary>
         /// <param name="registry">The root type registry.</param>
         /// <param name="reflectInfo">The raw reflection element.</param>
-        /// <param name="args">Additional arguments.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
         {
             if (typeof(IPermission).IsAssignableFrom(reflectInfo) && typeof(IPermission) != reflectInfo)
             {

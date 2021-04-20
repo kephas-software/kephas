@@ -5,20 +5,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using Kephas.Runtime.Factories;
-
 namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime.Factories;
 
     /// <summary>
     /// Provides methods for accessing runtime type information.
@@ -77,11 +77,16 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="registry">The root type registry.</param>
         /// <param name="reflectInfo">The raw reflection element.</param>
-        /// <param name="args">Additional arguments.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        IRuntimeElementInfo? IRuntimeElementInfoFactory.TryCreateElementInfo(IRuntimeTypeRegistry registry, MemberInfo reflectInfo, params object[] args)
+        IRuntimeElementInfo? IRuntimeElementInfoFactory.TryCreateElementInfo(
+            IRuntimeTypeRegistry registry,
+            MemberInfo reflectInfo,
+            int position,
+            ILogger? logger)
         {
             if (this != registry)
             {
@@ -98,25 +103,26 @@ namespace Kephas.Runtime
             });
 
             return factoryType
-                .Select(factory => factory.TryCreateElementInfo(this, reflectInfo, args))
+                .Select(factory => factory.TryCreateElementInfo(this, reflectInfo, position, logger))
                 .FirstOrDefault(elementInfo => elementInfo != null);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the type information based on the type token.
+        /// </summary>
+        /// <param name="typeToken">The type token.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
+        /// <returns>The type information.</returns>
         public ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true)
         {
             Requires.NotNull(typeToken, nameof(typeToken));
 
-            if (typeToken is Type type)
+            return typeToken switch
             {
-                return this.GetTypeInfo(type);
-            }
-            else if (typeToken is TypeInfo typeInfo)
-            {
-                return this.GetTypeInfo(typeInfo);
-            }
-
-            throw new NotSupportedException($"Only type tokens of type '{nameof(Type)}' and '{nameof(TypeInfo)}' are supported, while '{typeToken.GetType()}' was provided.");
+                TypeInfo typeInfo => this.GetTypeInfo(typeInfo),
+                Type type => this.GetTypeInfo(type),
+                _ => throw new NotSupportedException($"Only type tokens of type '{nameof(Type)}' and '{nameof(TypeInfo)}' are supported, while '{typeToken.GetType()}' was provided.")
+            };
         }
 
         /// <summary>
@@ -182,8 +188,8 @@ namespace Kephas.Runtime
 
         private class DefaultRuntimeTypeInfoFactory : RuntimeTypeInfoFactoryBase
         {
-            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
-                => new RuntimeTypeInfo(registry, reflectInfo);
+            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
+                => new RuntimeTypeInfo(registry, reflectInfo, logger);
         }
     }
 }

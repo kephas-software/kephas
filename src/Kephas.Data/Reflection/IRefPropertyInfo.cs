@@ -14,5 +14,9 @@ namespace Kephas.Data.Reflection
     /// </summary>
     public interface IRefPropertyInfo : IPropertyInfo
     {
+        /// <summary>
+        /// Gets the reference type.
+        /// </summary>
+        ITypeInfo RefType { get; }
     }
 }

@@ -458,7 +458,7 @@ namespace Kephas.Core.Tests.Runtime
 
             Assert.IsNotNull(member);
             Assert.AreEqual(nameof(TestClass.PublicField), member.Name);
-            Assert.IsInstanceOf<RuntimeFieldInfo<TestClass, string>>(member);
+            Assert.IsInstanceOf<RuntimeFieldInfo>(member);
         }
 
         [Test]
@@ -470,7 +470,7 @@ namespace Kephas.Core.Tests.Runtime
 
             Assert.IsNotNull(member);
             Assert.AreEqual(nameof(TestClass.Name), member.Name);
-            Assert.IsInstanceOf<RuntimePropertyInfo<TestClass, string>>(member);
+            Assert.IsInstanceOf<RuntimePropertyInfo>(member);
         }
 
         [Test]

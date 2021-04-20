@@ -19,6 +19,7 @@ namespace Kephas.Workflow.Runtime
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -46,8 +47,9 @@ namespace Kephas.Workflow.Runtime
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeActivityInfo(IRuntimeTypeRegistry typeRegistry, Type type)
-            : base(typeRegistry, type)
+        /// <param name="logger">Optional. The logger.</param>
+        protected internal RuntimeActivityInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+            : base(typeRegistry, type, logger)
         {
         }
 

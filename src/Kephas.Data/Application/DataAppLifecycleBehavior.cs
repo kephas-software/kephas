@@ -18,7 +18,6 @@ namespace Kephas.Data.Application
     using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A data application lifecycle behavior.
@@ -50,6 +49,8 @@ namespace Kephas.Data.Application
             CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new RuntimeEntityInfoFactory());
+            this.typeRegistry.RegisterFactory(new RefRuntimePropertyInfoFactory());
+            this.typeRegistry.RegisterFactory(new ServiceRefRuntimePropertyInfoFactory());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
 using Kephas.Runtime.Factories;
 
 namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
@@ -46,7 +47,7 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
 
         public class AttributedRuntimeTypeInfoFactory : RuntimeTypeInfoFactoryBase
         {
-            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, params object[] args)
+            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
             {
                 var rawType = reflectInfo;
                 var attr = rawType.GetCustomAttribute<RuntimeTypeInfoAttribute>();
