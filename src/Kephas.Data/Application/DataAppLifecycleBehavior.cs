@@ -22,7 +22,7 @@ namespace Kephas.Data.Application
     /// <summary>
     /// A data application lifecycle behavior.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [ProcessingPriority(Priority.Highest)]
     public class DataAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IRuntimeTypeRegistry typeRegistry;

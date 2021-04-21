@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeTypeInfoTest.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeTypeInfoFactoryTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,17 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-using Kephas.Runtime.Factories;
-
 namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
+    using Kephas.Logging;
     using Kephas.Runtime;
-
+    using Kephas.Runtime.Factories;
     using NUnit.Framework;
 
     /// <summary>

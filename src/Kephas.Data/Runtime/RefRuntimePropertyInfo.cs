@@ -46,8 +46,10 @@ namespace Kephas.Data.Runtime
                     return this.refType;
                 }
 
-                var refGenericType = this.PropertyInfo.PropertyType.GetInterfaces()
-                    .FirstOrDefault(i => i.IsConstructedGenericOf(typeof(IRef<>)));
+                var propType = this.PropertyInfo.PropertyType;
+                var refGenericType = propType.IsConstructedGenericOf(typeof(IRef<>))
+                    ? propType
+                    : propType.GetInterfaces().FirstOrDefault(i => i.IsConstructedGenericOf(typeof(IRef<>)));
                 return this.refType = this.TypeRegistry.GetTypeInfo(refGenericType?.GenericTypeArguments[0] ?? typeof(object));
             }
         }
