@@ -12,6 +12,7 @@ namespace Kephas.Serialization.Json.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Reflection;
 
     using Kephas.Composition;
@@ -50,6 +51,14 @@ namespace Kephas.Serialization.Json.Tests
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(
                 new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), new RuntimeTypeRegistry(), Substitute.For<ILogManager>());
             return settingsProvider;
+        }
+
+        protected Stream GetJson(string fileName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var ns = "Kephas.Serialization.Json.Tests"; // assembly.GetName().Name;
+            var embeddedJson = $"{ns}.EmbeddedResources.{fileName}";
+            return assembly.GetManifestResourceStream(embeddedJson);
         }
     }
 }

@@ -18,14 +18,16 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicOperationInfo : DynamicElementInfo, IOperationInfo
     {
-        private readonly ICollection<IElementInfo> members;
+        private readonly ICollection<IParameterInfo> parameters;
+        private ITypeInfo? returnType;
+        private string? returnTypeName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicOperationInfo"/> class.
         /// </summary>
         public DynamicOperationInfo()
         {
-            this.members = new DynamicElementInfoCollection<IElementInfo>(this);
+            this.parameters = new DynamicElementInfoCollection<IParameterInfo>(this);
         }
 
         /// <summary>
@@ -34,17 +36,43 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The return type of the method.
         /// </value>
-        public ITypeInfo? ReturnType { get; protected internal set; }
-
-        public ITypeInfo? ReturnTypeName { get; protected internal set; }
+        public ITypeInfo? ReturnType
+        {
+            get => this.returnType ??= this.TryGetType(this.returnTypeName);
+            set => this.returnType = value;
+        }
 
         /// <summary>
-        /// Gets or sets the method parameters.
+        /// Gets or sets the name of the return type of the method.
+        /// </summary>
+        /// <value>
+        /// The name of the return type of the method.
+        /// </value>
+        public string? ReturnTypeName
+        {
+            get => this.returnTypeName ?? this.returnType?.FullName;
+            set
+            {
+                this.returnTypeName = value;
+                this.returnType = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the method parameters.
         /// </summary>
         /// <value>
         /// The method parameters.
         /// </value>
-        public IEnumerable<IParameterInfo> Parameters { get; protected internal set; } = new List<IParameterInfo>();
+        IEnumerable<IParameterInfo> IOperationInfo.Parameters => this.parameters;
+
+        /// <summary>
+        /// Gets the method parameters.
+        /// </summary>
+        /// <value>
+        /// The method parameters.
+        /// </value>
+        public ICollection<IParameterInfo> Parameters => this.parameters;
 
         /// <summary>
         /// Invokes the specified method on the provided instance.

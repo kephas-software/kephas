@@ -29,6 +29,7 @@ namespace Kephas.Reflection.Dynamic
         private readonly List<ITypeInfo> genericTypeArguments = new ();
         private readonly List<ITypeInfo> genericTypeParameters = new ();
         private readonly List<ITypeInfo> baseTypes = new ();
+        private string? qualifiedFullName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
@@ -68,7 +69,11 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The full name qualified with the module.
         /// </value>
-        public virtual string QualifiedFullName { get; protected internal set; }
+        public virtual string QualifiedFullName
+        {
+            get => this.qualifiedFullName ?? this.FullName;
+            protected internal set => this.qualifiedFullName = value;
+        }
 
         /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.

@@ -28,6 +28,18 @@ namespace Kephas.Core.Tests.Reflection.Dynamic
         }
 
         [Test]
+        public void Add_sets_position()
+        {
+            var container = Substitute.For<IElementInfo>();
+            var item1 = new TestElementInfo();
+            var item2 = new TestElementInfo();
+            var col = new DynamicElementInfoCollection<IElementInfo>(container) { item1, item2 };
+
+            Assert.AreEqual(0, item1.GetPosition());
+            Assert.AreEqual(1, item2.GetPosition());
+        }
+
+        [Test]
         public void Add_item_requires_DynamicElementInfo()
         {
             var item = Substitute.For<IElementInfo>();
@@ -36,6 +48,9 @@ namespace Kephas.Core.Tests.Reflection.Dynamic
             Assert.Throws<InvalidOperationException>(() => col.Add(item));
         }
 
-        private class TestElementInfo : DynamicElementInfo { }
+        private class TestElementInfo : DynamicElementInfo
+        {
+            public int GetPosition() => this.Position;
+        }
     }
 }

@@ -11,7 +11,6 @@ namespace Kephas.Reflection.Dynamic
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Collections;
     using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Runtime;
@@ -21,34 +20,18 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicTypeRegistry : Expando, ITypeRegistry, IElementInfo
     {
-        private readonly string name;
-        private readonly string fullName;
+        private readonly IRuntimeTypeRegistry runtimeTypeRegistry;
         private readonly DynamicElementInfoCollection<ITypeInfo> types;
-        private readonly IList<object> annotations = new List<object>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTypeRegistry"/> class.
         /// </summary>
-        public DynamicTypeRegistry()
-            : this(nameof(DynamicTypeRegistry), nameof(DynamicTypeRegistry))
+        /// <param name="runtimeTypeRegistry">Optional. The runtime type registry. If not provided, the <see cref="RuntimeTypeRegistry.Instance"/> is used.</param>
+        public DynamicTypeRegistry(IRuntimeTypeRegistry? runtimeTypeRegistry = null)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicTypeRegistry"/> class.
-        /// </summary>
-        /// <param name="name">The type registry name.</param>
-        /// <param name="fullName">The type registry full name.</param>
-        /// <param name="annotations">Optional. The annotations.</param>
-        protected DynamicTypeRegistry(string name, string fullName, IEnumerable<object>? annotations = null)
-        {
-            this.name = name;
-            this.fullName = fullName;
+            this.runtimeTypeRegistry = runtimeTypeRegistry ?? RuntimeTypeRegistry.Instance;
             this.types = new (this);
-            if (annotations != null)
-            {
-                this.annotations.AddRange(annotations);
-            }
+            this.Name = this.GetType().Name;
         }
 
         /// <summary>
@@ -57,12 +40,12 @@ namespace Kephas.Reflection.Dynamic
         public ICollection<ITypeInfo> Types => this.types;
 
         /// <summary>
-        /// Gets the name of the element.
+        /// Gets or sets the name of the registry.
         /// </summary>
         /// <value>
-        /// The name of the element.
+        /// The name of the registry.
         /// </value>
-        string IElementInfo.Name => this.name;
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets the full name of the element.
@@ -70,7 +53,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The full name of the element.
         /// </value>
-        string IElementInfo.FullName => this.fullName;
+        string IElementInfo.FullName => this.Name;
 
         /// <summary>
         /// Gets the element annotations.
@@ -78,7 +61,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The element annotations.
         /// </value>
-        IEnumerable<object> IElementInfo.Annotations => this.annotations;
+        IEnumerable<object> IElementInfo.Annotations => Enumerable.Empty<object>();
 
         /// <summary>
         /// Gets the parent element declaring this element.
@@ -101,7 +84,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The attribute of the provided type.
         /// </returns>
-        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => this.annotations.OfType<TAttribute>();
+        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => Enumerable.Empty<TAttribute>();
 
         /// <summary>
         /// Gets the type information based on the type token.
@@ -115,7 +98,8 @@ namespace Kephas.Reflection.Dynamic
             {
                 Guid id => this.types.FirstOrDefault(t => id.Equals((t as IIdentifiable)?.Id)),
                 string name => this.types.FirstOrDefault(t => t.FullName == name)
-                               ?? this.types.FirstOrDefault(t => t.Name == name),
+                               ?? this.types.FirstOrDefault(t => t.Name == name)
+                               ?? this.runtimeTypeRegistry.GetTypeInfo(typeToken, throwOnNotFound),
                 _ => null,
             };
 

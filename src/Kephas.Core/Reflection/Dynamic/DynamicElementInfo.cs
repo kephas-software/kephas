@@ -101,6 +101,11 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
+        /// Gets or sets the position within its container.
+        /// </summary>
+        protected internal int Position { get; set; }
+
+        /// <summary>
         /// Tries to get the type navigating through the containers upwards.
         /// </summary>
         /// <param name="typeName">The type name.</param>

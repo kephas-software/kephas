@@ -18,13 +18,33 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicParameterInfo : DynamicElementInfo, IParameterInfo
     {
+        private ITypeInfo? valueType;
+        private string? valueTypeName;
+
         /// <summary>
-        /// Gets or sets the parameter value type.
+        /// Gets or sets the type of the parameter.
         /// </summary>
         /// <value>
-        /// The parameter value type.
+        /// The type of the parameter.
         /// </value>
-        public ITypeInfo ValueType { get; protected internal set; }
+        public ITypeInfo ValueType
+        {
+            get => this.valueType ??= this.TryGetType(this.valueTypeName);
+            set => this.valueType = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the type name of the parameter.
+        /// </summary>
+        public string? ValueTypeName
+        {
+            get => this.valueTypeName ?? this.valueType?.FullName;
+            set
+            {
+                this.valueTypeName = value;
+                this.valueType = null;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the position in the parameter's list.
@@ -32,7 +52,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The position in the parameter's list.
         /// </value>
-        public int Position { get; protected internal set; }
+        public new int Position => base.Position;
 
         /// <summary>
         /// Gets or sets a value indicating whether this parameter is optional.
@@ -40,7 +60,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// <c>true</c> if the parameter is optional, <c>false</c> otherwise.
         /// </value>
-        public bool IsOptional { get; protected internal set; }
+        public bool IsOptional { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the parameter is for input.
@@ -48,7 +68,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// True if this parameter is for input, false if not.
         /// </value>
-        public bool IsIn { get; protected internal set; }
+        public bool IsIn { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the parameter is for output.
@@ -56,7 +76,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// True if this parameter is for output, false if not.
         /// </value>
-        public bool IsOut { get; protected internal set; }
+        public bool IsOut { get; set; }
 
         /// <summary>
         /// Sets the specified value.

@@ -58,7 +58,9 @@ namespace Kephas.Core.Tests.Interaction
             eventHub.Subscribe<string>((e, ctx) => calls++);
 
             var result = await eventHub.PublishAsync("hello", null);
+#if NETCOREAPP2_1 || NETCOREAPP3_1
             Assert.IsNull(result.Value);
+#endif
             Assert.AreEqual(1, calls);
         }
 
@@ -74,7 +76,9 @@ namespace Kephas.Core.Tests.Interaction
             });
 
             var result = await eventHub.PublishAsync("hello", null);
+#if NETCOREAPP2_1 || NETCOREAPP3_1
             Assert.IsNull(result.Value);
+#endif
             Assert.AreEqual(1, calls);
         }
     }

@@ -42,4 +42,9 @@
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="EmbeddedResources\Schema1.json" />
+      <EmbeddedResource Include="EmbeddedResources\Schema1.json" />
+    </ItemGroup>
+
 </Project>

@@ -55,7 +55,7 @@ namespace Kephas.Reflection.Dynamic
         /// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
-        public void Add(T item)
+        public virtual void Add(T item)
         {
             if (item is not DynamicElementInfo element)
             {
@@ -64,6 +64,8 @@ namespace Kephas.Reflection.Dynamic
             }
 
             element.DeclaringContainer = this.declaringContainer;
+            element.Position = this.innerList.Count;
+
             this.innerList.Add(item);
         }
 
