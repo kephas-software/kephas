@@ -15,10 +15,7 @@ namespace Kephas.Reflection.Dynamic
     using System.Linq;
 
     using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
-    using Kephas.Reflection.Localization;
     using Kephas.Runtime;
 
     /// <summary>
@@ -26,9 +23,6 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public abstract class DynamicElementInfo : Expando, IElementInfo
     {
-        /// <summary>
-        /// The annotations.
-        /// </summary>
         private readonly IList<object> annotations = new List<object>();
 
         /// <summary>
@@ -37,7 +31,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The name of the element.
         /// </value>
-        public string Name { get; protected internal set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the full name of the element.
@@ -45,7 +39,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The full name of the element.
         /// </value>
-        public virtual string FullName { get; protected internal set; }
+        public virtual string FullName { get; set; }
 
         /// <summary>
         /// Gets the element annotations.
@@ -53,7 +47,15 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The element annotations.
         /// </value>
-        public IEnumerable<object> Annotations => this.annotations;
+        IEnumerable<object> IElementInfo.Annotations => this.annotations;
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public ICollection<object> Annotations => this.annotations;
 
         /// <summary>
         /// Gets or sets the parent element declaring this element.
@@ -61,7 +63,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo? DeclaringContainer { get; protected internal set; }
+        public virtual IElementInfo? DeclaringContainer { get; protected internal set; }
 
         /// <summary>
         /// Gets the display information.
@@ -99,14 +101,24 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Adds an annotation to the dynamic element.
+        /// Tries to get the type navigating through the containers upwards.
         /// </summary>
-        /// <param name="annotation">The annotation.</param>
-        protected internal virtual void AddAnnotation(object annotation)
+        /// <param name="typeName">The type name.</param>
+        /// <returns>The type or <c>null</c>.</returns>
+        protected virtual ITypeInfo? TryGetType(string? typeName)
         {
-            Requires.NotNull(annotation, nameof(annotation));
+            if (typeName == null)
+            {
+                return null;
+            }
 
-            this.annotations.Add(annotation);
+            IElementInfo ancestor = this;
+            while (ancestor != null && ancestor is not ITypeRegistry)
+            {
+                ancestor = ancestor.DeclaringContainer;
+            }
+
+            return (ancestor as ITypeRegistry)?.GetTypeInfo(typeName, throwOnNotFound: false);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Kephas.Commands.Messaging.Reflection
                 .Select(this.CreateParameterInfo)
                 .ToArray();
 
-            messageType.Annotations.ForEach(this.AddAnnotation);
+            this.Annotations.AddRange(messageType.Annotations);
             var returnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value ?? typeof(object);
             this.ReturnType = this.typeRegistry.GetTypeInfo(returnType);
         }

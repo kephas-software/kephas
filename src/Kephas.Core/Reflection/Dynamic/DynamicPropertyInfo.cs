@@ -10,6 +10,8 @@
 
 namespace Kephas.Reflection.Dynamic
 {
+    using System;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
@@ -18,13 +20,33 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicPropertyInfo : DynamicElementInfo, IPropertyInfo
     {
+        private ITypeInfo? valueType;
+        private string? valueTypeName;
+
         /// <summary>
         /// Gets or sets the type of the property.
         /// </summary>
         /// <value>
         /// The type of the property.
         /// </value>
-        public ITypeInfo ValueType { get; protected internal set; }
+        public ITypeInfo ValueType
+        {
+            get => this.valueType ??= this.TryGetType(this.valueTypeName);
+            set => this.valueType = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the type name of the property.
+        /// </summary>
+        public string? ValueTypeName
+        {
+            get => this.valueTypeName ?? this.valueType?.FullName;
+            set
+            {
+                this.valueTypeName = value;
+                this.valueType = null;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the property can be written to.
@@ -32,7 +54,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
         /// </value>
-        public bool CanWrite { get; protected internal set; }
+        public bool CanWrite { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the property value can be read.
@@ -40,7 +62,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
-        public bool CanRead { get; protected internal set; }
+        public bool CanRead { get; set; } = true;
 
         /// <summary>
         /// Sets the specified value.
@@ -50,6 +72,11 @@ namespace Kephas.Reflection.Dynamic
         public virtual void SetValue(object? obj, object? value)
         {
             Requires.NotNull(obj, nameof(obj));
+
+            if (!this.CanWrite)
+            {
+                throw new InvalidOperationException($"Property '{this.Name}' is read-only.");
+            }
 
             if (obj is IExpando expando)
             {
@@ -69,6 +96,11 @@ namespace Kephas.Reflection.Dynamic
         public virtual object? GetValue(object? obj)
         {
             Requires.NotNull(obj, nameof(obj));
+
+            if (!this.CanRead)
+            {
+                throw new InvalidOperationException($"Property '{this.Name}' is write-only.");
+            }
 
             if (obj is IExpando expando)
             {

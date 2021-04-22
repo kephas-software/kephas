@@ -18,6 +18,16 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicOperationInfo : DynamicElementInfo, IOperationInfo
     {
+        private readonly ICollection<IElementInfo> members;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicOperationInfo"/> class.
+        /// </summary>
+        public DynamicOperationInfo()
+        {
+            this.members = new DynamicElementInfoCollection<IElementInfo>(this);
+        }
+
         /// <summary>
         /// Gets or sets the return type of the method.
         /// </summary>
@@ -25,6 +35,8 @@ namespace Kephas.Reflection.Dynamic
         /// The return type of the method.
         /// </value>
         public ITypeInfo? ReturnType { get; protected internal set; }
+
+        public ITypeInfo? ReturnTypeName { get; protected internal set; }
 
         /// <summary>
         /// Gets or sets the method parameters.

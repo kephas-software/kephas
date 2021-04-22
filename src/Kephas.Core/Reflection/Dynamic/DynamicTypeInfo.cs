@@ -25,42 +25,26 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicTypeInfo : DynamicElementInfo, ITypeInfo, IIdentifiable
     {
-        /// <summary>
-        /// The list of members.
-        /// </summary>
-        private readonly IList<IElementInfo> members = new List<IElementInfo>();
-
-        /// <summary>
-        /// The list of generic type arguments.
-        /// </summary>
-        private readonly List<ITypeInfo> genericTypeArguments = new List<ITypeInfo>();
-
-        /// <summary>
-        /// The list of generic type parameters.
-        /// </summary>
-        private readonly List<ITypeInfo> genericTypeParameters = new List<ITypeInfo>();
-
-        /// <summary>
-        /// The list of base types.
-        /// </summary>
-        private readonly IList<ITypeInfo> baseTypes = new List<ITypeInfo>();
+        private readonly ICollection<IElementInfo> members;
+        private readonly List<ITypeInfo> genericTypeArguments = new ();
+        private readonly List<ITypeInfo> genericTypeParameters = new ();
+        private readonly List<ITypeInfo> baseTypes = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public DynamicTypeInfo(ITypeRegistry? typeRegistry = null)
+        public DynamicTypeInfo()
         {
-            this.TypeRegistry = typeRegistry ?? DynamicTypeRegistry.Null;
+            this.members = new DynamicElementInfoCollection<IElementInfo>(this);
         }
 
         /// <summary>
-        /// Gets the identifier for this instance.
+        /// Gets or sets the identifier for this instance.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
-        public object Id { get; protected internal set; } = Guid.NewGuid();
+        public object Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets the full name of the element.
@@ -76,7 +60,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The namespace of the type.
         /// </value>
-        public string Namespace { get; protected internal set; }
+        public string Namespace { get; set; }
 
         /// <summary>
         /// Gets or sets the full name qualified with the module where it was defined.
@@ -132,9 +116,23 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The members.
         /// </value>
-        public IEnumerable<IElementInfo> Members => this.members;
+        public ICollection<IElementInfo> Members => this.members;
 
-        public ITypeRegistry TypeRegistry { get; }
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.members;
+
+        /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
+        public ITypeRegistry TypeRegistry =>
+            this.DeclaringContainer as ITypeRegistry
+                ?? this.DeclaringContainer?.DeclaringContainer as ITypeRegistry
+                ?? throw new InvalidOperationException($"The {nameof(this.DeclaringContainer)} is not set. Try add the '{this.GetType()}' to the '{nameof(DynamicTypeRegistry.Types)}' collection.");
 
         /// <summary>
         /// Gets a member by the provided name.
@@ -144,7 +142,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The requested member, or <c>null</c>.
         /// </returns>
-        public virtual IElementInfo GetMember(string name, bool throwIfNotFound = true)
+        public virtual IElementInfo? GetMember(string name, bool throwIfNotFound = true)
         {
             var memberInfo = this.Members.FirstOrDefault(m => m.Name == name);
             if (memberInfo != null)
@@ -173,7 +171,7 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Constructs a generic type baed on the provided type arguments.
+        /// Constructs a generic type based on the provided type arguments.
         /// </summary>
         /// <param name="typeArguments">The type arguments.</param>
         /// <param name="constructionContext">The construction context (optional).</param>
@@ -182,7 +180,7 @@ namespace Kephas.Reflection.Dynamic
         /// </returns>
         public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
         {
-            throw new NotSupportedException();
+            return this;
         }
 
         /// <summary>

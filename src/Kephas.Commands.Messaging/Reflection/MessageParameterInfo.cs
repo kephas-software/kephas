@@ -36,7 +36,7 @@ namespace Kephas.Commands.Messaging.Reflection
             this.propertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;
             this.Position = position;
-            propertyInfo.Annotations.ForEach(this.AddAnnotation);
+            this.Annotations.AddRange(propertyInfo.Annotations);
             this.IsIn = this.Annotations.OfType<InAttribute>().Any();
             this.IsOut = this.Annotations.OfType<OutAttribute>().Any();
             this.ValueType = propertyInfo.ValueType;

@@ -564,7 +564,7 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Constructs a generic type baed on the provided type arguments.
+        /// Constructs a generic type based on the provided type arguments.
         /// </summary>
         /// <param name="typeArguments">The type arguments.</param>
         /// <param name="constructionContext">The construction context (optional).</param>
