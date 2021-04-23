@@ -122,16 +122,32 @@ namespace Kephas
         /// Concatenates the elements of an object array, using the specified separator between
         /// each element.
         /// </summary>
+        /// <param name="args">An array that contains the elements to concatenate.</param>
         /// <param name="separator">
         /// The string to use as a separator. <paramref name="separator"/> is included in the returned string
         /// only if values has more than one element.
         /// </param>
-        /// <param name="args">An array that contains the elements to concatenate.</param>
         /// <returns>
         /// A string.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string JoinWith(this string separator, params object?[] args)
+        public static string JoinWith(this IEnumerable<string?> args, string separator)
+            => string.Join(separator, args);
+
+        /// <summary>
+        /// Concatenates the elements of an object array, using the specified separator between
+        /// each element.
+        /// </summary>
+        /// <param name="args">An array that contains the elements to concatenate.</param>
+        /// <param name="separator">
+        /// The string to use as a separator. <paramref name="separator"/> is included in the returned string
+        /// only if values has more than one element.
+        /// </param>
+        /// <returns>
+        /// A string.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string JoinWith(this IEnumerable<object?> args, string separator)
             => string.Join(separator, args);
     }
 }
