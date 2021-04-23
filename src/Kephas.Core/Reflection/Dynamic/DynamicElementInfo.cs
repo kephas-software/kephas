@@ -24,6 +24,7 @@ namespace Kephas.Reflection.Dynamic
     public abstract class DynamicElementInfo : Expando, IElementInfo
     {
         private readonly IList<object> annotations = new List<object>();
+        private string? fullName;
 
         /// <summary>
         /// Gets or sets the name of the element.
@@ -31,7 +32,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The name of the element.
         /// </value>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the full name of the element.
@@ -39,7 +40,11 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The full name of the element.
         /// </value>
-        public virtual string FullName { get; set; }
+        public virtual string FullName
+        {
+            get => this.fullName ?? this.Name;
+            set => this.fullName = value;
+        }
 
         /// <summary>
         /// Gets the element annotations.
@@ -66,12 +71,20 @@ namespace Kephas.Reflection.Dynamic
         public virtual IElementInfo? DeclaringContainer { get; protected internal set; }
 
         /// <summary>
+        /// Gets or sets display information.
+        /// </summary>
+        public virtual DynamicDisplayInfo? Display { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position within its container.
+        /// </summary>
+        protected internal int Position { get; set; }
+
+        /// <summary>
         /// Gets the display information.
         /// </summary>
         /// <returns>The display information.</returns>
-        public virtual IDisplayInfo? GetDisplayInfo()
-            => this[ElementInfoHelper.DisplayInfoKey] as IDisplayInfo
-               ?? (IDisplayInfo)(this[ElementInfoHelper.DisplayInfoKey] = new DisplayInfoAttribute());
+        public virtual IDisplayInfo? GetDisplayInfo() => this.Display ??= new DynamicDisplayInfo();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -101,29 +114,30 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Gets or sets the position within its container.
-        /// </summary>
-        protected internal int Position { get; set; }
-
-        /// <summary>
         /// Tries to get the type navigating through the containers upwards.
         /// </summary>
         /// <param name="typeName">The type name.</param>
         /// <returns>The type or <c>null</c>.</returns>
         protected virtual ITypeInfo? TryGetType(string? typeName)
         {
-            if (typeName == null)
-            {
-                return null;
-            }
+            return typeName == null
+                ? null
+                : this.GetTypeRegistry()?.GetTypeInfo(typeName, throwOnNotFound: false);
+        }
 
+        /// <summary>
+        /// Tries to get the type registry navigating the declaring containers upwards.
+        /// </summary>
+        /// <returns>The root type registry or <c>null</c>.</returns>
+        protected virtual ITypeRegistry? GetTypeRegistry()
+        {
             IElementInfo ancestor = this;
             while (ancestor != null && ancestor is not ITypeRegistry)
             {
                 ancestor = ancestor.DeclaringContainer;
             }
 
-            return (ancestor as ITypeRegistry)?.GetTypeInfo(typeName, throwOnNotFound: false);
+            return ancestor as ITypeRegistry;
         }
     }
 }

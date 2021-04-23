@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection;
-
 namespace Kephas.ComponentModel.DataAnnotations
 {
     using System;
 
     using Kephas.Localization.Internal;
+    using Kephas.Reflection;
     using Kephas.Reflection.Localization;
 
     /// <summary>
