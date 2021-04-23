@@ -5,7 +5,7 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
-        <Version>9.1.0-dev.4</Version>
+        <Version>9.1.0-dev.5</Version>
         <AssemblyVersion>9.1.0.0</AssemblyVersion>
         <FileVersion>9.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
