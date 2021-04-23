@@ -116,6 +116,7 @@ namespace Kephas.Serialization.Json
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
+                new DynamicTypeRegistryJsonConverter(typeRegistry, typeResolver),
                 new AppServiceMetadataJsonConverter(typeRegistry, typeResolver),
                 new AppServiceInfoJsonConverter(typeRegistry, typeResolver),
                 new ExpandoJsonConverter(typeRegistry, typeResolver),
