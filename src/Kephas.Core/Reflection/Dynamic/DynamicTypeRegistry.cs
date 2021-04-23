@@ -103,6 +103,7 @@ namespace Kephas.Reflection.Dynamic
                 string name => this.types.FirstOrDefault(t => t.FullName == name)
                                ?? this.types.FirstOrDefault(t => t.Name == name)
                                ?? this.ResolveTypeInfo(name, throwOnNotFound),
+                Type type => this.runtimeTypeRegistry.GetTypeInfo(type, throwOnNotFound),
                 _ => null,
             };
 
