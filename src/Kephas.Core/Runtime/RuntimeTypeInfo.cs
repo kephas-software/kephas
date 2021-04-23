@@ -153,7 +153,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The namespace of the type.
         /// </value>
-        public string Namespace { get; }
+        public string? Namespace { get; }
 
         /// <summary>
         /// Gets the default value of the type.

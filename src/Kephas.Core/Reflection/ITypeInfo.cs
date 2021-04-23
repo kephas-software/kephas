@@ -28,7 +28,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The namespace of the type.
         /// </value>
-        string Namespace { get; }
+        string? Namespace { get; }
 
         /// <summary>
         /// Gets the full name qualified with the module where it was defined.
