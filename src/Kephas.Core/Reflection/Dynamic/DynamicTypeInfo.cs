@@ -15,7 +15,6 @@ namespace Kephas.Reflection.Dynamic
     using System.Linq;
 
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Resources;
     using Kephas.Services;
@@ -28,8 +27,9 @@ namespace Kephas.Reflection.Dynamic
         private readonly ICollection<IElementInfo> members;
         private readonly List<ITypeInfo> genericTypeArguments = new ();
         private readonly List<ITypeInfo> genericTypeParameters = new ();
-        private readonly List<ITypeInfo> baseTypes = new ();
+        private List<ITypeInfo>? baseTypes;
         private string? qualifiedFullName;
+        private string? bases;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
@@ -45,7 +45,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The identifier.
         /// </value>
-        public object Id { get; set; } = Guid.NewGuid();
+        public virtual object Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets the full name of the element.
@@ -53,7 +53,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The full name of the element.
         /// </value>
-        public override string FullName => base.FullName ?? $"{this.Namespace}.{this.Name}";
+        public override string FullName => string.IsNullOrEmpty(this.Namespace) ? base.FullName : $"{this.Namespace}.{this.Name}";
 
         /// <summary>
         /// Gets or sets the namespace of the type.
@@ -61,7 +61,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The namespace of the type.
         /// </value>
-        public string Namespace { get; set; }
+        public virtual string? Namespace { get; set; }
 
         /// <summary>
         /// Gets or sets the full name qualified with the module where it was defined.
@@ -81,7 +81,21 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The bases.
         /// </value>
-        public IEnumerable<ITypeInfo> BaseTypes => this.baseTypes;
+        IEnumerable<ITypeInfo> ITypeInfo.BaseTypes
+            => this.baseTypes ??= this.bases == null ? new List<ITypeInfo>() : this.ComputeBaseTypes(this.bases);
+
+        /// <summary>
+        /// Gets or sets the base type name. Multiple bases are separated by commas.
+        /// </summary>
+        public virtual string? Base
+        {
+            get => this.bases ??= this.baseTypes?.Select(b => b.FullName).JoinWith(", ");
+            set
+            {
+                this.bases = value;
+                this.baseTypes = null;
+            }
+        }
 
         /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters of a generic type definition (open generic).
@@ -89,7 +103,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeParameters => this.genericTypeParameters;
+        IReadOnlyList<ITypeInfo> ITypeInfo.GenericTypeParameters => this.genericTypeParameters;
 
         /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type arguments of a closed generic type.
@@ -97,15 +111,15 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeArguments => this.genericTypeArguments;
+        IReadOnlyList<ITypeInfo> ITypeInfo.GenericTypeArguments => this.genericTypeArguments;
 
         /// <summary>
-        /// Gets or sets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
+        /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
         /// </summary>
         /// <value>
         /// The generic type definition.
         /// </value>
-        public ITypeInfo GenericTypeDefinition { get; protected internal set; }
+        ITypeInfo? ITypeInfo.GenericTypeDefinition { get; }
 
         /// <summary>
         /// Gets the properties.
@@ -135,8 +149,7 @@ namespace Kephas.Reflection.Dynamic
         /// Gets the container type registry.
         /// </summary>
         public ITypeRegistry TypeRegistry =>
-            this.DeclaringContainer as ITypeRegistry
-                ?? this.DeclaringContainer?.DeclaringContainer as ITypeRegistry
+            this.GetTypeRegistry()
                 ?? throw new InvalidOperationException($"The {nameof(this.DeclaringContainer)} is not set. Try add the '{this.GetType()}' to the '{nameof(DynamicTypeRegistry.Types)}' collection.");
 
         /// <summary>
@@ -189,59 +202,16 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Adds a member to the dynamic type.
+        /// Computes the base types based on the provided bases.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="member">The member.</param>
-        protected internal virtual void AddMember(IElementInfo member)
+        /// <param name="bases">The base type names separated by comma.</param>
+        /// <returns>A list of <see cref="ITypeInfo"/>.</returns>
+        protected virtual List<ITypeInfo> ComputeBaseTypes(string bases)
         {
-            Requires.NotNull(member, nameof(member));
-            Requires.NotNullOrEmpty(member.Name, nameof(member.Name));
-
-            if (this.members.Any(m => m.Name == member.Name))
-            {
-                throw new InvalidOperationException(string.Format(Strings.DynamicTypeInfo_AddMember_Duplicate_Exception, member.Name, this));
-            }
-
-            this.members.Add(member);
-        }
-
-        /// <summary>
-        /// Adds a base type to the dynamic type.
-        /// </summary>
-        /// <param name="baseType">The base type.</param>
-        protected internal virtual void AddBaseType(ITypeInfo baseType)
-        {
-            Requires.NotNull(baseType, nameof(baseType));
-
-            if (baseType == this)
-            {
-                throw new ArgumentException(nameof(baseType), string.Format(Strings.DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception, this));
-            }
-
-            this.baseTypes.Add(baseType);
-        }
-
-        /// <summary>
-        /// Adds a generic type parameter to the dynamic type.
-        /// </summary>
-        /// <param name="genericTypeParameter">The generic type parameter.</param>
-        protected internal virtual void AddGenericTypeParameter(ITypeInfo genericTypeParameter)
-        {
-            Requires.NotNull(genericTypeParameter, nameof(genericTypeParameter));
-
-            this.genericTypeParameters.Add(genericTypeParameter);
-        }
-
-        /// <summary>
-        /// Adds a generic type argument to the dynamic type.
-        /// </summary>
-        /// <param name="genericTypeArgument">The generic type argument.</param>
-        protected internal virtual void AddGenericTypeArgument(ITypeInfo genericTypeArgument)
-        {
-            Requires.NotNull(genericTypeArgument, nameof(genericTypeArgument));
-
-            this.genericTypeArguments.Add(genericTypeArgument);
+            var typeRegistry = this.TypeRegistry;
+            return bases.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(b => typeRegistry.GetTypeInfo(b)!)
+                .ToList();
         }
     }
 }
