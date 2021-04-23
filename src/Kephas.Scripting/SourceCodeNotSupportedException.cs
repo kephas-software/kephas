@@ -32,7 +32,7 @@ namespace Kephas.Scripting
 
         private static string GetMessage(IScript script, Type[] supportedCodeTypes)
         {
-            return Strings.SourceCodeTypeNotSupported_Exception.FormatWith(script?.SourceCode?.GetType(), ", ".JoinWith(supportedCodeTypes));
+            return Strings.SourceCodeTypeNotSupported_Exception.FormatWith(script?.SourceCode?.GetType(), supportedCodeTypes.JoinWith(", "));
         }
     }
 }
