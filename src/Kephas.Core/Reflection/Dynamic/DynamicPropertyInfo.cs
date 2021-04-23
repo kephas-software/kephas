@@ -29,7 +29,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The type of the property.
         /// </value>
-        public ITypeInfo ValueType
+        public virtual ITypeInfo ValueType
         {
             get => this.valueType ??= this.TryGetType(this.valueTypeName);
             set => this.valueType = value;
@@ -38,7 +38,7 @@ namespace Kephas.Reflection.Dynamic
         /// <summary>
         /// Gets or sets the type name of the property.
         /// </summary>
-        public string? ValueTypeName
+        public virtual string? ValueTypeName
         {
             get => this.valueTypeName ?? this.valueType?.FullName;
             set
@@ -54,7 +54,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
         /// </value>
-        public bool CanWrite { get; set; } = true;
+        public virtual bool CanWrite { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the property value can be read.
@@ -62,7 +62,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
-        public bool CanRead { get; set; } = true;
+        public virtual bool CanRead { get; set; } = true;
 
         /// <summary>
         /// Sets the specified value.
