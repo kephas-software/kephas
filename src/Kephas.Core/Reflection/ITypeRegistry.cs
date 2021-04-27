@@ -7,6 +7,9 @@
 
 namespace Kephas.Reflection
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -21,5 +24,18 @@ namespace Kephas.Reflection
         /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
         /// <returns>The type information.</returns>
         ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true);
+
+#if NETSTANDARD2_0
+#else
+        /// <summary>
+        /// Gets the type information asynchronously based on the type token.
+        /// </summary>
+        /// <param name="typeToken">The type token.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding the type information.</returns>
+        Task<ITypeInfo?> GetTypeInfoAsync(object typeToken, bool throwOnNotFound = true, CancellationToken cancellationToken = default)
+            => Task.FromResult(this.GetTypeInfo(typeToken, throwOnNotFound));
+#endif
     }
 }
