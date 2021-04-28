@@ -13,6 +13,8 @@ namespace Kephas.Reflection.Dynamic
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Dynamic;
@@ -123,6 +125,20 @@ namespace Kephas.Reflection.Dynamic
             return typeName == null
                 ? null
                 : this.GetTypeRegistry()?.GetTypeInfo(typeName, throwOnNotFound: false);
+        }
+
+        /// <summary>
+        /// Tries to get the type navigating through the containers upwards.
+        /// </summary>
+        /// <param name="typeName">The type name.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The type or <c>null</c>.</returns>
+        protected virtual Task<ITypeInfo?> TryGetTypeAsync(string? typeName, CancellationToken cancellationToken)
+        {
+            return typeName == null
+                ? Task.FromResult<ITypeInfo?>(null)
+                : (this.GetTypeRegistry()?.GetTypeInfoAsync(typeName, throwOnNotFound: false, cancellationToken: cancellationToken)
+                    ?? Task.FromResult<ITypeInfo?>(null));
         }
 
         /// <summary>
