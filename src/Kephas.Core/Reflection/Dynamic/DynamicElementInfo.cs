@@ -127,8 +127,20 @@ namespace Kephas.Reflection.Dynamic
                 : this.GetTypeRegistry()?.GetTypeInfo(typeName, throwOnNotFound: false);
         }
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Tries to get the type navigating through the containers upwards.
+        /// </summary>
+        /// <param name="typeName">The type name.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The type or <c>null</c>.</returns>
+        protected virtual Task<ITypeInfo?> TryGetTypeAsync(string? typeName, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(this.TryGetType(typeName));
+        }
+#else
+        /// <summary>
+        /// Tries to get the type asynchronously navigating through the containers upwards.
         /// </summary>
         /// <param name="typeName">The type name.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
@@ -140,6 +152,7 @@ namespace Kephas.Reflection.Dynamic
                 : (this.GetTypeRegistry()?.GetTypeInfoAsync(typeName, throwOnNotFound: false, cancellationToken: cancellationToken)
                     ?? Task.FromResult<ITypeInfo?>(null));
         }
+#endif
 
         /// <summary>
         /// Tries to get the type registry navigating the declaring containers upwards.
