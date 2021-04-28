@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Commands.Messaging.Reflection
 {
     using System.ComponentModel;

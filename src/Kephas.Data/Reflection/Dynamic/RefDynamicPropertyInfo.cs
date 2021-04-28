@@ -7,6 +7,9 @@
 
 namespace Kephas.Data.Reflection.Dynamic
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
 
@@ -59,6 +62,16 @@ namespace Kephas.Data.Reflection.Dynamic
         {
             get => typeof(IRef).FullName;
             set { }
+        }
+
+        /// <summary>
+        /// Gets the reference type asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding the reference type.</returns>
+        public virtual async Task<ITypeInfo> GetRefTypeAsync(CancellationToken cancellationToken = default)
+        {
+            return this.refType ??= await this.TryGetTypeAsync(this.refTypeName, cancellationToken);
         }
     }
 }

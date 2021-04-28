@@ -10,6 +10,9 @@
 
 namespace Kephas.Reflection.Dynamic
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
@@ -77,6 +80,18 @@ namespace Kephas.Reflection.Dynamic
         /// True if this parameter is for output, false if not.
         /// </value>
         public bool IsOut { get; set; }
+
+        /// <summary>
+        /// Gets the type of the element's value asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result yielding the type of the element's value.
+        /// </returns>
+        public virtual async Task<ITypeInfo> GetValueTypeAsync(CancellationToken cancellationToken = default)
+        {
+            return this.valueType ??= await this.TryGetTypeAsync(this.valueTypeName, cancellationToken);
+        }
 
         /// <summary>
         /// Sets the specified value.

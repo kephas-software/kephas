@@ -7,6 +7,9 @@
 
 namespace Kephas.Data.Reflection
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Reflection;
 
     /// <summary>
@@ -18,5 +21,16 @@ namespace Kephas.Data.Reflection
         /// Gets the service reference type.
         /// </summary>
         ITypeInfo ServiceRefType { get; }
+
+#if NETSTANDARD2_0
+#else
+        /// <summary>
+        /// Gets the service reference type asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding the service reference type.</returns>
+        Task<ITypeInfo> GetServiceRefTypeAsync(CancellationToken cancellationToken = default)
+            => Task.FromResult(this.ServiceRefType);
+#endif
     }
 }

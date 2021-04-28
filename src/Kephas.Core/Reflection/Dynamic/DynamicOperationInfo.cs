@@ -12,6 +12,8 @@ namespace Kephas.Reflection.Dynamic
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Information about the dynamic operation.
@@ -73,6 +75,18 @@ namespace Kephas.Reflection.Dynamic
         /// The method parameters.
         /// </value>
         public ICollection<IParameterInfo> Parameters => this.parameters;
+
+        /// <summary>
+        /// Gets the return type of the operation asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result yielding the return type of the operation.
+        /// </returns>
+        public virtual async Task<ITypeInfo?> GetReturnTypeAsync(CancellationToken cancellationToken = default)
+        {
+            return this.returnType ??= await this.TryGetTypeAsync(this.returnTypeName, cancellationToken);
+        }
 
         /// <summary>
         /// Invokes the specified method on the provided instance.

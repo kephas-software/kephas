@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Threading.Tasks;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Threading.Tasks;
-
 namespace Kephas.Reflection
 {
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Contract for operation information.
@@ -22,10 +23,10 @@ namespace Kephas.Reflection
     public interface IOperationInfo : IElementInfo
     {
         /// <summary>
-        /// Gets the return type of the method.
+        /// Gets the return type of the operation.
         /// </summary>
         /// <value>
-        /// The return type of the method.
+        /// The return type of the operation.
         /// </value>
         ITypeInfo? ReturnType { get; }
 
@@ -36,6 +37,19 @@ namespace Kephas.Reflection
         /// The method parameters.
         /// </value>
         IEnumerable<IParameterInfo> Parameters { get; }
+
+#if NETSTANDARD2_0
+#else
+        /// <summary>
+        /// Gets the return type of the operation asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result yielding the return type of the operation.
+        /// </returns>
+        Task<ITypeInfo?> GetReturnTypeAsync(CancellationToken cancellationToken = default)
+            => Task.FromResult(this.ReturnType);
+#endif
 
         /// <summary>
         /// Invokes the specified method on the provided instance.

@@ -11,6 +11,8 @@
 namespace Kephas.Reflection.Dynamic
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -63,6 +65,18 @@ namespace Kephas.Reflection.Dynamic
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
         public virtual bool CanRead { get; set; } = true;
+
+        /// <summary>
+        /// Gets the type of the element's value asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result yielding the type of the element's value.
+        /// </returns>
+        public virtual async Task<ITypeInfo> GetValueTypeAsync(CancellationToken cancellationToken = default)
+        {
+            return this.valueType ??= await this.TryGetTypeAsync(this.valueTypeName, cancellationToken);
+        }
 
         /// <summary>
         /// Sets the specified value.

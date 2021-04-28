@@ -10,6 +10,9 @@
 
 namespace Kephas.Reflection
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Contract for reflection elements holding a value.
     /// </summary>
@@ -22,6 +25,19 @@ namespace Kephas.Reflection
         /// The type of the element's value.
         /// </value>
         ITypeInfo ValueType { get; }
+
+#if NETSTANDARD2_0
+#else
+        /// <summary>
+        /// Gets the type of the element's value asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result yielding the type of the element's value.
+        /// </returns>
+        Task<ITypeInfo> GetValueTypeAsync(CancellationToken cancellationToken = default)
+            => Task.FromResult(this.ValueType);
+#endif
 
         /// <summary>
         /// Sets the specified value.

@@ -7,6 +7,9 @@
 
 namespace Kephas.Data.Reflection.Dynamic
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
 
@@ -21,7 +24,7 @@ namespace Kephas.Data.Reflection.Dynamic
         /// <summary>
         /// Gets or sets the service reference type.
         /// </summary>
-        public ITypeInfo ServiceRefType
+        public virtual ITypeInfo ServiceRefType
         {
             get => this.serviceRefType ??= this.TryGetType(this.serviceRefTypeName);
             set => this.serviceRefType = value;
@@ -59,6 +62,16 @@ namespace Kephas.Data.Reflection.Dynamic
         {
             get => typeof(IServiceRef).FullName;
             set { }
+        }
+
+        /// <summary>
+        /// Gets the reference type asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding the reference type.</returns>
+        public virtual async Task<ITypeInfo> GetServiceRefTypeAsync(CancellationToken cancellationToken = default)
+        {
+            return this.serviceRefType ??= await this.TryGetTypeAsync(this.serviceRefTypeName, cancellationToken);
         }
     }
 }
