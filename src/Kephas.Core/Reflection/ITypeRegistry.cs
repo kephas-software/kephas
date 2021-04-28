@@ -38,4 +38,23 @@ namespace Kephas.Reflection
             => Task.FromResult(this.GetTypeInfo(typeToken, throwOnNotFound));
 #endif
     }
+
+#if NETSTANDARD2_0
+    /// <summary>
+    /// Extension methods for <see cref="ITypeRegistry"/>.
+    /// </summary>
+    public static class TypeRegistryExtensions
+    {
+        /// <summary>
+        /// Gets the type information asynchronously based on the type token.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="typeToken">The type token.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding the type information.</returns>
+        public static Task<ITypeInfo?> GetTypeInfoAsync(this ITypeRegistry typeRegistry, object typeToken, bool throwOnNotFound = true, CancellationToken cancellationToken = default)
+            => Task.FromResult(typeRegistry.GetTypeInfo(typeToken, throwOnNotFound));
+    }
+#endif
 }

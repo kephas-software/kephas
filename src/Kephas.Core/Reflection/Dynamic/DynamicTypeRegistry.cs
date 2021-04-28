@@ -10,10 +10,13 @@ namespace Kephas.Reflection.Dynamic
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Runtime;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A type registry for dynamic types.
@@ -116,6 +119,33 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
+        /// Gets the type information based on the type token.
+        /// </summary>
+        /// <param name="typeToken">The type token.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The type information.</returns>
+        public virtual async Task<ITypeInfo?> GetTypeInfoAsync(object typeToken, bool throwOnNotFound = true, CancellationToken cancellationToken = default)
+        {
+            var typeInfo = typeToken switch
+            {
+                Guid id => this.types.FirstOrDefault(t => id.Equals((t as IIdentifiable)?.Id)),
+                string name => this.types.FirstOrDefault(t => t.FullName == name)
+                               ?? this.types.FirstOrDefault(t => t.Name == name)
+                               ?? await this.ResolveTypeInfoAsync(name, throwOnNotFound, cancellationToken).PreserveThreadContext(),
+                Type type => await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken).PreserveThreadContext(),
+                _ => null,
+            };
+
+            if (typeInfo == null && throwOnNotFound)
+            {
+                throw new KeyNotFoundException($"Type with token '{typeToken}' not found.");
+            }
+
+            return typeInfo;
+        }
+
+        /// <summary>
         /// Resolves the <see cref="ITypeInfo"/> based on the provided type name.
         /// </summary>
         /// <param name="typeName">The type name.</param>
@@ -132,6 +162,26 @@ namespace Kephas.Reflection.Dynamic
 
             var type = this.typeResolver.ResolveType(typeName, throwOnNotFound);
             return type == null ? null : this.runtimeTypeRegistry.GetTypeInfo(type, throwOnNotFound);
+        }
+
+        /// <summary>
+        /// Resolves the <see cref="ITypeInfo"/> based on the provided type name.
+        /// </summary>
+        /// <param name="typeName">The type name.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found, throws an exception.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The type information.</returns>
+        protected virtual async Task<ITypeInfo?> ResolveTypeInfoAsync(string typeName, bool throwOnNotFound, CancellationToken cancellationToken)
+        {
+            if (this.typeResolver == null)
+            {
+                return throwOnNotFound
+                    ? throw new KeyNotFoundException($"Type with name '{typeName}' not found. Try to provide a type resolver for resolving type names.")
+                    : null;
+            }
+
+            var type = this.typeResolver.ResolveType(typeName, throwOnNotFound);
+            return type == null ? null : await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken).PreserveThreadContext();
         }
     }
 }
