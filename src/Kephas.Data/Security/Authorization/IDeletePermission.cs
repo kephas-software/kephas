@@ -15,7 +15,7 @@ namespace Kephas.Data.Security.Authorization
     /// Data can be deleted. May be intersected with other permissions to further restrict specific sections.
     /// </summary>
     [PermissionInfo(DataPermissionTokenName.Delete, Scoping.Type | Scoping.Instance)]
-    public interface IDeletePermission : IPermission
+    public interface IDeletePermission
     {
     }
 }

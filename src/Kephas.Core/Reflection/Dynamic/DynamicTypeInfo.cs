@@ -33,12 +33,12 @@ namespace Kephas.Reflection.Dynamic
         /// <summary>
         /// The list of generic type arguments.
         /// </summary>
-        private readonly List<ITypeInfo> genericTypeArguments = new List<ITypeInfo>();
+        private readonly List<ITypeInfo> genericTypeArguments = new ();
 
         /// <summary>
         /// The list of generic type parameters.
         /// </summary>
-        private readonly List<ITypeInfo> genericTypeParameters = new List<ITypeInfo>();
+        private readonly List<ITypeInfo> genericTypeParameters = new ();
 
         /// <summary>
         /// The list of base types.
@@ -55,7 +55,7 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Gets the identifier for this instance.
+        /// Gets or sets the identifier for this instance.
         /// </summary>
         /// <value>
         /// The identifier.
@@ -134,6 +134,9 @@ namespace Kephas.Reflection.Dynamic
         /// </value>
         public IEnumerable<IElementInfo> Members => this.members;
 
+        /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
         public ITypeRegistry TypeRegistry { get; }
 
         /// <summary>

@@ -43,8 +43,7 @@ namespace Kephas.Model.Security.Authorization.Runtime.ModelRegistries
                     context.IncludeAbstractClasses = true;
                     context.IncludeInterfaces = true;
                     context.ExcludeMarkers = true;
-                    context.MarkerBaseTypes = new[] { typeof(IPermission) };
-                    context.MarkerAttributeTypes = new[] { typeof(PermissionTypeAttribute), typeof(PermissionInfoAttribute) };
+                    context.MarkerAttributeTypes = new[] { typeof(IPermissionInfoAttribute) };
                 },
                 logManager)
         {

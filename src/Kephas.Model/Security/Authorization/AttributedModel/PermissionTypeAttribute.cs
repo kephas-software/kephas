@@ -14,13 +14,14 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Security.Authorization.Reflection;
 
     /// <summary>
     /// Attribute used to mark permission types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
-    public class PermissionTypeAttribute : ClassifierKindAttribute, IScoped, IToken
+    public class PermissionTypeAttribute : ClassifierKindAttribute, IPermissionInfoAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionTypeAttribute"/> class.

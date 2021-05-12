@@ -16,7 +16,7 @@ namespace Kephas.Data.Security.Authorization
     /// Note: reading data may not entitle to using it.
     /// An example could be credit cards, which may be used without being allowed to read their content.
     /// </summary>
-    [PermissionInfo(DataPermissionTokenName.Use, Scoping.Type)]
+    [PermissionInfo(DataPermissionTokenName.Use, Scoping.Type | Scoping.Instance)]
     public interface IUsePermission : IQueryPermission
     {
     }

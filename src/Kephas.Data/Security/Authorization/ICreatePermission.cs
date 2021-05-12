@@ -15,7 +15,7 @@ namespace Kephas.Data.Security.Authorization
     /// New data can be created. May be intersected with other permissions to further restrict specific sections.
     /// </summary>
     [PermissionInfo(DataPermissionTokenName.Create, Scoping.Type)]
-    public interface ICreatePermission : IPermission
+    public interface ICreatePermission
     {
     }
 }

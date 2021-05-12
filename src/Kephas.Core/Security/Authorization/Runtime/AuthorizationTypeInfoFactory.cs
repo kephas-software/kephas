@@ -8,8 +8,11 @@
 namespace Kephas.Security.Authorization.Runtime
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
 
     using Kephas.Runtime;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// The <see cref="IRuntimeTypeInfoFactory"/> for the authorization subsystem.
@@ -36,7 +39,7 @@ namespace Kephas.Security.Authorization.Runtime
         /// </returns>
         public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
         {
-            if (typeof(IPermission).IsAssignableFrom(type) && typeof(IPermission) != type)
+            if (type.Name.EndsWith("Permission") && type.GetCustomAttributes().OfType<IPermissionInfoAttribute>().FirstOrDefault() != null)
             {
                 return new RuntimePermissionInfo(this.typeRegistry, type);
             }

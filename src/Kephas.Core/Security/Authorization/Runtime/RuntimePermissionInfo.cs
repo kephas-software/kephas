@@ -61,9 +61,8 @@ namespace Kephas.Security.Authorization.Runtime
         /// <value>
         /// The granted permissions.
         /// </value>
-        public IEnumerable<IPermissionInfo> GrantedPermissions
-        {
-            get => this.grantedPermissions ??= this.GetAttributes<GrantsPermissionAttribute>()
+        public IEnumerable<IPermissionInfo> GrantedPermissions =>
+            this.grantedPermissions ??= this.GetAttributes<GrantsPermissionAttribute>()
                 .SelectMany(attr => attr.PermissionTypes)
                 .Union(new List<Type>(this.Type.GetInterfaces()) { this.Type.BaseType }
                     .Where(t => t != null))
@@ -72,7 +71,6 @@ namespace Kephas.Security.Authorization.Runtime
                 .Distinct()
                 .ToList()
                 .AsReadOnly();
-        }
 
         /// <summary>
         /// Gets the required permissions to access this permission.
@@ -80,16 +78,14 @@ namespace Kephas.Security.Authorization.Runtime
         /// <value>
         /// The required permissions.
         /// </value>
-        public IEnumerable<IPermissionInfo> RequiredPermissions
-        {
-            get => this.requiredPermissions ??= this.GetAttributes<RequiresPermissionAttribute>()
+        public IEnumerable<IPermissionInfo> RequiredPermissions =>
+            this.requiredPermissions ??= this.GetAttributes<RequiresPermissionAttribute>()
                 .SelectMany(attr => attr.PermissionTypes)
                 .Select(t => this.TypeRegistry.GetTypeInfo(t))
                 .OfType<IPermissionInfo>()
                 .Distinct()
                 .ToList()
                 .AsReadOnly();
-        }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -109,7 +105,7 @@ namespace Kephas.Security.Authorization.Runtime
                 .FirstOrDefault();
             if (!string.IsNullOrEmpty(attr?.TokenName))
             {
-                return attr.TokenName;
+                return attr!.TokenName;
             }
 
             var tokenName = type.Name;
@@ -118,7 +114,7 @@ namespace Kephas.Security.Authorization.Runtime
                 tokenName = tokenName.Substring(1);
             }
 
-            const string ending = "permission"; 
+            const string ending = "permission";
             if (tokenName.EndsWith(ending, StringComparison.OrdinalIgnoreCase))
             {
                 tokenName = tokenName.Substring(0, tokenName.Length - ending.Length);

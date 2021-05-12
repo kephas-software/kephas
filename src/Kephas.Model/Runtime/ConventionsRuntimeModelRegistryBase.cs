@@ -121,13 +121,16 @@ namespace Kephas.Model.Runtime
                 && markerAttributeTypes.Any(
                     attrType =>
                         IncludeType(type, includeClasses, includeAbstractClasses, includeInterfaces)
-                        && type.GetCustomAttribute(attrType) != null))
+                        && HasGetCustomAttribute(type, attrType)))
             {
                 return true;
             }
 
             return false;
         }
+
+        private static bool HasGetCustomAttribute(Type type, Type attrType)
+            => type.GetCustomAttributes().Any(attrType.IsInstanceOfType);
 
         private static IEnumerable<Type> ResolveTypes(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {

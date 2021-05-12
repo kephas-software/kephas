@@ -114,6 +114,7 @@ namespace Kephas.Messaging.Tests.Behaviors
         [RequiresPermission(typeof(GigiPermission))]
         public class NonFree { }
 
-        public class GigiPermission : IPermission {}
+        [PermissionInfo]
+        public class GigiPermission {}
     }
 }

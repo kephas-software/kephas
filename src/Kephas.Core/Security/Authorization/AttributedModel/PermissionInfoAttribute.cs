@@ -16,7 +16,7 @@ namespace Kephas.Security.Authorization.AttributedModel
     /// Attribute indicating that the permission to access/execute/use the decorated element is granted.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-    public class PermissionInfoAttribute : Attribute, IScoped, IToken
+    public class PermissionInfoAttribute : Attribute, IPermissionInfoAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionInfoAttribute"/> class.
