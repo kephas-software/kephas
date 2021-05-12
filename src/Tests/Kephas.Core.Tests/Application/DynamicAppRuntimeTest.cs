@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.IO;
+
 namespace Kephas.Core.Tests.Application
 {
     using System.Linq;
@@ -37,10 +39,18 @@ namespace Kephas.Core.Tests.Application
         {
             var appEnv = new DynamicAppRuntime();
             ServiceHelper.Initialize(appEnv);
-            var assemblies = appEnv.GetAppAssemblies();
-            var assemblyList = assemblies.ToList();
+            try
+            {
+                var assemblies = appEnv.GetAppAssemblies();
+                var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+                Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            }
+            catch (FileLoadException fex)
+                when (fex.Message.StartsWith("Could not load file or assembly 'ReSharperTestRunner"))
+            {
+                // no real error in ReSharper
+            }
         }
 
         [Test]

@@ -205,7 +205,14 @@ namespace Kephas.Runtime
 
         private Func<object?, object?>? ComputeGetter()
         {
-            var computeGetter = ComputeGetterMethod.MakeGenericMethod(this.PropertyInfo.DeclaringType, this.PropertyInfo.PropertyType);
+            var propType = this.PropertyInfo.PropertyType;
+            var declType = this.PropertyInfo.DeclaringType;
+            if (propType.ContainsGenericParameters || declType!.ContainsGenericParameters)
+            {
+                return null;
+            }
+
+            var computeGetter = ComputeGetterMethod.MakeGenericMethod(declType, propType);
             return (Func<object?, object?>?)computeGetter.Call(this);
         }
 
@@ -240,7 +247,14 @@ namespace Kephas.Runtime
 
         private Action<object?, object?>? ComputeSetter()
         {
-            var computeSetter = ComputeSetterMethod.MakeGenericMethod(this.PropertyInfo.DeclaringType, this.PropertyInfo.PropertyType);
+            var propType = this.PropertyInfo.PropertyType;
+            var declType = this.PropertyInfo.DeclaringType;
+            if (propType.ContainsGenericParameters || declType!.ContainsGenericParameters)
+            {
+                return null;
+            }
+
+            var computeSetter = ComputeSetterMethod.MakeGenericMethod(propType, declType);
             return (Action<object?, object?>?)computeSetter.Call(this);
         }
 

@@ -75,15 +75,10 @@ namespace Kephas.Core.Endpoints.Tests
 
             var settingsString = @"{""task"": {""defaultTimeout"": ""0:5:0""} }";
             var serializationService = Substitute.For<ISerializationService>();
-#if NETCOREAPP3_1
-            serializationService.Deserialize(settingsString, Arg.Any<Action<ISerializationContext>>())
-                .Returns(ci => new CoreSettings { Task = new TaskSettings {DefaultTimeout = TimeSpan.FromMinutes(5) } });
-#else
             serializationService.DeserializeAsync(settingsString, Arg.Any<Action<ISerializationContext>>(),
                     Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<object?>(
                     new CoreSettings { Task = new TaskSettings {DefaultTimeout = TimeSpan.FromMinutes(5) } }));
-#endif
             var handler = new UpdateSettingsHandler(container, typeResolver, serializationService);
             var result = await handler.ProcessAsync(
                 new UpdateSettingsMessage { SettingsType = "core", Settings = settingsString },
