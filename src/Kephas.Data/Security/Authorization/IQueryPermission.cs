@@ -16,7 +16,7 @@ namespace Kephas.Data.Security.Authorization
     /// This is required for displaying drop downs for referenced entities or for changing the entity owner.
     /// </summary>
     [PermissionInfo(DataPermissionTokenName.Query, Scoping.Type | Scoping.Instance)]
-    public interface IQueryPermission : IPermission
+    public interface IQueryPermission
     {
     }
 }

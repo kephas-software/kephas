@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Security.Authorization.AttributedModel;
+
 namespace Kephas.Core.Tests.Security.Authorization.Runtime
 {
     using System.Linq;
@@ -70,7 +72,10 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
             Assert.AreEqual(Scoping.Global, info.Scoping);
         }
 
-        public interface ITestReadPermission : IPermission {}
+        [PermissionInfo]
+        public interface ITestReadPermission {}
+
+        [PermissionInfo]
         public interface IDerivedTestPermission : ITestReadPermission {}
     }
 }

@@ -14,7 +14,7 @@ namespace Kephas.Security.Authorization
     /// </summary>
     [PermissionInfo(TokenName, Scoping.Global)]
     [RequiresPermission(typeof(SystemPermission))]
-    public sealed class SystemPermission : IPermission
+    public sealed class SystemPermission
     {
         /// <summary>
         /// The token name of the System permission.

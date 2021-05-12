@@ -87,7 +87,8 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
         }
 
         [ExcludeFromModel]
-        public class ExcludedPermission : IPermission
+        [PermissionInfo]
+        public class ExcludedPermission
         {
         }
 
@@ -97,6 +98,7 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
         [PermissionInfo("attributed")]
         public class AttributedPermission {}
 
-        public interface IReadPermission : IPermission {}
+        [PermissionInfo]
+        public interface IReadPermission {}
     }
 }
