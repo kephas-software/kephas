@@ -126,7 +126,7 @@ namespace Kephas.Runtime
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
         public virtual void SetValue(object? obj, object? value)
         {
-            throw new NotSupportedException();
+            this.FieldInfo.SetValue(obj, value);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Kephas.Runtime
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
         public virtual object? GetValue(object? obj)
         {
-            throw new NotSupportedException();
+            return this.FieldInfo.GetValue(obj);
         }
 
         /// <summary>
@@ -160,50 +160,6 @@ namespace Kephas.Runtime
         public override string ToString()
         {
             return $"{this.Name}: {this.FieldInfo.FieldType.FullName}";
-        }
-    }
-
-    /// <summary>
-    /// Implementation of <see cref="IRuntimeFieldInfo" /> for runtime fields.
-    /// </summary>
-    /// <typeparam name="T">The container type.</typeparam>
-    /// <typeparam name="TMember">The member type.</typeparam>
-    public sealed class RuntimeFieldInfo<T, TMember> : RuntimeFieldInfo
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeFieldInfo{T,TMember}"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The runtime type serviceRegistry.</param>
-        /// <param name="fieldInfo">The field information.</param>
-        /// <param name="position">Optional. The position.</param>
-        /// <param name="logger">Optional. The logger.</param>
-        internal RuntimeFieldInfo(IRuntimeTypeRegistry typeRegistry, FieldInfo fieldInfo, int position = -1, ILogger? logger = null)
-            : base(typeRegistry, fieldInfo, position, logger)
-        {
-        }
-
-        /// <summary>
-        /// Sets the specified value.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
-        public override void SetValue(object? obj, object? value)
-        {
-            this.FieldInfo.SetValue(obj, value);
-        }
-
-        /// <summary>
-        /// Gets the value from the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public override object? GetValue(object? obj)
-        {
-            return this.FieldInfo.GetValue(obj);
         }
     }
 }

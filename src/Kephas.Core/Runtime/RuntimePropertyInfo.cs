@@ -13,8 +13,8 @@ namespace Kephas.Runtime
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Threading;
 
-    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -24,6 +24,15 @@ namespace Kephas.Runtime
     /// </summary>
     public class RuntimePropertyInfo : RuntimeElementInfoBase, IRuntimePropertyInfo
     {
+        private static readonly MethodInfo ComputeGetterMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ((RuntimePropertyInfo)null!).ComputeGetter<int, int>());
+
+        private static readonly MethodInfo ComputeSetterMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ((RuntimePropertyInfo)null!).ComputeSetter<int, int>());
+
+        private readonly Lazy<Func<object?, object?>?> lazyGetter;
+        private readonly Lazy<Action<object?, object?>?> lazySetter;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo"/> class.
         /// </summary>
@@ -31,12 +40,15 @@ namespace Kephas.Runtime
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
+        protected internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
             : base(typeRegistry, logger)
         {
             this.PropertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;
             this.FullName = propertyInfo.DeclaringType?.FullName + "." + propertyInfo.Name;
+
+            this.lazyGetter = new Lazy<Func<object?, object?>?>(this.ComputeGetter, LazyThreadSafetyMode.PublicationOnly);
+            this.lazySetter = new Lazy<Action<object?, object?>?>(this.ComputeSetter, LazyThreadSafetyMode.PublicationOnly);
         }
 
         /// <summary>
@@ -69,7 +81,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.DeclaringType!);
 
         /// <summary>
         /// Gets the property information.
@@ -109,7 +121,7 @@ namespace Kephas.Runtime
         /// <value>
         /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
         /// </value>
-        public virtual bool CanWrite => this.PropertyInfo.CanWrite;
+        public virtual bool CanWrite => this.lazySetter.Value != null && this.PropertyInfo.CanWrite;
 
         /// <summary>
         /// Gets a value indicating whether the property value can be read.
@@ -117,7 +129,7 @@ namespace Kephas.Runtime
         /// <value>
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
-        public virtual bool CanRead => this.PropertyInfo.CanRead;
+        public virtual bool CanRead => this.lazyGetter.Value != null && this.PropertyInfo.CanRead;
 
 #if NETSTANDARD2_0
         /// <summary>
@@ -143,7 +155,13 @@ namespace Kephas.Runtime
         /// <exception cref="MemberAccessException">Property value cannot be set.</exception>
         public virtual void SetValue(object? obj, object? value)
         {
-            throw new NotSupportedException();
+            var setDelegate = this.lazySetter.Value;
+            if (setDelegate == null)
+            {
+                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, this.PropertyInfo.DeclaringType));
+            }
+
+            setDelegate(obj, value);
         }
 
         /// <summary>
@@ -156,7 +174,13 @@ namespace Kephas.Runtime
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
         public virtual object? GetValue(object? obj)
         {
-            throw new NotSupportedException();
+            var getDelegate = this.lazyGetter.Value;
+            if (getDelegate == null)
+            {
+                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, this.PropertyInfo.DeclaringType));
+            }
+
+            return getDelegate(obj);
         }
 
         /// <summary>
@@ -178,201 +202,75 @@ namespace Kephas.Runtime
         {
             return $"{this.PropertyInfo.Name}: {this.PropertyInfo.PropertyType.FullName}";
         }
-    }
 
-    /// <summary>
-    /// Implementation of <see cref="IRuntimePropertyInfo" /> for typed runtime properties.
-    /// </summary>
-    /// <typeparam name="T">The container type.</typeparam>
-    /// <typeparam name="TMember">The member type.</typeparam>
-    public sealed class RuntimePropertyInfo<T, TMember> : RuntimePropertyInfo
-    {
-        /// <summary>
-        /// True if getter computed.
-        /// </summary>
-        private bool getterComputed = false;
-
-        /// <summary>
-        /// The getter.
-        /// </summary>
-        private Func<T, TMember>? getter;
-
-        /// <summary>
-        /// True if setter computed.
-        /// </summary>
-        private bool setterComputed = false;
-
-        /// <summary>
-        /// The setter.
-        /// </summary>
-        private Action<T, TMember>? setter;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="position">Optional. The position.</param>
-        /// <param name="logger">Optional. The logger.</param>
-        internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
-            : base(typeRegistry, propertyInfo, position, logger)
+        private Func<object?, object?>? ComputeGetter()
         {
+            var computeGetter = ComputeGetterMethod.MakeGenericMethod(this.PropertyInfo.DeclaringType, this.PropertyInfo.PropertyType);
+            return (Func<object?, object?>?)computeGetter.Call(this);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the property value can be read.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
-        /// </value>
-        public override bool CanRead => this.Getter != null && base.CanRead;
-
-        /// <summary>
-        /// Gets a value indicating whether the property can be written to.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
-        /// </value>
-        public override bool CanWrite => this.Setter != null && base.CanWrite;
-
-        /// <summary>
-        /// Gets the getter.
-        /// </summary>
-        private Func<T, TMember>? Getter
-        {
-            get
-            {
-                if (this.getterComputed)
-                {
-                    return this.getter;
-                }
-
-                this.getter = this.ComputeGetter();
-                this.getterComputed = true;
-                return this.getter;
-            }
-        }
-
-        /// <summary>
-        /// Gets the setter.
-        /// </summary>
-        private Action<T, TMember>? Setter
-        {
-            get
-            {
-                if (this.setterComputed)
-                {
-                    return this.setter;
-                }
-
-                this.setter = this.ComputeSetter();
-                this.setterComputed = true;
-                return this.setter;
-            }
-        }
-
-        /// <summary>
-        /// Sets the specified value.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="MemberAccessException">Property value cannot be set.</exception>
-        public override void SetValue(object? obj, object? value)
-        {
-            var setDelegate = this.Setter;
-            if (setDelegate == null)
-            {
-                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, typeof(T)));
-            }
-
-            setDelegate((T)obj, (TMember)value);
-        }
-
-        /// <summary>
-        /// Gets the value from the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public override object? GetValue(object? obj)
-        {
-            var getDelegate = this.Getter;
-            if (getDelegate == null)
-            {
-                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, typeof(T)));
-            }
-
-            return getDelegate((T)obj);
-        }
-
-        /// <summary>
-        /// Computes the member get delegate.
-        /// </summary>
-        /// <returns>
-        /// The member get delegate.
-        /// </returns>
-        private Func<T, TMember>? ComputeGetter()
+        private Func<object?, object?>? ComputeGetter<T, TMember>()
         {
             var mi = this.PropertyInfo.GetMethod;
-            if (mi != null && mi.IsPublic)
+            if (mi == null || !mi.IsPublic)
             {
-                try
-                {
-                    if (mi.IsSecurityTransparent)
-                    {
-                        return obj => (TMember)mi.Invoke(obj, Array.Empty<object>());
-                    }
-
-                    return (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
-                }
-                catch (ArgumentException ex)
-                {
-                    if (this.Logger.IsTraceEnabled())
-                    {
-                        this.Logger.Trace(ex, "Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
-                    }
-
-                    return obj => (TMember)mi.Invoke(obj, Array.Empty<object>());
-                }
+                return null;
             }
 
-            return null;
+            try
+            {
+                if (mi.IsSecurityTransparent)
+                {
+                    return obj => mi.Invoke(obj, Array.Empty<object>());
+                }
+
+                var getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
+                return o => getter((T)o);
+            }
+            catch (ArgumentException ex)
+            {
+                if (this.Logger.IsTraceEnabled())
+                {
+                    this.Logger.Trace(ex, "Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
+                }
+
+                return obj => mi.Invoke(obj, Array.Empty<object>());
+            }
         }
 
-        /// <summary>
-        /// Computes the member set delegate.
-        /// </summary>
-        /// <returns>
-        /// The member set delegate.
-        /// </returns>
-        private Action<T, TMember>? ComputeSetter()
+        private Action<object?, object?>? ComputeSetter()
+        {
+            var computeSetter = ComputeSetterMethod.MakeGenericMethod(this.PropertyInfo.DeclaringType, this.PropertyInfo.PropertyType);
+            return (Action<object?, object?>?)computeSetter.Call(this);
+        }
+
+        private Action<object?, object?>? ComputeSetter<T, TMember>()
         {
             var mi = this.PropertyInfo.SetMethod;
-            if (mi != null && mi.IsPublic)
+            if (mi == null || !mi.IsPublic)
             {
-                try
-                {
-                    if (mi.IsSecurityTransparent)
-                    {
-                        return (obj, v) => mi.Invoke(obj, new object[] { v });
-                    }
-
-                    return (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
-                }
-                catch (ArgumentException ex)
-                {
-                    if (this.Logger.IsTraceEnabled())
-                    {
-                        this.Logger.Trace(ex, "Cannot compute setter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
-                    }
-
-                    return (obj, v) => mi.Invoke(obj, new object[] { v });
-                }
+                return null;
             }
 
-            return null;
+            try
+            {
+                if (mi.IsSecurityTransparent)
+                {
+                    return (obj, v) => mi.Invoke(obj, new object?[] { v });
+                }
+
+                var setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
+                return (o, v) => setter((T)o, (TMember)v);
+            }
+            catch (ArgumentException ex)
+            {
+                if (this.Logger.IsTraceEnabled())
+                {
+                    this.Logger.Trace(ex, "Cannot compute setter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
+                }
+
+                return (obj, v) => mi.Invoke(obj, new object?[] { v });
+            }
         }
     }
 }

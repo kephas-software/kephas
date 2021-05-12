@@ -26,17 +26,14 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageParameterInfo"/> class.
         /// </summary>
-        /// <param name="container">The container.</param>
         /// <param name="propertyInfo">The property info.</param>
-        /// <param name="position">The parameter position.</param>
-        protected internal MessageParameterInfo(MessageOperationInfo container, IPropertyInfo propertyInfo, int position)
+        protected internal MessageParameterInfo(IPropertyInfo propertyInfo)
         {
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
             this.propertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;
-            this.Position = position;
-            propertyInfo.Annotations.ForEach(this.AddAnnotation);
+            this.Annotations.AddRange(propertyInfo.Annotations);
             this.IsIn = this.Annotations.OfType<InAttribute>().Any();
             this.IsOut = this.Annotations.OfType<OutAttribute>().Any();
             this.ValueType = propertyInfo.ValueType;

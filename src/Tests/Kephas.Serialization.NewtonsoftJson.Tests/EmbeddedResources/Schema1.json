@@ -1,0 +1,42 @@
+{
+  "name": "schema-1",
+  "types": [
+    {
+      "$type": "Kephas.Reflection.Dynamic.DynamicTypeInfo",
+      "name": "Customer",
+      "members": [
+        {
+          "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
+          "name": "Name",
+          "valueTypeName": "System.String"
+        },
+        {
+          "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
+          "name": "Description",
+          "valueTypeName": "System.String"
+        }
+      ]
+    },
+    {
+      "$type": "Kephas.Reflection.Dynamic.DynamicTypeInfo",
+      "name": "Document",
+      "members": [
+        {
+          "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
+          "name": "Name",
+          "valueTypeName": "System.String"
+        },
+        {
+          "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
+          "name": "Folder",
+          "valueTypeName": "System.String"
+        },
+        {
+          "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
+          "name": "SyncId",
+          "valueTypeName": "System.Int64"
+        }
+      ]
+    }
+  ]
+}

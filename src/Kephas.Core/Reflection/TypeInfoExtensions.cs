@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Reflection
 {
     using System;
@@ -146,6 +144,25 @@ namespace Kephas.Reflection
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        /// <summary>
+        /// Indicates whether the type is an instance of the generic <see cref="Nullable{T}"/> type.
+        /// </summary>
+        /// <param name="typeInfo">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullableType(this ITypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            if (typeInfo is IRuntimeTypeInfo runtimeTypeInfo)
+            {
+                return IsNullableType(runtimeTypeInfo.TypeInfo);
+            }
+
+            return false;
         }
 
         /// <summary>

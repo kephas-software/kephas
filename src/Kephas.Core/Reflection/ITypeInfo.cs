@@ -28,7 +28,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The namespace of the type.
         /// </value>
-        string Namespace { get; }
+        string? Namespace { get; }
 
         /// <summary>
         /// Gets the full name qualified with the module where it was defined.
@@ -102,7 +102,7 @@ namespace Kephas.Reflection
         IElementInfo? GetMember(string name, bool throwIfNotFound = true);
 
         /// <summary>
-        /// Constructs a generic type baed on the provided type arguments.
+        /// Constructs a generic type based on the provided type arguments.
         /// </summary>
         /// <param name="typeArguments">The type arguments.</param>
         /// <param name="constructionContext">Optional. The construction context.</param>

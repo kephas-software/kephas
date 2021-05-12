@@ -137,7 +137,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The namespace of the type.
         /// </value>
-        public string Namespace => this.Projection?.FullName ?? string.Empty;
+        public string? Namespace => this.Projection?.FullName;
 
         /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
@@ -237,7 +237,7 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Constructs a generic type baed on the provided type arguments.
+        /// Constructs a generic type based on the provided type arguments.
         /// </summary>
         /// <param name="typeArguments">The type arguments.</param>
         /// <param name="constructionContext">The construction context (optional).</param>

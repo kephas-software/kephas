@@ -87,7 +87,7 @@ namespace Kephas.Data.Tests.InMemory
                 Arg.Any<ISerializationContext>(),
                 Arg.Any<CancellationToken>()).Returns(Task.FromResult((object)new[] { "mama", "papa" }));
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
             serializer.Deserialize(
                 Arg.Any<string>(),
                 Arg.Any<ISerializationContext>()).Returns((object)new[] { "mama", "papa" });

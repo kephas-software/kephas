@@ -28,8 +28,6 @@ namespace Kephas.Commands.Messaging.Reflection
     /// </summary>
     public class MessageOperationInfo : DynamicOperationInfo, IPrototype
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageOperationInfo"/> class.
         /// </summary>
@@ -43,7 +41,6 @@ namespace Kephas.Commands.Messaging.Reflection
             Requires.NotNull(typeRegistry, nameof(typeRegistry));
 
             this.MessageType = messageType;
-            this.typeRegistry = typeRegistry;
             this.LazyMessageProcessor = lazyMessageProcessor;
             var t = messageType;
             this.Name = t.Name.EndsWith("Message")
@@ -55,13 +52,12 @@ namespace Kephas.Commands.Messaging.Reflection
             // ReSharper disable once VirtualMemberCallInConstructor
             this.FullName = $"{messageType.Namespace}.{this.Name}";
 
-            this.Parameters = messageType.Properties
-                .Select(this.CreateParameterInfo)
-                .ToArray();
+            this.Parameters.AddRange(messageType.Properties
+                .Select(this.CreateParameterInfo));
 
-            messageType.Annotations.ForEach(this.AddAnnotation);
+            this.Annotations.AddRange(messageType.Annotations);
             var returnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value ?? typeof(object);
-            this.ReturnType = this.typeRegistry.GetTypeInfo(returnType);
+            this.ReturnType = typeRegistry.GetTypeInfo(returnType);
         }
 
         /// <summary>
@@ -174,7 +170,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <returns>The new <see cref="IParameterInfo"/>.</returns>
         protected virtual IParameterInfo CreateParameterInfo(IPropertyInfo propertyInfo, int position)
         {
-            return new MessageParameterInfo(this, propertyInfo, position);
+            return new MessageParameterInfo(propertyInfo);
         }
 
         /// <summary>

@@ -11,10 +11,12 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
     using System.Linq;
     using System.Text;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// An OCR result.
     /// </summary>
-    public class OcrResult
+    public class OcrResult : Expando
     {
         /// <summary>
         /// Gets or sets the read operation status.

@@ -486,13 +486,6 @@ namespace Kephas.Serialization.Json.Tests
             Assert.AreEqual(2, node.Children.Count);
         }
 
-        private static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
-        {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(
-                new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), new RuntimeTypeRegistry(), Substitute.For<ILogManager>());
-            return settingsProvider;
-        }
-
         public class TestEntity
         {
             public string Name { get; set; }

@@ -52,7 +52,7 @@ namespace Kephas.Scheduling.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new SchedulingTypeInfoFactory(this.typeRegistry));
+            this.typeRegistry.RegisterFactory(new SchedulingTypeInfoFactory());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

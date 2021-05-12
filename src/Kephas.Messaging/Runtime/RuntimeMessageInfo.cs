@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Runtime
 {
     using System;
 
+    using Kephas.Logging;
     using Kephas.Messaging.Reflection;
     using Kephas.Runtime;
 
@@ -25,8 +26,9 @@ namespace Kephas.Messaging.Runtime
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeMessageInfo(IRuntimeTypeRegistry typeRegistry, Type type)
-            : base(typeRegistry, type)
+        /// <param name="logger">Optional. The logger.</param>
+        protected internal RuntimeMessageInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+            : base(typeRegistry, type, logger)
         {
         }
     }

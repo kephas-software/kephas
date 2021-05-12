@@ -55,7 +55,9 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
                 Assert.IsFalse(result.HasErrors());
+#if NETCOREAPP2_1 || NETCOREAPP3_1
                 Assert.IsNull(result.Value);
+#endif
             }
         }
 
@@ -158,7 +160,9 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
                 Assert.IsFalse(result.HasErrors());
+#if NETCOREAPP2_1 || NETCOREAPP3_1
                 Assert.IsNull(result.Value);
+#endif
             }
         }
 

@@ -105,7 +105,7 @@ namespace Kephas.Core.Tests.Text
 
         public void JoinWith_success(string separator, string[] args, string expected)
         {
-            var joined = StringExtensions.JoinWith(separator, args);
+            var joined = StringExtensions.JoinWith(args, separator);
 
             Assert.AreEqual(expected.Length, joined.Length);
             var i = 0;
@@ -124,7 +124,7 @@ namespace Kephas.Core.Tests.Text
         [Test]
         public void JoinWith_join_null()
         {
-            Assert.Throws<ArgumentNullException>(() => StringExtensions.JoinWith("123", null));
+            Assert.Throws<ArgumentNullException>(() => StringExtensions.JoinWith(null, "123"));
         }
     }
 }

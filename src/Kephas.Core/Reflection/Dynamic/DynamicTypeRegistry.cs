@@ -7,22 +7,90 @@
 
 namespace Kephas.Reflection.Dynamic
 {
-    using System.Collections.Concurrent;
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Kephas.Data;
     using Kephas.Dynamic;
+    using Kephas.Runtime;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A type registry for dynamic types.
     /// </summary>
-    public class DynamicTypeRegistry : Expando, ITypeRegistry
+    public class DynamicTypeRegistry : Expando, ITypeRegistry, IElementInfo
     {
-        private readonly ConcurrentDictionary<object, ITypeInfo> types = new ConcurrentDictionary<object, ITypeInfo>();
+        private readonly ITypeResolver? typeResolver;
+        private readonly IRuntimeTypeRegistry runtimeTypeRegistry;
+        private readonly DynamicElementInfoCollection<ITypeInfo> types;
 
         /// <summary>
-        /// Gets a dynamic type registry that does nothing.
+        /// Initializes a new instance of the <see cref="DynamicTypeRegistry"/> class.
         /// </summary>
-        public static ITypeRegistry Null { get; } = new NullDynamicTypeRegistry();
+        /// <param name="runtimeTypeRegistry">Optional. The runtime type registry. If not provided, the <see cref="RuntimeTypeRegistry.Instance"/> is used.</param>
+        /// <param name="typeResolver">Optional. The type resolver.</param>
+        public DynamicTypeRegistry(IRuntimeTypeRegistry? runtimeTypeRegistry = null, ITypeResolver? typeResolver = null)
+        {
+            this.typeResolver = typeResolver;
+            this.runtimeTypeRegistry = runtimeTypeRegistry ?? RuntimeTypeRegistry.Instance;
+            this.types = new (this);
+            this.Name = this.GetType().Name;
+        }
+
+        /// <summary>
+        /// Gets the collection of types.
+        /// </summary>
+        public ICollection<ITypeInfo> Types => this.types;
+
+        /// <summary>
+        /// Gets or sets the name of the registry.
+        /// </summary>
+        /// <value>
+        /// The name of the registry.
+        /// </value>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        string IElementInfo.FullName => this.Name;
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => Enumerable.Empty<object>();
+
+        /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        IElementInfo? IElementInfo.DeclaringContainer => null;
+
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        IDisplayInfo? IElementInfo.GetDisplayInfo() => null;
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => Enumerable.Empty<TAttribute>();
 
         /// <summary>
         /// Gets the type information based on the type token.
@@ -32,7 +100,17 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>The type information.</returns>
         public virtual ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true)
         {
-            if (!this.types.TryGetValue(typeToken, out var typeInfo) && throwOnNotFound)
+            var typeInfo = typeToken switch
+            {
+                Guid id => this.types.FirstOrDefault(t => id.Equals((t as IIdentifiable)?.Id)),
+                string name => this.types.FirstOrDefault(t => t.FullName == name)
+                               ?? this.types.FirstOrDefault(t => t.Name == name)
+                               ?? this.ResolveTypeInfo(name, throwOnNotFound),
+                Type type => this.runtimeTypeRegistry.GetTypeInfo(type, throwOnNotFound),
+                _ => null,
+            };
+
+            if (typeInfo == null && throwOnNotFound)
             {
                 throw new KeyNotFoundException($"Type with token '{typeToken}' not found.");
             }
@@ -41,21 +119,69 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Adds the type information to the registry.
+        /// Gets the type information based on the type token.
         /// </summary>
-        /// <param name="typeInfo">The type information.</param>
-        /// <returns>This registry.</returns>
-        protected internal virtual DynamicTypeRegistry AddTypeInfo(DynamicTypeInfo typeInfo)
+        /// <param name="typeToken">The type token.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The type information.</returns>
+        public virtual async Task<ITypeInfo?> GetTypeInfoAsync(object typeToken, bool throwOnNotFound = true, CancellationToken cancellationToken = default)
         {
-            this.types.TryAdd(typeInfo.Id, typeInfo);
-            return this;
+            var typeInfo = typeToken switch
+            {
+                Guid id => this.types.FirstOrDefault(t => id.Equals((t as IIdentifiable)?.Id)),
+                string name => this.types.FirstOrDefault(t => t.FullName == name)
+                               ?? this.types.FirstOrDefault(t => t.Name == name)
+                               ?? await this.ResolveTypeInfoAsync(name, throwOnNotFound, cancellationToken).PreserveThreadContext(),
+                Type type => await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken).PreserveThreadContext(),
+                _ => null,
+            };
+
+            if (typeInfo == null && throwOnNotFound)
+            {
+                throw new KeyNotFoundException($"Type with token '{typeToken}' not found.");
+            }
+
+            return typeInfo;
         }
 
-        private class NullDynamicTypeRegistry : DynamicTypeRegistry
+        /// <summary>
+        /// Resolves the <see cref="ITypeInfo"/> based on the provided type name.
+        /// </summary>
+        /// <param name="typeName">The type name.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found, throws an exception.</param>
+        /// <returns>The type information.</returns>
+        protected virtual ITypeInfo? ResolveTypeInfo(string typeName, bool throwOnNotFound)
         {
-            protected internal override DynamicTypeRegistry AddTypeInfo(DynamicTypeInfo typeInfo) => this;
+            if (this.typeResolver == null)
+            {
+                return throwOnNotFound
+                    ? throw new KeyNotFoundException($"Type with name '{typeName}' not found. Try to provide a type resolver for resolving type names.")
+                    : null;
+            }
 
-            public override ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true) => null;
+            var type = this.typeResolver.ResolveType(typeName, throwOnNotFound);
+            return type == null ? null : this.runtimeTypeRegistry.GetTypeInfo(type, throwOnNotFound);
+        }
+
+        /// <summary>
+        /// Resolves the <see cref="ITypeInfo"/> based on the provided type name.
+        /// </summary>
+        /// <param name="typeName">The type name.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found, throws an exception.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The type information.</returns>
+        protected virtual async Task<ITypeInfo?> ResolveTypeInfoAsync(string typeName, bool throwOnNotFound, CancellationToken cancellationToken)
+        {
+            if (this.typeResolver == null)
+            {
+                return throwOnNotFound
+                    ? throw new KeyNotFoundException($"Type with name '{typeName}' not found. Try to provide a type resolver for resolving type names.")
+                    : null;
+            }
+
+            var type = this.typeResolver.ResolveType(typeName, throwOnNotFound);
+            return type == null ? null : await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken).PreserveThreadContext();
         }
     }
 }

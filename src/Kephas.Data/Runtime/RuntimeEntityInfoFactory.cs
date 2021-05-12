@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTypeInfoFactory.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeEntityInfoFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,36 +12,30 @@ namespace Kephas.Data.Runtime
 {
     using System;
 
+    using Kephas.Logging;
     using Kephas.Runtime;
+    using Kephas.Runtime.Factories;
 
     /// <summary>
     /// A data type information factory.
     /// </summary>
-    public class DataTypeInfoFactory : IRuntimeTypeInfoFactory
+    public class RuntimeEntityInfoFactory : RuntimeTypeInfoFactoryBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTypeInfoFactory"/> class.
+        /// Tries to create the runtime element information for the provided raw reflection element.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public DataTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
         {
-            if (typeof(IEntity).IsAssignableFrom(type))
+            if (typeof(IEntity).IsAssignableFrom(reflectInfo))
             {
-                return new RuntimeEntityInfo(this.typeRegistry, type);
+                return new RuntimeEntityInfo(registry, reflectInfo, logger);
             }
 
             return null;

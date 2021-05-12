@@ -11,37 +11,31 @@ namespace Kephas.Security.Authorization.Runtime
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Logging;
     using Kephas.Runtime;
+    using Kephas.Runtime.Factories;
     using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// The <see cref="IRuntimeTypeInfoFactory"/> for the authorization subsystem.
     /// </summary>
-    public class AuthorizationTypeInfoFactory : IRuntimeTypeInfoFactory
+    public class AuthorizationTypeInfoFactory : RuntimeTypeInfoFactoryBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorizationTypeInfoFactory"/> class.
+        /// Tries to create the runtime element information for the provided raw reflection element.
         /// </summary>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        public AuthorizationTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Tries to create the runtime type information type for the provided raw type.
-        /// </summary>
-        /// <param name="type">The raw type.</param>
+        /// <param name="registry">The root type registry.</param>
+        /// <param name="reflectInfo">The raw reflection element.</param>
+        /// <param name="position">Optional. The position in the declaring container.</param>
+        /// <param name="logger">Optional. The logger.</param>
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
+        public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
         {
-            if (type.Name.EndsWith("Permission") && type.GetCustomAttributes().OfType<IPermissionInfoAttribute>().FirstOrDefault() != null)
+            if (reflectInfo.Name.EndsWith("Permission") && reflectInfo.GetCustomAttributes().OfType<IPermissionInfoAttribute>().FirstOrDefault() != null)
             {
-                return new RuntimePermissionInfo(this.typeRegistry, type);
+                return new RuntimePermissionInfo(registry, reflectInfo);
             }
 
             return null;

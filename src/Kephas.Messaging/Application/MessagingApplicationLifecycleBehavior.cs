@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory(this.typeRegistry));
+            this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory());
 
             this.InitializeConfig(appContext);
 

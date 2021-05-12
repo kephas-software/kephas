@@ -252,7 +252,8 @@ namespace Kephas.Serialization
         /// </returns>
         protected virtual ISerializer GetSerializer(ISerializationContext context)
         {
-            context ??= this.contextFactory.CreateContext<SerializationContext>(this, typeof(JsonMediaType));
+            Requires.NotNull(context, nameof(context));
+
             var mediaType = context.MediaType ?? typeof(JsonMediaType);
 
             var serializer = this.serializerFactories.TryGetValue(mediaType);

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeTypeInfoTest.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeTypeInfoFactoryTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,8 +14,9 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
+    using Kephas.Logging;
     using Kephas.Runtime;
-
+    using Kephas.Runtime.Factories;
     using NUnit.Framework;
 
     /// <summary>
@@ -26,33 +27,27 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
     public class RuntimeTypeInfoFactoryTest
     {
         [Test]
-        public void CreateRuntimeTypeInfo_default()
+        public void TryCreateElementInfo_default()
         {
             var typeRegistry = new RuntimeTypeRegistry();
-            var typeInfo = typeRegistry.CreateRuntimeTypeInfo(typeof(int));
+            var typeInfo = (typeRegistry as IRuntimeElementInfoFactory).TryCreateElementInfo(typeRegistry, typeof(int));
             Assert.IsInstanceOf<RuntimeTypeInfo>(typeInfo);
         }
 
         [Test]
-        public void CreateRuntimeTypeInfo_attributed()
+        public void TryCreateElementInfo_attributed()
         {
             var typeRegistry = new RuntimeTypeRegistry();
-            typeRegistry.RegisterFactory(new AttributedRuntimeTypeInfoFactory(typeRegistry));
-            var typeInfo = typeRegistry.CreateRuntimeTypeInfo(typeof(HasSpecialRuntimeTypeInfo));
+            typeRegistry.RegisterFactory(new AttributedRuntimeTypeInfoFactory());
+            var typeInfo = (typeRegistry as IRuntimeElementInfoFactory).TryCreateElementInfo(typeRegistry, typeof(HasSpecialRuntimeTypeInfo));
             Assert.IsInstanceOf<SpecialRuntimeTypeInfo>(typeInfo);
         }
 
-        public class AttributedRuntimeTypeInfoFactory : IRuntimeTypeInfoFactory
+        public class AttributedRuntimeTypeInfoFactory : RuntimeTypeInfoFactoryBase
         {
-            private readonly IRuntimeTypeRegistry typeRegistry;
-
-            public AttributedRuntimeTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
+            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
             {
-                this.typeRegistry = typeRegistry;
-            }
-
-            public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type rawType)
-            {
+                var rawType = reflectInfo;
                 var attr = rawType.GetCustomAttribute<RuntimeTypeInfoAttribute>();
                 var typeInfoType = attr?.Type;
                 if (typeInfoType == null)
@@ -60,7 +55,7 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
                     return null;
                 }
 
-                var typeInfo = (IRuntimeTypeInfo)Activator.CreateInstance(typeInfoType, this.typeRegistry, rawType);
+                var typeInfo = (IRuntimeTypeInfo)Activator.CreateInstance(typeInfoType, registry, rawType);
                 return typeInfo;
             }
         }

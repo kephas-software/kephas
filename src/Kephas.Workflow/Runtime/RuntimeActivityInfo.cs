@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime.Factories;
+
 namespace Kephas.Workflow.Runtime
 {
     using System;
@@ -19,6 +21,7 @@ namespace Kephas.Workflow.Runtime
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -46,8 +49,9 @@ namespace Kephas.Workflow.Runtime
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeActivityInfo(IRuntimeTypeRegistry typeRegistry, Type type)
-            : base(typeRegistry, type)
+        /// <param name="logger">Optional. The logger.</param>
+        protected internal RuntimeActivityInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+            : base(typeRegistry, type, logger)
         {
         }
 
@@ -174,14 +178,18 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         protected virtual IDictionary<string, IRuntimeParameterInfo> CreateParameterInfos(Type type)
         {
-            var memberTypeGetter = (Func<PropertyInfo, Type>)(prop => typeof(RuntimeActivityParameterInfo));
-
             var runtimeMembers = type.GetRuntimeProperties()
                 .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
                             && p.GetIndexParameters().Length == 0
                             && !ActivityProperties.ContainsKey(p.Name));
 
-            return this.CreateMembers<PropertyInfo, IRuntimeParameterInfo>(type, runtimeMembers, memberTypeGetter);
+            IRuntimeParameterInfo ParameterFactory(PropertyInfo fieldInfo, int position, ILogger? logger)
+            {
+                return (IRuntimeParameterInfo?)(this.TypeRegistry as IRuntimeElementInfoFactory)?.TryCreateElementInfo(this.TypeRegistry, fieldInfo, position, logger)
+                       ?? new RuntimeActivityParameterInfo(this.TypeRegistry, fieldInfo, position, logger);
+            }
+
+            return this.CreateMembers<PropertyInfo, IRuntimeParameterInfo>(type, runtimeMembers, ParameterFactory);
         }
 
         /// <summary>

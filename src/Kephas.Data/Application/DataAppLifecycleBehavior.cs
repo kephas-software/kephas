@@ -18,12 +18,11 @@ namespace Kephas.Data.Application
     using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A data application lifecycle behavior.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [ProcessingPriority(Priority.Highest)]
     public class DataAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
@@ -49,7 +48,9 @@ namespace Kephas.Data.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new DataTypeInfoFactory(this.typeRegistry));
+            this.typeRegistry.RegisterFactory(new RuntimeEntityInfoFactory());
+            this.typeRegistry.RegisterFactory(new RefRuntimePropertyInfoFactory());
+            this.typeRegistry.RegisterFactory(new ServiceRefRuntimePropertyInfoFactory());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

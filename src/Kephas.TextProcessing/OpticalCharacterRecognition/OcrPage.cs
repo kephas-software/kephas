@@ -9,10 +9,12 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
     using System;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// A page within a scanned document.
     /// </summary>
-    public class OcrPage
+    public class OcrPage : Expando
     {
         /// <summary>
         /// Gets or sets the page number.

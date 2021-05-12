@@ -8,23 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Reflection
 {
     /// <summary>
     /// Interface for parameter information.
     /// </summary>
-    public interface IParameterInfo : IValueElementInfo
+    public interface IParameterInfo : IValueElementInfo, IPositionalElementInfo
     {
-        /// <summary>
-        /// Gets the position in the parameter's list.
-        /// </summary>
-        /// <value>
-        /// The position in the parameter's list.
-        /// </value>
-        int Position { get; }
-
         /// <summary>
         /// Gets a value indicating whether this parameter is optional.
         /// </summary>

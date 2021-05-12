@@ -27,7 +27,7 @@ namespace Kephas.Workflow.Tests
         public StateMachineBaseTest()
         {
             this.TypeRegistry = new RuntimeTypeRegistry();
-            this.TypeRegistry.RegisterFactory(new WorkflowTypeInfoFactory(this.TypeRegistry));
+            this.TypeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
         }
 
         public IRuntimeTypeRegistry TypeRegistry { get; }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
@@ -40,6 +40,11 @@
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Autofac\Kephas.Testing.Composition.Autofac.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="EmbeddedResources\Schema1.json" />
+      <EmbeddedResource Include="EmbeddedResources\Schema1.json" />
     </ItemGroup>
 
 </Project>
