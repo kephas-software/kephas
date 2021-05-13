@@ -14,7 +14,8 @@ namespace Kephas.Orchestration.Endpoints
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Permissions;
+    using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// A stop application message.

@@ -35,7 +35,7 @@ namespace Kephas.Security.Authorization
         /// <value>
         /// The scope.
         /// </value>
-        object Scope { get; }
+        object? Scope { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw on authorization failure.

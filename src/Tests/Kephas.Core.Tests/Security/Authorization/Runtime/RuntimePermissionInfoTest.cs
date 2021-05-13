@@ -5,15 +5,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Security.Authorization.AttributedModel;
-
 namespace Kephas.Core.Tests.Security.Authorization.Runtime
 {
     using System.Linq;
 
     using Kephas.Runtime;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.Runtime;
+    using Kephas.Security.Permissions;
+    using Kephas.Security.Permissions.AttributedModel;
+    using Kephas.Security.Permissions.Runtime;
+    using Kephas.Security.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
@@ -24,7 +25,7 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
         public RuntimePermissionInfoTest()
         {
             this.typeRegistry = new RuntimeTypeRegistry();
-            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new SecurityTypeInfoFactory());
         }
 
         [Test]

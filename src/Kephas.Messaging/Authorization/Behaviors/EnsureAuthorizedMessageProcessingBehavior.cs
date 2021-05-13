@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
     using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Messaging.Composition;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Permissions.AttributedModel;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -110,7 +110,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
         /// </returns>
         private IReadOnlyList<Type> ComputePermissions(Type messageType)
         {
-            var permAttrs = messageType.GetTypeInfo().GetCustomAttributes<RequiresPermissionAttribute>();
+            var permAttrs = messageType.GetCustomAttributes().OfType<IRequiresPermissionAnnotation>();
             var permissions = new HashSet<Type>();
             foreach (var permAttr in permAttrs)
             {

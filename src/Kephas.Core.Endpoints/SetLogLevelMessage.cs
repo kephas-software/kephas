@@ -16,7 +16,8 @@ namespace Kephas.Core.Endpoints
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Permissions;
+    using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// A set log level message.

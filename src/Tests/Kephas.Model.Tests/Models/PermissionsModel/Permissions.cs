@@ -7,9 +7,9 @@
 
 namespace Kephas.Model.Tests.Models.PermissionsModel
 {
-    using Kephas.Model.Security.Authorization.AttributedModel;
+    using Kephas.Model.Security.Permissions.AttributedModel;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Permissions.AttributedModel;
 
     [PermissionInfo("do", Scoping.Type | Scoping.Instance)]
     public interface IDoPermission

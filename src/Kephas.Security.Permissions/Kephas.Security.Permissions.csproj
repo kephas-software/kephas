@@ -48,6 +48,10 @@
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <RootNamespace>Kephas.Security</RootNamespace>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
     </PropertyGroup>

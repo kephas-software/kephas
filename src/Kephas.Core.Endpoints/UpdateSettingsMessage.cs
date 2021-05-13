@@ -9,7 +9,8 @@ namespace Kephas.Core.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Permissions;
+    using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// Message for updating the settings.

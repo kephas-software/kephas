@@ -20,10 +20,9 @@ namespace Kephas.Messaging.Tests.Behaviors
     using Kephas.Messaging.Authorization.Behaviors;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Permissions.AttributedModel;
     using Kephas.Services;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]

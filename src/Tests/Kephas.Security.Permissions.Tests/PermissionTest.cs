@@ -7,7 +7,6 @@
 
 namespace Kephas.Security.Permissions.Tests
 {
-    using Kephas.Security.Authorization.Permissions;
     using NUnit.Framework;
 
     [TestFixture]

@@ -10,10 +10,10 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Model.Security.Authorization.Elements;
+    using Kephas.Model.Security.Permissions.Elements;
     using Kephas.Runtime;
+    using Kephas.Security.Application;
     using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.Application;
     using Kephas.Services;
     using Kephas.Testing.Model;
     using NSubstitute;
@@ -26,7 +26,7 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
         public async Task InitializeAsync_permissioninfo_support()
         {
             var typeRegistry = new RuntimeTypeRegistry();
-            var behavior = new AuthorizationAppLifecycleBehavior(typeRegistry);
+            var behavior = new SecurityAppLifecycleBehavior(typeRegistry);
             await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
 
             var container = this.CreateContainerForModel(
