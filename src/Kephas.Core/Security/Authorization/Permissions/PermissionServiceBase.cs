@@ -15,6 +15,8 @@ namespace Kephas.Security.Authorization.Permissions
 
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
+    using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Services;
 
     /// <summary>
@@ -54,6 +56,15 @@ namespace Kephas.Security.Authorization.Permissions
                 return Array.Empty<IPermission>();
             }
 
+            var rawRootPermissions = rawGrantedPermissions
+                .Select(p => new Permission(p).TokenName)
+                .Distinct()
+                .ToArray();
+
+            // get scoped permissions
+            var scopeTypes = this.TypeRegistry.Where(e => e.GetAttribute<PermissionScopeAttribute>() != null).ToList();
+
+            //....
             throw new System.NotImplementedException();
         }
 
