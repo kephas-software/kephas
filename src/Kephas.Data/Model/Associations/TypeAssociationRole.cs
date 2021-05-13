@@ -49,7 +49,7 @@ namespace Kephas.Data.Model.Associations
         /// <value>
         /// The referenced entity type.
         /// </value>
-        public ITypeInfo? RefType { get; internal set; }
+        public ITypeInfo RefType { get; internal set; }
 
         /// <summary>
         /// Gets the role kind.

@@ -27,7 +27,7 @@ namespace Kephas.Data.Setup
         /// <value>
         /// The data targets.
         /// </value>
-        IEnumerable<string> Targets { get; set; }
+        IEnumerable<string>? Targets { get; set; }
     }
 
     /// <summary>
@@ -40,6 +40,7 @@ namespace Kephas.Data.Setup
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The data setup context.</param>
+        /// <param name="targets">The targets.</param>
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
