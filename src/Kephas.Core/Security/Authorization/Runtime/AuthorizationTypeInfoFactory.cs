@@ -33,7 +33,7 @@ namespace Kephas.Security.Authorization.Runtime
         /// </returns>
         public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
         {
-            if (reflectInfo.Name.EndsWith("Permission") && reflectInfo.GetCustomAttributes().OfType<IPermissionInfoAttribute>().FirstOrDefault() != null)
+            if (reflectInfo.Name.EndsWith("Permission") && reflectInfo.GetCustomAttributes().OfType<IPermissionInfoAnnotation>().FirstOrDefault() != null)
             {
                 return new RuntimePermissionInfo(registry, reflectInfo);
             }

@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Security.Authorization.Permissions
+namespace Kephas.Security.Permissions.Tests
 {
     using Kephas.Security.Authorization.Permissions;
     using NUnit.Framework;
@@ -14,9 +14,9 @@ namespace Kephas.Core.Tests.Security.Authorization.Permissions
     public class PermissionTest
     {
         [Test]
-        public void Permission_with_token()
+        public void Parse_with_token()
         {
-            var pi = new Permission("token");
+            var pi = Permission.Parse("token");
 
             Assert.AreEqual("token", pi.TokenName);
             Assert.IsNull(pi.Scope);
@@ -24,9 +24,9 @@ namespace Kephas.Core.Tests.Security.Authorization.Permissions
         }
 
         [Test]
-        public void Permission_with_scope()
+        public void Parse_with_scope()
         {
-            var pi = new Permission("token:scope");
+            var pi = Permission.Parse("token:scope");
 
             Assert.AreEqual("token", pi.TokenName);
             Assert.AreEqual("scope", pi.Scope);
@@ -34,9 +34,9 @@ namespace Kephas.Core.Tests.Security.Authorization.Permissions
         }
 
         [Test]
-        public void Permission_with_sections()
+        public void Parse_with_sections()
         {
-            var pi = new Permission("token:scope:s1:s2");
+            var pi = Permission.Parse("token:scope:s1:s2");
 
             Assert.AreEqual("token", pi.TokenName);
             Assert.AreEqual("scope", pi.Scope);
@@ -46,22 +46,34 @@ namespace Kephas.Core.Tests.Security.Authorization.Permissions
         [Test]
         public void ToString_with_token()
         {
-            var pi = new Permission("token");
+            var pi = Permission.Parse("token");
             Assert.AreEqual("token", pi.ToString());
         }
 
         [Test]
         public void ToString_with_scope()
         {
-            var pi = new Permission("token:scope");
+            var pi = Permission.Parse("token:scope");
             Assert.AreEqual("token:scope", pi.ToString());
         }
 
         [Test]
         public void ToString_with_sections()
         {
-            var pi = new Permission("token:scope:s1:s2");
+            var pi = Permission.Parse("token:scope:s1:s2");
             Assert.AreEqual("token:scope:s1:s2", pi.ToString());
+        }
+
+        [Test]
+        public void Equals()
+        {
+            Assert.AreEqual(Permission.Parse("token:scope"), Permission.Parse("token:scope"));
+        }
+
+        [Test]
+        public void NotEquals()
+        {
+            Assert.AreNotEqual(Permission.Parse("token:scope"), Permission.Parse("token:scope:a1"));
         }
     }
 }

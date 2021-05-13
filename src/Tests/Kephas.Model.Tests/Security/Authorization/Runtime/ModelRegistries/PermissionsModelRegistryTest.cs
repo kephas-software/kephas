@@ -23,8 +23,6 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
-    using Kephas.Security.Authorization.Permissions;
-    using Kephas.Testing;
     using Kephas.Testing.Composition;
     using NSubstitute;
     using NUnit.Framework;
@@ -44,7 +42,6 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>())
                 .Returns(new[]
                 {
-                    typeof(IPermission),
                     typeof(IPermissionType),
                     typeof(PermissionType),
                     typeof(string),
@@ -77,7 +74,7 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
-            typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IPermission), typeof(IPermissionType), typeof(PermissionType), typeof(string), typeof(ExcludedPermission) });
+            typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IPermissionType), typeof(PermissionType), typeof(string), typeof(ExcludedPermission) });
 
             var contextFactory = this.CreateContextFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<ICompositionContext>()));

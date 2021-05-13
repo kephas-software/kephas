@@ -21,7 +21,7 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
     /// Attribute used to mark permission types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
-    public class PermissionTypeAttribute : ClassifierKindAttribute, IPermissionInfoAttribute
+    public class PermissionTypeAttribute : ClassifierKindAttribute, IPermissionInfoAnnotation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionTypeAttribute"/> class.

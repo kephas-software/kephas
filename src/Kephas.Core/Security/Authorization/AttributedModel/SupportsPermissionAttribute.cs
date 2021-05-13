@@ -19,7 +19,7 @@ namespace Kephas.Security.Authorization.AttributedModel
     /// Attribute indicating that the decorated element supports the enumerated permissions.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
-    public class SupportsPermissionAttribute : Attribute
+    public class SupportsPermissionAttribute : Attribute, ISupportsPermissionAnnotation
     {
         /// <summary>
         /// The permission types metadata key.
@@ -38,10 +38,10 @@ namespace Kephas.Security.Authorization.AttributedModel
         }
 
         /// <summary>
-        /// Gets the types of the required permissions.
+        /// Gets the types of the supported permissions.
         /// </summary>
         /// <value>
-        /// The types of the required permissions.
+        /// The types of the supported permissions.
         /// </value>
         [MetadataValue(PermissionTypesMetadataKey)]
         public Type[] PermissionTypes { get; }

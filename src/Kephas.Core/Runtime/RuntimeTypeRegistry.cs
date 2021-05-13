@@ -122,6 +122,7 @@ namespace Kephas.Runtime
             {
                 TypeInfo typeInfo => this.GetTypeInfo(typeInfo),
                 Type type => this.GetTypeInfo(type),
+                ITypeInfo ti => ti,
                 _ => throw new NotSupportedException($"Only type tokens of type '{nameof(Type)}' and '{nameof(TypeInfo)}' are supported, while '{typeToken.GetType()}' was provided.")
             };
         }

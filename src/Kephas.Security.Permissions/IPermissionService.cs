@@ -10,6 +10,8 @@ namespace Kephas.Security.Authorization.Permissions
     using System.Collections.Generic;
     using System.Security.Principal;
 
+    using Kephas.Reflection;
+    using Kephas.Security.Authorization.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -23,7 +25,17 @@ namespace Kephas.Security.Authorization.Permissions
         /// </summary>
         /// <param name="identity">The identity holding the grants.</param>
         /// <param name="context">Optional. The context for the operation.</param>
-        /// <returns>An enumeration of permissions.</returns>
+        /// <returns>An enumeration of <see cref="IPermission"/>.</returns>
         IEnumerable<IPermission> GetGrantedPermissions(IIdentity identity, IContext? context = null);
+
+        /// <summary>
+        /// Gets the supported permissions for the provided type.
+        /// </summary>
+        /// <param name="typeInfo">Type of the entity.</param>
+        /// <param name="context">Optional. The context for the operation.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IPermissionInfo"/>.
+        /// </returns>
+        IEnumerable<IPermissionInfo> GetSupportedPermissions(ITypeInfo typeInfo, IContext? context = null);
     }
 }

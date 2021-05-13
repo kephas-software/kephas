@@ -1,28 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAggregatedElementInfo.cs" company="Kephas Software SRL">
+// <copyright file="IPermissionScopeAnnotation.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Contract for aggregated element information.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Reflection
+namespace Kephas.Security.Authorization.AttributedModel
 {
-    using System.Collections.Generic;
-
     /// <summary>
-    /// Contract for aggregated element information.
+    /// Marker interface for permission scope annotations.
     /// </summary>
-    public interface IAggregatedElementInfo : IElementInfo
+    public interface IPermissionScopeAnnotation
     {
         /// <summary>
-        /// Gets the parts of an aggregated element.
+        /// Gets the name of the permission scope.
         /// </summary>
         /// <value>
-        /// The parts.
+        /// The name of the permission scope.
         /// </value>
-        IEnumerable<object> Parts { get; }
+        string ScopeName { get; }
     }
 }

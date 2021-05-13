@@ -16,7 +16,7 @@ namespace Kephas.Security.Authorization.AttributedModel
     /// A type can be a permission scope, meaning that permissions assigned at its level are valid for the whole graph starting from that type.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
-    public sealed class PermissionScopeAttribute : Attribute
+    public sealed class PermissionScopeAttribute : Attribute, IPermissionScopeAnnotation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionScopeAttribute"/> class.
