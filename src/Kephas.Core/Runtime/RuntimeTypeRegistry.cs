@@ -8,6 +8,7 @@
 namespace Kephas.Runtime
 {
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
@@ -185,6 +186,14 @@ namespace Kephas.Runtime
                 listByElementType.Insert(0, factory);
             }
         }
+
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<ITypeInfo> GetEnumerator() => this.runtimeTypeInfosCache.Values.GetEnumerator();
+
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator() => this.runtimeTypeInfosCache.Values.GetEnumerator();
 
         private class DefaultRuntimeTypeInfoFactory : RuntimeTypeInfoFactoryBase
         {

@@ -7,6 +7,7 @@
 
 namespace Kephas.Reflection
 {
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Provides access to type information.
     /// </summary>
-    public interface ITypeRegistry : IExpando
+    public interface ITypeRegistry : IExpando, IEnumerable<ITypeInfo>
     {
         /// <summary>
         /// Gets the type information based on the type token.

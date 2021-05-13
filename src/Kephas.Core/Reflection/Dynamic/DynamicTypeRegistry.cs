@@ -8,6 +8,7 @@
 namespace Kephas.Reflection.Dynamic
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -144,6 +145,14 @@ namespace Kephas.Reflection.Dynamic
 
             return typeInfo;
         }
+
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<ITypeInfo> GetEnumerator() => this.types.GetEnumerator();
+
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator() => this.types.GetEnumerator();
 
         /// <summary>
         /// Resolves the <see cref="ITypeInfo"/> based on the provided type name.
