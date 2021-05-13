@@ -99,7 +99,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
