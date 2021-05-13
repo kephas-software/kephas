@@ -23,6 +23,7 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Authorization.Permissions;
     using Kephas.Testing;
     using Kephas.Testing.Composition;
     using NSubstitute;
