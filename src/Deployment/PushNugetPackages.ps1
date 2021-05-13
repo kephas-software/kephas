@@ -58,6 +58,7 @@ $paths = @(
     "Kephas.Scripting.CSharp",
     "Kephas.Scripting.Lua",
     "Kephas.Scripting.Python",
+    "Kephas.Security.Permissions",
     "Kephas.Serialization.MongoDBBson",
     "Kephas.Serialization.NewtonsoftJson",
     "Kephas.TextProcessing",
