@@ -29,7 +29,7 @@ namespace Kephas.Data.Model.Runtime.Construction.Annotations
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override KeyAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, KeyAttribute runtimeElement)
+        protected override KeyAnnotation? TryCreateModelElementCore(IModelConstructionContext constructionContext, KeyAttribute runtimeElement)
         {
             return new KeyAnnotation(constructionContext, this.TryComputeName(runtimeElement, constructionContext), runtimeElement);
         }

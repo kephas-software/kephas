@@ -66,7 +66,7 @@ namespace Kephas.Workflow.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ActivityType TryCreateModelElementCore(
+        protected override ActivityType? TryCreateModelElementCore(
             IModelConstructionContext constructionContext,
             IRuntimeTypeInfo runtimeElement)
         {

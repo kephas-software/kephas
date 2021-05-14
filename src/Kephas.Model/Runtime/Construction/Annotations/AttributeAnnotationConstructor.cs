@@ -33,7 +33,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Annotation TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
+        protected override Annotation? TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
         {
             var annotationType = typeof(AttributeAnnotation<>).MakeGenericType(runtimeElement.GetType());
             var annotation = Activator.CreateInstance(

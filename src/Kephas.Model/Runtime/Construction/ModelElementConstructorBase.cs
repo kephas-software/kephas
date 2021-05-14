@@ -108,7 +108,7 @@ namespace Kephas.Model.Runtime.Construction
         protected virtual IEnumerable<INamedElement> ComputeMemberProperties(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
             var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
-            if (!(runtimeElement is IRuntimeTypeInfo typeInfo))
+            if (runtimeElement is not IRuntimeTypeInfo typeInfo)
             {
                 return new List<INamedElement>();
             }

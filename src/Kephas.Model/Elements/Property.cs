@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Model.Elements
 {
     using System.Linq;
@@ -45,7 +43,7 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo ValueType
         {
-            get => this.valueType ?? (this.valueType = this.ComputeValueType());
+            get => this.valueType ??= this.ComputeValueType();
             protected internal set => this.valueType = value;
         }
 
@@ -70,12 +68,12 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public void SetValue(object obj, object? value)
+        public void SetValue(object? obj, object? value)
         {
             var runtimeProperty = this.TryGetRuntimePropertyInfo();
             if (runtimeProperty == null)
             {
-                obj.SetPropertyValue(this.Name, value);
+                obj?.SetPropertyValue(this.Name, value);
             }
             else
             {
@@ -90,17 +88,12 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The value.
         /// </returns>
-        public object? GetValue(object obj)
+        public object? GetValue(object? obj)
         {
             var runtimeProperty = this.TryGetRuntimePropertyInfo();
-            if (runtimeProperty == null)
-            {
-                return obj.GetPropertyValue(this.Name);
-            }
-            else
-            {
-                return runtimeProperty.GetValue(obj);
-            }
+            return runtimeProperty == null
+                ? obj?.GetPropertyValue(this.Name)
+                : runtimeProperty.GetValue(obj);
         }
 
         /// <summary>
@@ -109,7 +102,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// A <see cref="IRuntimePropertyInfo"/> or <c>null</c>.
         /// </returns>
-        protected virtual IRuntimePropertyInfo TryGetRuntimePropertyInfo()
+        protected virtual IRuntimePropertyInfo? TryGetRuntimePropertyInfo()
         {
             // TODO improve implementation.
             if (this.runtimePropertyInfo != null)
@@ -157,7 +150,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The part of the provided type.
         /// </returns>
-        private T TryGetFirstPart<T>()
+        protected T? TryGetFirstPart<T>()
         {
             return this.Parts.OfType<T>().FirstOrDefault();
         }

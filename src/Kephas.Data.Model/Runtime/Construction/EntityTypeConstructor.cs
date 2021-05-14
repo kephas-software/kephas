@@ -45,7 +45,7 @@ namespace Kephas.Data.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override EntityType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override EntityType? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             return new EntityType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }

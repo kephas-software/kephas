@@ -30,7 +30,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Parameter TryCreateModelElementCore(
+        protected override Parameter? TryCreateModelElementCore(
             IModelConstructionContext constructionContext,
             IRuntimeParameterInfo runtimeElement)
         {

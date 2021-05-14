@@ -33,7 +33,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override AspectAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, AspectAttribute runtimeElement)
+        protected override AspectAnnotation? TryCreateModelElementCore(IModelConstructionContext constructionContext, AspectAttribute runtimeElement)
         {
             return new AspectAnnotation(constructionContext, this.TryComputeName(runtimeElement, constructionContext), runtimeElement.ClassifierFilter);
         }

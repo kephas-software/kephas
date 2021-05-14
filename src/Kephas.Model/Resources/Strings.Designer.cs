@@ -161,6 +161,15 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}&apos; in &apos;{1}&apos; does not have any parts to be able to compute the reference type..
+        /// </summary>
+        internal static string Property_MissingPartsToComputeRefType_Exception {
+            get {
+                return ResourceManager.GetString("Property_MissingPartsToComputeRefType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot create a model element out of the provided attribute {0}..
         /// </summary>
         internal static string RuntimeModelElementConfiguratorBase_AddAttribute_CannotCreateModelElement_Exception {

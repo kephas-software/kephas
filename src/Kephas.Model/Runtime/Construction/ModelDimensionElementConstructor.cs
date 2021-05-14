@@ -72,7 +72,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ModelDimensionElement TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override ModelDimensionElement? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var typeInfo = runtimeElement.TypeInfo;
             if (!typeInfo.IsInterface)
@@ -88,7 +88,7 @@ namespace Kephas.Model.Runtime.Construction
 
             var modelElement = new ModelDimensionElement(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
             {
-                DimensionName = this.ComputeDimensionName(typeInfo.Namespace)
+                DimensionName = this.ComputeDimensionName(typeInfo.Namespace),
             };
             return modelElement;
         }

@@ -59,7 +59,7 @@ namespace Kephas.Model.Security.Permissions.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override PermissionType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override PermissionType? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             return new PermissionType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }

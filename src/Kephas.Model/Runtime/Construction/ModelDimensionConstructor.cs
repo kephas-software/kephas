@@ -63,7 +63,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ModelDimension TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override ModelDimension? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var typeInfo = runtimeElement.TypeInfo;
             var dimensionAttribute = typeInfo.GetCustomAttribute<ModelDimensionAttribute>();
@@ -75,7 +75,7 @@ namespace Kephas.Model.Runtime.Construction
             var modelElement = new ModelDimension(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
                                    {
                                        Index = dimensionAttribute.Index,
-                                       IsAggregatable = dimensionAttribute.IsAggregatable
+                                       IsAggregatable = dimensionAttribute.IsAggregatable,
                                    };
             return modelElement;
         }

@@ -116,7 +116,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected abstract TModel TryCreateModelElementCore(IModelConstructionContext constructionContext, TRuntime runtimeElement);
+        protected abstract TModel? TryCreateModelElementCore(IModelConstructionContext constructionContext, TRuntime runtimeElement);
 
         /// <summary>
         /// Constructs the model element content.

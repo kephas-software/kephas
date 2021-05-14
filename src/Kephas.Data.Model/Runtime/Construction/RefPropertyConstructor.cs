@@ -1,29 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MixinAnnotationConstructor.cs" company="Kephas Software SRL">
+// <copyright file="RefPropertyConstructor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the mixin annotation constructor class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction.Annotations
+using Kephas.Data.Reflection;
+
+namespace Kephas.Data.Model.Runtime.Construction
 {
-    using Kephas.Model.AttributedModel;
+    using Kephas.Data.Model.Elements;
     using Kephas.Model.Construction;
-    using Kephas.Model.Elements.Annotations;
+    using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.Construction;
+    using Kephas.Runtime;
+    using Kephas.Services;
 
-    /// <summary>
-    /// A mixin annotation constructor.
-    /// </summary>
-    public class MixinAnnotationConstructor : AnnotationConstructorBase<MixinAnnotation, MixinAttribute>
+    [ProcessingPriority(Priority.BelowNormal)]
+    public class RefPropertyConstructor : PropertyConstructor
     {
-        /// <summary>
-        /// The static instance of the <see cref="MixinAnnotationConstructor"/>.
-        /// </summary>
-        public static readonly MixinAnnotationConstructor Instance = new MixinAnnotationConstructor();
-
         /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
@@ -33,9 +28,19 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override MixinAnnotation? TryCreateModelElementCore(IModelConstructionContext constructionContext, MixinAttribute runtimeElement)
+        protected override Property? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimePropertyInfo runtimeElement)
         {
-            return new MixinAnnotation(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
+            if (runtimeElement is not IRefPropertyInfo)
+            {
+                return null;
+            }
+
+            var property = new RefProperty(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
+            {
+                CanRead = runtimeElement.CanRead,
+                CanWrite = runtimeElement.CanWrite,
+            };
+            return property;
         }
     }
 }
