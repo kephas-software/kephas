@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Data.Reflection;
+
 namespace Kephas.Data.Model.Associations
 {
     using System;
@@ -12,6 +14,7 @@ namespace Kephas.Data.Model.Associations
     using System.Linq;
 
     using Kephas.Data.AttributedModel;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Graphs;
     using Kephas.Operations;
@@ -22,43 +25,17 @@ namespace Kephas.Data.Model.Associations
     /// <summary>
     /// Provides a graph of associations.
     /// </summary>
-    public class TypeAssociationGraphProvider
+    [OverridePriority(Priority.Low)]
+    public class TypeAssociationGraphProvider : ITypeAssociationGraphProvider
     {
-        /// <summary>
-        /// The edge relation information key.
-        /// </summary>
-        internal const string EdgeRelationInfoKey = "EdgeRelationInfo";
-
-        /// <summary>
-        /// The navigation end key.
-        /// </summary>
-        private const string RelationshipRoleKey = "RelationshipRole";
-
-        /// <summary>
-        /// The edge name key.
-        /// </summary>
-        private const string EdgeNameKey = "EdgeName";
-
-        private ITypeInfo? refClassifier;
-        private ITypeInfo? collectionClassifier;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeAssociationGraphProvider"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="contextFactory">The context factory.</param>
-        public TypeAssociationGraphProvider(
-            ITypeRegistry typeRegistry,
-            IContextFactory contextFactory)
+        protected TypeAssociationGraphProvider(IContextFactory contextFactory)
         {
-            this.TypeRegistry = typeRegistry;
             this.ContextFactory = contextFactory;
         }
-
-        /// <summary>
-        /// Gets the type registry.
-        /// </summary>
-        protected ITypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Gets the context factory.
@@ -70,42 +47,39 @@ namespace Kephas.Data.Model.Associations
         /// </summary>
         /// <param name="options">Optional. Options for configuring the graph.</param>
         /// <returns>An operation result yielding a graph of <see cref="ITypeInfo"/>.</returns>
-        public IOperationResult<Graph<ITypeInfo>> GetAssociationGraph(Action<IAssociationContext>? options = null)
+        public IOperationResult<Graph<ITypeInfo, ITypeAssociation>> GetAssociationGraph(Action<IAssociationContext>? options = null)
         {
-            this.EnsureInitialized();
+            using var context = this.CreateAssociationContext(options);
+            this.EnsureInitialized(context);
 
-            using var associationContext = this.CreateAssociationContext(options);
+            var graph = new Graph<ITypeInfo, ITypeAssociation>();
+            var result = new OperationResult<Graph<ITypeInfo, ITypeAssociation>>(graph);
 
-            var graph = new Graph<ITypeInfo>();
-            var result = new OperationResult<Graph<ITypeInfo>>(graph);
-
-            var entityTypes = this.GetGraphTypes(associationContext).ToList();
+            var entityTypes = this.GetGraphTypes(context).ToList();
             foreach (var entityType in entityTypes)
             {
                 graph.AddNode(entityType);
             }
 
-
+            var rolesCache = new Dictionary<IPropertyInfo, ITypeAssociationRole>();
             foreach (var entityType in entityTypes)
             {
                 foreach (var property in entityType.Properties)
                 {
-                    var role = this.TryGetAssociationRole(entityType, property, entityTypes);
+                    var role = this.TryGetAssociationRole(context, entityType, property, entityTypes, rolesCache);
                     if (role == null || !entityTypes.Contains(role.RefType))
                     {
                         continue;
                     }
 
-                    var otherRole = this.TryGetOtherAssociationRole(role, entityTypes);
-                    var relationInfo = new TypeAssociation(role, otherRole);
-                    var fromType = relationInfo.DependentRole.Type;
-                    var toType = relationInfo.PrimaryRole.Type;
+                    var otherRole = this.TryGetOtherAssociationRole(context, role, entityTypes, rolesCache);
+                    var association = new TypeAssociation(role, otherRole);
+                    var fromType = association.DependentRole.Type;
+                    var toType = association.PrimaryRole.Type;
                     var fromNode = graph.FindNodesByValue(fromType).First();
-                    if (!fromNode.OutgoingEdges.Any(e => relationInfo.Name.Equals(e[EdgeNameKey])))
+                    if (fromNode.OutgoingEdges.OfType<IGraphEdge<ITypeInfo, ITypeAssociation>>().All(e => association.Name != e.Value?.Name))
                     {
-                        var edge = graph.AddEdge(fromType, toType);
-                        edge[EdgeRelationInfoKey] = relationInfo;
-                        edge[EdgeNameKey] = relationInfo.Name;
+                        var edge = graph.AddEdge(fromType, toType, association);
                     }
                 }
             }
@@ -121,8 +95,8 @@ namespace Kephas.Data.Model.Associations
         protected virtual IEnumerable<ITypeInfo> GetGraphTypes(IAssociationContext context)
         {
             return context.TypeFilter == null
-                ? this.TypeRegistry
-                : this.TypeRegistry.Where(t => context.TypeFilter(t, context));
+                ? context.TypeRegistry!
+                : context.TypeRegistry!.Where(t => context.TypeFilter(t, context));
         }
 
         /// <summary>
@@ -135,54 +109,82 @@ namespace Kephas.Data.Model.Associations
             return this.ContextFactory.CreateContext<AssociationContext>().Merge(options);
         }
 
-
-        private ITypeAssociationRole? TryGetAssociationRole(ITypeInfo entityType, IPropertyInfo property, IEnumerable<ITypeInfo> entityTypes)
+        /// <summary>
+        /// Gets the association role data from the property information.
+        /// </summary>
+        /// <param name="context">The association context.</param>
+        /// <param name="property">The property information.</param>
+        /// <returns>A tuple containing the referenced type and the multiplicity.</returns>
+        protected virtual (ITypeInfo refType, TypeAssociationMultiplicity multiplicity) GetAssociationRoleData(IAssociationContext context, IPropertyInfo property)
         {
-            if (property.HasDynamicMember(RelationshipRoleKey))
+            var refType = property.ValueType;
+            var multiplicity = TypeAssociationMultiplicity.Unspecified;
+            if (property is IRefPropertyInfo refProperty)
             {
-                return property[RelationshipRoleKey] as ITypeAssociationRole;
+                refType = refProperty.RefType;
+                multiplicity = TypeAssociationMultiplicity.One;
+            }
+            else if (refType.IsConstructedGenericType())
+            {
+                if (refType.GenericTypeDefinition == context.RefTypeInfo)
+                {
+                    refType = refType.GenericTypeArguments[0];
+                    multiplicity = TypeAssociationMultiplicity.One;
+                }
+                else if (refType.GenericTypeDefinition == context.CollectionTypeInfo)
+                {
+                    refType = refType.GenericTypeArguments[0];
+                    multiplicity = TypeAssociationMultiplicity.Many;
+                }
             }
 
-            var propertyType = property.ValueType;
-            var isRef = false;
-            var isCollection = false;
-            if (propertyType.IsConstructedGenericType())
+            return (refType, multiplicity);
+        }
+
+        private ITypeAssociationRole? TryGetAssociationRole(
+            IAssociationContext context,
+            ITypeInfo entityType,
+            IPropertyInfo property,
+            IEnumerable<ITypeInfo> entityTypes,
+            IDictionary<IPropertyInfo, ITypeAssociationRole> rolesCache)
+        {
+            if (rolesCache.TryGetValue(property, out var role))
             {
-                if (propertyType.GenericTypeDefinition == this.refClassifier)
-                {
-                    propertyType = propertyType.GenericTypeArguments[0];
-                    isRef = true;
-                }
-                else if (propertyType.GenericTypeDefinition == this.collectionClassifier)
-                {
-                    propertyType = propertyType.GenericTypeArguments[0];
-                    isCollection = true;
-                }
+                return role;
             }
 
-            if (!entityTypes.Contains(propertyType))
+            var (refType, multiplicity) = this.GetAssociationRoleData(context, property);
+
+            if (!entityTypes.Contains(refType))
             {
-                property[RelationshipRoleKey] = null;
+                rolesCache.Remove(property);
                 return null;
             }
 
             var partAttr = property.GetAttribute<EntityPartAttribute>();
             var partKind = partAttr?.Kind;
-            var navEnd = new TypeAssociationRole(entityType, property)
+            role = new TypeAssociationRole(entityType, property)
             {
-                RefType = propertyType,
-                RoleKind = isRef || isCollection ? this.GetRoleKind(partKind) : TypeAssociationKind.Composition,
-                IsCollection = isCollection,
+                RefType = refType,
+                RoleKind = multiplicity != TypeAssociationMultiplicity.Unspecified
+                    ? this.GetRoleKind(partKind)
+                    : TypeAssociationKind.Composition,
+                Multiplicity = multiplicity,
             };
-            property[RelationshipRoleKey] = navEnd;
-            return navEnd;
+
+            rolesCache[property] = role;
+            return role;
         }
 
-        private ITypeAssociationRole? TryGetOtherAssociationRole(ITypeAssociationRole role, IEnumerable<ITypeInfo> entityTypes)
+        private ITypeAssociationRole? TryGetOtherAssociationRole(
+            IAssociationContext context,
+            ITypeAssociationRole role,
+            IEnumerable<ITypeInfo> entityTypes,
+            IDictionary<IPropertyInfo, ITypeAssociationRole> rolesCache)
         {
             foreach (var property in role.RefType.Properties)
             {
-                var otherRole = this.TryGetAssociationRole(role.RefType, property, entityTypes);
+                var otherRole = this.TryGetAssociationRole(context, role.RefType, property, entityTypes, rolesCache);
                 if (otherRole?.Property == role.Property)
                 {
                     // self referencing entities - ignore
@@ -216,24 +218,13 @@ namespace Kephas.Data.Model.Associations
                     : TypeAssociationKind.Simple;
         }
 
-        private void EnsureInitialized()
+        private void EnsureInitialized(IAssociationContext context)
         {
-            if (this.refClassifier != null)
-            {
-                return;
-            }
+            Requires.NotNull(context.TypeRegistry, nameof(context.TypeRegistry));
+            var typeRegistry = context.TypeRegistry!;
 
-            lock (this.TypeRegistry)
-            {
-                if (this.refClassifier != null)
-                {
-                    return;
-                }
-
-                this.refClassifier = this.TypeRegistry.GetTypeInfo(typeof(IRef<>), throwOnNotFound: false);
-                this.collectionClassifier =
-                    this.TypeRegistry.GetTypeInfo(typeof(ICollection<>), throwOnNotFound: false);
-            }
+            context.RefTypeInfo ??= typeRegistry.GetTypeInfo(typeof(IRef<>), throwOnNotFound: false);
+            context.CollectionTypeInfo ??= typeRegistry.GetTypeInfo(typeof(ICollection<>), throwOnNotFound: false);
         }
     }
 }

@@ -60,12 +60,9 @@ namespace Kephas.Data.Model.Associations
         public TypeAssociationKind RoleKind { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether this role indicates a collection (multiplicity > 1).
+        /// Gets the multiplicity value.
         /// </summary>
-        /// <value>
-        /// True if this role indicates a collection, false if not.
-        /// </value>
-        public bool IsCollection { get; internal set; }
+        public TypeAssociationMultiplicity Multiplicity { get; internal set; }
 
         /// <summary>
         /// Returns a string that represents the current object.

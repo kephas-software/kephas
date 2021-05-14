@@ -11,7 +11,6 @@ namespace Kephas.Data.Security.Permissions
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Data.Model;
     using Kephas.Data.Model.Associations;
     using Kephas.Data.Reflection;
     using Kephas.Graphs;
@@ -44,12 +43,15 @@ namespace Kephas.Data.Security.Permissions
         /// Initializes a new instance of the <see cref="EntityPermissionScopeResolverBase"/> class.
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="associationGraphProvider">The association graph provider.</param>
         /// <param name="contextFactory">The context factory.</param>
         protected EntityPermissionScopeResolverBase(
             ITypeRegistry typeRegistry,
+            ITypeAssociationGraphProvider associationGraphProvider,
             IContextFactory contextFactory)
         {
             this.TypeRegistry = typeRegistry;
+            this.AssociationGraphProvider = associationGraphProvider;
             this.ContextFactory = contextFactory;
         }
 
@@ -57,6 +59,11 @@ namespace Kephas.Data.Security.Permissions
         /// Gets the type registry.
         /// </summary>
         protected ITypeRegistry TypeRegistry { get; }
+
+        /// <summary>
+        /// Gets the association graph provider.
+        /// </summary>
+        protected ITypeAssociationGraphProvider AssociationGraphProvider { get; }
 
         /// <summary>
         /// Gets the context factory.
@@ -140,13 +147,13 @@ namespace Kephas.Data.Security.Permissions
                 }
 
                 var currentNode = graph.FindNodesByValue(current!).First();
-                foreach (var edge in currentNode.OutgoingEdges)
+                foreach (IGraphEdge<ITypeInfo, ITypeAssociation> edge in currentNode.OutgoingEdges)
                 {
                     // the entity scope name is relevant only for aggregation & composition
-                    var relationship = this.GetValue(edge);
-                    if (relationship?.Kind is TypeAssociationKind.Aggregation or TypeAssociationKind.Composition)
+                    var association = edge.Value;
+                    if (association?.Kind is TypeAssociationKind.Aggregation or TypeAssociationKind.Composition)
                     {
-                        var masterEntity = ((IGraphNode<ITypeInfo>)edge.To).Value;
+                        var masterEntity = edge.To.Value;
                         if (!searchedEntities.Contains(masterEntity) && !toSearch.Contains(masterEntity))
                         {
                             toSearch.Enqueue(masterEntity);
@@ -164,31 +171,23 @@ namespace Kephas.Data.Security.Permissions
         /// <returns>
         /// The entity association graph.
         /// </returns>
-        protected virtual Graph<ITypeInfo> GetEntityAssociationGraph()
+        protected virtual Graph<ITypeInfo, ITypeAssociation> GetEntityAssociationGraph()
         {
             const string EntityAssociationGraphKey = "EntityAssociationGraph";
-            if (this.TypeRegistry[EntityAssociationGraphKey] is Graph<ITypeInfo> dependencyGraph)
+            if (this.TypeRegistry[EntityAssociationGraphKey] is Graph<ITypeInfo, ITypeAssociation> dependencyGraph)
             {
                 return dependencyGraph;
             }
 
-            dependencyGraph = new TypeAssociationGraphProvider(this.TypeRegistry, this.ContextFactory)
-                .GetAssociationGraph(ctx => ctx.TypeFilter = (t, c) => t is IEntityInfo)
+            dependencyGraph = this.AssociationGraphProvider
+                .GetAssociationGraph(ctx =>
+                {
+                    ctx.TypeRegistry = this.TypeRegistry;
+                    ctx.TypeFilter = (t, c) => t is IEntityInfo;
+                })
                 .Value;
             this.TypeRegistry[EntityAssociationGraphKey] = dependencyGraph;
             return dependencyGraph;
-        }
-
-        /// <summary>
-        /// An IGraphEdge extension method that gets a value.
-        /// </summary>
-        /// <param name="graphEdge">The graphEdge to act on.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        private ITypeAssociation? GetValue(IGraphEdge graphEdge)
-        {
-            return graphEdge[TypeAssociationGraphProvider.EdgeRelationInfoKey] as ITypeAssociation;
         }
     }
 }

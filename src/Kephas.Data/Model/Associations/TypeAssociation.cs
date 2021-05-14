@@ -26,17 +26,19 @@ namespace Kephas.Data.Model.Associations
                 role2 = new TypeAssociationRole(role1.RefType)
                             {
                                 RoleKind = TypeAssociationKind.Simple,
-                                IsCollection = !role1.IsCollection && role1.RoleKind == TypeAssociationKind.Simple,
+                                Multiplicity = !role1.IsCollection() && role1.RoleKind == TypeAssociationKind.Simple
+                                    ? TypeAssociationMultiplicity.Many
+                                    : TypeAssociationMultiplicity.One,
                                 RefType = role1.Type,
                             };
             }
 
-            if (role1.RoleKind != TypeAssociationKind.Simple || role1.IsCollection)
+            if (role1.RoleKind != TypeAssociationKind.Simple || role1.IsCollection())
             {
                 this.PrimaryRole = role1;
                 this.DependentRole = role2;
             }
-            else if (role2.RoleKind != TypeAssociationKind.Simple || role2.IsCollection)
+            else if (role2.RoleKind != TypeAssociationKind.Simple || role2.IsCollection())
             {
                 this.PrimaryRole = role2;
                 this.DependentRole = role1;

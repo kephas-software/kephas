@@ -7,6 +7,7 @@
 
 namespace Kephas.Data.Security.Permissions
 {
+    using Kephas.Data.Model.Associations;
     using Kephas.Runtime;
     using Kephas.Services;
 
@@ -20,9 +21,13 @@ namespace Kephas.Data.Security.Permissions
         /// Initializes a new instance of the <see cref="EntityPermissionScopeResolver"/> class.
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="associationGraphProvider">The association graph provider.</param>
         /// <param name="contextFactory">The context factory.</param>
-        public EntityPermissionScopeResolver(IRuntimeTypeRegistry typeRegistry, IContextFactory contextFactory)
-            : base(typeRegistry, contextFactory)
+        public EntityPermissionScopeResolver(
+            IRuntimeTypeRegistry typeRegistry,
+            ITypeAssociationGraphProvider associationGraphProvider,
+            IContextFactory contextFactory)
+            : base(typeRegistry, associationGraphProvider, contextFactory)
         {
         }
     }
