@@ -28,7 +28,7 @@ namespace Kephas.Sets
         /// <summary>
         /// The order graph.
         /// </summary>
-        private readonly Graph<TValue> orderGraph = new Graph<TValue>();
+        private readonly Graph<TValue, object> orderGraph = new Graph<TValue, object>();
 
         /// <summary>
         /// The ordered values.
@@ -135,7 +135,7 @@ namespace Kephas.Sets
         /// <returns>
         /// An enumeration of values, ordered.
         /// </returns>
-        private IEnumerable<TValue> GetOrderedValues(Graph<TValue> connectedGraph)
+        private IEnumerable<TValue> GetOrderedValues(Graph<TValue, object> connectedGraph)
         {
             var orderedNodes = new List<IGraphNode<TValue>>();
             var eligibleNodes = new List<IGraphNode<TValue>>(connectedGraph.Nodes.OfType<IGraphNode<TValue>>());
@@ -201,9 +201,9 @@ namespace Kephas.Sets
         /// </summary>
         /// <param name="graph">The graph.</param>
         /// <param name="subgraph">The subgraph.</param>
-        private void AddMissingOrderEdges(Graph<TValue> graph, Graph<TValue> subgraph)
+        private void AddMissingOrderEdges(Graph<TValue, object> graph, Graph<TValue, object> subgraph)
         {
-            var edgesToProcess = new Queue<IGraphEdge<TValue>>(subgraph.Edges.OfType<IGraphEdge<TValue>>());
+            var edgesToProcess = new Queue<IGraphEdge<TValue, object>>(subgraph.Edges.OfType<IGraphEdge<TValue, object>>());
 
             while (edgesToProcess.Count > 0)
             {
@@ -214,7 +214,7 @@ namespace Kephas.Sets
                 {
                     if (!subgraph.HasEdge(from, to))
                     {
-                        var newEdge = (IGraphEdge<TValue>)graph.AddEdge(from, to);
+                        var newEdge = (IGraphEdge<TValue, object>)graph.AddEdge(from, to);
                         subgraph.AddEdge(newEdge);
                         edgesToProcess.Enqueue(newEdge);
                     }

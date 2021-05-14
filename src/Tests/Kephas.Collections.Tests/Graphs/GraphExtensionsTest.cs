@@ -1,4 +1,11 @@
-﻿namespace Kephas.Core.Tests.Graphs
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GraphExtensionsTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Core.Tests.Graphs
 {
     using System;
     using System.Collections.Generic;
@@ -100,9 +107,9 @@
             Assert.AreSame(subgraphs[0].Edges[2], orderedGraph.Edges[1]);
         }
 
-        private Graph<TItem> CreateGraph<TItem>(IEnumerable<Tuple<TItem, TItem>> edges)
+        private Graph<TItem, object> CreateGraph<TItem>(IEnumerable<Tuple<TItem, TItem>> edges)
         {
-            return this.CreateGraph<Graph<TItem>, TItem>(edges);
+            return this.CreateGraph<Graph<TItem, object>, TItem>(edges);
         }
 
         private T CreateGraph<T, TItem>(IEnumerable<Tuple<TItem, TItem>> edges) where T : Graph, new()

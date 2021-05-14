@@ -44,7 +44,8 @@ namespace Kephas.Graphs
     /// Defines an unoriented graph with value nodes.
     /// </summary>
     /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    public class UnorientedGraph<TNodeValue> : Graph<TNodeValue>
+    /// <typeparam name="TEdgeValue">Type of the edge values.</typeparam>
+    public class UnorientedGraph<TNodeValue, TEdgeValue> : Graph<TNodeValue, TEdgeValue>
     {
         /// <summary>
         /// Creates a subgraph.
@@ -54,7 +55,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected internal override Graph CreateSubgraph()
         {
-            return new UnorientedGraph<TNodeValue>();
+            return new UnorientedGraph<TNodeValue, TEdgeValue>();
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected override GraphEdge CreateEdge(GraphNode from, GraphNode to)
         {
-            return new UnorientedGraphEdge<TNodeValue>((GraphNode<TNodeValue>)from, (GraphNode<TNodeValue>)to);
+            return new UnorientedGraphEdge<TNodeValue, TEdgeValue>((GraphNode<TNodeValue>)from, (GraphNode<TNodeValue>)to);
         }
     }
 }

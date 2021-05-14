@@ -38,7 +38,8 @@ namespace Kephas.Graphs
     /// Defines the contract for a graph edge.
     /// </summary>
     /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    public interface IGraphEdge<TNodeValue> : IGraphEdge
+    /// <typeparam name="TEdgeValue">The edge value.</typeparam>
+    public interface IGraphEdge<TNodeValue, TEdgeValue> : IGraphEdge
     {
         /// <summary>
         /// Gets the node from which the edge starts.
@@ -55,5 +56,10 @@ namespace Kephas.Graphs
         /// The node where the edge ends.
         /// </value>
         new IGraphNode<TNodeValue> To { get; }
+
+        /// <summary>
+        /// Gets or sets the value of the edge.
+        /// </summary>
+        TEdgeValue? Value { get; set; }
     }
 }

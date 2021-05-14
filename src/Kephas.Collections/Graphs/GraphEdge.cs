@@ -67,10 +67,11 @@ namespace Kephas.Graphs
     /// Defines a graph edge connecting nodes holding values.
     /// </summary>
     /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    public class GraphEdge<TNodeValue> : GraphEdge, IGraphEdge<TNodeValue>
+    /// <typeparam name="TEdgeValue">Type of the edge value.</typeparam>
+    public class GraphEdge<TNodeValue, TEdgeValue> : GraphEdge, IGraphEdge<TNodeValue, TEdgeValue>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphEdge{TNodeValue}"/> class.
+        /// Initializes a new instance of the <see cref="GraphEdge{TNodeValue, TEdgeValue}"/> class.
         /// </summary>
         /// <param name="from">The node from which the edge starts.</param>
         /// <param name="to">The node where the edge ends.</param>
@@ -94,5 +95,10 @@ namespace Kephas.Graphs
         /// The node where the edge ends.
         /// </value>
         public new IGraphNode<TNodeValue> To => (IGraphNode<TNodeValue>)base.To;
+
+        /// <summary>
+        /// Gets or sets the value of the edge.
+        /// </summary>
+        public TEdgeValue? Value { get; set; }
     }
 }

@@ -163,7 +163,8 @@ namespace Kephas.Graphs
     /// Defines an oriented graph with value nodes.
     /// </summary>
     /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    public class Graph<TNodeValue> : Graph
+    /// <typeparam name="TEdgeValue">Type of the edge value.</typeparam>
+    public class Graph<TNodeValue, TEdgeValue> : Graph
     {
         /// <summary>
         /// Adds a node to the graph and returns it.
@@ -183,7 +184,7 @@ namespace Kephas.Graphs
         /// <returns>
         /// The new node.
         /// </returns>
-        public IGraphNode<TNodeValue> AddNode(TNodeValue value)
+        public IGraphNode<TNodeValue> AddNode(TNodeValue? value)
         {
             var node = (IGraphNode<TNodeValue>)base.AddNode();
             node.Value = value;
@@ -195,12 +196,15 @@ namespace Kephas.Graphs
         /// </summary>
         /// <param name="from">The starting node.</param>
         /// <param name="to">The ending node.</param>
+        /// <param name="edgeValue">Optional. The edge value.</param>
         /// <returns>
         /// The new edge.
         /// </returns>
-        public IGraphEdge<TNodeValue> AddEdge(IGraphNode<TNodeValue> from, IGraphNode<TNodeValue> to)
+        public IGraphEdge<TNodeValue, TEdgeValue> AddEdge(IGraphNode<TNodeValue> from, IGraphNode<TNodeValue> to, TEdgeValue? edgeValue = default)
         {
-            return (IGraphEdge<TNodeValue>)base.AddEdge(from, to);
+            var edge = (IGraphEdge<TNodeValue, TEdgeValue>)base.AddEdge(from, to);
+            edge.Value = edgeValue;
+            return edge;
         }
 
         /// <summary>
@@ -210,10 +214,11 @@ namespace Kephas.Graphs
         /// </summary>
         /// <param name="fromValue">The starting node identified by this value.</param>
         /// <param name="toValue">The ending node identified by this value.</param>
+        /// <param name="edgeValue">Optional. The edge value.</param>
         /// <returns>
         /// The new edge.
         /// </returns>
-        public IGraphEdge<TNodeValue> AddEdge(TNodeValue fromValue, TNodeValue toValue)
+        public IGraphEdge<TNodeValue, TEdgeValue> AddEdge(TNodeValue fromValue, TNodeValue toValue, TEdgeValue? edgeValue = default)
         {
             var fromNodes = this.FindNodesByValue(fromValue).Take(2).ToList();
             if (fromNodes.Count > 1)
@@ -231,7 +236,9 @@ namespace Kephas.Graphs
 
             var to = toNodes.Count == 0 ? this.AddNode(toValue) : toNodes[0];
 
-            return (IGraphEdge<TNodeValue>)base.AddEdge(from, to);
+            var edge = (IGraphEdge<TNodeValue, TEdgeValue>)base.AddEdge(from, to);
+            edge.Value = edgeValue;
+            return edge;
         }
 
         /// <summary>
@@ -254,7 +261,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected internal override Graph CreateSubgraph()
         {
-            return new Graph<TNodeValue>();
+            return new Graph<TNodeValue, TEdgeValue>();
         }
 
         /// <summary>
@@ -278,7 +285,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected override GraphEdge CreateEdge(GraphNode from, GraphNode to)
         {
-            return new GraphEdge<TNodeValue>((GraphNode<TNodeValue>)from, (GraphNode<TNodeValue>)to);
+            return new GraphEdge<TNodeValue, TEdgeValue>((GraphNode<TNodeValue>)from, (GraphNode<TNodeValue>)to);
         }
     }
 }

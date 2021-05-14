@@ -37,10 +37,11 @@ namespace Kephas.Graphs
     /// Defines an unoriented graph edge connecting nodes holding values.
     /// </summary>
     /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    public class UnorientedGraphEdge<TNodeValue> : GraphEdge<TNodeValue>
+    /// <typeparam name="TEdgeValue">Type of the edge value.</typeparam>
+    public class UnorientedGraphEdge<TNodeValue, TEdgeValue> : GraphEdge<TNodeValue, TEdgeValue>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnorientedGraphEdge{TNodeValue}"/> class.
+        /// Initializes a new instance of the <see cref="UnorientedGraphEdge{TNodeValue, TEdgeValue}"/> class.
         /// </summary>
         /// <param name="from">The node from which the edge starts.</param>
         /// <param name="to">The node where the edge ends.</param>

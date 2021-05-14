@@ -64,6 +64,6 @@ namespace Kephas.Graphs
         /// <value>
         /// The node value.
         /// </value>
-        TValue Value { get; set; }
+        TValue? Value { get; set; }
     }
 }
