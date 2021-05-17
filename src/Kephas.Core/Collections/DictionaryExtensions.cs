@@ -43,9 +43,9 @@ namespace Kephas.Collections
         /// <summary>
         /// Tries to get the value for the provided key. If the requested item cannot be found, the default value is returned.
         /// </summary>
+        /// <typeparam name="TDictionary">The dictionary type.</typeparam>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <typeparam name="TDictionary">The dictionary type.</typeparam>
         /// <param name="target">The dictionary where the merge operation occurs.</param>
         /// <param name="source">The source dictionary to merge.</param>
         /// <returns>The merged dictionary.</returns>
