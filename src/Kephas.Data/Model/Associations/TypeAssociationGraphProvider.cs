@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Data.Reflection;
-
 namespace Kephas.Data.Model.Associations
 {
     using System;
@@ -14,6 +12,7 @@ namespace Kephas.Data.Model.Associations
     using System.Linq;
 
     using Kephas.Data.AttributedModel;
+    using Kephas.Data.Reflection;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Graphs;
@@ -32,7 +31,7 @@ namespace Kephas.Data.Model.Associations
         /// Initializes a new instance of the <see cref="TypeAssociationGraphProvider"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
-        protected TypeAssociationGraphProvider(IContextFactory contextFactory)
+        public TypeAssociationGraphProvider(IContextFactory contextFactory)
         {
             this.ContextFactory = contextFactory;
         }
