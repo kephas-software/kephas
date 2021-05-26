@@ -138,8 +138,7 @@ namespace Kephas.Model.Runtime.Construction
             object runtimeElement,
             IModelConstructionContext constructionContext)
         {
-            var memberInfo = runtimeElement as IElementInfo;
-            if (memberInfo == null)
+            if (runtimeElement is not IElementInfo memberInfo)
             {
                 return null;
             }

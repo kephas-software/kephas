@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime.Factories;
-
 namespace Kephas.Runtime
 {
     using System;
@@ -14,6 +12,7 @@ namespace Kephas.Runtime
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Runtime.Factories;
 
     /// <summary>
     /// The interface for the runtime type serviceRegistry.

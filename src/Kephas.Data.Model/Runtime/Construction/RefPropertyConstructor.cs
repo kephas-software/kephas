@@ -5,17 +5,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Data.Reflection;
-
 namespace Kephas.Data.Model.Runtime.Construction
 {
     using Kephas.Data.Model.Elements;
+    using Kephas.Data.Reflection;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Runtime;
     using Kephas.Services;
 
+    /// <summary>
+    /// Constructor for reference properties.
+    /// </summary>
     [ProcessingPriority(Priority.BelowNormal)]
     public class RefPropertyConstructor : PropertyConstructor
     {
@@ -35,7 +37,7 @@ namespace Kephas.Data.Model.Runtime.Construction
                 return null;
             }
 
-            var property = new RefProperty(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
+            var property = new RefProperty(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext)!)
             {
                 CanRead = runtimeElement.CanRead,
                 CanWrite = runtimeElement.CanWrite,
