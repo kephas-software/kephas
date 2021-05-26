@@ -11,9 +11,9 @@
 namespace Kephas.Model.Runtime.Construction
 {
     using System.Linq;
-
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services.Composition;
@@ -34,7 +34,8 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return runtimeElement.Annotations.OfType<IAppServiceInfo>().Any();
+            return runtimeElement.Annotations.OfType<IAppServiceInfo>().Any()
+                   || runtimeElement.HasDynamicMember(AppServicesRegistry.AppServiceKey);
         }
 
         /// <summary>
@@ -48,17 +49,17 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override AppServiceType? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            var appServiceAttr = runtimeElement.Annotations.OfType<IAppServiceInfo>().SingleOrDefault();
+            var appServiceAttr = runtimeElement.Annotations.OfType<IAppServiceInfo>().SingleOrDefault()
+                ?? runtimeElement[AppServicesRegistry.AppServiceKey] as IAppServiceInfo;
             if (appServiceAttr == null)
             {
-                var appServiceInfos = constructionContext.AmbientServices.GetAppServiceInfos();
-                appServiceAttr = appServiceInfos.FirstOrDefault(i => i.contractType == runtimeElement.Type).appServiceInfo;
+                return null;
             }
 
             var contractType = appServiceAttr?.ContractType;
             var appServiceRuntimeElement = contractType == null ? runtimeElement : runtimeElement.TypeRegistry.GetTypeInfo(contractType);
 
-            return new AppServiceType(constructionContext, appServiceAttr, this.TryComputeName(appServiceRuntimeElement, constructionContext));
+            return new AppServiceType(constructionContext, appServiceAttr!, this.TryComputeName(appServiceRuntimeElement, constructionContext)!);
         }
     }
 }
