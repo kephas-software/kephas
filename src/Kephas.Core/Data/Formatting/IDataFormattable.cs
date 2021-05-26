@@ -7,8 +7,6 @@
 
 namespace Kephas.Data.Formatting
 {
-    using Kephas.Services;
-
     /// <summary>
     /// Extracts the information contained in this object to a serialization friendly representation.
     /// </summary>
@@ -19,10 +17,10 @@ namespace Kephas.Data.Formatting
         /// </summary>
         /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-#if NETSTANDARD2_0
-        object ToData(IDataFormattingContext? context = null);
-#else
         object ToData(IDataFormattingContext? context = null)
+#if NETSTANDARD2_0
+        ;
+#else
         {
             return this.ToString();
         }
