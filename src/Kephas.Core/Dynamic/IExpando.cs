@@ -24,7 +24,7 @@ namespace Kephas.Dynamic
     using Kephas.Runtime;
 
     /// <summary>
-    /// Enumerates the
+    /// Enumerates the flags for controlling the member binding through indexer or dynamic member access.
     /// </summary>
     [Flags]
     public enum ExpandoMemberBinderKind
