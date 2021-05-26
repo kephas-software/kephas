@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceContractsRegistry.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesRegistry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,6 +16,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Runtime;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
 
@@ -24,14 +25,21 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// </summary>
     public class AppServicesRegistry : IRuntimeModelRegistry
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter;
+
+        /// <summary>
+        /// The key for the app service metadata.
+        /// </summary>
+        internal static readonly string AppServiceKey = "Kephas:AppService";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesRegistry"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        public AppServicesRegistry(IAmbientServices ambientServices)
-            : this(ambientServices, IsNotThirdParty)
+        /// <param name="typeRegistry">The runtime type registry.</param>
+        public AppServicesRegistry(IAmbientServices ambientServices, IRuntimeTypeRegistry typeRegistry)
+            : this(ambientServices, typeRegistry, IsNotThirdParty)
         {
         }
 
@@ -39,12 +47,17 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// Initializes a new instance of the <see cref="AppServicesRegistry"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="filter">Optional. Sets the filter for eligible service contracts.</param>
-        protected internal AppServicesRegistry(IAmbientServices ambientServices, Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter)
+        protected internal AppServicesRegistry(
+            IAmbientServices ambientServices,
+            IRuntimeTypeRegistry typeRegistry,
+            Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.AmbientServices = ambientServices;
+            this.typeRegistry = typeRegistry;
             this.filter = filter;
         }
 
@@ -68,7 +81,12 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 appServiceInfos = appServiceInfos.Where(sc => this.filter(sc, this.AmbientServices));
             }
 
-            var types = new HashSet<Type>(appServiceInfos.Select(i => i.contractType));
+            var types = new HashSet<IRuntimeTypeInfo>(appServiceInfos.Select(i =>
+            {
+                var typeInfo = this.typeRegistry.GetTypeInfo(i.contractType);
+                typeInfo[AppServiceKey] = i.appServiceInfo;
+                return typeInfo;
+            }));
 
             return Task.FromResult<IEnumerable<object>>(types);
         }
