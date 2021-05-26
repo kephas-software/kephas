@@ -15,6 +15,7 @@ namespace Kephas.Reflection.Dynamic
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Dynamic parameter information.
@@ -30,6 +31,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The type of the parameter.
         /// </value>
+        [ExcludeFromSerialization]
         public ITypeInfo ValueType
         {
             get => this.valueType ??= this.TryGetType(this.valueTypeName);

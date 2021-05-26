@@ -21,7 +21,7 @@ namespace Kephas.Serialization.Json.Tests.Integration.Reflection.Dynamic
         public void Deserialize_Schema1()
         {
             var container = this.CreateContainer();
-            var serializationService = this.CreateContainer().GetExport<ISerializationService>();
+            var serializationService = container.GetExport<ISerializationService>();
             var dynTypeRegistry = serializationService.JsonDeserialize<DynamicTypeRegistry>(
                 this.GetJson("Schema1.json").ReadAllString());
 
@@ -39,6 +39,20 @@ namespace Kephas.Serialization.Json.Tests.Integration.Reflection.Dynamic
             var syncIdProperty = docType.Properties.Single(p => p.Name == "SyncId");
             Assert.AreEqual(typeof(long), ((IRuntimeTypeInfo)syncIdProperty.ValueType).Type);
             Assert.AreEqual("System.Int64", ((DynamicPropertyInfo)syncIdProperty).ValueTypeName);
+        }
+
+        [Test]
+        public void Serialize_Schema1()
+        {
+            var container = this.CreateContainer();
+            var serializationService = container.GetExport<ISerializationService>();
+            var dynTypeRegistry = serializationService.JsonDeserialize<DynamicTypeRegistry>(
+                this.GetJson("Schema1.json").ReadAllString());
+
+            var typeRegistryString = serializationService.JsonSerialize(dynTypeRegistry)!;
+            Assert.IsTrue(typeRegistryString.Contains(@"""name"":""schema-1"""));
+            Assert.IsTrue(typeRegistryString.Contains(@"""name"":""Customer"""));
+            Assert.IsTrue(typeRegistryString.Contains(@"""name"":""Document"""));
         }
     }
 }

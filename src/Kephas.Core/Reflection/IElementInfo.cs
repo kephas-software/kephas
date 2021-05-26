@@ -14,6 +14,7 @@ namespace Kephas.Reflection
 
     using Kephas.Dynamic;
     using Kephas.Runtime;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Contract providing base element information.
@@ -60,10 +61,31 @@ namespace Kephas.Reflection
         IDisplayInfo? GetDisplayInfo();
 #else
         /// <summary>
+        /// Gets a value indicating whether the element is excluded from serialization.
+        /// </summary>
+        /// <returns><c>true</c> if the element is excluded from serialization, <c>false</c> otherwise.</returns>
+        bool ExcludeFromSerialization() => this.GetAttribute<ExcludeFromSerializationAttribute>() != null;
+
+        /// <summary>
         /// Gets the display information.
         /// </summary>
         /// <returns>The display information.</returns>
         IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
 #endif
     }
+
+#if NETSTANDARD2_0
+    /// <summary>
+    /// Extension methods for <see cref="IElementInfo"/>.
+    /// </summary>
+    public static class ElementInfoExtensions
+    {
+        /// <summary>
+        /// Gets a value indicating whether the element is excluded from serialization.
+        /// </summary>
+        /// <param name="self">The element information.</param>
+        /// <returns><c>true</c> if the element is excluded from serialization, <c>false</c> otherwise.</returns>
+        public static bool ExcludeFromSerialization(this IElementInfo self) => self.GetAttribute<ExcludeFromSerializationAttribute>() != null;
+    }
+#endif
 }

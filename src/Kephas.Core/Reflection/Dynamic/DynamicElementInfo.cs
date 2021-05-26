@@ -18,6 +18,7 @@ namespace Kephas.Reflection.Dynamic
 
     using Kephas.Dynamic;
     using Kephas.Runtime;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Dynamic element information.
@@ -69,6 +70,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The declaring element.
         /// </value>
+        [ExcludeFromSerialization]
         public virtual IElementInfo? DeclaringContainer { get; protected internal set; }
 
         /// <summary>

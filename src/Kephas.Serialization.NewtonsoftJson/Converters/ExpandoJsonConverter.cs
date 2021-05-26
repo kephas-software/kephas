@@ -174,18 +174,6 @@ namespace Kephas.Serialization.Json.Converters
             return this.GetReadReturnValue(valueTypeInfo, expandoCollector, existingValue);
         }
 
-        /// <summary>
-        /// Gets the return value of the <see cref="ReadJson"/> operation.
-        /// </summary>
-        /// <param name="expandoTypeInfo">The return value type information.</param>
-        /// <param name="expandoCollector">The expando value collecting the properties.</param>
-        /// <param name="existingValue">The existing value.</param>
-        /// <returns>The read operation's return value.</returns>
-        protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpando expandoCollector, object? existingValue)
-        {
-            return expandoCollector;
-        }
-
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
@@ -238,14 +226,16 @@ namespace Kephas.Serialization.Json.Converters
                     continue;
                 }
 
-                var isClassProperty = typeProperties.ContainsKey(key);
+                var isClassProperty = typeProperties.TryGetValue(key, out var typeProperty);
                 var propName = casingResolver != null && isClassProperty
                     ? casingResolver.GetSerializedPropertyName(key)
                     : key;
 
-                if (isClassProperty && typeContractProperties != null && !typeContractProperties.Contains(propName))
+                if (isClassProperty && 
+                    ((typeContractProperties != null && !typeContractProperties.Contains(propName))
+                    || typeProperty.ExcludeFromSerialization()))
                 {
-                    // ignore property if the serializer ignored it.
+                    // ignore property if the serializer ignored it or if explicitly removed from serialization.
                     continue;
                 }
 
@@ -254,6 +244,18 @@ namespace Kephas.Serialization.Json.Converters
             }
 
             writer.WriteEndObject();
+        }
+
+        /// <summary>
+        /// Gets the return value of the <see cref="ReadJson"/> operation.
+        /// </summary>
+        /// <param name="expandoTypeInfo">The return value type information.</param>
+        /// <param name="expandoCollector">The expando value collecting the properties.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>The read operation's return value.</returns>
+        protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpando expandoCollector, object? existingValue)
+        {
+            return expandoCollector;
         }
 
         /// <summary>

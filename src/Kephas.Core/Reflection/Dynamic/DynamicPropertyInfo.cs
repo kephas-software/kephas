@@ -16,6 +16,7 @@ namespace Kephas.Reflection.Dynamic
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Dynamic property information.
@@ -31,6 +32,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The type of the property.
         /// </value>
+        [ExcludeFromSerialization]
         public virtual ITypeInfo ValueType
         {
             get => this.valueType ??= this.TryGetType(this.valueTypeName);

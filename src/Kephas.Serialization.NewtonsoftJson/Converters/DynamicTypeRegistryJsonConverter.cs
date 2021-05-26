@@ -19,7 +19,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// <see cref="DynamicTypeRegistry"/> should be processed before expandos, that's why the higher priority.
     /// </remarks>
-    [ProcessingPriority(Priority.AboveNormal)]
+    [ProcessingPriority(Priority.High)]
     public class DynamicTypeRegistryJsonConverter : ExpandoJsonConverter
     {
         /// <summary>
