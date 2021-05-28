@@ -32,6 +32,10 @@ namespace Kephas.Serialization.Json.Tests.Integration.Reflection.Dynamic
             Assert.AreEqual("Customer", customerType.Name);
             Assert.AreEqual("Customer", customerType.FullName);
 
+            var aliasesProperty = (DynamicPropertyInfo)customerType.Properties.First(p => p.Name == "Aliases");
+            Assert.AreEqual("System.String[]", aliasesProperty.ValueTypeName);
+            Assert.AreEqual(typeof(string[]), (aliasesProperty.ValueType as IRuntimeTypeInfo)!.Type);
+
             var docType = dynTypeRegistry.Types.Skip(1).First();
             Assert.AreEqual("Document", docType.Name);
             Assert.AreEqual("Document", docType.FullName);
@@ -53,6 +57,7 @@ namespace Kephas.Serialization.Json.Tests.Integration.Reflection.Dynamic
             Assert.IsTrue(typeRegistryString.Contains(@"""name"":""schema-1"""));
             Assert.IsTrue(typeRegistryString.Contains(@"""name"":""Customer"""));
             Assert.IsTrue(typeRegistryString.Contains(@"""name"":""Document"""));
+            Assert.IsTrue(typeRegistryString.Contains(@"""System.String[]"""));
         }
     }
 }

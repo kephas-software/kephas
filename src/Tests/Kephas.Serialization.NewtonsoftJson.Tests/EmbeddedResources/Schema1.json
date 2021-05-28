@@ -14,6 +14,11 @@
           "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
           "name": "Description",
           "valueTypeName": "System.String"
+        },
+        {
+          "$type": "Kephas.Reflection.Dynamic.DynamicPropertyInfo",
+          "name": "Aliases",
+          "valueTypeName": "System.String[]"
         }
       ]
     },
