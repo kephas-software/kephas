@@ -12,6 +12,7 @@ namespace Kephas.Data.Reflection.Dynamic
 
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Dynamic property information for service references.
@@ -24,6 +25,7 @@ namespace Kephas.Data.Reflection.Dynamic
         /// <summary>
         /// Gets or sets the service reference type.
         /// </summary>
+        [ExcludeFromSerialization]
         public virtual ITypeInfo ServiceRefType
         {
             get => this.serviceRefType ??= this.TryGetType(this.serviceRefTypeName);
@@ -49,6 +51,7 @@ namespace Kephas.Data.Reflection.Dynamic
         /// <value>
         /// The type of the property.
         /// </value>
+        [ExcludeFromSerialization]
         public override ITypeInfo ValueType
         {
             get => base.ValueType;
