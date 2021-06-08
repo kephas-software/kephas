@@ -52,7 +52,7 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Gets or sets the position in the parameter's list.
+        /// Gets the position in the parameter's list.
         /// </summary>
         /// <value>
         /// The position in the parameter's list.

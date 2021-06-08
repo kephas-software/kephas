@@ -42,7 +42,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The message ID.
         /// </returns>
-        public virtual object GetMessageId(object message)
+        public virtual object? GetMessageId(object message)
         {
             // brokered messages are not identifiable in the sense
             // that the ID is a logical behavior/handler discriminator.
@@ -51,7 +51,7 @@ namespace Kephas.Messaging
                 return null;
             }
 
-            var expandoMessage = message.GetContent().ToExpando();
+            var expandoMessage = message.GetContent().ToIndexable()!;
             var messageId = expandoMessage[nameof(IIdentifiable.Id)]
                             ?? expandoMessage[nameof(MessageHandlerMetadata.MessageId)];
             return messageId;

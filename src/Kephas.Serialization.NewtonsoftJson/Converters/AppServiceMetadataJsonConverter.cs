@@ -38,9 +38,9 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>The newly created expando collector.</returns>
-        protected override IExpando CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+        protected override IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
         {
-            return existingValue == null ? new Expando() : (IExpando)existingValue;
+            return existingValue == null ? new Expando() : (IExpandoBase)existingValue;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="expandoCollector">The expando value collecting the properties.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>The read operation's return value.</returns>
-        protected override object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpando expandoCollector, object? existingValue)
+        protected override object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpandoBase expandoCollector, object? existingValue)
         {
             return existingValue != null
                 ? base.GetReadReturnValue(expandoTypeInfo, expandoCollector, existingValue)

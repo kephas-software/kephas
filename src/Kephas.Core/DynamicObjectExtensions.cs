@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Kephas
 {
     using System.Dynamic;
@@ -102,9 +104,9 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>A dynamic object wrapping the provided object.</returns>
-        public static dynamic? ToDynamic(this object obj)
+        public static dynamic? ToDynamic(this object? obj)
         {
-            if (obj == null || obj is IDynamicMetaObjectProvider)
+            if (obj is null or IDynamicMetaObjectProvider)
             {
                 return obj;
             }
@@ -117,11 +119,46 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>An <see cref="IExpando"/> wrapping the provided object. If the provided object is an expando, that object is returned.</returns>
-        public static IExpando? ToExpando(this object? obj)
+        public static IExpandoBase? ToExpando(this object? obj)
         {
-            if (obj == null || obj is IExpando)
+            if (obj is null or IExpandoBase)
             {
-                return (IExpando?)obj;
+                return (IExpandoBase?)obj;
+            }
+
+            return new Expando(obj);
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IExpando"/> object out of the provided instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>An <see cref="IExpando"/> wrapping the provided object. If the provided object is an expando, that object is returned.</returns>
+        public static IDictionary<string, object?>? ToDictionary(this object? obj)
+        {
+            if (obj is null or IDictionary<string, object?>)
+            {
+                return (IDictionary<string, object?>?)obj;
+            }
+
+            if (obj is IExpandoBase expando)
+            {
+                return expando.ToDictionary();
+            }
+
+            return new Expando(obj).ToDictionary();
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IIndexable"/> object out of the provided instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>An <see cref="IIndexable"/> wrapping the provided object. If the provided object is indexable, that object is returned.</returns>
+        public static IIndexable? ToIndexable(this object? obj)
+        {
+            if (obj is null or IIndexable)
+            {
+                return (IIndexable?)obj;
             }
 
             return new Expando(obj);

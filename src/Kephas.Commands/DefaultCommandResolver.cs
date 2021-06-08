@@ -48,9 +48,8 @@ namespace Kephas.Commands
         ///     otherwise <c>null</c> will be returned.
         /// </param>
         /// <returns>The command as an <see cref="IOperation"/> or <c>null</c>.</returns>
-        public virtual IOperationInfo? ResolveCommand(
-            string command,
-            IExpando? args = null,
+        public virtual IOperationInfo? ResolveCommand(string command,
+            IExpandoBase? args = null,
             bool throwOnNotFound = true)
         {
             var partiallyMatchingCommands = this.registries

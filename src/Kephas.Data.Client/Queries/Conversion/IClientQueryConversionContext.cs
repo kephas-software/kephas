@@ -21,7 +21,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <value>
         /// The options.
         /// </value>
-        object Options { get; set; }
+        object? Options { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this object uses the member access convention.

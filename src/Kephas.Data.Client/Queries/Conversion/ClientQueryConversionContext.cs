@@ -21,7 +21,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <summary>
         /// Options for controlling the operation.
         /// </summary>
-        private object options;
+        private object? options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryConversionContext"/> class.
@@ -38,7 +38,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <value>
         /// The options.
         /// </value>
-        public object Options
+        public object? Options
         {
             get => this.options;
             set
@@ -46,7 +46,7 @@ namespace Kephas.Data.Client.Queries.Conversion
                 this.options = value;
                 if (value != null)
                 {
-                    var expandoValue = value.ToExpando();
+                    var expandoValue = value.ToIndexable()!;
                     this.UseMemberAccessConvention = expandoValue.GetLaxValue(
                         nameof(this.UseMemberAccessConvention),
                         this.UseMemberAccessConvention);

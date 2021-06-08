@@ -30,7 +30,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
         public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
-            : this(typeRegistry, typeResolver, typeof(IExpando), typeof(Expando))
+            : this(typeRegistry, typeResolver, typeof(IExpandoBase), typeof(Expando))
         {
         }
 
@@ -49,9 +49,9 @@ namespace Kephas.Serialization.Json.Converters
             this.TypeRegistry = typeRegistry;
             this.TypeResolver = typeResolver;
 
-            if (!typeof(IExpando).IsAssignableFrom(expandoBaseType))
+            if (!typeof(IExpandoBase).IsAssignableFrom(expandoBaseType))
             {
-                throw new SerializationException($"The expando base type {expandoBaseType} must be convertible to {typeof(IExpando)}.");
+                throw new SerializationException($"The expando base type {expandoBaseType} must be convertible to {typeof(IExpandoBase)}.");
             }
 
             this.ExpandoBaseType = expandoBaseType;
@@ -231,7 +231,7 @@ namespace Kephas.Serialization.Json.Converters
                     ? casingResolver.GetSerializedPropertyName(key)
                     : key;
 
-                if (isClassProperty && 
+                if (isClassProperty &&
                     ((typeContractProperties != null && !typeContractProperties.Contains(propName))
                     || typeProperty.ExcludeFromSerialization()))
                 {
@@ -253,7 +253,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="expandoCollector">The expando value collecting the properties.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>The read operation's return value.</returns>
-        protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpando expandoCollector, object? existingValue)
+        protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpandoBase expandoCollector, object? existingValue)
         {
             return expandoCollector;
         }
@@ -264,10 +264,10 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>The newly created expando collector.</returns>
-        protected virtual IExpando CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+        protected virtual IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
         {
             var createInstance = existingValue == null;
-            var expando = (IExpando)(createInstance ? expandoTypeInfo.CreateInstance() : existingValue)!;
+            var expando = (IExpandoBase)(createInstance ? expandoTypeInfo.CreateInstance() : existingValue)!;
             return expando;
         }
 

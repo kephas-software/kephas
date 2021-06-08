@@ -55,33 +55,13 @@ namespace Kephas.Dynamic
         All = InnerDictionary | InnerObject | This,
     }
 
+
     /// <summary>
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
-    public interface IExpando : IDynamicMetaObjectProvider, IIndexable
+    public interface IExpando : IDynamicMetaObjectProvider, IExpandoBase
     {
-        /// <summary>
-        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
-        /// </summary>
-        /// <param name="memberName">Name of the member.</param>
-        /// <returns>
-        /// True if defined, false if not.
-        /// </returns>
-        bool HasDynamicMember(string memberName);
-
-        /// <summary>
-        /// Converts the expando to a dictionary having as keys the property names and as values the
-        /// respective properties' values.
-        /// </summary>
-        /// <param name="keyFunc">Optional. The key transformation function.</param>
-        /// <param name="valueFunc">Optional. The value transformation function.</param>
-        /// <returns>
-        /// A dictionary of property values with their associated names.
-        /// </returns>
-        IDictionary<string, object?> ToDictionary(
-            Func<string, string>? keyFunc = null,
-            Func<object?, object?>? valueFunc = null);
     }
 
     /// <summary>
@@ -165,7 +145,7 @@ namespace Kephas.Dynamic
             }
 
             // for common objects, merge the properties.
-            foreach (var kv in source.ToExpando().ToDictionary())
+            foreach (var kv in source.ToDictionary()!)
             {
                 if (!kv.Key.IsPrivate())
                 {
@@ -190,7 +170,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The lax value.
         /// </returns>
-        public static T GetLaxValue<T>(this IIndexable expando, string member, T defaultValue = default)
+        public static T? GetLaxValue<T>(this IIndexable expando, string member, T? defaultValue = default)
         {
             Requires.NotNull(expando, nameof(expando));
 

@@ -49,7 +49,8 @@ namespace Kephas.Commands.Messaging
         ///     otherwise <c>null</c> will be returned.
         /// </param>
         /// <returns>The command as an <see cref="IOperation"/> or <c>null</c>.</returns>
-        public override IOperationInfo? ResolveCommand(string command, IExpando? args = null, bool throwOnNotFound = true)
+        public override IOperationInfo? ResolveCommand(string command, IExpandoBase? args = null,
+            bool throwOnNotFound = true)
         {
             var (_, runAt, isOneWay) = this.ExtractEnvelopeArgs(args);
             return runAt == null
@@ -57,7 +58,7 @@ namespace Kephas.Commands.Messaging
                 : new RunAtOperationInfo(this.lazyMessageBroker, runAt, command, args, isOneWay);
         }
 
-        private (IExpando? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IExpando? args)
+        private (IExpandoBase? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IExpandoBase? args)
         {
             if (args == null || !args.HasDynamicMember(RunAtOperationInfo.RunAtArg))
             {

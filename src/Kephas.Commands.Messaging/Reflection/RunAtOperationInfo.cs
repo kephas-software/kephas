@@ -37,7 +37,7 @@ namespace Kephas.Commands.Messaging.Reflection
 
         private readonly Lazy<IMessageBroker> lazyMessageBroker;
         private readonly string command;
-        private readonly IExpando? args;
+        private readonly IExpandoBase? args;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RunAtOperationInfo"/> class.
@@ -47,7 +47,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <param name="command">The command to be executed.</param>
         /// <param name="args">The command arguments.</param>
         /// <param name="isOneWay">Optional. Indicates whether the operation is one way.</param>
-        public RunAtOperationInfo(Lazy<IMessageBroker> lazyMessageBroker, object runAt, string command, IExpando? args, bool isOneWay = false)
+        public RunAtOperationInfo(Lazy<IMessageBroker> lazyMessageBroker, object runAt, string command, IExpandoBase? args, bool isOneWay = false)
         {
             this.lazyMessageBroker = lazyMessageBroker;
             this.Endpoint = this.GetEndpoint(runAt);

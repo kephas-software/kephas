@@ -83,7 +83,7 @@ namespace Kephas.Data.Commands
         {
             var dataContext = bulkUpdateContext.DataContext;
             var criteria = this.GetMatchingCriteria<T>(bulkUpdateContext);
-            var values = bulkUpdateContext.Values.ToExpando().ToDictionary();
+            var values = bulkUpdateContext.Values.ToDictionary();
 
             var localCache = this.TryGetLocalCache(dataContext);
             var localCacheCount = 0L;
@@ -130,7 +130,7 @@ namespace Kephas.Data.Commands
         /// <param name="values">The values.</param>
         protected virtual void UpdateEntity<T>(T entity, IDictionary<string, object> values)
         {
-            var expandoEntity = entity.ToExpando();
+            var expandoEntity = entity.ToIndexable()!;
             foreach (var kv in values)
             {
                 expandoEntity[kv.Key] = kv.Value;

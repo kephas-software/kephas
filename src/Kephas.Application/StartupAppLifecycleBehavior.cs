@@ -152,8 +152,8 @@ namespace Kephas.Application
                 }
             }
 
-            var args = rawCommand.ToExpando()!.ToDictionary();
-            var defaultArgs = commandTypeInfo.CreateInstance().ToExpando()!;
+            var args = rawCommand.ToDictionary()!;
+            var defaultArgs = commandTypeInfo.CreateInstance().ToIndexable()!;
             foreach (var propInfo in commandTypeInfo.Properties.Values)
             {
                 if (Equals(args[propInfo.Name], defaultArgs[propInfo.Name]))

@@ -30,15 +30,20 @@ namespace Kephas.Data.Conversion.TargetResolvers
         /// </summary>
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
-        /// <param name="sourceEntity"></param>
+        /// <param name="sourceEntity">The source entity.</param>
         /// <param name="sourceEntityEntry">The source entity entry.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
-        public async Task<object> TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object sourceEntity, IEntityEntry sourceEntityEntry, CancellationToken cancellationToken = default)
+        public async Task<object?> TryResolveTargetEntityAsync(
+            IDataContext targetDataContext,
+            TypeInfo targetType,
+            object sourceEntity,
+            IEntityEntry sourceEntityEntry,
+            CancellationToken cancellationToken = default)
         {
-            var sourceId = sourceEntityEntry?.EntityId ?? sourceEntity.ToExpando()[nameof(IIdentifiable.Id)];
+            var sourceId = sourceEntityEntry?.EntityId ?? sourceEntity.ToIndexable()![nameof(IIdentifiable.Id)];
             if (!Id.IsEmpty(sourceId))
             {
                 var target = await targetDataContext.FindAsync(

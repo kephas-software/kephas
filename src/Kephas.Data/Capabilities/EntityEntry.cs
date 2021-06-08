@@ -40,17 +40,17 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// The expando entity.
         /// </summary>
-        private IExpando? expandoEntity;
+        private IExpandoBase? expandoEntity;
 
         /// <summary>
         /// The original entity.
         /// </summary>
-        private IExpando? originalEntity;
+        private IExpandoBase? originalEntity;
 
         /// <summary>
         /// Context for the data.
         /// </summary>
-        private WeakReference<IDataContext> dataContextRef;
+        private WeakReference<IDataContext>? dataContextRef;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityEntry"/> class.
@@ -81,7 +81,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The original entity.
         /// </value>
-        public IExpando OriginalEntity => this.originalEntity ??= this.CreateOriginalEntity();
+        public IExpandoBase OriginalEntity => this.originalEntity ??= this.CreateOriginalEntity();
 
         /// <summary>
         /// Gets the identifier of the entity.
@@ -192,7 +192,7 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// Gets a wrapper expando object over the entity, to access dynamic values from it.
         /// </summary>
-        protected IExpando ExpandoEntity => this.expandoEntity ??= this.Entity as IExpando ?? new Expando(this.Entity);
+        protected IExpandoBase ExpandoEntity => this.expandoEntity ??= this.Entity as IExpandoBase ?? new Expando(this.Entity);
 
         /// <summary>
         /// Gets the root of the entity graph.
@@ -408,7 +408,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The new original entity.
         /// </returns>
-        protected virtual IExpando CreateOriginalEntity()
+        protected virtual IExpandoBase CreateOriginalEntity()
         {
             var typeInfo = this.Entity.GetTypeInfo();
             var originalValues = new Dictionary<string, object?>();
