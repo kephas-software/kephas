@@ -102,7 +102,7 @@ namespace Kephas.Serialization.Json.Converters
             }
 
             var valueTypeInfo = this.TypeRegistry.GetTypeInfo(existingValue?.GetType() ?? objectType);
-            if (valueTypeInfo.Type == this.ExpandoBaseType)
+            if (valueTypeInfo.Type == this.ExpandoBaseType || valueTypeInfo.Type.IsInterface)
             {
                 valueTypeInfo = this.TypeRegistry.GetTypeInfo(this.DefaultImplementationType);
             }
