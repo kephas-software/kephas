@@ -30,7 +30,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets a weak reference to the inner object.
         /// </summary>
-        protected WeakReference<object>? InnerObjectRef => null;
+        protected object? InnerObject => this;
 
         /// <summary>
         /// Gets the binders to use when retrieving the expando members.
@@ -56,12 +56,7 @@ namespace Kephas.Dynamic
         /// <returns>The <see cref="object" />.</returns>
         object? IIndexable.this[string key]
         {
-            get
-            {
-                TryGetValue(this, key, out var value);
-                return value;
-            }
-
+            get => TryGetValue(this, key, out var value) ? value : value;
             set => TrySetValue(this, key, value);
         }
 
@@ -78,6 +73,54 @@ namespace Kephas.Dynamic
             Func<string, string>? keyFunc,
             Func<object?, object?>? valueFunc)
             => ToDictionary(this, keyFunc, valueFunc);
+
+        /// <summary>
+        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// </summary>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// True if defined, false if not.
+        /// </returns>
+        bool IExpandoBase.HasDynamicMember(string memberName)
+            => HasDynamicMember(this, memberName);
+
+        /// <summary>
+        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// </summary>
+        /// <param name="self">The expando.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// True if defined, false if not.
+        /// </returns>
+        protected internal static bool HasDynamicMember(IExpandoMixin self, string memberName)
+        {
+            var binders = self.MemberBinders;
+
+            // First check for public properties over this instance
+            var innerObject = self.InnerObject;
+            if (self != innerObject
+                && binders.HasFlag(ExpandoMemberBinderKind.This)
+                && TryGetPropertyInfo(self.GetType(), memberName, self.IgnoreCase) != null)
+            {
+                return true;
+            }
+
+            // then check for public properties in the inner object
+            if (innerObject != null
+                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject)
+                && TryGetPropertyInfo(innerObject.GetType()!, memberName, self.IgnoreCase) != null)
+            {
+                return true;
+            }
+
+            // last, check the dictionary for member
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
+            {
+                return self.InnerDictionary.ContainsKey(memberName);
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Converts the expando to a dictionary having as keys the property names and as values the
@@ -108,7 +151,7 @@ namespace Kephas.Dynamic
                 : new Dictionary<string, object?>();
 
             // second, the values in the inner object
-            var innerObject = TryGetInnerObject(self);
+            var innerObject = self.InnerObject;
             if (innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var innerObjectType = innerObject.GetType();
@@ -176,7 +219,7 @@ namespace Kephas.Dynamic
             }
 
             // first, check the properties in this object
-            var innerObject = TryGetInnerObject(self);
+            var innerObject = self.InnerObject;
             if (self != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var thisType = self.GetType();
@@ -245,7 +288,7 @@ namespace Kephas.Dynamic
             }
 
             // first, check the properties in this object
-            var innerObject = TryGetInnerObject(self);
+            var innerObject = self.InnerObject;
             if (self != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var thisType = self.GetType();
@@ -297,22 +340,6 @@ namespace Kephas.Dynamic
         /// <returns>A PropertyInfo or <c>null</c>.</returns>
         protected internal static PropertyInfo? TryGetPropertyInfo(Type type, string key, bool ignoreCase)
             => type.GetProperty(key, GetBindingFlags(ignoreCase));
-
-        /// <summary>
-        /// Tries to get the inner object from the weak reference.
-        /// </summary>
-        /// <param name="self">The expando.</param>
-        /// <returns>The inner object or <c>null</c>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected internal static object? TryGetInnerObject(IExpandoMixin self)
-        {
-            if (self.InnerObjectRef == null)
-            {
-                return null;
-            }
-
-            return self.InnerObjectRef.TryGetTarget(out var innerObject) ? innerObject : null;
-        }
 
         /// <summary>
         /// Gets the binding flags for retrieving type members.

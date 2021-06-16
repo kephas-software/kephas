@@ -120,7 +120,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets a weak reference to the inner object.
         /// </summary>
-        WeakReference<object>? IExpandoMixin.InnerObjectRef => this.innerObjectRef;
+        object? IExpandoMixin.InnerObject => this.TryGetInnerObject();
 
         /// <summary>
         /// Gets the binders to use when retrieving the expando members.
@@ -157,12 +157,7 @@ namespace Kephas.Dynamic
         /// <returns>The <see cref="object" />.</returns>
         public object? this[string key]
         {
-            get
-            {
-                this.TryGetValue(key, out var value);
-                return value;
-            }
-
+            get => this.TryGetValue(key, out var value) ? value : value;
             set => this.TrySetValue(key, value);
         }
 
@@ -233,6 +228,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public virtual bool HasDynamicMember(string memberName)
         {
+#if NETSTANDARD2_0
             var binders = this.MemberBinders;
 
             // First check for public properties over this instance
@@ -259,6 +255,9 @@ namespace Kephas.Dynamic
             }
 
             return false;
+#else
+            return IExpandoMixin.HasDynamicMember(this, memberName);
+#endif
         }
 
         /// <summary>
@@ -645,16 +644,12 @@ namespace Kephas.Dynamic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object? TryGetInnerObject()
         {
-#if NETSTANDARD2_0
             if (this.innerObjectRef == null)
             {
                 return null;
             }
 
             return this.innerObjectRef.TryGetTarget(out var innerObject) ? innerObject : null;
-#else
-            return IExpandoMixin.TryGetInnerObject(this);
-#endif
         }
 
         /// <summary>
