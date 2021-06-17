@@ -142,7 +142,7 @@ namespace Kephas.Messaging.Distributed
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             string eventId,
-            IExpando eventArgs,
+            IDynamic eventArgs,
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
@@ -213,7 +213,7 @@ namespace Kephas.Messaging.Distributed
         public static void Publish(
             this IMessageBroker messageBroker,
             string eventId,
-            IExpando eventArgs,
+            IDynamic eventArgs,
             Action<IDispatchingContext>? optionsConfig = null)
         {
             messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig).WaitNonLocking();

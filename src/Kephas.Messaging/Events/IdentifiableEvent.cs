@@ -33,6 +33,6 @@ namespace Kephas.Messaging.Events
         /// <value>
         /// The event arguments.
         /// </value>
-        public IExpando EventArgs { get; set; }
+        public IDynamic EventArgs { get; set; }
     }
 }
