@@ -115,7 +115,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets an <see cref="IExpando"/> object out of the provided instance.
+        /// Gets an <see cref="IExpandoBase"/> object out of the provided instance.
         /// </summary>
         /// <param name="obj">The object to convert.</param>
         /// <returns>The provided instance, if it is an <see cref="IExpandoBase"/>, or a dynamic wrapper over it.</returns>

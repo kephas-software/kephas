@@ -10,11 +10,11 @@
 
 namespace Kephas.Core.Tests.Dynamic
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Dynamic;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,10 +23,7 @@ namespace Kephas.Core.Tests.Dynamic
         [Test]
         public void Merge_obj_in_null()
         {
-            var expando = (IExpando)null;
-            var result = expando.Merge("1234");
-
-            Assert.IsNull(result);
+            Assert.Throws<ArgumentNullException>(() => ((IDynamic)null!).Merge("1234"));
         }
 
         [Test]
