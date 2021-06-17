@@ -36,7 +36,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     }
 
     /// <summary>
-    /// A service for storing <see cref="IExpando"/> based roles.
+    /// A service for storing IdentityRole based roles.
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
     [ExcludeFromComposition]
