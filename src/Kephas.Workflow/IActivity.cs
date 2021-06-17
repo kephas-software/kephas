@@ -46,7 +46,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The arguments.
         /// </value>
-        IExpando? Arguments { get; set; }
+        IDynamic? Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets the execution context.

@@ -102,7 +102,7 @@ namespace Kephas.Workflow.Model.Elements
         public virtual async Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
@@ -139,7 +139,7 @@ namespace Kephas.Workflow.Model.Elements
         /// </returns>
         object? IOperationInfo.Invoke(object? instance, IEnumerable<object?> args)
         {
-            if (!(instance is IActivity))
+            if (instance is not IActivity)
             {
                 throw new WorkflowException($"Expected activity '{instance}' to invoke, instead received {instance?.GetType()}.");
             }
@@ -147,8 +147,8 @@ namespace Kephas.Workflow.Model.Elements
             var argsList = new List<object?> { instance };
             argsList.AddRange(args);
             var target = argsList[0];
-            var arguments = (IExpando?)argsList[1];
-            var context = (IActivityContext)argsList[2];
+            var arguments = (IDynamic?)argsList[1];
+            var context = (IActivityContext?)argsList[2];
             var cancellationToken = (CancellationToken)argsList[3];
 
             return ExecuteAsyncMethodInfo.Call(this, argsList.ToArray());

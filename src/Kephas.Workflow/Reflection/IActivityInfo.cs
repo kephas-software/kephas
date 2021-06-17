@@ -35,7 +35,7 @@ namespace Kephas.Workflow.Reflection
         Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default);
     }

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime.Factories;
-
 namespace Kephas.Workflow.Runtime
 {
     using System;
@@ -26,6 +24,7 @@ namespace Kephas.Workflow.Runtime
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Runtime.AttributedModel;
+    using Kephas.Runtime.Factories;
     using Kephas.Threading.Tasks;
     using Kephas.Workflow.Reflection;
 
@@ -85,7 +84,7 @@ namespace Kephas.Workflow.Runtime
         public virtual async Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
@@ -130,8 +129,8 @@ namespace Kephas.Workflow.Runtime
             var argsList = new List<object?> { activity };
             argsList.AddRange(args);
             var target = argsList[0];
-            var arguments = (IExpando?)argsList[1];
-            var context = (IActivityContext)argsList[2];
+            var arguments = (IDynamic?)argsList[1];
+            var context = (IActivityContext?)argsList[2];
             var cancellationToken = (CancellationToken)argsList[3];
 
             return ExecuteAsyncMethodInfo.Call(this, argsList.ToArray());

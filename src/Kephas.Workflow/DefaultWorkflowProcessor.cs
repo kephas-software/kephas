@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Workflow
 {
     using System;
@@ -23,6 +21,7 @@ namespace Kephas.Workflow
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
     using Kephas.Workflow.Behaviors;
@@ -70,7 +69,7 @@ namespace Kephas.Workflow
         public async Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             Action<IActivityContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
@@ -136,7 +135,13 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the execute activity.
         /// </returns>
-        protected virtual async Task<object?> ExecuteActivityAsync(IActivityInfo activityInfo, IActivity activity, object? target, IExpando? executionArgs, IActivityContext context, CancellationToken cancellationToken)
+        protected virtual async Task<object?> ExecuteActivityAsync(
+            IActivityInfo activityInfo,
+            IActivity activity,
+            object? target,
+            IDynamic? executionArgs,
+            IActivityContext context,
+            CancellationToken cancellationToken)
         {
             var timeout = context.Timeout;
             if (!timeout.HasValue || timeout.Value <= TimeSpan.Zero)
@@ -231,9 +236,9 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the activity arguments.
         /// </returns>
-        protected virtual Task<IExpando> GetExecutionArgumentsAsync(
+        protected virtual Task<IDynamic> GetExecutionArgumentsAsync(
             IActivityInfo activityInfo,
-            IExpando? arguments,
+            IDynamic? arguments,
             IActivityContext activityContext,
             CancellationToken cancellationToken)
         {

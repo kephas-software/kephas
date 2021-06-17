@@ -40,7 +40,7 @@ namespace Kephas.Workflow
         Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             Action<IActivityContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
     }

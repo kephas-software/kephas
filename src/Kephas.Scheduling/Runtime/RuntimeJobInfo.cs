@@ -91,7 +91,7 @@ namespace Kephas.Scheduling.Runtime
         public virtual Task<object?> ExecuteAsync(
             IJob job,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
@@ -109,7 +109,12 @@ namespace Kephas.Scheduling.Runtime
         /// <returns>
         /// An asynchronous result that yields the output.
         /// </returns>
-        public override Task<object?> ExecuteAsync(IActivity activity, object? target, IExpando? arguments, IActivityContext context, CancellationToken cancellationToken = default)
+        public override Task<object?> ExecuteAsync(
+            IActivity activity,
+            object? target,
+            IDynamic? arguments,
+            IActivityContext context,
+            CancellationToken cancellationToken = default)
         {
             if (activity is IJob job)
             {
