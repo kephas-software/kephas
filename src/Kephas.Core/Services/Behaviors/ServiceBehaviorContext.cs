@@ -107,7 +107,7 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         private static object? GetExportMetadata(IExportFactory<TServiceContract> serviceExport)
         {
-            var metadata = serviceExport.ToIndexable()![nameof(IExportFactory<TServiceContract, AppServiceMetadata>.Metadata)];
+            var metadata = serviceExport.ToDynamic()[nameof(IExportFactory<TServiceContract, AppServiceMetadata>.Metadata)];
             return metadata;
         }
     }

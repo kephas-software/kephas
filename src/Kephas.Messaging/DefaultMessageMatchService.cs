@@ -51,7 +51,7 @@ namespace Kephas.Messaging
                 return null;
             }
 
-            var expandoMessage = message.GetContent().ToIndexable()!;
+            var expandoMessage = message.GetContent().ToDynamic();
             var messageId = expandoMessage[nameof(IIdentifiable.Id)]
                             ?? expandoMessage[nameof(MessageHandlerMetadata.MessageId)];
             return messageId;

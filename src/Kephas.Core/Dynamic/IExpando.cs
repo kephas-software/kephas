@@ -145,7 +145,7 @@ namespace Kephas.Dynamic
             }
 
             // for common objects, merge the properties.
-            foreach (var kv in source.ToDictionary()!)
+            foreach (var kv in source.ToDictionary())
             {
                 if (!kv.Key.IsPrivate())
                 {
@@ -170,7 +170,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The lax value.
         /// </returns>
-        public static T? GetLaxValue<T>(this IIndexable expando, string member, T? defaultValue = default)
+        public static T? GetLaxValue<T>(this IDynamic expando, string member, T? defaultValue = default)
         {
             Requires.NotNull(expando, nameof(expando));
 

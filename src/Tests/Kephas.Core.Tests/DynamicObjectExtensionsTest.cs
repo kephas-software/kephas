@@ -10,6 +10,7 @@
 
 namespace Kephas.Core.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Dynamic;
 
@@ -25,15 +26,15 @@ namespace Kephas.Core.Tests
         public void ToDynamic_dynamic()
         {
             var obj = new ExpandoObject();
-            var dyn = obj.ToDynamic();
+            var dyn = obj.ToDynamicObject();
             Assert.AreSame(obj, dyn);
         }
 
         [Test]
-        public void ToDynamic_non_dynamic()
+        public void ToDynamic_non_dynamic_method()
         {
             var obj = new List<string>();
-            var dyn = obj.ToDynamic();
+            var dyn = obj.ToDynamicObject();
             Assert.AreNotSame(obj, dyn);
 
             dyn.Add("John");
@@ -42,10 +43,19 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void ToDynamic_null()
+        public void ToDynamic_non_dynamic_property()
         {
-            var dyn = ((object)null).ToDynamic();
-            Assert.IsNull(dyn);
+            var obj = new List<string> { "one", "two" };
+            var dyn = obj.ToDynamicObject();
+            Assert.AreNotSame(obj, dyn);
+
+            Assert.AreEqual(2, dyn.Count);
+        }
+
+        [Test]
+        public void ToDynamic_null_exception()
+        {
+            Assert.Throws<ArgumentNullException>(() => ((object)null).ToDynamicObject());
         }
     }
 }

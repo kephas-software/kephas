@@ -23,7 +23,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Contract interface for brokered messages.
     /// </summary>
-    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope, IIndexable
+    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope, IDynamic
     {
         /// <summary>
         /// Gets the identifier.

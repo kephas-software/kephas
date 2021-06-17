@@ -54,7 +54,7 @@ namespace Kephas.Dynamic
         /// </remarks>
         /// <param name="key">The key.</param>
         /// <returns>The <see cref="object" />.</returns>
-        object? IIndexable.this[string key]
+        object? IDynamic.this[string key]
         {
             get => TryGetValue(this, key, out var value) ? value : value;
             set => TrySetValue(this, key, value);

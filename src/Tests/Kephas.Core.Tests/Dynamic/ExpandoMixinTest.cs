@@ -20,16 +20,16 @@ namespace Kephas.Core.Tests.Dynamic
         public void Indexer_from_dictionary()
         {
             var expando = new Expandable();
-            expando.ToIndexable()["Hi"] = "there";
-            Assert.AreEqual("there", expando.ToIndexable()["Hi"]);
+            expando.ToDynamic()["Hi"] = "there";
+            Assert.AreEqual("there", expando.ToDynamic()["Hi"]);
         }
 
         [Test]
         public void Indexer_from_member()
         {
             var expando = new Expandable();
-            expando.ToIndexable()["Name"] = "John Doe";
-            Assert.AreEqual("John Doe", expando.ToIndexable()["Name"]);
+            expando.ToDynamic()["Name"] = "John Doe";
+            Assert.AreEqual("John Doe", expando.ToDynamic()["Name"]);
             Assert.AreEqual("John Doe", expando.Name);
         }
 
@@ -37,7 +37,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void HasDynamicMember()
         {
             var expando = new Expandable();
-            expando.ToIndexable()["Hi"] = "there";
+            expando.ToDynamic()["Hi"] = "there";
             Assert.IsTrue(expando.ToExpando().HasDynamicMember("Hi"));
             Assert.IsFalse(expando.ToExpando().HasDynamicMember("there"));
         }
@@ -46,7 +46,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void ToDictionary()
         {
             var expando = new Expandable();
-            expando.ToIndexable()["Hi"] = "there";
+            expando.ToDynamic()["Hi"] = "there";
 
             var dict = expando.ToExpando().ToDictionary();
             Assert.IsTrue(dict.ContainsKey("Hi"));

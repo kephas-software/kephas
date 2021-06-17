@@ -81,6 +81,8 @@ namespace Kephas.Data.Commands
             CancellationToken cancellationToken)
             where T : class
         {
+            Requires.NotNull(bulkUpdateContext.Values, "bulkUpdateContext.Values");
+
             var dataContext = bulkUpdateContext.DataContext;
             var criteria = this.GetMatchingCriteria<T>(bulkUpdateContext);
             var values = bulkUpdateContext.Values.ToDictionary();
@@ -130,7 +132,7 @@ namespace Kephas.Data.Commands
         /// <param name="values">The values.</param>
         protected virtual void UpdateEntity<T>(T entity, IDictionary<string, object> values)
         {
-            var expandoEntity = entity.ToIndexable()!;
+            var expandoEntity = entity.ToDynamic();
             foreach (var kv in values)
             {
                 expandoEntity[kv.Key] = kv.Value;

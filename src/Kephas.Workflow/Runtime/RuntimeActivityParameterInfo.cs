@@ -155,9 +155,9 @@ namespace Kephas.Workflow.Runtime
         /// <param name="value">The value.</param>
         public virtual void SetValue(object? obj, object? value)
         {
-            if (obj is IIndexable indexableObj)
+            if (obj is IDynamic dynamicInstance)
             {
-                indexableObj[this.Name] = value;
+                dynamicInstance[this.Name] = value;
             }
             else
             {
@@ -174,9 +174,9 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         public virtual object? GetValue(object? obj)
         {
-            if (obj is IIndexable indexableObj)
+            if (obj is IDynamic dynamicInstance)
             {
-                return indexableObj[this.Name];
+                return dynamicInstance[this.Name];
             }
 
             return obj?.GetPropertyValue(this.Name);

@@ -43,7 +43,7 @@ namespace Kephas.Data.Conversion.TargetResolvers
             IEntityEntry sourceEntityEntry,
             CancellationToken cancellationToken = default)
         {
-            var sourceId = sourceEntityEntry?.EntityId ?? sourceEntity.ToIndexable()![nameof(IIdentifiable.Id)];
+            var sourceId = sourceEntityEntry?.EntityId ?? sourceEntity?.ToDynamic()[nameof(IIdentifiable.Id)];
             if (!Id.IsEmpty(sourceId))
             {
                 var target = await targetDataContext.FindAsync(

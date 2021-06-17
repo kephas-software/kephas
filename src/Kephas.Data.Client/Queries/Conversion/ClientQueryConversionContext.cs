@@ -46,7 +46,7 @@ namespace Kephas.Data.Client.Queries.Conversion
                 this.options = value;
                 if (value != null)
                 {
-                    var expandoValue = value.ToIndexable()!;
+                    var expandoValue = value.ToDynamic();
                     this.UseMemberAccessConvention = expandoValue.GetLaxValue(
                         nameof(this.UseMemberAccessConvention),
                         this.UseMemberAccessConvention);

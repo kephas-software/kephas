@@ -38,7 +38,7 @@ namespace Kephas.Data.Tests.Commands
             var result = await cmd.ExecuteAsync(findContext);
             var foundEntity = result.Entity;
 
-            Assert.AreSame(localCache.Values.First(e => e.Entity.ToDynamic().Name == "belogea").Entity, foundEntity);
+            Assert.AreSame(localCache.Values.First(e => e.Entity.ToDynamicObject().Name == "belogea").Entity, foundEntity);
         }
 
         [Test]
