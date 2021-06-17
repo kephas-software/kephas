@@ -20,7 +20,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Contract for operation results.
     /// </summary>
-    public interface IOperationResult : IExpando, INotifyPropertyChanged
+    public interface IOperationResult : IExpandoBase, INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the return value.

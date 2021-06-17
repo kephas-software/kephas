@@ -17,7 +17,7 @@ namespace Kephas.Localization
     /// <summary>
     /// Interface for localization.
     /// </summary>
-    public interface ILocalization : IExpando
+    public interface ILocalization : IExpandoBase
     {
         /// <summary>
         /// Gets the culture.
