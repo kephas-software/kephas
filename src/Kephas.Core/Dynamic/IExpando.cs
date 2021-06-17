@@ -91,7 +91,7 @@ namespace Kephas.Dynamic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Merge<T, TContract>(this T expando, Action<TContract>? optionsConfig)
             where T : class, TContract
-            where TContract : IExpando
+            where TContract : IDynamic
         {
             Requires.NotNull(expando, nameof(expando));
 
@@ -113,16 +113,18 @@ namespace Kephas.Dynamic
         /// The target expando object.
         /// </returns>
         public static T Merge<T>(this T expando, object? source)
-            where T : IExpando
+            where T : class, IDynamic
         {
-            if (expando == null || source == null || (object)expando == source)
+            Requires.NotNull(expando, nameof(expando));
+
+            if (source == null || ReferenceEquals(expando, source))
             {
                 return expando;
             }
 
             // if the source is an enumeration of key-value pairs (dictionaries), then merge the dictionary.
             var itemType = source.GetType().TryGetEnumerableItemType();
-            if (itemType != null && itemType.IsGenericType)
+            if (itemType is { IsGenericType: true })
             {
                 var genericItemTypeDefinition = itemType.GetGenericTypeDefinition();
                 if (genericItemTypeDefinition == typeof(KeyValuePair<,>)
