@@ -104,7 +104,7 @@ namespace Kephas.Reflection.Dynamic
         {
             Requires.NotNull(obj, nameof(obj));
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 expando[this.Name] = value;
             }
@@ -123,7 +123,7 @@ namespace Kephas.Reflection.Dynamic
         {
             Requires.NotNull(obj, nameof(obj));
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 return expando[this.Name];
             }

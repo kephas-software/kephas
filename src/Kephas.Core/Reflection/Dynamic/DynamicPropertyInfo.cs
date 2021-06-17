@@ -94,7 +94,7 @@ namespace Kephas.Reflection.Dynamic
                 throw new InvalidOperationException($"Property '{this.Name}' is read-only.");
             }
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 expando[this.Name] = value;
             }
@@ -118,7 +118,7 @@ namespace Kephas.Reflection.Dynamic
                 throw new InvalidOperationException($"Property '{this.Name}' is write-only.");
             }
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 return expando[this.Name];
             }
