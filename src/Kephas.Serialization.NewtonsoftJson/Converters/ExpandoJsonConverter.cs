@@ -20,7 +20,7 @@ namespace Kephas.Serialization.Json.Converters
     using Newtonsoft.Json.Serialization;
 
     /// <summary>
-    /// JSON converter for <see cref="IExpando"/> instances.
+    /// JSON converter for <see cref="IExpandoBase"/> based instances.
     /// </summary>
     public class ExpandoJsonConverter : JsonConverterBase
     {
@@ -211,14 +211,14 @@ namespace Kephas.Serialization.Json.Converters
             var typeProperties = valueTypeInfo.Properties;
             var typeContractProperties = (serializer.ContractResolver.ResolveContract(valueTypeInfo.Type) as JsonDynamicContract)?.Properties;
 
-            var expando = (IExpando)value;
+            var valueDictionary = value.ToDictionary();
 #if NETSTANDARD2_0
-            foreach (var kv in expando.ToDictionary())
+            foreach (var kv in valueDictionary)
             {
                 var key = kv.Key;
                 var propValue = kv.Value;
 #else
-            foreach (var (key, propValue) in expando.ToDictionary())
+            foreach (var (key, propValue) in valueDictionary)
             {
 #endif
                 if (propValue == null && serializer.NullValueHandling == NullValueHandling.Ignore)
