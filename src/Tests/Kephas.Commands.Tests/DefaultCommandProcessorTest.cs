@@ -38,9 +38,9 @@ namespace Kephas.Commands.Tests
             var contextFactory = this.CreateContextFactoryMock(() => new Context(Substitute.For<IAmbientServices>()));
             var cmdInfo = Substitute.For<IOperationInfo>();
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
-                .Returns(ci => ((IExpando)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!");
+                .Returns(ci => ((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!");
             var resolver = Substitute.For<ICommandResolver>();
-            resolver.ResolveCommand("help", Arg.Any<IExpando>(), throwOnNotFound: true)
+            resolver.ResolveCommand("help", Arg.Any<IExpandoBase>(), throwOnNotFound: true)
                 .Returns(cmdInfo);
             var processor = new DefaultCommandProcessor(resolver, Substitute.For<ICommandIdentityResolver>(), contextFactory);
 
@@ -55,9 +55,9 @@ namespace Kephas.Commands.Tests
             var contextFactory = this.CreateContextFactoryMock(() => new Context(Substitute.For<IAmbientServices>()));
             var cmdInfo = Substitute.For<IOperationInfo>();
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
-                .Returns(ci => Task.FromResult<object?>(((IExpando)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!"));
+                .Returns(ci => Task.FromResult<object?>(((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!"));
             var resolver = Substitute.For<ICommandResolver>();
-            resolver.ResolveCommand("help", Arg.Any<IExpando>(), throwOnNotFound: true)
+            resolver.ResolveCommand("help", Arg.Any<IExpandoBase>(), throwOnNotFound: true)
                 .Returns(cmdInfo);
             var processor = new DefaultCommandProcessor(resolver, Substitute.For<ICommandIdentityResolver>(), contextFactory);
 

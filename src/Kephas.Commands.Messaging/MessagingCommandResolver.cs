@@ -49,8 +49,7 @@ namespace Kephas.Commands.Messaging
         ///     otherwise <c>null</c> will be returned.
         /// </param>
         /// <returns>The command as an <see cref="IOperation"/> or <c>null</c>.</returns>
-        public override IOperationInfo? ResolveCommand(string command, IExpandoBase? args = null,
-            bool throwOnNotFound = true)
+        public override IOperationInfo? ResolveCommand(string command, IDynamic? args = null, bool throwOnNotFound = true)
         {
             var (_, runAt, isOneWay) = this.ExtractEnvelopeArgs(args);
             return runAt == null
@@ -58,9 +57,10 @@ namespace Kephas.Commands.Messaging
                 : new RunAtOperationInfo(this.lazyMessageBroker, runAt, command, args, isOneWay);
         }
 
-        private (IExpandoBase? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IExpandoBase? args)
+        private (IDynamic? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IDynamic? args)
         {
-            if (args == null || !args.HasDynamicMember(RunAtOperationInfo.RunAtArg))
+            var expandoArgs = args?.ToExpando();
+            if (args == null || expandoArgs == null || !expandoArgs.HasDynamicMember(RunAtOperationInfo.RunAtArg))
             {
                 return (args, null, false);
             }
@@ -68,7 +68,7 @@ namespace Kephas.Commands.Messaging
             var runAt = args[RunAtOperationInfo.RunAtArg];
             args[RunAtOperationInfo.RunAtArg] = null;
 
-            if (!args.HasDynamicMember(RunAtOperationInfo.OneWayArg))
+            if (!expandoArgs.HasDynamicMember(RunAtOperationInfo.OneWayArg))
             {
                 return (args, runAt, false);
             }
