@@ -142,7 +142,7 @@ namespace Kephas.Workflow
         /// </returns>
         protected virtual Task<object?> TransitionCoreAsync(ITransitionContext context, ITransitionInfo transitionInfo, CancellationToken cancellationToken)
         {
-            var returnType = transitionInfo.ReturnType.AsType();
+            var returnType = transitionInfo.ReturnType?.AsType() ?? typeof(object);
             if (returnType == typeof(Task))
             {
                 var task = (Task)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
