@@ -10,7 +10,6 @@
 
 namespace Kephas.Scripting.Python
 {
-    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -21,7 +20,6 @@ namespace Kephas.Scripting.Python
     using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
     using Microsoft.Scripting;
     using Microsoft.Scripting.Hosting;
 
@@ -49,7 +47,7 @@ namespace Kephas.Scripting.Python
         /// </summary>
         private const string ReturnValueVariableName = "returnValue";
 
-        private ScriptEngine engine;
+        private readonly ScriptEngine engine;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PythonLanguageService"/> class.
@@ -69,12 +67,16 @@ namespace Kephas.Scripting.Python
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public object Execute(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null)
+        public object? Execute(
+            IScript script,
+            IScriptGlobals? scriptGlobals = null,
+            IDynamic? args = null,
+            IContext? executionContext = null)
         {
             // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
 
-            args = args ?? new Expando();
-            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+            args ??= new Expando();
+            scriptGlobals ??= new ScriptGlobals { Args = args };
 
             var (scope, source) = this.PrepareScope(script, scriptGlobals);
 
@@ -94,7 +96,12 @@ namespace Kephas.Scripting.Python
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public async Task<object> ExecuteAsync(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null, CancellationToken cancellationToken = default)
+        public async Task<object?> ExecuteAsync(
+            IScript script,
+            IScriptGlobals? scriptGlobals = null,
+            IDynamic? args = null,
+            IContext? executionContext = null,
+            CancellationToken cancellationToken = default)
         {
             // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
 

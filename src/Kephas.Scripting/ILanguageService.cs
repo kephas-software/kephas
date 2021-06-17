@@ -37,10 +37,10 @@ namespace Kephas.Scripting
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        Task<object> ExecuteAsync(
+        Task<object?> ExecuteAsync(
             IScript script,
             IScriptGlobals? scriptGlobals = null,
-            IExpando? args = null,
+            IDynamic? args = null,
             IContext? executionContext = null,
             CancellationToken cancellationToken = default);
 
@@ -83,10 +83,10 @@ namespace Kephas.Scripting
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        object Execute(
+        object? Execute(
             IScript script,
             IScriptGlobals? scriptGlobals = null,
-            IExpando? args = null,
+            IDynamic? args = null,
             IContext? executionContext = null);
     }
 
