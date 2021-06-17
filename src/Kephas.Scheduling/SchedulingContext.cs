@@ -57,7 +57,7 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Gets or sets the activity arguments.
         /// </summary>
-        public IExpando? ActivityArguments { get; set; }
+        public IDynamic? ActivityArguments { get; set; }
 
         /// <summary>
         /// Gets or sets the activity options.

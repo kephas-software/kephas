@@ -154,7 +154,7 @@ namespace Kephas.Scheduling
             this IScheduler scheduler,
             IJobInfo scheduledJob,
             object? target = null,
-            IExpando? arguments = null,
+            IDynamic? arguments = null,
             Action<IActivityContext>? options = null,
             ITrigger? trigger = null,
             CancellationToken cancellationToken = default)
@@ -179,7 +179,7 @@ namespace Kephas.Scheduling
             this IScheduler scheduler,
             object scheduledJobId,
             object? target = null,
-            IExpando? arguments = null,
+            IDynamic? arguments = null,
             Action<IActivityContext>? options = null,
             ITrigger? trigger = null,
             CancellationToken cancellationToken = default)
@@ -321,7 +321,7 @@ namespace Kephas.Scheduling
             IJobInfo? scheduledJob,
             object? scheduledJobId,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             Action<IActivityContext>? options = null,
             ITrigger? trigger = null,
             CancellationToken cancellationToken = default)
