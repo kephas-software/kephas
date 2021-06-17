@@ -25,7 +25,7 @@ namespace Kephas.Threading.Tasks
 
         private const string ThreadingContextRestoreActionsKey = "__ThreadContextRestoreActions";
 
-        private static readonly IExpando GlobalThreadContextPool = new Expando(isThreadSafe: true);
+        private static readonly IDynamic GlobalThreadContextPool = new Expando(isThreadSafe: true);
 
         private readonly IDynamic threadContextPool;
 

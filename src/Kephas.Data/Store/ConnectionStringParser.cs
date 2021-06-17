@@ -43,11 +43,11 @@ namespace Kephas.Data.Store
         }
 
         /// <summary>
-        /// Parses the provided connection string as <see cref="IExpando"/>.
+        /// Parses the provided connection string to an <see cref="IExpandoBase"/>.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <returns>
-        /// An <see cref="IExpando"/> containing the configuration parameters.
+        /// An <see cref="IExpandoBase"/> containing the configuration parameters.
         /// </returns>
         public static IExpandoBase ToExpando(string connectionString)
         {
