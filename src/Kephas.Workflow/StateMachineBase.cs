@@ -231,11 +231,12 @@ namespace Kephas.Workflow
 
         private IEnumerable<object?> GetInvocationArguments(ITransitionInfo transitionInfo, ITransitionContext context, CancellationToken cancellationToken)
         {
+            var args = context.Arguments?.ToExpando();
             foreach (var paramInfo in transitionInfo.Parameters)
             {
-                if (context.Arguments?.HasDynamicMember(paramInfo.Name) ?? false)
+                if (args?.HasDynamicMember(paramInfo.Name) ?? false)
                 {
-                    yield return context.Arguments[paramInfo.Name];
+                    yield return args[paramInfo.Name];
                 }
                 else if (paramInfo.ValueType.AsType() == typeof(CancellationToken))
                 {
