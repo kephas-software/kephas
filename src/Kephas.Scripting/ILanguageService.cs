@@ -56,10 +56,10 @@ namespace Kephas.Scripting
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        object Execute(
+        object? Execute(
             IScript script,
             IScriptGlobals? scriptGlobals = null,
-            IExpando? args = null,
+            IDynamic? args = null,
             IContext? executionContext = null)
         {
             return this.ExecuteAsync(script, scriptGlobals, args, executionContext).GetResultNonLocking();
@@ -106,11 +106,11 @@ namespace Kephas.Scripting
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public static object Execute(
+        public static object? Execute(
             this ILanguageService languageService,
             IScript script,
             IScriptGlobals? scriptGlobals = null,
-            IExpando? args = null,
+            IDynamic? args = null,
             IContext? executionContext = null)
         {
             Requires.NotNull(languageService, nameof(languageService));

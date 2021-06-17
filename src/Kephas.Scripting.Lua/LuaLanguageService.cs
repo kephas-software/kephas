@@ -55,7 +55,11 @@ namespace Kephas.Scripting.Lua
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public object? Execute(IScript script, IScriptGlobals? scriptGlobals = null, IDynamic? args = null, IContext? executionContext = null)
+        public object? Execute(
+            IScript script,
+            IScriptGlobals? scriptGlobals = null,
+            IDynamic? args = null,
+            IContext? executionContext = null)
         {
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals { Args = args };
