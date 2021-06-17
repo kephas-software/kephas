@@ -39,7 +39,7 @@ namespace Kephas.Workflow.Tests
 
             var target = new object();
             var expected = new object();
-            activityInfo.ExecuteAsync(activity, target, Arg.Any<IExpando>(), Arg.Any<IActivityContext>(), Arg.Any<CancellationToken>())
+            activityInfo.ExecuteAsync(activity, target, Arg.Any<IDynamic>(), Arg.Any<IActivityContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expected));
 
             var result = await processor.ExecuteAsync(activity, target, arguments: null, optionsConfig: null);
