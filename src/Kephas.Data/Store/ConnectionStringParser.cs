@@ -49,7 +49,7 @@ namespace Kephas.Data.Store
         /// <returns>
         /// An <see cref="IExpando"/> containing the configuration parameters.
         /// </returns>
-        public static IExpando AsExpando(string connectionString)
+        public static IExpandoBase ToExpando(string connectionString)
         {
             Requires.NotNullOrEmpty(connectionString, nameof(connectionString));
 

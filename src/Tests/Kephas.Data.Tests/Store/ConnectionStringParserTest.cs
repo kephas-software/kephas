@@ -59,7 +59,7 @@ namespace Kephas.Data.Tests.Store
         [Test]
         public void AsExpando_common_case()
         {
-            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;Key2=val2");
+            dynamic values = ConnectionStringParser.ToExpando("Key1=val1;Key2=val2");
 
             Assert.AreEqual("val1", values.Key1);
             Assert.AreEqual("val2", values.Key2);
@@ -68,7 +68,7 @@ namespace Kephas.Data.Tests.Store
         [Test]
         public void AsExpando_ignore_empty_entries()
         {
-            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;;Key2=val2");
+            dynamic values = ConnectionStringParser.ToExpando("Key1=val1;;Key2=val2");
 
             Assert.AreEqual("val1", values.Key1);
             Assert.AreEqual("val2", values.Key2);
@@ -77,7 +77,7 @@ namespace Kephas.Data.Tests.Store
         [Test]
         public void AsExpando_missing_param_value()
         {
-            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;Key2");
+            dynamic values = ConnectionStringParser.ToExpando("Key1=val1;Key2");
 
             Assert.AreEqual("val1", values.Key1);
         }
@@ -85,7 +85,7 @@ namespace Kephas.Data.Tests.Store
         [Test]
         public void AsExpando_param_value_is_empty()
         {
-            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;Key2=");
+            dynamic values = ConnectionStringParser.ToExpando("Key1=val1;Key2=");
 
             Assert.AreEqual("val1", values.Key1);
             Assert.AreEqual(string.Empty, values.Key2);
