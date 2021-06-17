@@ -31,7 +31,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="name">The command name.</param>
         /// <param name="args">The command arguments.</param>
-        public Command(string name, IDynamic? args = null)
+        public Command(string name, IDynamic? args)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 

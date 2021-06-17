@@ -70,7 +70,7 @@ namespace Kephas.Application.Console.Tests
                 .Returns(ci => Task.FromResult(ci.Arg<object>().ToString()));
             var serialization = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IExpando>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
+            processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IDynamic>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<object>(ci.Arg<string>() + " processed"));
 
             var shell = new DefaultCommandShell(console, processor, serialization);
