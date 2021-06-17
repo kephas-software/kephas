@@ -15,7 +15,7 @@ namespace Kephas.Graphs
     /// <summary>
     /// Defines the contract for a graph edge.
     /// </summary>
-    public interface IGraphEdge : IExpando
+    public interface IGraphEdge : IExpandoBase
     {
         /// <summary>
         /// Gets the node from which the edge starts.
