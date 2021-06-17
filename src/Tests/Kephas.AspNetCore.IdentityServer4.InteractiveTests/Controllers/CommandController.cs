@@ -80,7 +80,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
         /// <returns>
         /// An asynchronous result that yields the process result.
         /// </returns>
-        protected async Task<object?> ProcessCoreAsync(string command, IExpando? args, CancellationToken cancellationToken = default)
+        protected async Task<object?> ProcessCoreAsync(string command, IDynamic? args, CancellationToken cancellationToken = default)
         {
             try
             {
