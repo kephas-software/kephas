@@ -18,7 +18,7 @@ namespace Kephas.Plugins
     /// <summary>
     /// Interface for plugin.
     /// </summary>
-    public interface IPlugin : IExpando, IInstance<IAppInfo>, IIdentifiable
+    public interface IPlugin : IExpandoBase, IInstance<IAppInfo>, IIdentifiable
     {
         /// <summary>
         /// Gets the identity.
