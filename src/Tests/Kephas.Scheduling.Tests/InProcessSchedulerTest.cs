@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application;
-
 namespace Kephas.Scheduling.Tests
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Runtime;
