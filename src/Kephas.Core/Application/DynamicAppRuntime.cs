@@ -52,7 +52,7 @@ namespace Kephas.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IExpando? appArgs = null)
+            IDynamic? appArgs = null)
             : base(getLogger, checkLicense, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
         }

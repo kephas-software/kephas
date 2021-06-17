@@ -72,7 +72,7 @@ namespace Kephas.Plugins.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IExpando? appArgs = null,
+            IDynamic? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
             IPluginRepository? pluginRepository = null)
@@ -212,9 +212,9 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// True to enable plugins, false to disable them.
         /// </returns>
-        protected virtual bool ComputeEnablePlugins(bool? enablePlugins, IExpando? appArgs)
+        protected virtual bool ComputeEnablePlugins(bool? enablePlugins, IDynamic? appArgs)
         {
-            return enablePlugins ?? (bool?) appArgs?[EnablePluginsArgName] ?? true;
+            return enablePlugins ?? (bool?)appArgs?[EnablePluginsArgName] ?? true;
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The calculated plugins folder.
         /// </returns>
-        protected virtual string ComputePluginsLocation(string? rawPluginsFolder, IExpando? appArgs)
+        protected virtual string ComputePluginsLocation(string? rawPluginsFolder, IDynamic? appArgs)
         {
             var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginsFolderArgName] as string ?? DefaultPluginsFolder);
             return Path.GetFullPath(pluginsFolder);

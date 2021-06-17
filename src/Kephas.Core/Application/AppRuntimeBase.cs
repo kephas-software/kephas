@@ -127,7 +127,7 @@ namespace Kephas.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IExpando? appArgs = null)
+            IDynamic? appArgs = null)
             : base(isThreadSafe: true)
         {
             this.AppArgs = appArgs == null
