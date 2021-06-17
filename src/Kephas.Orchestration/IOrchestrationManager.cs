@@ -52,7 +52,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IDynamic arguments, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Stops a running application asynchronously.

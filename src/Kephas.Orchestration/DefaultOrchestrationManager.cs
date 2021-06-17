@@ -246,7 +246,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IDynamic arguments, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
             await Task.Yield();
 
@@ -526,7 +526,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The app executable arguments.
         /// </returns>
-        protected virtual IArgs GetAppExecutableArgs(IAppInfo appInfo, IExpando arguments)
+        protected virtual IArgs GetAppExecutableArgs(IAppInfo appInfo, IDynamic arguments)
         {
             var appArgs = new Args
             {
@@ -548,7 +548,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The new process starter factory.
         /// </returns>
-        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, Action<IContext>? optionsConfig = null)
+        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IDynamic arguments, Action<IContext>? optionsConfig = null)
             => this.processStarterFactoryFactory.CreateExportedValue();
 
         /// <summary>
