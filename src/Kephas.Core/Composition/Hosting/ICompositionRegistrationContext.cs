@@ -27,7 +27,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The parts.
         /// </value>
-        IEnumerable<Type> Parts { get; set; }
+        IEnumerable<Type>? Parts { get; set; }
 
         /// <summary>
         /// Gets or sets the registrars.
@@ -43,6 +43,6 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The application service information providers.
         /// </value>
-        IEnumerable<IAppServiceInfoProvider> AppServiceInfoProviders { get; set; }
+        IEnumerable<IAppServiceInfoProvider>? AppServiceInfoProviders { get; set; }
     }
 }

@@ -127,10 +127,8 @@ namespace Kephas.Composition.Conventions
                 parts.AddRange(registrationContext.Parts.Where(IsPartCandidate));
             }
 
-            var conventionRegistrars = registrationContext?.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
-            var registrars = conventionRegistrars == null
-                                ? new List<IConventionsRegistrar>()
-                                : new List<IConventionsRegistrar>(conventionRegistrars);
+            var conventionRegistrars = registrationContext.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
+            var registrars = conventionRegistrars?.ToList() ?? new List<IConventionsRegistrar>();
             if (registrationContext.Registrars != null)
             {
                 registrars.AddRange(registrationContext.Registrars);
