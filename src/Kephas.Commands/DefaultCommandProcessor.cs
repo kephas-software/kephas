@@ -60,7 +60,7 @@ namespace Kephas.Commands
         /// <returns>
         /// The asynchronous result returning the output of the command execution.
         /// </returns>
-        public virtual async Task<object?> ProcessAsync(string command, IExpando? args = null, IContext? context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<object?> ProcessAsync(string command, IDynamic? args = null, IContext? context = null, CancellationToken cancellationToken = default)
         {
             var commandInfo = this.resolver.ResolveCommand(command, args);
             var ownsContext = context == null;

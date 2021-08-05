@@ -173,7 +173,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
 
             Assert.IsInstanceOf<Expando>(obj);
             var expando = (Expando)obj;
-            var strategy = (IIndexable)expando["connection-strategy"];
+            var strategy = (IDynamic)expando["connection-strategy"];
             Assert.IsNotNull(strategy);
             var connectionFlow = (IList<object?>)strategy["connection-flow"];
             Assert.AreEqual(2, connectionFlow.Count);

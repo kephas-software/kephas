@@ -89,7 +89,7 @@ namespace Kephas.Commands.Messaging.Reflection
         {
             var argsList = args?.ToArray() ?? Array.Empty<object?>();
 
-            var opArgs = argsList.Length > 0 ? (IExpando?)argsList[0] : null;
+            var opArgs = argsList.Length > 0 ? (IDynamic?)argsList[0] : null;
             var opContext = argsList.Length > 1 ? (IContext?)argsList[1] : null;
             var opToken = argsList.Length > 2 ? (CancellationToken?)argsList[2] : default;
 
@@ -106,7 +106,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// </returns>
         public virtual object CreateInstance(IEnumerable<object?>? args = null)
         {
-            var opArgs = (IExpando?)args?.FirstOrDefault();
+            var opArgs = (IDynamic?)args?.FirstOrDefault();
             var message = this.CreateMessage(opArgs);
 
             return this.CreateOperation(message, opArgs);
@@ -118,7 +118,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <param name="message">The message.</param>
         /// <param name="args">The raw arguments.</param>
         /// <returns>The operation.</returns>
-        protected internal virtual IOperation CreateOperation(object message, IExpando? args)
+        protected internal virtual IOperation CreateOperation(object message, IDynamic? args)
         {
             return new MessageOperation(message, this.LazyMessageProcessor);
         }
@@ -128,7 +128,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// </summary>
         /// <param name="values">The values.</param>
         /// <returns>The message.</returns>
-        protected internal virtual object CreateMessage(IExpando? values)
+        protected internal virtual object CreateMessage(IDynamic? values)
         {
             var message = this.MessageType.CreateInstance();
 
@@ -180,7 +180,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <returns>
         /// The message arguments.
         /// </returns>
-        protected virtual IDictionary<string, object?> GetMessageArguments(IExpando args) => args.ToDictionary();
+        protected virtual IDictionary<string, object?> GetMessageArguments(IDynamic args) => args.ToDictionary();
 
         /// <summary>
         /// Handles an argument that cannot be matched by name.

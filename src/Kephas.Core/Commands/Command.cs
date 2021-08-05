@@ -31,7 +31,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="name">The command name.</param>
         /// <param name="args">The command arguments.</param>
-        public Command(string name, IExpando? args = null)
+        public Command(string name, IDynamic? args)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -47,7 +47,7 @@ namespace Kephas.Commands
         /// <summary>
         /// Gets the command arguments.
         /// </summary>
-        public IExpando Args { get; }
+        public IDynamic Args { get; }
 
         /// <summary>
         /// Parses the command from the provided command line and returns it.
@@ -56,7 +56,7 @@ namespace Kephas.Commands
         /// <returns>The parsed command.</returns>
         public static Command Parse(string commandLine)
         {
-            return new Command(commandLine);
+            return new (commandLine);
         }
 
         /// <summary>Returns a string that represents the current object.</summary>
@@ -71,7 +71,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="commandLine">The command line.</param>
         /// <returns>The command name and arguments.</returns>
-        protected virtual (string command, IExpando args) ParseCore(string commandLine)
+        protected virtual (string command, IDynamic args) ParseCore(string commandLine)
         {
             var commandIndex = commandLine.IndexOf(" ");
             var name = commandIndex <= 0 ? commandLine : commandLine.Substring(0, commandIndex);

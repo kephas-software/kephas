@@ -24,7 +24,7 @@ namespace Kephas.Commands
         /// <typeparam name="TArgs">The arguments type.</typeparam>
         /// <param name="args">The expando arguments.</param>
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static TArgs AsArgs<TArgs>(this IExpando args)
+        public static TArgs AsArgs<TArgs>(this IDynamic args)
         {
             Requires.NotNull(args, nameof(args));
             return args is TArgs appArgs ? appArgs : (TArgs)Activator.CreateInstance(typeof(TArgs), args);
@@ -35,7 +35,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="args">The expando arguments.</param>
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static IArgs AsArgs(this IExpando args)
+        public static IArgs AsArgs(this IDynamic args)
         {
             Requires.NotNull(args, nameof(args));
             return args is IArgs appArgs ? appArgs : new Args(args);
@@ -69,7 +69,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="arguments">The arguments as a dictionary.</param>
         /// <returns>A list of string arguments.</returns>
-        public static IEnumerable<string> ToCommandArgs(this IExpando arguments)
+        public static IEnumerable<string> ToCommandArgs(this IDynamic arguments)
         {
             if (arguments is IArgs args)
             {

@@ -121,6 +121,7 @@ namespace Kephas.Serialization.Json
                 new AppServiceInfoJsonConverter(typeRegistry, typeResolver),
                 new ExpandoJsonConverter(typeRegistry, typeResolver),
                 new DictionaryJsonConverter(typeRegistry, typeResolver),
+                new AnonymousClassJsonConverter(typeRegistry),
                 new ArrayJsonConverter(),
                 new CollectionJsonConverter(typeRegistry),
                 new ObjectJsonConverter(),

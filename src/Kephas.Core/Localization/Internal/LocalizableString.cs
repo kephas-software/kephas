@@ -31,7 +31,7 @@ namespace Kephas.Localization.Internal
         /// <summary>
         /// The property value.
         /// </summary>
-        private string propertyValue;
+        private string? propertyValue;
 
         /// <summary>
         /// The resource type.

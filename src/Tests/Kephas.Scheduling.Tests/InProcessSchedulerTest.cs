@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application;
-
 namespace Kephas.Scheduling.Tests
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Runtime;
@@ -58,7 +57,7 @@ namespace Kephas.Scheduling.Tests
             var execution = 0;
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -94,7 +93,7 @@ namespace Kephas.Scheduling.Tests
             var execution = 0;
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -130,7 +129,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             var triggerId = 1;
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -172,7 +171,7 @@ namespace Kephas.Scheduling.Tests
 
             var triggerId = 1;
             var trigger = new TimerTrigger(triggerId) {Count = null, Interval = TimeSpan.FromMilliseconds(30)};
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -211,7 +210,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             var triggerId = 1;
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -251,7 +250,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             var triggerId = 1;
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -290,7 +289,7 @@ namespace Kephas.Scheduling.Tests
             var execution = 0;
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
@@ -324,7 +323,7 @@ namespace Kephas.Scheduling.Tests
             var execution = 0;
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
-            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,

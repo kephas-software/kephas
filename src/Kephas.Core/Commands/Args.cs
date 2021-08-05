@@ -12,7 +12,6 @@ namespace Kephas.Commands
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
@@ -63,7 +62,7 @@ namespace Kephas.Commands
         /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
         /// <param name="args">The argument values.</param>
-        public Args(IExpando args)
+        public Args(IDynamic args)
             : base(ComputeArgs(args.ToDictionary()))
         {
             this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;

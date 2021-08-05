@@ -33,7 +33,7 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
-        Task<object> TryResolveTargetEntityAsync(
+        Task<object?> TryResolveTargetEntityAsync(
             IDataContext targetDataContext,
             TypeInfo targetType,
             object sourceEntity,

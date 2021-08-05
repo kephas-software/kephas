@@ -72,7 +72,7 @@ namespace Kephas.Workflow.Reflection
             IStateMachine stateMachine,
             object targetState,
             ITransitionInfo? transitionInfo,
-            IExpando? arguments,
+            IDynamic? arguments,
             ITransitionContext context,
             CancellationToken cancellationToken = default);
     }

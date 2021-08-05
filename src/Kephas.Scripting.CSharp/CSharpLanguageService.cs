@@ -57,18 +57,18 @@ namespace Kephas.Scripting.CSharp
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public async Task<object> ExecuteAsync(
+        public async Task<object?> ExecuteAsync(
             IScript script,
-            IScriptGlobals scriptGlobals = null,
-            IExpando args = null,
-            IContext executionContext = null,
+            IScriptGlobals? scriptGlobals = null,
+            IDynamic? args = null,
+            IContext? executionContext = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(script, nameof(script));
             Requires.NotNull(script.SourceCode, nameof(script.SourceCode));
 
-            args = args ?? new Expando();
-            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+            args ??= new Expando();
+            scriptGlobals ??= new ScriptGlobals { Args = args };
 
             var (globalsScript, assemblies) = this.GetGlobalsScript(scriptGlobals);
 
@@ -140,7 +140,7 @@ namespace Kephas.Scripting.CSharp
 
         public class Globals
         {
-            public IExpando __g { get; set; }
+            public IDynamic __g { get; set; }
         }
     }
 }

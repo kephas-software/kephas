@@ -15,6 +15,7 @@ namespace Kephas.Reflection.Dynamic
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Dynamic parameter information.
@@ -30,6 +31,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The type of the parameter.
         /// </value>
+        [ExcludeFromSerialization]
         public ITypeInfo ValueType
         {
             get => this.valueType ??= this.TryGetType(this.valueTypeName);
@@ -50,7 +52,7 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Gets or sets the position in the parameter's list.
+        /// Gets the position in the parameter's list.
         /// </summary>
         /// <value>
         /// The position in the parameter's list.
@@ -102,7 +104,7 @@ namespace Kephas.Reflection.Dynamic
         {
             Requires.NotNull(obj, nameof(obj));
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 expando[this.Name] = value;
             }
@@ -121,7 +123,7 @@ namespace Kephas.Reflection.Dynamic
         {
             Requires.NotNull(obj, nameof(obj));
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 return expando[this.Name];
             }

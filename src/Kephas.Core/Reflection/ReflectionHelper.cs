@@ -50,7 +50,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsPrivate(this string identifier)
         {
-            return identifier?.StartsWith("_") ?? true;
+            return identifier.StartsWith("_") || identifier.StartsWith("#");
         }
 
         /// <summary>

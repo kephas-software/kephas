@@ -290,7 +290,7 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var instance = new DerivedExpando();
             instance.Age = age;
-            dynamic expando = instance.ToDynamic();
+            dynamic expando = instance.ToDynamicObject();
 
             var isOld = expando.IsOld();
             return isOld;

@@ -36,7 +36,7 @@ namespace Kephas.Scripting
         /// </returns>
         Task<object?> ExecuteAsync(
             IScript script,
-            IExpando? args = null,
+            IDynamic? args = null,
             IContext? executionContext = null,
             Action<IScriptingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);

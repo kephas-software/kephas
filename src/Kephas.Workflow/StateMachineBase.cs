@@ -142,7 +142,7 @@ namespace Kephas.Workflow
         /// </returns>
         protected virtual Task<object?> TransitionCoreAsync(ITransitionContext context, ITransitionInfo transitionInfo, CancellationToken cancellationToken)
         {
-            var returnType = transitionInfo.ReturnType.AsType();
+            var returnType = transitionInfo.ReturnType?.AsType() ?? typeof(object);
             if (returnType == typeof(Task))
             {
                 var task = (Task)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
@@ -231,11 +231,12 @@ namespace Kephas.Workflow
 
         private IEnumerable<object?> GetInvocationArguments(ITransitionInfo transitionInfo, ITransitionContext context, CancellationToken cancellationToken)
         {
+            var args = context.Arguments?.ToExpando();
             foreach (var paramInfo in transitionInfo.Parameters)
             {
-                if (context.Arguments?.HasDynamicMember(paramInfo.Name) ?? false)
+                if (args?.HasDynamicMember(paramInfo.Name) ?? false)
                 {
-                    yield return context.Arguments[paramInfo.Name];
+                    yield return args[paramInfo.Name];
                 }
                 else if (paramInfo.ValueType.AsType() == typeof(CancellationToken))
                 {

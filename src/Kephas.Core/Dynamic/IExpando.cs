@@ -24,7 +24,7 @@ namespace Kephas.Dynamic
     using Kephas.Runtime;
 
     /// <summary>
-    /// Enumerates the
+    /// Enumerates the flags for controlling the member binding through indexer or dynamic member access.
     /// </summary>
     [Flags]
     public enum ExpandoMemberBinderKind
@@ -55,33 +55,13 @@ namespace Kephas.Dynamic
         All = InnerDictionary | InnerObject | This,
     }
 
+
     /// <summary>
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
-    public interface IExpando : IDynamicMetaObjectProvider, IIndexable
+    public interface IExpando : IDynamicMetaObjectProvider, IExpandoBase
     {
-        /// <summary>
-        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
-        /// </summary>
-        /// <param name="memberName">Name of the member.</param>
-        /// <returns>
-        /// True if defined, false if not.
-        /// </returns>
-        bool HasDynamicMember(string memberName);
-
-        /// <summary>
-        /// Converts the expando to a dictionary having as keys the property names and as values the
-        /// respective properties' values.
-        /// </summary>
-        /// <param name="keyFunc">Optional. The key transformation function.</param>
-        /// <param name="valueFunc">Optional. The value transformation function.</param>
-        /// <returns>
-        /// A dictionary of property values with their associated names.
-        /// </returns>
-        IDictionary<string, object?> ToDictionary(
-            Func<string, string>? keyFunc = null,
-            Func<object?, object?>? valueFunc = null);
     }
 
     /// <summary>
@@ -111,7 +91,7 @@ namespace Kephas.Dynamic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Merge<T, TContract>(this T expando, Action<TContract>? optionsConfig)
             where T : class, TContract
-            where TContract : IExpando
+            where TContract : IDynamic
         {
             Requires.NotNull(expando, nameof(expando));
 
@@ -133,16 +113,18 @@ namespace Kephas.Dynamic
         /// The target expando object.
         /// </returns>
         public static T Merge<T>(this T expando, object? source)
-            where T : IExpando
+            where T : class, IDynamic
         {
-            if (expando == null || source == null || (object)expando == source)
+            Requires.NotNull(expando, nameof(expando));
+
+            if (source == null || ReferenceEquals(expando, source))
             {
                 return expando;
             }
 
             // if the source is an enumeration of key-value pairs (dictionaries), then merge the dictionary.
             var itemType = source.GetType().TryGetEnumerableItemType();
-            if (itemType != null && itemType.IsGenericType)
+            if (itemType is { IsGenericType: true })
             {
                 var genericItemTypeDefinition = itemType.GetGenericTypeDefinition();
                 if (genericItemTypeDefinition == typeof(KeyValuePair<,>)
@@ -165,7 +147,7 @@ namespace Kephas.Dynamic
             }
 
             // for common objects, merge the properties.
-            foreach (var kv in source.ToExpando().ToDictionary())
+            foreach (var kv in source.ToDictionary())
             {
                 if (!kv.Key.IsPrivate())
                 {
@@ -190,7 +172,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The lax value.
         /// </returns>
-        public static T GetLaxValue<T>(this IIndexable expando, string member, T defaultValue = default)
+        public static T? GetLaxValue<T>(this IDynamic expando, string member, T? defaultValue = default)
         {
             Requires.NotNull(expando, nameof(expando));
 

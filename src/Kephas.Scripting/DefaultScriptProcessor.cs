@@ -119,7 +119,7 @@ namespace Kephas.Scripting
         /// </returns>
         public async Task<object?> ExecuteAsync(
             IScript script,
-            IExpando? args = null,
+            IDynamic? args = null,
             IContext? executionContext = null,
             Action<IScriptingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
@@ -180,7 +180,7 @@ namespace Kephas.Scripting
         /// </returns>
         protected virtual IScriptingContext CreateScriptingContext(
             IScript script,
-            IExpando args,
+            IDynamic args,
             IContext? executionContext,
             Action<IScriptingContext>? optionsConfig = null)
         {

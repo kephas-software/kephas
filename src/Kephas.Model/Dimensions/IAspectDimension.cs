@@ -15,8 +15,8 @@ namespace Kephas.Model.Dimensions
 
     /// <summary>
     /// Dimension identifying orthogonal aspects within the application. 
-    /// By default, Kephas provide a default dimension element named 'Main',
-    /// identifying the main concern of a model element.
+    /// By default, Kephas provide a default dimension element named 'Default',
+    /// identifying the default aspect of a model element.
     /// </summary>
     /// <remarks>
     /// The aspect dimension is aggregatable because it may provide logical aspects

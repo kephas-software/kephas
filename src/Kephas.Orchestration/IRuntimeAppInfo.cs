@@ -17,7 +17,7 @@ namespace Kephas.Orchestration
     /// <summary>
     /// Interface for runtime application information.
     /// </summary>
-    public interface IRuntimeAppInfo : IExpando
+    public interface IRuntimeAppInfo : IDynamic
     {
     /// <summary>
     /// Gets the identifier of the application.

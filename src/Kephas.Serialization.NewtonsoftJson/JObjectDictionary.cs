@@ -21,7 +21,7 @@ namespace Kephas.Serialization.Json
     /// <summary>
     /// Dictionary of objects.
     /// </summary>
-    public class JObjectDictionary : IDictionary<string, object?>, IIndexable
+    public class JObjectDictionary : IDictionary<string, object?>, IDynamic
     {
         private readonly JObject obj;
 

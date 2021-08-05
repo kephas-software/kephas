@@ -67,7 +67,7 @@ namespace Kephas.Scheduling.Reflection
         Task<object?> ExecuteAsync(
             IJob job,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default);
     }

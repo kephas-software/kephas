@@ -19,7 +19,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// <see cref="DynamicTypeRegistry"/> should be processed before expandos, that's why the higher priority.
     /// </remarks>
-    [ProcessingPriority(Priority.AboveNormal)]
+    [ProcessingPriority(Priority.High)]
     public class DynamicTypeRegistryJsonConverter : ExpandoJsonConverter
     {
         /// <summary>
@@ -38,9 +38,9 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>The newly created expando collector.</returns>
-        protected override IExpando CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+        protected override IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
         {
-            return existingValue == null ? new DynamicTypeRegistry(this.TypeRegistry, this.TypeResolver) : (IExpando)existingValue;
+            return existingValue == null ? new DynamicTypeRegistry(this.TypeRegistry, this.TypeResolver) : (IExpandoBase)existingValue;
         }
     }
 }

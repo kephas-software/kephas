@@ -492,7 +492,7 @@ namespace Kephas.Scheduling
         protected virtual IJobResult StartJob(
             IJobInfo scheduledJob,
             object? target,
-            IExpando? arguments,
+            IDynamic? arguments,
             Action<IActivityContext>? options,
             CancellationTokenSource cancellationTokenSource)
         {

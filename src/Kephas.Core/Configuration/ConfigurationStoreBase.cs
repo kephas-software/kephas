@@ -32,7 +32,7 @@ namespace Kephas.Configuration
         /// </summary>
         /// <param name="store">The store.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
-        protected ConfigurationStoreBase(IIndexable store, IRuntimeTypeRegistry typeRegistry)
+        protected ConfigurationStoreBase(IDynamic store, IRuntimeTypeRegistry typeRegistry)
         {
             this.InternalStore = store;
             this.TypeRegistry = typeRegistry;
@@ -44,7 +44,7 @@ namespace Kephas.Configuration
         /// <value>
         /// The internal store.
         /// </value>
-        protected IIndexable InternalStore { get; }
+        protected IDynamic InternalStore { get; }
 
         /// <summary>
         /// Gets the type registry.

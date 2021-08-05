@@ -39,7 +39,7 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Gets or sets the activity arguments.
         /// </summary>
-        IExpando? ActivityArguments { get; set; }
+        IDynamic? ActivityArguments { get; set; }
 
         /// <summary>
         /// Gets or sets the activity options.
@@ -112,7 +112,7 @@ namespace Kephas.Scheduling
         /// <param name="arguments">The activity arguments.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext ActivityArguments<TContext>(this TContext context, IExpando? arguments)
+        public static TContext ActivityArguments<TContext>(this TContext context, IDynamic? arguments)
             where TContext : class, ISchedulingContext
         {
             Requires.NotNull(context, nameof(context));
@@ -131,7 +131,7 @@ namespace Kephas.Scheduling
         /// <param name="options">Optional. The activity options.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext Activity<TContext>(this TContext context, object? target, IExpando? arguments = null, Action<IActivityContext>? options = null)
+        public static TContext Activity<TContext>(this TContext context, object? target, IDynamic? arguments = null, Action<IActivityContext>? options = null)
             where TContext : class, ISchedulingContext
         {
             Requires.NotNull(context, nameof(context));

@@ -23,6 +23,6 @@ namespace Kephas.Scripting
         /// <value>
         /// The global arguments.
         /// </value>
-        IExpando Args { get; }
+        IDynamic Args { get; }
     }
 }

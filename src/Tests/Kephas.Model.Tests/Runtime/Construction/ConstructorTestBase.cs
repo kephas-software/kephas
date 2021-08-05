@@ -37,8 +37,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
         /// The construction context.
         /// </returns>
         public IModelConstructionContext GetConstructionContext(
-            IModelSpace modelSpace = null,
-            IRuntimeModelElementFactory factory = null)
+            IModelSpace? modelSpace = null,
+            IRuntimeModelElementFactory? factory = null)
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry()).WithStaticAppRuntime();
             var compositionContext = Substitute.For<ICompositionContext>();

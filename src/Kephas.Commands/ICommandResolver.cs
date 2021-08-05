@@ -28,6 +28,6 @@ namespace Kephas.Commands
         ///     otherwise <c>null</c> will be returned.
         /// </param>
         /// <returns>The command as an <see cref="IOperation"/> or <c>null</c>.</returns>
-        IOperationInfo? ResolveCommand(string command, IExpando? args = null, bool throwOnNotFound = true);
+        IOperationInfo? ResolveCommand(string command, IDynamic? args = null, bool throwOnNotFound = true);
     }
 }

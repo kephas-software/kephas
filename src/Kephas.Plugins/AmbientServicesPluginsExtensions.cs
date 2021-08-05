@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas
 {
     using System;
@@ -56,7 +54,7 @@ namespace Kephas
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IExpando? appArgs = null,
+            IDynamic? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
             Action<PluginsAppRuntime>? config = null)

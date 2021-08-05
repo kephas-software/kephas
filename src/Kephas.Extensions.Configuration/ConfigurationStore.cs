@@ -34,7 +34,7 @@ namespace Kephas.Extensions.Configuration
         {
         }
 
-        private class ConfigurationAdapter : IIndexable
+        private class ConfigurationAdapter : IDynamic
         {
             public ConfigurationAdapter(IConfiguration configuration)
             {

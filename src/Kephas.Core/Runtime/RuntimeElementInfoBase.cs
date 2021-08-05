@@ -14,7 +14,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Base class for runtime element infos.
     /// </summary>
-    public abstract class RuntimeElementInfoBase : Expando, IExpando
+    public abstract class RuntimeElementInfoBase : Expando
     {
         /// <summary>
         /// Gets the logger.

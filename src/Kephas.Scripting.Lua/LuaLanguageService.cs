@@ -10,7 +10,6 @@
 
 namespace Kephas.Scripting.Lua
 {
-    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -20,7 +19,6 @@ namespace Kephas.Scripting.Lua
     using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
     using Neo.IronLua;
 
     /// <summary>
@@ -37,7 +35,7 @@ namespace Kephas.Scripting.Lua
         /// </summary>
         public const string Language = "LUA";
 
-        private Lua engine;
+        private readonly Lua engine;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LuaLanguageService"/> class.
@@ -57,10 +55,14 @@ namespace Kephas.Scripting.Lua
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public object Execute(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null)
+        public object? Execute(
+            IScript script,
+            IScriptGlobals? scriptGlobals = null,
+            IDynamic? args = null,
+            IContext? executionContext = null)
         {
-            args = args ?? new Expando();
-            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+            args ??= new Expando();
+            scriptGlobals ??= new ScriptGlobals { Args = args };
 
             var (scope, source) = this.PrepareScope(script, scriptGlobals);
 
@@ -81,7 +83,12 @@ namespace Kephas.Scripting.Lua
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public async Task<object> ExecuteAsync(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null, CancellationToken cancellationToken = default)
+        public async Task<object?> ExecuteAsync(
+            IScript script,
+            IScriptGlobals? scriptGlobals = null,
+            IDynamic? args = null,
+            IContext? executionContext = null,
+            CancellationToken cancellationToken = default)
         {
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals { Args = args };
@@ -113,7 +120,7 @@ namespace Kephas.Scripting.Lua
             return (scope, source);
         }
 
-        private object GetReturnValue(LuaResult result, LuaGlobal scope)
+        private object? GetReturnValue(LuaResult result, LuaGlobal scope)
         {
             // TODO
             return result.Values.Length == 0 ? null : result.Values[0];

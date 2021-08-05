@@ -55,7 +55,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The arguments.
         /// </value>
-        public IExpando Args { get; set; }
+        public IDynamic Args { get; set; }
 
         /// <summary>
         /// Gets or sets the script globals.

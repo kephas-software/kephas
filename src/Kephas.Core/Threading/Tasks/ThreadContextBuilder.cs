@@ -25,9 +25,9 @@ namespace Kephas.Threading.Tasks
 
         private const string ThreadingContextRestoreActionsKey = "__ThreadContextRestoreActions";
 
-        private static readonly IExpando GlobalThreadContextPool = new Expando(isThreadSafe: true);
+        private static readonly IDynamic GlobalThreadContextPool = new Expando(isThreadSafe: true);
 
-        private readonly IExpando threadContextPool;
+        private readonly IDynamic threadContextPool;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
@@ -41,7 +41,7 @@ namespace Kephas.Threading.Tasks
         /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
         /// </summary>
         /// <param name="threadContextPool">The thread context pool.</param>
-        internal ThreadContextBuilder(IExpando threadContextPool)
+        internal ThreadContextBuilder(IDynamic threadContextPool)
         {
             Requires.NotNull(threadContextPool, nameof(threadContextPool));
 

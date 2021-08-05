@@ -87,7 +87,13 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// An asynchronous result that yields the transition result.
         /// </returns>
-        public Task<object?> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
+        public Task<object?> TransitionAsync(
+            IStateMachine stateMachine,
+            object targetState,
+            ITransitionInfo? transitionInfo,
+            IDynamic? arguments,
+            ITransitionContext context,
+            CancellationToken cancellationToken = default)
         {
             context.To = targetState;
             if (transitionInfo != null)

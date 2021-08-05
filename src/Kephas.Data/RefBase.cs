@@ -59,7 +59,7 @@ namespace Kephas.Data
         protected virtual object? GetEntityPropertyValue(string propertyName)
         {
             var entity = this.GetContainerEntity();
-            return entity is IIndexable expandoEntity
+            return entity is IDynamic expandoEntity
                        ? expandoEntity[propertyName]
                        : entity.GetPropertyValue(propertyName);
         }
@@ -72,7 +72,7 @@ namespace Kephas.Data
         protected virtual void SetEntityPropertyValue(string propertyName, object? value)
         {
             var entity = this.GetContainerEntity();
-            if (entity is IIndexable expandoEntity)
+            if (entity is IDynamic expandoEntity)
             {
                 expandoEntity[propertyName] = value;
             }

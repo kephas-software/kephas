@@ -17,6 +17,7 @@ namespace Kephas.Reflection.Dynamic
     using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Resources;
+    using Kephas.Serialization;
     using Kephas.Services;
 
     /// <summary>
@@ -127,6 +128,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The properties.
         /// </value>
+        [ExcludeFromSerialization]
         public IEnumerable<IPropertyInfo> Properties => this.Members.OfType<IPropertyInfo>();
 
         /// <summary>
@@ -148,6 +150,7 @@ namespace Kephas.Reflection.Dynamic
         /// <summary>
         /// Gets the container type registry.
         /// </summary>
+        [ExcludeFromSerialization]
         public ITypeRegistry TypeRegistry =>
             this.GetTypeRegistry()
                 ?? throw new InvalidOperationException($"The {nameof(this.DeclaringContainer)} is not set. Try add the '{this.GetType()}' to the '{nameof(DynamicTypeRegistry.Types)}' collection.");

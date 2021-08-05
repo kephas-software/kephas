@@ -16,6 +16,7 @@ namespace Kephas.Reflection.Dynamic
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Dynamic property information.
@@ -31,6 +32,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The type of the property.
         /// </value>
+        [ExcludeFromSerialization]
         public virtual ITypeInfo ValueType
         {
             get => this.valueType ??= this.TryGetType(this.valueTypeName);
@@ -92,7 +94,7 @@ namespace Kephas.Reflection.Dynamic
                 throw new InvalidOperationException($"Property '{this.Name}' is read-only.");
             }
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 expando[this.Name] = value;
             }
@@ -116,7 +118,7 @@ namespace Kephas.Reflection.Dynamic
                 throw new InvalidOperationException($"Property '{this.Name}' is write-only.");
             }
 
-            if (obj is IExpando expando)
+            if (obj is IDynamic expando)
             {
                 return expando[this.Name];
             }

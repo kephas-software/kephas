@@ -19,7 +19,7 @@ namespace Kephas.Scheduling.Triggers
     /// <summary>
     /// Interface for trigger.
     /// </summary>
-    public interface ITrigger : IExpando, IInstance<ITriggerInfo>, IIdentifiable, IDisposable
+    public interface ITrigger : IDynamic, IInstance<ITriggerInfo>, IIdentifiable, IDisposable
     {
         /// <summary>
         /// Occurs when the trigger is fired.

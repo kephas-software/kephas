@@ -91,7 +91,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppArgs"/> class.
         /// </summary>
         /// <param name="args">The argument values.</param>
-        public AppArgs(IExpando args)
+        public AppArgs(IDynamic args)
             : base(args)
         {
         }

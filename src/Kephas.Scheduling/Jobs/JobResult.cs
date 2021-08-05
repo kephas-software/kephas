@@ -137,7 +137,7 @@ namespace Kephas.Scheduling.Jobs
         /// <returns>A serialization friendly object representing this object.</returns>
         public override object ToData(IDataFormattingContext? context = null)
         {
-            var expando = base.ToData(context).ToExpando()!;
+            var expando = base.ToData(context).ToDynamic();
             expando[nameof(this.ScheduledJobId)] = this.ScheduledJobId;
             expando[nameof(this.RunningJobId)] = this.RunningJobId;
             expando[nameof(this.TriggerId)] = this.TriggerId;

@@ -29,7 +29,7 @@ namespace Kephas.Collections
         /// <param name="key">The item's key.</param>
         /// <param name="defaultValue">The default value to return if the item could not be found.</param>
         /// <returns>The found value, or the default value.</returns>
-        public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+        public static TValue? TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue = default)
         {
             Requires.NotNull(dictionary, nameof(dictionary));
             if (key == null)

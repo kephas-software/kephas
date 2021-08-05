@@ -10,6 +10,7 @@
 
 namespace Kephas
 {
+    using System.Collections.Generic;
     using System.Dynamic;
 
     using Kephas.Diagnostics.Contracts;
@@ -100,31 +101,66 @@ namespace Kephas
         /// <summary>
         /// Gets a dynamic object out of the provided instance.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>A dynamic object wrapping the provided object.</returns>
-        public static dynamic? ToDynamic(this object obj)
+        /// <param name="obj">The object to convert.</param>
+        /// <returns>The provided instance, if it is a dynamic object, or a dynamic wrapper over it.</returns>
+        public static dynamic ToDynamicObject(this object obj)
         {
-            if (obj == null || obj is IDynamicMetaObjectProvider)
-            {
-                return obj;
-            }
+            Requires.NotNull(obj, nameof(obj));
 
-            return new Expando(obj);
+            return obj switch
+            {
+                IDynamicMetaObjectProvider => obj,
+                _ => new Expando(obj)
+            };
         }
 
         /// <summary>
-        /// Gets an <see cref="IExpando"/> object out of the provided instance.
+        /// Gets an <see cref="IExpandoBase"/> object out of the provided instance.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>An <see cref="IExpando"/> wrapping the provided object. If the provided object is an expando, that object is returned.</returns>
-        public static IExpando? ToExpando(this object? obj)
+        /// <param name="obj">The object to convert.</param>
+        /// <returns>The provided instance, if it is an <see cref="IExpandoBase"/>, or a dynamic wrapper over it.</returns>
+        public static IExpandoBase ToExpando(this object obj)
         {
-            if (obj == null || obj is IExpando)
-            {
-                return (IExpando?)obj;
-            }
+            Requires.NotNull(obj, nameof(obj));
 
-            return new Expando(obj);
+            return obj switch
+            {
+                IExpandoBase expando => expando,
+                _ => new Expando(obj)
+            };
+        }
+
+        /// <summary>
+        /// Converts the provided instance to a dictionary.
+        /// </summary>
+        /// <param name="obj">The object to convert.</param>
+        /// <returns>The provided instance, if it is a dictionary, or a dictionary containing its content.</returns>
+        public static IDictionary<string, object?> ToDictionary(this object obj)
+        {
+            Requires.NotNull(obj, nameof(obj));
+
+            return obj switch
+            {
+                IDictionary<string, object?> dictionary => dictionary,
+                IExpandoBase expando => expando.ToDictionary(),
+                _ => new Expando(obj).ToDictionary()
+            };
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IDynamic"/> object out of the provided instance.
+        /// </summary>
+        /// <param name="obj">The object to convert.</param>
+        /// <returns>The provided instance, if it is an <see cref="IDynamic"/>, or a dynamic wrapper over it.</returns>
+        public static IDynamic ToDynamic(this object obj)
+        {
+            Requires.NotNull(obj, nameof(obj));
+
+            return obj switch
+            {
+                IDynamic dyn => dyn,
+                _ => new Expando(obj)
+            };
         }
     }
 }

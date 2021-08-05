@@ -21,7 +21,7 @@ namespace Kephas.Configuration
     /// <remarks>
     /// The configuration store is used to store configuration values based on keys.
     /// </remarks>
-    public interface IConfigurationStore : IIndexable
+    public interface IConfigurationStore : IDynamic
     {
         /// <summary>
         /// Configures the settings.

@@ -15,6 +15,8 @@ namespace Kephas.Reflection.Dynamic
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Serialization;
+
     /// <summary>
     /// Information about the dynamic operation.
     /// </summary>
@@ -38,6 +40,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The return type of the method.
         /// </value>
+        [ExcludeFromSerialization]
         public ITypeInfo? ReturnType
         {
             get => this.returnType ??= this.TryGetType(this.returnTypeName);
