@@ -19,6 +19,6 @@
         /// <returns>
         /// A tuple of (term1, operation, term2).
         /// </returns>
-        Tuple<double, string, double> Parse(string input, IEnumerable<string> operations);
+        (double op1, string opName, double op2) Parse(string input, IEnumerable<string> operations);
     }
 }

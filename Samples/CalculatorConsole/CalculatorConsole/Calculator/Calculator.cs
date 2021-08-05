@@ -23,9 +23,9 @@
 
         public (double Value, string OperationName) Compute(string input)
         {
-            var parsedOperation = this.parser.Parse(input, this.OperationsDictionary.Select(op => op.Key));
-            var operation = this.OperationsDictionary[parsedOperation.Item2];
-            return (operation.CreateExportedValue().Compute(parsedOperation.Item1, parsedOperation.Item3), operation.Metadata.OperationName);
+            var (op1, opName, op2) = this.parser.Parse(input, this.OperationsDictionary.Select(op => op.Key));
+            var operation = this.OperationsDictionary[opName];
+            return (operation.CreateExportedValue().Compute(op1, op2), operation.Metadata.OperationName);
         }
     }
 }
