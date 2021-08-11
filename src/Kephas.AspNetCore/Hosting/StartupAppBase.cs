@@ -14,7 +14,6 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Hosting.Configuration;
@@ -28,7 +27,6 @@ namespace Kephas.Application.AspNetCore.Hosting
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
     using LogLevel = Kephas.Logging.LogLevel;
     using Strings = Kephas.Resources.Strings;
 
@@ -40,8 +38,8 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// </remarks>
     public abstract class StartupAppBase : AppBase
     {
-        private IServiceCollection serviceCollection;
-        private Task bootstrapTask;
+        private IServiceCollection? serviceCollection;
+        private Task? bootstrapTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StartupAppBase"/> class.
@@ -128,6 +126,12 @@ namespace Kephas.Application.AspNetCore.Hosting
         {
             this.AmbientServices = ambientServices;
 
+            if (this.serviceCollection == null)
+            {
+                throw new ApplicationException(
+                    $"The service collection is not initialize. Possible cause: {nameof(this.ConfigureServices)} was not called.");
+            }
+
             try
             {
                 this.AmbientServices
@@ -167,10 +171,15 @@ namespace Kephas.Application.AspNetCore.Hosting
 
             // ensure upon request processing that the bootstrapping procedure is done.
             app.Use(async (context, next) =>
+            {
+                if (this.bootstrapTask == null)
                 {
-                    await this.bootstrapTask.PreserveThreadContext();
-                    await next.Invoke();
-                });
+                    throw new ApplicationException("The bootstrap task is not initialized!");
+                }
+
+                await this.bootstrapTask.PreserveThreadContext();
+                await next.Invoke();
+            });
 
             // use middleware configurators to setup the application.
             foreach (var middlewareConfigurator in this.GetMiddlewareConfigurators(appContext))
@@ -201,7 +210,8 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// </summary>
         /// <param name="appContext">The application context.</param>
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
-        protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(IAspNetAppContext appContext)
+        protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(
+            IAspNetAppContext appContext)
         {
             var container = appContext.CompositionContext;
             var middlewareConfigurators = container
@@ -216,8 +226,10 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
-        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
-            => ambientServices.GetServicesConfigurators().Select(c => (Action<IServiceCollection, IAmbientServices>)c.ConfigureServices);
+        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(
+            IAmbientServices ambientServices)
+            => ambientServices.GetServicesConfigurators()
+                .Select(c => (Action<IServiceCollection, IAmbientServices>)c.ConfigureServices);
 
         /// <summary>
         /// Disposes the services container. Replaces the original <see cref="AfterAppManagerFinalize"/>

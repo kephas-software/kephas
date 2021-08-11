@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkerAppShutdownAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="WorkerAppMainLoop.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,15 +25,15 @@ namespace Kephas.Extensions.Hosting.Application
     /// </summary>
     [Override]
     [OverridePriority(Priority.AboveNormal)]
-    public class WorkerAppShutdownAwaiter : DefaultAppShutdownAwaiter, IInitializable
+    public class WorkerAppMainLoop : DefaultAppMainLoop, IInitializable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkerAppShutdownAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="WorkerAppMainLoop"/> class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="host">Optional. The host.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public WorkerAppShutdownAwaiter(IEventHub eventHub, IHost? host = null, ILogManager? logManager = null)
+        public WorkerAppMainLoop(IEventHub eventHub, IHost? host = null, ILogManager? logManager = null)
             : base(eventHub, logManager)
         {
             this.Host = host;

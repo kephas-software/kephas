@@ -27,13 +27,13 @@ namespace Kephas.Application
     [ProcessingPriority(Priority.Highest)]
     public class ShutdownAwaiterAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
-        private readonly IAppShutdownAwaiter awaiter;
+        private readonly IAppMainLoop awaiter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShutdownAwaiterAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="awaiter">The awaiter.</param>
-        public ShutdownAwaiterAppLifecycleBehavior(IAppShutdownAwaiter awaiter)
+        public ShutdownAwaiterAppLifecycleBehavior(IAppMainLoop awaiter)
         {
             this.awaiter = awaiter;
         }

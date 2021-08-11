@@ -71,14 +71,14 @@ namespace Kephas.Application.Tests
         public async Task BootstrapAsync_wait_for_shutdown_exception_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
-            var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
-            termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
+            var termAwaiter = Substitute.For<IAppMainLoop>();
+            termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns<(IOperationResult result, AppShutdownInstruction instruction)>(ci => throw new InvalidOperationException("bad thing happened"));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
-            compositionContext.GetExport<IAppShutdownAwaiter>(Arg.Any<string>())
+            compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
@@ -93,14 +93,14 @@ namespace Kephas.Application.Tests
         public async Task BootstrapAsync_shutdown_instruction_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
-            var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
-            termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
+            var termAwaiter = Substitute.For<IAppMainLoop>();
+            termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
-            compositionContext.GetExport<IAppShutdownAwaiter>(Arg.Any<string>())
+            compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
@@ -115,14 +115,14 @@ namespace Kephas.Application.Tests
         public async Task BootstrapAsync_none_instruction_does_not_stop_application()
         {
             var appManager = Substitute.For<IAppManager>();
-            var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
-            termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
+            var termAwaiter = Substitute.For<IAppMainLoop>();
+            termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
-            compositionContext.GetExport<IAppShutdownAwaiter>(Arg.Any<string>())
+            compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
@@ -136,7 +136,7 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task BootstrapAsync_composition()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestApp), typeof(TestShutdownAwaiter), typeof(TestShutdownFeatureManager) });
+            var container = this.CreateContainer(parts: new[] { typeof(TestApp), typeof(TestMainLoop), typeof(TestShutdownFeatureManager) });
             var app = new TestApp(ambientServices: container.GetExport<IAmbientServices>());
             var (appContext, instruction) = await app.BootstrapAsync();
 
@@ -163,21 +163,21 @@ namespace Kephas.Application.Tests
 
         public class TestShutdownFeatureManager : FeatureManagerBase
         {
-            private readonly IAppShutdownAwaiter awaiter;
+            private readonly IAppMainLoop awaiter;
 
-            public TestShutdownFeatureManager(IAppShutdownAwaiter awaiter)
+            public TestShutdownFeatureManager(IAppMainLoop awaiter)
             {
                 this.awaiter = awaiter;
             }
 
             protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
             {
-                (this.awaiter as TestShutdownAwaiter).SignalShutdown();
+                (this.awaiter as TestMainLoop).SignalShutdown();
                 return base.InitializeCoreAsync(appContext, cancellationToken);
             }
         }
 
-        public class TestShutdownAwaiter : IAppShutdownAwaiter, IInitializable
+        public class TestMainLoop : IAppMainLoop, IInitializable
         {
             bool initialized = false;
 
@@ -194,7 +194,7 @@ namespace Kephas.Application.Tests
                 this.initialized = true;
             }
 
-            public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+            public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
             {
                 return (new OperationResult(), AppShutdownInstruction.Ignore);
             }

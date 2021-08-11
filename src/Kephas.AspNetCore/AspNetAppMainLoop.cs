@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspNetAppShutdownAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="AspNetAppMainLoop.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,18 +25,18 @@ namespace Kephas.Application.AspNetCore
     /// An ASP net application shutdown awaiter.
     /// </summary>
     [OverridePriority(Priority.High)]
-    public class AspNetAppShutdownAwaiter : Loggable, IAppShutdownAwaiter
+    public class AspNetAppMainLoop : Loggable, IAppMainLoop
     {
         private readonly IHostApplicationLifetime appLifetime;
         private IEventSubscription shutdownSubscription;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AspNetAppShutdownAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="AspNetAppMainLoop"/> class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="appLifetime">The application lifetime.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public AspNetAppShutdownAwaiter(IEventHub eventHub, IHostApplicationLifetime appLifetime, ILogManager? logManager = null)
+        public AspNetAppMainLoop(IEventHub eventHub, IHostApplicationLifetime appLifetime, ILogManager? logManager = null)
             : base(logManager)
         {
             this.appLifetime = appLifetime;
@@ -50,7 +50,7 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// An asynchronous result that yields the termination result.
         /// </returns>
-        public Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
             return Task.FromResult<(IOperationResult result, AppShutdownInstruction instruction)>((new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore));
         }

@@ -29,9 +29,9 @@ namespace Kephas.Application.Console.Tests.Application
         public void Composition()
         {
             var container = this.CreateContainer();
-            var awaiter = container.GetExport<IAppShutdownAwaiter>();
+            var awaiter = container.GetExport<IAppMainLoop>();
 
-            Assert.IsInstanceOf<ConsoleAppShutdownAwaiter>(awaiter);
+            Assert.IsInstanceOf<ConsoleAppMainLoop>(awaiter);
         }
 
         [Test]
@@ -50,8 +50,8 @@ namespace Kephas.Application.Console.Tests.Application
             shell.StartAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.Delay(100));
 
-            var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
-            var awaiterTask = awaiter.WaitForShutdownSignalAsync(default);
+            var awaiter = new ConsoleAppMainLoop(shell, eventHub);
+            var awaiterTask = awaiter.Main(default);
             await Task.WhenAll(
                 awaiterTask,
                 callback(new ShutdownSignal("hello"), Substitute.For<IContext>(), default));
@@ -74,8 +74,8 @@ namespace Kephas.Application.Console.Tests.Application
                     callback = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
                     return Substitute.For<IEventSubscription>();
                 });
-            var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
-            var awaiterTask = awaiter.WaitForShutdownSignalAsync(default);
+            var awaiter = new ConsoleAppMainLoop(shell, eventHub);
+            var awaiterTask = awaiter.Main(default);
             await awaiterTask;
 
             Assert.AreEqual(AppShutdownInstruction.Shutdown, awaiterTask.Result.instruction);

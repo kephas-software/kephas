@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppShutdownAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="IAppMainLoop.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,18 +17,18 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// Singleton application service contract for the service awaiting for the application shutdown signal.
+    /// Singleton application service contract for the service executing the application's main loop.
     /// </summary>
     [SingletonAppServiceContract]
-    public interface IAppShutdownAwaiter
+    public interface IAppMainLoop
     {
         /// <summary>
-        /// Waits for the shutdown signal asynchronously.
+        /// Executes the application's main loop asynchronously.
         /// </summary>
         /// <param name="cancellationToken">The application lifetime token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken);
+        Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken);
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAppShutdownAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="DefaultAppMainLoop.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Kephas.Application
     /// A default application shutdown awaiter.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultAppShutdownAwaiter : Loggable, IAppShutdownAwaiter
+    public class DefaultAppMainLoop : Loggable, IAppMainLoop
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly IEventSubscription shutdownSubscription;
@@ -33,11 +33,11 @@ namespace Kephas.Application
         private TaskCompletionSource<IOperationResult>? completionSource;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultAppShutdownAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="DefaultAppMainLoop"/> class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public DefaultAppShutdownAwaiter(IEventHub eventHub, ILogManager? logManager = null)
+        public DefaultAppMainLoop(IEventHub eventHub, ILogManager? logManager = null)
             : base(logManager)
         {
             this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>((e, ctx) => this.HandleShutdownSignal());
@@ -53,13 +53,13 @@ namespace Kephas.Application
         public bool IsAttended { get; protected internal set; } = true;
 
         /// <summary>
-        /// Waits for the shutdown signal asynchronously.
+        /// Executes the application's main loop asynchronously.
         /// </summary>
         /// <param name="cancellationToken">The application lifetime token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken)
+        public virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken)
         {
             this.completionSource = new TaskCompletionSource<IOperationResult>();
 

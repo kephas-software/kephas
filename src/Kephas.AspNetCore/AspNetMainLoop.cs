@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspNetShutdownAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="AspNetMainLoop.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,18 +25,18 @@ namespace Kephas.Application.AspNetCore
     /// </summary>
     [Override]
     [ProcessingPriority(Priority.AboveNormal - 100)]
-    public class AspNetShutdownAwaiter : WorkerAppShutdownAwaiter
+    public class AspNetMainLoop : WorkerAppMainLoop
     {
         private readonly IEventSubscription? shutdownSubscription;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AspNetShutdownAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="AspNetMainLoop"/> class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="appLifetime">Optional. The application lifetime.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public AspNetShutdownAwaiter(
+        public AspNetMainLoop(
             IEventHub eventHub,
             IAppArgs appArgs,
             IHostApplicationLifetime? appLifetime = null,
@@ -73,10 +73,10 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public override async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public override async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
             return this.RunAsInteractive
-                ? await base.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext()
+                ? await base.Main(cancellationToken).PreserveThreadContext()
                 : (new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore);
         }
 
