@@ -11,7 +11,7 @@ namespace CalculatorConsole
 {
     using System.Threading.Tasks;
 
-    using CalculatorConsole.Application;
+    using Kephas;
     using Kephas.Application;
 
     /// <summary>
@@ -21,7 +21,10 @@ namespace CalculatorConsole
     {
         public static Task Main(string[] args)
         {
-            return new CalculatorShell().BootstrapAsync(new AppArgs(args));
+            return new App(ambientServices => ambientServices
+                .WithNLogManager()
+                .WithStaticAppRuntime()
+                .BuildWithLite()).BootstrapAsync(new AppArgs(args));
         }
     }
 }
