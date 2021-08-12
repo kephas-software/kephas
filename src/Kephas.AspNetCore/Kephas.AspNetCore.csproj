@@ -14,13 +14,13 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides the infrastructure for the Kephas Framework integration with ASP.NET Core applications.
-            Typically used areas and classes/interfaces/services:
-            - StartupBase, IAspNetAppContext.
-            - Hosting: IHostConfigurator, IStartupFilterService.
+			Provides the infrastructure for the Kephas Framework integration with ASP.NET Core applications.
+			Typically used areas and classes/interfaces/services:
+			- StartupBase, IAspNetAppContext.
+			- Hosting: IMiddlewareConfigurator, IEndpointConfigurator, IStartupFilterService.
 
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+			Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+		</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
