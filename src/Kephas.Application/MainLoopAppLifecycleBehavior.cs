@@ -18,24 +18,24 @@ namespace Kephas.Application
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// A shutdown awaiter application lifecycle behavior.
+    /// An application lifecycle behavior initializing the main loop.
     /// </summary>
     /// <remarks>
-    /// Makes sure that the shutdown awaiter has a chance to initialize before the application manager starts initializing the features.
+    /// Makes sure that the application main loop has a chance to initialize before the application manager starts initializing the features.
     /// Sometimes the features and the behaviors order a shutdown (like a setup routine).
     /// </remarks>
     [ProcessingPriority(Priority.Highest)]
-    public class ShutdownAwaiterAppLifecycleBehavior : AppLifecycleBehaviorBase
+    public class MainLoopAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
-        private readonly IAppMainLoop awaiter;
+        private readonly IAppMainLoop mainLoop;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShutdownAwaiterAppLifecycleBehavior"/> class.
+        /// Initializes a new instance of the <see cref="MainLoopAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="awaiter">The awaiter.</param>
-        public ShutdownAwaiterAppLifecycleBehavior(IAppMainLoop awaiter)
+        /// <param name="mainLoop">The application's main loop.</param>
+        public MainLoopAppLifecycleBehavior(IAppMainLoop mainLoop)
         {
-            this.awaiter = awaiter;
+            this.mainLoop = mainLoop;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Kephas.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.awaiter, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.mainLoop, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
@@ -66,7 +66,7 @@ namespace Kephas.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.awaiter, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.mainLoop, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
     }

@@ -93,15 +93,15 @@ namespace Kephas.Application.Tests
         public async Task BootstrapAsync_shutdown_instruction_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
-            var termAwaiter = Substitute.For<IAppMainLoop>();
-            termAwaiter.Main(Arg.Any<CancellationToken>())
+            var mainLoop = Substitute.For<IAppMainLoop>();
+            mainLoop.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
             compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
-                .Returns(termAwaiter);
+                .Returns(mainLoop);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
             var (appContext, instruction) = await app.BootstrapAsync();

@@ -67,7 +67,7 @@ namespace Kephas.Application.AspNetCore
         protected virtual bool RunAsInteractive => !this.AppArgs.RunAsService;
 
         /// <summary>
-        /// Waits for the shutdown signal asynchronously.
+        /// Executes the application's main loop asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>

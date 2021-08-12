@@ -13,6 +13,7 @@ namespace Kephas.Application.Console.Tests.Application
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Reflection;
@@ -23,7 +24,8 @@ namespace Kephas.Application.Console.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    public class ConsoleAppShutdownAwaiterTest : ConsoleTestBase
+    public class ConsoleAppMainLoopTest
+        : ConsoleTestBase
     {
         [Test]
         public void Composition()

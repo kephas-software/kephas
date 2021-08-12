@@ -244,8 +244,8 @@ namespace Kephas.Application
             try
             {
                 var container = this.AmbientServices.CompositionContainer;
-                var terminationAwaiter = container.GetExport<IAppMainLoop>();
-                var (result, instruction) = await terminationAwaiter.Main(cancellationToken)
+                var mainLoop = container.GetExport<IAppMainLoop>();
+                var (result, instruction) = await mainLoop.Main(cancellationToken)
                     .PreserveThreadContext();
                 this.AppContext!.AppResult = result;
 
