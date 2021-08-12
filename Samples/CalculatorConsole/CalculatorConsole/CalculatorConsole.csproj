@@ -2,50 +2,33 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
         <Authors>Kephas Software SRL</Authors>
         <Product>Kephas Samples</Product>
         <Copyright>(c) Kephas Software SRL 2017-2019</Copyright>
-        <Version>6.0.0</Version>
-        <FileVersion>6.0.0.0</FileVersion>
-        <AssemblyVersion>6.0.0.0</AssemblyVersion>
+        <Version>9.3.0</Version>
+        <FileVersion>9.3.0.0</FileVersion>
+        <AssemblyVersion>9.3.0.0</AssemblyVersion>
         <PackageTags>kephas samples</PackageTags>
         <NeutralLanguage>en-US</NeutralLanguage>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\CalculatorConsole.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.2|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NETCOREAPP2_2</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.2|AnyCPU'">
-        <DefineConstants>NETCOREAPP2_2</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
-        <DefineConstants>NET452</DefineConstants>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG</DefineConstants>
     </PropertyGroup>
 
     <!-- common NuGet package refs that affect all projects -->
     <ItemGroup>
-        <PackageReference Include="Kephas.Application" Version="8.4.3" />
-        <PackageReference Include="Kephas.Application.Console" Version="8.4.3" />
-        <PackageReference Include="Kephas.Messaging" Version="8.4.0" />
+        <PackageReference Include="Kephas.Application" Version="9.3.0" />
+        <PackageReference Include="Kephas.Application.Console" Version="9.3.0" />
+        <PackageReference Include="Kephas.Messaging" Version="9.3.0" />
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-        <PackageReference Include="Kephas.Composition.Mef" Version="8.4.0" />
-        <PackageReference Include="Kephas.Core" Version="8.4.4" />
-        <PackageReference Include="Kephas.Logging.NLog" Version="8.4.0" />
-        <PackageReference Include="System.Composition" Version="1.3.0" />
+        <PackageReference Include="Kephas.Core" Version="9.3.0" />
+        <PackageReference Include="Kephas.Logging.NLog" Version="9.3.0" />
     </ItemGroup>
     <ItemGroup>
       <None Update="NLog.config">

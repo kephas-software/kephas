@@ -12,15 +12,17 @@ namespace CalculatorConsole.Application
     using Kephas;
     using Kephas.Application;
     using Kephas.Logging.NLog;
+    using System;
+    using System.Threading;
 
     public class CalculatorShell : AppBase
     {
-        protected override void BuildServicesContainer(IAmbientServices ambientServices)
-        {
-            ambientServices
+        public CalculatorShell()
+            : base(containerBuilder: ambientServices => ambientServices
                 .WithNLogManager()
                 .WithStaticAppRuntime()
-                .BuildWithSystemComposition();
+                .BuildWithLite())
+        {
         }
     }
 }

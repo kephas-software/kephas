@@ -8,11 +8,11 @@ using Kephas.Operations;
 
 namespace ConfigurationConsole.Application
 {
-    public class CalculatorAppShutdownAwaiter : IAppShutdownAwaiter
+    public class CalculatorMainLoop : IAppMainLoop
     {
         private readonly ICalculator calculator;
 
-        public CalculatorAppShutdownAwaiter(IConsole console, ICalculator calculator)
+        public CalculatorMainLoop(IConsole console, ICalculator calculator)
         {
             this.Console = console;
             this.calculator = calculator;
@@ -20,7 +20,7 @@ namespace ConfigurationConsole.Application
 
         public IConsole Console { get; }
 
-        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Application started.");
