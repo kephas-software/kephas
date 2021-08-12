@@ -97,7 +97,7 @@ namespace Kephas.Application
             this.AfterAppManagerInitialize();
 
             this.AppLifetimeTokenSource ??= new CancellationTokenSource();
-            var instruction = await this.WaitForShutdownSignalAsync(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
+            var instruction = await this.Main(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
 
             if (instruction != AppShutdownInstruction.Shutdown)
             {
@@ -233,13 +233,13 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Waits for the shutdown signal asynchronously.
+        /// Executes the application's main loop asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown instruction.
         /// </returns>
-        protected virtual async Task<AppShutdownInstruction> WaitForShutdownSignalAsync(CancellationToken cancellationToken)
+        protected virtual async Task<AppShutdownInstruction> Main(CancellationToken cancellationToken)
         {
             try
             {
