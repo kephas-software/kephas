@@ -2,17 +2,19 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
-        <ApplicationIcon />
-        <StartupObject />
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <LangVersion>latest</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <LangVersion>latest</LangVersion>
-    </PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+		<Authors>Kephas Software SRL</Authors>
+		<Product>Kephas Samples</Product>
+		<Copyright>(c) Kephas Software SRL 2017-2021</Copyright>
+		<Version>9.3.1</Version>
+		<FileVersion>9.3.1.0</FileVersion>
+		<AssemblyVersion>9.3.1.0</AssemblyVersion>
+		<PackageTags>kephas samples</PackageTags>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
     <PropertyGroup>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -26,7 +28,6 @@
         <PackageReference Include="Kephas.Logging.NLog" Version="9.3.1" />
         <PackageReference Include="Kephas.Messaging" Version="9.3.1" />
         <PackageReference Include="Kephas.Serialization.NewtonsoftJson" Version="9.3.1" />
-        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>

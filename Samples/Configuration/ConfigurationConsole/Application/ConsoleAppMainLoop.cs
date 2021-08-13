@@ -15,9 +15,9 @@ using Kephas.Operations;
 
 namespace ConfigurationConsole.Application
 {
-    public class ConsoleAppShutdownAwaiter : IAppMainLoop
+    public class ConsoleAppMainLoop : IAppMainLoop
     {
-        public ConsoleAppShutdownAwaiter(IConsole console)
+        public ConsoleAppMainLoop(IConsole console)
         {
             Console = console;
         }
