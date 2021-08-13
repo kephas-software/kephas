@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calculator", "Calculator", "{37EDA61C-1DB4-4338-9877-8C2404ECFB89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorConsole", "CalculatorConsole\CalculatorConsole\CalculatorConsole.csproj", "{49EB7C9A-BC81-4085-83FB-A4A40EE82098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorConsole", "CalculatorConsole\CalculatorConsole\CalculatorConsole.csproj", "{49EB7C9A-BC81-4085-83FB-A4A40EE82098}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Startup", "Startup", "{C15F2D0E-BD12-4185-A021-F630094651B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupConsole", "StartupConsole\StartupConsole\StartupConsole.csproj", "{2B15F402-2704-4121-97E5-59B143936214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupConsole", "StartupConsole\StartupConsole\StartupConsole.csproj", "{2B15F402-2704-4121-97E5-59B143936214}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomizeMefContainer", "CustomizeMefContainer", "{07B8ABA1-319F-45F0-8298-E55370522BC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoleGame", "CustomizeMefContainer\RoleGame\RoleGame.csproj", "{2B436BEA-5734-47FA-A193-564F3FC0B17E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoleGame", "CustomizeMefContainer\RoleGame\RoleGame.csproj", "{2B436BEA-5734-47FA-A193-564F3FC0B17E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{5D739283-D925-4F6C-B7A2-64459E50405E}"
 EndProject
@@ -29,7 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationConsole", "Con
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MetadataWebApp", "MetadataWebApp", "{52C56D45-BA43-4201-BE8C-9EDF9BDD6A13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata.WebApp", "MetadataWebApp\Metadata.WebApp\Metadata.WebApp.csproj", "{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Metadata.WebApp", "MetadataWebApp\Metadata.WebApp\Metadata.WebApp.csproj", "{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoleGame.ScopedContext", "DependencyInjection\RoleGame.ScopedContext\RoleGame.ScopedContext.csproj", "{D70AAAE8-5EE9-4B60-9712-B407FD2DB40C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{480D7FEC-B1A3-4AD3-8757-DC28EABE2AF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,10 @@ Global
 		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D70AAAE8-5EE9-4B60-9712-B407FD2DB40C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D70AAAE8-5EE9-4B60-9712-B407FD2DB40C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D70AAAE8-5EE9-4B60-9712-B407FD2DB40C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D70AAAE8-5EE9-4B60-9712-B407FD2DB40C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +86,8 @@ Global
 		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C} = {74A641A7-24A2-4782-A959-F5FAA515C17C}
 		{52C56D45-BA43-4201-BE8C-9EDF9BDD6A13} = {5D739283-D925-4F6C-B7A2-64459E50405E}
 		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02} = {52C56D45-BA43-4201-BE8C-9EDF9BDD6A13}
+		{D70AAAE8-5EE9-4B60-9712-B407FD2DB40C} = {480D7FEC-B1A3-4AD3-8757-DC28EABE2AF7}
+		{480D7FEC-B1A3-4AD3-8757-DC28EABE2AF7} = {5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B337414D-EBA0-4DCD-9CC5-3F736C99372C}

@@ -17,7 +17,11 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
-    <ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
         <Compile Remove="Properties\**" />
         <EmbeddedResource Remove="Properties\**" />
         <None Remove="Properties\**" />
