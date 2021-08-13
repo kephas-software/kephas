@@ -9,7 +9,7 @@ using RoleGame.Services;
 
 namespace RoleGame.Application
 {
-    public class RoleGameShutdownAwaiter : IAppShutdownAwaiter
+    public class RoleGameMainLoop : IAppMainLoop
     {
         private readonly ICompositionContext compositionContext;
         private readonly IConsole console;
@@ -20,7 +20,7 @@ namespace RoleGame.Application
         /// Initializes a new instance of the RoleGame.Application.RoleGameShutdownAwaiter class.
         /// </summary>
         /// <param name="console">The console.</param>
-        public RoleGameShutdownAwaiter(ICompositionContext compositionContext, IConsole console)
+        public RoleGameMainLoop(ICompositionContext compositionContext, IConsole console)
         {
             this.compositionContext = compositionContext;
             this.console = console;
@@ -34,19 +34,22 @@ namespace RoleGame.Application
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
             this.console.WriteLine(string.Empty);
             this.console.WriteLine($"Application started.");
 
-            var context = CreateUserContext("Adela");
-            this.compositionContexts.Add("Adela", context);
+            var context = CreateUserContext("Ciuri");
+            this.compositionContexts.Add("Ciuri", context);
 
-            context = CreateUserContext("Ioan");
-            this.compositionContexts.Add("Ioan", context);
+            context = CreateUserContext("Buri");
+            this.compositionContexts.Add("Buri", context);
 
-            var gameManagerUser1 = this.compositionContexts["Ioan"].GetExport<IGameManager>().User.Name;
-            var gameManagerUser2 = this.compositionContexts["Adela"].GetExport<IGameManager>().User.Name;
+            var gameManagerUser1 = this.compositionContexts["Ciuri"].GetExport<IGameManager>().User.Name;
+            var gameManagerUser2 = this.compositionContexts["Buri"].GetExport<IGameManager>().User.Name;
+
+            console.WriteLine($"User in composition context Ciuri: {gameManagerUser1}.");
+            console.WriteLine($"User in composition context Buri: {gameManagerUser2}.");
 
             console.WriteLine("Press any key to end the program...");
             console.ReadLine();

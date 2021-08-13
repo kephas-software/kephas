@@ -10,14 +10,22 @@
 namespace RoleGame
 {
     using System.Threading.Tasks;
+using Kephas;
     using Kephas.Application;
     using RoleGame.Application;
+    using RoleGame.Composition;
 
     class Program
     {
         static Task Main(string[] args)
         {
-            return new RoleGameShell().BootstrapAsync(new AppArgs(args));
+            return new App(ambientServices =>
+                ambientServices
+                    .WithNLogManager()
+                    .WithDynamicAppRuntime(an => an.Name.StartsWith("Kephas") || an.Name.StartsWith("RoleGame"))
+                    .BuildWithSystemComposition(
+                        cfg => cfg.WithConventionsRegistrar(new GameConventionRegistrar())))
+                .BootstrapAsync(new AppArgs(args));
         }
     }
 }
