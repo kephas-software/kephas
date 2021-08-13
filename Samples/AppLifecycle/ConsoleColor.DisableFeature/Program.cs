@@ -7,13 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace StartupConsole
+namespace ConsoleColor.DisableFeature
 {
-    using System;
     using System.Threading.Tasks;
-using Kephas;
+    using Kephas;
     using Kephas.Application;
-    using StartupConsole.Application;
 
     /// <summary>
     /// The entry point class.

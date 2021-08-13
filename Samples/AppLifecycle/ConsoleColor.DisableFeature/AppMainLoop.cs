@@ -13,25 +13,26 @@ using Kephas.Application;
 using Kephas.Application.Console;
 using Kephas.Operations;
 
-namespace StartupConsole.Application
+namespace ConsoleColor.DisableFeature
 {
-    public class ConsoleAppMainLoop : IAppMainLoop
+    public class AppMainLoop : IAppMainLoop
     {
-        public ConsoleAppMainLoop(IConsole console)
+        public AppMainLoop(IConsole console)
         {
-            this.Console = console;
+            Console = console;
         }
 
         public IConsole Console { get; }
 
         public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
-            this.Console.WriteLine(string.Empty);
-            this.Console.WriteLine($"Application started.");
+            Console.WriteLine(string.Empty);
+            Console.WriteLine($"Application started.");
+            Console.WriteLine($"Modify GreenConsoleEnabledServiceBehaviorRule class for disabling the GreenConsole feature.");
 
-            this.Console.WriteLine(string.Empty);
-            this.Console.WriteLine("Press any key to end the program.");
-            this.Console.ReadLine();
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("Press any key to end the program.");
+            Console.ReadLine();
 
             return (new OperationResult(), AppShutdownInstruction.Shutdown);
         }

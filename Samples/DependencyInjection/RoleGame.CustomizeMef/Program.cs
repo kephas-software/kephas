@@ -7,12 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace RoleGame
+namespace RoleGame.CustomizeMef
 {
     using System.Threading.Tasks;
-using Kephas;
+    using Kephas;
     using Kephas.Application;
-    using RoleGame.Application;
     using RoleGame.Composition;
 
     class Program

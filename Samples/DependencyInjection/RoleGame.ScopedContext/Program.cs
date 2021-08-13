@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace CalculatorConsole
+namespace RoleGame.ScopedContext
 {
     using System.Threading.Tasks;
 

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ConfigurationConsole
+namespace ConsoleSettings.JsonConfiguration
 {
     using System.Threading.Tasks;
     using Kephas;

@@ -13,11 +13,11 @@ using Kephas.Application;
 using Kephas.Application.Console;
 using Kephas.Operations;
 
-namespace ConfigurationConsole.Application
+namespace ConsoleSettings.JsonConfiguration
 {
-    public class ConsoleAppMainLoop : IAppMainLoop
+    public class AppMainLoop : IAppMainLoop
     {
-        public ConsoleAppMainLoop(IConsole console)
+        public AppMainLoop(IConsole console)
         {
             Console = console;
         }

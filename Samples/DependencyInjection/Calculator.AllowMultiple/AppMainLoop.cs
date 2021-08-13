@@ -6,15 +6,15 @@ using Kephas.Application;
 using Kephas.Application.Console;
 using Kephas.Operations;
 
-namespace ConfigurationConsole.Application
+namespace Calculator.AllowMultiple
 {
-    public class CalculatorMainLoop : IAppMainLoop
+    public class AppMainLoop : IAppMainLoop
     {
         private readonly ICalculator calculator;
 
-        public CalculatorMainLoop(IConsole console, ICalculator calculator)
+        public AppMainLoop(IConsole console, ICalculator calculator)
         {
-            this.Console = console;
+            Console = console;
             this.calculator = calculator;
         }
 

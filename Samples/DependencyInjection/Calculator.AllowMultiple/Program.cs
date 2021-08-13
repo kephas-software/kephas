@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace CalculatorConsole
+namespace Calculator.AllowMultiple
 {
     using System.Threading.Tasks;
 

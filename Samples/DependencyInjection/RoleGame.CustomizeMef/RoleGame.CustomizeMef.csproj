@@ -43,5 +43,8 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Application\" />
+    </ItemGroup>
 
 </Project>
