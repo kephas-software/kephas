@@ -1,4 +1,13 @@
-﻿using System.Threading;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ConsoleAppMainLoop.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   The entry point class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Threading;
 using System.Threading.Tasks;
 using Kephas.Application;
 using Kephas.Application.Console;
