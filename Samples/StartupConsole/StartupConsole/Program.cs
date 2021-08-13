@@ -11,6 +11,7 @@ namespace StartupConsole
 {
     using System;
     using System.Threading.Tasks;
+using Kephas;
     using Kephas.Application;
     using StartupConsole.Application;
 
@@ -25,7 +26,11 @@ namespace StartupConsole
         /// <param name="args">Array of command-line argument strings.</param>
         public static Task Main(string[] args)
         {
-            return new ConsoleShell().BootstrapAsync(new AppArgs(args));
+            return new App(ambientServices =>
+                ambientServices
+                    .WithNLogManager()
+                    .WithStaticAppRuntime()
+                    .BuildWithLite()).BootstrapAsync(new AppArgs(args));
         }
     }
 }

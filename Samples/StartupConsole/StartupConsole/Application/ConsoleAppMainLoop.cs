@@ -6,16 +6,16 @@ using Kephas.Operations;
 
 namespace StartupConsole.Application
 {
-    public class ConsoleAppShutdownAwaiter : IAppShutdownAwaiter
+    public class ConsoleAppMainLoop : IAppMainLoop
     {
-        public ConsoleAppShutdownAwaiter(IConsole console)
+        public ConsoleAppMainLoop(IConsole console)
         {
             this.Console = console;
         }
 
         public IConsole Console { get; }
 
-        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
             this.Console.WriteLine(string.Empty);
             this.Console.WriteLine($"Application started.");
