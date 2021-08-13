@@ -14,6 +14,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Hosting.Configuration;
@@ -27,6 +28,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+
     using LogLevel = Kephas.Logging.LogLevel;
     using Strings = Kephas.Resources.Strings;
 
