@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+		<Authors>Kephas Software SRL</Authors>
+		<Product>Kephas Samples</Product>
+		<Copyright>(c) Kephas Software SRL 2017-2019</Copyright>
+		<Version>9.3.1</Version>
+		<FileVersion>9.3.1.0</FileVersion>
+		<AssemblyVersion>9.3.1.0</AssemblyVersion>
+		<PackageTags>kephas samples</PackageTags>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+	</PropertyGroup>
+
+	<!-- common NuGet package refs that affect all projects -->
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="Kephas.Application" Version="9.3.1" />
+		<PackageReference Include="Kephas.Application.Console" Version="9.3.1" />
+		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+		<PackageReference Include="Kephas.Core" Version="9.3.1" />
+		<PackageReference Include="Kephas.Logging.NLog" Version="9.3.1" />
+		<PackageReference Include="Kephas.Composition.Autofac" Version="9.3.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="NLog.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>
