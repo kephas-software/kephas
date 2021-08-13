@@ -1,4 +1,13 @@
-﻿using System.Threading;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ConsoleAppShutdownAwaiter.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the program class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Threading;
 using System.Threading.Tasks;
 using Kephas.Application;
 using Kephas.Application.Console;
@@ -6,7 +15,7 @@ using Kephas.Operations;
 
 namespace ConfigurationConsole.Application
 {
-    public class ConsoleAppShutdownAwaiter : IAppShutdownAwaiter
+    public class ConsoleAppShutdownAwaiter : IAppMainLoop
     {
         public ConsoleAppShutdownAwaiter(IConsole console)
         {
@@ -15,7 +24,7 @@ namespace ConfigurationConsole.Application
 
         public IConsole Console { get; }
 
-        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
         {
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Application started.");

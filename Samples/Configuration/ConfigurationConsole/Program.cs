@@ -9,16 +9,19 @@
 
 namespace ConfigurationConsole
 {
-    using System.Runtime.Loader;
     using System.Threading.Tasks;
+    using Kephas;
     using Kephas.Application;
-    using StartupConsole.Application;
 
     class Program
     {
         public static async Task Main(string[] args)
         {
-            await new ConsoleShell().BootstrapAsync(new AppArgs(args));
+            await new App(ambientServices =>
+                ambientServices
+                    .WithNLogManager()
+                    .WithDynamicAppRuntime()
+                    .BuildWithAutofac()).BootstrapAsync(new AppArgs(args));
         }
     }
 }

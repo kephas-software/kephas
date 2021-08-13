@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <ApplicationIcon />
         <StartupObject />
     </PropertyGroup>
@@ -19,13 +19,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Kephas.Application" Version="8.4.3" />
-        <PackageReference Include="Kephas.Application.Console" Version="8.4.3" />
-        <PackageReference Include="Kephas.Composition.Autofac" Version="8.4.0" />
-        <PackageReference Include="Kephas.Core" Version="8.4.4" />
-        <PackageReference Include="Kephas.Logging.NLog" Version="8.4.0" />
-        <PackageReference Include="Kephas.Messaging" Version="8.4.0" />
-        <PackageReference Include="Kephas.Serialization.NewtonsoftJson" Version="8.4.6" />
+        <PackageReference Include="Kephas.Application" Version="9.3.1" />
+        <PackageReference Include="Kephas.Application.Console" Version="9.3.1" />
+        <PackageReference Include="Kephas.Composition.Autofac" Version="9.3.1" />
+        <PackageReference Include="Kephas.Core" Version="9.3.1" />
+        <PackageReference Include="Kephas.Logging.NLog" Version="9.3.1" />
+        <PackageReference Include="Kephas.Messaging" Version="9.3.1" />
+        <PackageReference Include="Kephas.Serialization.NewtonsoftJson" Version="9.3.1" />
         <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     </ItemGroup>
 

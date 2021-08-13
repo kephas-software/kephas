@@ -25,10 +25,12 @@
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A Task.</returns>
-        protected override async Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            Console.BackgroundColor = Enum.Parse<ConsoleColor>(this.consoleConfig.Settings.BackColor);
-            Console.ForegroundColor = Enum.Parse<ConsoleColor>(this.consoleConfig.Settings.ForeColor);
+            Console.BackgroundColor = this.consoleConfig.GetSettings().BackColor;
+            Console.ForegroundColor = this.consoleConfig.GetSettings().ForeColor;
+
+            return Task.CompletedTask;
         }
     }
 }
