@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Activation
 {
     using System.Collections.Concurrent;
@@ -30,7 +28,7 @@ namespace Kephas.Activation
         /// <summary>
         /// The implementation type map.
         /// </summary>
-        private readonly ConcurrentDictionary<ITypeInfo, ITypeInfo> implementationTypeMap = new ConcurrentDictionary<ITypeInfo, ITypeInfo>();
+        private readonly ConcurrentDictionary<ITypeInfo, ITypeInfo?> implementationTypeMap = new ();
 
         /// <summary>
         /// Creates an instance of the provided <see cref="ITypeInfo"/>.
@@ -47,7 +45,7 @@ namespace Kephas.Activation
         /// </returns>
         public virtual object CreateInstance(
             ITypeInfo typeInfo,
-            IEnumerable<object>? args = null,
+            IEnumerable<object?>? args = null,
             IContext? activationContext = null)
         {
             var implementationType = this.GetImplementationType(typeInfo, activationContext);
@@ -120,7 +118,7 @@ namespace Kephas.Activation
         /// <returns>
         /// The implementation type for the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        protected virtual ITypeInfo ComputeImplementationType(
+        protected virtual ITypeInfo? ComputeImplementationType(
             ITypeInfo abstractType,
             IContext? activationContext = null,
             bool throwOnNotFound = true)

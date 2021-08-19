@@ -50,7 +50,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task<IOperationResult> PublishAsync(object @event, IContext? context, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> PublishAsync(object @event, IContext? context = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
 

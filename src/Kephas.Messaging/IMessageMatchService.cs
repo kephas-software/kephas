@@ -49,7 +49,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// True if the message type and ID matches the criteria, false if not.
         /// </returns>
-        bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object messageId);
+        bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object? messageId);
     }
 
     /// <summary>

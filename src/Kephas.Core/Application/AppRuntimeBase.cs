@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+
 namespace Kephas.Application
 {
     using System;
@@ -87,8 +90,7 @@ namespace Kephas.Application
         protected static readonly string AssemblyFileExtension = ".dll";
 
         private readonly Func<string, ILogger> getLogger;
-        private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
-            new ConcurrentDictionary<object, IEnumerable<Assembly>>();
+        private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache = new ();
 
         private string? appLocation;
         private string? appFolder;
@@ -522,19 +524,25 @@ namespace Kephas.Application
         /// </returns>
         protected virtual FrameworkName GetAppFrameworkName()
         {
-            var assembly = Assembly.GetEntryAssembly();
-            var targetFramework = assembly?.GetCustomAttribute<TargetFrameworkAttribute>();
-            if (targetFramework == null)
+            var fwkVersion = Environment.Version;
+            var fwkDescription = RuntimeInformation.FrameworkDescription;
+            var mnemonics = new (string match, string name)[]
             {
-                assembly = Assembly.GetExecutingAssembly();
-                targetFramework = assembly.GetCustomAttribute<TargetFrameworkAttribute>();
-                if (targetFramework == null)
+                (".NET Native", ".NETNative"),
+                (".NET Framework", ".NETFramework"),
+                (".NET Core", ".NETCoreApp"),
+                (".NET", ".NETCoreApp"),
+            };
+
+            foreach (var (match, name) in mnemonics)
+            {
+                if (fwkDescription.StartsWith(match))
                 {
-                    throw new InvalidOperationException($"Could not identify the current framework from {Assembly.GetEntryAssembly()} and {Assembly.GetExecutingAssembly()}.");
+                    return new FrameworkName(name, new Version(fwkDescription[(match.Length + 1)..]));
                 }
             }
 
-            return new FrameworkName(targetFramework.FrameworkName);
+            throw new InvalidOperationException($"Could not identify the current framework from {Assembly.GetEntryAssembly()} and {Assembly.GetExecutingAssembly()}.");
         }
 
         /// <summary>

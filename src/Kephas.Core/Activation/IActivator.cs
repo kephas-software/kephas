@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Activation
 {
     using System.Collections.Generic;
@@ -35,7 +33,7 @@ namespace Kephas.Activation
         /// <returns>
         /// An instance of the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        object CreateInstance(ITypeInfo typeInfo, IEnumerable<object>? args = null, IContext? activationContext = null);
+        object CreateInstance(ITypeInfo typeInfo, IEnumerable<object?>? args = null, IContext? activationContext = null);
 
         /// <summary>
         /// Gets the type implementing the abstract type provided as the parameter.

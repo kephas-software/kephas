@@ -67,7 +67,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// True if the message type and ID matches the criteria, false if not.
         /// </returns>
-        public virtual bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object messageId)
+        public virtual bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object? messageId)
         {
             var m = messageMatch;
             return (m.MessageType == null

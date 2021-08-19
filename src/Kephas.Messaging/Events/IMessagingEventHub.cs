@@ -30,6 +30,6 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback);
+        IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext?, CancellationToken, Task> callback);
     }
 }

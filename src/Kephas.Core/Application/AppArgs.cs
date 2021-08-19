@@ -53,7 +53,7 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppArgs"/> class
         /// from the process's command line arguments. To initialize
-        /// empty args use <code>new AppArgs(new string[0])</code>.
+        /// empty args use <c>new AppArgs(new string[0])</c>.
         /// </summary>
         public AppArgs()
             : base(ComputeArgs(System.Environment.GetCommandLineArgs()))

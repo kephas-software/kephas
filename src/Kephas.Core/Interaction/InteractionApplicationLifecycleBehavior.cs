@@ -64,7 +64,7 @@ namespace Kephas.Interaction
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
+            return Task.FromResult<IOperationResult>(true.ToOperationResult());
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Kephas.Interaction
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
+            return Task.FromResult<IOperationResult>(true.ToOperationResult());
         }
 
         /// <summary>

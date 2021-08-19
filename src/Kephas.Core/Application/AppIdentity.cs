@@ -119,7 +119,7 @@ namespace Kephas.Application
         {
             return other != null
                 && this.Id.Equals(other.Id, StringComparison.OrdinalIgnoreCase)
-                && (this.Version == null || this.Version.Equals(other.Version));
+                && (this.Version?.Equals(other.Version) ?? true);
         }
 
         /// <summary>

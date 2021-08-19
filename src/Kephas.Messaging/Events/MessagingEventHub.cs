@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Events
     using Kephas.Diagnostics.Contracts;
     using Kephas.Interaction;
     using Kephas.Messaging.Composition;
-    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -57,13 +56,13 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public virtual IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback)
+        public virtual IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext?, CancellationToken, Task> callback)
         {
             Requires.NotNull(match, nameof(match));
             Requires.NotNull(callback, nameof(callback));
 
-            Func<object, bool> funcMatch = e => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e), this.messageMatchService.GetMessageId(e));
-            return this.Subscribe(funcMatch, callback);
+            bool FuncMatch(object e) => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e), this.messageMatchService.GetMessageId(e));
+            return this.Subscribe(FuncMatch, callback);
         }
 
         /// <summary>

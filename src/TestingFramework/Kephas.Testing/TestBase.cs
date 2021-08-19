@@ -169,13 +169,13 @@ namespace Kephas.Testing
                         return (IOperationResult)true.ToOperationResult();
                     });
 
-            eventHub.Subscribe(Arg.Any<Type>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+            eventHub.Subscribe(Arg.Any<Type>(), Arg.Any<Func<object, IContext?, CancellationToken, Task>>())
                 .Returns(
                     ci =>
                     {
                         var subscription = Substitute.For<IEventSubscription>();
                         var match = ci.Arg<Type>();
-                        var func = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
+                        var func = ci.Arg<Func<object, IContext?, CancellationToken, Task>>();
                         dict.Add(subscription, (e, c, t) =>
                         {
                             if (match == e.GetType())
@@ -192,7 +192,7 @@ namespace Kephas.Testing
                         return subscription;
                     });
 
-            eventHub.Subscribe(Arg.Any<Func<object, bool>>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+            eventHub.Subscribe(Arg.Any<Func<object, bool>>(), Arg.Any<Func<object, IContext?, CancellationToken, Task>>())
                 .Returns(
                     ci =>
                     {

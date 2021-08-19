@@ -34,7 +34,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task<IOperationResult> PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default);
+        Task<IOperationResult> PublishAsync(object @event, IContext? context = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Subscribes to the event(s) matching the criteria.
