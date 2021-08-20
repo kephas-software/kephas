@@ -219,11 +219,11 @@ namespace Kephas.Application
                 ? "net"
                 : fwkName.Identifier == ".NETStandard"
                     ? "netstandard"
-                    : fwkName.Identifier == ".NETCoreApp"
+                    : fwkName.Identifier == ".NETCoreApp" && fwkName.Version.Major < 5
                         ? "netcoreapp"
                         : "net";
             var build = fwkName.Version.Build <= 0 ? string.Empty : fwkName.Version.Build.ToString();
-            var fwkVersion = fwkId == "net"
+            var fwkVersion = fwkId == "net" && fwkName.Version.Major < 5
                 ? $"{fwkName.Version.Major}{fwkName.Version.Minor}{build}"
                 : $"{fwkName.Version.Major}.{fwkName.Version.Minor}";
             return fwkId + fwkVersion;
@@ -538,7 +538,17 @@ namespace Kephas.Application
             {
                 if (fwkDescription.StartsWith(match))
                 {
-                    return new FrameworkName(name, new Version(fwkDescription[(match.Length + 1)..]));
+#if NETSTANDARD2_0
+                    var version = new Version(fwkDescription.Substring(match.Length + 1));
+#else
+                    var version = new Version(fwkDescription[(match.Length + 1)..]);
+#endif
+                    version = version.Major == 4 && version.Revision != 0
+                        ? match == ".NET Core"
+                            ? new Version(2, 1)
+                            : new Version(version.Major, version.Minor, version.Revision)
+                        : new Version(version.Major, version.Minor);
+                    return new FrameworkName(name, version);
                 }
             }
 
