@@ -645,7 +645,7 @@ namespace Kephas.Services.Composition
                 }
 
                 var selectedPart = overrideChain[0].Key;
-                if (overrideChain[0].Value.Value == overrideChain[1].Value.Value)
+                if (overrideChain.Count > 1 && overrideChain[0].Value.Value == overrideChain[1].Value.Value)
                 {
                     throw new AmbiguousServiceResolutionException(
                         string.Format(

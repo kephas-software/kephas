@@ -84,7 +84,7 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [Test]
-        public void RegisterConventions_Single_one_service_overridden()
+        public void RegisterConventions_Single_one_service_overridden_chain()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
@@ -97,12 +97,33 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleOverrideTestService).GetTypeInfo(),
-                        typeof(TopSingleOverrideTestService).GetTypeInfo(),
+                        typeof(ChainSingleOverrideTestService).GetTypeInfo(),
                     },
                 new TestRegistrationContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
-            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(TopSingleOverrideTestService)));
+            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(ChainSingleOverrideTestService)));
+        }
+
+        [Test]
+        public void RegisterConventions_Single_one_service_overridden()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AppServiceInfoConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                {
+                    typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
+                    typeof(ISingleTestAppService).GetTypeInfo(), 
+                    typeof(SingleTestService).GetTypeInfo(),
+                    typeof(DerivedOverrideSingleTestService).GetTypeInfo(),
+                },
+                new TestRegistrationContext(new AmbientServices()));
+
+            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
+            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(DerivedOverrideSingleTestService)));
         }
 
         [Test]
@@ -477,7 +498,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [SingletonAppServiceContract(AllowMultiple = true)]
         public interface IMultipleTestAppService { }
 
-        public class SingleTestService : AppServiceInfoConventionsRegistrarTest.ISingleTestAppService { }
+        public class SingleTestService : ISingleTestAppService { }
 
         [OverridePriority(Priority.High)]
         public class SingleOverrideTestService : ISingleTestAppService { }
@@ -489,7 +510,10 @@ namespace Kephas.Core.Tests.Services.Composition
         public class NewMultipleTestService : IMultipleTestAppService { }
 
         [Override]
-        public class TopSingleOverrideTestService : SingleOverrideTestService { }
+        public class ChainSingleOverrideTestService : SingleOverrideTestService { }
+
+        [Override]
+        public class DerivedOverrideSingleTestService : SingleTestService { }
 
 
         [SingletonAppServiceContract]
