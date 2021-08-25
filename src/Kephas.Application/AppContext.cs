@@ -55,7 +55,7 @@ namespace Kephas.Application
         /// <value>
         /// The application root exception.
         /// </value>
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
 
         /// <summary>
         /// Gets or sets the application result.
@@ -63,6 +63,6 @@ namespace Kephas.Application
         /// <value>
         /// The application result.
         /// </value>
-        public object AppResult { get; set; }
+        public object? AppResult { get; set; }
     }
 }
