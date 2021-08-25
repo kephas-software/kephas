@@ -21,7 +21,7 @@ namespace Kephas.Application.AspNetCore
     using Microsoft.Extensions.Hosting;
 
     /// <summary>
-    /// Shutdown awaiter for an ASP.NET Core application.
+    /// The main loop service of an ASP.NET Core application.
     /// </summary>
     [Override]
     [ProcessingPriority(Priority.AboveNormal - 100)]
@@ -45,11 +45,19 @@ namespace Kephas.Application.AspNetCore
         {
             this.AppArgs = appArgs;
             this.AppLifetime = appLifetime;
-            if (this.RunAsInteractive)
+            if (this.IsAttended)
             {
                 this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>((e, ctx) => this.HandleShutdownSignal());
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the application is attended/interactive.
+        /// </summary>
+        /// <value>
+        /// True if the application is attended/interactive, false if not.
+        /// </value>
+        public override bool IsAttended => false;
 
         /// <summary>
         /// Gets the application arguments.
@@ -62,20 +70,15 @@ namespace Kephas.Application.AspNetCore
         protected IHostApplicationLifetime? AppLifetime { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the instance is run in interactive mode.
-        /// </summary>
-        protected virtual bool RunAsInteractive => !this.AppArgs.RunAsService;
-
-        /// <summary>
         /// Executes the application's main loop asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public override async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
+        public override async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken)
         {
-            return this.RunAsInteractive
+            return this.IsAttended
                 ? await base.Main(cancellationToken).PreserveThreadContext()
                 : (new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore);
         }
@@ -83,7 +86,7 @@ namespace Kephas.Application.AspNetCore
         /// <summary>Handles the shutdown signal.</summary>
         protected override void HandleShutdownSignal()
         {
-            if (this.RunAsInteractive)
+            if (this.IsAttended)
             {
                 base.HandleShutdownSignal();
                 return;

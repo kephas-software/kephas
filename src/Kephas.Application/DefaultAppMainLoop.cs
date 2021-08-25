@@ -45,12 +45,12 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the application is attended/interactive.
+        /// Gets a value indicating whether the application is attended/interactive.
         /// </summary>
         /// <value>
         /// True if the application is attended/interactive, false if not.
         /// </value>
-        public bool IsAttended { get; protected internal set; } = true;
+        public virtual bool IsAttended => true;
 
         /// <summary>
         /// Executes the application's main loop asynchronously.
@@ -65,42 +65,40 @@ namespace Kephas.Application
 
             var result = new OperationResult();
 
-            using (this.cancellationTokenSource)
-            using (this.cancellationTokenSource.Token.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult(result))))
-            using (cancellationToken.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult(result))))
-            using (this.shutdownSubscription)
+            using var source = this.cancellationTokenSource;
+            using var registration = this.cancellationTokenSource.Token.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult(result)));
+            using var register = cancellationToken.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult(result)));
+            using var subscription = this.shutdownSubscription;
+            if (this.IsAttended)
             {
-                if (this.IsAttended)
-                {
-                    try
-                    {
-                        await this.RunAttendedAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
-
-                        this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
-
-                        return (this.GetAttendedResult(result), AppShutdownInstruction.Shutdown);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        return (this.unattendedCompletion
-                                    ? this.GetUnattendedResult(result)
-                                    : this.GetAttendedResult(result),
-                                AppShutdownInstruction.Shutdown);
-                    }
-                }
-
                 try
                 {
-                    await this.RunUnattendedAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
+                    await this.RunAttendedAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
 
                     this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
+                    return (this.GetAttendedResult(result), AppShutdownInstruction.Shutdown);
                 }
                 catch (OperationCanceledException)
                 {
-                    return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
+                    return (this.unattendedCompletion
+                            ? this.GetUnattendedResult(result)
+                            : this.GetAttendedResult(result),
+                        AppShutdownInstruction.Shutdown);
                 }
+            }
+
+            try
+            {
+                await this.RunUnattendedAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
+
+                this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
+            }
+            catch (OperationCanceledException)
+            {
+                return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
             }
         }
 
