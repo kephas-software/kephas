@@ -66,8 +66,8 @@ namespace Kephas.Commands
             if (matchingCommands.Count == 0)
             {
                 return throwOnNotFound
-                    ? throw new KeyNotFoundException(Strings.DefaultCommandRegistry_CommandNotFound.FormatWith(command))
-                    : (IOperationInfo?)null;
+                    ? throw new CommandNotFoundException(command, Strings.DefaultCommandRegistry_CommandNotFound.FormatWith(command))
+                    : null;
             }
 
             if (matchingCommands.Count > 1)
