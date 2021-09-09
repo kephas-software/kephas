@@ -151,7 +151,7 @@ namespace Kephas.Application
                 appVersion,
                 this.AppArgs.Environment);
 
-            this[AppIdentityKey] = new AppIdentity(this[AppIdKey] as string, this[AppVersionKey] as string);
+            this[AppIdentityKey] = new AppIdentity((string)this[AppIdKey]!, this[AppVersionKey] as string);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Kephas.Application
             assemblyFilter ??= this.AssemblyFilter;
             var assemblies = this.assemblyResolutionCache.GetOrAdd(
                 (object)assemblyFilter ?? this,
-                _ => this.ComputeAppAssemblies(assemblyFilter));
+                _ => this.ComputeAppAssemblies(assemblyFilter!));
 
             return assemblies;
         }
@@ -629,7 +629,16 @@ namespace Kephas.Application
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 
-                assembliesToCheck = assemblyRefsToLoad.Select(this.TryLoadAssembly).Where(a => a != null).ToList();
+                assembliesToCheck = new List<Assembly>();
+                foreach (var an in assemblyRefsToLoad)
+                {
+                    var assembly = this.TryLoadAssembly(an);
+                    if (assembly != null)
+                    {
+                        assembliesToCheck.Add(assembly);
+                    }
+                }
+
                 assemblies.AddRange(assembliesToCheck);
             }
 

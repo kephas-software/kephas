@@ -131,7 +131,7 @@ namespace Kephas.Services.Composition
         /// <typeparam name="TAttribute">The attribute type.</typeparam>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <returns>The metadata value if found, otherwise the default value.</returns>
-        protected TValue GetMetadataValue<TAttribute, TValue>(IDictionary<string, object?> metadata, TValue defaultValue = default)
+        protected TValue? GetMetadataValue<TAttribute, TValue>(IDictionary<string, object?> metadata, TValue? defaultValue = default)
             where TAttribute : IMetadataValue<TValue>
         {
             var metadataName = MetadataResolver.GetMetadataNameFromAttributeType(typeof(TAttribute));
@@ -141,7 +141,7 @@ namespace Kephas.Services.Composition
                 return defaultValue;
             }
 
-            return (TValue)value!;
+            return (TValue?)value;
         }
     }
 }

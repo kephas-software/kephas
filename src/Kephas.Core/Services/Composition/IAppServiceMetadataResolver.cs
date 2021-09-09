@@ -38,7 +38,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The metadata value from attribute.
         /// </returns>
-        object GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property);
+        object? GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property);
 
         /// <summary>
         /// Gets the metadata name from the attribute type.

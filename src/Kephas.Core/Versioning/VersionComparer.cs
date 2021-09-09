@@ -78,14 +78,14 @@ namespace Kephas.Versioning
         /// <returns>
         /// True if both versions are equal, false otherwise.
         /// </returns>
-        public bool Equals(SemanticVersion version1, SemanticVersion version2)
+        public bool Equals(SemanticVersion? version1, SemanticVersion? version2)
         {
-            if ((object)version1 == (object)version2)
+            if (object.Equals(version1, version2))
             {
                 return true;
             }
 
-            if ((object)version2 == null || (object)version1 == null)
+            if (object.Equals(version2, null) || object.Equals(version1, null))
             {
                 return false;
             }
@@ -157,7 +157,7 @@ namespace Kephas.Versioning
         /// </returns>
         public int Compare(SemanticVersion? version1, SemanticVersion? version2)
         {
-            if ((object?)version1 == (object?)version2)
+            if (object.Equals(version1, version2))
             {
                 return 0;
             }
@@ -293,8 +293,8 @@ namespace Kephas.Versioning
             }
 
             var releaseLabels = version.ReleaseLabels;
-            return releaseLabels is string[] strArray && releaseLabels != null
-                ? releaseLabels.ToArray()
+            return releaseLabels is string[] strArray
+                ? strArray
                 : null;
         }
 
@@ -319,17 +319,9 @@ namespace Kephas.Versioning
                 return false;
             }
 
-            for (var index = 0; index < releaseLabelsOrNull1.Length; ++index)
-            {
-                if (!StringComparer.OrdinalIgnoreCase.Equals(
-                    releaseLabelsOrNull1[index],
-                    releaseLabelsOrNull2[index]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !releaseLabelsOrNull1
+                .Where((t, index) => !StringComparer.OrdinalIgnoreCase.Equals(t, releaseLabelsOrNull2[index]))
+                .Any();
         }
     }
 }

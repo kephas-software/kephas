@@ -4,6 +4,7 @@
         <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+<!--        <WarningsAsErrors>nullable</WarningsAsErrors>-->
 
         <Version>10.0.0-dev.1</Version>
         <AssemblyVersion>10.0.0.0</AssemblyVersion>

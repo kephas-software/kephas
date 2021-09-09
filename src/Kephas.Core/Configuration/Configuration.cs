@@ -148,7 +148,7 @@ namespace Kephas.Configuration
                    ?? new TSettings();
         }
 
-        private Task HandleConfigurationChangeAsync(ConfigurationChangedSignal signal, IContext context, CancellationToken cancellationToken)
+        private Task HandleConfigurationChangeAsync(ConfigurationChangedSignal signal, IContext? context, CancellationToken cancellationToken)
         {
             if (signal.SettingsType != typeof(TSettings).FullName
                     || signal.SourceAppInstanceId == this.appRuntime.GetAppInstanceId())

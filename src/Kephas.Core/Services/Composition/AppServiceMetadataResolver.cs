@@ -110,7 +110,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The metadata value from attribute.
         /// </returns>
-        public object GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property)
+        public object? GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property)
         {
             var attr =
                 implementationType.GetTypeInfo()
@@ -129,7 +129,7 @@ namespace Kephas.Services.Composition
         public string GetMetadataNameFromAttributeType(Type attributeType)
         {
             var name = attributeType.Name;
-            return name.EndsWith(AttributeSuffix) ? name.Substring(0, name.Length - AttributeSuffix.Length) : name;
+            return name.EndsWith(AttributeSuffix) ? name[..^AttributeSuffix.Length] : name;
         }
 
         /// <summary>
@@ -142,12 +142,12 @@ namespace Kephas.Services.Composition
             var name = genericTypeParameter.Name;
             if (name.StartsWith(TypePrefix) && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
             {
-                name = name.Substring(1);
+                name = name[1..];
             }
 
             if (!name.EndsWith(TypeSuffix))
             {
-                name = name + TypeSuffix;
+                name += TypeSuffix;
             }
 
             return name;
@@ -193,7 +193,7 @@ namespace Kephas.Services.Composition
         /// </returns>
         private bool IsMetadataValueAttribute(Type attributeType)
         {
-            return MetadataValueTypeInfo.Type.IsAssignableFrom(attributeType);
+            return this.MetadataValueTypeInfo.Type.IsAssignableFrom(attributeType);
         }
     }
 }

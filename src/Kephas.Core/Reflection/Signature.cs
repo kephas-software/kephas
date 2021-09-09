@@ -20,9 +20,7 @@ namespace Kephas.Reflection
     /// </summary>
     public class Signature : IEquatable<Signature>, IEnumerable<Type>, IReadOnlyList<Type>
     {
-        private static readonly Type[] EmptyValue = new Type[0];
-
-        private Type[] value;
+        private readonly Type[] value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Signature"/> class.
@@ -30,7 +28,7 @@ namespace Kephas.Reflection
         /// <param name="value">A variable-length parameters list containing value.</param>
         public Signature(params Type[] value)
         {
-            this.value = value ?? EmptyValue;
+            this.value = value ?? Type.EmptyTypes;
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace Kephas.Reflection
         /// <param name="value">A variable-length parameters list containing value.</param>
         public Signature(IEnumerable<Type> value)
         {
-            this.value = value?.ToArray() ?? EmptyValue;
+            this.value = value?.ToArray() ?? Type.EmptyTypes;
         }
 
         /// <summary>
@@ -67,7 +65,7 @@ namespace Kephas.Reflection
         /// true if the current object is equal to the <paramref name="other">other</paramref> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(Signature other)
+        public bool Equals(Signature? other)
         {
             if (other == null)
             {
@@ -84,15 +82,7 @@ namespace Kephas.Reflection
                 return false;
             }
 
-            for (var i = 0; i < this.value.Length; i++)
-            {
-                if (!(this.value[i]?.Equals(other.value[i]) ?? other.value[i] == null))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !this.value.Where((t, i) => !(t?.Equals(other.value[i]) ?? other.value[i] == null)).Any();
         }
 
         /// <summary>
@@ -102,7 +92,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// true if the specified object  is equal to the current object; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
             {
@@ -128,16 +118,8 @@ namespace Kephas.Reflection
         /// <returns>
         /// A hash code for the current object.
         /// </returns>
-        public override int GetHashCode()
-        {
-            var hashCode = 0;
-            for (var i = 0; i < this.value.Length; i++)
-            {
-                hashCode += (i + 1) * (this.value[i]?.GetType().GetHashCode() ?? 0);
-            }
-
-            return hashCode;
-        }
+        public override int GetHashCode() =>
+            this.value.Select((t, i) => (i + 1) * (t?.GetType().GetHashCode() ?? 0)).Sum();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -147,10 +129,8 @@ namespace Kephas.Reflection
         /// </returns>
         public override string ToString()
         {
-            string GetTypeName(Type t)
-            {
-                return t == null ? null : t.IsNullableType() ? $"{t.GetNonNullableType().Name}?" : t.Name;
-            }
+            string GetTypeName(Type? t) =>
+                t == null ? string.Empty : t.IsNullableType() ? $"{t.GetNonNullableType().Name}?" : t.Name;
 
             return $"({string.Join(", ", this.value.Select(GetTypeName))})";
         }

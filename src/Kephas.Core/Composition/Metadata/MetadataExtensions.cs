@@ -29,19 +29,14 @@ namespace Kephas.Composition.Metadata
         /// <param name="valueExtractor">The value extractor.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The metadata value.</returns>
-        public static TValue ExtractMetadataValue<TAttribute, TValue>(this Type type, Func<TAttribute, TValue> valueExtractor, TValue defaultValue = default(TValue))
+        public static TValue? ExtractMetadataValue<TAttribute, TValue>(this Type type, Func<TAttribute, TValue> valueExtractor, TValue? defaultValue = default)
           where TAttribute : Attribute
         {
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(valueExtractor, nameof(valueExtractor));
 
             var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
-            if (attr == null)
-            {
-                return defaultValue;
-            }
-
-            return valueExtractor(attr);
+            return attr == null ? defaultValue : valueExtractor(attr);
         }
 
         /// <summary>
@@ -52,18 +47,13 @@ namespace Kephas.Composition.Metadata
         /// <param name="type">The type.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The metadata value.</returns>
-        public static TValue ExtractMetadataValue<TAttribute, TValue>(this Type type, TValue defaultValue = default(TValue))
+        public static TValue? ExtractMetadataValue<TAttribute, TValue>(this Type type, TValue? defaultValue = default)
           where TAttribute : Attribute, IMetadataValue<TValue>
         {
             Requires.NotNull(type, nameof(type));
 
             var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
-            if (attr == null)
-            {
-                return defaultValue;
-            }
-
-            return attr.Value;
+            return attr == null ? defaultValue : attr.Value;
         }
     }
 }

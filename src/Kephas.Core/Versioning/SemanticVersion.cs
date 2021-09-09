@@ -222,9 +222,9 @@ namespace Kephas.Versioning
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static bool operator ==(SemanticVersion version1, SemanticVersion version2)
+        public static bool operator ==(SemanticVersion? version1, SemanticVersion? version2)
         {
-            return object.Equals((object) version1, (object) version2);
+            return object.Equals(version1, version2);
         }
 
         /// <summary>
@@ -235,9 +235,9 @@ namespace Kephas.Versioning
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static bool operator !=(SemanticVersion version1, SemanticVersion version2)
+        public static bool operator !=(SemanticVersion? version1, SemanticVersion? version2)
         {
-            return !object.Equals((object) version1, (object) version2);
+            return !object.Equals(version1, version2);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace Kephas.Versioning
         /// This string is unique to the identity of the version and does not contain metadata.
         /// </summary>
         /// <returns>The normalized string.</returns>
-        public virtual string? ToNormalizedString()
+        public virtual string ToNormalizedString()
         {
             return this.ToString("N", VersionFormatter.Instance);
         }
@@ -384,7 +384,7 @@ namespace Kephas.Versioning
 
         /// <summary>Get the normalized string.</summary>
         /// <returns>The normalized string.</returns>
-        public override string? ToString()
+        public override string ToString()
         {
             return this.ToNormalizedString();
         }
@@ -405,49 +405,14 @@ namespace Kephas.Versioning
         /// <returns>
         /// The formatted string.
         /// </returns>
-        public virtual string? ToString(string format, IFormatProvider? formatProvider)
+        public virtual string ToString(string? format, IFormatProvider? formatProvider)
         {
-            string? formattedString = null;
-            if (formatProvider == null || !this.TryFormatter(format, formatProvider, out formattedString))
+            if (formatProvider == null || !this.TryFormatter(format, formatProvider, out string formattedString))
             {
                 formattedString = this.ToString();
             }
 
             return formattedString;
-        }
-
-        /// <summary>
-        /// Internal string formatter.
-        /// </summary>
-        /// <param name="format">The format to use.
-        ///                      -or-
-        ///                      A null reference (<see langword="Nothing" /> in Visual Basic) to use
-        ///                      the default format defined for the type of the
-        ///                      <see cref="T:System.IFormattable" /> implementation.</param>
-        /// <param name="formatProvider">The provider to use to format the value.
-        ///                              -or-
-        ///                              A null reference (<see langword="Nothing" /> in Visual Basic)
-        ///                              to obtain the numeric format information from the current
-        ///                              locale setting of the operating system.</param>
-        /// <param name="formattedString">[out] The formatted string.</param>
-        /// <returns>
-        /// True if the version could be formatted, false otherwise.
-        /// </returns>
-        protected bool TryFormatter(
-            string format,
-            IFormatProvider? formatProvider,
-            out string? formattedString)
-        {
-            formattedString = null;
-            if (formatProvider == null ||
-                !(formatProvider.GetFormat(this.GetType()) is ICustomFormatter format1))
-            {
-                return false;
-            }
-
-            formattedString = format1.Format(format, this, formatProvider);
-
-            return true;
         }
 
         /// <summary>
@@ -721,6 +686,39 @@ namespace Kephas.Versioning
             }
 
             return version1;
+        }
+
+        /// <summary>
+        /// Internal string formatter.
+        /// </summary>
+        /// <param name="format">The format to use.
+        ///                      -or-
+        ///                      A null reference (<see langword="Nothing" /> in Visual Basic) to use
+        ///                      the default format defined for the type of the
+        ///                      <see cref="T:System.IFormattable" /> implementation.</param>
+        /// <param name="formatProvider">The provider to use to format the value.
+        ///                              -or-
+        ///                              A null reference (<see langword="Nothing" /> in Visual Basic)
+        ///                              to obtain the numeric format information from the current
+        ///                              locale setting of the operating system.</param>
+        /// <param name="formattedString">[out] The formatted string.</param>
+        /// <returns>
+        /// True if the version could be formatted, false otherwise.
+        /// </returns>
+        protected bool TryFormatter(
+            string? format,
+            IFormatProvider? formatProvider,
+            out string formattedString)
+        {
+            formattedString = string.Empty;
+            if (formatProvider?.GetFormat(this.GetType()) is not ICustomFormatter format1)
+            {
+                return false;
+            }
+
+            formattedString = format1.Format(format, this, formatProvider);
+
+            return true;
         }
 
         private static string[]? ParseReleaseLabels(string? releaseLabels) =>

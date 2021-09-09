@@ -64,18 +64,13 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
             }
         }
 
-        public ApiResource GetResource(string name, ResourceSettings definition)
-        {
-            switch (definition.Profile)
+        public ApiResource GetResource(string name, ResourceSettings definition) =>
+            definition.Profile switch
             {
-                case ApplicationProfiles.API:
-                    return this.GetAPI(name, definition);
-                case ApplicationProfiles.IdentityServerJwt:
-                    return this.GetLocalAPI(name, definition);
-                default:
-                    throw new InvalidOperationException($"Type '{definition.Profile}' is not supported.");
-            }
-        }
+                ApplicationProfiles.API => this.GetAPI(name, definition),
+                ApplicationProfiles.IdentityServerJwt => this.GetLocalAPI(name, definition),
+                _ => throw new InvalidOperationException($"Type '{definition.Profile}' is not supported.")
+            };
 
         private ApiResource GetAPI(string name, ResourceSettings definition) =>
             ApiResourceBuilder.ApiResource(name)

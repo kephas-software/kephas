@@ -249,7 +249,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The <see cref="bool" />.
         /// </returns>
-        public override bool TrySetMember(SetMemberBinder binder, object value)
+        public override bool TrySetMember(SetMemberBinder binder, object? value)
         {
             if (this.TrySetValue(binder.Name, value))
             {
@@ -274,7 +274,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The <see cref="bool" />.
         /// </returns>
-        public override bool TryInvokeMember(InvokeMemberBinder binder, object?[] args, out object? result)
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object?[]? args, out object? result)
         {
             var binders = this.MemberBinders;
 

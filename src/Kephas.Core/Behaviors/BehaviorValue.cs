@@ -10,6 +10,7 @@
 
 namespace Kephas.Behaviors
 {
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -56,10 +57,9 @@ namespace Kephas.Behaviors
         /// </returns>
         public static IBehaviorValue<TValue> WithReason<TValue>(this IBehaviorValue<TValue> behavior, string reason)
         {
-            if (behavior != null)
-            {
-                behavior[ReasonKey] = reason;
-            }
+            Requires.NotNull(behavior, nameof(behavior));
+
+            behavior[ReasonKey] = reason;
 
             return behavior;
         }
@@ -71,7 +71,7 @@ namespace Kephas.Behaviors
         /// <returns>
         /// The reason, if one was provided, otherwise <c>null</c>.
         /// </returns>
-        public static string? GetReason(this IBehaviorValue behavior)
+        public static string? GetReason(this IBehaviorValue? behavior)
         {
             if (behavior == null)
             {
