@@ -88,7 +88,7 @@ namespace Kephas.Diagnostics.Logging
         internal class DebugLogger : ILogger
         {
             private readonly string name;
-            private readonly Action<string, string, object, object?[], Exception?>? logCallback;
+            private readonly Action<string, string, object?, object?[], Exception?>? logCallback;
             private readonly Func<LogLevel> logLevelGetter;
 
             /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Diagnostics.Logging
             /// <param name="name">The name.</param>
             /// <param name="logCallback">The log callback.</param>
             /// <param name="logLevelGetter">Getter function for the log level.</param>
-            public DebugLogger(string name, Action<string, string, object, object?[], Exception?>? logCallback, Func<LogLevel> logLevelGetter)
+            public DebugLogger(string name, Action<string, string, object?, object?[], Exception?>? logCallback, Func<LogLevel> logLevelGetter)
             {
                 this.name = name;
                 this.logCallback = logCallback;
@@ -131,7 +131,7 @@ namespace Kephas.Diagnostics.Logging
                 return this.LogCore(level.ToString(), messageFormat, args, exception);
             }
 
-            private bool LogCore(string level, object message, object?[] args, Exception? exception = null)
+            private bool LogCore(string level, object? message, object?[] args, Exception? exception = null)
             {
                 if (this.logCallback == null)
                 {

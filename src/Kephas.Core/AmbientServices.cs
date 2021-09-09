@@ -184,7 +184,7 @@ namespace Kephas
         /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
         /// </returns>
         /// <param name="serviceType">An object that specifies the type of service object to get. </param>
-        public object GetService(Type serviceType)
+        public object? GetService(Type serviceType)
         {
             return this.resolver.GetService(serviceType);
         }
@@ -205,7 +205,7 @@ namespace Kephas
             // this is a message that ALL registration infos should be returned.
             if (registrationContext != null && candidateTypes != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
             {
-                return new (Type contractType, IAppServiceInfo appServiceInfo)[0];
+                return Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
             }
 
             // exclude the composition context from the list as it is the responsibility

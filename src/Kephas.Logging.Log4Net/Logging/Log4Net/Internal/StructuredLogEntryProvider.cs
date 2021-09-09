@@ -31,11 +31,11 @@ namespace Kephas.Logging.Log4Net.Internal
         /// <returns>
         /// The log entry.
         /// </returns>
-        public (string message, object[]? positionalArgs, IDictionary<string, object>? namedArgs) GetLogEntry(string messageFormat, params object[] args)
+        public (string message, object[]? positionalArgs, IDictionary<string, object>? namedArgs) GetLogEntry(string? messageFormat, params object[] args)
         {
-            if (args == null || args.Length == 0)
+            if (messageFormat == null || args == null || args.Length == 0)
             {
-                return (messageFormat, args, null);
+                return (messageFormat ?? string.Empty, args, null);
             }
 
             if (messageFormat.IndexOf('{') < 0)

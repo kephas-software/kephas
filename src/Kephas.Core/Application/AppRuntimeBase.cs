@@ -614,7 +614,7 @@ namespace Kephas.Application
             // assembly with different versions loaded.
             // TODO log when such cases occur.
             var assemblies = loadedAssemblies.Where(a => assemblyFilter(a.GetName())).ToList();
-            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().Name));
+            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().Name!));
             var assembliesToCheck = new List<Assembly>(assemblies);
 
             while (assembliesToCheck.Count > 0)
@@ -622,10 +622,10 @@ namespace Kephas.Application
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var referencesToLoad in assembliesToCheck
                     .Select(assembly => this.GetReferencedAssemblies(assembly)
-                    .Where(a => !loadedAssemblyRefs.Contains(a.Name) && assemblyFilter(a))
+                    .Where(a => !loadedAssemblyRefs.Contains(a.Name!) && assemblyFilter(a))
                     .ToList()))
                 {
-                    loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name));
+                    loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name!));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 

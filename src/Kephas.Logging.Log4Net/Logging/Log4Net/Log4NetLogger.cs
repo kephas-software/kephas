@@ -54,7 +54,7 @@ namespace Kephas.Logging.Log4Net
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args)
+        public bool Log(LogLevel level, Exception? exception, string? messageFormat, params object?[] args)
         {
             var (message, positionalArgs, _) = this.entryProvider.GetLogEntry(messageFormat, args);
             message = positionalArgs == null || positionalArgs.Length == 0 ? message : string.Format(message, positionalArgs);

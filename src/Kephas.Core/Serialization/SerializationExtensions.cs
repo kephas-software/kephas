@@ -411,13 +411,13 @@ namespace Kephas.Serialization
                 return Task.FromResult((string?)null);
             }
 
-            Action<ISerializationContext> config = ctx =>
+            void Config(ISerializationContext ctx)
             {
                 ctx.MediaType = typeof(TMediaType);
                 optionsConfig?.Invoke(ctx);
-            };
+            }
 
-            return serializationService.SerializeAsync(obj, config, cancellationToken);
+            return serializationService.SerializeAsync(obj, Config, cancellationToken);
         }
 
         /// <summary>
@@ -443,13 +443,13 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            Action<ISerializationContext> config = ctx =>
+            void Config(ISerializationContext ctx)
             {
                 ctx.MediaType = typeof(TMediaType);
                 optionsConfig?.Invoke(ctx);
-            };
+            }
 
-            return serializationService.Serialize(obj, config);
+            return serializationService.Serialize(obj, (Action<ISerializationContext>)Config);
         }
 
         /// <summary>

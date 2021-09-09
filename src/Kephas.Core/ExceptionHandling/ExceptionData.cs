@@ -49,7 +49,7 @@ namespace Kephas.ExceptionHandling
                 }
             }
 
-            this.ExceptionType = exception.GetType().FullName;
+            this.ExceptionType = exception.GetType().FullName!;
             this.Message = exception.Message;
             this.Severity = severity.Value;
         }

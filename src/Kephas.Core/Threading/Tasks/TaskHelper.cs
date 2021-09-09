@@ -98,7 +98,7 @@ namespace Kephas.Threading.Tasks
             {
                 if (taskException.InnerExceptions.Count == 1)
                 {
-                    throw taskException.InnerException;
+                    throw taskException.InnerExceptions[0];
                 }
 
                 throw taskException;
@@ -125,16 +125,11 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The task result.
         /// </returns>
-        public static T GetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
+        public static T? GetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
             Requires.NotNull(task, nameof(task));
 
-            if (task.WaitNonLocking(timeout, waitMilliseconds, throwOnTimeout))
-            {
-                return task.Result;
-            }
-
-            return default;
+            return task.WaitNonLocking(timeout, waitMilliseconds, throwOnTimeout) ? task.Result : default;
         }
 
         /// <summary>

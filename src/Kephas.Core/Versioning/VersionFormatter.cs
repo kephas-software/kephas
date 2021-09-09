@@ -29,14 +29,14 @@ namespace Kephas.Versioning
         /// <returns>
         /// The formatted value.
         /// </returns>
-        public string? Format(string format, object arg, IFormatProvider formatProvider)
+        public string Format(string? format, object? arg, IFormatProvider? formatProvider)
         {
             Requires.NotNull(arg, nameof(arg));
 
-            string? str1 = null;
-            if (arg.GetType() == typeof(IFormattable))
+            var str1 = string.Empty;
+            if (arg is IFormattable formattableArg)
             {
-                str1 = ((IFormattable) arg).ToString(format, formatProvider);
+                str1 = formattableArg.ToString(format, formatProvider);
             }
             else if (!string.IsNullOrEmpty(format))
             {
@@ -48,7 +48,7 @@ namespace Kephas.Versioning
 
                 if (format.Length == 1)
                 {
-                    str1 = VersionFormatter.Format(format[0], version);
+                    str1 = Format(format[0], version) ?? string.Empty;
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace Kephas.Versioning
         /// <returns>
         /// The version format type.
         /// </returns>
-        public object? GetFormat(Type formatType)
+        public object? GetFormat(Type? formatType)
         {
             return formatType == typeof(ICustomFormatter) ||
                    formatType == typeof(SemanticVersion)
@@ -92,7 +92,7 @@ namespace Kephas.Versioning
         /// Create a normalized version string. This string is unique for each version 'identity'
         /// and does not include leading zeros or metadata.
         /// </summary>
-        private static string? GetNormalizedString(SemanticVersion version)
+        private static string GetNormalizedString(SemanticVersion version)
         {
             var str = Format('V', version);
             if (version.IsPrerelease)
@@ -100,13 +100,13 @@ namespace Kephas.Versioning
                 str = str + "-" + version.Release;
             }
 
-            return str;
+            return str ?? string.Empty;
         }
 
         /// <summary>
         /// Create the full version string including metadata. This is primarily for display purposes.
         /// </summary>
-        private static string? GetFullString(SemanticVersion version)
+        private static string GetFullString(SemanticVersion version)
         {
             var str = GetNormalizedString(version);
             if (version.HasMetadata)
@@ -132,11 +132,12 @@ namespace Kephas.Versioning
                 _ => null
             };
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string FormatVersion(SemanticVersion version) =>
             $"{version.Major}.{version.Minor}.{version.Patch}{GetHotfixPart(version)}";
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string GetHotfixPart(SemanticVersion version) =>
-            !version.Hotfix.HasValue || version.Hotfix == 0 ? string.Empty : $".{version.Hotfix}";
+            version.Hotfix is null or 0 ? string.Empty : $".{version.Hotfix}";
     }
 }

@@ -50,7 +50,7 @@ namespace Kephas.Model.AttributedModel
         /// <value>
         /// The projected type.
         /// </value>
-        public Type ProjectedType { get; }
+        public Type? ProjectedType { get; }
 
         /// <summary>
         /// Gets the projected type name.
