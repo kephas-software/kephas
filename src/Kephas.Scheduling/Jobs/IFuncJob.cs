@@ -18,9 +18,6 @@ namespace Kephas.Scheduling.Jobs
     /// </summary>
     /// <remarks>Jobs are specializations of activities.</remarks>
     public interface IFuncJob : IJob, IOperation
-#if NETSTANDARD2_0
-        , IAsyncOperation
-#endif
     {
     }
 }

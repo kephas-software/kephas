@@ -236,9 +236,6 @@ namespace Kephas.Core.Tests.Services
 
         public class Test : IInstance
         {
-#if NETCOREAPP2_1
-            public ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
-#endif
         }
     }
 }

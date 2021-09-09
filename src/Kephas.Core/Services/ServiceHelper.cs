@@ -103,12 +103,9 @@ namespace Kephas.Services
                 case IFinalizable syncService:
                     syncService.Finalize(context);
                     return;
-#if NETSTANDARD2_0
-#else
                 case IAsyncDisposable asyncDisposableService:
                     await asyncDisposableService.DisposeAsync().PreserveThreadContext();
                     return;
-#endif
                 case IDisposable disposableService:
                     disposableService.Dispose();
                     return;
@@ -139,12 +136,9 @@ namespace Kephas.Services
                 case IFinalizable syncService:
                     syncService.Finalize(context);
                     break;
-#if NETSTANDARD2_0
-#else
                 case IAsyncDisposable asyncDisposableService:
                     asyncDisposableService.DisposeAsync().WaitNonLocking();
                     return;
-#endif
                 case IDisposable disposableService:
                     disposableService.Dispose();
                     break;

@@ -19,12 +19,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for data commands.
     /// </summary>
-    public interface IDataCommand
-#if NETSTANDARD2_0
-        : IAsyncOperation
-#else
-        : IOperation
-#endif
+    public interface IDataCommand : IOperation
     {
         /// <summary>
         /// Executes the data command asynchronously.
@@ -36,8 +31,6 @@ namespace Kephas.Data.Commands
         /// </returns>
         Task<IOperationResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Executes the data command.
         /// </summary>
@@ -49,7 +42,6 @@ namespace Kephas.Data.Commands
         {
             return this.ExecuteAsync(operationContext).GetResultNonLocking();
         }
-#endif
     }
 
     /// <summary>
@@ -71,8 +63,6 @@ namespace Kephas.Data.Commands
         /// </returns>
         Task<TResult> ExecuteAsync(TOperationContext operationContext, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Executes the data command.
         /// </summary>
@@ -84,42 +74,5 @@ namespace Kephas.Data.Commands
         {
             return this.ExecuteAsync(operationContext).GetResultNonLocking();
         }
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Contract for synchronous data commands.
-    /// </summary>
-    public interface ISyncDataCommand
-    {
-        /// <summary>
-        /// Executes the data command.
-        /// </summary>
-        /// <param name="operationContext">The operation context.</param>
-        /// <returns>
-        /// A <see cref="IOperationResult"/>.
-        /// </returns>
-        IOperationResult Execute(IDataOperationContext operationContext);
-    }
-
-    /// <summary>
-    /// Generic contract for synchronous data commands.
-    /// </summary>
-    /// <typeparam name="TOperationContext">Type of the operation context.</typeparam>
-    /// <typeparam name="TResult">Type of the result.</typeparam>
-    public interface ISyncDataCommand<in TOperationContext, out TResult> : ISyncDataCommand
-        where TOperationContext : IDataOperationContext
-        where TResult : IOperationResult
-    {
-        /// <summary>
-        /// Executes the data command.
-        /// </summary>
-        /// <param name="operationContext">The operation context.</param>
-        /// <returns>
-        /// A <typeparamref name="TResult"/>.
-        /// </returns>
-        TResult Execute(TOperationContext operationContext);
-    }
-#endif
 }

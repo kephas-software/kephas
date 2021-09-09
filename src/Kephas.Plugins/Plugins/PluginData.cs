@@ -134,13 +134,8 @@ namespace Kephas.Plugins
             }
 
 
-#if NETSTANDARD2_0
-            var data = splits.Length > 3 ? DataParse(splits.Skip(3).Take(splits.Length - 4)) : null;
-            if (!int.TryParse(splits[splits.Length - 1], out var checksum))
-#else
             var data = splits.Length > 3 ? DataParse(splits[3..^1]) : null;
             if (!int.TryParse(splits[^1], out var checksum))
-#endif
             {
                 return throwOnInvalid
                     ? throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).", ParseChecksumInvalidCode)

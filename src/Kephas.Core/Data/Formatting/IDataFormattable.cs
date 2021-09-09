@@ -18,12 +18,8 @@ namespace Kephas.Data.Formatting
         /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
         object ToData(IDataFormattingContext? context = null)
-#if NETSTANDARD2_0
-        ;
-#else
         {
             return this.ToString();
         }
-#endif
     }
 }

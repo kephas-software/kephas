@@ -56,11 +56,7 @@ namespace Kephas.Dynamic
     /// </list>
     /// </para>
     /// </summary>
-    public abstract class ExpandoBase : DynamicObject, IExpando
-#if NETSTANDARD2_0
-#else
-        , IExpandoMixin
-#endif
+    public abstract class ExpandoBase : DynamicObject, IExpando, IExpandoMixin
     {
         private IDictionary<string, object?> innerDictionary;
         private WeakReference<object>? innerObjectRef;
@@ -110,8 +106,6 @@ namespace Kephas.Dynamic
             this.InitializeExpando(innerObject, innerDictionary);
         }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the inner dictionary.
         /// </summary>
@@ -131,7 +125,6 @@ namespace Kephas.Dynamic
         /// Gets a value indicating whether to ignore the case when identifying the members by name.
         /// </summary>
         bool IExpandoMixin.IgnoreCase => this.ignoreCase;
-#endif
 
         /// <summary>
         /// Gets the inner dictionary.
@@ -228,36 +221,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public virtual bool HasDynamicMember(string memberName)
         {
-#if NETSTANDARD2_0
-            var binders = this.MemberBinders;
-
-            // First check for public properties over this instance
-            var innerObject = this.TryGetInnerObject();
-            if (this != innerObject
-                && binders.HasFlag(ExpandoMemberBinderKind.This)
-                && this.TryGetPropertyInfo(this.GetType(), memberName, this.ignoreCase) != null)
-            {
-                return true;
-            }
-
-            // then check for public properties in the inner object
-            if (innerObject != null
-                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject)
-                && this.TryGetPropertyInfo(innerObject.GetType()!, memberName, this.ignoreCase) != null)
-            {
-                return true;
-            }
-
-            // last, check the dictionary for member
-            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
-            {
-                return this.innerDictionary.ContainsKey(memberName);
-            }
-
-            return false;
-#else
             return IExpandoMixin.HasDynamicMember(this, memberName);
-#endif
         }
 
         /// <summary>
@@ -398,50 +362,7 @@ namespace Kephas.Dynamic
         public virtual IDictionary<string, object?> ToDictionary(
             Func<string, string>? keyFunc = null,
             Func<object?, object?>? valueFunc = null)
-#if NETSTANDARD2_0
-        {
-            var binders = this.MemberBinders;
-
-            // add the properties in their overwrite order:
-            // first, the values in the dictionary
-            var dictionary = binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary)
-                ? keyFunc == null && valueFunc == null
-                    ? new Dictionary<string, object?>(this.innerDictionary)
-                    : this.innerDictionary.ToDictionary(
-                        kv => keyFunc == null ? kv.Key : keyFunc(kv.Key),
-                        kv => valueFunc == null ? kv.Value : valueFunc(kv.Value))
-                : new Dictionary<string, object?>();
-
-            // second, the values in the inner object
-            var innerObject = this.TryGetInnerObject();
-            if (innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
-            {
-                foreach (var prop in RuntimeTypeInfo.GetTypeProperties(innerObject.GetType()!))
-                {
-                    var propName = prop.Name;
-                    var value = prop.GetValue(innerObject);
-                    dictionary[keyFunc == null ? propName : keyFunc(propName)] =
-                        valueFunc == null ? value : valueFunc(value);
-                }
-            }
-
-            // last, the values in this instance's properties
-            if (this != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
-            {
-                foreach (var prop in RuntimeTypeInfo.GetTypeProperties(this.GetType()))
-                {
-                    var propName = prop.Name;
-                    var value = prop.GetValue(this);
-                    dictionary[keyFunc == null ? propName : keyFunc(propName)] =
-                        valueFunc == null ? value : valueFunc(value);
-                }
-            }
-
-            return dictionary;
-        }
-#else
-            => IExpandoMixin.ToDictionary(this, keyFunc, valueFunc);
-#endif
+                => IExpandoMixin.ToDictionary(this, keyFunc, valueFunc);
 
         /// <summary>
         /// Attempts to get the dynamic value with the given key.
@@ -457,62 +378,7 @@ namespace Kephas.Dynamic
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
         protected virtual bool TryGetValue(string key, out object? value)
-#if NETSTANDARD2_0
-        {
-            var binders = this.MemberBinders;
-
-            bool? TryGetPropertyValue(Type type, object instance, out object? val)
-            {
-                var propInfo = this.TryGetPropertyInfo(type, key, this.ignoreCase);
-                if (propInfo == null)
-                {
-                    val = null;
-                    return null;
-                }
-
-                if (propInfo.CanRead)
-                {
-                    val = propInfo.GetValue(instance);
-                    return true;
-                }
-
-                val = null;
-                return false;
-            }
-
-            // first, check the properties in this object
-            var innerObject = this.TryGetInnerObject();
-            if (this != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
-            {
-                var canRead = TryGetPropertyValue(this.GetType(), this, out value);
-                if (canRead != null)
-                {
-                    return canRead.Value;
-                }
-            }
-
-            // then, check the inner object
-            if (innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
-            {
-                var canRead = TryGetPropertyValue(innerObject.GetType()!, innerObject, out value);
-                if (canRead != null)
-                {
-                    return canRead.Value;
-                }
-            }
-
-            // last, check the dictionary for member
-            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
-            {
-                return this.innerDictionary.TryGetValue(key, out value);
-            }
-
-            value = null;
-            return false;
-        }
-#else
             => IExpandoMixin.TryGetValue(this, key, out value);
-#endif
 
         /// <summary>
         /// Attempts to set the value with the given key.
@@ -528,68 +394,7 @@ namespace Kephas.Dynamic
         /// <c>true</c> if the value could be set, <c>false</c> otherwise.
         /// </returns>
         protected virtual bool TrySetValue(string key, object? value)
-#if NETSTANDARD2_0
-        {
-            var binders = this.MemberBinders;
-
-            bool? TrySetPropertyValue(Type type, object instance)
-            {
-                var propInfo = this.TryGetPropertyInfo(type, key, this.ignoreCase);
-                if (propInfo == null)
-                {
-                    return null;
-                }
-
-                if (propInfo.CanWrite)
-                {
-                    propInfo.SetValue(instance, value);
-                    return true;
-                }
-
-                return false;
-            }
-
-            // first, check the properties in this object
-            var innerObject = this.TryGetInnerObject();
-            if (this != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
-            {
-                var canSet = TrySetPropertyValue(this.GetType(), this);
-                if (canSet != null)
-                {
-                    return canSet.Value;
-                }
-            }
-
-            // then check the inner object
-            if (innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
-            {
-                var canSet = TrySetPropertyValue(innerObject.GetType()!, innerObject);
-                if (canSet != null)
-                {
-                    return canSet.Value;
-                }
-            }
-
-            // last, check the dictionary for member
-            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
-            {
-                if (value == null)
-                {
-                    this.innerDictionary.Remove(key);
-                }
-                else
-                {
-                    this.innerDictionary[key] = value;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-#else
             => IExpandoMixin.TrySetValue(this, key, value);
-#endif
 
         /// <summary>
         /// Tries to get the MethodInfo for the provided type and key.
@@ -628,17 +433,7 @@ namespace Kephas.Dynamic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static BindingFlags GetBindingFlags(bool ignoreCase)
         {
-#if NETSTANDARD2_0
-            var flags = BindingFlags.Instance | BindingFlags.Public;
-            if (ignoreCase)
-            {
-                flags |= BindingFlags.IgnoreCase;
-            }
-
-            return flags;
-#else
             return IExpandoMixin.GetBindingFlags(ignoreCase);
-#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

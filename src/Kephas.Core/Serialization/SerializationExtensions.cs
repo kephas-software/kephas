@@ -25,121 +25,6 @@ namespace Kephas.Serialization
     /// </summary>
     public static class SerializationExtensions
     {
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Serializes the object with the provided options.
-        /// </summary>
-        /// <param name="serializationService">The serialization service.</param>
-        /// <param name="obj">The object to be serialized.</param>
-        /// <param name="textWriter">The text writer where the serialized object should be written.</param>
-        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
-        public static void Serialize(
-            this ISerializationService serializationService,
-            object? obj,
-            TextWriter textWriter,
-            Action<ISerializationContext>? optionsConfig = null)
-        {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            if (obj == null)
-            {
-                return;
-            }
-
-            if (serializationService is ISyncSerializationService syncService)
-            {
-                syncService.Serialize(obj, textWriter, optionsConfig);
-            }
-            else
-            {
-                serializationService.SerializeAsync(obj, textWriter, optionsConfig).WaitNonLocking();
-            }
-        }
-
-        /// <summary>
-        /// Serializes the object with the options provided in the serialization context.
-        /// </summary>
-        /// <param name="serializationService">The serialization service.</param>
-        /// <param name="obj">The object to be serialized.</param>
-        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
-        /// <returns>
-        /// The serialized object.
-        /// </returns>
-        public static string? Serialize(
-            this ISerializationService serializationService,
-            object? obj,
-            Action<ISerializationContext>? optionsConfig = null)
-        {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            if (obj == null)
-            {
-                return null;
-            }
-
-            if (serializationService is ISyncSerializationService syncService)
-            {
-                return syncService.Serialize(obj, optionsConfig);
-            }
-            else
-            {
-                return serializationService.SerializeAsync(obj, optionsConfig).GetResultNonLocking();
-            }
-        }
-
-        /// <summary>
-        /// Deserializes the object with the options provided in the serialization context.
-        /// </summary>
-        /// <param name="serializationService">The serialization service.</param>
-        /// <param name="textReader">The text reader where from the serialized object should be read.</param>
-        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        public static object? Deserialize(
-            this ISerializationService serializationService,
-            TextReader textReader,
-            Action<ISerializationContext>? optionsConfig = null)
-        {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            if (serializationService is ISyncSerializationService syncService)
-            {
-                return syncService.Deserialize(textReader, optionsConfig);
-            }
-            else
-            {
-                return serializationService.DeserializeAsync(textReader, optionsConfig).GetResultNonLocking();
-            }
-        }
-
-        /// <summary>
-        /// Deserializes the object with the options provided in the serialization context.
-        /// </summary>
-        /// <param name="serializationService">The serialization service.</param>
-        /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        public static object? Deserialize(
-            this ISerializationService serializationService,
-            string? serializedObj,
-            Action<ISerializationContext>? optionsConfig = null)
-        {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            if (serializationService is ISyncSerializationService syncService)
-            {
-                return syncService.Deserialize(serializedObj, optionsConfig);
-            }
-            else
-            {
-                return serializationService.DeserializeAsync(serializedObj, optionsConfig).GetResultNonLocking();
-            }
-        }
-#endif
-
         /// <summary>
         /// Deserializes the object from the provided format asynchronously.
         /// </summary>
@@ -166,14 +51,14 @@ namespace Kephas.Serialization
                 return default;
             }
 
-            Action<ISerializationContext> config = ctx =>
+            void Config(ISerializationContext ctx)
             {
                 ctx.MediaType = typeof(TMediaType);
                 ctx.RootObjectType = typeof(TRootObject);
                 optionsConfig?.Invoke(ctx);
-            };
+            }
 
-            var result = await serializationService.DeserializeAsync(serializedObj, config, cancellationToken).PreserveThreadContext();
+            var result = await serializationService.DeserializeAsync(serializedObj, Config, cancellationToken).PreserveThreadContext();
             return (TRootObject)result;
         }
 
@@ -674,106 +559,5 @@ namespace Kephas.Serialization
         {
             return Serialize<XmlMediaType>(serializationService, obj, optionsConfig);
         }
-
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Serializes the provided object.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="obj">The object.</param>
-        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        public static void Serialize(
-            this ISerializer serializer,
-            object? obj,
-            TextWriter textWriter,
-            ISerializationContext context)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            if (serializer is ISyncSerializer syncSerializer)
-            {
-                syncSerializer.Serialize(obj, textWriter, context);
-            }
-            else
-            {
-                serializer.SerializeAsync(obj, textWriter, context).WaitNonLocking();
-            }
-        }
-
-        /// <summary>
-        /// Serializes the provided object.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="obj">The object.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <returns>
-        /// The serialized object.
-        /// </returns>
-        public static string? Serialize(
-            this ISerializer serializer,
-            object? obj,
-            ISerializationContext context)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            if (serializer is ISyncSerializer syncSerializer)
-            {
-                return syncSerializer.Serialize(obj, context);
-            }
-            else
-            {
-                return serializer.SerializeAsync(obj, context).GetResultNonLocking();
-            }
-        }
-
-        /// <summary>
-        /// Deserializes an object.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        public static object? Deserialize(
-            this ISerializer serializer,
-            TextReader textReader,
-            ISerializationContext context)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            if (serializer is ISyncSerializer syncSerializer)
-            {
-                return syncSerializer.Deserialize(textReader, context);
-            }
-
-            return serializer.DeserializeAsync(textReader, context).GetResultNonLocking();
-        }
-
-        /// <summary>
-        /// Deserializes an object.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="serializedObject">The serialized object.</param>
-        /// <param name="context">Optional. The context containing serialization options.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        public static object? Deserialize(
-            this ISerializer serializer,
-            string? serializedObject,
-            ISerializationContext context)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            if (serializer is ISyncSerializer syncSerializer)
-            {
-                return syncSerializer.Deserialize(serializedObject, context);
-            }
-
-            return serializer.DeserializeAsync(serializedObject, context).GetResultNonLocking();
-        }
-#endif
     }
 }

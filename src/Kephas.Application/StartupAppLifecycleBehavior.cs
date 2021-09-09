@@ -143,11 +143,7 @@ namespace Kephas.Application
             {
                 if (commandName.EndsWith(ending))
                 {
-#if NETSTANDARD2_0
-                    commandName = commandName.Substring(0, commandName.Length - ending.Length);
-#else
                     commandName = commandName[0..^ending.Length];
-#endif
                     break;
                 }
             }

@@ -170,13 +170,8 @@ namespace Kephas.Licensing
             var licensedBy = splits.Length > 5 ? splits[5] : null;
             var validFrom = splits.Length > 6 ? DateTimeParse(splits[6]) : null;
             var validTo = splits.Length > 7 ? DateTimeParse(splits[7]) : null;
-#if NETSTANDARD2_0
-            var checksumString = splits.Length > 8 ? splits[splits.Length - 1] : null;
-            var data = splits.Length > 9 ? DataParse(splits.Skip(8).Take(splits.Length - 9)) : null;
-#else
             var checksumString = splits.Length > 8 ? splits[^1] : null;
             var data = splits.Length > 9 ? DataParse(splits[8..^1]) : null;
-#endif
 
             if (checksumString == null || !int.TryParse(checksumString, out var checksum))
             {

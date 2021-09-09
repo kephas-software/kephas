@@ -124,14 +124,6 @@ namespace Kephas.Runtime
         /// </value>
         public IRuntimeTypeInfo ReturnType => this.TypeRegistry.GetTypeInfo(this.MethodInfo.ReturnType);
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the display information.
-        /// </summary>
-        /// <returns>The display information.</returns>
-        public IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
-#endif
-
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>

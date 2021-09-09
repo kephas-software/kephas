@@ -538,11 +538,7 @@ namespace Kephas.Application
             {
                 if (fwkDescription.StartsWith(match))
                 {
-#if NETSTANDARD2_0
-                    var version = new Version(fwkDescription.Substring(match.Length + 1));
-#else
                     var version = new Version(fwkDescription[(match.Length + 1)..]);
-#endif
                     version = version.Major == 4 && version.Revision != 0
                         ? match == ".NET Core"
                             ? new Version(2, 1)

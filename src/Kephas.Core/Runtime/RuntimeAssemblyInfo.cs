@@ -200,14 +200,6 @@ namespace Kephas.Runtime
             return this.assembly.GetCustomAttributes<TAttribute>();
         }
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the display information.
-        /// </summary>
-        /// <returns>The display information.</returns>
-        public IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
-#endif
-
         /// <summary>
         /// Creates the list of type information from the provided assembly.
         /// </summary>

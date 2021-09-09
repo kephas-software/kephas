@@ -26,8 +26,6 @@ namespace Kephas.Runtime
         /// <returns>A runtime type.</returns>
         IRuntimeTypeInfo GetTypeInfo(Type type);
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the runtime type information.
         /// </summary>
@@ -39,7 +37,6 @@ namespace Kephas.Runtime
 
             return this.GetTypeInfo(typeInfo.AsType());
         }
-#endif
 
         /// <summary>
         /// Gets the runtime assembly.
@@ -79,20 +76,5 @@ namespace Kephas.Runtime
         /// <param name="factory">The factory.</param>
         public static void RegisterFactory(this IRuntimeTypeRegistry registry, IRuntimeTypeInfoFactory factory)
             => registry.RegisterFactory<IRuntimeTypeInfoFactory>(factory);
-
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the runtime type information.
-        /// </summary>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        /// <param name="typeInfo">The type information.</param>
-        /// <returns>A runtime type.</returns>
-        public static IRuntimeTypeInfo GetTypeInfo(this IRuntimeTypeRegistry typeRegistry, TypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return typeRegistry.GetTypeInfo(typeInfo.AsType());
-        }
-#endif
     }
 }

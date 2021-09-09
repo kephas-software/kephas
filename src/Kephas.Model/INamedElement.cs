@@ -77,8 +77,6 @@ namespace Kephas.Model
         /// </value>
         new IModelElement? DeclaringContainer { get; }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the element annotations.
         /// </summary>
@@ -94,7 +92,6 @@ namespace Kephas.Model
         /// The declaring element.
         /// </value>
         IElementInfo? IElementInfo.DeclaringContainer => this.DeclaringContainer;
-#endif
 
         /// <summary>
         /// Gets the model space.

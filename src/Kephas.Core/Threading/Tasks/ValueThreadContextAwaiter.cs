@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NETSTANDARD2_0
-#else
-
 namespace Kephas.Threading.Tasks
 {
     using System;
@@ -169,4 +166,3 @@ namespace Kephas.Threading.Tasks
         }
     }
 }
-#endif

@@ -15,8 +15,6 @@ namespace Kephas.Dynamic
 
     using Kephas.Runtime;
 
-#if NETSTANDARD2_0
-#else
     /// <summary>
     /// Mixin for providing a default implementation of an <see cref="IExpandoBase"/>.
     /// </summary>
@@ -56,7 +54,7 @@ namespace Kephas.Dynamic
         /// <returns>The <see cref="object" />.</returns>
         object? IDynamic.this[string key]
         {
-            get => TryGetValue(this, key, out var value) ? value : value;
+            get => TryGetValue(this, key, out var value) ? value : null;
             set => TrySetValue(this, key, value);
         }
 
@@ -361,5 +359,4 @@ namespace Kephas.Dynamic
             return flags;
         }
     }
-#endif
 }

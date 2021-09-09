@@ -24,9 +24,6 @@ namespace Kephas.Cryptography
     /// </summary>
     [OverridePriority(Priority.Lowest)]
     public class NullEncryptionService : IEncryptionService
-#if NETSTANDARD2_0
-        , ISyncEncryptionService
-#endif
     {
         /// <summary>
         /// Generates a key.

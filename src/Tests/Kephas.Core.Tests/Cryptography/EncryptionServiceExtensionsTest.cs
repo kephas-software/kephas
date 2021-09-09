@@ -40,23 +40,6 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreEqual(output, encrypted);
         }
 
-#if NETCOREAPP2_1
-        [Test]
-        [TestCase("password", "ZHJvd3NzYXA=")]
-        [TestCase("123", "MzIx")]
-        public void Encrypt_no_sync_support(string input, string output)
-        {
-            var encryptionService = Substitute.For<IEncryptionService>();
-            encryptionService.EncryptAsync(null, null, null, default(CancellationToken))
-                .ReturnsForAnyArgs(Task.FromResult(0))
-                .AndDoes(this.ReverseBytes);
-
-            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
-            Assert.AreEqual(output, encrypted);
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("password", "ZHJvd3NzYXA=")]
         [TestCase("123", "MzIx")]
@@ -69,21 +52,6 @@ namespace Kephas.Core.Tests.Cryptography
             var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
             Assert.AreEqual(output, encrypted);
         }
-#else
-        [Test]
-        [TestCase("password", "ZHJvd3NzYXA=")]
-        [TestCase("123", "MzIx")]
-        public void Encrypt_with_sync_support(string input, string output)
-        {
-            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
-            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
-            syncEncryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
-                .Do(this.ReverseBytes);
-
-            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
-            Assert.AreEqual(output, encrypted);
-        }
-#endif
 
         [Test]
         [TestCase("ZHJvd3NzYXA=", "password")]
@@ -99,24 +67,6 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreEqual(output, encrypted);
         }
 
-#if NETCOREAPP3_1_OR_GREATER
-#else
-        [Test]
-        [TestCase("ZHJvd3NzYXA=", "password")]
-        [TestCase("MzIx", "123")]
-        public void Decrypt_no_sync_support(string input, string output)
-        {
-            var encryptionService = Substitute.For<IEncryptionService>();
-            encryptionService.DecryptAsync(null, null, null, default(CancellationToken))
-                .ReturnsForAnyArgs(Task.FromResult(0))
-                .AndDoes(this.ReverseBytes);
-
-            var encrypted = EncryptionServiceExtensions.Decrypt(encryptionService, input);
-            Assert.AreEqual(output, encrypted);
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("ZHJvd3NzYXA=", "password")]
         [TestCase("MzIx", "123")]
@@ -129,21 +79,6 @@ namespace Kephas.Core.Tests.Cryptography
             var encrypted = EncryptionServiceExtensions.Decrypt(encryptionService, input);
             Assert.AreEqual(output, encrypted);
         }
-#else
-        [Test]
-        [TestCase("ZHJvd3NzYXA=", "password")]
-        [TestCase("MzIx", "123")]
-        public void Decrypt_with_sync_support(string input, string output)
-        {
-            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
-            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
-            syncEncryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
-                .Do(this.ReverseBytes);
-
-            var encrypted = EncryptionServiceExtensions.Decrypt(encryptionService, input);
-            Assert.AreEqual(output, encrypted);
-        }
-#endif
 
         [Test]
         [TestCase("password")]
@@ -163,7 +98,6 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreEqual(input, decrypted);
         }
 
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("password")]
         [TestCase("123")]
@@ -179,27 +113,7 @@ namespace Kephas.Core.Tests.Cryptography
             var decrypted = EncryptionServiceExtensions.Decrypt(encryptionService, encrypted);
             Assert.AreEqual(input, decrypted);
         }
-#else
-        [Test]
-        [TestCase("password")]
-        [TestCase("123")]
-        public void Encrypt_Decrypt_are_inverse_no_sync_support(string input)
-        {
-            var encryptionService = Substitute.For<IEncryptionService>();
-            encryptionService.EncryptAsync(null, null, null, default(CancellationToken))
-                .ReturnsForAnyArgs(Task.FromResult(0))
-                .AndDoes(this.ReverseBytes);
-            encryptionService.DecryptAsync(null, null, null, default(CancellationToken))
-                .ReturnsForAnyArgs(Task.FromResult(0))
-                .AndDoes(this.ReverseBytes);
 
-            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
-            var decrypted = EncryptionServiceExtensions.Decrypt(encryptionService, encrypted);
-            Assert.AreEqual(input, decrypted);
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         [TestCase("password")]
         [TestCase("123")]
@@ -215,24 +129,6 @@ namespace Kephas.Core.Tests.Cryptography
             var decrypted = EncryptionServiceExtensions.Decrypt(encryptionService, encrypted);
             Assert.AreEqual(input, decrypted);
         }
-#else
-        [Test]
-        [TestCase("password")]
-        [TestCase("123")]
-        public void Encrypt_Decrypt_are_inverse_with_sync_support(string input)
-        {
-            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
-            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
-            syncEncryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
-                .Do(this.ReverseBytes);
-            syncEncryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
-                .Do(this.ReverseBytes);
-
-            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
-            var decrypted = EncryptionServiceExtensions.Decrypt(encryptionService, encrypted);
-            Assert.AreEqual(input, decrypted);
-        }
-#endif
 
         public void ReverseBytes(CallInfo ci)
         {

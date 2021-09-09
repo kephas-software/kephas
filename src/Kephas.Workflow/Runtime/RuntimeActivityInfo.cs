@@ -97,18 +97,8 @@ namespace Kephas.Workflow.Runtime
                 return await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
             }
 
-#if NETSTANDARD2_0
-            if (activity is IAsyncOperation asyncOperation)
-            {
-                return await asyncOperation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
-            }
-
-            // TODO localization
-            throw new NotImplementedException($"Either implement the {nameof(IOperation)} or {nameof(IAsyncOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
-#else
             // TODO localization
             throw new NotImplementedException($"Implement the {nameof(IOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
-#endif
         }
 
         /// <summary>

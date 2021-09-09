@@ -160,11 +160,7 @@ namespace Kephas.Application.Reflection
                     continue;
                 }
 
-#if NETSTANDARD2_0
-                var featureName = name.Substring(0, name.Length - ending.Length);
-#else
                 var featureName = name[..^ending.Length];
-#endif
                 if (!string.IsNullOrEmpty(featureName))
                 {
                     return new FeatureInfo(featureName, autoVersion);

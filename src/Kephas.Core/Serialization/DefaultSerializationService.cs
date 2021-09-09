@@ -30,9 +30,6 @@ namespace Kephas.Serialization
     /// </summary>
     [OverridePriority(Priority.Low)]
     public class DefaultSerializationService : ISerializationService
-#if NETSTANDARD2_0
-        , ISyncSerializationService
-#endif
     {
         private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories;
         private readonly IContextFactory contextFactory;

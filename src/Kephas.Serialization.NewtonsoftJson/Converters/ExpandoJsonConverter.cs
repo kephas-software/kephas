@@ -212,15 +212,8 @@ namespace Kephas.Serialization.Json.Converters
             var typeContractProperties = (serializer.ContractResolver.ResolveContract(valueTypeInfo.Type) as JsonDynamicContract)?.Properties;
 
             var valueDictionary = value.ToDictionary();
-#if NETSTANDARD2_0
-            foreach (var kv in valueDictionary)
-            {
-                var key = kv.Key;
-                var propValue = kv.Value;
-#else
             foreach (var (key, propValue) in valueDictionary)
             {
-#endif
                 if (propValue == null && serializer.NullValueHandling == NullValueHandling.Ignore)
                 {
                     continue;

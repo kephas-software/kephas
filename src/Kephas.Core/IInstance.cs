@@ -23,11 +23,7 @@ namespace Kephas
         /// <returns>
         /// The type information.
         /// </returns>
-#if NETSTANDARD2_0
-        ITypeInfo GetTypeInfo();
-#else
         ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
-#endif
     }
 
     /// <summary>
@@ -43,10 +39,6 @@ namespace Kephas
         /// <returns>
         /// The type information.
         /// </returns>
-#if NETSTANDARD2_0
-        new T GetTypeInfo();
-#else
         new T GetTypeInfo() => (T)((IInstance)this).GetTypeInfo();
-#endif
     }
 }

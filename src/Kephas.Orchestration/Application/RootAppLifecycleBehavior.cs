@@ -259,11 +259,7 @@ namespace Kephas.Orchestration.Application
 
             if (this.supervisorTimer != null)
             {
-#if NETSTANDARD2_0
-                this.supervisorTimer.Dispose();
-#else
                 await this.supervisorTimer.DisposeAsync().PreserveThreadContext();
-#endif
                 this.supervisorTimer = null;
             }
 

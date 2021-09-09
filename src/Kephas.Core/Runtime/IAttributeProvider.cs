@@ -29,8 +29,6 @@ namespace Kephas.Runtime
         IEnumerable<TAttribute> GetAttributes<TAttribute>()
             where TAttribute : Attribute;
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the single attribute of the provided type.
         /// </summary>
@@ -43,28 +41,5 @@ namespace Kephas.Runtime
         {
             return this.GetAttributes<TAttribute>().SingleOrDefault();
         }
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Provides extension methods for <see cref="IAttributeProvider"/>.
-    /// </summary>
-    public static class AttributeProviderExtensions
-    {
-        /// <summary>
-        /// Gets the single attribute of the provided type.
-        /// </summary>
-        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
-        /// <param name="attributeProvider">The attribute provider.</param>
-        /// <returns>
-        /// The attribute of the provided type.
-        /// </returns>
-        public static TAttribute? GetAttribute<TAttribute>(this IAttributeProvider? attributeProvider)
-            where TAttribute : Attribute
-        {
-            return attributeProvider?.GetAttributes<TAttribute>().SingleOrDefault();
-        }
-    }
-#endif
 }

@@ -22,7 +22,7 @@ namespace Kephas.Core.Tests.Runtime
             Assert.IsFalse(RuntimeEnvironment.IsNetFramework);
         }
 
-#if NETCOREAPP2_1 || NETCOREAPP3_1
+#if NETCOREAPP3_1
         [Test]
         public void IsNetCore()
         {

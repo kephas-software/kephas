@@ -59,17 +59,10 @@ namespace Kephas.Collections
                 return target;
             }
 
-#if NETSTANDARD2_0
-            foreach (var kv in source)
-            {
-                target[kv.Key] = kv.Value;
-            }
-#else
             foreach (var (k, v) in source)
             {
                 target[k] = v;
             }
-#endif
 
             return target;
         }

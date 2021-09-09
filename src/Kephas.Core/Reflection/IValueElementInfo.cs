@@ -26,8 +26,6 @@ namespace Kephas.Reflection
         /// </value>
         ITypeInfo ValueType { get; }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the type of the element's value asynchronously.
         /// </summary>
@@ -37,7 +35,6 @@ namespace Kephas.Reflection
         /// </returns>
         Task<ITypeInfo> GetValueTypeAsync(CancellationToken cancellationToken = default)
             => Task.FromResult(this.ValueType);
-#endif
 
         /// <summary>
         /// Sets the specified value.

@@ -67,8 +67,6 @@ namespace Kephas.Cryptography
             Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
         /// </summary>
@@ -96,96 +94,13 @@ namespace Kephas.Cryptography
         {
             this.DecryptAsync(input, output, optionsConfig).WaitNonLocking();
         }
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Application service contract for synchronous encryption.
-    /// </summary>
-    public interface ISyncEncryptionService
-    {
-        /// <summary>
-        /// Encrypts the input stream and writes the encrypted content into the output stream.
-        /// </summary>
-        /// <param name="input">The input stream.</param>
-        /// <param name="output">The output stream.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        void Encrypt(
-            Stream input,
-            Stream output,
-            Action<IEncryptionContext>? optionsConfig = null);
-
-        /// <summary>
-        /// Decrypts the input stream and writes the decrypted content into the output stream.
-        /// </summary>
-        /// <param name="input">The input stream.</param>
-        /// <param name="output">The output stream.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        void Decrypt(
-            Stream input,
-            Stream output,
-            Action<IEncryptionContext>? optionsConfig = null);
-    }
-#endif
 
     /// <summary>
     /// Extension methods for <see cref="IEncryptionService"/>.
     /// </summary>
     public static class EncryptionServiceExtensions
     {
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Encrypts the input stream and writes the encrypted content into the output stream.
-        /// </summary>
-        /// <param name="encryptionService">The encryption service.</param>
-        /// <param name="input">The input.</param>
-        /// <param name="output">The output.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        public static void Encrypt(
-            this IEncryptionService encryptionService,
-            Stream input,
-            Stream output,
-            Action<IEncryptionContext>? optionsConfig = null)
-        {
-            Requires.NotNull(encryptionService, nameof(encryptionService));
-
-            if (encryptionService is ISyncEncryptionService syncEncryptionService)
-            {
-                syncEncryptionService.Encrypt(input, output, optionsConfig);
-            }
-            else
-            {
-                encryptionService.EncryptAsync(input, output, optionsConfig).WaitNonLocking();
-            }
-        }
-
-        /// <summary>
-        /// Decrypts the input stream and writes the decrypted content into the output stream.
-        /// </summary>
-        /// <param name="encryptionService">The encryption service.</param>
-        /// <param name="input">The input stream.</param>
-        /// <param name="output">The output stream.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        public static void Decrypt(
-            this IEncryptionService encryptionService,
-            Stream input,
-            Stream output,
-            Action<IEncryptionContext>? optionsConfig = null)
-        {
-            Requires.NotNull(encryptionService, nameof(encryptionService));
-
-            if (encryptionService is ISyncEncryptionService syncEncryptionService)
-            {
-                syncEncryptionService.Decrypt(input, output, optionsConfig);
-            }
-            else
-            {
-                encryptionService.DecryptAsync(input, output, optionsConfig).WaitNonLocking();
-            }
-        }
-#endif
-
         /// <summary>
         /// Encrypts the input string and returns a promise of the encrypted string (Base64 encoded).
         /// </summary>

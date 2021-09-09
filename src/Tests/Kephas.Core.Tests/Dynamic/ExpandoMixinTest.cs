@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Dynamic
     using Kephas.Dynamic;
     using NUnit.Framework;
 
-#if NETCOREAPP3_1_OR_GREATER
     [TestFixture]
     public class ExpandoMixinTest
     {
@@ -62,5 +61,4 @@ namespace Kephas.Core.Tests.Dynamic
             public string? Name { get; set; }
         }
     }
-#endif
 }

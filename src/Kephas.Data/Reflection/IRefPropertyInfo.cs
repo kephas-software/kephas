@@ -22,14 +22,11 @@ namespace Kephas.Data.Reflection
         /// </summary>
         ITypeInfo RefType { get; }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the reference type asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>The asynchronous result yielding the reference type.</returns>
         Task<ITypeInfo> GetRefTypeAsync(CancellationToken cancellationToken = default) => Task.FromResult(this.RefType);
-#endif
     }
 }

@@ -102,14 +102,6 @@ namespace Kephas.Runtime
         /// </value>
         ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetTypeInfo(this.FieldInfo.FieldType);
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the display information.
-        /// </summary>
-        /// <returns>The display information.</returns>
-        public virtual IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
-#endif
-
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>

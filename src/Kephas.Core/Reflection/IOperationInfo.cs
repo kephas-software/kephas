@@ -38,8 +38,6 @@ namespace Kephas.Reflection
         /// </value>
         IEnumerable<IParameterInfo> Parameters { get; }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the return type of the operation asynchronously.
         /// </summary>
@@ -49,7 +47,6 @@ namespace Kephas.Reflection
         /// </returns>
         Task<ITypeInfo?> GetReturnTypeAsync(CancellationToken cancellationToken = default)
             => Task.FromResult(this.ReturnType);
-#endif
 
         /// <summary>
         /// Invokes the specified method on the provided instance.
@@ -82,15 +79,13 @@ namespace Kephas.Reflection
                 await taskResult.PreserveThreadContext();
                 result = taskResult.GetResult();
             }
-#if NETSTANDARD2_0
-#else
             else if (result is ValueTask valueTaskResult)
             {
                 taskResult = valueTaskResult.AsTask();
                 await taskResult.PreserveThreadContext();
                 result = taskResult.GetResult();
             }
-#endif
+
             return result;
         }
     }

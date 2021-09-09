@@ -131,14 +131,6 @@ namespace Kephas.Runtime
         /// </value>
         public virtual bool CanRead => this.lazyGetter.Value != null && this.PropertyInfo.CanRead;
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the display information.
-        /// </summary>
-        /// <returns>The display information.</returns>
-        public virtual IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
-#endif
-
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>

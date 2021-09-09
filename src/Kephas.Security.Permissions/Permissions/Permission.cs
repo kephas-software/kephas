@@ -95,11 +95,7 @@ namespace Kephas.Security.Permissions
                 scope = EnsureNormalizedString(splits[1]);
                 if (splits.Length > 2)
                 {
-#if NETSTANDARD2_0
-                    sections = splits.Skip(2).Select(EnsureNormalizedString).ToArray();
-#else
                     sections = splits[2..].Select(EnsureNormalizedString).ToArray();
-#endif
                 }
             }
 

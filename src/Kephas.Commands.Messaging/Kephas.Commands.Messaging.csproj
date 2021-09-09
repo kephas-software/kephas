@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
-        <Version>9.3.4</Version>
-        <AssemblyVersion>9.3.4.0</AssemblyVersion>
-        <FileVersion>9.3.4.0</FileVersion>
+        <Version>10.0.0-dev.1</Version>
+        <AssemblyVersion>10.0.0.0</AssemblyVersion>
+        <FileVersion>10.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -51,14 +51,6 @@
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
-        <DefineConstants>$(DefineConstants);NETSTANDARD2_1</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-        <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

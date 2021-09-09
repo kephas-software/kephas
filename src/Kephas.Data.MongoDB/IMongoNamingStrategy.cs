@@ -25,13 +25,9 @@ namespace Kephas.Data.MongoDB
         /// <returns>
         /// The collection name.
         /// </returns>
-#if NETSTANDARD2_0
-        string GetCollectionName(IDataContext dataContext, Type entityType);
-#else
         string GetCollectionName(IDataContext dataContext, Type entityType)
         {
             return entityType.Name;
         }
-#endif
     }
 }

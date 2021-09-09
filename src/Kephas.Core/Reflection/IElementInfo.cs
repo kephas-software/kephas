@@ -53,13 +53,6 @@ namespace Kephas.Reflection
         /// </value>
         IElementInfo? DeclaringContainer { get; }
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the display information.
-        /// </summary>
-        /// <returns>The display information.</returns>
-        IDisplayInfo? GetDisplayInfo();
-#else
         /// <summary>
         /// Gets a value indicating whether the element is excluded from serialization.
         /// </summary>
@@ -71,21 +64,5 @@ namespace Kephas.Reflection
         /// </summary>
         /// <returns>The display information.</returns>
         IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Extension methods for <see cref="IElementInfo"/>.
-    /// </summary>
-    public static class ElementInfoExtensions
-    {
-        /// <summary>
-        /// Gets a value indicating whether the element is excluded from serialization.
-        /// </summary>
-        /// <param name="self">The element information.</param>
-        /// <returns><c>true</c> if the element is excluded from serialization, <c>false</c> otherwise.</returns>
-        public static bool ExcludeFromSerialization(this IElementInfo self) => self.GetAttribute<ExcludeFromSerializationAttribute>() != null;
-    }
-#endif
 }

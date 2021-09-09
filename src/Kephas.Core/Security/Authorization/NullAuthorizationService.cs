@@ -22,9 +22,6 @@ namespace Kephas.Security.Authorization
     /// </summary>
     [OverridePriority(Priority.Lowest)]
     public class NullAuthorizationService : IAuthorizationService
-#if NETSTANDARD2_0
-        , ISyncAuthorizationService
-#endif
     {
         /// <summary>
         /// Query asynchronously whether the authorization context has the requested permissions.

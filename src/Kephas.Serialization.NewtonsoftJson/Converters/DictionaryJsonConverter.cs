@@ -178,15 +178,8 @@ namespace Kephas.Serialization.Json.Converters
                 writer.WriteValue(typeName);
             }
 
-#if NETSTANDARD2_0
-            foreach (var kv in value)
-            {
-                var key = kv.Key;
-                var item = kv.Value;
-#else
             foreach (var (key, item) in value)
             {
-#endif
                 if (item == null && serializer.NullValueHandling == NullValueHandling.Ignore)
                 {
                     continue;

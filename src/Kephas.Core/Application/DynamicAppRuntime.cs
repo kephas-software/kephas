@@ -127,11 +127,7 @@ namespace Kephas.Application
         /// </returns>
         protected AssemblyName GetAssemblyName(string assemblyFileName)
         {
-#if NETSTANDARD2_0
-            return new AssemblyName(assemblyFileName.Substring(0, assemblyFileName.Length - AssemblyFileExtension.Length));
-#else
             return new AssemblyName(assemblyFileName[..^AssemblyFileExtension.Length]);
-#endif
         }
     }
 }

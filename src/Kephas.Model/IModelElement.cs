@@ -37,8 +37,6 @@ namespace Kephas.Model
         /// <returns>The member with the provided qualified name or <c>null</c>.</returns>
         INamedElement? GetMember(string qualifiedName, bool throwOnNotFound = true);
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets the model element's own members, excluding those declared by the base element or mixins.
         /// </summary>
@@ -47,28 +45,5 @@ namespace Kephas.Model
         {
             return this.Members.Where(m => m.DeclaringContainer == this);
         }
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Extensions for <see cref="IModelElement"/>.
-    /// </summary>
-    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "Reviewed. Suppression is OK here.")]
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public static class ModelElementExtensions
-    {
-        /// <summary>
-        /// Gets the model element's own members, excluding those declared by the base element or mixins.
-        /// </summary>
-        /// <param name="modelElement">The model element.</param>
-        /// <returns>The members declared exclusively at the element level.</returns>
-        public static IEnumerable<INamedElement> GetDeclaredMembers(this IModelElement modelElement)
-        {
-            Requires.NotNull(modelElement, nameof(modelElement));
-
-            return modelElement.Members.Where(m => m.DeclaringContainer == modelElement);
-        }
-    }
-#endif
 }

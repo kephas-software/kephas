@@ -28,9 +28,6 @@ namespace Kephas.Scripting.Python
     /// </summary>
     [Language(Language, LanguageAlt)]
     public class PythonLanguageService : ILanguageService
-#if NETSTANDARD2_0
-        , ISyncLanguageService
-#endif
     {
         /// <summary>
         /// The language identifier.

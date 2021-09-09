@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <SignAssembly>true</SignAssembly>
@@ -11,14 +11,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     </ItemGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-        <DefineConstants>NETCOREAPP3_1</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
-        <DefineConstants>NETCOREAPP2_1</DefineConstants>
-    </PropertyGroup>
 
     <ItemGroup>
       <Compile Remove="Properties\**" />

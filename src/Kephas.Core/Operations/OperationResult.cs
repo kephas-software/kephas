@@ -333,15 +333,6 @@ namespace Kephas.Operations
                 this.Enqueue(item);
             }
 
-#if NETSTANDARD2_0
-            /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
-            /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
-            void ICollection<T>.Clear()
-            {
-                while (this.TryDequeue(out _)) { }
-            }
-#endif
-
             /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.</summary>
             /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
             /// <returns>true if <paramref name="item">item</paramref> is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false.</returns>

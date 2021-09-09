@@ -28,9 +28,6 @@ namespace Kephas.Licensing
     /// The default licensing manager.
     /// </summary>
     public class DefaultLicensingManager : ILicensingManager
-#if NETSTANDARD2_0
-        , ISyncLicensingManager
-#endif
     {
         private readonly Func<AppIdentity, IEnumerable<LicenseData>> licenseDataGetter;
 

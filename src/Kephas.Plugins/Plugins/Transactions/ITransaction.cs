@@ -42,8 +42,6 @@ namespace Kephas.Plugins.Transactions
         /// </returns>
         Task<IOperationResult> RollbackAsync(IPluginContext context, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Undoes the operations in the given context.
         /// </summary>
@@ -55,51 +53,13 @@ namespace Kephas.Plugins.Transactions
         {
             return this.RollbackAsync(context).GetResultNonLocking();
         }
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Interface for sync operations transaction.
-    /// </summary>
-    public interface ISyncTransaction
-    {
-        /// <summary>
-        /// Undoes the operations in the given context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// An <see cref="IOperationResult"/>.
-        /// </returns>
-        IOperationResult Rollback(IPluginContext context);
-    }
-#endif
 
     /// <summary>
     /// A transaction extensions.
     /// </summary>
     public static class TransactionExtensions
     {
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Undoes the operations in the given context.
-        /// </summary>
-        /// <param name="transaction">The transaction.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// An <see cref="IOperationResult"/>.
-        /// </returns>
-        public static IOperationResult Rollback(this ITransaction transaction, IPluginContext context)
-        {
-            if (transaction is ISyncTransaction syncTransaction)
-            {
-                return syncTransaction.Rollback(context);
-            }
-
-            return transaction.RollbackAsync(context).GetResultNonLocking();
-        }
-#endif
-
         /// <summary>
         /// Moves a file.
         /// </summary>

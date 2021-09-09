@@ -137,8 +137,6 @@ namespace Kephas.Threading.Tasks
             return default;
         }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Waits the task avoiding the current thread to be locked.
         /// </summary>
@@ -184,7 +182,6 @@ namespace Kephas.Threading.Tasks
         {
             return GetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds, throwOnTimeout);
         }
-#endif
 
         /// <summary>
         /// Gets a task awaiter preserving the current context upon continuation.
@@ -229,8 +226,6 @@ namespace Kephas.Threading.Tasks
             return new ThreadContextAwaiter(task);
         }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>
@@ -269,7 +264,6 @@ namespace Kephas.Threading.Tasks
         {
             return new ValueThreadContextAwaiter(valueTask);
         }
-#endif
 
         /// <summary>
         /// Configures a timeout for the provided task. If the task ends within the indicated time,

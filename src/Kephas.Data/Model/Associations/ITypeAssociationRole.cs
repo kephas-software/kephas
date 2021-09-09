@@ -51,8 +51,6 @@ namespace Kephas.Data.Model.Associations
         /// </summary>
         TypeAssociationMultiplicity Multiplicity { get; }
 
-#if NETSTANDARD2_0
-#else
         /// <summary>
         /// Gets a value indicating whether this role indicates a collection (multiplicity > 1).
         /// </summary>
@@ -60,23 +58,5 @@ namespace Kephas.Data.Model.Associations
         /// True if this role indicates a collection, false if not.
         /// </returns>
         bool IsCollection() => this.Multiplicity == TypeAssociationMultiplicity.Many;
-#endif
     }
-
-#if NETSTANDARD2_0
-    /// <summary>
-    /// Extension methods for <see cref="ITypeAssociationRole"/>.
-    /// </summary>
-    public static class TypeAssociationRoleExtensions
-    {
-        /// <summary>
-        /// Gets a value indicating whether this role indicates a collection (multiplicity > 1).
-        /// </summary>
-        /// <param name="role">The association role.</param>
-        /// <returns>
-        /// True if this role indicates a collection, false if not.
-        /// </returns>
-        public static bool IsCollection(this ITypeAssociationRole role) => role.Multiplicity == TypeAssociationMultiplicity.Many;
-    }
-#endif
 }

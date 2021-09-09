@@ -176,31 +176,6 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo? GenericTypeDefinition { get; private set; }
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the enumeration of properties.
-        /// </summary>
-        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
-
-        /// <summary>
-        /// Gets the members.
-        /// </summary>
-        /// <value>
-        /// The members.
-        /// </value>
-        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
-
-        /// <summary>
-        /// Gets a member by the provided name.
-        /// </summary>
-        /// <param name="name">The member name.</param>
-        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
-        /// <returns>
-        /// The requested member, or <c>null</c>.
-        /// </returns>
-        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound) => this.GetMember(name, throwIfNotFound);
-#endif
-
         /// <summary>
         /// Indicates whether this classifier is an aspect of the provided classifier.
         /// </summary>

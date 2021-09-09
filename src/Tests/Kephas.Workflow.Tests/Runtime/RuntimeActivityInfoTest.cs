@@ -108,14 +108,9 @@ namespace Kephas.Workflow.Tests.Runtime
         public async Task ExecuteAsync_async_operation()
         {
             var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
-#if NETCOREAPP3_1
             var activity = Substitute.For<ActivityBase, IOperation>();
 
             (activity as IOperation).ExecuteAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<object>("success"));
-#else
-            var activity = Substitute.For<ActivityBase, IAsyncOperation>();
-            (activity as IAsyncOperation).ExecuteAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<object>("success"));
-#endif
 
             Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>())));
         }
