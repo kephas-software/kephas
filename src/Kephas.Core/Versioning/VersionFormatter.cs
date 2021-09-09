@@ -34,9 +34,10 @@ namespace Kephas.Versioning
             Requires.NotNull(arg, nameof(arg));
 
             var str1 = string.Empty;
-            if (arg is IFormattable formattableArg)
+            if (arg.GetType() == typeof(IFormattable))
             {
-                str1 = formattableArg.ToString(format, formatProvider);
+                // NOTE: do not use pattern matching here as this causes an infinite loop
+                str1 = ((IFormattable)arg).ToString(format, formatProvider);
             }
             else if (!string.IsNullOrEmpty(format))
             {

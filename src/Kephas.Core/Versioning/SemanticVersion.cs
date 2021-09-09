@@ -13,8 +13,7 @@ namespace Kephas.Versioning
 
     using Kephas.Diagnostics.Contracts;
 
-    /// <summary>A strict SemVer implementation</summary>
-    /// <summary>A base version operations</summary>
+    /// <summary>A strict SemVer implementation.</summary>
     public class SemanticVersion : IFormattable, IComparable, IComparable<SemanticVersion>, IEquatable<SemanticVersion>
     {
         private static readonly string[] EmptyReleaseLabels = Array.Empty<string>();
@@ -407,7 +406,7 @@ namespace Kephas.Versioning
         /// </returns>
         public virtual string ToString(string? format, IFormatProvider? formatProvider)
         {
-            if (formatProvider == null || !this.TryFormatter(format, formatProvider, out string formattedString))
+            if (formatProvider == null || !this.TryFormatter(format, formatProvider, out string? formattedString))
             {
                 formattedString = this.ToString();
             }
@@ -711,12 +710,13 @@ namespace Kephas.Versioning
             out string formattedString)
         {
             formattedString = string.Empty;
-            if (formatProvider?.GetFormat(this.GetType()) is not ICustomFormatter format1)
+            if (formatProvider == null ||
+                formatProvider.GetFormat(this.GetType()) is not ICustomFormatter customFormatter)
             {
                 return false;
             }
 
-            formattedString = format1.Format(format, this, formatProvider);
+            formattedString = customFormatter.Format(format, this, formatProvider);
 
             return true;
         }
