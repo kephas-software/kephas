@@ -78,7 +78,9 @@ namespace Kephas.Orchestration.Tests
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime[AppRuntimeBase.AppIdKey].Returns("hi");
             appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("there");
-            appRuntime.GetHostAddress().Returns(IPAddress.Loopback);
+
+            var hostInfoProvider = Substitute.For<IHostInfoProvider>();
+            hostInfoProvider.GetHostAddress().Returns(IPAddress.Loopback);
 
             var eventHub = this.CreateEventHubMock();
 
@@ -96,6 +98,7 @@ namespace Kephas.Orchestration.Tests
                 Substitute.For<IMessageProcessor>(), 
                 Substitute.For<IExportFactory<IProcessStarterFactory>>(),
                 config,
+                hostInfoProvider,
                 Substitute.For<ILogManager>());
             manager.HeartbeatDueTime = TimeSpan.FromMilliseconds(100);
             manager.HeartbeatInterval = TimeSpan.FromMilliseconds(100);

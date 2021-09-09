@@ -90,22 +90,6 @@ namespace Kephas.Application
         string GetAppFramework();
 
         /// <summary>
-        /// Gets host address.
-        /// </summary>
-        /// <returns>
-        /// The host address.
-        /// </returns>
-        IPAddress GetHostAddress();
-
-        /// <summary>
-        /// Gets host name.
-        /// </summary>
-        /// <returns>
-        /// The host name.
-        /// </returns>
-        string GetHostName();
-
-        /// <summary>
         /// Attempts to load an assembly from its given assembly name.
         /// </summary>
         /// <param name="assemblyName">The name of the assembly to be loaded.</param>

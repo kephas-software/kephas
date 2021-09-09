@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Messaging;
-
 namespace Kephas.Orchestration.Application
 {
     using System;
@@ -20,6 +18,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Diagnostics.Contracts;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Operations;
     using Kephas.Orchestration.Interaction;
@@ -37,6 +36,7 @@ namespace Kephas.Orchestration.Application
         private readonly IMessageBroker messageBroker;
         private readonly IMessageHandlerRegistry messageHandlerRegistry;
         private readonly IEventHub eventHub;
+        private readonly IHostInfoProvider hostInfoProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrchestrationAppLifecycleBehavior"/> class.
@@ -45,22 +45,25 @@ namespace Kephas.Orchestration.Application
         /// <param name="messageBroker">The application event publisher.</param>
         /// <param name="messageHandlerRegistry">The message handler registry.</param>
         /// <param name="eventHub">The event hub.</param>
+        /// <param name="hostInfoProvider">The host information provider.</param>
         public OrchestrationAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IMessageBroker messageBroker,
             IMessageHandlerRegistry messageHandlerRegistry,
-            IEventHub eventHub)
+            IEventHub eventHub,
+            IHostInfoProvider hostInfoProvider)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(messageHandlerRegistry, nameof(messageHandlerRegistry));
             Requires.NotNull(eventHub, nameof(eventHub));
+            Requires.NotNull(hostInfoProvider, nameof(hostInfoProvider));
 
             this.appRuntime = appRuntime;
             this.messageBroker = messageBroker;
             this.messageHandlerRegistry = messageHandlerRegistry;
             this.eventHub = eventHub;
-
+            this.hostInfoProvider = hostInfoProvider;
             this.messageHandlerRegistry.RegisterHandler<AppStoppedEvent>(this.HandleAppStoppedEventAsync);
             this.messageHandlerRegistry.RegisterHandler<AppStoppingEvent>(this.HandleAppStoppingEventAsync);
             this.messageHandlerRegistry.RegisterHandler<AppStartedEvent>(this.HandleAppStartedEventAsync);
@@ -244,7 +247,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStartingEvent
             {
-                AppInfo = this.appRuntime.GetRuntimeAppInfo(),
+                AppInfo = this.hostInfoProvider.GetRuntimeAppInfo(),
                 Timestamp = DateTimeOffset.Now,
             };
         }
@@ -253,7 +256,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStartedEvent
                        {
-                           AppInfo = this.appRuntime.GetRuntimeAppInfo(),
+                           AppInfo = this.hostInfoProvider.GetRuntimeAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
         }
@@ -262,7 +265,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStoppingEvent
             {
-                AppInfo = this.appRuntime.GetRuntimeAppInfo(),
+                AppInfo = this.hostInfoProvider.GetRuntimeAppInfo(),
                 Timestamp = DateTimeOffset.Now,
             };
         }
@@ -271,7 +274,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStoppedEvent
                        {
-                           AppInfo = this.appRuntime.GetRuntimeAppInfo(),
+                           AppInfo = this.hostInfoProvider.GetRuntimeAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
         }

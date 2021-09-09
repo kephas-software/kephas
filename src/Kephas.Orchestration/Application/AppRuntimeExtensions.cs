@@ -10,9 +10,6 @@
 
 namespace Kephas.Orchestration.Application
 {
-    using System.Diagnostics;
-    using System.Linq;
-
     using Kephas.Application;
     using Kephas.Application.Reflection;
 
@@ -21,27 +18,6 @@ namespace Kephas.Orchestration.Application
     /// </summary>
     public static class AppRuntimeExtensions
     {
-        /// <summary>
-        /// Gets the application information for the provided runtime.
-        /// </summary>
-        /// <param name="appRuntime">The application runtime.</param>
-        /// <returns>
-        /// The application information.
-        /// </returns>
-        public static IRuntimeAppInfo GetRuntimeAppInfo(this IAppRuntime appRuntime)
-        {
-            return new RuntimeAppInfo
-                       {
-                           AppId = appRuntime.GetAppId(),
-                           AppInstanceId = appRuntime.GetAppInstanceId(),
-                           IsRoot = appRuntime.IsRoot(),
-                           ProcessId = Process.GetCurrentProcess().Id,
-                           Features = appRuntime.GetFeatures().Select(f => f.Name).ToArray(),
-                           HostName = appRuntime.GetHostName(),
-                           HostAddress = appRuntime.GetHostAddress().ToString(),
-                       };
-        }
-
         /// <summary>
         /// Gets the application information for the provided <see cref="IAppInfo"/>.
         /// </summary>

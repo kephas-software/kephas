@@ -49,7 +49,7 @@ namespace Kephas.Orchestration
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
-
+        private readonly IHostInfoProvider hostInfoProvider;
         private Timer heartbeatTimer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
@@ -65,6 +65,7 @@ namespace Kephas.Orchestration
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="processStarterFactoryFactory">Factory for the process starter factory.</param>
         /// <param name="configuration">The orchestration configuration.</param>
+        /// <param name="hostInfoProvider">The host information provider.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         public DefaultOrchestrationManager(
             IAppRuntime appRuntime,
@@ -73,6 +74,7 @@ namespace Kephas.Orchestration
             IMessageProcessor messageProcessor,
             IExportFactory<IProcessStarterFactory> processStarterFactoryFactory,
             IConfiguration<OrchestrationSettings> configuration,
+            IHostInfoProvider hostInfoProvider,
             ILogManager? logManager = null)
             : base(logManager)
         {
@@ -81,12 +83,15 @@ namespace Kephas.Orchestration
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
             Requires.NotNull(processStarterFactoryFactory, nameof(processStarterFactoryFactory));
+            Requires.NotNull(configuration, nameof(configuration));
+            Requires.NotNull(hostInfoProvider, nameof(hostInfoProvider));
 
             this.AppRuntime = appRuntime;
             this.EventHub = eventHub;
             this.MessageBroker = messageBroker;
             this.MessageProcessor = messageProcessor;
             this.Configuration = configuration;
+            this.hostInfoProvider = hostInfoProvider;
             this.processStarterFactoryFactory = processStarterFactoryFactory;
 
             this.HeartbeatDueTime = this.HeartbeatInterval = this.Configuration.GetSettings().HeartbeatInterval;
@@ -561,7 +566,7 @@ namespace Kephas.Orchestration
         {
             return new AppHeartbeatEvent
             {
-                AppInfo = this.AppRuntime.GetRuntimeAppInfo(),
+                AppInfo = this.hostInfoProvider.GetRuntimeAppInfo(),
                 Timestamp = DateTimeOffset.Now,
             };
         }

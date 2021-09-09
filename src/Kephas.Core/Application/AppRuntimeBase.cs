@@ -308,29 +308,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets host address.
-        /// </summary>
-        /// <returns>
-        /// The host address.
-        /// </returns>
-        public virtual IPAddress GetHostAddress()
-        {
-            var hostEntry = Dns.GetHostEntry(Dns.GetHostName());
-            return hostEntry.AddressList.Last(add => add.AddressFamily == AddressFamily.InterNetwork);
-        }
-
-        /// <summary>
-        /// Gets the name of the host where the application process runs.
-        /// </summary>
-        /// <returns>
-        /// The host name.
-        /// </returns>
-        public virtual string GetHostName()
-        {
-            return Dns.GetHostName();
-        }
-
-        /// <summary>
         /// Attempts to load an assembly.
         /// </summary>
         /// <param name="assemblyName">The name of the assembly to be loaded.</param>
@@ -417,7 +394,7 @@ namespace Kephas.Application
                                                             ? appId
                                                             : $"{appId}-{Guid.NewGuid():N}"
                                                         : appInstanceId;
-            this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
+            this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName()?.Version?.ToString() ?? "0.0.0.0") : appVersion;
             this[EnvKey] = environment;
         }
 
