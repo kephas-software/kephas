@@ -80,12 +80,12 @@ namespace Kephas.Versioning
         /// </returns>
         public bool Equals(SemanticVersion? version1, SemanticVersion? version2)
         {
-            if (object.Equals(version1, version2))
+            if ((object?)version1 == (object?)version2)
             {
                 return true;
             }
 
-            if (object.Equals(version2, null) || object.Equals(version1, null))
+            if ((object?)version2 == null || (object?)version1 == null)
             {
                 return false;
             }
@@ -157,7 +157,7 @@ namespace Kephas.Versioning
         /// </returns>
         public int Compare(SemanticVersion? version1, SemanticVersion? version2)
         {
-            if (object.Equals(version1, version2))
+            if (object.ReferenceEquals(version1, version2))
             {
                 return 0;
             }
@@ -184,13 +184,13 @@ namespace Kephas.Versioning
                 return num2;
             }
 
-            int num3 = version1.Patch.CompareTo(version2.Patch);
+            var num3 = version1.Patch.CompareTo(version2.Patch);
             if (num3 != 0)
             {
                 return num3;
             }
 
-            int num4 = !version1.Hotfix.HasValue && !version2.Hotfix.HasValue
+            var num4 = !version1.Hotfix.HasValue && !version2.Hotfix.HasValue
                 ? 0
                 : !version1.Hotfix.HasValue
                     ? -1
