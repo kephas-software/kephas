@@ -16,7 +16,7 @@ namespace Kephas.Core.Tests.Cryptography
 
     using Kephas.Composition;
     using Kephas.Cryptography;
-
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;

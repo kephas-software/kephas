@@ -222,11 +222,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.IdentityServer4.InteractiveTests", "Tests\Kephas.AspNetCore.IdentityServer4.InteractiveTests\Kephas.AspNetCore.IdentityServer4.InteractiveTests.csproj", "{84913883-4BEE-455E-B2F8-813B3741905D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.SignalR", "Kephas.AspNetCore.SignalR\Kephas.AspNetCore.SignalR.csproj", "{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.SignalR", "Kephas.AspNetCore.SignalR\Kephas.AspNetCore.SignalR.csproj", "{2D86CA38-94B3-4E53-ACCE-1B187433ABB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Security.Permissions", "Kephas.Security.Permissions\Kephas.Security.Permissions.csproj", "{A71024CE-2497-4880-A9D4-0A7D4684A82A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security.Permissions", "Kephas.Security.Permissions\Kephas.Security.Permissions.csproj", "{A71024CE-2497-4880-A9D4-0A7D4684A82A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Security.Permissions.Tests", "Tests\Kephas.Security.Permissions.Tests\Kephas.Security.Permissions.Tests.csproj", "{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security.Permissions.Tests", "Tests\Kephas.Security.Permissions.Tests\Kephas.Security.Permissions.Tests.csproj", "{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Cryptography", "Kephas.Cryptography\Kephas.Cryptography.csproj", "{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Cryptography.Tests", "Tests\Kephas.Cryptography.Tests\Kephas.Cryptography.Tests.csproj", "{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -630,6 +634,14 @@ Global
 		{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -679,6 +691,7 @@ Global
 		{ACC5B767-FE66-486A-BA70-AFC928F6F746} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{84913883-4BEE-455E-B2F8-813B3741905D} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

@@ -45,7 +45,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
             Assert.IsInstanceOf<CompositionContextAdapter>(ambientServices.CompositionContainer);
 
             var appManager = ambientServices.CompositionContainer.GetExport<IEncryptionService>();
-            Assert.IsInstanceOf<AesEncryptionService>(appManager);
+            Assert.IsInstanceOf<NullEncryptionService>(appManager);
         }
 
         [Test]
