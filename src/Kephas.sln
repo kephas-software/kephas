@@ -228,9 +228,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security.Permissions
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security.Permissions.Tests", "Tests\Kephas.Security.Permissions.Tests\Kephas.Security.Permissions.Tests.csproj", "{BDC6D7A3-BD69-4F30-9FC4-08AA5C5D3C7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Cryptography", "Kephas.Cryptography\Kephas.Cryptography.csproj", "{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security.Cryptography", "Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj", "{128DC857-D5B5-40AD-9DE2-EE5C1B7B0E87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Cryptography.Tests", "Tests\Kephas.Cryptography.Tests\Kephas.Cryptography.Tests.csproj", "{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security.Cryptography.Tests", "Tests\Kephas.Security.Cryptography.Tests\Kephas.Security.Cryptography.Tests.csproj", "{74C358D5-FB2E-4A7F-ADF5-93257BA36E2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
