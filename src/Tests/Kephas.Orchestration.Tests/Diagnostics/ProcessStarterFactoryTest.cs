@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Diagnostics
+namespace Kephas.Orchestration.Tests.Diagnostics
 {
     using System;
     using System.IO;
@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Diagnostics
                 return;
             }
 
-            var appRuntime = this.CreateAppRuntime(System.Environment.CurrentDirectory);
+            var appRuntime = CreateAppRuntime(Environment.CurrentDirectory);
 
             var builder = new ProcessStarterFactory(appRuntime)
                 .WithManagedExecutable("a.exe");
@@ -48,7 +48,7 @@ namespace Kephas.Core.Tests.Diagnostics
                 return;
             }
 
-            var appRuntime = this.CreateAppRuntime(System.Environment.CurrentDirectory);
+            var appRuntime = CreateAppRuntime(Environment.CurrentDirectory);
 
             var builder = new ProcessStarterFactory(appRuntime)
                 .WithManagedExecutable("a.exe");
@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests.Diagnostics
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
             Directory.CreateDirectory(appLocation);
 
-            var appRuntime = this.CreateAppRuntime(appLocation);
+            var appRuntime = CreateAppRuntime(appLocation);
 
             var builder = new ProcessStarterFactory(appRuntime)
                 .WithManagedExecutable("a.exe");
@@ -83,7 +83,7 @@ namespace Kephas.Core.Tests.Diagnostics
         [Test]
         public void GetProcessStartInfo_executable_not_set()
         {
-            var appRuntime = this.CreateAppRuntime(System.Environment.CurrentDirectory);
+            var appRuntime = CreateAppRuntime(Environment.CurrentDirectory);
 
             var builder = new ProcessStarterFactory(appRuntime);
 
