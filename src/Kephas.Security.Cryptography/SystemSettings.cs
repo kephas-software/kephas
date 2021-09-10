@@ -18,22 +18,10 @@ namespace Kephas.Application.Configuration
     /// </summary>
     public class SystemSettings : Expando
     {
-        /// <summary>
-        /// Gets the settings for the application instances.
-        /// </summary>
-        public IDictionary<string, AppSettings> Instances { get; } = new Dictionary<string, AppSettings>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets the certificate information.
         /// </summary>
         public IDictionary<string, CertificateSettings>? Certificates { get; } = new Dictionary<string, CertificateSettings>(StringComparer.InvariantCultureIgnoreCase);
-
-        /// <summary>
-        /// Gets or sets the commands to be executed upon startup, when the application is started for the first time.
-        /// </summary>
-        /// <remarks>
-        /// The application will take care to remove the executed commands from this list once they were executed.
-        /// </remarks>
-        public object[]? SetupCommands { get; set; }
     }
 }

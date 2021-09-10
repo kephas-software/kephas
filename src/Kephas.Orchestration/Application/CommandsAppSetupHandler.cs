@@ -20,6 +20,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Operations;
+    using Kephas.Orchestration.Configuration;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Kephas.Orchestration.Application
     public class CommandsAppSetupHandler : Loggable, IAppSetupHandler
     {
         private readonly IAppRuntime appRuntime;
-        private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IConfiguration<OrchestrationSettings> systemConfiguration;
         private readonly IAppSettingsProvider appSettingsProvider;
         private readonly ICommandProcessor commandProcessor;
         private readonly IMessageProcessor messageProcessor;
@@ -45,7 +46,7 @@ namespace Kephas.Orchestration.Application
         /// <param name="logManager">Optional. The log manager.</param>
         public CommandsAppSetupHandler(
             IAppRuntime appRuntime,
-            IConfiguration<SystemSettings> systemConfiguration,
+            IConfiguration<OrchestrationSettings> systemConfiguration,
             IAppSettingsProvider appSettingsProvider,
             ICommandProcessor commandProcessor,
             IMessageProcessor messageProcessor,

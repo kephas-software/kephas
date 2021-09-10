@@ -1,35 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAppSettingsProvider.cs" company="Kephas Software SRL">
+// <copyright file="OrchestrationAppSettingsProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
-namespace Kephas.Application.Configuration
+namespace Kephas.Orchestration.Configuration
 {
+    using Kephas.Application;
+    using Kephas.Application.Configuration;
+    using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Services;
 
     /// <summary>
-    /// The default implementation of the <see cref="IAppSettingsProvider"/>
+    /// The orchestration implementation of the <see cref="IAppSettingsProvider"/>
     /// </summary>
-    [OverridePriority(Priority.Low)]
-    public class DefaultAppSettingsProvider : IAppSettingsProvider
+    [OverridePriority(Priority.BelowNormal)]
+    public class OrchestrationAppSettingsProvider : IAppSettingsProvider
     {
         private readonly IAppRuntime appRuntime;
-        private readonly IConfiguration<AppSettings> appConfiguration;
+        private readonly IConfiguration<OrchestrationSettings> systemConfiguration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultAppSettingsProvider"/> class.
+        /// Initializes a new instance of the <see cref="OrchestrationAppSettingsProvider"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="appConfiguration">The system configuration.</param>
-        public DefaultAppSettingsProvider(IAppRuntime appRuntime, IConfiguration<AppSettings> appConfiguration)
+        /// <param name="systemConfiguration">The system configuration.</param>
+        public OrchestrationAppSettingsProvider(IAppRuntime appRuntime, IConfiguration<OrchestrationSettings> systemConfiguration)
         {
             this.appRuntime = appRuntime;
-            this.appConfiguration = appConfiguration;
+            this.systemConfiguration = systemConfiguration;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace Kephas.Application.Configuration
         /// </summary>
         /// <returns>The application settings.</returns>
         public AppSettings? GetAppSettings()
-            => this.appConfiguration.GetSettings();
+            => this.GetAppSettings(this.appRuntime.GetAppId()!);
 
         /// <summary>
         /// Gets the application settings for the provided application.
@@ -46,14 +47,8 @@ namespace Kephas.Application.Configuration
         /// <returns>The application settings.</returns>
         public AppSettings? GetAppSettings(string appId)
         {
-            var thisAppId = this.appRuntime.GetAppId();
-            if (!string.Equals(thisAppId, appId, StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new ApplicationException($"{nameof(AppSettings)} for '{appId}' was requested. However, the current application is '{thisAppId}'. Possible cause: missing Kephas.Orchestration assembly.");
-            }
-
-            var appSettings = this.appConfiguration.GetSettings();
-            return appSettings;
+            var systemSettings = this.systemConfiguration.GetSettings();
+            return systemSettings.Instances?.TryGetValue(appId);
         }
     }
 }

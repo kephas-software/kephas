@@ -24,6 +24,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
+    using Kephas.Orchestration.Configuration;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace Kephas.Orchestration.Application
         public RootAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IOrchestrationManager orchestrationManager,
-            IConfiguration<SystemSettings> systemConfiguration,
+            IConfiguration<OrchestrationSettings> systemConfiguration,
             IEventHub eventHub,
             IAppSetupService appSetupService,
             ILogManager? logManager = null)
@@ -89,7 +90,7 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// Gets the system configuration.
         /// </summary>
-        protected IConfiguration<SystemSettings> SystemConfiguration { get; }
+        protected IConfiguration<OrchestrationSettings> SystemConfiguration { get; }
 
         /// <summary>
         /// Gets or sets the worker processes.

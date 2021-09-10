@@ -5,18 +5,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Operations;
-
-namespace Kephas.Application.Tests
+namespace Kephas.Orchestration.Tests.Application
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Application.Configuration;
     using Kephas.Application.Interaction;
     using Kephas.Configuration;
     using Kephas.Interaction;
+    using Kephas.Operations;
+    using Kephas.Orchestration.Application;
+    using Kephas.Orchestration.Configuration;
     using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
@@ -30,8 +32,8 @@ namespace Kephas.Application.Tests
         {
             var eventHub = this.CreateEventHubMock();
 
-            var settings = new SystemSettings();
-            var config = Substitute.For<IConfiguration<SystemSettings>>();
+            var settings = new OrchestrationSettings();
+            var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
 
             var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
@@ -49,8 +51,8 @@ namespace Kephas.Application.Tests
         {
             var eventHub = this.CreateEventHubMock();
 
-            var settings = new SystemSettings();
-            var config = Substitute.For<IConfiguration<SystemSettings>>();
+            var settings = new OrchestrationSettings();
+            var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
 
             var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());

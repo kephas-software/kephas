@@ -8,6 +8,9 @@
 namespace Kephas.Application.Tests.Configuration
 {
     using Kephas.Application.Configuration;
+    using Kephas.Configuration;
+    using Kephas.Services;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -20,6 +23,17 @@ namespace Kephas.Application.Tests.Configuration
             var provider = container.GetExport<IAppSettingsProvider>();
 
             Assert.IsInstanceOf<DefaultAppSettingsProvider>(provider);
+        }
+
+        [Test]
+        public void GetAppSettings_success()
+        {
+            var appSettings = new AppSettings();
+            var config = Substitute.For<IConfiguration<AppSettings>>();
+            config.GetSettings(Arg.Any<IContext?>()).Returns(appSettings);
+            var provider = new DefaultAppSettingsProvider(Substitute.For<IAppRuntime>(), config);
+
+            Assert.AreSame(appSettings, provider.GetAppSettings());
         }
     }
 }

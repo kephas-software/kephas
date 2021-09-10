@@ -5,18 +5,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application
+namespace Kephas.Orchestration.Application
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Application.Configuration;
     using Kephas.Application.Interaction;
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Interaction;
     using Kephas.Operations;
+    using Kephas.Orchestration.Configuration;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;
 
@@ -26,7 +28,7 @@ namespace Kephas.Application
     public class StartupAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IEventHub eventHub;
-        private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IConfiguration<OrchestrationSettings> systemConfiguration;
         private readonly IRuntimeTypeRegistry typeRegistry;
         private IEventSubscription? scheduleCommandSubscription;
 
@@ -38,7 +40,7 @@ namespace Kephas.Application
         /// <param name="typeRegistry">The type registry.</param>
         public StartupAppLifecycleBehavior(
             IEventHub eventHub,
-            IConfiguration<SystemSettings> systemConfiguration,
+            IConfiguration<OrchestrationSettings> systemConfiguration,
             IRuntimeTypeRegistry typeRegistry)
         {
             this.eventHub = eventHub;
