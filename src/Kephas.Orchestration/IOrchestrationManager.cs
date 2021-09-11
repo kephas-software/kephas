@@ -15,6 +15,7 @@ namespace Kephas.Orchestration
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Dynamic;
     using Kephas.Operations;
@@ -31,6 +32,13 @@ namespace Kephas.Orchestration
         /// </summary>
         /// <returns>The root application instance ID.</returns>
         string GetRootAppInstanceId();
+
+        /// <summary>
+        /// Gets the application settings for the provided application.
+        /// </summary>
+        /// <param name="appId">The application identifier.</param>
+        /// <returns>The application settings.</returns>
+        AppSettings? GetAppSettings(string appId);
 
         /// <summary>
         /// Gets the live apps asynchronously.

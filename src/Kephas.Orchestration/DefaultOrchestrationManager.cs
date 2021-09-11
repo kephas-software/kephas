@@ -229,6 +229,17 @@ namespace Kephas.Orchestration
         public virtual string GetRootAppInstanceId() => this.lazyRootAppInstanceId.Value;
 
         /// <summary>
+        /// Gets the application settings for the provided application.
+        /// </summary>
+        /// <param name="appId">The application identifier.</param>
+        /// <returns>The application settings.</returns>
+        public AppSettings? GetAppSettings(string appId)
+        {
+            var systemSettings = this.Configuration.GetSettings();
+            return systemSettings.Instances.TryGetValue(appId);
+        }
+
+        /// <summary>
         /// Gets the live apps asynchronously.
         /// </summary>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
