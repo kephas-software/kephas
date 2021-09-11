@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Cryptography.X509Certificates
+namespace Kephas.Security.Cryptography.X509Certificates
 {
     using System;
     using System.IO;
@@ -14,7 +14,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
     using System.Security.Cryptography.X509Certificates;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
+    using Kephas.Application.Cryptography.X509Certificates;
     using Kephas.Configuration;
     using Kephas.Cryptography;
     using Kephas.Cryptography.X509Certificates;
@@ -33,7 +33,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
         private const X509KeyStorageFlags UnsafeEphemeralKeySet = (X509KeyStorageFlags)32;
 
         private readonly IAppRuntime appRuntime;
-        private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IConfiguration<SecuritySettings> systemConfiguration;
         private readonly IEncryptionService encryptionService;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
         /// <param name="logManager">Optional. The log manager.</param>
         public DefaultCertificateProvider(
             IAppRuntime appRuntime,
-            IConfiguration<SystemSettings> systemConfiguration,
+            IConfiguration<SecuritySettings> systemConfiguration,
             IEncryptionService encryptionService,
             ILogManager? logManager = null)
             : base(logManager)
