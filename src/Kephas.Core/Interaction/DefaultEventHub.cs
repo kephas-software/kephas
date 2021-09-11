@@ -17,9 +17,9 @@ namespace Kephas.Interaction
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.ExceptionHandling;
     using Kephas.Logging;
     using Kephas.Operations;
-    using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -48,9 +48,10 @@ namespace Kephas.Interaction
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result.
+        /// An asynchronous result containing the operation result.
+        /// The encapsulated value is an enumeration of return values from each subscriber.
         /// </returns>
-        public virtual async Task<IOperationResult> PublishAsync(object @event, IContext? context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IEnumerable<object?>>> PublishAsync(object @event, IContext? context = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
 
@@ -60,7 +61,12 @@ namespace Kephas.Interaction
                 subscriptionsCopy = this.subscriptions.Where(s => s.Match(@event)).ToList();
             }
 
-            var result = new OperationResult { OperationState = OperationState.Completed };
+            var resultList = new List<object?>();
+            var result = new OperationResult<IEnumerable<object?>>
+            {
+                OperationState = OperationState.Completed,
+                Value = resultList,
+            };
             foreach (var subscription in subscriptionsCopy)
             {
                 try
@@ -69,8 +75,29 @@ namespace Kephas.Interaction
                     if (task != null)
                     {
                         await task.PreserveThreadContext();
-                        result.Value = task.GetResult();
+                        resultList.Add(task.GetResult());
                     }
+                }
+                catch (InterruptSignal interruption)
+                {
+                    switch (interruption.Severity)
+                    {
+                        case SeverityLevel.Info:
+                            resultList.Add(interruption.Result);
+                            result.Complete();
+                            break;
+                        case SeverityLevel.Warning:
+                            resultList.Add(interruption.Result);
+                            result.Complete(operationState: OperationState.Warning);
+                            this.Logger.Warn(interruption.Exception ?? interruption, "A warning interruption occurred when invoking subscription callback for '{event}'.", @event);
+                            break;
+                        default:
+                            result.Fail(interruption.Exception ?? interruption, operationState: OperationState.Aborted);
+                            this.Logger.Log((LogLevel)interruption.Severity, interruption.Exception ?? interruption, Strings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
+                            break;
+                    }
+
+                    break;
                 }
                 catch (Exception ex)
                 {
@@ -79,7 +106,7 @@ namespace Kephas.Interaction
                 }
             }
 
-            return result;
+            return result.Complete(operationState: result.HasErrors() ? OperationState.Failed : OperationState.Completed);
         }
 
         /// <summary>
