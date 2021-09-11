@@ -27,12 +27,12 @@ namespace Kephas.Application.Interaction
         }
 
         /// <summary>
-        /// The ID of the app for which the startup command should be added.
+        /// Gets the ID of the app for which the startup command should be added.
         /// </summary>
         public string? AppId { get; }
 
         /// <summary>
-        /// The command to be scheduled.
+        /// Gets the command to be scheduled.
         /// </summary>
         public object Command { get; }
     }
