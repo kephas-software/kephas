@@ -39,7 +39,10 @@ namespace Kephas.Application
         /// </returns>
         Task<IOperationResult> BeforeAppInitializeAsync(
             IContext appContext,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
+        }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
@@ -51,7 +54,10 @@ namespace Kephas.Application
         /// </returns>
         Task<IOperationResult> AfterAppInitializeAsync(
             IContext appContext,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
+        }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous finalization.
@@ -67,7 +73,10 @@ namespace Kephas.Application
         /// </returns>
         Task<IOperationResult> BeforeAppFinalizeAsync(
             IContext appContext,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
+        }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
@@ -77,6 +86,9 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task<IOperationResult> AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default);
+        Task<IOperationResult> AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
+        }
     }
 }
