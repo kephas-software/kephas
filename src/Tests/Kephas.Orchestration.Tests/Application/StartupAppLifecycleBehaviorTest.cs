@@ -8,6 +8,7 @@
 namespace Kephas.Orchestration.Tests.Application
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -17,8 +18,6 @@ namespace Kephas.Orchestration.Tests.Application
     using Kephas.Configuration;
     using Kephas.Interaction;
     using Kephas.Operations;
-    using Kephas.Orchestration.Application;
-    using Kephas.Orchestration.Configuration;
     using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
@@ -32,8 +31,8 @@ namespace Kephas.Orchestration.Tests.Application
         {
             var eventHub = this.CreateEventHubMock();
 
-            var settings = new OrchestrationSettings();
-            var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
+            var settings = new AppSettings();
+            var config = Substitute.For<IConfiguration<AppSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
 
             var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
@@ -51,8 +50,8 @@ namespace Kephas.Orchestration.Tests.Application
         {
             var eventHub = this.CreateEventHubMock();
 
-            var settings = new OrchestrationSettings();
-            var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
+            var settings = new AppSettings();
+            var config = Substitute.For<IConfiguration<AppSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
 
             var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
@@ -86,7 +85,7 @@ namespace Kephas.Orchestration.Tests.Application
                         await task;
                     }
 
-                    return (IOperationResult)true.ToOperationResult();
+                    return Enumerable.Empty<object?>().ToOperationResult();
                 });
             return eventHub;
         }

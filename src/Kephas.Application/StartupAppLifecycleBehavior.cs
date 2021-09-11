@@ -5,30 +5,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Application
+namespace Kephas.Application
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
     using Kephas.Application.Configuration;
     using Kephas.Application.Interaction;
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Interaction;
     using Kephas.Operations;
-    using Kephas.Orchestration.Configuration;
     using Kephas.Runtime;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Singleton application service for scheduling
+    /// Application service for scheduling startup commands.
     /// </summary>
     public class StartupAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IEventHub eventHub;
-        private readonly IConfiguration<OrchestrationSettings> systemConfiguration;
+        private readonly IConfiguration<AppSettings> appConfiguration;
         private readonly IRuntimeTypeRegistry typeRegistry;
         private IEventSubscription? scheduleCommandSubscription;
 
@@ -36,15 +33,15 @@ namespace Kephas.Orchestration.Application
         /// Initializes a new instance of the <see cref="StartupAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="systemConfiguration">The system configuration.</param>
+        /// <param name="appConfiguration">The application configuration.</param>
         /// <param name="typeRegistry">The type registry.</param>
         public StartupAppLifecycleBehavior(
             IEventHub eventHub,
-            IConfiguration<OrchestrationSettings> systemConfiguration,
+            IConfiguration<AppSettings> appConfiguration,
             IRuntimeTypeRegistry typeRegistry)
         {
             this.eventHub = eventHub;
-            this.systemConfiguration = systemConfiguration;
+            this.appConfiguration = appConfiguration;
             this.typeRegistry = typeRegistry;
         }
 
@@ -87,42 +84,38 @@ namespace Kephas.Orchestration.Application
         }
 
         /// <summary>
-        /// Gets the ID of the application where the command should be persisted.
+        /// Gets the application settings where the commands should be persisted.
         /// </summary>
         /// <param name="signal">The signal.</param>
-        /// <returns>The ID of the application.</returns>
-        protected virtual string? GetAppId(ScheduleStartupCommandSignal signal)
+        /// <param name="appContext">The application context.</param>
+        /// <returns>The application settings.</returns>
+        protected virtual AppSettings GetAppSettings(ScheduleStartupCommandSignal signal, IAppContext appContext)
         {
-            return signal.AppId;
+            return this.appConfiguration.GetSettings(appContext);
         }
 
-        private async Task HandleScheduleStartupCommandSignalAsync(ScheduleStartupCommandSignal signal, IAppContext appContext, CancellationToken token)
+        /// <summary>
+        /// Updates the application settings for which the startup commands were added.
+        /// </summary>
+        /// <param name="appSettings">The application settings.</param>
+        /// <param name="appContext">The application context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        protected virtual Task UpdateSettingsAsync(AppSettings appSettings, IAppContext appContext, CancellationToken cancellationToken)
         {
-            var settings = this.systemConfiguration.GetSettings(appContext);
-            var appId = this.GetAppId(signal);
-            if (string.IsNullOrEmpty(appId))
-            {
-                var commands = settings.SetupCommands == null
-                    ? new List<object>()
-                    : new List<object>(settings.SetupCommands);
-                commands.Add(this.FormatCommand(signal.Command));
-                settings.SetupCommands = commands.ToArray();
-            }
-            else
-            {
-                if (!settings.Instances.TryGetValue(appId, out var appSettings))
-                {
-                    settings.Instances[appId] = appSettings = new AppSettings();
-                }
+            return this.appConfiguration.UpdateSettingsAsync(appSettings, context: appContext, cancellationToken: cancellationToken);
+        }
 
-                var commands = appSettings.SetupCommands == null
-                    ? new List<object>()
-                    : new List<object>(appSettings.SetupCommands);
-                commands.Add(this.FormatCommand(signal.Command));
-                appSettings.SetupCommands = commands.ToArray();
-            }
+        private Task HandleScheduleStartupCommandSignalAsync(ScheduleStartupCommandSignal signal, IAppContext appContext, CancellationToken token)
+        {
+            var appSettings = this.GetAppSettings(signal, appContext);
+            var commands = appSettings.SetupCommands == null
+                ? new List<object>()
+                : new List<object>(appSettings.SetupCommands);
+            commands.Add(this.FormatCommand(signal.Command));
+            appSettings.SetupCommands = commands.ToArray();
 
-            await this.systemConfiguration.UpdateSettingsAsync(context: appContext, cancellationToken: token).PreserveThreadContext();
+            return this.UpdateSettingsAsync(appSettings, appContext, token);
         }
 
         private object FormatCommand(object rawCommand)
