@@ -18,6 +18,7 @@ namespace Kephas.Application.Interaction
     using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// An interaction feature lifecycle behavior notifying about <see cref="FeatureStartingEvent"/>, <see cref="FeatureStartedEvent"/>, <see cref="FeatureStoppingEvent"/>, and <see cref="FeatureStoppedEvent"/>.
@@ -46,9 +47,10 @@ namespace Kephas.Application.Interaction
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        public override Task<IOperationResult> BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            return this.eventHub.PublishAsync(new FeatureStartingEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken);
+            return await this.eventHub.PublishAsync(new FeatureStartingEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
+                .PreserveThreadContext();
         }
 
         /// <summary>
@@ -60,9 +62,10 @@ namespace Kephas.Application.Interaction
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        public override Task<IOperationResult> AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            return this.eventHub.PublishAsync(new FeatureStartedEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken);
+            return await this.eventHub.PublishAsync(new FeatureStartedEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
+                .PreserveThreadContext();
         }
 
         /// <summary>
@@ -74,9 +77,10 @@ namespace Kephas.Application.Interaction
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        public override Task<IOperationResult> BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            return this.eventHub.PublishAsync(new FeatureStoppingEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken);
+            return await this.eventHub.PublishAsync(new FeatureStoppingEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
+                .PreserveThreadContext();
         }
 
         /// <summary>
@@ -88,9 +92,10 @@ namespace Kephas.Application.Interaction
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        public override Task<IOperationResult> AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            return this.eventHub.PublishAsync(new FeatureStoppedEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken);
+            return await this.eventHub.PublishAsync(new FeatureStoppedEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
+                .PreserveThreadContext();
         }
     }
 }
