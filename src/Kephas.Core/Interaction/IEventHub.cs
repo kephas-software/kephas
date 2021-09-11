@@ -11,6 +11,7 @@
 namespace Kephas.Interaction
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -32,9 +33,10 @@ namespace Kephas.Interaction
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result.
+        /// An asynchronous result containing the operation result.
+        /// The encapsulated value is an enumeration of return values from each subscriber.
         /// </returns>
-        Task<IOperationResult> PublishAsync(object @event, IContext? context = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IEnumerable<object?>>> PublishAsync(object @event, IContext? context = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Subscribes to the event(s) matching the criteria.
