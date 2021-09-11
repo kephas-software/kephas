@@ -166,7 +166,7 @@ namespace Kephas.Testing
                             await func(ci.Arg<object>(), ci.Arg<IContext>(), ci.Arg<CancellationToken>());
                         }
 
-                        return (IOperationResult)true.ToOperationResult();
+                        return Enumerable.Empty<object?>().ToOperationResult();
                     });
 
             eventHub.Subscribe(Arg.Any<Type>(), Arg.Any<Func<object, IContext?, CancellationToken, Task>>())
