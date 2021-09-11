@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemSettings.cs" company="Kephas Software SRL">
+// <copyright file="SecuritySettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Configuration
+namespace Kephas.Security.Cryptography
 {
     using System;
     using System.Collections.Generic;
@@ -14,11 +14,10 @@ namespace Kephas.Application.Configuration
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Settings for the application runtime.
+    /// Settings for the security components.
     /// </summary>
-    public class SystemSettings : Expando
+    public class SecuritySettings : Expando
     {
-
         /// <summary>
         /// Gets the certificate information.
         /// </summary>
