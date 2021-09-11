@@ -18,7 +18,7 @@ namespace Kephas.Messaging.Pipes.Endpoints
         /// Gets or sets the ID of the application instance sending this message.
         /// </summary>
         public string AppInstanceId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the live apps.
         /// </summary>
