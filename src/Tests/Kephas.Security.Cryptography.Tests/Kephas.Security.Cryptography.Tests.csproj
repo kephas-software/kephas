@@ -37,7 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Kephas.Cryptography\Kephas.Cryptography.csproj" />
+		<ProjectReference Include="..\..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />
 		<ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
 	</ItemGroup>
 

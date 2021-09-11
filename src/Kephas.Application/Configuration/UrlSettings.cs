@@ -9,7 +9,6 @@ namespace Kephas.Application.Configuration
 {
     using System;
 
-    using Kephas.Cryptography.X509Certificates;
     using Kephas.Dynamic;
 
     /// <summary>
