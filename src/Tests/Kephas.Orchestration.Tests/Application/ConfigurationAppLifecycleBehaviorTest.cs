@@ -5,24 +5,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Composition;
-using Kephas.Configuration;
-using Kephas.Security.Authentication;
-
 namespace Kephas.Orchestration.Tests.Application
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration.Application;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
