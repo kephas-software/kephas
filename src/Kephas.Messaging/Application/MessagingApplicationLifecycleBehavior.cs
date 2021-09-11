@@ -74,36 +74,6 @@ namespace Kephas.Messaging.Application
         }
 
         /// <summary>
-        /// Interceptor called after the application completes its asynchronous initialization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called before the application starts its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public Task<IOperationResult> BeforeAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
@@ -125,12 +95,7 @@ namespace Kephas.Messaging.Application
             {
                 var settings = this.messagingConfig.GetSettings(appContext);
 
-                if (settings == null)
-                {
-                    return;
-                }
-
-                BrokeredMessage.DefaultTimeout = settings.Distributed?.DefaultTimeout ?? BrokeredMessage.DefaultTimeout;
+                BrokeredMessage.DefaultTimeout = settings?.Distributed?.DefaultTimeout ?? BrokeredMessage.DefaultTimeout;
             }
             catch (Exception ex)
             {

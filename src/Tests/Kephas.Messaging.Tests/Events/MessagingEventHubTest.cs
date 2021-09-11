@@ -97,17 +97,15 @@ namespace Kephas.Messaging.Tests.Events
             var hub = new MessagingEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
             var s1calls = 0;
             var s2calls = 0;
-            using (var s1 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s1calls++))
-            using (var s2 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s2calls++))
-            {
-                await hub.PublishAsync(
-                    Substitute.For<IEvent>(),
-                    Substitute.For<IContext>(),
-                    default);
+            using var s1 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s1calls++);
+            using var s2 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s2calls++);
+            await hub.PublishAsync(
+                Substitute.For<IEvent>(),
+                Substitute.For<IContext>(),
+                default);
 
-                Assert.AreEqual(1, s1calls);
-                Assert.AreEqual(1, s2calls);
-            }
+            Assert.AreEqual(1, s1calls);
+            Assert.AreEqual(1, s2calls);
         }
     }
 }
