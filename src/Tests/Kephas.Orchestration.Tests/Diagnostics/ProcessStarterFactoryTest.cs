@@ -15,8 +15,8 @@ namespace Kephas.Orchestration.Tests.Diagnostics
 
     using Kephas.Application;
     using Kephas.Diagnostics;
+    using Kephas.Orchestration.Diagnostics;
     using Kephas.Runtime;
-
     using NUnit.Framework;
 
     public class ProcessStarterFactoryTest

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Diagnostics
+namespace Kephas.Orchestration.Diagnostics
 {
     using System;
     using System.Collections.Generic;

@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Kephas.Orchestration.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
@@ -27,6 +26,7 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration.Configuration;
+    using Kephas.Orchestration.Diagnostics;
     using Kephas.Orchestration.Interaction;
     using Kephas.Services;
     using NSubstitute;

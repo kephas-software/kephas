@@ -36,6 +36,7 @@ namespace Kephas.Orchestration
     using Kephas.Operations;
     using Kephas.Orchestration.Application;
     using Kephas.Orchestration.Configuration;
+    using Kephas.Orchestration.Diagnostics;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Orchestration.Interaction;
     using Kephas.Runtime;

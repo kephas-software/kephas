@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Diagnostics
+namespace Kephas.Orchestration.Diagnostics
 {
     using System;
     using System.Diagnostics;
 
-    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>

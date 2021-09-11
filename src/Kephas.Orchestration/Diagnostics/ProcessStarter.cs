@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Diagnostics
+namespace Kephas.Orchestration.Diagnostics
 {
     using System;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Logging;
-    using Kephas.Operations;
 
     /// <summary>
     /// A process starter.
