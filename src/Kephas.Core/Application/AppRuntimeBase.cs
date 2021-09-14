@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-
 namespace Kephas.Application
 {
     using System;
@@ -22,8 +19,10 @@ namespace Kephas.Application
     using System.Net.Sockets;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
     using System.Runtime.Loader;
     using System.Runtime.Versioning;
+    using System.Text.RegularExpressions;
 
     using Kephas.Collections;
     using Kephas.Dynamic;
@@ -99,12 +98,14 @@ namespace Kephas.Application
         private IEnumerable<string>? configFolders;
         private IEnumerable<string>? licenseFolders;
         private bool isDisposed = false; // To detect redundant calls
+        private IEnumerable<Assembly>? appAssemblies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
+        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
         /// <param name="appFolder">Optional. The application folder. If not specified, the current
@@ -121,6 +122,7 @@ namespace Kephas.Application
         protected AppRuntimeBase(
             Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
+            IEnumerable<Assembly>? appAssemblies = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
@@ -138,6 +140,7 @@ namespace Kephas.Application
             this.getLogger = getLogger ?? NullLogManager.GetNullLogger;
             this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
+            this.appAssemblies = appAssemblies;
             this.appFolder = appFolder;
             this.configFolders = configFolders;
             this.licenseFolders = licenseFolders;
@@ -631,7 +634,7 @@ namespace Kephas.Application
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
         }
 
-        private static bool EqualArray(byte[] s1, byte[] s2)
+        private static bool EqualArray(byte[]? s1, byte[]? s2)
         {
             if (s1 == null)
             {
@@ -662,7 +665,7 @@ namespace Kephas.Application
         private IEnumerable<Assembly> GetAppAssembliesRaw()
         {
             // TODO AssemblyLoadContext.Default.Assemblies;
-            return AppDomain.CurrentDomain.GetAssemblies();
+            return this.appAssemblies ?? AppDomain.CurrentDomain.GetAssemblies();
         }
 
         private Assembly? TryLoadAssembly(AssemblyName n)

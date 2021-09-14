@@ -62,6 +62,7 @@ namespace Kephas.Application
             var appRuntime = new DynamicAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
                 (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
+                null,
                 assemblyFilter,
                 appFolder,
                 configFolders,
@@ -112,6 +113,7 @@ namespace Kephas.Application
             var appRuntime = new StaticAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
                 (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
+                null,
                 assemblyFilter,
                 appFolder,
                 configFolders,

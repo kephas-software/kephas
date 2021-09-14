@@ -48,6 +48,7 @@ namespace Kephas.Plugins.Application
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
+        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
@@ -64,6 +65,7 @@ namespace Kephas.Plugins.Application
         public PluginsAppRuntime(
             Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
+            IEnumerable<Assembly>? appAssemblies = null,
             Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
@@ -76,7 +78,7 @@ namespace Kephas.Plugins.Application
             bool? enablePlugins = null,
             string? pluginsFolder = null,
             IPluginRepository? pluginRepository = null)
-            : base(getLogger, checkLicense, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
+            : base(getLogger, checkLicense, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);

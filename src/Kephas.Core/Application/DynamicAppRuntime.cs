@@ -32,6 +32,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
+        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
@@ -44,6 +45,7 @@ namespace Kephas.Application
         public DynamicAppRuntime(
             Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
+            IEnumerable<Assembly>? appAssemblies = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
@@ -53,7 +55,7 @@ namespace Kephas.Application
             string? appInstanceId = null,
             string? appVersion = null,
             IDynamic? appArgs = null)
-            : base(getLogger, checkLicense, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
+            : base(getLogger, checkLicense, appAssemblies, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
         }
 
