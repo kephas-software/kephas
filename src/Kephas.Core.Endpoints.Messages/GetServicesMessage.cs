@@ -9,8 +9,6 @@ namespace Kephas.Core.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
-    using Kephas.Messaging.Messages;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Message for retrieving metadata of the application services.
@@ -29,16 +27,5 @@ namespace Kephas.Core.Endpoints
         /// </summary>
         [DisplayInfo(Description = "Indicates whether the ordering behavior should be applied on the services.")]
         public bool Ordered { get; set; }
-    }
-
-    /// <summary>
-    /// The response message for <see cref="GetServicesMessage"/>.
-    /// </summary>
-    public class GetServicesResponseMessage : ResponseMessage
-    {
-        /// <summary>
-        /// Gets or sets the services.
-        /// </summary>
-        public AppServiceMetadata[]? Services { get; set; }
     }
 }

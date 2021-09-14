@@ -8,7 +8,6 @@
 namespace Kephas.Core.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
@@ -23,12 +22,12 @@ namespace Kephas.Core.Endpoints
         /// Gets or sets the settings type.
         /// </summary>
         [DisplayInfo(Description = "The name of the settings type to update. The 'Settings' ending may be left out. If not provided, the Settings must contain an already formed settings instance.")]
-        public string SettingsType { get; set; }
+        public string? SettingsType { get; set; }
 
         /// <summary>
         /// Gets or sets the settings.
         /// </summary>
         [DisplayInfo(Description = "The settings value to update. If it contains an already formed settings instance, the settings type may not be provided. If it is a string value, it contains the serialized value of the settings.")]
-        public object Settings { get; set; }
+        public object? Settings { get; set; }
     }
 }

@@ -23,6 +23,7 @@ $paths = @(
     "..\Kephas.Composition.Mef",
     "..\Kephas.Core",
     "..\Kephas.Core.Endpoints",
+    "..\Kephas.Core.Endpoints.Messages",
     "..\Kephas.Data",
     "..\Kephas.Data.Client",
     "..\Kephas.Data.Endpoints",

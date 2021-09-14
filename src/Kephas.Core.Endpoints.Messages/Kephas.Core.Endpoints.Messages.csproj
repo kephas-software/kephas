@@ -14,7 +14,7 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Adds messaging endpoints for core services. The endpoints wills work if Kephas.Messaging is referenced and the IMessageProcessor is used for processing the messages.
+            Provides the messages for the core endpoints.
             Typically used areas and classes/interfaces/services:
             - EncryptMessage, HashMessage, GetLogLevelMessage, SetLogLevelMessage.
 
@@ -46,6 +46,7 @@
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <RootNamespace>Kephas.Core.Endpoints</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -53,10 +54,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="stylecop.json" />
         <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
+            <Pack>true</Pack>
+            <PackagePath>\</PackagePath>
         </None>
     </ItemGroup>
 
@@ -65,36 +70,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kephas.Core.Endpoints.Messages\Kephas.Core.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

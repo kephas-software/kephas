@@ -39,18 +39,4 @@ namespace Kephas.Core.Endpoints
         [Display(Description = "Optional. The key used in encryption. If not provided, a default key will be used.")]
         public string? Key { get; set; }
     }
-
-    /// <summary>
-    /// An encrypt response message.
-    /// </summary>
-    public class EncryptResponseMessage
-    {
-        /// <summary>
-        /// Gets or sets the encrypted value.
-        /// </summary>
-        /// <value>
-        /// The encrypted value.
-        /// </value>
-        public string? Encrypted { get; set; }
-    }
 }

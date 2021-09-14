@@ -52,7 +52,7 @@ namespace Kephas.Core.Endpoints
 
             var settingsTypes = this.appRuntime.GetAppAssemblies()
                 .SelectMany(a => this.typeLoader.GetExportedTypes(a)
-                        .Where(t => t.IsAssignableFrom(typeof(ISettings)) && !t.IsAbstract))
+                        .Where(t => typeof(ISettings).IsAssignableFrom(t) && !t.IsAbstract))
                 .ToList();
 
             return new GetSettingsTypesResponseMessage

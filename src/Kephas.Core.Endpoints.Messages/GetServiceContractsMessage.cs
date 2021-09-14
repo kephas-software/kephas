@@ -9,13 +9,14 @@ namespace Kephas.Core.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
-    using Kephas.Messaging.Messages;
-    using Kephas.Services.Reflection;
+    using Kephas.Security.Permissions;
+    using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// Message for retrieving metadata of the application service contracts.
     /// </summary>
     [DisplayInfo(Description = "Gets the metadata of the application service contracts.")]
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class GetServiceContractsMessage : IMessage
     {
         /// <summary>
@@ -35,16 +36,5 @@ namespace Kephas.Core.Endpoints
         /// </summary>
         [DisplayInfo(Description = "Filter on the AsOpenGeneric flag.")]
         public bool? AsOpenGeneric { get; set; }
-    }
-
-    /// <summary>
-    /// The response message for <see cref="GetServiceContractsMessage"/>.
-    /// </summary>
-    public class GetServiceContractsResponseMessage : ResponseMessage
-    {
-        /// <summary>
-        /// Gets or sets the service information.
-        /// </summary>
-        public IAppServiceInfo[]? ServiceInfos { get; set; }
     }
 }

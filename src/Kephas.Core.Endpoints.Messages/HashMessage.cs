@@ -48,18 +48,4 @@ namespace Kephas.Core.Endpoints
         [Display(Description = "Optional. A value indicating to use the default salt in hash if none provided.")]
         public bool UseDefaultSalt { get; set; }
     }
-
-    /// <summary>
-    /// A hash response message.
-    /// </summary>
-    public class HashResponseMessage : IMessage
-    {
-        /// <summary>
-        /// Gets or sets the hash.
-        /// </summary>
-        /// <value>
-        /// The hash.
-        /// </value>
-        public string? Hash { get; set; }
-    }
 }
