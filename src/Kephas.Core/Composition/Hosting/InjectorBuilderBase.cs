@@ -344,10 +344,10 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// Creates the container with the provided configuration asynchronously.
+        /// Creates the injector.
         /// </summary>
-        /// <returns>A new container with the provided configuration.</returns>
-        public virtual IInjector CreateContainer()
+        /// <returns>The newly created injector.</returns>
+        public virtual IInjector CreateInjector()
         {
             IInjector? container = null;
             Profiler.WithInfoStopwatch(

@@ -795,7 +795,7 @@ namespace Kephas
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            return ambientServices.WithCompositionContainer(containerBuilder.CreateContainer());
+            return ambientServices.WithCompositionContainer(containerBuilder.CreateInjector());
         }
 
         /// <summary>
@@ -814,7 +814,7 @@ namespace Kephas
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            var container = containerBuilder.CreateContainer();
+            var container = containerBuilder.CreateInjector();
             return ambientServices.WithCompositionContainer(container);
         }
     }

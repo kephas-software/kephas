@@ -46,7 +46,7 @@ namespace Kephas
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            var container = containerBuilder.CreateContainer();
+            var container = containerBuilder.CreateInjector();
             return ambientServices.WithCompositionContainer(container);
         }
 

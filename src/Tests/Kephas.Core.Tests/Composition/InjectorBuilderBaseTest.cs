@@ -63,7 +63,7 @@ namespace Kephas.Core.Tests.Composition
             var builder = new TestInjectorBuilder(ambientServices)
                 .WithAssemblies(new[] { this.GetType().Assembly });
 
-            var container = builder.CreateContainer();
+            var container = builder.CreateInjector();
             Assert.IsNotNull(container);
         }
 
