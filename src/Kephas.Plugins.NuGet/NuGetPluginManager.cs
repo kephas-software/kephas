@@ -39,6 +39,8 @@ namespace Kephas.Plugins.NuGet
     using Kephas.Plugins.Transactions;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
+    
+    using ISettings = global::NuGet.Configuration.ISettings;
 
     /// <summary>
     /// Manager for plugins based on the NuGet infrastructure.

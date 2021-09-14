@@ -19,6 +19,7 @@ namespace Kephas.Security.Cryptography.X509Certificates
     using Kephas.Cryptography;
     using Kephas.Cryptography.X509Certificates;
     using Kephas.Logging;
+    using Kephas.Security.Cryptography.Configuration;
     using Kephas.Services;
 
     /// <summary>

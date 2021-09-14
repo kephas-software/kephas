@@ -9,10 +9,13 @@ namespace Kephas.Messaging.Pipes.Configuration
 {
     using System;
 
+    using Kephas.Configuration;
+    using Kephas.Dynamic;
+
     /// <summary>
     /// Settings for communication over pipes.
     /// </summary>
-    public class PipesSettings
+    public class PipesSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets the connection timeout.

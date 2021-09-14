@@ -11,12 +11,13 @@ namespace Kephas.Security.Cryptography.Configuration
     using System.Collections.Generic;
 
     using Kephas.Application.Cryptography.X509Certificates;
+    using Kephas.Configuration;
     using Kephas.Dynamic;
 
     /// <summary>
     /// Settings for the application runtime.
     /// </summary>
-    public class SecuritySettings : Expando
+    public class SecuritySettings : Expando, ISettings
     {
         /// <summary>
         /// Gets the certificate information.

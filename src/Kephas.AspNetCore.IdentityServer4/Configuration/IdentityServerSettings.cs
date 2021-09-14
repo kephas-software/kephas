@@ -9,13 +9,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
 {
     using System.Collections.Generic;
 
+    using Kephas.Configuration;
     using Kephas.Dynamic;
 
     /// <summary>
     /// Settings for identity server.
     /// </summary>
     /// <seealso cref="Kephas.Dynamic.Expando" />
-    public class IdentityServerSettings : Expando
+    public class IdentityServerSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets the resources.

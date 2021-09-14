@@ -10,10 +10,12 @@
 
 namespace Kephas.TextProcessing
 {
+    using Kephas.Configuration;
+
     /// <summary>
     /// The tokenizer settings.
     /// </summary>
-    public class TokenizerSettings
+    public class TokenizerSettings : ISettings
     {
         /// <summary>
         /// Gets or sets the word separators.

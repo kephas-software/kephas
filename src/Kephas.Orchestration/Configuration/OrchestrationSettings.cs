@@ -11,12 +11,13 @@ namespace Kephas.Orchestration.Configuration
     using System.Collections.Generic;
 
     using Kephas.Application.Configuration;
+    using Kephas.Configuration;
     using Kephas.Dynamic;
 
     /// <summary>
     /// Settings for orchestration.
     /// </summary>
-    public class OrchestrationSettings : Expando
+    public class OrchestrationSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets the settings for the application instances.

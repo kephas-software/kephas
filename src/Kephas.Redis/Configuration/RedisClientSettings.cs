@@ -10,10 +10,12 @@
 
 namespace Kephas.Redis.Configuration
 {
+    using Kephas.Configuration;
+
     /// <summary>
     /// The Redis client settings.
     /// </summary>
-    public class RedisClientSettings
+    public class RedisClientSettings : ISettings
     {
         /// <summary>
         /// Gets or sets the Redis connection string.

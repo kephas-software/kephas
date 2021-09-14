@@ -10,12 +10,14 @@
 
 namespace Kephas.Messaging
 {
+    using Kephas.Configuration;
+    using Kephas.Dynamic;
     using Kephas.Messaging.Distributed;
 
     /// <summary>
     /// Messaging settings.
     /// </summary>
-    public class MessagingSettings
+    public class MessagingSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets the distributed messaging settings.

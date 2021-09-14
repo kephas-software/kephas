@@ -12,11 +12,13 @@ namespace Kephas.Plugins.NuGet
 {
     using global::NuGet.Resolver;
     using Kephas.Application;
+    using Kephas.Configuration;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// The plugins settings.
     /// </summary>
-    public class PluginsSettings
+    public class PluginsSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets the full pathname of the NuGet configuration file.

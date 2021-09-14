@@ -10,13 +10,14 @@
 
 namespace Kephas
 {
-    using Kephas.Application;
+    using Kephas.Configuration;
+    using Kephas.Dynamic;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// The Kephas core settings.
     /// </summary>
-    public class CoreSettings
+    public class CoreSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets the task settings.

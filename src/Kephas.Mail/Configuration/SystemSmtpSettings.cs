@@ -10,10 +10,12 @@
 
 namespace Kephas.Mail.Configuration
 {
+    using Kephas.Configuration;
+
     /// <summary>
     /// A system email sender settings.
     /// </summary>
-    public class SystemSmtpSettings : SmtpSettings
+    public class SystemSmtpSettings : SmtpSettings, ISettings
     {
     }
 }

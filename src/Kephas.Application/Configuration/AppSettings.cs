@@ -7,12 +7,13 @@
 
 namespace Kephas.Application.Configuration
 {
+    using Kephas.Configuration;
     using Kephas.Dynamic;
 
     /// <summary>
     /// Settings for the application instances.
     /// </summary>
-    public class AppSettings : Expando
+    public class AppSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether application instances should be automatically started.
