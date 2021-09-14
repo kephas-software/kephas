@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingApplicationLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="MessagingAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -29,20 +29,20 @@ namespace Kephas.Messaging.Application
     /// A messaging application lifecycle behavior.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class MessagingApplicationLifecycleBehavior : Loggable, IAppLifecycleBehavior
+    public class MessagingAppLifecycleBehavior : Loggable, IAppLifecycleBehavior
     {
         private readonly IConfiguration<MessagingSettings> messagingConfig;
         private readonly IMessageBroker messageBroker;
         private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingApplicationLifecycleBehavior"/>
+        /// Initializes a new instance of the <see cref="MessagingAppLifecycleBehavior"/>
         /// class.
         /// </summary>
         /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="typeRegistry">The type registry.</param>
-        public MessagingApplicationLifecycleBehavior(IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IRuntimeTypeRegistry typeRegistry)
+        public MessagingAppLifecycleBehavior(IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IRuntimeTypeRegistry typeRegistry)
         {
             Requires.NotNull(messagingConfig, nameof(messagingConfig));
             Requires.NotNull(messageBroker, nameof(messageBroker));
