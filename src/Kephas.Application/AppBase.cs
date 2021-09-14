@@ -167,7 +167,7 @@ namespace Kephas.Application
 
         /// <summary>
         /// The <see cref="AfterAppManagerFinalize"/> is called after the application manager completed finalization.
-        /// It disposes the composition container and the ambient services.
+        /// It disposes the injector and the ambient services.
         /// </summary>
         protected virtual void AfterAppManagerFinalize()
         {
@@ -179,7 +179,7 @@ namespace Kephas.Application
         /// The <see cref="BeforeAppManagerInitialize"/> is called before the application manager is initialized.
         /// Initializes the application prerequisites: the ambient services, the application context
         /// registration, its own logger, and other. In the end, the <see cref="BuildServicesContainer"/> method is called
-        /// to complete the service registration and build the composition container.
+        /// to complete the service registration and build the injector.
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
         /// <returns>
