@@ -31,7 +31,10 @@ namespace Kephas.Versioning
         /// </returns>
         public string Format(string? format, object? arg, IFormatProvider? formatProvider)
         {
-            Requires.NotNull(arg, nameof(arg));
+            if (arg == null)
+            {
+                return string.Empty;
+            }
 
             var str1 = string.Empty;
             if (arg.GetType() == typeof(IFormattable))
