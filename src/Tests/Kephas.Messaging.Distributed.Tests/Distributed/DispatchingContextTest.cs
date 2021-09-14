@@ -32,7 +32,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
-                Substitute.For<IConfiguration<MessagingSettings>>(),
+                Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
                 Substitute.For<IAuthenticationService>());
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
-                Substitute.For<IConfiguration<MessagingSettings>>(),
+                Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
                 Substitute.For<IAuthenticationService>());
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Tests.Distributed
 
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
-                Substitute.For<IConfiguration<MessagingSettings>>(),
+                Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 appRuntime,
                 Substitute.For<IAuthenticationService>());
@@ -79,8 +79,8 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void Timeout_from_config()
         {
-            var config = Substitute.For<IConfiguration<MessagingSettings>>();
-            config.GetSettings(Arg.Any<IContext>()).Returns(ci => new MessagingSettings { Distributed = new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) } });
+            var config = Substitute.For<IConfiguration<DistributedMessagingSettings>>();
+            config.GetSettings(Arg.Any<IContext>()).Returns(ci => new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) });
 
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
@@ -96,7 +96,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void Timeout_from_default()
         {
-            var config = Substitute.For<IConfiguration<MessagingSettings>>();
+            var config = Substitute.For<IConfiguration<DistributedMessagingSettings>>();
             config.GetSettings(Arg.Any<IContext>()).Returns(ci => null);
 
             var builder = new DispatchingContext(

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultEventHubTest.cs" company="Kephas Software SRL">
+// <copyright file="MessagingEventHubTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,7 +14,6 @@ namespace Kephas.Messaging.Tests.Events
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
-    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
@@ -41,16 +40,13 @@ namespace Kephas.Messaging.Tests.Events
         {
             var container = this.CreateContainer();
             var hub = container.GetExport<IEventHub>();
-            var broker = container.GetExport<IMessageBroker>();
-            await (broker as IAsyncInitializable).InitializeAsync(new Context(container));
+            var processor = container.GetExport<IMessageProcessor>();
 
             var calls = 0;
-            using (var s = hub.Subscribe<PingMessage>(async (e, c, t) => calls++))
-            {
-                await broker.PublishAsync<PingMessage>();
-                await Task.Delay(100);
-                Assert.AreEqual(1, calls);
-            }
+            using var s = hub.Subscribe<PingMessage>(async (e, c, t) => calls++);
+            await processor.ProcessAsync(new PingMessage());
+            await Task.Delay(100);
+            Assert.AreEqual(1, calls);
         }
 
         [Test]

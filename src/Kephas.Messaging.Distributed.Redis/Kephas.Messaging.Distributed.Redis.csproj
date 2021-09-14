@@ -14,12 +14,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides services for messaging, a.k.a. request/response service layer.
+            Provides distributed message routing over Redis using StackExchange.Redis.
             Typically used areas and classes/interfaces/services:
-            - IMessageProcessor, IMessage, MessageHandlerBase.
-            - Distributed: IMessageBroker, IBrokeredMessage, MessageRouterBase.
-            - Behaviors: IMessagingBehavior, MessagingBehaviorBase.
-            - Events: IEvent.
+            - RedisAppMessageRouter.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -36,7 +33,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas messaging request response servicelayer events</PackageTags>
+        <PackageTags>kephas messaging request response servicelayer events redis</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -56,15 +53,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+      <Compile Remove="Properties\**" />
+      <EmbeddedResource Remove="Properties\**" />
+      <None Remove="Properties\**" />
+      <None Update="kephas.logo.stone.png">
+        <Pack>true</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -72,39 +71,26 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging.Distributed\Kephas.Messaging.Distributed.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
+        <ProjectReference Include="..\Kephas.Redis\Kephas.Redis.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <ItemGroup>

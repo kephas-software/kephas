@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Diagnostics.Contracts;
+
 namespace Kephas.Messaging.Redis.Routing
 {
     using System;
@@ -44,9 +46,9 @@ namespace Kephas.Messaging.Redis.Routing
         private readonly ISerializationService serializationService;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
-        private ISubscriber publisher;
+        private ISubscriber? publisher;
         private IConnectionMultiplexer? subConnection;
-        private ISubscriber subscriber;
+        private ISubscriber? subscriber;
         private string redisRootChannelName;
         private IConnectionMultiplexer? pubConnection;
         private bool isRedisChannelInitialized;
@@ -126,8 +128,8 @@ namespace Kephas.Messaging.Redis.Routing
 
             this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
 
-            var redisNS = this.redisConfiguration.GetSettings(this.AppContext).Namespace;
-            this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
+            var redisNamespace = this.redisConfiguration.GetSettings(this.AppContext).Namespace;
+            this.redisRootChannelName = string.IsNullOrEmpty(redisNamespace) ? ChannelType : $"{redisNamespace}:{ChannelType}";
 
             this.pubConnection = this.redisConnectionManager.CreateConnection();
             this.publisher = this.pubConnection.GetSubscriber();
@@ -287,7 +289,7 @@ namespace Kephas.Messaging.Redis.Routing
 
                 try
                 {
-                    this.subscriber.UnsubscribeAll();
+                    this.subscriber?.UnsubscribeAll();
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -307,13 +309,15 @@ namespace Kephas.Messaging.Redis.Routing
 
         private async Task PublishAsync(string serializedMessage, string channelName, bool oneWay)
         {
+            Requires.NotNull(this.publisher, nameof(this.publisher));
+
             if (oneWay)
             {
-                await this.publisher.PublishAsync(channelName, serializedMessage, CommandFlags.FireAndForget).PreserveThreadContext();
+                await this.publisher!.PublishAsync(channelName, serializedMessage, CommandFlags.FireAndForget).PreserveThreadContext();
             }
             else
             {
-                await this.publisher.PublishAsync(channelName, serializedMessage).PreserveThreadContext();
+                await this.publisher!.PublishAsync(channelName, serializedMessage).PreserveThreadContext();
             }
         }
     }

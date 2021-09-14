@@ -4,6 +4,9 @@
         <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <RootNamespace>Kephas.Messaging.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,9 +36,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\Kephas.Messaging.Pipes\Kephas.Messaging.Pipes.csproj" />
-        <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
+        <ProjectReference Include="..\..\Kephas.Messaging.Distributed\Kephas.Messaging.Distributed.csproj" />
         <ProjectReference Include="..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Autofac\Kephas.Testing.Composition.Autofac.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 

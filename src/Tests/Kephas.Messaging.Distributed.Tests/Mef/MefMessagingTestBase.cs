@@ -16,8 +16,14 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
+    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Configuration;
     using Kephas.Logging;
+    using Kephas.Messaging.Distributed;
+    using Kephas.Security.Authentication;
+    using Kephas.Services;
     using Kephas.Testing.Application;
     using NSubstitute;
 
@@ -42,6 +48,30 @@ namespace Kephas.Messaging.Tests
         protected virtual ICompositionContext CreateMessagingContainerMock()
         {
             var container = Substitute.For<ICompositionContext>();
+
+            Func<object[], DispatchingContext> ctxCreator = args =>
+                                    new DispatchingContext(
+                                        container,
+                                        Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
+                                        Substitute.For<IMessageBroker>(),
+                                        Substitute.For<IAppRuntime>(),
+                                        Substitute.For<IAuthenticationService>(),
+                                        args.Length > 0 ? args[0] : null);
+
+            container.GetExport(typeof(IExportFactoryImporter<IContextFactory>), Arg.Any<string>())
+                .Returns(ci =>
+                    new ExportFactoryImporter<IContextFactory>(
+                        new ExportFactory<IContextFactory>(
+                            () =>
+                            {
+                                return this.CreateContextFactoryMock(ctxCreator);
+                            })));
+
+            container.GetExport(typeof(IContextFactory), Arg.Any<string>())
+                .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
+
+            container.GetExport<IContextFactory>(Arg.Any<string>())
+                .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
 
             return container;
         }

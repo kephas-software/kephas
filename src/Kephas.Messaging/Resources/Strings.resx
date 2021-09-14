@@ -165,9 +165,6 @@
   <data name="DefaultMessageBroker_LogOnEnqueue_Success" xml:space="preserve">
     <value>Enqueue brokered message (#{messageId}, {message}) timeout: {timeout}.</value>
   </data>
-  <data name="MessageAdapter_MessageNotSet_Exception" xml:space="preserve">
-    <value>The message is not set in the message adapter.</value>
-  </data>
   <data name="DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception" xml:space="preserve">
     <value>Cannot send message to the following recipients: {0}. There is no message router to handle them.</value>
   </data>

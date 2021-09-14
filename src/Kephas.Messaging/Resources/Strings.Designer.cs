@@ -286,15 +286,6 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message is not set in the message adapter..
-        /// </summary>
-        public static string MessageAdapter_MessageNotSet_Exception {
-            get {
-                return ResourceManager.GetString("MessageAdapter_MessageNotSet_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The message to process must be of type &apos;{0}&apos;, received &apos;{1}&apos;..
         /// </summary>
         public static string MessageHandler_BadMessageType_Exception {

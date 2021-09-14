@@ -31,7 +31,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        public DispatchingContext(ICompositionContext compositionContext, IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
+        public DispatchingContext(ICompositionContext compositionContext, IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
             : base(compositionContext)
         {
             this.MessageBroker = messageBroker;
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
                 this.BrokeredMessage = message == null
                     ? new BrokeredMessage()
                     : new BrokeredMessage(message);
-                this.BrokeredMessage.Timeout = messagingConfig.GetSettings()?.Distributed?.DefaultTimeout ?? Distributed.BrokeredMessage.DefaultTimeout;
+                this.BrokeredMessage.Timeout = messagingConfig.GetSettings().DefaultTimeout ?? Distributed.BrokeredMessage.DefaultTimeout;
                 this.BrokeredMessage.Sender = this.CreateAppInstanceEndpoint();
             }
         }

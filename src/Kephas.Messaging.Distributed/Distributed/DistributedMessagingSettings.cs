@@ -1,30 +1,31 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingSettings.cs" company="Kephas Software SRL">
+// <copyright file="DistributedMessagingSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the messaging settings class.
+//   Implements the distributed messaging settings class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging
+namespace Kephas.Messaging.Distributed
 {
+    using System;
+
     using Kephas.Configuration;
     using Kephas.Dynamic;
-    using Kephas.Messaging.Distributed;
 
     /// <summary>
-    /// Messaging settings.
+    /// A distributed messaging settings.
     /// </summary>
-    public class MessagingSettings : Expando, ISettings
+    public class DistributedMessagingSettings : Expando, ISettings
     {
         /// <summary>
-        /// Gets or sets the distributed messaging settings.
+        /// Gets or sets the default timeout.
         /// </summary>
         /// <value>
-        /// The distributed messaging settings.
+        /// The default timeout.
         /// </value>
-        public DistributedMessagingSettings Distributed { get; set; } = new DistributedMessagingSettings();
+        public TimeSpan? DefaultTimeout { get; set; }
     }
 }

@@ -1,48 +1,45 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EventAdapter.cs" company="Kephas Software SRL">
+// <copyright file="MessageAdapter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the event adapter class.
+//   Implements the message adapter class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Events
+namespace Kephas.Messaging.Messages
 {
     using System;
 
-    using Kephas.Messaging.Messages;
-    using Kephas.Messaging.Resources;
-
     /// <summary>
-    /// An event envelope.
+    /// A message envelope.
     /// </summary>
-    public class EventEnvelope : IEvent, IMessageEnvelope
+    public class MessageEnvelope : IMessageEnvelope
     {
         /// <summary>
-        /// Gets or sets the event.
+        /// Gets or sets the message.
         /// </summary>
         /// <value>
-        /// The event.
+        /// The message.
         /// </value>
-        public object Event { get; set; }
+        public object? Message { get; set; }
 
         /// <summary>
         /// Gets the message.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the event is not set.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the message is not set.</exception>
         /// <returns>
         /// The message.
         /// </returns>
         object IMessageEnvelope.GetContent()
         {
-            if (this.Event == null)
+            if (this.Message == null)
             {
-                throw new InvalidOperationException(Strings.MessageAdapter_MessageNotSet_Exception);
+                throw new InvalidOperationException("The message is not set in the envelope.");
             }
 
-            return this.Event;
+            return this.Message;
         }
     }
 }

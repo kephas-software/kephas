@@ -10,20 +10,16 @@
 
 namespace Kephas.Messaging.Application
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Runtime;
     using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A messaging application lifecycle behavior.
@@ -31,25 +27,17 @@ namespace Kephas.Messaging.Application
     [ProcessingPriority(Priority.High)]
     public class MessagingAppLifecycleBehavior : Loggable, IAppLifecycleBehavior
     {
-        private readonly IConfiguration<MessagingSettings> messagingConfig;
-        private readonly IMessageBroker messageBroker;
         private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingAppLifecycleBehavior"/>
         /// class.
         /// </summary>
-        /// <param name="messagingConfig">The messaging configuration.</param>
-        /// <param name="messageBroker">The message broker.</param>
         /// <param name="typeRegistry">The type registry.</param>
-        public MessagingAppLifecycleBehavior(IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IRuntimeTypeRegistry typeRegistry)
+        public MessagingAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
         {
-            Requires.NotNull(messagingConfig, nameof(messagingConfig));
-            Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(typeRegistry, nameof(typeRegistry));
 
-            this.messagingConfig = messagingConfig;
-            this.messageBroker = messageBroker;
             this.typeRegistry = typeRegistry;
         }
 
@@ -61,46 +49,12 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppInitializeAsync(
+        public Task<IOperationResult> BeforeAppInitializeAsync(
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory());
-
-            this.InitializeConfig(appContext);
-
-            await ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
-            return true.ToOperationResult();
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public async Task<IOperationResult> AfterAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            await ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
-            return true.ToOperationResult();
-        }
-
-        private void InitializeConfig(IContext? appContext)
-        {
-            try
-            {
-                var settings = this.messagingConfig.GetSettings(appContext);
-
-                BrokeredMessage.DefaultTimeout = settings?.Distributed?.DefaultTimeout ?? BrokeredMessage.DefaultTimeout;
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Error(ex, "Error while trying to set messaging default values.");
-            }
+            return Task.FromResult<IOperationResult>(true.ToOperationResult());
         }
     }
 }

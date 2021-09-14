@@ -14,7 +14,7 @@ namespace Kephas.Messaging
 
     using Kephas.Data;
     using Kephas.Messaging.Composition;
-    using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
 
     /// <summary>
@@ -44,9 +44,9 @@ namespace Kephas.Messaging
         /// </returns>
         public virtual object? GetMessageId(object message)
         {
-            // brokered messages are not identifiable in the sense
+            // message envelopes are not identifiable in the sense
             // that the ID is a logical behavior/handler discriminator.
-            if (message is IBrokeredMessage)
+            if (message is IMessageEnvelope)
             {
                 return null;
             }

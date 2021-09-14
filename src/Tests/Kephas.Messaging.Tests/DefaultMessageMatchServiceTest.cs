@@ -12,7 +12,6 @@ namespace Kephas.Messaging.Tests
 {
     using Kephas.Data;
     using Kephas.Messaging.Composition;
-    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using NSubstitute;
@@ -104,8 +103,8 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void GetMessageId_brokered_message_is_null()
         {
-            var message = Substitute.For<IBrokeredMessage>();
-            message.Id.Returns("abcd");
+            var message = Substitute.For<IMessageEnvelope, IIdentifiable>();
+            ((IIdentifiable)message).Id.Returns("abcd");
             var matchService = new DefaultMessageMatchService();
             var messageId = matchService.GetMessageId(message);
             Assert.IsNull(messageId);

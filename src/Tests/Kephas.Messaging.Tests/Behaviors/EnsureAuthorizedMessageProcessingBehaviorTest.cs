@@ -18,7 +18,6 @@ namespace Kephas.Messaging.Tests.Behaviors
 
     using Kephas.Composition;
     using Kephas.Messaging.Authorization.Behaviors;
-    using Kephas.Messaging.Distributed;
     using Kephas.Security.Authorization;
     using Kephas.Security.Permissions.AttributedModel;
     using Kephas.Services;
