@@ -55,14 +55,14 @@ namespace Kephas.Commands.Application
 
         private async Task<object?> ExecuteStartupCommandAsync(ExecuteStartupCommandSignal signal, IContext? context, CancellationToken cancellationToken)
         {
-            if (signal.Command is not Command command)
+            if (signal.Command is not CommandInfo command)
             {
                 if (signal.Command is not string cmdLine)
                 {
                     return Task.FromResult<object?>(null);
                 }
 
-                command = Command.Parse(cmdLine);
+                command = CommandInfo.Parse(cmdLine);
             }
 
             var result = await this.commandProcessor

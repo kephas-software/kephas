@@ -166,7 +166,7 @@ namespace Kephas.Application.Console
         /// <returns>
         /// A Tuple consisting of the command and the command arguments.
         /// </returns>
-        protected virtual Command ParseCommandLine(string commandLine) => new (commandLine);
+        protected virtual CommandInfo ParseCommandLine(string commandLine) => new (commandLine);
 
         /// <summary>
         /// Writes a command output asynchronous.

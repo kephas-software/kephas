@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Command.cs" company="Kephas Software SRL">
+// <copyright file="CommandInfo.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,15 +11,15 @@ namespace Kephas.Commands
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Represents a command to be executed.
+    /// Stores command information.
     /// </summary>
-    public class Command
+    public class CommandInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Command"/> class.
+        /// Initializes a new instance of the <see cref="CommandInfo"/> class.
         /// </summary>
         /// <param name="commandLine">The command line.</param>
-        public Command(string commandLine)
+        public CommandInfo(string commandLine)
         {
             Requires.NotNullOrEmpty(commandLine, nameof(commandLine));
 
@@ -27,11 +27,11 @@ namespace Kephas.Commands
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Command"/> class.
+        /// Initializes a new instance of the <see cref="CommandInfo"/> class.
         /// </summary>
         /// <param name="name">The command name.</param>
         /// <param name="args">The command arguments.</param>
-        public Command(string name, IDynamic? args)
+        public CommandInfo(string name, IDynamic? args)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -54,7 +54,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="commandLine">The command line.</param>
         /// <returns>The parsed command.</returns>
-        public static Command Parse(string commandLine)
+        public static CommandInfo Parse(string commandLine)
         {
             return new (commandLine);
         }
