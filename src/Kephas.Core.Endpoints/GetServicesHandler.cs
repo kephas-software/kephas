@@ -29,17 +29,17 @@ namespace Kephas.Core.Endpoints
             ReflectionHelper.GetGenericMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
 
         private readonly ITypeResolver typeResolver;
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetServicesHandler"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="compositionContext">The composition context.</param>
-        public GetServicesHandler(ITypeResolver typeResolver, ICompositionContext compositionContext)
+        /// <param name="injector">The composition context.</param>
+        public GetServicesHandler(ITypeResolver typeResolver, IInjector injector)
         {
             this.typeResolver = typeResolver;
-            this.compositionContext = compositionContext;
+            this.injector = injector;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Kephas.Core.Endpoints
 
         private IEnumerable<AppServiceMetadata> GetServicesMetadata<TContract>(bool ordered)
         {
-            var factories = this.compositionContext.GetExportFactories<TContract, AppServiceMetadata>();
+            var factories = this.injector.GetExportFactories<TContract, AppServiceMetadata>();
             return ordered
                 ? factories.Order().Select(f => f.Metadata)
                 : factories.Select(f => f.Metadata);

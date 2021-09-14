@@ -17,7 +17,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class ScopedSystemCompositionContext : SystemCompositionContextBase
+    public class ScopedSystemInjector : SystemInjectorBase
     {
         /// <summary>
         /// The composition context export.
@@ -25,10 +25,10 @@ namespace Kephas.Composition.Mef.Hosting
         private Export<CompositionContext> export;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScopedSystemCompositionContext"/> class.
+        /// Initializes a new instance of the <see cref="ScopedSystemInjector"/> class.
         /// </summary>
         /// <param name="export">The export.</param>
-        public ScopedSystemCompositionContext(Export<CompositionContext> export)
+        public ScopedSystemInjector(Export<CompositionContext> export)
         {
             Requires.NotNull(export, nameof(export));
 

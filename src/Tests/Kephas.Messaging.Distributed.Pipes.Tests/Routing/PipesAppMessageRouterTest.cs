@@ -249,7 +249,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task InitializeAppAsync(ICompositionContext container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
+        private async Task InitializeAppAsync(IInjector container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
         {
             var appManager = container.GetExport<IAppManager>();
             var appContext = new AppContext(
@@ -265,7 +265,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task FinalizeAppAsync(ICompositionContext container)
+        private async Task FinalizeAppAsync(IInjector container)
         {
             var appManager = container.GetExport<IAppManager>();
             await appManager.FinalizeAppAsync(

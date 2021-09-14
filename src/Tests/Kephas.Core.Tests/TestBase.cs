@@ -99,13 +99,13 @@ namespace Kephas.Core.Tests
             var contextFactoryMock = Substitute.For<IContextFactory>();
             ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
             contextFactoryMock.CreateContext<SerializationContext>(Arg.Any<object[]>())
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
             return serializationService;
         }
 
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>()));
+            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>()));
             var serializationService = new DefaultSerializationService(
                 contextFactoryMock,
                 new List<IExportFactory<ISerializer, SerializerMetadata>>

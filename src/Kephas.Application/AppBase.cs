@@ -171,7 +171,7 @@ namespace Kephas.Application
         /// </summary>
         protected virtual void AfterAppManagerFinalize()
         {
-            this.AmbientServices?.CompositionContainer.Dispose();
+            this.AmbientServices?.Injector.Dispose();
             this.AmbientServices?.Dispose();
         }
 
@@ -243,7 +243,7 @@ namespace Kephas.Application
         {
             try
             {
-                var container = this.AmbientServices.CompositionContainer;
+                var container = this.AmbientServices.Injector;
                 var mainLoop = container.GetExport<IAppMainLoop>();
                 var (result, instruction) = await mainLoop.Main(cancellationToken)
                     .PreserveThreadContext();
@@ -318,7 +318,7 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
 
-                var container = appContext.CompositionContext;
+                var container = appContext.Injector;
                 var appManager = container.GetExport<IAppManager>();
 
                 await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
@@ -369,7 +369,7 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
-                var container = this.AmbientServices.CompositionContainer;
+                var container = this.AmbientServices.Injector;
                 appContext = container.GetExport<IAppContext>();
                 var appManager = container.GetExport<IAppManager>();
 

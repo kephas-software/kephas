@@ -37,7 +37,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Context for the composition.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceType" /> class.
@@ -54,7 +54,7 @@ namespace Kephas.Model.Elements
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
             this.appServiceInfo = appServiceInfo;
-            this.compositionContext = constructionContext.CompositionContext;
+            this.injector = constructionContext.Injector;
             this.ContractType = this.appServiceInfo.ContractType;
         }
 
@@ -113,7 +113,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The service instance factory.
         /// </value>
-        public Func<ICompositionContext, object>? InstanceFactory => this.appServiceInfo.InstanceFactory;
+        public Func<IInjector, object>? InstanceFactory => this.appServiceInfo.InstanceFactory;
 
         /// <summary>
         /// Gets the service lifetime.
@@ -137,7 +137,7 @@ namespace Kephas.Model.Elements
             }
 
             // TODO resolve or exception for generic services
-            return this.compositionContext.GetExport(this.ContractType);
+            return this.injector.GetExport(this.ContractType);
         }
 
         /// <summary>Adds a part to the aggregated element.</summary>

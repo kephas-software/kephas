@@ -35,30 +35,30 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
         public DataSpace(
-            ICompositionContext compositionContext,
+            IInjector injector,
             IDataContextFactory dataContextFactory,
             IDataStoreProvider dataStoreProvider)
-            : this(compositionContext, dataContextFactory, dataStoreProvider, false)
+            : this(injector, dataContextFactory, dataStoreProvider, false)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
         /// <param name="isThreadSafe">True if this object is thread safe.</param>
         protected DataSpace(
-            ICompositionContext compositionContext,
+            IInjector injector,
             IDataContextFactory dataContextFactory,
             IDataStoreProvider dataStoreProvider,
             bool isThreadSafe)
-            : base(compositionContext, isThreadSafe)
+            : base(injector, isThreadSafe)
         {
             Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
             Requires.NotNull(dataStoreProvider, nameof(dataStoreProvider));
@@ -125,7 +125,7 @@ namespace Kephas.Data
                                               g => g.Key,
                                               g =>
                                                   {
-                                                      var initContext = new Context(this.CompositionContext)
+                                                      var initContext = new Context(this.Injector)
                                                                                       {
                                                                                           Identity = this.Identity,
                                                                                       }.InitialData(g);

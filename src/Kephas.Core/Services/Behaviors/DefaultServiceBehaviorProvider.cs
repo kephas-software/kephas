@@ -28,7 +28,7 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// The composition context.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// The behavior factories.
@@ -43,14 +43,14 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultServiceBehaviorProvider"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultServiceBehaviorProvider(
-            ICompositionContext compositionContext,
+            IInjector injector,
             ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories = null)
         {
-            this.compositionContext = compositionContext;
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            this.injector = injector;
+            Requires.NotNull(injector, nameof(injector));
 
             this.behaviorFactories = behaviorFactories?.Order().ToList()
                                      ?? new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>();
@@ -71,7 +71,7 @@ namespace Kephas.Services.Behaviors
             Requires.NotNull(services, nameof(services));
 
             var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return services.Where(service => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.compositionContext, service, context), rules));
+            return services.Where(service => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.injector, service, context), rules));
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Kephas.Services.Behaviors
             Requires.NotNull(serviceFactories, nameof(serviceFactories));
 
             var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.compositionContext, export, context), rules));
+            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.injector, export, context), rules));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Kephas.Services.Behaviors
             Requires.NotNull(serviceFactories, nameof(serviceFactories));
 
             var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.compositionContext, export, context), rules));
+            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.injector, export, context), rules));
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionException.cs" company="Kephas Software SRL">
+// <copyright file="InjectionException.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,32 +13,32 @@ namespace Kephas.Composition
     using System;
 
     /// <summary>
-    /// Exception which occurs on composition errors.
+    /// Exception which occurs on injection errors.
     /// </summary>
-    public class CompositionException : Exception
+    public class InjectionException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionException"/> class.
+        /// Initializes a new instance of the <see cref="InjectionException"/> class.
         /// </summary>
-        public CompositionException()
+        public InjectionException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionException"/> class.
+        /// Initializes a new instance of the <see cref="InjectionException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        public CompositionException(string message)
+        public InjectionException(string message)
             : base(message)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionException"/> class.
+        /// Initializes a new instance of the <see cref="InjectionException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public CompositionException(string message, Exception inner)
+        public InjectionException(string message, Exception inner)
             : base(message, inner)
         {
         }

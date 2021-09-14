@@ -26,7 +26,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void GetInitialData_not_set()
         {
-            var context = new TestContext(Substitute.For<ICompositionContext>());
+            var context = new TestContext(Substitute.For<IInjector>());
             var initialData = context.InitialData();
             Assert.IsNull(initialData);
         }
@@ -34,7 +34,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void SetInitialData_object_enumeration()
         {
-            var context = new TestContext(Substitute.For<ICompositionContext>());
+            var context = new TestContext(Substitute.For<IInjector>());
             context.InitialData(new[] { "ana", "are", "mere" });
 
             var initialData = context.InitialData();
@@ -53,7 +53,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void SetInitialData_tuple_enumeration()
         {
-            var context = new TestContext(Substitute.For<ICompositionContext>());
+            var context = new TestContext(Substitute.For<IInjector>());
             context.InitialData(new[]
                                        {
                                            ((object)"ana", ChangeState.Added),
@@ -77,7 +77,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void SetInitialData_entity_entry_enumeration()
         {
-            var context = new TestContext(Substitute.For<ICompositionContext>());
+            var context = new TestContext(Substitute.For<IInjector>());
             context.InitialData(new[]
                                        {
                                            new EntityEntry("ana") { ChangeState = ChangeState.Added },
@@ -100,8 +100,8 @@ namespace Kephas.Data.Tests.InMemory
 
         public class TestContext : Context
         {
-            public TestContext(ICompositionContext compositionContext, bool isThreadSafe = false)
-                : base(compositionContext, isThreadSafe)
+            public TestContext(IInjector injector, bool isThreadSafe = false)
+                : base(injector, isThreadSafe)
             {
             }
         }

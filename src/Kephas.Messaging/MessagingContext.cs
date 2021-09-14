@@ -43,14 +43,14 @@ namespace Kephas.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">Optional. The Message.</param>
         public MessagingContext(
-            ICompositionContext compositionContext,
+            IInjector injector,
             IMessageProcessor messageProcessor,
             IMessage? message = null)
-            : base(compositionContext)
+            : base(injector)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 

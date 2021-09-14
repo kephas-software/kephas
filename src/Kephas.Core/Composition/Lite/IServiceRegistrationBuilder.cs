@@ -72,7 +72,7 @@ namespace Kephas.Composition.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithFactory(Func<ICompositionContext, object> factory);
+        IServiceRegistrationBuilder WithFactory(Func<IInjector, object> factory);
 
         /// <summary>
         /// Registers the service with the provided implementation type.

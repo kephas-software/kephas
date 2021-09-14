@@ -39,7 +39,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void GetEnumerator()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
@@ -57,7 +57,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Indexer_type()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
@@ -72,7 +72,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Indexer_typeInfo()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
@@ -88,7 +88,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Indexer_same_data_context_when_same_type()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
@@ -105,7 +105,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Dispose()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
@@ -122,7 +122,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Initialize_Identity_set()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
@@ -137,12 +137,12 @@ namespace Kephas.Data.Tests
         [Test]
         public void Initialize_Identity_not_overwritten()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
             var identity = Substitute.For<IIdentity>();
-            var context = new Context(Substitute.For<ICompositionContext>()) { Identity = identity };
+            var context = new Context(Substitute.For<IInjector>()) { Identity = identity };
             var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);
 
@@ -152,7 +152,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Initialize_initial_data()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
@@ -178,7 +178,7 @@ namespace Kephas.Data.Tests
                     });
 
             var identity = Substitute.For<IIdentity>();
-            var context = new Context(Substitute.For<ICompositionContext>()) { Identity = identity };
+            var context = new Context(Substitute.For<IInjector>()) { Identity = identity };
             context.InitialData(
                 new[]
                     {

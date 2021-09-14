@@ -19,7 +19,7 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="ScopedSystemCompositionContext"/>.
+    /// Tests for <see cref="ScopedSystemInjector"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -31,7 +31,7 @@ namespace Kephas.Tests.Composition.Mef
             var container = this.CreateContainerWithBuilder(typeof(MefCompositionContainerTest.ScopeExportedClass));
             using (var scopedContext = container.CreateScopedContext())
             {
-                Assert.IsInstanceOf<ScopedSystemCompositionContext>(scopedContext);
+                Assert.IsInstanceOf<ScopedSystemInjector>(scopedContext);
                 var scopedInstance1 = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedContext())
@@ -48,7 +48,7 @@ namespace Kephas.Tests.Composition.Mef
         public void CreateScopedContext_CompositionContext_registration_root()
         {
             var container = this.CreateContainerWithBuilder();
-            var selfContainer = container.GetExport<ICompositionContext>();
+            var selfContainer = container.GetExport<IInjector>();
             Assert.AreSame(container, selfContainer);
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Composition.Mef
             var container = this.CreateContainerWithBuilder();
             using (var scopedContext = container.CreateScopedContext())
             {
-                var selfScopedContext = scopedContext.GetExport<ICompositionContext>();
+                var selfScopedContext = scopedContext.GetExport<IInjector>();
                 Assert.AreSame(selfScopedContext, scopedContext);
             }
         }
@@ -70,7 +70,7 @@ namespace Kephas.Tests.Composition.Mef
             using (var scopedContext = container.CreateScopedContext())
             {
                 var scopedInstance = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
-                Assert.AreSame(scopedContext, scopedInstance.CompositionContext);
+                Assert.AreSame(scopedContext, scopedInstance.Injector);
             }
         }
     }

@@ -73,18 +73,18 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="compositionContext">The context for the composition (optional). If not provided,
+        /// <param name="injector">The context for the composition (optional). If not provided,
         /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
         /// </param>
         /// <param name="isThreadSafe">
         /// <c>true</c> if this object is thread safe when working
         /// with the internal dictionary, <c>false</c> otherwise. Default is <c>false</c>.
         /// </param>
-        public Context(ICompositionContext compositionContext, bool isThreadSafe = false)
+        public Context(IInjector injector, bool isThreadSafe = false)
             : base(isThreadSafe)
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            this.SetCompositionContext(compositionContext);
+            this.SetCompositionContext(injector);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The composition context.
         /// </newValue>
-        public ICompositionContext CompositionContext { get; private set; }
+        public IInjector Injector { get; private set; }
 
         /// <summary>
         /// Gets or sets the authenticated user.
@@ -174,16 +174,16 @@ namespace Kephas.Services
         /// <summary>
         /// Sets composition context.
         /// </summary>
-        /// <param name="compositionContext">
+        /// <param name="injector">
         /// The context for the composition. If not provided,
         /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
         /// </param>
-        protected virtual void SetCompositionContext(ICompositionContext compositionContext)
+        protected virtual void SetCompositionContext(IInjector injector)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
 
-            this.AmbientServices = compositionContext.GetExport<IAmbientServices>();
-            this.CompositionContext = compositionContext;
+            this.AmbientServices = injector.GetExport<IAmbientServices>();
+            this.Injector = injector;
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Kephas.Services
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.AmbientServices = ambientServices;
-            this.CompositionContext = ambientServices.CompositionContainer;
+            this.Injector = ambientServices.Injector;
         }
 
         /// <summary>
@@ -215,12 +215,12 @@ namespace Kephas.Services
             this.DisposeResources();
         }
 
-        private static ICompositionContext GetParentCompositionContext(IContext parentContext)
+        private static IInjector GetParentCompositionContext(IContext parentContext)
         {
             Requires.NotNull(parentContext, nameof(parentContext));
-            Requires.NotNull(parentContext.CompositionContext, nameof(parentContext.CompositionContext));
+            Requires.NotNull(parentContext.Injector, nameof(parentContext.Injector));
 
-            return parentContext.CompositionContext;
+            return parentContext.Injector;
         }
     }
 }

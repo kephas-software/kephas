@@ -37,11 +37,11 @@ namespace Kephas.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivityContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
-        public ActivityContext(ICompositionContext compositionContext, IWorkflowProcessor workflowProcessor, bool isThreadSafe = false)
-            : base(compositionContext, isThreadSafe)
+        public ActivityContext(IInjector injector, IWorkflowProcessor workflowProcessor, bool isThreadSafe = false)
+            : base(injector, isThreadSafe)
         {
             Requires.NotNull(workflowProcessor, nameof(workflowProcessor));
 

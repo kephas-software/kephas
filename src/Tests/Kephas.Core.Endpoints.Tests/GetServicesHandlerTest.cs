@@ -93,8 +93,8 @@ namespace Kephas.Core.Endpoints.Tests
         [Override]
         public class TestGetServicesHandler : GetServicesHandler
         {
-            public TestGetServicesHandler(ITypeResolver typeResolver, ICompositionContext compositionContext)
-                : base(typeResolver, compositionContext)
+            public TestGetServicesHandler(ITypeResolver typeResolver, IInjector injector)
+                : base(typeResolver, injector)
             {
             }
         }

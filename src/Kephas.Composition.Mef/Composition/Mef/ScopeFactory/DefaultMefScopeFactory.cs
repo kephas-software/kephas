@@ -17,7 +17,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
     /// <summary>
     /// A MEF scope provider.
     /// </summary>
-    [CompositionScope]
+    [InjectionScope]
     public class DefaultMefScopeFactory : MefScopeFactoryBase
     {
         /// <summary>
@@ -25,7 +25,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
         /// </summary>
         /// <param name="scopedContextFactory">The scoped context factory.</param>
         [ImportingConstructor]
-        public DefaultMefScopeFactory([SharingBoundary(CompositionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
+        public DefaultMefScopeFactory([SharingBoundary(InjectionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
             : base(scopedContextFactory)
         {
             Requires.NotNull(scopedContextFactory, nameof(scopedContextFactory));

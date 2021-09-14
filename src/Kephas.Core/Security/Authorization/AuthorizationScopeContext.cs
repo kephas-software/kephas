@@ -22,7 +22,7 @@ namespace Kephas.Security.Authorization
         /// </summary>
         /// <param name="callingContext">Context for the calling.</param>
         public AuthorizationScopeContext(IContext callingContext)
-            : base(callingContext?.CompositionContext)
+            : base(callingContext?.Injector)
         {
             this.CallingContext = callingContext;
         }

@@ -390,7 +390,7 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Checks the type of the exported contract.
         /// </summary>
-        /// <exception cref="CompositionException">Thrown when a Composition error condition occurs.</exception>
+        /// <exception cref="InjectionException">Thrown when a Composition error condition occurs.</exception>
         /// <param name="exportedContractType">Type of the exported contract.</param>
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="serviceContractType">Type of the service contract.</param>
@@ -416,7 +416,7 @@ namespace Kephas.Services.Composition
                         exportedContractType,
                         serviceContractType);
                 logger.Error(contractValidationMessage);
-                throw new CompositionException(contractValidationMessage);
+                throw new InjectionException(contractValidationMessage);
             }
 
             return true;
@@ -437,7 +437,7 @@ namespace Kephas.Services.Composition
             var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
 
             // get the one constructor marked as CompositionConstructor.
-            var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
+            var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<InjectionConstructorAttribute>() != null).ToList();
             if (explicitlyMarkedConstructors.Count == 0)
             {
                 // none marked explicitly, leave the decision up to the IoC implementation.
@@ -446,7 +446,7 @@ namespace Kephas.Services.Composition
 
             if (explicitlyMarkedConstructors.Count > 1)
             {
-                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
+                throw new InjectionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(InjectionConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
             return explicitlyMarkedConstructors[0];
@@ -718,7 +718,7 @@ namespace Kephas.Services.Composition
             return typeInfo.IsClass
                    && !typeInfo.IsAbstract
                    && !typeInfo.IsNestedPrivate
-                   && typeInfo.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null;
+                   && typeInfo.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null;
         }
 
         /// <summary>

@@ -67,12 +67,12 @@ namespace Kephas.Composition.Lite.Internal
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
-        public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<ICompositionContext, object> serviceFactory, bool isSingleton)
+        public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
         {
             this.ContractType = contractType;
             this.InstanceFactory = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            var compositionContext = ambientServices.AsCompositionContext();
+            var compositionContext = ambientServices.AsInjector();
             this.lazyFactory = isSingleton
                                    ? new LazyValue(() => serviceFactory(compositionContext), contractType)
                                    : new LazyFactory(() => serviceFactory(compositionContext), contractType);
@@ -96,7 +96,7 @@ namespace Kephas.Composition.Lite.Internal
 
         public Type? InstanceType { get; }
 
-        public Func<ICompositionContext, object>? InstanceFactory { get; }
+        public Func<IInjector, object>? InstanceFactory { get; }
 
         /// <summary>
         /// Makes a generic service information with closed generic types.
@@ -215,7 +215,7 @@ namespace Kephas.Composition.Lite.Internal
 
             if (maxCtor == null)
             {
-                throw new CompositionException(
+                throw new InjectionException(
                     string.Format(Strings.AmbientServices_MissingCompositionConstructor_Exception, instanceType, string.Join(", ", unresolvedParams)));
             }
 

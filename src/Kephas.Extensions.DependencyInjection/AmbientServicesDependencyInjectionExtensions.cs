@@ -38,11 +38,11 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static IAmbientServices BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionCompositionContainerBuilder>? containerBuilderConfig = null)
+        public static IAmbientServices BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new DependencyInjectionCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
+            var containerBuilder = new DependencyInjectionInjectorBuilder(new CompositionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
@@ -74,7 +74,7 @@ namespace Kephas
                     .Where(t => typeof(IServicesConfigurator).IsAssignableFrom(t)
                                 && t.IsClass
                                 && !t.IsAbstract
-                                && t.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null))
+                                && t.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null))
                 .Select(t => ambientServices.TypeRegistry.GetTypeInfo(t));
             var orderedConfiguratorTypes = configuratorTypes
                 .Select(t => new ExportFactory<IServicesConfigurator, AppServiceMetadata>(

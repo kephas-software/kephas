@@ -28,34 +28,34 @@ namespace Kephas.Data.Tests
     public class TestDataContext : DataContextBase
     {
         public TestDataContext(
-            ICompositionContext compositionContext = null,
+            IInjector injector = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
-            : base(GetTestCompositionContext(compositionContext, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
+            : base(GetTestCompositionContext(injector, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
         {
         }
 
         public static TestDataContext CreateDataContext(
-            ICompositionContext compositionContext = null,
+            IInjector injector = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
         {
-            return new TestDataContext(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
+            return new TestDataContext(injector, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
         }
 
         public static TestDataContext InitializeDataContext(
             IContext initializationContext = null,
-            ICompositionContext compositionContext = null,
+            IInjector injector = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
         {
-            var dataContext = new TestDataContext(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
+            var dataContext = new TestDataContext(injector, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
             dataContext.Initialize(initializationContext ?? dataContext.CreateDataInitializationContext());
             return dataContext;
         }
@@ -114,12 +114,12 @@ namespace Kephas.Data.Tests
             return dataStore;
         }
 
-        private static ICompositionContext GetTestCompositionContext(ICompositionContext compositionContext, IRuntimeTypeRegistry typeRegistry)
-            => compositionContext ?? CreateCompositionContext(typeRegistry);
+        private static IInjector GetTestCompositionContext(IInjector injector, IRuntimeTypeRegistry typeRegistry)
+            => injector ?? CreateCompositionContext(typeRegistry);
 
-        private static ICompositionContext CreateCompositionContext(IRuntimeTypeRegistry typeRegistry)
+        private static IInjector CreateCompositionContext(IRuntimeTypeRegistry typeRegistry)
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
             return compositionContext;
         }

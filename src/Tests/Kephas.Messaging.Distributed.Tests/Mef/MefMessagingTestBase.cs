@@ -29,11 +29,11 @@ namespace Kephas.Messaging.Tests
 
     public class MefMessagingTestBase : MefApplicationTestBase
     {
-        public override ICompositionContext CreateContainer(
+        public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<SystemCompositionContainerBuilder>? config = null,
+            Action<SystemInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
@@ -54,9 +54,9 @@ namespace Kephas.Messaging.Tests
             return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
-        protected virtual ICompositionContext CreateMessagingContainerMock()
+        protected virtual IInjector CreateMessagingContainerMock()
         {
-            var container = Substitute.For<ICompositionContext>();
+            var container = Substitute.For<IInjector>();
 
             Func<object[], DispatchingContext> ctxCreator = args =>
                                     new DispatchingContext(

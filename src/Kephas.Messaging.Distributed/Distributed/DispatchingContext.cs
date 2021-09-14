@@ -25,14 +25,14 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="DispatchingContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        public DispatchingContext(ICompositionContext compositionContext, IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
-            : base(compositionContext)
+        public DispatchingContext(IInjector injector, IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
+            : base(injector)
         {
             this.MessageBroker = messageBroker;
             this.AppRuntime = appRuntime;

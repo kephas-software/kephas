@@ -105,7 +105,7 @@ namespace Kephas.Application.Tests
         private ServiceBehaviorContext<IFeatureManager> GetServiceBehaviorContext(IExportFactory<IFeatureManager, FeatureManagerMetadata> exportFactory)
         {
             var context = new ServiceBehaviorContext<IFeatureManager>(
-                Substitute.For<ICompositionContext>(),
+                Substitute.For<IInjector>(),
                 exportFactory,
                 null);
             return context;

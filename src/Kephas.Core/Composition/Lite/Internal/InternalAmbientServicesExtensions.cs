@@ -21,17 +21,17 @@ namespace Kephas.Composition.Lite.Internal
 
     internal static class InternalAmbientServicesExtensions
     {
-        internal static ICompositionContext AsCompositionContext(this IAmbientServices ambientServices)
+        internal static IInjector AsInjector(this IAmbientServices ambientServices)
         {
-            const string AsCompositionContextKey = "__AsCompositionContext";
-            if (ambientServices[AsCompositionContextKey] is ICompositionContext compositionContext)
+            const string AsInjectorKey = "__AsInjector";
+            if (ambientServices[AsInjectorKey] is IInjector injector)
             {
-                return compositionContext;
+                return injector;
             }
 
-            compositionContext = ambientServices.ToCompositionContext();
-            ambientServices[AsCompositionContextKey] = compositionContext;
-            return compositionContext;
+            injector = ambientServices.ToCompositionContext();
+            ambientServices[AsInjectorKey] = injector;
+            return injector;
         }
 
         internal static TMetadata GetMetadata<TMetadata>(

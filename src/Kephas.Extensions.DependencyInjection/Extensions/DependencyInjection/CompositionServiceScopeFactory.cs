@@ -22,15 +22,15 @@ namespace Kephas.Extensions.DependencyInjection
         /// <summary>
         /// Context for the composition.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionServiceScopeFactory"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public CompositionServiceScopeFactory(ICompositionContext compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public CompositionServiceScopeFactory(IInjector injector)
         {
-            this.compositionContext = compositionContext;
+            this.injector = injector;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IServiceScope CreateScope()
         {
-            return new CompositionServiceScope(this.compositionContext);
+            return new CompositionServiceScope(this.injector);
         }
     }
 }

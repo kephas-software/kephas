@@ -48,7 +48,7 @@ namespace Kephas.Composition.Lite.Internal
             if (factory == null)
             {
                 var innerType = serviceType.GetGenericArguments()[0];
-                throw new CompositionException(Strings.NoImplementationForServiceType_Exception.FormatWith(innerType));
+                throw new InjectionException(Strings.NoImplementationForServiceType_Exception.FormatWith(innerType));
             }
 
             return factory();

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LiteCompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="LiteInjectorBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,15 +20,15 @@ namespace Kephas.Composition.Lite.Hosting
     /// <summary>
     /// A lightweight composition container builder.
     /// </summary>
-    public class LiteCompositionContainerBuilder : CompositionContainerBuilderBase<LiteCompositionContainerBuilder>
+    public class LiteInjectorBuilder : InjectorBuilderBase<LiteInjectorBuilder>
     {
         private IAmbientServices ambientServices;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiteCompositionContainerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="LiteInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public LiteCompositionContainerBuilder(ICompositionRegistrationContext context)
+        public LiteInjectorBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
             this.ambientServices = context.AmbientServices;
@@ -42,7 +42,7 @@ namespace Kephas.Composition.Lite.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var liteConventions = (LiteConventionsBuilder)conventions;
             liteConventions.Build(parts);

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContextExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="InjectorExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -22,12 +22,12 @@ namespace Kephas.Core.Tests.Composition
     using NUnit.Framework;
 
     [TestFixture]
-    public class CompositionContextExtensionsTest
+    public class InjectorExtensionsTest
     {
         [Test]
         public void GetExportFactory_generic_1_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
 
             var result = context.GetExportFactory<string>();
@@ -37,7 +37,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
 
             var result = (IExportFactory<string>)context.GetExportFactory(typeof(string));
@@ -47,7 +47,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_generic_2_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
 
             var result = context.GetExportFactory<string, string>();
@@ -58,7 +58,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_metadata_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
 
             var result = (IExportFactory<string, string>)context.GetExportFactory(typeof(string), typeof(string));
@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_generic_1_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
 
             var result = context.GetExportFactories<string>();
@@ -80,7 +80,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
 
             var result = (IEnumerable<IExportFactory<string>>)context.GetExportFactories(typeof(string));
@@ -91,7 +91,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_generic_2_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
 
             var result = context.GetExportFactories<string, string>();
@@ -103,7 +103,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_metadata_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
 
             var result = (IEnumerable<IExportFactory<string, string>>)context.GetExportFactories(typeof(string), typeof(string));

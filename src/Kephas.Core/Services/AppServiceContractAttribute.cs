@@ -139,7 +139,7 @@ namespace Kephas.Services
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<ICompositionContext, object>? IAppServiceInfo.InstanceFactory => null;
+        Func<IInjector, object>? IAppServiceInfo.InstanceFactory => null;
 
         /// <summary>
         /// Registers the provided metadata attribute types as default attributes.

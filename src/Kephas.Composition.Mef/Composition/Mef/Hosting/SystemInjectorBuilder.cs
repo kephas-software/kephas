@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemCompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="SystemInjectorBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -32,7 +32,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <remarks>
     /// This class is not thread safe.
     /// </remarks>
-    public class SystemCompositionContainerBuilder : CompositionContainerBuilderBase<SystemCompositionContainerBuilder>
+    public class SystemInjectorBuilder : InjectorBuilderBase<SystemInjectorBuilder>
     {
         /// <summary>
         /// The scope factories.
@@ -45,10 +45,10 @@ namespace Kephas.Composition.Mef.Hosting
         private ContainerConfiguration configuration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemCompositionContainerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="SystemInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public SystemCompositionContainerBuilder(ICompositionRegistrationContext context)
+        public SystemInjectorBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
             Requires.NotNull(context, nameof(context));
@@ -67,7 +67,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="conventions">The conventions.</param>
         /// <returns>This builder.</returns>
-        public override SystemCompositionContainerBuilder WithConventions(IConventionsBuilder conventions)
+        public override SystemInjectorBuilder WithConventions(IConventionsBuilder conventions)
         {
             // ReSharper disable once SuspiciousTypeConversion.Global
             var mefConventions = conventions as IMefConventionBuilderProvider;
@@ -84,7 +84,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="containerConfiguration">The container configuration.</param>
         /// <returns>This builder.</returns>
-        public SystemCompositionContainerBuilder WithConfiguration(ContainerConfiguration containerConfiguration)
+        public SystemInjectorBuilder WithConfiguration(ContainerConfiguration containerConfiguration)
         {
             Requires.NotNull(containerConfiguration, nameof(containerConfiguration));
 
@@ -100,7 +100,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        public SystemCompositionContainerBuilder WithScopeFactory<TFactory>()
+        public SystemInjectorBuilder WithScopeFactory<TFactory>()
             where TFactory : IMefScopeFactory
         {
             this.scopeFactories.Add(typeof(TFactory));
@@ -118,7 +118,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        public virtual SystemCompositionContainerBuilder WithExportProvider(IExportProvider exportProvider)
+        public virtual SystemInjectorBuilder WithExportProvider(IExportProvider exportProvider)
         {
             Requires.NotNull(exportProvider, nameof(exportProvider));
 
@@ -135,7 +135,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        protected SystemCompositionContainerBuilder RegisterScopeFactory<TFactory>(IConventionsBuilder conventions)
+        protected SystemInjectorBuilder RegisterScopeFactory<TFactory>(IConventionsBuilder conventions)
             where TFactory : IMefScopeFactory
         {
             return this.RegisterScopeFactory(conventions, typeof(TFactory));
@@ -149,11 +149,11 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        protected SystemCompositionContainerBuilder RegisterScopeFactory(IConventionsBuilder conventions, Type factoryType)
+        protected SystemInjectorBuilder RegisterScopeFactory(IConventionsBuilder conventions, Type factoryType)
         {
             var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
 
-            var scopeName = factoryType.ExtractMetadataValue<CompositionScopeAttribute, string>(a => a.Value);
+            var scopeName = factoryType.ExtractMetadataValue<InjectionScopeAttribute, string>(a => a.Value);
             mefConventions
                 .ForType(factoryType)
                 .Export(b => b.AsContractType<IMefScopeFactory>()
@@ -180,7 +180,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             this.RegisterScopeFactoryConventions(conventions);
 
@@ -225,9 +225,9 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The new composition context.
         /// </returns>
-        protected virtual ICompositionContext CreateCompositionContext(ContainerConfiguration containerConfiguration)
+        protected virtual IInjector CreateCompositionContext(ContainerConfiguration containerConfiguration)
         {
-            return new SystemCompositionContainer(containerConfiguration);
+            return new SystemInjectionContainer(containerConfiguration);
         }
 
         /// <summary>

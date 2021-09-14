@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainerBuilderBase.cs" company="Kephas Software SRL">
+// <copyright file="InjectorBuilderBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -33,18 +33,19 @@ namespace Kephas.Composition.Hosting
     /// Base class for composition container builders.
     /// </summary>
     /// <typeparam name="TBuilder">The type of the builder.</typeparam>
-    public abstract class CompositionContainerBuilderBase<TBuilder> : ICompositionContainerBuilder
-        where TBuilder : CompositionContainerBuilderBase<TBuilder>
+    public abstract class InjectorBuilderBase<TBuilder> : IInjectorBuilder
+        where TBuilder : InjectorBuilderBase<TBuilder>
     {
         private HashSet<Assembly> compositionAssemblies;
         private HashSet<Assembly> conventionAssemblies;
+        private InjectionSettings settings = new InjectionSettings();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
+        /// Initializes a new instance of the <see cref="InjectorBuilderBase{TBuilder}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the composition context.")]
-        protected CompositionContainerBuilderBase(ICompositionRegistrationContext context)
+        protected InjectorBuilderBase(ICompositionRegistrationContext context)
         {
             Requires.NotNull(context, nameof(context));
             var ambientServices = context.AmbientServices;
@@ -346,9 +347,9 @@ namespace Kephas.Composition.Hosting
         /// Creates the container with the provided configuration asynchronously.
         /// </summary>
         /// <returns>A new container with the provided configuration.</returns>
-        public virtual ICompositionContext CreateContainer()
+        public virtual IInjector CreateContainer()
         {
-            ICompositionContext? container = null;
+            IInjector? container = null;
             Profiler.WithInfoStopwatch(
                 () =>
                 {
@@ -375,7 +376,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected abstract ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
+        protected abstract IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
 
         /// <summary>
         /// Gets the composition assemblies.
@@ -444,10 +445,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>
         /// The composition settings.
         /// </returns>
-        protected virtual CompositionSettings GetSettings()
-        {
-            return null;
-        }
+        protected virtual InjectionSettings GetSettings() => this.settings;
 
         /// <summary>
         /// Gets the assemblies.
@@ -501,7 +499,7 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns>The composition container.</returns>
-        private ICompositionContext CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
+        private IInjector CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
         {
             var parts = this.GetCompositionParts(assemblies);
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);

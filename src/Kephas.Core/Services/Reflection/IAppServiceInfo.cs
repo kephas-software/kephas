@@ -84,7 +84,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<ICompositionContext, object>? InstanceFactory { get; }
+        Func<IInjector, object>? InstanceFactory { get; }
     }
 
     /// <summary>

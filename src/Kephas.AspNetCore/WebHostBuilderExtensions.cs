@@ -36,7 +36,7 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         public static IWebHostBuilder UseAppUrls(this IWebHostBuilder hostBuilder, IAmbientServices ambientServices, KestrelServerOptions opts)
         {
-            var container = ambientServices.CompositionContainer;
+            var container = ambientServices.Injector;
             var appConfiguration = container.GetExport<IConfiguration<AppSettings>>();
             var appContext = container.GetExport<IAppContext>();
             var instanceSettings = appConfiguration.GetSettings(appContext);
@@ -115,7 +115,7 @@ namespace Kephas.Application.AspNetCore
                 return null;
             }
 
-            var certificateProvider = ambientServices.CompositionContainer.GetExport<ICertificateProvider>();
+            var certificateProvider = ambientServices.Injector.GetExport<ICertificateProvider>();
             return certificateProvider.TryGetCertificate(certName);
         }
     }

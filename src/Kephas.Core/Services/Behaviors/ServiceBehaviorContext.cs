@@ -25,12 +25,12 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
         /// class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata (optional).</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(ICompositionContext compositionContext, TServiceContract service, object? metadata = null, IContext? context = null)
-            : this(compositionContext, null, service, metadata, context)
+        public ServiceBehaviorContext(IInjector injector, TServiceContract service, object? metadata = null, IContext? context = null)
+            : this(injector, null, service, metadata, context)
         {
             Requires.NotNull(service, nameof(service));
         }
@@ -39,11 +39,11 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
         /// class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="serviceFactory">The service export factory.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract> serviceFactory, IContext? context = null)
-            : this(compositionContext, serviceFactory, null, GetExportMetadata(serviceFactory), context)
+        public ServiceBehaviorContext(IInjector injector, IExportFactory<TServiceContract> serviceFactory, IContext? context = null)
+            : this(injector, serviceFactory, null, GetExportMetadata(serviceFactory), context)
         {
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
         }
@@ -52,13 +52,13 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
         /// class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="serviceFactory">The service export factory.</param>
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        private ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract>? serviceFactory, TServiceContract? service, object? metadata = null, IContext? context = null)
-            : base(compositionContext)
+        private ServiceBehaviorContext(IInjector injector, IExportFactory<TServiceContract>? serviceFactory, TServiceContract? service, object? metadata = null, IContext? context = null)
+            : base(injector)
         {
             this.ServiceFactory = serviceFactory;
             this.Service = service;

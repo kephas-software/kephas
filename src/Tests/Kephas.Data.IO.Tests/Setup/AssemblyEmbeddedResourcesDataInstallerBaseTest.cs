@@ -75,7 +75,7 @@ namespace Kephas.Data.IO.Tests.Setup
 
         private IContextFactory GetContextFactory()
         {
-            return this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<ICompositionContext>()));
+            return this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
         }
 
         public class TestAssemblyEmbeddedResourcesDataInstaller : AssemblyEmbeddedResourcesDataInstallerBase

@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Dynamic_Context()
         {
-            dynamic context = new Context(Substitute.For<ICompositionContext>());
+            dynamic context = new Context(Substitute.For<IInjector>());
             context.Value = 12;
             Assert.AreEqual(12, context.Value);
 
@@ -48,7 +48,7 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Constructor_sync_composition_context_and_ambient_services()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
             compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
             var context = new Context(compositionContext);
@@ -58,17 +58,17 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Constructor_sync_ambient_services_and_composition_context()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
-            ambientServices.CompositionContainer.Returns(compositionContext);
+            ambientServices.Injector.Returns(compositionContext);
             var context = new Context(ambientServices);
-            Assert.AreSame(compositionContext, context.CompositionContext);
+            Assert.AreSame(compositionContext, context.Injector);
         }
 
         [Test]
         public void Identity_can_be_set_once()
         {
-            var context = new Context(Substitute.For<ICompositionContext>());
+            var context = new Context(Substitute.For<IInjector>());
             context.Identity = Substitute.For<IIdentity>();
 
             Assert.Throws<SecurityException>(() => context.Identity = Substitute.For<IIdentity>());
@@ -77,7 +77,7 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Identity_can_be_set_multiple_when_overridable()
         {
-            var context = new OverrideIdentityContext(Substitute.For<ICompositionContext>());
+            var context = new OverrideIdentityContext(Substitute.For<IInjector>());
             context.Identity = Substitute.For<IIdentity>();
 
             var newIdentity = Substitute.For<IIdentity>();
@@ -90,7 +90,7 @@ namespace Kephas.Core.Tests.Services
         public void AddResource_dispose_with_context()
         {
             var disposable = Substitute.For<IDisposable>();
-            using (var context = new Context(Substitute.For<ICompositionContext>()))
+            using (var context = new Context(Substitute.For<IInjector>()))
             {
                 context.AddResource(disposable);
             }
@@ -102,7 +102,7 @@ namespace Kephas.Core.Tests.Services
         public void DisposeResources_called_once()
         {
             var disposable = Substitute.For<IDisposable>();
-            var context = new Context(Substitute.For<ICompositionContext>());
+            var context = new Context(Substitute.For<IInjector>());
             context.AddResource(disposable);
 
             context.DisposeResources();
@@ -126,8 +126,8 @@ namespace Kephas.Core.Tests.Services
                 return true;
             }
 
-            public OverrideIdentityContext(ICompositionContext compositionContext, bool isThreadSafe = false)
-                : base(compositionContext, isThreadSafe)
+            public OverrideIdentityContext(IInjector injector, bool isThreadSafe = false)
+                : base(injector, isThreadSafe)
             {
             }
         }

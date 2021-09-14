@@ -32,18 +32,18 @@ namespace Kephas.Extensions.Configuration.Providers
     /// </summary>
     public abstract class OptionsSettingsProviderBase : ISettingsProvider
     {
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
         private readonly Lazy<FileSettingsProvider> lazyFileSettingsProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsSettingsProviderBase"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        protected OptionsSettingsProviderBase(ICompositionContext compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        protected OptionsSettingsProviderBase(IInjector injector)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
 
-            this.compositionContext = compositionContext;
+            this.injector = injector;
             this.lazyFileSettingsProvider = new Lazy<FileSettingsProvider>(this.CreateFileSettingsProvider);
         }
 
@@ -57,7 +57,7 @@ namespace Kephas.Extensions.Configuration.Providers
         /// </returns>
         public virtual object? GetSettings(Type settingsType, IContext? context)
         {
-            var options = this.compositionContext.TryGetExport(typeof(IOptions<>).MakeGenericType(settingsType));
+            var options = this.injector.TryGetExport(typeof(IOptions<>).MakeGenericType(settingsType));
             return options?.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
         }
 
@@ -80,10 +80,10 @@ namespace Kephas.Extensions.Configuration.Providers
         protected virtual FileSettingsProvider CreateFileSettingsProvider()
         {
             return new FileSettingsProvider(
-                this.compositionContext.GetExport<IAppRuntime>(),
-                this.compositionContext.GetExport<ISerializationService>(),
-                this.compositionContext.GetExport<ICollection<Lazy<IMediaType, MediaTypeMetadata>>>(),
-                this.compositionContext.GetExport<ILogManager>());
+                this.injector.GetExport<IAppRuntime>(),
+                this.injector.GetExport<ISerializationService>(),
+                this.injector.GetExport<ICollection<Lazy<IMediaType, MediaTypeMetadata>>>(),
+                this.injector.GetExport<ILogManager>());
         }
     }
 }

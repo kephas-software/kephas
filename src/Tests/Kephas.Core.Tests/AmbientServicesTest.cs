@@ -44,14 +44,14 @@ namespace Kephas.Core.Tests
         public void Register_instance_cannot_set_null()
         {
             var ambientServices = new AmbientServices();
-            Assert.That(() => ambientServices.Register(typeof(ICompositionContext), (object)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Register(typeof(IInjector), (object)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
         public void Register_factory_cannot_set_null()
         {
             var ambientServices = new AmbientServices();
-            Assert.That(() => ambientServices.Register(typeof(ICompositionContext), (Func<object>)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Register(typeof(IInjector), (Func<object>)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -436,10 +436,10 @@ namespace Kephas.Core.Tests
         public void CompositionContainer_works_fine_when_explicitely_set()
         {
             var ambientServices = new AmbientServices();
-            var compositionContextMock = Substitute.For<ICompositionContext>();
-            compositionContextMock.TryGetExport<ICompositionContext>(null).Returns((ICompositionContext)null);
+            var compositionContextMock = Substitute.For<IInjector>();
+            compositionContextMock.TryGetExport<IInjector>(null).Returns((IInjector)null);
             ambientServices.Register(compositionContextMock);
-            var noService = ambientServices.CompositionContainer.TryGetExport<ICompositionContext>();
+            var noService = ambientServices.Injector.TryGetExport<IInjector>();
             Assert.IsNull(noService);
         }
 

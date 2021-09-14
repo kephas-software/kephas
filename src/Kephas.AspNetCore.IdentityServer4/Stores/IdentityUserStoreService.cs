@@ -38,7 +38,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// A repository based service for storing <see cref="IdentityUser"/> based users.
     /// </summary>
     /// <typeparam name="TUser">The user type.</typeparam>
-    [ExcludeFromComposition]
+    [ExcludeFromInjection]
     public class IdentityUserStoreService<TUser> : IdentityUserStoreServiceBase<TUser>
         where TUser : IdentityUser
     {

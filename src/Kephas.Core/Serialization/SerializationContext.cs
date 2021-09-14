@@ -25,11 +25,11 @@ namespace Kephas.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaType">Optional. The media type (type implementing <see cref="IMediaType"/>).</param>
-        public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService, Type? mediaType = null)
-            : base(compositionContext)
+        public SerializationContext(IInjector injector, ISerializationService serializationService, Type? mediaType = null)
+            : base(injector)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 

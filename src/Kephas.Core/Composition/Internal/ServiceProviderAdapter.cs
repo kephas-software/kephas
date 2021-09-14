@@ -19,7 +19,7 @@ namespace Kephas.Composition.Internal
     using Kephas.Reflection;
 
     /// <summary>
-    /// Adapter for <see cref="IServiceProvider"/> based on a composition context.
+    /// Adapter for <see cref="IServiceProvider"/> based on <see cref="IInjector"/>.
     /// </summary>
     internal class ServiceProviderAdapter : IServiceProvider
     {
@@ -32,18 +32,18 @@ namespace Kephas.Composition.Internal
         /// <summary>
         /// Context for the composition.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceProviderAdapter"/>
         /// class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public ServiceProviderAdapter(ICompositionContext compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public ServiceProviderAdapter(IInjector injector)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
 
-            this.compositionContext = compositionContext;
+            this.injector = injector;
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace Kephas.Composition.Internal
             if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<>)))
             {
                 var contractType = serviceType.GenericTypeArguments[0];
-                return this.compositionContext.GetExportFactory(contractType);
+                return this.injector.GetExportFactory(contractType);
             }
 
             if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
             {
                 var contractType = serviceType.GenericTypeArguments[0];
                 var metadataType = serviceType.GenericTypeArguments[1];
-                return this.compositionContext.GetExportFactory(contractType, metadataType);
+                return this.injector.GetExportFactory(contractType, metadataType);
             }
 
             if (serviceType.IsConstructedGenericOf(typeof(IEnumerable<>)) ||
@@ -80,17 +80,17 @@ namespace Kephas.Composition.Internal
                     if (exportType.IsConstructedGenericOf(typeof(IExportFactory<>)))
                     {
                         var contractType = exportType.GenericTypeArguments[0];
-                        return this.compositionContext.GetExportFactories(contractType);
+                        return this.injector.GetExportFactories(contractType);
                     }
 
                     if (exportType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
                     {
                         var contractType = exportType.GenericTypeArguments[0];
                         var metadataType = exportType.GenericTypeArguments[1];
-                        return this.compositionContext.GetExportFactories(contractType, metadataType);
+                        return this.injector.GetExportFactories(contractType, metadataType);
                     }
 
-                    var exports = this.compositionContext.GetExports(exportType);
+                    var exports = this.injector.GetExports(exportType);
                     if (serviceType.IsClass)
                     {
                         var toList = ToListMethod.MakeGenericMethod(exportType);
@@ -104,7 +104,7 @@ namespace Kephas.Composition.Internal
                 }
             }
 
-            return this.compositionContext.TryGetExport(serviceType);
+            return this.injector.TryGetExport(serviceType);
         }
 
         private TEnumerable ToEnumerable<TEnumerable>(IEnumerable<object> exports)

@@ -24,16 +24,16 @@ namespace Kephas.Extensions.DependencyInjection
         /// <summary>
         /// Context for the scoped composition.
         /// </summary>
-        private readonly ICompositionContext scopedCompositionContext;
+        private readonly IInjector scopedInjector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionServiceScope"/> class.
         /// </summary>
-        /// <param name="parentCompositionContext">Context for the parent composition.</param>
-        public CompositionServiceScope(ICompositionContext parentCompositionContext)
+        /// <param name="parentInjector">Context for the parent composition.</param>
+        public CompositionServiceScope(IInjector parentInjector)
         {
-            this.scopedCompositionContext = parentCompositionContext.CreateScopedContext();
-            this.ServiceProvider = this.scopedCompositionContext.ToServiceProvider();
+            this.scopedInjector = parentInjector.CreateScopedContext();
+            this.ServiceProvider = this.scopedInjector.ToServiceProvider();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            this.scopedCompositionContext.Dispose();
+            this.scopedInjector.Dispose();
         }
     }
 }

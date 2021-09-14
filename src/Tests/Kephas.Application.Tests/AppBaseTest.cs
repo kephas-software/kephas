@@ -28,7 +28,7 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task ConfigureAmbientServicesAsync_ambient_services_static_instance_set()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
 
             IAmbientServices ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
@@ -42,7 +42,7 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task ConfigureAmbientServicesAsync_ambient_services_explicit_instance_set()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
 
             IAmbientServices ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
@@ -57,7 +57,7 @@ namespace Kephas.Application.Tests
         {
             var appManager = Substitute.For<IAppManager>();
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
             IAmbientServices ambientServices = null;
@@ -75,7 +75,7 @@ namespace Kephas.Application.Tests
             termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns<(IOperationResult result, AppShutdownInstruction instruction)>(ci => throw new InvalidOperationException("bad thing happened"));
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
             compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
@@ -97,7 +97,7 @@ namespace Kephas.Application.Tests
             mainLoop.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
             compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
@@ -119,7 +119,7 @@ namespace Kephas.Application.Tests
             termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
             compositionContext.GetExport<IAppMainLoop>(Arg.Any<string>())
@@ -150,7 +150,7 @@ namespace Kephas.Application.Tests
         {
             var appManager = Substitute.For<IAppManager>();
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
             var ambientServices = new AmbientServices()

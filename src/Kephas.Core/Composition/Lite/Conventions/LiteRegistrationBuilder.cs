@@ -66,7 +66,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// <value>
         /// A function delegate that yields an object.
         /// </value>
-        public Func<ICompositionContext, object> Factory { get; set; }
+        public Func<IInjector, object> Factory { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the implementation.

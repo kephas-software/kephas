@@ -44,7 +44,7 @@ namespace Kephas
     /// (like in the case of the entities instantiated by the ORMs). Those are cases where the
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
-    [ExcludeFromComposition]
+    [ExcludeFromInjection]
     public class AmbientServices : Expando, IAmbientServices, IAppServiceInfoProvider
     {
         private readonly IServiceRegistry registry = new ServiceRegistry();
@@ -59,7 +59,7 @@ namespace Kephas
         public AmbientServices(bool registerDefaultServices = true, IRuntimeTypeRegistry? typeRegistry = null)
         {
             this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
-                .Register<ICompositionContext>(b => b.WithInstance(this.AsCompositionContext()).ExternallyOwned(true));
+                .Register<IInjector>(b => b.WithInstance(this.AsInjector()).ExternallyOwned(true));
 
             typeRegistry ??= RuntimeTypeRegistry.Instance;
             this
@@ -106,7 +106,7 @@ namespace Kephas
         /// <value>
         /// The composition container.
         /// </value>
-        public ICompositionContext CompositionContainer => this.GetService<ICompositionContext>();
+        public IInjector Injector => this.GetService<IInjector>();
 
         /// <summary>
         /// Gets the type serviceRegistry.
@@ -211,7 +211,7 @@ namespace Kephas
             // exclude the composition context from the list as it is the responsibility
             // of each composition context implementation to register itself in the DI container.
             return this.registry
-                .Where(s => !ReferenceEquals(s.ContractType, typeof(ICompositionContext)))
+                .Where(s => !ReferenceEquals(s.ContractType, typeof(IInjector)))
                 .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType, si)))
                 .ToList();
         }

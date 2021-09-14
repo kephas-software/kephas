@@ -36,7 +36,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var serializer = new JsonSerializer(settingsProvider);
             var obj = await serializer.DeserializeAsync(
                 @"{""ContractType"":""System.String"",""Lifetime"":""Transient"",""AllowMultiple"":false,""AsOpenGeneric"":false}",
-                new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>()) { RootObjectType = typeof(IAppServiceInfo) });
+                new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>()) { RootObjectType = typeof(IAppServiceInfo) });
 
             Assert.IsInstanceOf<AppServiceInfo>(obj);
             var appServiceInfo = (IAppServiceInfo)obj!;

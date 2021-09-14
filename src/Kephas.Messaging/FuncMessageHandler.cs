@@ -21,7 +21,7 @@ namespace Kephas.Messaging
     /// A function message handler.
     /// </summary>
     /// <typeparam name="TMessage">Type of the message.</typeparam>
-    [ExcludeFromComposition]
+    [ExcludeFromInjection]
     public class FuncMessageHandler<TMessage> : MessageHandlerBase<TMessage, IMessage>
         where TMessage : class
     {

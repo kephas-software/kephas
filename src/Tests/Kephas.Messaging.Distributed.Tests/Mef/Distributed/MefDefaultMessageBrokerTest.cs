@@ -40,10 +40,10 @@ namespace Kephas.Messaging.Tests.Mef.Distributed
     [TestFixture]
     public class MefDefaultMessageBrokerTest : MefMessagingTestBase
     {
-        public async Task<IMessageBroker> GetMessageBrokerAsync(ICompositionContext compositionContext)
+        public async Task<IMessageBroker> GetMessageBrokerAsync(IInjector injector)
         {
-            var messageBroker = compositionContext.GetExport<IMessageBroker>();
-            await ServiceHelper.InitializeAsync(messageBroker, new Context(compositionContext));
+            var messageBroker = injector.GetExport<IMessageBroker>();
+            await ServiceHelper.InitializeAsync(messageBroker, new Context(injector));
 
             return messageBroker;
         }

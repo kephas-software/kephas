@@ -24,17 +24,17 @@ namespace Kephas.Core.Endpoints
     {
         private const string SettingsEnding = "Settings";
 
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
         private readonly ITypeResolver typeResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSettingsHandler"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        public GetSettingsHandler(ICompositionContext compositionContext, ITypeResolver typeResolver)
+        public GetSettingsHandler(IInjector injector, ITypeResolver typeResolver)
         {
-            this.compositionContext = compositionContext;
+            this.injector = injector;
             this.typeResolver = typeResolver;
         }
 
@@ -75,7 +75,7 @@ namespace Kephas.Core.Endpoints
             }
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
-            var configuration = this.compositionContext.GetExport(configurationType);
+            var configuration = this.injector.GetExport(configurationType);
             var getSettings = configurationType.GetMethod(nameof(IConfiguration<CoreSettings>.GetSettings));
             var settings = getSettings?.Call(configuration, context);
             return new GetSettingsResponseMessage

@@ -33,21 +33,21 @@ namespace Kephas.Application.AspNetCore
         /// Initializes a new instance of the <see cref="AspNetAppManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public AspNetAppManager(
             IAppRuntime appRuntime,
-            ICompositionContext compositionContext,
+            IInjector injector,
             IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories)
             : base(
                 appRuntime,
-                compositionContext,
+                injector,
                 serviceBehaviorProvider,
                 appLifecycleBehaviorFactories,
                 featureManagerFactories,

@@ -21,10 +21,10 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <summary>
         /// Initializes a new instance of the <see cref="OcrContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
-        public OcrContext(ICompositionContext compositionContext, bool isThreadSafe = false)
-            : base(compositionContext, isThreadSafe)
+        public OcrContext(IInjector injector, bool isThreadSafe = false)
+            : base(injector, isThreadSafe)
         {
         }
 

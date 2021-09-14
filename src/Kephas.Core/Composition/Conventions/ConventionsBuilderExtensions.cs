@@ -49,7 +49,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// A <see cref="IPartBuilder"/> to further configure the rule.
         /// </returns>
-        public static IPartBuilder ForInstanceFactory<TService>(this IConventionsBuilder conventionsBuilder, Func<ICompositionContext, TService> factory)
+        public static IPartBuilder ForInstanceFactory<TService>(this IConventionsBuilder conventionsBuilder, Func<IInjector, TService> factory)
         {
             Requires.NotNull(conventionsBuilder, nameof(conventionsBuilder));
 

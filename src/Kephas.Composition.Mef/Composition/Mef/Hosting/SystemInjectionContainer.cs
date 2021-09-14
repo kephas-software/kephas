@@ -19,13 +19,13 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class SystemCompositionContainer : SystemCompositionContextBase
+    public class SystemInjectionContainer : SystemInjectorBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemCompositionContainer" /> class.
+        /// Initializes a new instance of the <see cref="SystemInjectionContainer" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        protected internal SystemCompositionContainer(ContainerConfiguration configuration)
+        protected internal SystemInjectionContainer(ContainerConfiguration configuration)
         {
             Requires.NotNull(configuration, nameof(configuration));
 

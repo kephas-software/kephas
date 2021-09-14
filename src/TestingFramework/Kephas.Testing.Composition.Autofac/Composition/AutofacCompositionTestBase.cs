@@ -54,9 +54,9 @@ namespace Kephas.Testing.Composition
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <returns>
-        /// An AutofacCompositionContainerBuilder.
+        /// An AutofacInjectorBuilder.
         /// </returns>
-        public virtual AutofacCompositionContainerBuilder WithContainerBuilder(
+        public virtual AutofacInjectorBuilder WithContainerBuilder(
             IAmbientServices? ambientServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
@@ -70,7 +70,7 @@ namespace Kephas.Testing.Composition
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new AutofacCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
+            return new AutofacInjectorBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Kephas.Testing.Composition
         /// <returns>
         /// The new container.
         /// </returns>
-        public ICompositionContext CreateContainer(params Assembly[] assemblies)
+        public IInjector CreateContainer(params Assembly[] assemblies)
         {
             return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
         }
@@ -97,11 +97,11 @@ namespace Kephas.Testing.Composition
         /// <returns>
         /// The new container.
         /// </returns>
-        public virtual ICompositionContext CreateContainer(
+        public virtual IInjector CreateContainer(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<AutofacCompositionContainerBuilder>? config = null,
+            Action<AutofacInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
@@ -118,18 +118,18 @@ namespace Kephas.Testing.Composition
             return container;
         }
 
-        public ICompositionContext CreateContainerWithBuilder(Action<AutofacCompositionContainerBuilder> config = null)
+        public IInjector CreateContainerWithBuilder(Action<AutofacInjectorBuilder> config = null)
         {
             var builder = WithContainerBuilder()
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly);
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly);
             config?.Invoke(builder);
             return builder.CreateContainer();
         }
 
-        public ICompositionContext CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        public IInjector CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             return WithContainerBuilder(ambientServices)
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(types)
                 .CreateContainer();
         }
@@ -138,8 +138,8 @@ namespace Kephas.Testing.Composition
         {
             return new List<Assembly>
                        {
-                           typeof(ICompositionContext).GetTypeInfo().Assembly,     /* Kephas.Core*/
-                           typeof(AutofacCompositionContainer).GetTypeInfo().Assembly, /* Kephas.Composition.Autofac */
+                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Core*/
+                           typeof(AutofacInjectionContainer).GetTypeInfo().Assembly, /* Kephas.Composition.Autofac */
                        };
         }
 

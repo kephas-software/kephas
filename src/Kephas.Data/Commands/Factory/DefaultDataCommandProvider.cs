@@ -27,7 +27,7 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// Context for the composition.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// The command factories.
@@ -37,12 +37,12 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataCommandProvider"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public DefaultDataCommandProvider(ICompositionContext compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public DefaultDataCommandProvider(IInjector injector)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
 
-            this.compositionContext = compositionContext;
+            this.injector = injector;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Kephas.Data.Commands.Factory
         private Func<IDataCommand> CreateCommandFactory(Type dataContextType, Type commandType)
         {
             var dataCommandFactoryType = typeof(IDataCommandFactory<>).MakeGenericType(commandType);
-            var dataCommandFactory = (IDataCommandFactory)this.compositionContext.TryGetExport(dataCommandFactoryType);
+            var dataCommandFactory = (IDataCommandFactory)this.injector.TryGetExport(dataCommandFactoryType);
             if (dataCommandFactory == null)
             {
                 return () => null;

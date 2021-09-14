@@ -71,7 +71,7 @@ namespace Kephas.Composition.Lite
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
-                case Func<ICompositionContext, object> factory:
+                case Func<IInjector, object> factory:
                     return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime == AppServiceLifetime.Singleton)
                     {
                         AllowMultiple = this.allowMultiple,
@@ -193,7 +193,7 @@ namespace Kephas.Composition.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder WithFactory(Func<ICompositionContext, object> factory)
+        public IServiceRegistrationBuilder WithFactory(Func<IInjector, object> factory)
         {
             Requires.NotNull(factory, nameof(factory));
 

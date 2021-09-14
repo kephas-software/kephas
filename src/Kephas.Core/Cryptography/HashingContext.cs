@@ -21,10 +21,10 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="HashingContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Optional. Context for the composition.</param>
+        /// <param name="injector">Optional. Context for the composition.</param>
         /// <param name="isThreadSafe">Optional. True if this object is thread safe.</param>
-        public HashingContext(ICompositionContext compositionContext, bool isThreadSafe = false)
-            : base(compositionContext, isThreadSafe)
+        public HashingContext(IInjector injector, bool isThreadSafe = false)
+            : base(injector, isThreadSafe)
         {
         }
 

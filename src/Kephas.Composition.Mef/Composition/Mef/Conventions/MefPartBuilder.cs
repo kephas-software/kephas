@@ -40,7 +40,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instanceFactory">The instance factory.</param>
-        public MefPartBuilder(Type contractType, Func<ICompositionContext, object> instanceFactory)
+        public MefPartBuilder(Type contractType, Func<IInjector, object> instanceFactory)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(instanceFactory, nameof(instanceFactory));
@@ -63,7 +63,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// <value>
         /// The instance factory.
         /// </value>
-        public Func<ICompositionContext, object> InstanceFactory { get; }
+        public Func<IInjector, object> InstanceFactory { get; }
 
         /// <summary>
         /// Gets the instance.

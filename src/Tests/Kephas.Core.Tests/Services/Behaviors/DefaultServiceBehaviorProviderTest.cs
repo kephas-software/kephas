@@ -80,12 +80,12 @@ namespace Kephas.Core.Tests.Services.Behaviors
         }
 
 
-        private ICompositionContext CreateCompositionContextWithFactories(params IExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>[] ruleFactories)
+        private IInjector CreateCompositionContextWithFactories(params IExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>[] ruleFactories)
         {
             var exporter = Substitute.For<ICollectionExportFactoryImporter>();
             exporter.ExportFactories.Returns(ruleFactories);
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
                 .Returns(exporter);
 

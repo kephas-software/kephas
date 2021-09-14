@@ -15,13 +15,13 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     /// <summary>
     /// A composition container for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public class DependencyInjectionCompositionContainer : DependencyInjectionCompositionContextBase
+    public class DependencyInjectionInjectionContainer : DependencyInjectionInjectorBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyInjectionCompositionContainer"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionInjectionContainer"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        public DependencyInjectionCompositionContainer(ServiceProvider serviceProvider)
+        public DependencyInjectionInjectionContainer(ServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }

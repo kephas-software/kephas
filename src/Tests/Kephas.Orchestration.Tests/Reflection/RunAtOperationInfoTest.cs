@@ -110,7 +110,7 @@ namespace Kephas.Tests.Reflection
                 .Returns(ci =>
                 {
                     var dispContext = new DispatchingContext(
-                        Substitute.For<ICompositionContext>(),
+                        Substitute.For<IInjector>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),
@@ -162,7 +162,7 @@ namespace Kephas.Tests.Reflection
                 .Returns(ci =>
                 {
                     var dispContext = new DispatchingContext(
-                        Substitute.For<ICompositionContext>(),
+                        Substitute.For<IInjector>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),

@@ -25,9 +25,9 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
-        public ScriptingContext(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="injector">The composition context.</param>
+        public ScriptingContext(IInjector injector)
+            : base(injector)
         {
         }
 

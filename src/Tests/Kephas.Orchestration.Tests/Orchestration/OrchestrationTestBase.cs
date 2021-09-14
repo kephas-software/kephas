@@ -40,11 +40,11 @@ namespace Kephas.Tests.Orchestration
             return assemblies;
         }
 
-        public override ICompositionContext CreateContainer(
+        public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteCompositionContainerBuilder>? config = null,
+            Action<LiteInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

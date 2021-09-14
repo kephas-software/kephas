@@ -1,24 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="IInjectorBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ICompositionContainerBuilder interface.
+//   Declares the IInjectorBuilder interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Composition.Hosting
 {
     /// <summary>
-    /// Contract for composition container builders.
+    /// Contract for injection builders.
     /// </summary>
-    public interface ICompositionContainerBuilder
+    public interface IInjectorBuilder
     {
         /// <summary>
-        /// Creates the container with the provided configuration asynchronously.
+        /// Creates the injector.
         /// </summary>
-        /// <returns>A new container with the provided configuration.</returns>
-        ICompositionContext CreateContainer();
+        /// <returns>The newly created injector.</returns>
+        IInjector CreateContainer();
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionConstructorAttribute.cs" company="Kephas Software SRL">
+// <copyright file="InjectionConstructorAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,7 +21,7 @@ namespace Kephas.Composition.AttributedModel
     ///                 should be used.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
-    public sealed class CompositionConstructorAttribute : Attribute
+    public sealed class InjectionConstructorAttribute : Attribute
     {
     }
 }

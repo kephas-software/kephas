@@ -764,16 +764,16 @@ namespace Kephas.Application.Tests
 
         private IServiceBehaviorProvider GetServiceBehaviorProvider()
         {
-            var provider = new DefaultServiceBehaviorProvider(Substitute.For<ICompositionContext>(), new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
+            var provider = new DefaultServiceBehaviorProvider(Substitute.For<IInjector>(), new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
             return provider;
         }
 
-        private ICompositionContext GetCompositionContext()
+        private IInjector GetCompositionContext()
         {
             var exporter = Substitute.For<ICollectionExportFactoryImporter>();
             exporter.ExportFactories.Returns(new IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[0]);
 
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
                 .Returns(exporter);
 

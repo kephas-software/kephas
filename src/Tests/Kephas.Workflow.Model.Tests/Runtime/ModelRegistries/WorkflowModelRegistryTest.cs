@@ -40,7 +40,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(IStateMachine), typeof(IStateMachineType), typeof(ActivityBase), typeof(string), typeof(TestActivity), typeof(TestStateMachine) });
 
             var contextFactory = this.CreateContextFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<ICompositionContext>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
@@ -61,7 +61,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(ActivityBase), typeof(string), typeof(ExcludedActivity) });
 
             var contextFactory = this.CreateContextFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<ICompositionContext>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();

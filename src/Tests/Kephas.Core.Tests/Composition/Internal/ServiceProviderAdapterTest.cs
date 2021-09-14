@@ -28,7 +28,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.TryGetExport(typeof(string), Arg.Any<string>()).Returns("hello");
             var adapter = new ServiceProviderAdapter(context);
 
@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_not_found()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.TryGetExport(typeof(string), Arg.Any<string>()).Returns(null);
             var adapter = new ServiceProviderAdapter(context);
 
@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactory_generic_1_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -61,7 +61,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactory_generic_2_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -73,7 +73,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactories_enumerable_generic_1_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -85,7 +85,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactories_enumerable_generic_2_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -98,7 +98,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactories_collection_generic_1_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -110,7 +110,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactories_collection_generic_2_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -123,7 +123,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactories_list_generic_1_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -139,7 +139,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_ExportFactories_list_generic_2_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
@@ -157,7 +157,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_Enumerable_string_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
@@ -170,7 +170,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_Collection_string_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
@@ -183,7 +183,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_IList_string_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
@@ -196,7 +196,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         [Test]
         public void GetService_List_string_success()
         {
-            var context = Substitute.For<ICompositionContext>();
+            var context = Substitute.For<IInjector>();
             context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 

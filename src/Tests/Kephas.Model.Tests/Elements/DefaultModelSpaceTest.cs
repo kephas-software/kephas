@@ -30,7 +30,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeDimensions_2_dims()
         {
-            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
+            var context = new ModelConstructionContext(Substitute.For<IInjector>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -60,7 +60,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeProjections_2_dims()
         {
-            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
+            var context = new ModelConstructionContext(Substitute.For<IInjector>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -93,7 +93,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_classifier_with_two_properties()
         {
-            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
+            var context = new ModelConstructionContext(Substitute.For<IInjector>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -160,7 +160,7 @@ namespace Kephas.Model.Tests.Elements
         private ModelConstructionContext CreateModelConstructionContext()
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
             var context = new ModelConstructionContext(compositionContext);
             return context;

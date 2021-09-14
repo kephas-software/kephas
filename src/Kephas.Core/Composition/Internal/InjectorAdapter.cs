@@ -1,43 +1,33 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DependencyInjectionCompositionContextBase.cs" company="Kephas Software SRL">
+// <copyright file="InjectorAdapter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the medi composition context base class.
+//   Implements the composition context adapter class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions.DependencyInjection.Hosting
+namespace Kephas.Composition.Internal
 {
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Composition;
-
-    using Microsoft.Extensions.DependencyInjection;
-
     /// <summary>
-    /// A composition context base for Microsoft.Extensions.DependencyInjection.
+    /// An adapter of <see cref="IServiceProvider"/> for <see cref="IInjector"/>.
     /// </summary>
-    public abstract class DependencyInjectionCompositionContextBase : ICompositionContext, IServiceProvider
+    internal class InjectorAdapter : IInjector
     {
+        private readonly IServiceProvider serviceProvider;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyInjectionCompositionContextBase"/> class.
+        /// Initializes a new instance of the <see cref="InjectorAdapter"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        protected DependencyInjectionCompositionContextBase(IServiceProvider serviceProvider)
+        public InjectorAdapter(IServiceProvider serviceProvider)
         {
-            this.ServiceProvider = serviceProvider;
+            this.serviceProvider = serviceProvider;
         }
-
-        /// <summary>
-        /// Gets the service provider.
-        /// </summary>
-        /// <value>
-        /// The service provider.
-        /// </value>
-        protected IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -45,11 +35,11 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>
-        /// An object implementing <paramref name="contractType" />.
+        /// An object implementing <paramref name="contractType"/>.
         /// </returns>
         public object GetExport(Type contractType, string? serviceName = null)
         {
-            return this.ServiceProvider.GetRequiredService(contractType);
+            return this.serviceProvider.GetService(contractType);
         }
 
         /// <summary>
@@ -57,11 +47,12 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>
-        /// An enumeration of objects implementing <paramref name="contractType" />.
+        /// An enumeration of objects implementing <paramref name="contractType"/>.
         /// </returns>
         public IEnumerable<object> GetExports(Type contractType)
         {
-            return this.ServiceProvider.GetServices(contractType);
+            var collectionType = typeof(IEnumerable<>).MakeGenericType(contractType);
+            return (IEnumerable<object>)this.serviceProvider.GetService(collectionType);
         }
 
         /// <summary>
@@ -75,7 +66,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         public T GetExport<T>(string? serviceName = null)
             where T : class
         {
-            return this.ServiceProvider.GetRequiredService<T>();
+            return (T)this.serviceProvider.GetService(typeof(T));
         }
 
         /// <summary>
@@ -88,7 +79,8 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         public IEnumerable<T> GetExports<T>()
             where T : class
         {
-            return this.ServiceProvider.GetServices<T>();
+            var collectionType = typeof(IEnumerable<>).MakeGenericType(typeof(T));
+            return (IEnumerable<T>)this.serviceProvider.GetService(collectionType);
         }
 
         /// <summary>
@@ -97,12 +89,12 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>
-        /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the
+        /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object? TryGetExport(Type contractType, string? serviceName = null)
+        public object TryGetExport(Type contractType, string? serviceName = null)
         {
-            return this.ServiceProvider.GetService(contractType);
+            return this.serviceProvider.GetService(contractType);
         }
 
         /// <summary>
@@ -117,7 +109,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         public T? TryGetExport<T>(string? serviceName = null)
             where T : class
         {
-            return this.ServiceProvider.GetService<T>();
+            return (T?)this.serviceProvider.GetService(typeof(T));
         }
 
         /// <summary>
@@ -126,28 +118,17 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public ICompositionContext CreateScopedContext()
+        IInjector IInjector.CreateScopedContext()
         {
-            return new DependencyInjectionScopedCompositionContext(this.ServiceProvider.CreateScope());
+            return this;
         }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
-        public virtual void Dispose()
+        void IDisposable.Dispose()
         {
-            (this.ServiceProvider as IDisposable)?.Dispose();
         }
-
-        /// <summary>
-        /// Gets the service object of the specified type.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if
-        /// there is no service object of type <paramref name="serviceType">serviceType</paramref>.
-        /// </returns>
-        public object GetService(Type serviceType) => this.ServiceProvider.GetService(serviceType);
     }
 }

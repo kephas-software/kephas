@@ -53,7 +53,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IServiceProvider CreateServiceProvider(IAmbientServices containerBuilder)
         {
-            return containerBuilder.CompositionContainer.ToServiceProvider();
+            return containerBuilder.Injector.ToServiceProvider();
         }
     }
 }

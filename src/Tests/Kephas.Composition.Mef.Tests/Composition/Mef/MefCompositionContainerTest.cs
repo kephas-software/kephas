@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Composition.Mef;
+
 namespace Kephas.Tests.Composition.Mef
 {
     using System;
@@ -32,20 +34,20 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="SystemCompositionContainer"/>.
+    /// Tests for <see cref="SystemInjectionContainer"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MefCompositionContainerTest : MefCompositionTestBase
     {
-        public SystemCompositionContainer CreateContainer(params Type[] types)
+        public SystemInjectionContainer CreateContainer(params Type[] types)
         {
             return this.WithEmptyConfiguration()
                 .WithParts(types)
                 .CreateCompositionContainer();
         }
 
-        public SystemCompositionContainer CreateExportProvidersContainer(params Type[] types)
+        public SystemInjectionContainer CreateExportProvidersContainer(params Type[] types)
         {
             var config = this.WithEmptyConfiguration();
             return this.WithExportProviders(config).WithParts(types).CreateCompositionContainer();
@@ -322,19 +324,19 @@ namespace Kephas.Tests.Composition.Mef
         private class ContainerServicesImporter
         {
             [Import]
-            public ICompositionContext CompositionContainer { get; set; }
+            public IInjector InjectionContainer { get; set; }
         }
 
         [Export]
-        [Shared(CompositionScopeNames.Default)]
+        [Shared(InjectionScopeNames.Default)]
         public class ScopeExportedClass
         {
-            public ICompositionContext CompositionContext { get; }
+            public IInjector Injector { get; }
 
             [ImportingConstructor]
-            public ScopeExportedClass(ICompositionContext compositionContext)
+            public ScopeExportedClass(IInjector injector)
             {
-                this.CompositionContext = compositionContext;
+                this.Injector = injector;
             }
         }
 

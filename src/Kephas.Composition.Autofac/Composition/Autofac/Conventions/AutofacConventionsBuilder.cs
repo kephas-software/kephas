@@ -120,13 +120,13 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <returns>
         /// A <see cref="T:Kephas.Composition.Conventions.IPartBuilder" /> to further configure the rule.
         /// </returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
+        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
         {
             var registrationBuilder = RegistrationBuilder.ForDelegate(
                     type,
                     (context, parameters) =>
                     {
-                        var serviceProvider = context.Resolve<ICompositionContext>();
+                        var serviceProvider = context.Resolve<IInjector>();
                         return factory(serviceProvider);
                     });
             var partBuilder = new AutofacPartBuilder(this.containerBuilder, registrationBuilder);

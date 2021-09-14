@@ -24,7 +24,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Provides methods for accessing runtime type information.
     /// </summary>
-    [ExcludeFromComposition]
+    [ExcludeFromInjection]
     public class RuntimeTypeRegistry : Expando, IRuntimeTypeRegistry, IRuntimeElementInfoFactory
     {
         private readonly ITypeLoader? typeLoader;

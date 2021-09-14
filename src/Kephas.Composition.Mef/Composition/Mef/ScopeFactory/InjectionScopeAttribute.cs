@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionScopeAttribute.cs" company="Kephas Software SRL">
+// <copyright file="InjectionScopeAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,17 +16,17 @@ namespace Kephas.Composition.Mef.ScopeFactory
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Attribute for MEF scope.
+    /// Attribute indicating the MEF scope.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class CompositionScopeAttribute : Attribute, IMetadataValue<string>
+    public class InjectionScopeAttribute : Attribute, IMetadataValue<string>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionScopeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="InjectionScopeAttribute"/> class.
         /// </summary>
-        public CompositionScopeAttribute()
+        public InjectionScopeAttribute()
         {
-            this.Value = CompositionScopeNames.Default;
+            this.Value = InjectionScopeNames.Default;
         }
 
         /// <summary>

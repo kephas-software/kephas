@@ -30,7 +30,7 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// <summary>
         /// The context factory.
         /// </summary>
-        private readonly Func<ICompositionContext, object> contextFactory;
+        private readonly Func<IInjector, object> contextFactory;
 
         /// <summary>
         /// The is shared.
@@ -69,7 +69,7 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="contextFactory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<ICompositionContext, object> contextFactory, bool isSingleton)
+        public FactoryExportDescriptorProvider(Type contractType, Func<IInjector, object> contextFactory, bool isSingleton)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(contextFactory, nameof(contextFactory));
@@ -119,7 +119,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                             (c, o) =>
                                 {
                                     var instance = this.factory == null
-                                                       ? this.contextFactory(SystemCompositionContextBase.TryGetCompositionContext(c, createNewIfMissing: false))
+                                                       ? this.contextFactory(SystemInjectorBase.TryGetCompositionContext(c, createNewIfMissing: false))
                                                        : this.factory();
                                     if (instance is IDisposable disposable)
                                     {

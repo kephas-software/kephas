@@ -24,9 +24,9 @@ namespace Kephas.Data.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public DataIOContext(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public DataIOContext(IInjector injector)
+            : base(injector)
         {
         }
 

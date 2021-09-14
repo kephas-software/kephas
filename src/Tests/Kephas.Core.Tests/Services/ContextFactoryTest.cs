@@ -32,7 +32,7 @@ namespace Kephas.Core.Tests.Services
             var context = factory.CreateContext<Context>();
 
             Assert.AreSame(ambientServices, context.AmbientServices);
-            Assert.AreSame(compositionContext, context.CompositionContext);
+            Assert.AreSame(compositionContext, context.Injector);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace Kephas.Core.Tests.Services
             var context = factory.CreateContext<EncryptionContext>();
 
             Assert.AreSame(ambientServices, context.AmbientServices);
-            Assert.AreSame(compositionContext, context.CompositionContext);
+            Assert.AreSame(compositionContext, context.Injector);
         }
 
         [Test]
@@ -57,26 +57,26 @@ namespace Kephas.Core.Tests.Services
             var context = factory.CreateContext<SerializationContext>(typeof(string));
 
             Assert.AreSame(ambientServices, context.AmbientServices);
-            Assert.AreSame(compositionContext, context.CompositionContext);
+            Assert.AreSame(compositionContext, context.Injector);
             Assert.AreSame(serializationService, context.SerializationService);
             Assert.AreSame(typeof(string), context.MediaType);
         }
 
-        private (IAmbientServices ambientServices, ICompositionContext compositionContext) GetServices(params IAppServiceInfo[] appServiceInfos)
+        private (IAmbientServices ambientServices, IInjector compositionContext) GetServices(params IAppServiceInfo[] appServiceInfos)
         {
             var ambientServices = Substitute.For<IAmbientServices>();
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
 
             var infos = appServiceInfos.Select(i => (contractType: i.ContractType, appServiceInfo: i));
 
-            ambientServices.CompositionContainer.Returns(compositionContext);
-            ambientServices.GetService(typeof(ICompositionContext)).Returns(compositionContext);
+            ambientServices.Injector.Returns(compositionContext);
+            ambientServices.GetService(typeof(IInjector)).Returns(compositionContext);
             ambientServices["__AppServiceInfosKey"].Returns(infos);
 
             compositionContext.GetExport(typeof(IAmbientServices), Arg.Any<string>()).Returns(ambientServices);
             compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            compositionContext.GetExport(typeof(ICompositionContext), Arg.Any<string>()).Returns(compositionContext);
-            compositionContext.GetExport<ICompositionContext>(Arg.Any<string>()).Returns(compositionContext);
+            compositionContext.GetExport(typeof(IInjector), Arg.Any<string>()).Returns(compositionContext);
+            compositionContext.GetExport<IInjector>(Arg.Any<string>()).Returns(compositionContext);
 
             return (ambientServices, compositionContext);
         }

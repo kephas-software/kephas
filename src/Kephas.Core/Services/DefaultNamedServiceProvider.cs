@@ -26,15 +26,15 @@ namespace Kephas.Services
         /// <summary>
         /// Context for the composition.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultNamedServiceProvider"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public DefaultNamedServiceProvider(ICompositionContext compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public DefaultNamedServiceProvider(IInjector injector)
         {
-            this.compositionContext = compositionContext;
+            this.injector = injector;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Kephas.Services
         /// </returns>
         public TService GetNamedService<TService>(string serviceName)
         {
-            var exportFactories = this.compositionContext
+            var exportFactories = this.injector
                 .GetExportFactories<TService, AppServiceMetadata>()
                 .Order()
                 .Where(f => f.Metadata.ServiceName == serviceName)

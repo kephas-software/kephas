@@ -27,9 +27,9 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Initializes a new instance of the <see cref="DataExportContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public DataExportContext(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public DataExportContext(IInjector injector)
+            : base(injector)
         {
         }
 

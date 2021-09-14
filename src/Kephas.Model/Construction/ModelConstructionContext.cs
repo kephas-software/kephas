@@ -40,13 +40,13 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public ModelConstructionContext(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public ModelConstructionContext(IInjector injector)
+            : base(injector)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
 
-            this.Logger = compositionContext.GetLogger(this.GetType());
+            this.Logger = injector.GetLogger(this.GetType());
         }
 
         /// <summary>

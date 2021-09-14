@@ -114,7 +114,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
+        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
         {
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(factory, nameof(factory));

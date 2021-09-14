@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainerBuilderBaseTest.cs" company="Kephas Software SRL">
+// <copyright file="InjectorBuilderBaseTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Test class for <see cref="CompositionContainerBuilderBase{TBuilder}" />.
+//   Test class for <see cref="InjectorBuilderBase{TBuilder}" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -26,18 +26,18 @@ namespace Kephas.Core.Tests.Composition
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="CompositionContainerBuilderBase{TBuilder}"/>.
+    /// Test class for <see cref="InjectorBuilderBase{TBuilder}"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CompositionContainerBuilderBaseTest
+    public class InjectorBuilderBaseTest
     {
         [Test]
         public void Constructor_success()
         {
             var logManager = Substitute.For<ILogManager>();
             var appRuntime = Substitute.For<IAppRuntime>();
-            var builder = new TestCompositionContainerBuilder(logManager, appRuntime);
+            var builder = new TestInjectorBuilder(logManager, appRuntime);
 
             Assert.AreEqual(logManager, builder.LogManager);
             Assert.AreEqual(appRuntime, builder.AppRuntime);
@@ -47,7 +47,7 @@ namespace Kephas.Core.Tests.Composition
         public void WithConventionsBuilder()
         {
             var conventions = Substitute.For<IConventionsBuilder>();
-            var builder = new TestCompositionContainerBuilder()
+            var builder = new TestInjectorBuilder()
                 .WithConventions(conventions);
 
             Assert.AreSame(conventions, builder.InternalConventionsBuilder);
@@ -60,21 +60,21 @@ namespace Kephas.Core.Tests.Composition
                 .Register(Substitute.For<ILogManager>())
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
-            var builder = new TestCompositionContainerBuilder(ambientServices)
+            var builder = new TestInjectorBuilder(ambientServices)
                 .WithAssemblies(new[] { this.GetType().Assembly });
 
             var container = builder.CreateContainer();
             Assert.IsNotNull(container);
         }
 
-        public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
+        public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
-            public TestCompositionContainerBuilder(IAmbientServices ambientServices = null)
+            public TestInjectorBuilder(IAmbientServices ambientServices = null)
                 : base(new CompositionRegistrationContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
             {
             }
 
-            public TestCompositionContainerBuilder(ILogManager logManager, IAppRuntime appRuntime)
+            public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
                 : base(new CompositionRegistrationContext(new AmbientServices().Register(logManager).Register(appRuntime)))
             {
             }
@@ -89,9 +89,9 @@ namespace Kephas.Core.Tests.Composition
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Substitute.For<ICompositionContext>();
+                return Substitute.For<IInjector>();
             }
         }
 
@@ -147,7 +147,7 @@ namespace Kephas.Core.Tests.Composition
             /// <param name="type">The registered service type.</param>
             /// <param name="factory">The service factory.</param>
             /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-            public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
+            public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
             {
                 // throw new NotImplementedException();
                 return Substitute.For<IPartBuilder>();

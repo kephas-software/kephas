@@ -43,9 +43,9 @@ namespace Kephas.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        protected Loggable(ICompositionContext compositionContext)
-            : this(() => compositionContext?.GetExport<ILogManager>())
+        /// <param name="injector">Context for the composition.</param>
+        protected Loggable(IInjector injector)
+            : this(() => injector?.GetExport<ILogManager>())
         {
         }
 

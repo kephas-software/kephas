@@ -36,7 +36,7 @@ namespace Kephas.Tests.Composition.Autofac
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="AutofacCompositionContainerBuilder"/>.
+    /// Tests for <see cref="AutofacInjectorBuilder"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -49,7 +49,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockAppRuntime = builder.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
 
             var container = builder.CreateContainer();
 
@@ -81,7 +81,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithAssembly(typeof(AutofacConventionsBuilder).GetTypeInfo().Assembly)
                 .CreateContainer();
 
@@ -94,7 +94,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -109,7 +109,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -123,7 +123,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .CreateContainer();
 
@@ -137,7 +137,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -153,7 +153,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -167,7 +167,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
                 .CreateContainer();
 
@@ -182,7 +182,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateContainer();
 
@@ -195,7 +195,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
                 .CreateContainer();
 
@@ -208,7 +208,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithRegistration(
                     new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
                     new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
@@ -225,7 +225,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateContainer();
 
@@ -237,7 +237,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateContainer();
 
@@ -304,7 +304,7 @@ namespace Kephas.Tests.Composition.Autofac
         public void GetExport_AppService_no_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger()
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) });
             Assert.Throws<NoConstructorsFoundException>(() => builder.CreateContainer());
         }
@@ -314,7 +314,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(AmbiguousCompositionConstructorAppService) })
                 .CreateContainer();
             Assert.Throws<DependencyResolutionException>(() => container.GetExport<IConstructorAppService>());
@@ -325,7 +325,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(LargestCompositionConstructorAppService) })
                 .CreateContainer();
 
@@ -337,8 +337,8 @@ namespace Kephas.Tests.Composition.Autofac
         public void GetExport_AppService_multiple_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            Assert.Throws<CompositionException>(() => builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+            Assert.Throws<InjectionException>(() => builder
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
                 .CreateContainer());
         }
@@ -348,7 +348,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
                 .CreateContainer();
 
@@ -362,7 +362,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
                 .CreateContainer();
 
@@ -383,7 +383,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockAppRuntime = factory.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -403,7 +403,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -423,7 +423,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -443,7 +443,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -451,7 +451,7 @@ namespace Kephas.Tests.Composition.Autofac
             Assert.AreEqual("123", instance);
         }
 
-        private AutofacCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
+        private AutofacInjectorBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -460,11 +460,11 @@ namespace Kephas.Tests.Composition.Autofac
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);
-            var factory = new AutofacCompositionContainerBuilder(context);
+            var factory = new AutofacInjectorBuilder(context);
             return factory;
         }
 
-        private AutofacCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
+        private AutofacInjectorBuilder CreateCompositionContainerBuilderWithStringLogger()
         {
             var builder = this.CreateCompositionContainerBuilder();
 
@@ -605,10 +605,10 @@ namespace Kephas.Tests.Composition.Autofac
             /// <summary>
             /// Initializes a new instance of the <see cref="SingleConstructorAppService"/> class.
             /// </summary>
-            /// <param name="compositionContainer">
+            /// <param name="injectionContainer">
             /// The composition container.
             /// </param>
-            public SingleConstructorAppService(ICompositionContext compositionContainer)
+            public SingleConstructorAppService(IInjector injectionContainer)
             {
             }
         }
@@ -619,7 +619,7 @@ namespace Kephas.Tests.Composition.Autofac
             {
             }
 
-            public AmbiguousCompositionConstructorAppService(ICompositionContext compositionContainer)
+            public AmbiguousCompositionConstructorAppService(IInjector injectionContainer)
             {
             }
         }
@@ -636,10 +636,10 @@ namespace Kephas.Tests.Composition.Autofac
             /// <summary>
             /// Initializes a new instance of the <see cref="LargestCompositionConstructorAppService"/> class.
             /// </summary>
-            /// <param name="compositionContainer">
+            /// <param name="injectionContainer">
             /// The composition container.
             /// </param>
-            public LargestCompositionConstructorAppService(ICompositionContext compositionContainer)
+            public LargestCompositionConstructorAppService(IInjector injectionContainer)
             {
             }
         }
@@ -659,7 +659,7 @@ namespace Kephas.Tests.Composition.Autofac
             /// <summary>
             /// Initializes a new instance of the <see cref="MultipleCompositionConstructorAppService"/> class.
             /// </summary>
-            [CompositionConstructor]
+            [InjectionConstructor]
             public MultipleCompositionConstructorAppService()
             {
             }
@@ -667,11 +667,11 @@ namespace Kephas.Tests.Composition.Autofac
             /// <summary>
             /// Initializes a new instance of the <see cref="MultipleCompositionConstructorAppService"/> class.
             /// </summary>
-            /// <param name="compositionContainer">
+            /// <param name="injectionContainer">
             /// The composition container.
             /// </param>
-            [CompositionConstructor]
-            public MultipleCompositionConstructorAppService(ICompositionContext compositionContainer)
+            [InjectionConstructor]
+            public MultipleCompositionConstructorAppService(IInjector injectionContainer)
             {
             }
         }
@@ -682,7 +682,7 @@ namespace Kephas.Tests.Composition.Autofac
 
         public class ExportedClassWithFakeDependency : ExportedClass
         {
-            [CompositionConstructor]
+            [InjectionConstructor]
             public ExportedClassWithFakeDependency()
             {
             }

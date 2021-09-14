@@ -35,17 +35,17 @@ namespace Kephas.Tests.Composition.Autofac
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="AutofacCompositionContainer"/>.
+    /// Tests for <see cref="AutofacInjectionContainer"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacCompositionContainerTest : AutofacCompositionTestBase
     {
-        public AutofacCompositionContainer CreateContainer(params Type[] types)
+        public AutofacInjectionContainer CreateContainer(params Type[] types)
         {
             var builder = this.WithEmptyConfiguration();
             builder.RegisterTypes(types);
-            return new AutofacCompositionContainer(builder);
+            return new AutofacInjectionContainer(builder);
         }
 
         [Test]
@@ -287,12 +287,12 @@ namespace Kephas.Tests.Composition.Autofac
         //[Scoped(CompositionScopeNames.Default)]
         public class ScopeExportedClass
         {
-            public ICompositionContext CompositionContext { get; }
+            public IInjector Injector { get; }
 
             //[ImportingConstructor]
-            public ScopeExportedClass(ICompositionContext compositionContext)
+            public ScopeExportedClass(IInjector injector)
             {
-                this.CompositionContext = compositionContext;
+                this.Injector = injector;
             }
         }
 

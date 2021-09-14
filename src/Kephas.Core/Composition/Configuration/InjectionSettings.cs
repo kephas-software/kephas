@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionSettings.cs" company="Kephas Software SRL">
+// <copyright file="InjectionSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,9 +13,9 @@ namespace Kephas.Composition.Configuration
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Stores composition settings.
+    /// Stores injection settings.
     /// </summary>
-    public class CompositionSettings : Expando
+    public class InjectionSettings : Expando
     {
         /// <summary>
         /// Gets or sets the assembly file name pattern.
@@ -23,6 +23,6 @@ namespace Kephas.Composition.Configuration
         /// <value>
         /// The assembly file name pattern.
         /// </value>
-        public string AssemblyFileNamePattern { get; set; }
+        public string? AssemblyFileNamePattern { get; set; }
     }
 }

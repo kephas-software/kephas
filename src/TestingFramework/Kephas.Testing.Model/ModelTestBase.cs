@@ -35,12 +35,12 @@ namespace Kephas.Testing.Model
             return registry;
         }
 
-        public ICompositionContext CreateContainerForModel(params Type[] elements)
+        public IInjector CreateContainerForModel(params Type[] elements)
         {
             return this.CreateContainerForModel(ambientServices: null, elements: elements);
         }
 
-        public ICompositionContext CreateContainerForModel(IAmbientServices? ambientServices, params Type[] elements)
+        public IInjector CreateContainerForModel(IAmbientServices? ambientServices, params Type[] elements)
         {
             var container = this.CreateContainer(
                 ambientServices: ambientServices,
@@ -50,12 +50,12 @@ namespace Kephas.Testing.Model
             return container;
         }
 
-        public ICompositionContext CreateContainerForModel(Type[] parts, Type[] elements)
+        public IInjector CreateContainerForModel(Type[] parts, Type[] elements)
         {
             return this.CreateContainerForModel(ambientServices: null, parts: parts, elements: elements);
         }
 
-        public ICompositionContext CreateContainerForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
+        public IInjector CreateContainerForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
         {
             var container = this.CreateContainer(
                 ambientServices: ambientServices,

@@ -22,9 +22,9 @@ namespace Kephas.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public SearchContext(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="injector">Context for the composition.</param>
+        public SearchContext(IInjector injector)
+            : base(injector)
         {
         }
 

@@ -24,7 +24,7 @@ namespace Kephas.Tests.Composition.Mef
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
             var container = ambientServices
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
-                .BuildWithSystemComposition(b => b.WithPart(typeof(CustomAmbientServices))).CompositionContainer;
+                .BuildWithSystemComposition(b => b.WithPart(typeof(CustomAmbientServices))).Injector;
             var otherAmbientServices = container.GetExport<IAmbientServices>();
 
             Assert.AreSame(ambientServices, otherAmbientServices);

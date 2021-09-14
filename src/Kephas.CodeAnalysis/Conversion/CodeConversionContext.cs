@@ -22,12 +22,12 @@ namespace Kephas.CodeAnalysis.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeConversionContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="codeConverter">The code converter.</param>
         public CodeConversionContext(
-            ICompositionContext compositionContext,
+            IInjector injector,
             ICodeConverter codeConverter)
-            : base(compositionContext)
+            : base(injector)
         {
             Requires.NotNull(codeConverter, nameof(codeConverter));
 

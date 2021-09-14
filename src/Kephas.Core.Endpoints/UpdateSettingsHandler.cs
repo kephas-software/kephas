@@ -29,25 +29,25 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     public class UpdateSettingsHandler : MessageHandlerBase<UpdateSettingsMessage, ResponseMessage>
     {
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
         private readonly ITypeResolver typeResolver;
         private readonly ISerializationService serializationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSettingsHandler"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public UpdateSettingsHandler(
-            ICompositionContext compositionContext,
+            IInjector injector,
             ITypeResolver typeResolver,
             ISerializationService serializationService,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.compositionContext = compositionContext;
+            this.injector = injector;
             this.typeResolver = typeResolver;
             this.serializationService = serializationService;
         }
@@ -103,7 +103,7 @@ namespace Kephas.Core.Endpoints
             }
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
-            var configuration = this.compositionContext.GetExport(configurationType);
+            var configuration = this.injector.GetExport(configurationType);
             var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
                 .GetMember(nameof(IConfiguration<CoreSettings>.UpdateSettingsAsync));
             var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }).PreserveThreadContext());

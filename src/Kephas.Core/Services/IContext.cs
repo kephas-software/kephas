@@ -32,7 +32,7 @@ namespace Kephas.Services
         /// <value>
         /// The composition context.
         /// </value>
-        ICompositionContext CompositionContext { get; }
+        IInjector Injector { get; }
 
         /// <summary>
         /// Gets the ambient services.

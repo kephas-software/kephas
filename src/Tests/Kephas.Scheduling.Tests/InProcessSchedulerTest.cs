@@ -49,7 +49,7 @@ namespace Kephas.Scheduling.Tests
         public async Task EnqueueAsync_extension()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -84,7 +84,7 @@ namespace Kephas.Scheduling.Tests
         public async Task EnqueueAsync()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var appRuntime = new StaticAppRuntime(appId: "test", appInstanceId: "test-1");
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), appRuntime);
 
@@ -120,7 +120,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelTriggerAsync_triggerId()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -161,7 +161,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelTriggerAsync_trigger()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -201,7 +201,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelScheduledJobAsync_jobInfo()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -241,7 +241,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelScheduledJobAsync_jobInfoId()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -281,7 +281,7 @@ namespace Kephas.Scheduling.Tests
         public async Task FinalizeAsync_disposes_all_triggers_and_scheduled_jobs()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -315,7 +315,7 @@ namespace Kephas.Scheduling.Tests
         public async Task FinalizeAsync_disposes_all_triggers()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();

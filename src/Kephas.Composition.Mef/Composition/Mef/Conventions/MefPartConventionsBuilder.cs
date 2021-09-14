@@ -80,7 +80,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IPartConventionsBuilder Scoped()
         {
-            this.innerConventionBuilder.Shared(CompositionScopeNames.Default);
+            this.innerConventionBuilder.Shared(InjectionScopeNames.Default);
             return this;
         }
 
@@ -158,7 +158,7 @@ namespace Kephas.Composition.Mef.Conventions
 
                     if (constructorsList.Count == 0)
                     {
-                        throw new CompositionException(string.Format(Strings.MefPartConventionsBuilder_MissingCompositionConstructor, ctorInfos.FirstOrDefault()?.DeclaringType?.ToString() ?? "<unknown>", this.contractType));
+                        throw new InjectionException(string.Format(Strings.MefPartConventionsBuilder_MissingCompositionConstructor, ctorInfos.FirstOrDefault()?.DeclaringType?.ToString() ?? "<unknown>", this.contractType));
                     }
 
                     if (constructorsList.Count == 1)
@@ -169,7 +169,7 @@ namespace Kephas.Composition.Mef.Conventions
                     var sortedConstructors = constructorsList.ToDictionary(c => c, c => c.GetParameters().Length).OrderByDescending(kv => kv.Value).ToList();
                     if (sortedConstructors[0].Value == sortedConstructors[1].Value)
                     {
-                        throw new CompositionException(string.Format(Strings.MefPartConventionsBuilder_AmbiguousCompositionConstructor, constructorsList.First().DeclaringType, typeof(CompositionConstructorAttribute)));
+                        throw new InjectionException(string.Format(Strings.MefPartConventionsBuilder_AmbiguousCompositionConstructor, constructorsList.First().DeclaringType, typeof(InjectionConstructorAttribute)));
                     }
 
                     return sortedConstructors[0].Key;

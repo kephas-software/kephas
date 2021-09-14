@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("other", "salt", "pBbAk+s59J5HOdOZfsuULq8hEgjkBKChn/vhh++mCwE=")]
         public void Hash_with_salt(string value, string salt, string hash)
         {
-            var contextFactory = this.CreateContextFactory(() => new HashingContext(Substitute.For<ICompositionContext>()));
+            var contextFactory = this.CreateContextFactory(() => new HashingContext(Substitute.For<IInjector>()));
             var hashingService = new Sha256HashingService(contextFactory);
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var saltBytes = Encoding.UTF8.GetBytes(salt);

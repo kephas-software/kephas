@@ -39,8 +39,8 @@ namespace Kephas.Messaging.Redis.Tests
             };
         }
 
-        public override ICompositionContext CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null, Action<LiteCompositionContainerBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
+        public override IInjector CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
         {
             return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }

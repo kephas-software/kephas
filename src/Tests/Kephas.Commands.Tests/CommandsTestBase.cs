@@ -23,11 +23,11 @@ namespace Kephas.Commands.Tests
 
     public abstract class CommandsTestBase : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(
+        public override IInjector CreateContainer(
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null,
+            Action<LiteInjectorBuilder> config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

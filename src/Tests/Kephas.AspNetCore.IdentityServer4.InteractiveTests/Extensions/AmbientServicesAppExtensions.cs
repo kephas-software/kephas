@@ -68,7 +68,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         /// <param name="settings">The JSON serialization settings.</param>
         public static void ConfigureJsonSerialization(this IAmbientServices ambientServices, JsonSerializerSettings settings)
         {
-            var jsonSettingsProvider = ambientServices.CompositionContainer
+            var jsonSettingsProvider = ambientServices.Injector
                 .GetExport<IJsonSerializerSettingsProvider>();
             jsonSettingsProvider.ConfigureJsonSerializerSettings(settings);
             settings.TypeNameHandling = TypeNameHandling.Auto;

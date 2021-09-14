@@ -41,7 +41,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IRuntimeModelElementFactory? factory = null)
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry()).WithStaticAppRuntime();
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
             return new ModelConstructionContext(compositionContext)
             {

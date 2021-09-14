@@ -41,20 +41,20 @@ namespace Kephas.Data.MongoDB
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="namingStrategy">The naming strategy.</param>
         public MongoDataContext(
-            ICompositionContext compositionContext,
+            IInjector injector,
             IDataCommandProvider dataCommandProvider,
             IDataBehaviorProvider dataBehaviorProvider,
             IRuntimeTypeRegistry typeRegistry,
             IMongoNamingStrategy namingStrategy)
-            : base(compositionContext, dataCommandProvider, dataBehaviorProvider)
+            : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
             Requires.NotNull(typeRegistry, nameof(typeRegistry));
@@ -169,7 +169,7 @@ namespace Kephas.Data.MongoDB
             settings.ClusterConfigurator = b =>
             {
                 b.ConfigureConnectionPool(s => s.With());
-                b.Subscribe(new MongoDataContextLogEventSubscriber(this.CompositionContext));
+                b.Subscribe(new MongoDataContextLogEventSubscriber(this.Injector));
             };
             settings.SslSettings = new SslSettings
             {

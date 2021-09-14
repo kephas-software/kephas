@@ -1,22 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExcludeFromCompositionAttribute.cs" company="Kephas Software SRL">
+// <copyright file="InjectionScopeNames.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Indicates that a specific service should be excluded from composition.
+//   Implements the scope names class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.AttributedModel
+namespace Kephas.Composition.Mef
 {
-    using System;
-
     /// <summary>
-    /// Marks a class eligible as an application service implementation to be excluded from composition.
+    /// Provides the built-in scope names.
     /// </summary>
-    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-    public sealed class ExcludeFromCompositionAttribute : Attribute
+    public static class InjectionScopeNames
     {
+        /// <summary>
+        /// The default scope name.
+        /// </summary>
+        public const string Default = "default";
     }
 }

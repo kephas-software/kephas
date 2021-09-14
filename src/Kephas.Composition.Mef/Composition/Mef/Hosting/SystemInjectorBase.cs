@@ -22,9 +22,9 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// A MEF composition context.
     /// </summary>
-    public abstract class SystemCompositionContextBase : ICompositionContext
+    public abstract class SystemInjectorBase : IInjector
     {
-        private static ConcurrentDictionary<CompositionContext, ICompositionContext> map = new ConcurrentDictionary<CompositionContext, ICompositionContext>();
+        private static ConcurrentDictionary<CompositionContext, IInjector> map = new ConcurrentDictionary<CompositionContext, IInjector>();
 
         private CompositionContext? innerCompositionContext;
 
@@ -144,9 +144,9 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public virtual ICompositionContext CreateScopedContext()
+        public virtual IInjector CreateScopedContext()
         {
-            var scopeProvider = this.GetExport<IMefScopeFactory>(CompositionScopeNames.Default);
+            var scopeProvider = this.GetExport<IMefScopeFactory>(InjectionScopeNames.Default);
 
             var scopedContextExport = scopeProvider.CreateScopedContextExport();
             return GetOrAddCompositionContext(scopedContextExport);
@@ -168,7 +168,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        internal static ICompositionContext? TryGetCompositionContext(CompositionContext context, bool createNewIfMissing)
+        internal static IInjector? TryGetCompositionContext(CompositionContext context, bool createNewIfMissing)
         {
             if (map.TryGetValue(context, out var compositionContext))
             {
@@ -176,7 +176,7 @@ namespace Kephas.Composition.Mef.Hosting
             }
 
             return createNewIfMissing
-                ? new ScopedSystemCompositionContext(new Export<CompositionContext>(context, () => { }))
+                ? new ScopedSystemInjector(new Export<CompositionContext>(context, () => { }))
                 : null;
         }
 
@@ -199,7 +199,7 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemCompositionContextBase"/> class.
+        /// Initializes a new instance of the <see cref="SystemInjectorBase"/> class.
         /// </summary>
         /// <param name="context">The inner container.</param>
         protected void Initialize(CompositionContext context)
@@ -234,9 +234,9 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The composition context.
         /// </returns>
-        private static ICompositionContext GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
+        private static IInjector GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
         {
-            return map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionContext(scopedContextExport));
+            return map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemInjector(scopedContextExport));
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="DefaultIdGenerator"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        [CompositionConstructor]
+        [InjectionConstructor]
         public DefaultIdGenerator(IConfiguration<IdGeneratorSettings> configuration)
             : this(configuration.GetSettings())
         {

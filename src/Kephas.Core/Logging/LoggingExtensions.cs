@@ -58,7 +58,7 @@ namespace Kephas.Logging
                 return ambientServices.LogManager.GetLogger(objType);
             }
 
-            if (obj is ICompositionContext compositionContext)
+            if (obj is IInjector compositionContext)
             {
                 return compositionContext.GetLogger(objType);
             }
@@ -71,7 +71,7 @@ namespace Kephas.Logging
                     return ambientServices.LogManager.GetLogger(objType);
                 }
 
-                compositionContext = contextObj.CompositionContext;
+                compositionContext = contextObj.Injector;
                 if (compositionContext != null)
                 {
                     return compositionContext.GetLogger(objType);

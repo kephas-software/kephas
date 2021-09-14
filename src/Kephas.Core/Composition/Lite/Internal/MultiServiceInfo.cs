@@ -73,7 +73,7 @@ namespace Kephas.Composition.Lite.Internal
 
         Type IAppServiceInfo.InstanceType => null;
 
-        Func<ICompositionContext, object>? IAppServiceInfo.InstanceFactory => null;
+        Func<IInjector, object>? IAppServiceInfo.InstanceFactory => null;
 
         public Type ServiceType { get; }
 

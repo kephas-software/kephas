@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacCompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="AutofacInjectorBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,17 +24,17 @@ namespace Kephas.Composition.Autofac.Hosting
     /// <summary>
     /// An Autofac composition container builder.
     /// </summary>
-    public class AutofacCompositionContainerBuilder : CompositionContainerBuilderBase<AutofacCompositionContainerBuilder>
+    public class AutofacInjectorBuilder : InjectorBuilderBase<AutofacInjectorBuilder>
     {
         private readonly IList<Action<ContainerBuilder>> builderConfigs = new List<Action<ContainerBuilder>>();
 
         private ContainerBuilder? containerBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacCompositionContainerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="AutofacInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public AutofacCompositionContainerBuilder(ICompositionRegistrationContext context)
+        public AutofacInjectorBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
         }
@@ -46,7 +46,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        public AutofacCompositionContainerBuilder WithConfig(Action<ContainerBuilder> config)
+        public AutofacInjectorBuilder WithConfig(Action<ContainerBuilder> config)
         {
             Requires.NotNull(config, nameof(config));
 
@@ -62,7 +62,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        public AutofacCompositionContainerBuilder WithContainerBuilder(ContainerBuilder builder)
+        public AutofacInjectorBuilder WithContainerBuilder(ContainerBuilder builder)
         {
             Requires.NotNull(builder, nameof(builder));
 
@@ -88,7 +88,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
 
@@ -107,7 +107,7 @@ namespace Kephas.Composition.Autofac.Hosting
                                           : throw new InvalidOperationException(
                                                 $"The conventions instance must implement either {typeof(IAutofacContainerBuilder)} or {typeof(IAutofacContainerBuilderProvider)}.");
 
-            return new AutofacCompositionContainer(containerBuilder);
+            return new AutofacInjectionContainer(containerBuilder);
         }
     }
 }

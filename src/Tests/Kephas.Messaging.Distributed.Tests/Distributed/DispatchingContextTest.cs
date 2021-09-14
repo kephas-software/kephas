@@ -31,7 +31,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void OneWay()
         {
             var builder = new DispatchingContext(
-                Substitute.For<ICompositionContext>(),
+                Substitute.For<IInjector>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -45,7 +45,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content()
         {
             var builder = new DispatchingContext(
-                Substitute.For<ICompositionContext>(),
+                Substitute.For<IInjector>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -64,7 +64,7 @@ namespace Kephas.Messaging.Tests.Distributed
             appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("app-instance-id");
 
             var builder = new DispatchingContext(
-                Substitute.For<ICompositionContext>(),
+                Substitute.For<IInjector>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 appRuntime,
@@ -83,7 +83,7 @@ namespace Kephas.Messaging.Tests.Distributed
             config.GetSettings(Arg.Any<IContext>()).Returns(ci => new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) });
 
             var builder = new DispatchingContext(
-                Substitute.For<ICompositionContext>(),
+                Substitute.For<IInjector>(),
                 config,
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -100,7 +100,7 @@ namespace Kephas.Messaging.Tests.Distributed
             config.GetSettings(Arg.Any<IContext>()).Returns(ci => null);
 
             var builder = new DispatchingContext(
-                Substitute.For<ICompositionContext>(),
+                Substitute.For<IInjector>(),
                 config,
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),

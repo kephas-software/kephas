@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DependencyInjectionCompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionInjectorBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -23,14 +23,14 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     /// <summary>
     /// A dependency injection composition container builder.
     /// </summary>
-    public class DependencyInjectionCompositionContainerBuilder : CompositionContainerBuilderBase<DependencyInjectionCompositionContainerBuilder>
+    public class DependencyInjectionInjectorBuilder : InjectorBuilderBase<DependencyInjectionInjectorBuilder>
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="DependencyInjectionCompositionContainerBuilder"/> class.
+        /// <see cref="DependencyInjectionInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public DependencyInjectionCompositionContainerBuilder(ICompositionRegistrationContext context)
+        public DependencyInjectionInjectorBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
         }
@@ -54,7 +54,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var serviceProvider = conventions is IServiceProviderBuilder mediServiceProviderBuilder
                                       ? mediServiceProviderBuilder.BuildServiceProvider(parts)
@@ -63,7 +63,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
                                           : throw new InvalidOperationException(
                                                 $"The conventions instance must implement either {typeof(IServiceProviderBuilder)} or {typeof(IServiceCollectionProvider)}.");
 
-            return new DependencyInjectionCompositionContainer(serviceProvider);
+            return new DependencyInjectionInjectionContainer(serviceProvider);
         }
     }
 }

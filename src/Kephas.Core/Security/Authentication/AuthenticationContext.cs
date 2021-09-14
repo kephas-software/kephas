@@ -22,19 +22,19 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The context for the composition.</param>
-        public AuthenticationContext(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="injector">The context for the composition.</param>
+        public AuthenticationContext(IInjector injector)
+            : base(injector)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The context for the composition.</param>
+        /// <param name="injector">The context for the composition.</param>
         /// <param name="credentials">The credentials.</param>
-        public AuthenticationContext(ICompositionContext compositionContext, ICredentials credentials)
-            : base(compositionContext)
+        public AuthenticationContext(IInjector injector, ICredentials credentials)
+            : base(injector)
         {
             Requires.NotNull(credentials, nameof(credentials));
 

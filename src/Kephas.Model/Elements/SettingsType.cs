@@ -25,7 +25,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Context for the composition.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsType" /> class.
@@ -42,7 +42,7 @@ namespace Kephas.Model.Elements
             Requires.NotNull(settingsInfo, nameof(settingsInfo));
 
             this.settingsInfo = settingsInfo;
-            this.compositionContext = constructionContext.CompositionContext;
+            this.injector = constructionContext.Injector;
         }
     }
 }

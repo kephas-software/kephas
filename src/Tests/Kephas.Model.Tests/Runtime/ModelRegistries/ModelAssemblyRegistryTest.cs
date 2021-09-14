@@ -35,11 +35,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class ModelAssemblyRegistryTest : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(
+        public override IInjector CreateContainer(
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null,
+            Action<LiteInjectorBuilder> config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

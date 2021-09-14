@@ -42,7 +42,7 @@ namespace Kephas.Core.Tests.Serialization
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, new List<IExportFactory<ISerializer, SerializerMetadata>>());
             contextFactory.CreateContext<SerializationContext>(serializationService)
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
             Assert.Throws<KeyNotFoundException>(() => serializationService.Deserialize("123", ctx => ctx.MediaType = mediaType));
         }
 
@@ -54,7 +54,7 @@ namespace Kephas.Core.Tests.Serialization
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
             contextFactory.CreateContext<SerializationContext>(serializationService)
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
 
             ISerializationContext context = null;
             serializationService.Deserialize("123", ctx => context = ctx);
@@ -74,7 +74,7 @@ namespace Kephas.Core.Tests.Serialization
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
             contextFactory.CreateContext<SerializationContext>(serializationService)
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
 
             serializationService.Deserialize("123");
             oldSerializer.Received(0)
@@ -401,7 +401,7 @@ namespace Kephas.Core.Tests.Serialization
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
             contextFactory.CreateContext<SerializationContext>(serializationService)
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
 
             return serializationService;
         }

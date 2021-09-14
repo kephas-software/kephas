@@ -48,11 +48,11 @@ namespace Kephas.Messaging.Tests.Autofac
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacDefaultMessageProcessorTest : AutofacCompositionTestBase
     {
-        public override ICompositionContext CreateContainer(
+        public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<AutofacCompositionContainerBuilder>? config = null,
+            Action<AutofacInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
@@ -295,7 +295,7 @@ namespace Kephas.Messaging.Tests.Autofac
             var f = this.CreateTestBehaviorFactory(messageType: typeof(PingMessage));
 
             var processor = (TestMessageProcessor)this.CreateMessageProcessor(new[] { f }, handler, message);
-            var processingContext = new MessagingContext(Substitute.For<ICompositionContext>(), processor, message);
+            var processingContext = new MessagingContext(Substitute.For<IInjector>(), processor, message);
             processor.CreateProcessingContextFunc = (msg, ctx) => processingContext;
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -616,7 +616,7 @@ namespace Kephas.Messaging.Tests.Autofac
                 behaviorFactories);
 
             contextFactory.CreateContext<MessagingContext>(Arg.Any<object[]>())
-                .Returns(ci => new MessagingContext(Substitute.For<ICompositionContext>(), processor));
+                .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
 
             return processor;
         }

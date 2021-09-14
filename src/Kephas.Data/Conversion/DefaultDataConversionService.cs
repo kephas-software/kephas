@@ -60,20 +60,20 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="injector">The composition context.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
         /// <param name="targetResolverFactories">The target resolver factories.</param>
         public DefaultDataConversionService(
-            ICompositionContext compositionContext,
+            IInjector injector,
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories,
             ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
-            : base(compositionContext)
+            : base(injector)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
             Requires.NotNull(converterExportFactories, nameof(converterExportFactories));
             Requires.NotNull(targetResolverFactories, nameof(targetResolverFactories));
 
-            this.CompositionContext = compositionContext;
+            this.Injector = injector;
             this.converterExportFactories = converterExportFactories;
             this.targetResolverFactories = targetResolverFactories;
         }
@@ -84,7 +84,7 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The composition context.
         /// </value>
-        public ICompositionContext CompositionContext { get; }
+        public IInjector Injector { get; }
 
         /// <summary>
         /// Converts the source object to the target object asynchronously.

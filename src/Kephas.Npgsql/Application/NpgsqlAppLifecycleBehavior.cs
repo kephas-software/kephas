@@ -38,7 +38,7 @@ namespace Kephas.Npgsql.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
-            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.CompositionContext.GetExport<ILogManager>());
+            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.Injector.GetExport<ILogManager>());
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

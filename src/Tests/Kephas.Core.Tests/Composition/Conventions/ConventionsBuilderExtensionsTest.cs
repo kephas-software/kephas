@@ -28,14 +28,14 @@ namespace Kephas.Core.Tests.Composition.Conventions
         [Test]
         public void RegisterConventions_singleton_derived_conventions_with_metadata()
         {
-            var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var builder = new InjectorBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
                 new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
                 new TestRegistrationContext(new AmbientServices().Register<IConventionsRegistrar>(b => b.WithType<CalculatorConventionsRegistrar>().AllowMultiple())));
 
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
-            var partBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
+            var partBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
             Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
             var exportBuilder = partBuilder.ExportBuilder;
@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
         [Test]
         public void RegisterConventions_singleton_derived_conventions_with_metadata_from_context_registrar()
         {
-            var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var builder = new InjectorBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
                 new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
                 new TestRegistrationContext
@@ -60,7 +60,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
 
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
-            var partBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
+            var partBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
             Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
             var exportBuilder = partBuilder.ExportBuilder;

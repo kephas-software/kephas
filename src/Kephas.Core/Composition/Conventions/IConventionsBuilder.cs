@@ -54,6 +54,6 @@ namespace Kephas.Composition.Conventions
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory);
+        IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory);
     }
 }

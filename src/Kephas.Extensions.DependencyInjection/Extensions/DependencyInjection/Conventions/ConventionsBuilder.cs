@@ -125,12 +125,12 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A <see cref="T:Kephas.Composition.Conventions.IPartBuilder" /> to further configure the rule.
         /// </returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
+        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                         {
                                             ServiceType = type,
-                                            Factory = serviceProvider => factory(serviceProvider.GetService<ICompositionContext>()),
+                                            Factory = serviceProvider => factory(serviceProvider.GetService<IInjector>()),
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new DependencyInjectionPartBuilder(descriptorBuilder);

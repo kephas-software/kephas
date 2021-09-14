@@ -34,7 +34,7 @@ namespace Kephas.Services
         private const int CompositionContextIndex = -2;
         private const int LogManagerIndex = -3;
 
-        private readonly ICompositionContext compositionContext;
+        private readonly IInjector injector;
         private readonly IAmbientServices ambientServices;
         private readonly ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>> typeCache
             = new ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>>();
@@ -47,12 +47,12 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextFactory"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logManager">Manager for log.</param>
-        public ContextFactory(ICompositionContext compositionContext, IAmbientServices ambientServices, ILogManager logManager)
+        public ContextFactory(IInjector injector, IAmbientServices ambientServices, ILogManager logManager)
         {
-            this.compositionContext = compositionContext;
+            this.injector = injector;
             this.ambientServices = ambientServices;
             this.LogManager = logManager;
             this.appServiceInfos = this.ambientServices.GetAppServiceInfos().ToList();
@@ -125,7 +125,7 @@ namespace Kephas.Services
                 {
                     null,
                     () => this.ambientServices,
-                    () => this.compositionContext,
+                    () => this.injector,
                     () => this.LogManager,
                 };
             foreach (var paramInfo in paramInfos)
@@ -148,7 +148,7 @@ namespace Kephas.Services
                     if (appServiceInfo != null && appServiceInfo.Value.appServiceInfo != null && !appServiceInfo.Value.appServiceInfo.AllowMultiple)
                     {
                         argIndexMap.Add(-argResolverMap.Count);
-                        argResolverMap.Add(() => this.compositionContext.GetExport(paramType));
+                        argResolverMap.Add(() => this.injector.GetExport(paramType));
                     }
                     else if (paramInfo.HasDefaultValue)
                     {
@@ -172,7 +172,7 @@ namespace Kephas.Services
             {
                 return AmbientServicesIndex;
             }
-            else if (paramType == typeof(ICompositionContext))
+            else if (paramType == typeof(IInjector))
             {
                 return CompositionContextIndex;
             }

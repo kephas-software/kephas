@@ -32,7 +32,7 @@
                                        };
             var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? new AppServiceContractAttribute { AllowMultiple = ti == typeof(IServiceProvider).GetTypeInfo() } : null);
 
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var parts = new List<Type>(serviceContracts)
                             {
@@ -58,7 +58,7 @@
                                        };
             var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
 
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var parts = new List<Type>(serviceContracts)
                             {
@@ -72,7 +72,7 @@
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsTrue(builderEntry.Key(typeof(Generic2)));
 
-            var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var conventionBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var constructorInfo = conventionBuilder.ConstructorSelector(typeof(Generic2).GetTypeInfo().DeclaredConstructors);
             Assert.IsNull(constructorInfo);
         }
@@ -86,7 +86,7 @@
                                        };
             var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
 
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var parts = new List<Type>(serviceContracts)
                             {
@@ -103,7 +103,7 @@
             Assert.IsTrue(builderEntry.Key(typeof(IntClassifierFactory)));
             Assert.IsFalse(builderEntry.Key(typeof(ClassifierFactoryBase)));
 
-            var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var conventionBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var constructorInfo = conventionBuilder.ConstructorSelector(typeof(StringClassifierFactory).GetTypeInfo().DeclaredConstructors);
             Assert.IsNull(constructorInfo);
             constructorInfo = conventionBuilder.ConstructorSelector(typeof(IntClassifierFactory).GetTypeInfo().DeclaredConstructors);
@@ -120,7 +120,7 @@
                                        };
             var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
 
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var parts = new List<Type>(serviceContracts)
                             {
@@ -132,7 +132,7 @@
             var builderEntry = conventions.TypeConventionsBuilders.First();
             Assert.AreSame(typeof(ExportedClass), builderEntry.Key);
 
-            var builder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var builder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var exportBuilder = builder.ExportBuilder;
             Assert.AreSame(typeof(ExportedClass), exportBuilder.ContractType);
         }
@@ -146,7 +146,7 @@
                                        };
             var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
 
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var parts = new List<Type>(serviceContracts)
                             {
@@ -160,7 +160,7 @@
             Assert.IsFalse(builderEntry.Key(typeof(ConverterBase<,>)));
         }
 
-        [ExcludeFromComposition]
+        [ExcludeFromInjection]
         public class TestRegistrar : AppServiceInfoConventionsRegistrar
         {
             private readonly Func<Type, AppServiceContractAttribute> attrProvider;

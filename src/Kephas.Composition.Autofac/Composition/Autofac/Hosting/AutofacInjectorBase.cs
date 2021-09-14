@@ -22,18 +22,18 @@ namespace Kephas.Composition.Autofac.Hosting
     /// <summary>
     /// An Autofac composition context base.
     /// </summary>
-    public abstract class AutofacCompositionContextBase : ICompositionContext
+    public abstract class AutofacInjectorBase : IInjector
     {
-        private readonly ICompositionContainer? root;
+        private readonly IInjectionContainer? root;
 
         private ILifetimeScope? innerContainer;
         private ILogger? logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
+        /// Initializes a new instance of the <see cref="AutofacInjectorBase"/> class.
         /// </summary>
         /// <param name="root">The root.</param>
-        internal AutofacCompositionContextBase(ICompositionContainer? root)
+        internal AutofacInjectorBase(IInjectionContainer? root)
         {
             this.root = root;
         }
@@ -199,12 +199,12 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public ICompositionContext CreateScopedContext()
+        public IInjector CreateScopedContext()
         {
             this.AssertNotDisposed();
 
             var scope = this.innerContainer!.BeginLifetimeScope();
-            return (this.root ?? (ICompositionContainer)this).GetCompositionContext(scope);
+            return (this.root ?? (IInjectionContainer)this).GetCompositionContext(scope);
         }
 
         /// <summary>
@@ -226,13 +226,13 @@ namespace Kephas.Composition.Autofac.Hosting
                 return;
             }
 
-            (this.root ?? (ICompositionContainer)this).HandleDispose(this.innerContainer);
+            (this.root ?? (IInjectionContainer)this).HandleDispose(this.innerContainer);
             this.innerContainer.Dispose();
             this.innerContainer = null;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
+        /// Initializes a new instance of the <see cref="AutofacInjectorBase"/> class.
         /// </summary>
         /// <param name="container">The inner container.</param>
         protected void Initialize(ILifetimeScope container)

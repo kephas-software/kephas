@@ -621,7 +621,7 @@ namespace Kephas
             var service = ambientServices.GetService(serviceType);
             if (service == null)
             {
-                throw new CompositionException(
+                throw new InjectionException(
                     string.Format(
                         Strings.AmbientServices_RequiredServiceNotRegistered_Exception,
                         serviceType));
@@ -759,16 +759,16 @@ namespace Kephas
         /// Sets the composition container to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="compositionContainer">The composition container.</param>
+        /// <param name="injectionContainer">The composition container.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithCompositionContainer(this IAmbientServices ambientServices, ICompositionContext compositionContainer)
+        public static IAmbientServices WithCompositionContainer(this IAmbientServices ambientServices, IInjector injectionContainer)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(compositionContainer, nameof(compositionContainer));
+            Requires.NotNull(injectionContainer, nameof(injectionContainer));
 
-            ambientServices.Register(compositionContainer);
+            ambientServices.Register(injectionContainer);
 
             return ambientServices;
         }
@@ -784,7 +784,7 @@ namespace Kephas
         /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices WithCompositionContainer<TContainerBuilder>(this IAmbientServices ambientServices, Action<TContainerBuilder>? containerBuilderConfig = null)
-            where TContainerBuilder : ICompositionContainerBuilder
+            where TContainerBuilder : IInjectorBuilder
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
@@ -806,11 +806,11 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder>? containerBuilderConfig = null)
+        public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new LiteCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
+            var containerBuilder = new LiteInjectorBuilder(new CompositionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

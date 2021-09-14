@@ -56,33 +56,33 @@ namespace Kephas.Core.Tests
                 .Register(Substitute.For<ILogManager>())
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
-            var compositionContext = Substitute.For<ICompositionContext>();
-            ambientServices.WithCompositionContainer<TestCompositionContainerBuilder>(
+            var compositionContext = Substitute.For<IInjector>();
+            ambientServices.WithCompositionContainer<TestInjectorBuilder>(
                 b => b.WithAssembly(this.GetType().Assembly)
                     .WithCompositionContext(compositionContext));
 
-            Assert.AreSame(compositionContext, ambientServices.CompositionContainer);
+            Assert.AreSame(compositionContext, ambientServices.Injector);
         }
 
         [Test]
         public void WithCompositionContainer_builder_missing_required_constructor()
         {
             var ambientServices = new AmbientServices();
-            Assert.Throws<InvalidOperationException>(() => ambientServices.WithCompositionContainer<BadTestCompositionContainerBuilder>());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.WithCompositionContainer<BadTestInjectorBuilder>());
         }
 
-        public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
+        public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
-            private ICompositionContext compositionContext;
+            private IInjector injector;
 
-            public TestCompositionContainerBuilder(ICompositionRegistrationContext context)
+            public TestInjectorBuilder(ICompositionRegistrationContext context)
                 : base(context)
             {
             }
 
-            public TestCompositionContainerBuilder WithCompositionContext(ICompositionContext compositionContext)
+            public TestInjectorBuilder WithCompositionContext(IInjector injector)
             {
-                this.compositionContext = compositionContext;
+                this.injector = injector;
                 return this;
             }
 
@@ -91,18 +91,18 @@ namespace Kephas.Core.Tests
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return this.compositionContext ?? Substitute.For<ICompositionContext>();
+                return this.injector ?? Substitute.For<IInjector>();
             }
         }
 
         /// <summary>
         /// Missing required constructor with parameter of type ICompositionContainerBuilderContext.
         /// </summary>
-        public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<AmbientServicesExtensionsTest.BadTestCompositionContainerBuilder>
+        public class BadTestInjectorBuilder : InjectorBuilderBase<AmbientServicesExtensionsTest.BadTestInjectorBuilder>
         {
-            public BadTestCompositionContainerBuilder()
+            public BadTestInjectorBuilder()
                 : base(Substitute.For<ICompositionRegistrationContext>())
             {
             }
@@ -112,9 +112,9 @@ namespace Kephas.Core.Tests
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Substitute.For<ICompositionContext>();
+                return Substitute.For<IInjector>();
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LiteCompositionContainerBuilderTest.cs" company="Kephas Software SRL">
+// <copyright file="LiteInjectorBuilderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -32,7 +32,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
     using NUnit.Framework;
 
     [TestFixture]
-    public class LiteCompositionContainerBuilderTest
+    public class LiteInjectorBuilderTest
     {
         [Test]
         public void BuildWithLite_app_manager()
@@ -42,9 +42,9 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
             ambientServices.BuildWithLite();
 
-            Assert.IsInstanceOf<CompositionContextAdapter>(ambientServices.CompositionContainer);
+            Assert.IsInstanceOf<InjectorAdapter>(ambientServices.Injector);
 
-            var appManager = ambientServices.CompositionContainer.GetExport<IEncryptionService>();
+            var appManager = ambientServices.Injector.GetExport<IEncryptionService>();
             Assert.IsInstanceOf<NullEncryptionService>(appManager);
         }
 
@@ -141,7 +141,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -156,7 +156,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -170,7 +170,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .CreateContainer();
 
@@ -184,10 +184,10 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateContainer();
 
-            Assert.Throws<CompositionException>(() => container.GetExport<IExportFactory<ITestAppService>>());
+            Assert.Throws<InjectionException>(() => container.GetExport<IExportFactory<ITestAppService>>());
         }
 
         [Test]
@@ -195,10 +195,10 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateContainer();
 
-            Assert.Throws<CompositionException>(() => container.GetExport<IExportFactory<ITestAppService, AppServiceMetadata>>());
+            Assert.Throws<InjectionException>(() => container.GetExport<IExportFactory<ITestAppService, AppServiceMetadata>>());
         }
 
         [Test]
@@ -206,10 +206,10 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateContainer();
 
-            Assert.Throws<CompositionException>(() => container.GetExport<Lazy<ITestAppService>>());
+            Assert.Throws<InjectionException>(() => container.GetExport<Lazy<ITestAppService>>());
         }
 
         [Test]
@@ -217,10 +217,10 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateContainer();
 
-            Assert.Throws<CompositionException>(() => container.GetExport<Lazy<ITestAppService, AppServiceMetadata>>());
+            Assert.Throws<InjectionException>(() => container.GetExport<Lazy<ITestAppService, AppServiceMetadata>>());
         }
 
         [Test]
@@ -228,7 +228,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -244,7 +244,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -258,7 +258,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
                 .CreateContainer();
 
@@ -273,7 +273,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateContainer();
 
@@ -286,7 +286,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
                 .CreateContainer();
 
@@ -300,7 +300,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithRegistration(
                     new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
                     new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
@@ -312,7 +312,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
             Assert.IsNull(exported.Dependency);
         }
 
-        private LiteCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
+        private LiteInjectorBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -321,11 +321,11 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);
-            var factory = new LiteCompositionContainerBuilder(context);
+            var factory = new LiteInjectorBuilder(context);
             return factory;
         }
 
-        private LiteCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
+        private LiteInjectorBuilder CreateCompositionContainerBuilderWithStringLogger()
         {
             var builder = this.CreateCompositionContainerBuilder();
 
@@ -462,7 +462,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
         public class ExportedClassWithFakeDependency : ExportedClass
         {
-            [CompositionConstructor]
+            [InjectionConstructor]
             public ExportedClassWithFakeDependency()
             {
             }

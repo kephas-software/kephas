@@ -44,26 +44,26 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="compositionContext">The ambient services.</param>
+        /// <param name="injector">The ambient services.</param>
         /// <param name="serviceBehaviorProvider">Optional. The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">Optional. The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">Optional. The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">Optional. The feature lifecycle behavior factories.</param>
         public DefaultAppManager(
             IAppRuntime appRuntime,
-            ICompositionContext compositionContext,
+            IInjector injector,
             IServiceBehaviorProvider? serviceBehaviorProvider = null,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>? appLifecycleBehaviorFactories = null,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories = null,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? featureLifecycleBehaviorFactories = null)
-            : base(compositionContext)
+            : base(injector)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(injector, nameof(injector));
 
             this.AppRuntime = appRuntime;
-            this.CompositionContext = compositionContext;
-            this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(compositionContext);
+            this.Injector = injector;
+            this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(injector);
             this.lazyAppLifecycleBehaviorFactories = new Lazy<ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>>(
                 () => appLifecycleBehaviorFactories == null
                                      ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
@@ -97,7 +97,7 @@ namespace Kephas.Application
         /// <value>
         /// The composition context.
         /// </value>
-        protected ICompositionContext CompositionContext { get; }
+        protected IInjector Injector { get; }
 
         /// <summary>
         /// Gets the service behavior provider.

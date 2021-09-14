@@ -42,7 +42,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_Multiple()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -66,7 +66,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_Single_one_service()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -86,7 +86,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_Single_one_service_overridden_chain()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -108,7 +108,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_Single_one_service_overridden()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -129,7 +129,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_Single_override_service_success()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -150,7 +150,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_Single_override_service_failure()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             Assert.Throws<AmbiguousServiceResolutionException>(() => registrar.RegisterConventions(
@@ -168,7 +168,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_generic()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -189,7 +189,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_default_metadata()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -202,7 +202,7 @@ namespace Kephas.Core.Tests.Services.Composition
                     },
                 new TestRegistrationContext(new AmbientServices()));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(DefaultMetadataAppService)];
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(DefaultMetadataAppService)];
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(5, metadata.Count);
@@ -226,7 +226,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_generic_with_nongeneric_base()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -239,14 +239,14 @@ namespace Kephas.Core.Tests.Services.Composition
                 new TestRegistrationContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ExportBuilder.ContractType);
         }
 
         [Test]
         public void RegisterConventions_generic_with_nongeneric_metadata()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -258,7 +258,7 @@ namespace Kephas.Core.Tests.Services.Composition
                     },
                 new TestRegistrationContext(new AmbientServices()));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(6, metadata.Count);
@@ -271,7 +271,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_generic_with_nongeneric_metadata_two()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -283,7 +283,7 @@ namespace Kephas.Core.Tests.Services.Composition
                     },
                 new TestRegistrationContext(new AmbientServices()));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(7, metadata.Count);
@@ -300,7 +300,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_as_open_generic_ILogger()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var log = new StringBuilder();
 
@@ -314,7 +314,7 @@ namespace Kephas.Core.Tests.Services.Composition
                     },
                 new TestRegistrationContext(this.GetTestAmbientServices(m => log.AppendLine(m))));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.Single();
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.Single();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             // should not warn that metadata attributes are not supported
@@ -326,7 +326,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_metadata()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -344,7 +344,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsTrue(builderEntry.Key(typeof(NullExplicitMetadataAppService)));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(5, metadata.Count);
@@ -358,7 +358,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_metadata_IMetadataValue()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -376,7 +376,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsTrue(builderEntry.Key(typeof(CustomValueNullMetadataAppService)));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(6, metadata.Count);
@@ -390,7 +390,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_metadata_MetadataValue_properties()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -408,7 +408,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsTrue(builderEntry.Key(typeof(CustomValueNullMetadataAppService)));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(6, metadata.Count);
@@ -422,7 +422,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_metadata_MetadataNamedValue_properties()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -440,7 +440,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsTrue(builderEntry.Key(typeof(CustomNamedValueNullMetadataAppService)));
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(7, metadata.Count);
@@ -459,10 +459,10 @@ namespace Kephas.Core.Tests.Services.Composition
         [Test]
         public void RegisterConventions_bad_contract_type()
         {
-            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+            var conventions = new InjectorBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
-            Assert.Throws<CompositionException>(
+            Assert.Throws<InjectionException>(
                 () => registrar.RegisterConventions(
                     conventions,
                     new[] {

@@ -29,7 +29,7 @@ namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
                 .AddNewtonsoftJson(
                     options =>
                     {
-                        var jsonSettingsProvider = ambientServices.CompositionContainer
+                        var jsonSettingsProvider = ambientServices.Injector
                             .GetExport<IJsonSerializerSettingsProvider>();
                         jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
                     });

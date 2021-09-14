@@ -86,7 +86,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests
 
         private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
         {
-            return new EncryptionService(() => new EncryptionContext(ambientServices.CompositionContainer));
+            return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
         }
 
         private class EncryptionService : AesEncryptionService

@@ -26,7 +26,7 @@
             return registry;
         }
 
-        public ICompositionContext CreateContainerForModel(params Type[] elements)
+        public IInjector CreateContainerForModel(params Type[] elements)
         {
             var container = this.CreateContainer(
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },

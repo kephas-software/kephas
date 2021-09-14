@@ -27,11 +27,11 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacCompositionContainerBuilder>? containerBuilderConfig = null)
+        public static IAmbientServices BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacInjectorBuilder>? containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new AutofacCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
+            var containerBuilder = new AutofacInjectorBuilder(new CompositionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

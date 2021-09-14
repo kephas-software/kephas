@@ -22,10 +22,10 @@ namespace Kephas.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="TransitionContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="injector">Context for the composition.</param>
         /// <param name="stateMachine">The state machine.</param>
-        public TransitionContext(ICompositionContext compositionContext, IStateMachine stateMachine)
-            : base(compositionContext)
+        public TransitionContext(IInjector injector, IStateMachine stateMachine)
+            : base(injector)
         {
             this.StateMachine = stateMachine;
         }

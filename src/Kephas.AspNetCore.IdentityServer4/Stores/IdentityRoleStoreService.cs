@@ -39,7 +39,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// A service for storing IdentityRole based roles.
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
-    [ExcludeFromComposition]
+    [ExcludeFromInjection]
     public class IdentityRoleStoreService<TRole> : IdentityRoleStoreServiceBase<TRole>
         where TRole : IdentityRole
     {

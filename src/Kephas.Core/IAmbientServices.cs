@@ -36,12 +36,12 @@ namespace Kephas
         IConfigurationStore ConfigurationStore { get; }
 
         /// <summary>
-        /// Gets the composition container.
+        /// Gets the injector.
         /// </summary>
         /// <value>
-        /// The composition container.
+        /// The injector.
         /// </value>
-        ICompositionContext CompositionContainer { get; }
+        IInjector Injector { get; }
 
         /// <summary>
         /// Gets the application runtime.
