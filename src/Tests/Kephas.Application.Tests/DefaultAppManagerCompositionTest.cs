@@ -8,6 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Reflection;
+using Kephas.Composition;
+using Kephas.Composition.Lite.Hosting;
+using Kephas.Logging;
+
 namespace Kephas.Application.Tests
 {
     using System;
@@ -23,6 +29,24 @@ namespace Kephas.Application.Tests
     [TestFixture]
     public class DefaultAppManagerCompositionTest : ApplicationTestBase
     {
+        public override ICompositionContext CreateContainer(
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<LiteCompositionContainerBuilder>? config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
+        {
+            ambientServices ??= new AmbientServices();
+            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            {
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
+                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+            }
+
+            return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
+        }
+
         [Test]
         public void Composition_compute_auto_feature_info()
         {

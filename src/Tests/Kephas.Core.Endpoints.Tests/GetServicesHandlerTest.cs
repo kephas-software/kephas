@@ -67,7 +67,6 @@ namespace Kephas.Core.Endpoints.Tests
 
             Assert.Greater(result.Services.Length, 1);
             Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(PingMessageHandler)));
-            Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(GetServicesHandler)));
             Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(TestGetServicesHandler)));
         }
 

@@ -94,10 +94,10 @@ namespace Kephas.Testing.Composition
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             var allParts = this.GetDefaultParts().ToList();
-            allParts.AddRange(parts ?? new Type[0]);
+            allParts.AddRange(parts ?? Type.EmptyTypes);
             var containerBuilder = this.WithContainerBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
-                    .WithAssemblies(assemblies ?? new Assembly[0])
+                    .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
                     .WithParts(allParts);
 
             config?.Invoke(containerBuilder);
