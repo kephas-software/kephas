@@ -42,7 +42,7 @@ namespace Kephas.Tests.Orchestration.Application
             Assert.AreEqual(1, settings.SetupCommands.Length);
             Assert.AreEqual("hello", settings.SetupCommands[0]);
 
-            config.Received(1).UpdateSettingsAsync(null, Arg.Any<IContext>(), Arg.Any<CancellationToken>());
+            config.Received(1).UpdateSettingsAsync(settings, Arg.Any<IContext>(), Arg.Any<CancellationToken>());
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Kephas.Tests.Orchestration.Application
             Assert.AreEqual(1, settings.SetupCommands.Length);
             Assert.AreEqual("Hello -To \"gigi\" -Likes 3", settings.SetupCommands[0]);
 
-            config.Received(1).UpdateSettingsAsync(null, Arg.Any<IContext>(), Arg.Any<CancellationToken>());
+            config.Received(1).UpdateSettingsAsync(settings, Arg.Any<IContext>(), Arg.Any<CancellationToken>());
         }
 
         private IEventHub CreateEventHubMock()
