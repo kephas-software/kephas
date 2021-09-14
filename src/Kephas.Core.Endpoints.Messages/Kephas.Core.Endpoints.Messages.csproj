@@ -71,7 +71,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />
     </ItemGroup>
 
     <ItemGroup>

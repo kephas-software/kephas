@@ -54,6 +54,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="stylecop.json" />
       <None Update="kephas.logo.stone.png">
         <Pack>true</Pack>
