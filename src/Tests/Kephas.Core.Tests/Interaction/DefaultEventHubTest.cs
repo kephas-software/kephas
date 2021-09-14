@@ -8,9 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.ExceptionHandling;
+
 namespace Kephas.Core.Tests.Interaction
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
@@ -31,15 +34,15 @@ namespace Kephas.Core.Tests.Interaction
             Exception? exEvent = null;
             IContext? exContext = null;
             using (hub.Subscribe(
-                e => e.GetType() == typeof(string),
-                (e, ctx, token) =>
+                e => e is string,
+                async (e, ctx, token) =>
                 {
                     stringEvent = (string)e;
                     stringContext = ctx;
-                    return Task.CompletedTask;
+                    await Task.Delay(33, token);
                 }))
             using (hub.Subscribe(
-                e => e.GetType() == typeof(Exception),
+                e => e is Exception,
                 (e, ctx, token) =>
                 {
                     exEvent = (Exception)e;
@@ -55,7 +58,9 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
                 Assert.IsFalse(result.HasErrors());
-                Assert.IsNull(result.Value);
+                Assert.AreEqual(OperationState.Completed, result.OperationState);
+                Assert.GreaterOrEqual(result.Elapsed.TotalMilliseconds, 33);
+                CollectionAssert.AreEqual(new List<object?> { null }, result.Value);
             }
         }
 
@@ -68,7 +73,7 @@ namespace Kephas.Core.Tests.Interaction
             Exception? exEvent = null;
             IContext? exContext = null;
             using (hub.Subscribe(
-                e => e.GetType() == typeof(string),
+                e => e is string,
                 (e, ctx, token) =>
                 {
                     stringEvent = (string)e;
@@ -85,7 +90,7 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsNull(exContext);
                 Assert.IsTrue(result.HasErrors());
                 CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InvalidOperationException));
-                Assert.IsNull(result.Value);
+                CollectionAssert.AreEqual(new List<object?>(), result.Value);
             }
         }
 
@@ -94,7 +99,7 @@ namespace Kephas.Core.Tests.Interaction
         {
             var hub = new DefaultEventHub();
             using (hub.Subscribe(
-                e => e.GetType() == typeof(string),
+                e => e is string,
                 (e, ctx, token) => Task.FromResult(12)))
             using (hub.Subscribe(
                 e => e.GetType() == typeof(Exception),
@@ -104,26 +109,85 @@ namespace Kephas.Core.Tests.Interaction
                 var result = await hub.PublishAsync("hello", expectedContext);
 
                 Assert.IsFalse(result.HasErrors());
-                Assert.AreEqual(12, result.Value);
+                CollectionAssert.AreEqual(new List<object?> { 12 }, result.Value);
             }
         }
 
         [Test]
-        public async Task Subscribe_matching_event_with_return_value_multiple_last_wins()
+        public async Task Subscribe_matching_event_with_return_value_interrupt_success()
         {
             var hub = new DefaultEventHub();
             using (hub.Subscribe(
-                e => e.GetType() == typeof(string),
-                (e, ctx, token) => Task.FromResult(12)))
+                e => e is string,
+                (e, ctx, token) => Task.FromException(new InterruptSignal(12))))
             using (hub.Subscribe(
-                e => e.GetType() == typeof(string),
+                e => e is string,
                 (e, ctx, token) => Task.FromResult(24)))
             {
                 var expectedContext = Substitute.For<IContext>();
                 var result = await hub.PublishAsync("hello", expectedContext);
 
                 Assert.IsFalse(result.HasErrors());
-                Assert.AreEqual(24, result.Value);
+                CollectionAssert.AreEqual(new List<object?> { 12 }, result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_matching_event_with_return_value_interrupt_fail_error()
+        {
+            var hub = new DefaultEventHub();
+            using (hub.Subscribe(
+                e => e is string,
+                (e, ctx, token) => Task.FromException(new InterruptSignal(severity: SeverityLevel.Error))))
+            using (hub.Subscribe(
+                e => e is string,
+                (e, ctx, token) => Task.FromResult(24)))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.IsTrue(result.HasErrors());
+                CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InterruptSignal));
+                CollectionAssert.IsEmpty(result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_matching_event_with_return_value_interrupt_fail_exception()
+        {
+            var hub = new DefaultEventHub();
+            using (hub.Subscribe(
+                e => e is string,
+                (e, ctx, token) => Task.FromException(new InterruptSignal(new InvalidOperationException()))))
+            using (hub.Subscribe(
+                e => e is string,
+                (e, ctx, token) => Task.FromResult(24)))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.IsTrue(result.HasErrors());
+                CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InvalidOperationException));
+                CollectionAssert.IsEmpty(result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_matching_event_with_multiple_return_values()
+        {
+            var hub = new DefaultEventHub();
+            using (hub.Subscribe(
+                e => e is string,
+                (e, ctx, token) => Task.FromResult(12)))
+            using (hub.Subscribe(
+                e => e is string,
+                (e, ctx, token) => Task.FromResult(24)))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.IsFalse(result.HasErrors());
+                CollectionAssert.AreEqual(new List<object?> { 12, 24 }, result.Value);
             }
         }
 
@@ -158,9 +222,7 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
                 Assert.IsFalse(result.HasErrors());
-#if NETCOREAPP3_1
-                Assert.IsNull(result.Value);
-#endif
+                CollectionAssert.AreEqual(new List<object?> { null }, result.Value);
             }
         }
 
@@ -195,7 +257,7 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
                 Assert.IsFalse(result.HasErrors());
-                Assert.AreEqual(12, result.Value);
+                CollectionAssert.AreEqual(new List<object?> { 12 }, result.Value);
             }
         }
     }

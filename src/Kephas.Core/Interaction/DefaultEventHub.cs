@@ -89,11 +89,11 @@ namespace Kephas.Interaction
                         case SeverityLevel.Warning:
                             resultList.Add(interruption.Result);
                             result.Complete(operationState: OperationState.Warning);
-                            this.Logger.Warn(interruption.Exception ?? interruption, "A warning interruption occurred when invoking subscription callback for '{event}'.", @event);
+                            this.Logger.Warn(interruption.InnerException ?? interruption, "A warning interruption occurred when invoking subscription callback for '{event}'.", @event);
                             break;
                         default:
-                            result.Fail(interruption.Exception ?? interruption, operationState: OperationState.Aborted);
-                            this.Logger.Log((LogLevel)interruption.Severity, interruption.Exception ?? interruption, Strings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
+                            result.Fail(interruption.InnerException ?? interruption, operationState: OperationState.Aborted);
+                            this.Logger.Log((LogLevel)interruption.Severity, interruption.InnerException ?? interruption, Strings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
                             break;
                     }
 

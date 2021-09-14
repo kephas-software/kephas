@@ -69,7 +69,7 @@ namespace Kephas.Commands.Application
                 .ProcessAsync(command.Name, command.Args, signal.ExecutionContext, cancellationToken)
                 .PreserveThreadContext();
 
-            throw new InterruptSignal { Result = result };
+            throw new InterruptSignal(result: result);
         }
     }
 }

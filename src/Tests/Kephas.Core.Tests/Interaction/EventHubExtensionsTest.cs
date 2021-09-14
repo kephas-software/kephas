@@ -11,7 +11,7 @@
 namespace Kephas.Core.Tests.Interaction
 {
     using System;
-    using System.Threading;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
@@ -37,7 +37,7 @@ namespace Kephas.Core.Tests.Interaction
             eventHub.Subscribe<string, string>((e, ctx) => e);
 
             var result = await eventHub.PublishAsync("hello", null);
-            Assert.AreEqual("hello", result.Value);
+            CollectionAssert.AreEqual(new List<object?> { "hello" }, result.Value);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Kephas.Core.Tests.Interaction
             eventHub.Subscribe<string, string>((e, ctx, ct) => Task.FromResult(e));
 
             var result = await eventHub.PublishAsync("hello", null);
-            Assert.AreEqual("hello", result.Value);
+            CollectionAssert.AreEqual(new List<object?> { "hello" }, result.Value);
         }
 
         [Test]
@@ -58,9 +58,7 @@ namespace Kephas.Core.Tests.Interaction
             eventHub.Subscribe<string>((e, ctx) => calls++);
 
             var result = await eventHub.PublishAsync("hello", null);
-#if NETCOREAPP3_1
-            Assert.IsNull(result.Value);
-#endif
+            CollectionAssert.AreEqual(new List<object?> { null }, result.Value);
             Assert.AreEqual(1, calls);
         }
 
@@ -76,9 +74,7 @@ namespace Kephas.Core.Tests.Interaction
             });
 
             var result = await eventHub.PublishAsync("hello", null);
-#if NETCOREAPP3_1
-            Assert.IsNull(result.Value);
-#endif
+            CollectionAssert.AreEqual(new List<object?> { null }, result.Value);
             Assert.AreEqual(1, calls);
         }
     }

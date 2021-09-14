@@ -12,17 +12,21 @@ namespace Kephas.Threading.Tasks
 {
     using System;
     using System.Diagnostics;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Extension methods for the <see cref="Task"/> and <see cref="Task{TResult}"/> classes.
     /// </summary>
     public static class TaskHelper
     {
+        private static readonly MethodInfo GetResultMethod = ReflectionHelper.GetGenericMethodOf(_ => TaskHelper.GetResult<int>(null!));
+
         /// <summary>
         /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
         /// The default value is 20 milliseconds, but it can be changed to accomodate application needs.
@@ -541,12 +545,18 @@ namespace Kephas.Threading.Tasks
             Requires.NotNull(task, nameof(task));
 
             var taskType = task.GetType();
+            object? result = null;
             if (taskType.IsConstructedGenericType)
             {
-                return task.GetPropertyValue(nameof(Task<int>.Result));
+                var taskValueType = taskType.GetGenericArguments()[0];
+                if (taskValueType.Name != "VoidTaskResult")
+                {
+                    var getResult = GetResultMethod.MakeGenericMethod(taskValueType);
+                    result = getResult.Call(null, task);
+                }
             }
 
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -609,5 +619,7 @@ namespace Kephas.Threading.Tasks
             cts.Token.ThrowIfCancellationRequested();
             return task.IsCompleted ? task : delayTask;
         }
+
+        private static object? GetResult<T>(this Task<T> task) => task.Result;
     }
 }
