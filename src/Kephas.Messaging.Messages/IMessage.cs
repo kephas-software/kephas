@@ -26,9 +26,9 @@ namespace Kephas.Messaging
         /// <returns>
         /// The message content.
         /// </returns>
-        public object GetContent()
+        public virtual object GetContent()
         {
-            return this is IMessageEnvelope envelope ? envelope.GetContent() : this;
+            return this;
         }
     }
 }

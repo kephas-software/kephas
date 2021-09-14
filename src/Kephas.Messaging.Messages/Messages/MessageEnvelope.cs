@@ -32,7 +32,7 @@ namespace Kephas.Messaging.Messages
         /// <returns>
         /// The message.
         /// </returns>
-        object IMessageEnvelope.GetContent()
+        public object GetContent()
         {
             if (this.Message == null)
             {

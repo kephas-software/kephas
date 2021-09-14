@@ -15,12 +15,5 @@ namespace Kephas.Messaging.Messages
     /// </summary>
     public interface IMessageEnvelope : IMessage
     {
-        /// <summary>
-        /// Gets the contained message.
-        /// </summary>
-        /// <returns>
-        /// The contained message.
-        /// </returns>
-        object GetContent();
     }
 }

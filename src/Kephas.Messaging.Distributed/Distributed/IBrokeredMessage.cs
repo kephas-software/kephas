@@ -23,7 +23,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Contract interface for brokered messages.
     /// </summary>
-    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope, IDynamic
+    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope, IDynamic, INonIdentifiableMessage
     {
         /// <summary>
         /// Gets the identifier.
@@ -126,6 +126,17 @@ namespace Kephas.Messaging.Distributed
         /// A copy of this object.
         /// </returns>
         IBrokeredMessage Clone(IEnumerable<IEndpoint>? recipients = null);
+
+        /// <summary>
+        /// Gets the content of the message.
+        /// </summary>
+        /// <remarks>
+        /// In case of a message envelope, it returns the contained message, otherwise the message itself.
+        /// </remarks>
+        /// <returns>
+        /// The message content.
+        /// </returns>
+        object IMessage.GetContent() => this.Content;
     }
 
     /// <summary>

@@ -34,7 +34,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// The message.
         /// </returns>
-        object IMessageEnvelope.GetContent()
+        public object GetContent()
         {
             if (this.Event == null)
             {

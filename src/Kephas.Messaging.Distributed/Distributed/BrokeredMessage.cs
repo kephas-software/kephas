@@ -243,13 +243,5 @@ namespace Kephas.Messaging.Distributed
                 Trace = this.Trace,
             };
         }
-
-        /// <summary>
-        /// Gets the content message.
-        /// </summary>
-        /// <returns>
-        /// The content message.
-        /// </returns>
-        object IMessageEnvelope.GetContent() => this.Content;
     }
 }
