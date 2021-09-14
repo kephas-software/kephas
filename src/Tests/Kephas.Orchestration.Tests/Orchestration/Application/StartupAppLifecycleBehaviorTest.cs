@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Tests.Application
+namespace Kephas.Tests.Orchestration.Application
 {
     using System;
     using System.Linq;

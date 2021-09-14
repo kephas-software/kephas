@@ -1,23 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingCommandResolverTest.cs" company="Kephas Software SRL">
+// <copyright file="DistributedMessagingCommandResolverTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Tests
+namespace Kephas.Tests.Commands.Messaging
 {
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Commands.Messaging.Reflection;
+    using Kephas.Commands;
+    using Kephas.Commands.Messaging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Reflection;
     using Kephas.Services.Composition;
+    using Kephas.Tests.Orchestration;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessagingCommandResolverTest : CommandsTestBase
+    public class DistributedMessagingCommandResolverTest : OrchestrationTestBase
     {
         [Test]
         public void Composition()
@@ -25,14 +28,14 @@ namespace Kephas.Commands.Messaging.Tests
             var container = this.CreateContainer();
             var resolver = container.GetExport<ICommandResolver>();
 
-            Assert.IsInstanceOf<MessagingCommandResolver>(resolver);
+            Assert.IsInstanceOf<DistributedMessagingCommandResolver>(resolver);
         }
 
         [Test]
         public void Resolve()
         {
             var messageBroker = Substitute.For<IMessageBroker>();
-            var resolver = new MessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
+            var resolver = new DistributedMessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
             var args = new Args { [RunAtOperationInfo.RunAtArg] = "webapp" };
             var opInfo = resolver.ResolveCommand("help", args);
             Assert.IsInstanceOf<RunAtOperationInfo>(opInfo);
@@ -45,7 +48,7 @@ namespace Kephas.Commands.Messaging.Tests
         public void Resolve_oneway_true()
         {
             var messageBroker = Substitute.For<IMessageBroker>();
-            var resolver = new MessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
+            var resolver = new DistributedMessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
             var args = new Args { [RunAtOperationInfo.RunAtArg] = "webapp", [RunAtOperationInfo.OneWayArg] = "true" };
             var opInfo = resolver.ResolveCommand("help", args);
             Assert.IsInstanceOf<RunAtOperationInfo>(opInfo);
@@ -58,7 +61,7 @@ namespace Kephas.Commands.Messaging.Tests
         public void Resolve_oneway_empty()
         {
             var messageBroker = Substitute.For<IMessageBroker>();
-            var resolver = new MessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
+            var resolver = new DistributedMessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
             var args = new Args { [RunAtOperationInfo.RunAtArg] = "webapp", [RunAtOperationInfo.OneWayArg] = string.Empty };
             var opInfo = resolver.ResolveCommand("help", args);
             Assert.IsInstanceOf<RunAtOperationInfo>(opInfo);

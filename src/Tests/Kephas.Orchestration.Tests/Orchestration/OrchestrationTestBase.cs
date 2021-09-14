@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Tests
+namespace Kephas.Tests.Orchestration
 {
     using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Commands;
     using Kephas.Messaging;
+    using Kephas.Orchestration;
     using Kephas.Testing.Application;
-    using NUnit.Framework;
 
     public abstract class OrchestrationTestBase : ApplicationTestBase
     {

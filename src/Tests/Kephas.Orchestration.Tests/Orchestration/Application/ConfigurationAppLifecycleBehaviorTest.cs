@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Tests.Application
+namespace Kephas.Tests.Orchestration.Application
 {
     using System;
     using System.Collections.Generic;
@@ -20,6 +20,7 @@ namespace Kephas.Orchestration.Tests.Application
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Orchestration;
     using Kephas.Orchestration.Application;
     using Kephas.Security.Authentication;
     using Kephas.Services;
@@ -110,7 +111,7 @@ namespace Kephas.Orchestration.Tests.Application
                 {
                     var ctx = new DispatchingContext(
                         Substitute.For<ICompositionContext>(),
-                        Substitute.For<IConfiguration<MessagingSettings>>(),
+                        Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         Substitute.For<IMessageBroker>(),
                         appRuntime,
                         Substitute.For<IAuthenticationService>());

@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Reflection
+namespace Kephas.Reflection
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace Kephas.Commands.Messaging.Reflection
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Commands;
     using Kephas.Commands.Messaging.Endpoints;
     using Kephas.Dynamic;
     using Kephas.Messaging.Distributed;

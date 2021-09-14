@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <RootNamespace>Kephas.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

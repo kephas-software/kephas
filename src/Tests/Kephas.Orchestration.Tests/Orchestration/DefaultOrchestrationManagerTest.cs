@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Tests
+namespace Kephas.Tests.Orchestration
 {
     using System;
     using System.Collections.Generic;
@@ -18,13 +18,12 @@ namespace Kephas.Orchestration.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Commands;
     using Kephas.Composition;
     using Kephas.Configuration;
-    using Kephas.Diagnostics;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Orchestration;
     using Kephas.Orchestration.Configuration;
     using Kephas.Orchestration.Diagnostics;
     using Kephas.Orchestration.Interaction;

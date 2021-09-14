@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingCommandResolver.cs" company="Kephas Software SRL">
+// <copyright file="DistributedMessagingCommandResolver.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,19 +19,19 @@ namespace Kephas.Commands.Messaging
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// Command resolver when messaging is available.
+    /// Distributed messaging command resolver when messaging is available.
     /// </summary>
     [OverridePriority(Priority.BelowNormal)]
-    public class MessagingCommandResolver : DefaultCommandResolver
+    public class DistributedMessagingCommandResolver : DefaultCommandResolver
     {
         private readonly Lazy<IMessageBroker> lazyMessageBroker;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingCommandResolver"/> class.
+        /// Initializes a new instance of the <see cref="DistributedMessagingCommandResolver"/> class.
         /// </summary>
         /// <param name="lazyMessageBroker">The lazy message broker.</param>
         /// <param name="registries">The command registries.</param>
-        public MessagingCommandResolver(
+        public DistributedMessagingCommandResolver(
             Lazy<IMessageBroker> lazyMessageBroker,
             ICollection<Lazy<ICommandRegistry, AppServiceMetadata>> registries)
             : base(registries)

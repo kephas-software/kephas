@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using System;
     using System.Security.Principal;
@@ -13,20 +13,22 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Commands;
     using Kephas.Commands.Messaging.Endpoints;
-    using Kephas.Commands.Messaging.Reflection;
     using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Reflection;
     using Kephas.Security.Authentication;
     using Kephas.Services;
+    using Kephas.Tests.Orchestration;
     using Kephas.Threading.Tasks;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class RunAtOperationInfoTest : CommandsTestBase
+    public class RunAtOperationInfoTest : OrchestrationTestBase
     {
         [Test]
         public void RunAtOperationInfo_runat_appinstanceid()
@@ -109,7 +111,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
                 {
                     var dispContext = new DispatchingContext(
                         Substitute.For<ICompositionContext>(),
-                        Substitute.For<IConfiguration<MessagingSettings>>(),
+                        Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>());
@@ -161,7 +163,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
                 {
                     var dispContext = new DispatchingContext(
                         Substitute.For<ICompositionContext>(),
-                        Substitute.For<IConfiguration<MessagingSettings>>(),
+                        Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>());

@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Tests.Diagnostics
+namespace Kephas.Tests.Orchestration.Diagnostics
 {
     using System;
     using System.IO;
 
     using Kephas.Application;
-    using Kephas.Diagnostics;
     using Kephas.Orchestration.Diagnostics;
     using Kephas.Runtime;
     using NUnit.Framework;
