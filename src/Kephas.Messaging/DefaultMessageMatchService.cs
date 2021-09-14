@@ -44,9 +44,9 @@ namespace Kephas.Messaging
         /// </returns>
         public virtual object? GetMessageId(object message)
         {
-            // message envelopes are not identifiable in the sense
+            // message implementing INonIdentifiableMessage are not identifiable in the sense
             // that the ID is a logical behavior/handler discriminator.
-            if (message is IMessageEnvelope)
+            if (message is INonIdentifiableMessage)
             {
                 return null;
             }

@@ -101,9 +101,9 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public void GetMessageId_brokered_message_is_null()
+        public void GetMessageId_non_identifiable_message_is_null()
         {
-            var message = Substitute.For<IMessageEnvelope, IIdentifiable>();
+            var message = Substitute.For<INonIdentifiableMessage, IIdentifiable>();
             ((IIdentifiable)message).Id.Returns("abcd");
             var matchService = new DefaultMessageMatchService();
             var messageId = matchService.GetMessageId(message);
