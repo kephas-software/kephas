@@ -546,24 +546,25 @@ namespace Kephas.Application
                 return appId!;
             }
 
-            if (entryAssembly == null)
+            var assemblyName = entryAssembly?.GetName();
+            if (assemblyName == null || assemblyName.Name.Contains("TestRunner"))
             {
                 return "App";
             }
 
-            var titleAttr = entryAssembly.GetCustomAttribute<AssemblyTitleAttribute>();
+            var titleAttr = entryAssembly!.GetCustomAttribute<AssemblyTitleAttribute>();
             if (titleAttr != null)
             {
                 return titleAttr.Title;
             }
 
-            var productAttr = entryAssembly.GetCustomAttribute<AssemblyProductAttribute>();
+            var productAttr = entryAssembly!.GetCustomAttribute<AssemblyProductAttribute>();
             if (productAttr != null)
             {
                 return productAttr.Product;
             }
 
-            return entryAssembly.GetName().Name;
+            return assemblyName.Name;
         }
 
         /// <summary>
