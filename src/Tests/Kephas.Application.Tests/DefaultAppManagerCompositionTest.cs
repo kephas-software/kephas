@@ -10,8 +10,10 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using Kephas.Application.Configuration;
 using Kephas.Composition;
 using Kephas.Composition.Lite.Hosting;
+using Kephas.Configuration;
 using Kephas.Logging;
 
 namespace Kephas.Application.Tests
@@ -51,6 +53,8 @@ namespace Kephas.Application.Tests
         public void Composition_compute_auto_feature_info()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TestFeatureManager) });
+            var appConfiguration = container.GetExport<IConfiguration<AppSettings>>();
+            appConfiguration.GetSettings().EnabledFeatures = new[] { "test" };
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -63,9 +67,21 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
+        public void Composition_not_required()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(TestFeatureManager) });
+            var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
+
+            var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
+            CollectionAssert.IsEmpty(factoryMetadata);
+        }
+
+        [Test]
         public void Composition_full_feature_info()
         {
             var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager) });
+            var appConfiguration = container.GetExport<IConfiguration<AppSettings>>();
+            appConfiguration.GetSettings().EnabledFeatures = new[] { "Annotated test" };
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
