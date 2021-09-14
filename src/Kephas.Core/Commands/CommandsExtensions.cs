@@ -27,7 +27,7 @@ namespace Kephas.Commands
         public static TArgs AsArgs<TArgs>(this IDynamic args)
         {
             Requires.NotNull(args, nameof(args));
-            return args is TArgs appArgs ? appArgs : (TArgs)Activator.CreateInstance(typeof(TArgs), args);
+            return args is TArgs appArgs ? appArgs : (TArgs)Activator.CreateInstance(typeof(TArgs), args)!;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Kephas.Commands
                     string str => string.IsNullOrEmpty(str) ? str : $"\"{str.Replace("\"", "\"\"")}\"",
                     DateTime dateTime => $"\"{dateTime:s}\"",
                     DateTimeOffset dateTimeOffset => $"\"{dateTimeOffset:s}\"",
-                    _ => $"\"{o.ToString().Replace("\"", "\"\"")}\""
+                    _ => $"\"{o?.ToString()?.Replace("\"", "\"\"")}\""
                 };
 
             foreach (var a in arguments)
