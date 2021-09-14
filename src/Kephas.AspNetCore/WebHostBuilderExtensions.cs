@@ -14,7 +14,7 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Application.AspNetCore.Hosting;
     using Kephas.Application.Configuration;
     using Kephas.Collections;
-    using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Cryptography.X509Certificates;
     using Kephas.Logging;
     using Microsoft.AspNetCore.Hosting;
@@ -37,8 +37,9 @@ namespace Kephas.Application.AspNetCore
         public static IWebHostBuilder UseAppUrls(this IWebHostBuilder hostBuilder, IAmbientServices ambientServices, KestrelServerOptions opts)
         {
             var container = ambientServices.CompositionContainer;
-            var appSettingsProvider = container.GetExport<IAppSettingsProvider>();
-            var instanceSettings = appSettingsProvider.GetAppSettings();
+            var appConfiguration = container.GetExport<IConfiguration<AppSettings>>();
+            var appContext = container.GetExport<IAppContext>();
+            var instanceSettings = appConfiguration.GetSettings(appContext);
             var appRuntime = ambientServices.AppRuntime;
 
             var logger = ambientServices.LogManager.GetLogger<StartupAppBase>();

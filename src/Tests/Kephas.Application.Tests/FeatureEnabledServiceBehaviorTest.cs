@@ -14,6 +14,8 @@ namespace Kephas.Application.Tests
     using Kephas.Application.Reflection;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
+    using Kephas.Configuration;
+    using Kephas.Services;
     using Kephas.Services.Behaviors;
     using NSubstitute;
     using NUnit.Framework;
@@ -28,7 +30,8 @@ namespace Kephas.Application.Tests
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
                 new StaticAppRuntime(appId: "test-app"),
-                this.GetAppSettingsProvider(new[] { "enabled" }),
+                Substitute.For<IAppContext>(),
+                this.GetAppConfiguration(new[] { "enabled" }),
                 new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory, enabledExportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
@@ -40,7 +43,8 @@ namespace Kephas.Application.Tests
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
                 new StaticAppRuntime(appId: "test-app"),
-                this.GetAppSettingsProvider(new[] { "Test" }),
+                Substitute.For<IAppContext>(),
+                this.GetAppConfiguration(new[] { "Test" }),
                 new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
@@ -52,7 +56,8 @@ namespace Kephas.Application.Tests
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
                 new StaticAppRuntime(appId: "test-app"),
-                this.GetAppSettingsProvider(new[] { "test" }),
+                Substitute.For<IAppContext>(),
+                this.GetAppConfiguration(new[] { "test" }),
                 new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
@@ -64,7 +69,8 @@ namespace Kephas.Application.Tests
             var exportFactory = this.GetFeatureExportFactory("test", targetApps: new[] { "test-app" });
             var behavior = new FeatureEnabledServiceBehavior(
                 new StaticAppRuntime(appId: "test-app"),
-                this.GetAppSettingsProvider(),
+                Substitute.For<IAppContext>(),
+                this.GetAppConfiguration(),
                 new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
@@ -76,7 +82,8 @@ namespace Kephas.Application.Tests
             var exportFactory = this.GetFeatureExportFactory("test", targetApps: new[] { "test-app" });
             var behavior = new FeatureEnabledServiceBehavior(
                 new StaticAppRuntime(appId: "non-test-app"),
-                this.GetAppSettingsProvider(),
+                Substitute.For<IAppContext>(),
+                this.GetAppConfiguration(),
                 new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsFalse(value.Value);
@@ -88,7 +95,8 @@ namespace Kephas.Application.Tests
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
                 new StaticAppRuntime(appId: "test-app"),
-                this.GetAppSettingsProvider(),
+                Substitute.For<IAppContext>(),
+                this.GetAppConfiguration(),
                 new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsFalse(value.Value);
@@ -112,10 +120,10 @@ namespace Kephas.Application.Tests
             return exportFactory;
         }
 
-        private IAppSettingsProvider GetAppSettingsProvider(string[]? enabledFeatures = null)
+        private IConfiguration<AppSettings> GetAppConfiguration(string[]? enabledFeatures = null)
         {
-            var appSettingsProvider = Substitute.For<IAppSettingsProvider>();
-            appSettingsProvider.GetAppSettings().Returns(new AppSettings { EnabledFeatures = enabledFeatures });
+            var appSettingsProvider = Substitute.For<IConfiguration<AppSettings>>();
+            appSettingsProvider.GetSettings(Arg.Any<IContext?>()).Returns(new AppSettings { EnabledFeatures = enabledFeatures });
             return appSettingsProvider;
         }
     }
