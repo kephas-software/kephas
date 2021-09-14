@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PluginsSettings.cs" company="Kephas Software SRL">
+// <copyright file="NuGetSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace Kephas.Plugins.NuGet
     /// <summary>
     /// The plugins settings.
     /// </summary>
-    public class PluginsSettings : Expando, ISettings
+    public class NuGetSettings : Expando, ISettings
     {
         /// <summary>
         /// Gets or sets the full pathname of the NuGet configuration file.

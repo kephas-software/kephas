@@ -71,7 +71,7 @@ namespace Kephas.Plugins.NuGet
         // check the following resource for documentation
         // https://martinbjorkstrom.com/posts/2018-09-19-revisiting-nuget-client-libraries
 
-        private readonly PluginsSettings pluginsSettings;
+        private readonly NuGetSettings nuGetSettings;
         private readonly global::NuGet.Common.ILogger nativeLogger;
         private ISettings? settings;
 
@@ -87,12 +87,12 @@ namespace Kephas.Plugins.NuGet
             IAppRuntime appRuntime,
             IContextFactory contextFactory,
             IEventHub eventHub,
-            IConfiguration<PluginsSettings> pluginsConfig,
+            IConfiguration<NuGetSettings> pluginsConfig,
             ILogManager? logManager = null)
             : base(appRuntime, contextFactory, eventHub, logManager)
         {
             this.nativeLogger = new NuGetLogger(this.Logger);
-            this.pluginsSettings = pluginsConfig.GetSettings();
+            this.nuGetSettings = pluginsConfig.GetSettings();
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Kephas.Plugins.NuGet
                                 };
 
                                 var packages = await searchResource.SearchAsync(
-                                    searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
+                                    searchContext.SearchTerm ?? this.nuGetSettings.SearchTerm ?? "plugin",
                                     searchFilter,
                                     searchContext.Skip,
                                     searchContext.Take,
@@ -303,7 +303,7 @@ namespace Kephas.Plugins.NuGet
         {
             await Task.Yield();
 
-            var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
+            var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.nuGetSettings.PackageConfigFolder);
             var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
 
             var result = new OperationResult();
@@ -430,7 +430,7 @@ namespace Kephas.Plugins.NuGet
                 return result.MergeMessage($"Skipping configuration file uninstallation during update of {pluginData.Identity}.");
             }
 
-            var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
+            var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.nuGetSettings.PackageConfigFolder);
             var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
 
             if (!Directory.Exists(sourceConfigFilesFolder))
@@ -517,7 +517,7 @@ namespace Kephas.Plugins.NuGet
         protected virtual string GetPackagesFolder(string? defaultPackagesFolder = null)
         {
             defaultPackagesFolder ??= DefaultPackagesFolder;
-            if (string.IsNullOrEmpty(this.pluginsSettings.PackagesFolder))
+            if (string.IsNullOrEmpty(this.nuGetSettings.PackagesFolder))
             {
                 var settings = this.GetSettings();
                 var repositoryPathSettings = settings.GetSection("config")?.GetFirstItemWithAttribute<AddItem>("key", "repositoryPath");
@@ -530,9 +530,9 @@ namespace Kephas.Plugins.NuGet
                 return fullRepositoryPath;
             }
 
-            return Path.IsPathRooted(this.pluginsSettings.PackagesFolder)
-                ? this.pluginsSettings.PackagesFolder
-                : Path.Combine(this.AppRuntime.GetAppLocation(), this.pluginsSettings.PackagesFolder);
+            return Path.IsPathRooted(this.nuGetSettings.PackagesFolder)
+                ? this.nuGetSettings.PackagesFolder
+                : Path.Combine(this.AppRuntime.GetAppLocation(), this.nuGetSettings.PackagesFolder);
         }
 
         /// <summary>
@@ -543,9 +543,9 @@ namespace Kephas.Plugins.NuGet
         /// </returns>
         protected virtual string GetSettingsFolderPath()
         {
-            return string.IsNullOrEmpty(this.pluginsSettings.NuGetConfigPath)
+            return string.IsNullOrEmpty(this.nuGetSettings.NuGetConfigPath)
                 ? this.AppRuntime.GetAppConfigLocations().FirstOrDefault() ?? this.AppRuntime.GetAppLocation()
-                : this.AppRuntime.GetFullPath(this.pluginsSettings.NuGetConfigPath);
+                : this.AppRuntime.GetFullPath(this.nuGetSettings.NuGetConfigPath);
         }
 
         /// <summary>
@@ -764,7 +764,7 @@ namespace Kephas.Plugins.NuGet
             cancellationToken.ThrowIfCancellationRequested();
 
             var resolverContext = new PackageResolverContext(
-                this.pluginsSettings.ResolverDependencyBehavior,
+                this.nuGetSettings.ResolverDependencyBehavior,
                 new[] { pluginIdentity.Id },
                 Enumerable.Empty<string>(),
                 Enumerable.Empty<PackageReference>(),

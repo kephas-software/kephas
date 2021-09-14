@@ -139,12 +139,12 @@ namespace Kephas.Plugins.NuGet.Tests
 
             public object? GetSettings(Type settingsType, IContext? context)
             {
-                if (typeof(PluginsSettings) != settingsType)
+                if (typeof(NuGetSettings) != settingsType)
                 {
                     return null;
                 }
 
-                return new PluginsSettings
+                return new NuGetSettings
                 {
                     SearchTerm = this.searchTerm,
                     NuGetConfigPath = this.GetNuGetConfigPath(),
