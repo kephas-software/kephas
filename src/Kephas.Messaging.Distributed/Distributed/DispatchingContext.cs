@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
                 this.BrokeredMessage = message == null
                     ? new BrokeredMessage()
                     : new BrokeredMessage(message);
-                this.BrokeredMessage.Timeout = messagingConfig.GetSettings().DefaultTimeout ?? Distributed.BrokeredMessage.DefaultTimeout;
+                this.BrokeredMessage.Timeout = messagingConfig.GetSettings()?.DefaultTimeout ?? Distributed.BrokeredMessage.DefaultTimeout;
                 this.BrokeredMessage.Sender = this.CreateAppInstanceEndpoint();
             }
         }

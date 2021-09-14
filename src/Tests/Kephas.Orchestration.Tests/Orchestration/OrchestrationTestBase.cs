@@ -8,6 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Kephas.Application;
+using Kephas.Composition;
+using Kephas.Composition.Lite.Hosting;
+using Kephas.Logging;
+using NSubstitute;
+
 namespace Kephas.Tests.Orchestration
 {
     using System.Collections.Generic;
@@ -31,6 +38,24 @@ namespace Kephas.Tests.Orchestration
                                     typeof(ICommandProcessor).Assembly,
                                 };
             return assemblies;
+        }
+
+        public override ICompositionContext CreateContainer(
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<LiteCompositionContainerBuilder>? config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
+        {
+            var oldConfig = config;
+            config = b =>
+            {
+                var appContext = Substitute.For<IAppContext>();
+                b.WithFactory(() => appContext);
+                oldConfig?.Invoke(b);
+            };
+            return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }
 }
