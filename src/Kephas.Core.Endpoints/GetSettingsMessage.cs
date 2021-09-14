@@ -10,11 +10,12 @@ namespace Kephas.Core.Endpoints
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
+    using Kephas.Reflection;
 
     /// <summary>
     /// A get settings message.
     /// </summary>
-    [DisplayInfo(Description = "Gets the provided settings.")]
+    [DisplayInfo(Description = "Gets the settings for the provided type.")]
     public class GetSettingsMessage : IMessage
     {
         /// <summary>
