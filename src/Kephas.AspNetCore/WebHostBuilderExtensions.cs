@@ -42,18 +42,18 @@ namespace Kephas.Application.AspNetCore
             var appRuntime = ambientServices.AppRuntime;
 
             var logger = ambientServices.LogManager.GetLogger<StartupAppBase>();
-            var urls = instanceSettings?.Host?.Urls;
-            if (urls != null)
+            var urlSettings = instanceSettings?.Host?.Urls;
+            if (urlSettings != null)
             {
-                var endpointUrls = urls.Select(url => url.Url).ToArray();
+                var endpointUrls = urlSettings.Select(url => url.Url).Where(url => url != null).ToArray();
                 logger.Info(
                     "Using {urls} for {app} in instance {appInstance} (original urls: {originalUrls}).",
                     endpointUrls,
                     appRuntime.GetAppId(),
                     appRuntime.GetAppInstanceId(),
-                    urls.Select(url => url.ToString()).ToArray());
+                    urlSettings.Select(url => url.ToString()).ToArray());
                 hostBuilder.UseUrls(endpointUrls);
-                urls.ForEach(url => hostBuilder.ConfigureUrl(ambientServices, opts, url, logger));
+                urlSettings.ForEach(url => hostBuilder.ConfigureUrl(ambientServices, opts, url, logger));
             }
             else
             {
