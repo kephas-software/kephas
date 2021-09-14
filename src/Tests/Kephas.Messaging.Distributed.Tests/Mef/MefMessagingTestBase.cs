@@ -39,7 +39,16 @@ namespace Kephas.Messaging.Tests
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
             {
+                typeof(IMessageBroker).GetTypeInfo().Assembly, /* Kephas.Messaging.Distributed */
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+            };
+
+            var oldConfig = config;
+            config = b =>
+            {
+                var appContext = Substitute.For<IAppContext>();
+                b.WithFactory(() => appContext);
+                oldConfig?.Invoke(b);
             };
 
             return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);

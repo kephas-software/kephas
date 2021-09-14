@@ -36,20 +36,6 @@ namespace Kephas.Messaging.Tests.Events
         }
 
         [Test]
-        public async Task Subscribe_integration_subscription_called()
-        {
-            var container = this.CreateContainer();
-            var hub = container.GetExport<IEventHub>();
-            var processor = container.GetExport<IMessageProcessor>();
-
-            var calls = 0;
-            using var s = hub.Subscribe<PingMessage>(async (e, c, t) => calls++);
-            await processor.ProcessAsync(new PingMessage());
-            await Task.Delay(100);
-            Assert.AreEqual(1, calls);
-        }
-
-        [Test]
         public async Task Subscribe_subscription_called()
         {
             var matchService = Substitute.For<IMessageMatchService>();

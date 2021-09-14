@@ -39,6 +39,7 @@ namespace Kephas.Messaging.Tests
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
             {
+                typeof(IMessageBroker).GetTypeInfo().Assembly, /* Kephas.Messaging.Distributed */
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
 

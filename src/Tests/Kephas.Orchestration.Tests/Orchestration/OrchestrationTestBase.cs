@@ -15,6 +15,7 @@ namespace Kephas.Tests.Orchestration
 
     using Kephas.Commands;
     using Kephas.Messaging;
+    using Kephas.Messaging.Distributed;
     using Kephas.Orchestration;
     using Kephas.Testing.Application;
 
@@ -24,6 +25,7 @@ namespace Kephas.Tests.Orchestration
         {
             var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
                                 {
+                                    typeof(IMessageBroker).Assembly,
                                     typeof(IMessageProcessor).Assembly,
                                     typeof(IOrchestrationManager).Assembly,
                                     typeof(ICommandProcessor).Assembly,

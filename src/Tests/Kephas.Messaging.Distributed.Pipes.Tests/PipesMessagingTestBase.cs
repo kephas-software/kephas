@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Pipes.Tests
 
     using Kephas.Application;
     using Kephas.Commands;
+    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
     using Kephas.Serialization.Json;
@@ -27,6 +28,7 @@ namespace Kephas.Messaging.Pipes.Tests
             return new List<Assembly>(base.GetDefaultConventionAssemblies())
             {
                 typeof(IAppManager).Assembly,                   // Kephas.Application
+                typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(PipesAppMessageRouter).Assembly,         // Kephas.Messaging.Pipes
                 typeof(IOrchestrationManager).Assembly,         // Kephas.Orchestration

@@ -10,10 +10,15 @@
 
 namespace Kephas.Messaging.Redis.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Composition;
+    using Kephas.Composition.Lite.Hosting;
+    using Kephas.Logging;
+    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Redis.Routing;
     using Kephas.Redis;
     using Kephas.Serialization.Json;
@@ -26,11 +31,18 @@ namespace Kephas.Messaging.Redis.Tests
             return new List<Assembly>(base.GetDefaultConventionAssemblies())
             {
                 typeof(IAppManager).Assembly,                   // Kephas.Application
+                typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(IRedisConnectionManager).Assembly,       // Kephas.Redis
                 typeof(RedisAppMessageRouter).Assembly,         // Kephas.Messaging.Redis
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
+        }
+
+        public override ICompositionContext CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null, Action<LiteCompositionContainerBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
+        {
+            return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }
 }
