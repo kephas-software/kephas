@@ -26,14 +26,14 @@ namespace Kephas.AspNetCore.IdentityServer4
         where TUser : class
     {
         private readonly IHashingService hashingService;
-        private readonly IConfiguration<CryptographySettings> cryptographyConfiguration;
+        private readonly IConfiguration<HashingSettings> cryptographyConfiguration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordDoubleHasher{TUser}"/> class.
         /// </summary>
         /// <param name="hashingService">The hashing service.</param>
         /// <param name="cryptographyConfiguration">The cryptography configuration.</param>
-        public PasswordDoubleHasher(IHashingService hashingService, IConfiguration<CryptographySettings> cryptographyConfiguration)
+        public PasswordDoubleHasher(IHashingService hashingService, IConfiguration<HashingSettings> cryptographyConfiguration)
         {
             this.hashingService = hashingService;
             this.cryptographyConfiguration = cryptographyConfiguration;
@@ -85,7 +85,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         protected virtual string Hash(string value)
         {
             var rawPasswordHash = this.hashingService.Hash(value);
-            var hash = this.hashingService.Hash(rawPasswordHash, this.cryptographyConfiguration.GetSettings().GetHashingSaltBytes());
+            var hash = this.hashingService.Hash(rawPasswordHash, this.cryptographyConfiguration.GetSettings().GetSaltBytes());
             return Convert.ToBase64String(hash);
         }
     }

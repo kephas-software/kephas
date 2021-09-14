@@ -52,7 +52,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Hosting.ServicesConfigurators
             services.AddSingleton<IPasswordHasher<TUser>>(
                 serviceProvider => new PasswordDoubleHasher<TUser>(
                     serviceProvider.GetRequiredService<IHashingService>(),
-                    serviceProvider.GetService<IConfiguration<CryptographySettings>>()));
+                    serviceProvider.GetService<IConfiguration<HashingSettings>>()));
 
             if (setupAction != null)
             {
