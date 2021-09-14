@@ -99,11 +99,7 @@ namespace Kephas.Tests.Plugins
             var ex = Assert.Throws<ArgumentException>(() => PluginData.Parse("Gigi/Belogea:1.2.3\nEnabled\n\n274170507"));
             Assert.AreEqual("id", ex.ParamName);
 
-#if NETCOREAPP3_1
             var paramNameString = $" (Parameter 'id')";
-#else
-            var paramNameString = $"{Environment.NewLine}Parameter name: id";
-#endif
             Assert.AreEqual($"The app ID 'Gigi/Belogea' may not contain '/'. Not allowed characters: ':;,|/\\<>?'\"*@#$^`[]{{}}'.{paramNameString}", ex.Message);
         }
 
@@ -113,11 +109,7 @@ namespace Kephas.Tests.Plugins
             var ex = Assert.Throws<ArgumentException>(() => PluginData.Parse("GigiBelogea:1.2.3{dev}\nEnabled\n\n274170507"));
             Assert.AreEqual("version", ex.ParamName);
 
-#if NETCOREAPP3_1
             var paramNameString = $" (Parameter 'version')";
-#else
-            var paramNameString = $"{Environment.NewLine}Parameter name: version";
-#endif
             Assert.AreEqual($"The app version '1.2.3{{dev}}' may not contain '{{'. Not allowed characters: ':;,|/\\<>?'\"*@#$^`[]{{}}'.{paramNameString}", ex.Message);
         }
 
