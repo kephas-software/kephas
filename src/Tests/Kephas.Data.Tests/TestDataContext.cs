@@ -8,23 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.Tests
 {
     using System.Linq;
     using System.Security.Principal;
 
     using Kephas.Activation;
-    using Kephas.Composition;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Caching;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
+    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-
     using NSubstitute;
 
     public class TestDataContext : DataContextBase

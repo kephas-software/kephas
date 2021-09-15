@@ -31,7 +31,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// <param name="parentInjector">Context for the parent composition.</param>
         public CompositionServiceScope(IInjector parentInjector)
         {
-            this.scopedInjector = parentInjector.CreateScopedContext();
+            this.scopedInjector = parentInjector.CreateScopedInjector();
             this.ServiceProvider = this.scopedInjector.ToServiceProvider();
         }
 

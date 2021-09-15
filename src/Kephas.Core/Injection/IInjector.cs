@@ -82,12 +82,12 @@ namespace Kephas.Injection
             where T : class;
 
         /// <summary>
-        /// Creates a new scoped composition context.
+        /// Creates a new scoped injector.
         /// </summary>
         /// <returns>
-        /// The new scoped context.
+        /// The new scoped injector.
         /// </returns>
-        IInjector CreateScopedContext();
+        IInjector CreateScopedInjector();
     }
 
     /// <summary>

@@ -118,7 +118,7 @@ namespace Kephas.Injection.Internal
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        IInjector IInjector.CreateScopedContext()
+        IInjector IInjector.CreateScopedInjector()
         {
             return this;
         }

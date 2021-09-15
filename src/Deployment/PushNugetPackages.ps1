@@ -18,8 +18,8 @@ $paths = @(
     "Kephas.Collections",
     "Kephas.Commands",
     "Kephas.Commands.Messaging",
-    "Kephas.Composition.Autofac",
-    "Kephas.Composition.Mef",
+    "Kephas.Injection.Autofac",
+    "Kephas.Injection.SystemComposition",
     "Kephas.Core",
     "Kephas.Core.Endpoints",
     "Kephas.Core.Endpoints.Messages",
@@ -69,8 +69,8 @@ $paths = @(
     "Kephas.Workflow",
     "Kephas.Workflow.Model",
     "TestingFramework\Kephas.Testing",
-    "TestingFramework\Kephas.Testing.Composition.Autofac",
-    "TestingFramework\Kephas.Testing.Composition.Mef",
+    "TestingFramework\Kephas.Testing.Injection.Autofac",
+    "TestingFramework\Kephas.Testing.Injection.SystemComposition",
     "TestingFramework\Kephas.Testing.Model"
 )
 

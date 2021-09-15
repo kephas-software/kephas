@@ -33,8 +33,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Scripting\Kephas.Scripting.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Autofac\Kephas.Testing.Composition.Autofac.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.Autofac\Kephas.Testing.Injection.Autofac.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.SystemComposition\Kephas.Testing.Injection.SystemComposition.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 

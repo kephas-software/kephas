@@ -64,7 +64,7 @@
 		<ProjectReference Include="..\..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
 		<ProjectReference Include="..\..\Kephas.Commands\Kephas.Commands.csproj" />
 		<ProjectReference Include="..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
-		<ProjectReference Include="..\..\Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj" />
+		<ProjectReference Include="..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
 		<ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
 		<ProjectReference Include="..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
 		<ProjectReference Include="..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />

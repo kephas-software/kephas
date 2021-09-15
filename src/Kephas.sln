@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{816692E7-24DC-46B5-97FB-D314B52D815D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Mef", "Kephas.Composition.Mef\Kephas.Composition.Mef.csproj", "{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.SystemComposition", "Kephas.Injection.SystemComposition\Kephas.Injection.SystemComposition.csproj", "{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging", "Kephas.Messaging\Kephas.Messaging.csproj", "{1B8691E7-C070-4EBA-B999-DE4989589409}"
 EndProject
@@ -46,7 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Composition.Mef", "TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj", "{00BE907B-3852-480F-9ABC-5B4C5D4595B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Injection.SystemComposition", "TestingFramework\Kephas.Testing.Injection.SystemComposition\Kephas.Testing.Injection.SystemComposition.csproj", "{00BE907B-3852-480F-9ABC-5B4C5D4595B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}"
 EndProject
@@ -74,7 +74,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model.Abstracti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Tests", "Tests\Kephas.Core.Tests\Kephas.Core.Tests.csproj", "{20B57C5A-7B64-4D30-A799-B06561007640}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Mef.Tests", "Tests\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj", "{06C1648B-996A-484E-906A-3CF31EC19B6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.SystemComposition.Tests", "Tests\Kephas.Injection.SystemComposition.Tests\Kephas.Injection.SystemComposition.Tests.csproj", "{06C1648B-996A-484E-906A-3CF31EC19B6E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Mail.Tests", "Tests\Kephas.Mail.Tests\Kephas.Mail.Tests.csproj", "{47D24365-AA91-4E10-8C63-6C3263F5E3D7}"
 EndProject
@@ -100,7 +100,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting", "Kephas.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Tests", "Tests\Kephas.Scripting.Tests\Kephas.Scripting.Tests.csproj", "{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Autofac", "Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj", "{D8B1AFB3-AC1A-4E06-BA86-138CDCFB9010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Autofac", "Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj", "{D8B1AFB3-AC1A-4E06-BA86-138CDCFB9010}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow", "Kephas.Workflow\Kephas.Workflow.csproj", "{478DCC86-FBBA-4061-AD44-E917A77512B5}"
 EndProject
@@ -138,9 +138,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen", "Keph
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen.Tests", "Tests\Kephas.Data.LLBLGen.Tests\Kephas.Data.LLBLGen.Tests.csproj", "{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Autofac.Tests", "Tests\Kephas.Composition.Autofac.Tests\Kephas.Composition.Autofac.Tests.csproj", "{A561331E-F0E7-4338-9DB6-5A23AFBDC116}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Autofac.Tests", "Tests\Kephas.Injection.Autofac.Tests\Kephas.Injection.Autofac.Tests.csproj", "{A561331E-F0E7-4338-9DB6-5A23AFBDC116}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Composition.Autofac", "TestingFramework\Kephas.Testing.Composition.Autofac\Kephas.Testing.Composition.Autofac.csproj", "{41DB5A76-1B8C-486B-8F02-3CFE086D4CA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Injection.Autofac", "TestingFramework\Kephas.Testing.Injection.Autofac\Kephas.Testing.Injection.Autofac.csproj", "{41DB5A76-1B8C-486B-8F02-3CFE086D4CA3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing", "TestingFramework\Kephas.Testing\Kephas.Testing.csproj", "{59769055-29BC-4AEB-927A-8F13F8FE2868}"
 EndProject
