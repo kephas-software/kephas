@@ -28,7 +28,7 @@ namespace Kephas.Data.Tests
     public class DataSpaceTest : DataTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var dataSpace = container.GetExport<IDataSpace>();

@@ -22,7 +22,7 @@ namespace Kephas.Commands.Messaging.Tests
     public class MessagingCommandRegistryTest : CommandsTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var registries = container.GetExports<ICommandRegistry>();

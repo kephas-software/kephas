@@ -24,7 +24,7 @@ namespace Kephas.Commands.Tests
     public class DefaultCommandProcessorTest : CommandsTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var processor = container.GetExport<ICommandProcessor>();

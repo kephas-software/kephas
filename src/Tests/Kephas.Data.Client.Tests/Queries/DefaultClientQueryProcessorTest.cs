@@ -32,7 +32,7 @@ namespace Kephas.Data.Client.Tests.Queries
     public class DefaultClientQueryProcessorTest : ClientDataTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var processor = container.GetExport<IClientQueryProcessor>();

@@ -41,7 +41,7 @@ namespace Kephas.Plugins.NuGet.Tests
             this.CreateAppRuntime(logManager);
 
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var manager = container.GetExport<IPluginManager>();

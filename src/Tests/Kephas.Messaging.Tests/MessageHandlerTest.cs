@@ -26,7 +26,7 @@ namespace Kephas.Messaging.Tests
     public class MessageHandlerTest : MefCompositionTestBase
     {
         [Test]
-        public void Composition_single_handler()
+        public void Injection_single_handler()
         {
             var container = this.CreateContainer(parts: new[]
                                                             {
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public void Composition_two_handlers()
+        public void Injection_two_handlers()
         {
             var container = this.CreateContainer(parts: new[]
                                                             {

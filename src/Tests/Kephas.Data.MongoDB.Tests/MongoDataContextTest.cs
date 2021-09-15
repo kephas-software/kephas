@@ -20,7 +20,7 @@ namespace Kephas.Data.MongoDB.Tests
     public class MongoDataContextTest : MongoTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             using var dataSpace = container.GetExport<IDataSpace>();

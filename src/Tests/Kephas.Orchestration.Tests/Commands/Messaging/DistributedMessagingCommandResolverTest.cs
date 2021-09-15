@@ -23,7 +23,7 @@ namespace Kephas.Tests.Commands.Messaging
     public class DistributedMessagingCommandResolverTest : OrchestrationTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var resolver = container.GetExport<ICommandResolver>();

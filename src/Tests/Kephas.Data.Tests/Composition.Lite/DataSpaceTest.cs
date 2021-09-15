@@ -16,7 +16,7 @@ namespace Kephas.Data.Tests.Composition.Lite
     public class DataSpaceTest : DataTestBase
     {
         [Test]
-        public void Composition_success()
+        public void Injection_success()
         {
             var container = this.CreateContainer();
             var dataSpace = container.GetExport<IDataSpace>();

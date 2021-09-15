@@ -433,7 +433,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void CompositionContainer_works_fine_when_explicitely_set()
+        public void InjectionContainer_works_fine_when_explicitely_set()
         {
             var ambientServices = new AmbientServices();
             var compositionContextMock = Substitute.For<IInjector>();

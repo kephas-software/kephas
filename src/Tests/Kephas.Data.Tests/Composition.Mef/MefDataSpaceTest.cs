@@ -16,7 +16,7 @@ namespace Kephas.Data.Tests.Composition.Mef
     public class MefDataSpaceTest : MefDataTestBase
     {
         [Test]
-        public void Composition_success()
+        public void Injection_success()
         {
             var container = CreateContainer();
             var dataSpace = container.GetExport<IDataSpace>();

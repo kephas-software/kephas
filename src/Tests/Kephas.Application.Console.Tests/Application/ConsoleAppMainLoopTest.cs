@@ -28,7 +28,7 @@ namespace Kephas.Application.Console.Tests.Application
         : ConsoleTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var awaiter = container.GetExport<IAppMainLoop>();

@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     public class PipesAppMessageRouterTest : PipesMessagingTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var router = container.GetExports<IMessageRouter>().OfType<PipesAppMessageRouter>().SingleOrDefault();

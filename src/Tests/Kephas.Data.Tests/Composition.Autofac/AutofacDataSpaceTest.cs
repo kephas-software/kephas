@@ -18,7 +18,7 @@ namespace Kephas.Data.Tests.Composition.Autofac
     public class AutofacDataSpaceTest : AutofacDataTestBase
     {
         [Test]
-        public void Composition_success()
+        public void Injection_success()
         {
             var container = CreateContainer();
             var dataSpace = container.GetExport<IDataSpace>();

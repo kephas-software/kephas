@@ -26,7 +26,7 @@ namespace Kephas.Messaging.Tests.Events
     public class MessagingEventHubTest : MefMessagingTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var hub = container.GetExport<IEventHub>();

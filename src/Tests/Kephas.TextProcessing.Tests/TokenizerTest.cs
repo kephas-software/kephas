@@ -18,7 +18,7 @@ namespace Kephas.TextProcessing.Tests
     public class TokenizerTest : TextProcessingTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var tokenizer = container.GetExport<ITokenizer>();

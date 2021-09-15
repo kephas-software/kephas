@@ -34,7 +34,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     public class RedisAppMessageRouterTest : RedisMessagingTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var router = container.GetExports<IMessageRouter>().OfType<RedisAppMessageRouter>().SingleOrDefault();

@@ -38,7 +38,7 @@ namespace Kephas.Scheduling.Tests
         }
 
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
             var scheduler = container.GetExport<IScheduler>();

@@ -27,7 +27,7 @@ namespace Kephas.Application.Console.Tests
     public class DefaultCommandShellTest : ConsoleTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer();
             var shell = container.GetExport<ICommandShell>();

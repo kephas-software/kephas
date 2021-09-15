@@ -76,7 +76,7 @@ namespace Kephas.Core.Tests.Configuration
         }
 
         [Test]
-        public void Composition_Configuration_specific_provider()
+        public void Injection_Configuration_specific_provider()
         {
             // specific provider
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });

@@ -37,7 +37,7 @@ namespace Kephas.Tests.Orchestration
     public class DefaultOrchestrationManagerTest : OrchestrationTestBase
     {
         [Test]
-        public void Composition()
+        public void Injection()
         {
             var container = this.CreateContainer(new AmbientServices());
 
