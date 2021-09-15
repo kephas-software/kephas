@@ -42,6 +42,13 @@ namespace Kephas.Messaging.Redis.Tests
         public override IInjector CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
         {
+            ambientServices ??= new AmbientServices();
+            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            {
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
+                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+            }
+
             return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }

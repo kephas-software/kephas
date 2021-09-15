@@ -10,11 +10,16 @@
 
 namespace Kephas.Messaging.Pipes.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas;
     using Kephas.Application;
     using Kephas.Commands;
+    using Kephas.Composition;
+    using Kephas.Composition.Lite.Hosting;
+    using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
@@ -35,6 +40,18 @@ namespace Kephas.Messaging.Pipes.Tests
                 typeof(ICommandProcessor).Assembly,             // Kephas.Commands
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
+        }
+
+        public override IInjector CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null, IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
+        {
+            ambientServices ??= new AmbientServices();
+            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            {
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
+                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+            }
+
+            return base.CreateContainer(ambientServices, assemblies, parts, config);
         }
     }
 }
