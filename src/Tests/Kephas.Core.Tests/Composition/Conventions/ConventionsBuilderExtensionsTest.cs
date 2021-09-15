@@ -8,15 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Lite;
+
 namespace Kephas.Core.Tests.Composition.Conventions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
-    using Kephas.Composition.Lite;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using NUnit.Framework;
 
     /// <summary>
@@ -82,7 +83,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             builder
                 .ForTypesDerivedFrom(typeof(ICalculator))

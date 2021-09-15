@@ -7,9 +7,11 @@
 //   Implements the transition context class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Kephas.Injection;
+
 namespace Kephas.Workflow
 {
-    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Services;
     using Kephas.Workflow.Reflection;

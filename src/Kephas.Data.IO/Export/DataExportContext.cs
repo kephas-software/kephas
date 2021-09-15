@@ -8,11 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.IO.Export
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO;
     using Kephas.Data.IO.DataStreams;

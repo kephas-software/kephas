@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.Setup
 {
     using System.Collections.Generic;
-
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>

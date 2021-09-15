@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Endpoints.Tests
 {
     using System;
@@ -12,8 +14,6 @@ namespace Kephas.Core.Endpoints.Tests
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
     using Kephas.Messaging;

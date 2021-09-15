@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.IO.Tests.Export
 {
     using System;
@@ -15,8 +17,6 @@ namespace Kephas.Data.IO.Tests.Export
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Export;

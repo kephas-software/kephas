@@ -8,10 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Tests.Runtime.Construction.Builders
 {
     using System.Collections.Generic;
-    using Kephas.Composition;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;

@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Services.Composition
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition.Metadata;
     using Kephas.Reflection;
     using Kephas.Runtime;
 

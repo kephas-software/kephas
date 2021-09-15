@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.Conversion
 {
     using System;
@@ -17,8 +19,6 @@ namespace Kephas.Data.Conversion
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion.Composition;

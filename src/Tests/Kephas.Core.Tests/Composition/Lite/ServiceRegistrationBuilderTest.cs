@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Lite;
+
 namespace Kephas.Core.Tests.Composition.Lite
 {
-    using Kephas.Composition.Lite;
     using NSubstitute;
     using NUnit.Framework;
     using System;

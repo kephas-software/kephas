@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Security.Authentication
 {
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 

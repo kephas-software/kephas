@@ -16,12 +16,11 @@ namespace Kephas.Testing.Composition
     using System.Reflection;
     using System.Text;
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Hosting;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Diagnostics.Logging;
+    using Kephas.Injection;
+    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
-    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Testing;
 
@@ -57,7 +56,7 @@ namespace Kephas.Testing.Composition
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new LiteInjectorBuilder(new CompositionRegistrationContext(ambientServices));
+            return new LiteInjectorBuilder(new InjectionRegistrationContext(ambientServices));
         }
 
         /// <summary>

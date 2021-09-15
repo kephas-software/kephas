@@ -19,7 +19,6 @@ namespace Kephas.Tests.Plugins
 
     using Kephas.Application;
     using Kephas.Application.Reflection;
-    using Kephas.Composition;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;

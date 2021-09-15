@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
 using Kephas.Services;
 
 namespace Kephas.Messaging.Tests.Distributed

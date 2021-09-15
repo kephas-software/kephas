@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.IO.Setup
 {
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Data.IO.Import;
     using Kephas.Services;
 

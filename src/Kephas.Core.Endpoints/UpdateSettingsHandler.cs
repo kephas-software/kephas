@@ -5,14 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Endpoints
 {
     using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
     using Kephas.Logging;

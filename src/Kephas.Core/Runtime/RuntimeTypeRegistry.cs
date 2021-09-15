@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.AttributedModel;
+
 namespace Kephas.Runtime
 {
     using System;
@@ -13,8 +15,6 @@ namespace Kephas.Runtime
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;

@@ -9,6 +9,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Composition.Mef;
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
 
 namespace Kephas.Tests.Composition.Mef
 {
@@ -20,8 +23,6 @@ namespace Kephas.Tests.Composition.Mef
     using System.Linq;
 
     using Kephas.Composition;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -405,7 +406,7 @@ namespace Kephas.Tests.Composition.Mef
             public void RegisterConventions(
                 IConventionsBuilder builder,
                 IList<Type> candidateTypes,
-                ICompositionRegistrationContext registrationContext)
+                IInjectionRegistrationContext registrationContext)
             {
                 builder.ForType(typeof(OneFilter)).ExportInterface(
                     typeof(IFilter),

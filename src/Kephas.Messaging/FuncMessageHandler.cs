@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.AttributedModel;
+
 namespace Kephas.Messaging
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

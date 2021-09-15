@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Services.Composition
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Services.Composition
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Composition.Metadata;
     using Kephas.Model.AttributedModel;
     using Kephas.Runtime;
     using Kephas.Services;

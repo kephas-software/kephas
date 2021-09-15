@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Core.Tests
 {
     using System;
@@ -15,8 +18,6 @@ namespace Kephas.Core.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Serialization;

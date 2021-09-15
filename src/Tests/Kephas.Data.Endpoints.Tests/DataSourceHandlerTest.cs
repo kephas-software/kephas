@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Data.Endpoints.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition.ExportFactories;
     using Kephas.Data.DataSources;
     using Kephas.Messaging;
     using Kephas.Model;

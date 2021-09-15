@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.IO.Tests.DataStreams
 {
     using System.Collections.Generic;
@@ -16,8 +18,6 @@ namespace Kephas.Data.IO.Tests.DataStreams
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Net.Mime;
     using Kephas.Serialization;

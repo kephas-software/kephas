@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Kephas.Application.Configuration;
-using Kephas.Composition;
-using Kephas.Composition.Lite.Hosting;
 using Kephas.Configuration;
+using Kephas.Injection;
+using Kephas.Injection.Lite.Hosting;
 using Kephas.Logging;
 
 namespace Kephas.Application.Tests

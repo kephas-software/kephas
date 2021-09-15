@@ -10,8 +10,8 @@
 
 using System;
 using Kephas.Application;
-using Kephas.Composition;
-using Kephas.Composition.Lite.Hosting;
+using Kephas.Injection;
+using Kephas.Injection.Lite.Hosting;
 using Kephas.Logging;
 using NSubstitute;
 

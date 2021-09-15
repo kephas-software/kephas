@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Behaviors
 {
     using System;
-
-    using Kephas.Composition.Metadata;
 
     /// <summary>
     /// Indicates an end rule.

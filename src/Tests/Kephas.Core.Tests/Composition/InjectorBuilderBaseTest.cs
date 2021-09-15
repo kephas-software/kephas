@@ -16,13 +16,12 @@ namespace Kephas.Core.Tests.Composition
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
+    using Kephas.Injection;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -69,13 +68,13 @@ namespace Kephas.Core.Tests.Composition
 
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
-            public TestInjectorBuilder(IAmbientServices ambientServices = null)
-                : base(new CompositionRegistrationContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
+            public TestInjectorBuilder(IAmbientServices? ambientServices = null)
+                : base(new InjectionRegistrationContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
             {
             }
 
             public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
-                : base(new CompositionRegistrationContext(new AmbientServices().Register(logManager).Register(appRuntime)))
+                : base(new InjectionRegistrationContext(new AmbientServices().Register(logManager).Register(appRuntime)))
             {
             }
 

@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+using Kephas.Injection.ExportFactoryImporters;
+
 namespace Kephas.Messaging.Tests
 {
     using System;
@@ -16,8 +20,6 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Configuration;
     using Kephas.Logging;
@@ -71,10 +73,7 @@ namespace Kephas.Messaging.Tests
                 .Returns(ci =>
                     new ExportFactoryImporter<IContextFactory>(
                         new ExportFactory<IContextFactory>(
-                            () =>
-                            {
-                                return this.CreateContextFactoryMock(ctxCreator);
-                            })));
+                            () => this.CreateContextFactoryMock(ctxCreator))));
 
             container.GetExport(typeof(IContextFactory), Arg.Any<string>())
                 .Returns(ci => this.CreateContextFactoryMock(ctxCreator));

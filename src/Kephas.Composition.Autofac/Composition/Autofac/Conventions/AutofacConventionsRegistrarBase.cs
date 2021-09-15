@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Composition.Autofac.Conventions
 {
     using System;
@@ -16,8 +19,6 @@ namespace Kephas.Composition.Autofac.Conventions
     using global::Autofac;
 
     using Kephas.Composition.Autofac.Resources;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -35,7 +36,7 @@ namespace Kephas.Composition.Autofac.Conventions
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
@@ -58,6 +59,6 @@ namespace Kephas.Composition.Autofac.Conventions
         protected abstract void RegisterConventions(
             ContainerBuilder builder,
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext);
+            IInjectionRegistrationContext registrationContext);
     }
 }

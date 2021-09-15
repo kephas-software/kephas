@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.AttributedModel;
+
 namespace Kephas.Data.Client.DTO
 {
     using System;
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-
-    using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;

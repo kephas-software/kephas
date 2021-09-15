@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Tests.Composition.Mef
 {
     using System.Diagnostics.CodeAnalysis;

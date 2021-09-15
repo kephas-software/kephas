@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+using Kephas.Injection.ExportFactoryImporters;
+
 namespace Kephas.Application.Tests
 {
     using System;
@@ -21,9 +25,6 @@ namespace Kephas.Application.Tests
     using Kephas.Application;
     using Kephas.Application.Composition;
     using Kephas.Application.Reflection;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;

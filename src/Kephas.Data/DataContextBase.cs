@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Data
 
     using Kephas.Activation;
     using Kephas.Collections;
-    using Kephas.Composition;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;

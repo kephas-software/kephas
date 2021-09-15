@@ -8,15 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+using Kephas.Injection.ExportFactoryImporters;
+
 namespace Kephas.Core.Tests.Services.Behaviors
 {
     using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Behaviors;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using Kephas.Services.Behaviors.Composition;

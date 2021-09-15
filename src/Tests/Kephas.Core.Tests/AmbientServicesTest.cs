@@ -8,6 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Hosting;
+using Kephas.Injection.Lite;
+using Kephas.Injection.Lite.Conventions;
+
 namespace Kephas.Core.Tests
 {
     using System;
@@ -20,11 +25,6 @@ namespace Kephas.Core.Tests
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Hosting;
-    using Kephas.Composition.Internal;
-    using Kephas.Composition.Lite;
-    using Kephas.Composition.Lite.Conventions;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -447,7 +447,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_default_services()
         {
             var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
-            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new InjectionRegistrationContext(ambientServices));
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(ILogManager));
             Assert.IsNotNull(info);
@@ -462,7 +462,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_no_default_services()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false);
-            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new InjectionRegistrationContext(ambientServices));
 
             Assert.AreEqual(2, appServiceInfos.Count());
 
@@ -482,7 +482,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
-            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new InjectionRegistrationContext(ambientServices));
 
             Assert.IsFalse(appServiceInfos.Any());
         }

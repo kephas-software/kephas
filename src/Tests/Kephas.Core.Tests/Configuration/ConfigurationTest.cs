@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
 using Kephas.Services;
 
 namespace Kephas.Core.Tests.Configuration
@@ -18,8 +20,6 @@ namespace Kephas.Core.Tests.Configuration
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
     using Kephas.Configuration.Providers;

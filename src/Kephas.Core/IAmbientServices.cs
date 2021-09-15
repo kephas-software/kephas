@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Lite;
+
 namespace Kephas
 {
     using System;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Lite;
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Licensing;

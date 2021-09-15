@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Application.Tests
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Application.Tests
     using System.Threading.Tasks;
     using Kephas;
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Operations;
     using Kephas.Services;
     using NSubstitute;
@@ -30,7 +31,7 @@ namespace Kephas.Application.Tests
         {
             var compositionContext = Substitute.For<IInjector>();
 
-            IAmbientServices ambientServices = null;
+            IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
             var (appContext, instruction) = await app.BootstrapAsync();
 
@@ -44,7 +45,7 @@ namespace Kephas.Application.Tests
         {
             var compositionContext = Substitute.For<IInjector>();
 
-            IAmbientServices ambientServices = null;
+            IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
             var (appContext, instruction) = await app.BootstrapAsync();
 
@@ -60,7 +61,7 @@ namespace Kephas.Application.Tests
             var compositionContext = Substitute.For<IInjector>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
-            IAmbientServices ambientServices = null;
+            IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
             await app.BootstrapAsync();
 
@@ -205,7 +206,7 @@ namespace Kephas.Application.Tests
     {
         private readonly Func<IAmbientServices, Task> asyncConfig;
 
-        public TestApp(Func<IAmbientServices, Task> asyncConfig = null, IAmbientServices ambientServices = null)
+        public TestApp(Func<IAmbientServices, Task> asyncConfig = null, IAmbientServices? ambientServices = null)
             : base(ambientServices ?? new AmbientServices())
         {
             this.asyncConfig = asyncConfig;

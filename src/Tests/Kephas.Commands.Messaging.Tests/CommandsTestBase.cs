@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Lite.Hosting;
+
 namespace Kephas.Commands.Messaging.Tests
 {
     using System;
@@ -16,8 +19,6 @@ namespace Kephas.Commands.Messaging.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Testing.Composition;
@@ -25,10 +26,10 @@ namespace Kephas.Commands.Messaging.Tests
     public abstract class CommandsTestBase : CompositionTestBase
     {
         public override IInjector CreateContainer(
-            IAmbientServices ambientServices = null,
-            IEnumerable<Assembly> assemblies = null,
-            IEnumerable<Type> parts = null,
-            Action<LiteInjectorBuilder> config = null,
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<LiteInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

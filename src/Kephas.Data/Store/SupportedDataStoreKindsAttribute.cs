@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Data.Store
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition.Metadata;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

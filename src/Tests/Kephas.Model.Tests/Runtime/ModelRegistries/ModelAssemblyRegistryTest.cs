@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Lite.Hosting;
+
 namespace Kephas.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -17,8 +20,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
@@ -36,10 +37,10 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     public class ModelAssemblyRegistryTest : CompositionTestBase
     {
         public override IInjector CreateContainer(
-            IAmbientServices ambientServices = null,
-            IEnumerable<Assembly> assemblies = null,
-            IEnumerable<Type> parts = null,
-            Action<LiteInjectorBuilder> config = null,
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<LiteInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

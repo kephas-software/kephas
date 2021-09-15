@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Extensions.DependencyInjection
 {
-    using Kephas.Composition;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>

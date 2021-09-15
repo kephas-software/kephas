@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Data.Tests.Conversion
 {
     using System.Collections.Generic;
@@ -16,7 +19,6 @@ namespace Kephas.Data.Tests.Conversion
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion;

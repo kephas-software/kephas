@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Tests.Reflection
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Tests.Reflection
     using Kephas.Application;
     using Kephas.Commands;
     using Kephas.Commands.Messaging.Endpoints;
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;

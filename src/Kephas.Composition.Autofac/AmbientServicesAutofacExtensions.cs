@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Hosting;
+
 namespace Kephas
 {
     using System;
 
     using Kephas.Composition.Autofac.Hosting;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new AutofacInjectorBuilder(new CompositionRegistrationContext(ambientServices));
+            var containerBuilder = new AutofacInjectorBuilder(new InjectionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

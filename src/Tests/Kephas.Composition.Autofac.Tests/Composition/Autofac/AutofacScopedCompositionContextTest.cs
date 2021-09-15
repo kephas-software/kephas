@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Tests.Composition.Autofac
 {
     using System.Diagnostics.CodeAnalysis;

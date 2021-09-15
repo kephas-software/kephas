@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+
 namespace Kephas.Composition.Autofac.Conventions
 {
     using System;
@@ -15,8 +17,6 @@ namespace Kephas.Composition.Autofac.Conventions
 
     using global::Autofac;
     using global::Autofac.Builder;
-
-    using Kephas.Composition.Conventions;
 
     /// <summary>
     /// An Autofac part builder.

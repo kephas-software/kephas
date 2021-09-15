@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Core.Tests
 {
     using System;
@@ -15,9 +19,6 @@ namespace Kephas.Core.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -75,7 +76,7 @@ namespace Kephas.Core.Tests
         {
             private IInjector injector;
 
-            public TestInjectorBuilder(ICompositionRegistrationContext context)
+            public TestInjectorBuilder(IInjectionRegistrationContext context)
                 : base(context)
             {
             }
@@ -103,7 +104,7 @@ namespace Kephas.Core.Tests
         public class BadTestInjectorBuilder : InjectorBuilderBase<AmbientServicesExtensionsTest.BadTestInjectorBuilder>
         {
             public BadTestInjectorBuilder()
-                : base(Substitute.For<ICompositionRegistrationContext>())
+                : base(Substitute.For<IInjectionRegistrationContext>())
             {
             }
 

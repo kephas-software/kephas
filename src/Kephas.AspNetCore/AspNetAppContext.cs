@@ -34,7 +34,7 @@ namespace Kephas.Application.AspNetCore
         public AspNetAppContext(
             IWebHostEnvironment hostEnvironment,
             IConfiguration configuration,
-            IAmbientServices ambientServices = null,
+            IAmbientServices? ambientServices = null,
             IAppRuntime appRuntime = null,
             IAppArgs appArgs = null)
             : base(ambientServices, appRuntime, appArgs)

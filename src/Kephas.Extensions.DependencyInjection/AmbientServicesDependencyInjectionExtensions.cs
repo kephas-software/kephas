@@ -8,17 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.AttributedModel;
+using Kephas.Injection.ExportFactories;
+using Kephas.Injection.Hosting;
+
 namespace Kephas
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.DependencyInjection.Hosting;
     using Kephas.Model.AttributedModel;
@@ -42,7 +42,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new DependencyInjectionInjectorBuilder(new CompositionRegistrationContext(ambientServices));
+            var containerBuilder = new DependencyInjectionInjectorBuilder(new InjectionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

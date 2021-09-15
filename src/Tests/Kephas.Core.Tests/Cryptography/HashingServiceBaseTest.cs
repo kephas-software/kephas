@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Tests.Cryptography
 {
     using System.Security.Cryptography;
     using System.Text;
-
-    using Kephas.Composition;
     using Kephas.Cryptography;
     using Kephas.Services;
     using NSubstitute;

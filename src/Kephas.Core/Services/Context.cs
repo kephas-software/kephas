@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Services
     using System.Security.Principal;
 
     using Kephas;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;

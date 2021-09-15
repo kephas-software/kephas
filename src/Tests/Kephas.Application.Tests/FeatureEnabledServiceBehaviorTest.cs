@@ -5,6 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Application.Tests
 {
     using System.Collections.Generic;
@@ -12,8 +15,6 @@ namespace Kephas.Application.Tests
     using Kephas.Application.Composition;
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
     using Kephas.Services;
     using Kephas.Services.Behaviors;

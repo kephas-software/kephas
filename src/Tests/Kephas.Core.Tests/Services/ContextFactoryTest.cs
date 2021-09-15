@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Tests.Services
 {
     using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Cryptography;
     using Kephas.Logging;
     using Kephas.Serialization;

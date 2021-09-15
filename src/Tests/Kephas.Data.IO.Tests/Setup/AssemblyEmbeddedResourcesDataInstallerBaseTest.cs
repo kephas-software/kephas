@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Data.IO.Tests.Setup
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Setup;

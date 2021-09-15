@@ -8,15 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Hosting;
+using Kephas.Injection.Lite;
+using Kephas.Injection.Lite.Hosting;
+
 namespace Kephas
 {
     using System;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Hosting;
-    using Kephas.Composition.Lite;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Configuration;
     using Kephas.Cryptography;
     using Kephas.Diagnostics.Contracts;
@@ -789,7 +790,7 @@ namespace Kephas
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TContainerBuilder));
-            var context = new CompositionRegistrationContext(ambientServices);
+            var context = new InjectionRegistrationContext(ambientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
 
@@ -810,7 +811,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new LiteInjectorBuilder(new CompositionRegistrationContext(ambientServices));
+            var containerBuilder = new LiteInjectorBuilder(new InjectionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

@@ -1,4 +1,6 @@
-﻿namespace Kephas.Data.Model.Tests
+﻿using Kephas.Injection;
+
+namespace Kephas.Data.Model.Tests
 {
     using System;
     using System.Collections.Generic;

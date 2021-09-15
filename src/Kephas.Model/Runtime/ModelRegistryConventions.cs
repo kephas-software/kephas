@@ -5,10 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Runtime
 {
     using System;
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>

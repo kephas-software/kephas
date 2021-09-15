@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.AttributedModel;
+
 namespace Kephas.Reflection
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Reflection
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;

@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+
 namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition.Conventions;
     using Kephas.Logging;
 
     using Microsoft.Extensions.DependencyInjection;

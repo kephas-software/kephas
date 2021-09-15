@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Composition.Autofac.Hosting
 {
     using System;
@@ -17,8 +21,6 @@ namespace Kephas.Composition.Autofac.Hosting
 
     using Kephas.Composition.Autofac.Conventions;
     using Kephas.Composition.Autofac.Metadata;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -34,7 +36,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// Initializes a new instance of the <see cref="AutofacInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public AutofacInjectorBuilder(ICompositionRegistrationContext context)
+        public AutofacInjectorBuilder(IInjectionRegistrationContext context)
             : base(context)
         {
         }

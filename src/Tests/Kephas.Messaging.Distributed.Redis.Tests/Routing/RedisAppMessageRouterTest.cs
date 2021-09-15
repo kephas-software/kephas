@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Messaging.Redis.Tests.Routing
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
     using Kephas.Messaging.Distributed;

@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services.Behaviors
 {
-    using Kephas.Composition;
-
     /// <summary>
     /// Interface for service behavior context.
     /// </summary>

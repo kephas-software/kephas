@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.AttributedModel;
+
 namespace Kephas.Data
 {
     using System;
-
-    using Kephas.Composition.AttributedModel;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;

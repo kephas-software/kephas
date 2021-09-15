@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Composition.Mef.ScopeFactory
 {
     using System;
-
-    using Kephas.Composition.Metadata;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

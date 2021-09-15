@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
 using Kephas.Services;
 
 namespace Kephas.Messaging.Pipes.Tests.Routing
@@ -20,7 +21,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
 
     using Kephas.Application;
     using Kephas.Commands;
-    using Kephas.Composition;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
     using Kephas.Interaction;

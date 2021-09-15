@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Messaging.Tests
 {
     using System;
@@ -15,7 +18,6 @@ namespace Kephas.Messaging.Tests
     using System.Linq;
 
     using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;

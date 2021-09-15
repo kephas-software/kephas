@@ -5,14 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Lite;
+
 namespace Kephas.Model.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading.Tasks;
-
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Lite;
     using Kephas.Model.Elements;
     using Kephas.Services;
     using Kephas.Testing.Model;

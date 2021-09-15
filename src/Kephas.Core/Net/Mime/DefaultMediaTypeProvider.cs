@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Net.Mime
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Net.Mime
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Composition;
     using Kephas.Net.Mime.Composition;
     using Kephas.Resources;
     using Kephas.Services;

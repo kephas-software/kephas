@@ -1,13 +1,13 @@
-﻿namespace Kephas.Core.Tests.Services.Composition
+﻿using Kephas.Injection.AttributedModel;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
+namespace Kephas.Core.Tests.Services.Composition
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition.AttributedModel;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Core.Tests.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -170,7 +170,7 @@
                 this.attrProvider = attrProvider;
             }
 
-            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
+            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IList<Type> candidateTypes, IInjectionRegistrationContext registrationContext)
             {
                 yield return new TestAppServiceInfoProvider(this.attrProvider);
             }

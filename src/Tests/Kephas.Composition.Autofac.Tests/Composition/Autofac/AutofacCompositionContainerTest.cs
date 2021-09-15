@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Tests.Composition.Autofac
 {
     using System;
@@ -19,10 +23,7 @@ namespace Kephas.Tests.Composition.Autofac
     using global::Autofac.Core.Registration;
 
     using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Autofac.Hosting;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -335,7 +336,7 @@ namespace Kephas.Tests.Composition.Autofac
             public void RegisterConventions(
                 IConventionsBuilder builder,
                 IList<Type> candidateTypes,
-                ICompositionRegistrationContext registrationContext)
+                IInjectionRegistrationContext registrationContext)
             {
                 builder.ForType(typeof(OneFilter)).ExportInterface(
                     typeof(IFilter),

@@ -8,6 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.AttributedModel;
+using Kephas.Injection.Hosting;
+using Kephas.Injection.Internal;
+using Kephas.Injection.Lite.Hosting;
+
 namespace Kephas.Core.Tests.Composition.Lite.Hosting
 {
     using System;
@@ -17,11 +23,6 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
     using Kephas.Application;
     using Kephas.Collections;
-    using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
-    using Kephas.Composition.Hosting;
-    using Kephas.Composition.Internal;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Cryptography;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -312,12 +313,12 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
             Assert.IsNull(exported.Dependency);
         }
 
-        private LiteInjectorBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
+        private LiteInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new CompositionRegistrationContext(new AmbientServices()
+            var context = new InjectionRegistrationContext(new AmbientServices()
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);

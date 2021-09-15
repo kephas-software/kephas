@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.LLBLGen.Tests.Entities
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Data.LLBLGen.Entities;
     using Kephas.Data.LLBLGen.Entities.Composition;
     using Kephas.Runtime;

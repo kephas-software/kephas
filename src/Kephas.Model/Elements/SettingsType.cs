@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Elements
 {
-    using Kephas.Composition;
     using Kephas.Configuration.Reflection;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;

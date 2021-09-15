@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Scheduling.Quartz.JobStore
 {
     using System;
-
-    using Kephas.Composition;
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;

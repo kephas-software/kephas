@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services.Behaviors
 {
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services.Composition;
 

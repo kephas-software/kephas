@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+
 namespace Kephas.Composition.Mef.Conventions
 {
     using System.Composition.Convention;
-
-    using Kephas.Composition.Conventions;
 
     /// <summary>
     /// The MEF implementation of the conventions builder.

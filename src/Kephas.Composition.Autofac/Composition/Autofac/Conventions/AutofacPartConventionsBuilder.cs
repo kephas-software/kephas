@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+
 namespace Kephas.Composition.Autofac.Conventions
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-
-    using Kephas.Composition.Conventions;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 

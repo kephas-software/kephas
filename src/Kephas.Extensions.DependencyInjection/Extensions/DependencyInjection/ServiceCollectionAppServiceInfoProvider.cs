@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Extensions.DependencyInjection
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
@@ -37,7 +37,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             var ambientServices = registrationContext.AmbientServices;
             var serviceCollection = ambientServices.GetService<IServiceCollection>();

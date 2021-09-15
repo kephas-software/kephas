@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Scheduling.Tests
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Scheduling.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;

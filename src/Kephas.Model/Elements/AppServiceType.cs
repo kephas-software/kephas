@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -15,8 +17,6 @@ namespace Kephas.Model.Elements
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Reflection;

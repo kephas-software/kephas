@@ -10,8 +10,8 @@
 
 namespace Kephas.Application.AspNetCore.Configuration
 {
-    using Kephas.Composition;
     using Kephas.Extensions.Configuration.Providers;
+    using Kephas.Injection;
     using Kephas.Services;
     using Microsoft.Extensions.Options;
 

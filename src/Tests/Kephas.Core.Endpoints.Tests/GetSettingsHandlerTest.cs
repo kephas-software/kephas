@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Endpoints.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Messaging;
     using Kephas.Reflection;

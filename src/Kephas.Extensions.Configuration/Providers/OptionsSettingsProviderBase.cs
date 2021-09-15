@@ -17,9 +17,9 @@ namespace Kephas.Extensions.Configuration.Providers
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Net.Mime.Composition;

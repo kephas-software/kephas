@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Lite;
+
 namespace Kephas.Model
 {
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Lite;
-
     /// <summary>
     /// Extension methods for <see cref="IAmbientServices"/>. 
     /// </summary>

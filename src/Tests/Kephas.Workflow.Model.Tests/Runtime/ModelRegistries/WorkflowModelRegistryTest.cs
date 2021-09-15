@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -13,7 +15,6 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;

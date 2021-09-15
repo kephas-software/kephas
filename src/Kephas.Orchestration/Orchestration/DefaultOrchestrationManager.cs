@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Orchestration
 {
     using System;
@@ -24,7 +26,6 @@ namespace Kephas.Orchestration
     using Kephas.Application.Reflection;
     using Kephas.Collections;
     using Kephas.Commands;
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;

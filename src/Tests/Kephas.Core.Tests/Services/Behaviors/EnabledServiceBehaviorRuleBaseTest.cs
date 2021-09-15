@@ -8,10 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Tests.Services.Behaviors
 {
     using Kephas.Behaviors;
-    using Kephas.Composition;
     using Kephas.Services.Behaviors;
     using NSubstitute;
     using NUnit.Framework;

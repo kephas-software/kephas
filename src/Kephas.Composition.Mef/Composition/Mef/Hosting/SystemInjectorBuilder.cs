@@ -8,6 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Composition.Mef.Hosting
 {
     using System;
@@ -16,14 +21,10 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
     using System.Linq;
-
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;
-    using Kephas.Composition.Metadata;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -48,7 +49,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// Initializes a new instance of the <see cref="SystemInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public SystemInjectorBuilder(ICompositionRegistrationContext context)
+        public SystemInjectorBuilder(IInjectionRegistrationContext context)
             : base(context)
         {
             Requires.NotNull(context, nameof(context));

@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Configuration.Providers
 {
     using System;
-
-    using Kephas.Composition.Metadata;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

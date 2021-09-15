@@ -8,14 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;

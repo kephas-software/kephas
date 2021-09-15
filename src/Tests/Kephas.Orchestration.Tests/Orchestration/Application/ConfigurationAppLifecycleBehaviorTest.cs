@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Tests.Orchestration.Application
 {
     using System;
@@ -14,7 +16,6 @@ namespace Kephas.Tests.Orchestration.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
     using Kephas.Interaction;

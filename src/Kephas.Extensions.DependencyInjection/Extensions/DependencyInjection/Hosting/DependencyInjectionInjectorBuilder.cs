@@ -8,17 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
-
-    using Kephas.Composition.Conventions;
     using Kephas.Extensions.DependencyInjection.Conventions;
-    using Kephas.Composition.Hosting;
-
     using Microsoft.Extensions.DependencyInjection;
-    using Kephas.Composition;
 
     /// <summary>
     /// A dependency injection composition container builder.
@@ -30,7 +29,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <see cref="DependencyInjectionInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public DependencyInjectionInjectorBuilder(ICompositionRegistrationContext context)
+        public DependencyInjectionInjectorBuilder(IInjectionRegistrationContext context)
             : base(context)
         {
         }

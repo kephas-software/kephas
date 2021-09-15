@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Messaging.Tests.Autofac
 {
     using System;
@@ -21,7 +24,6 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Autofac.Hosting;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;

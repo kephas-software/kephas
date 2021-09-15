@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Serialization.Json.Tests.Converters
 {
     using System.Threading.Tasks;

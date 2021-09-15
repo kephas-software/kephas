@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Lite.Hosting;
+
 namespace Kephas.Messaging.Pipes.Tests
 {
     using System;
@@ -17,8 +20,6 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas;
     using Kephas.Application;
     using Kephas.Commands;
-    using Kephas.Composition;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Pipes.Routing;

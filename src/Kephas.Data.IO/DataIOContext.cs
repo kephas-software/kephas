@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.IO
 {
     using System;
-
-    using Kephas.Composition;
     using Kephas.Serialization;
     using Kephas.Services;
 

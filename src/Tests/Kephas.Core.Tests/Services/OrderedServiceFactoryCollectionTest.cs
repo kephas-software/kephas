@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Core.Tests.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;

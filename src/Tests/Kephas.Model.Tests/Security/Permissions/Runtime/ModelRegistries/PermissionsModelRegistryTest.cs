@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
 {
     using System;
@@ -13,7 +15,6 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Model.Security.Permissions;

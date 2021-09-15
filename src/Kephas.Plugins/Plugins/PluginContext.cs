@@ -8,10 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Plugins
 {
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Plugins.Transactions;
     using Kephas.Services;
 

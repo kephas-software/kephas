@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Composition.Autofac.Metadata
 {
     using System;
@@ -18,8 +21,6 @@ namespace Kephas.Composition.Autofac.Metadata
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
-
-    using Kephas.Composition.ExportFactories;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 

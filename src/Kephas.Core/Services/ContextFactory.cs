@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Services
     using System.Reflection;
 
     using Kephas;
-    using Kephas.Composition;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;

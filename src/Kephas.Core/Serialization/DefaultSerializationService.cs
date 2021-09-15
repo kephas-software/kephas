@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Serialization
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Serialization
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Resources;

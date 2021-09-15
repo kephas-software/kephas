@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>

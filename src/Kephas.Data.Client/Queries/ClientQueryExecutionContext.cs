@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.Client.Queries
 {
     using System;
-
-    using Kephas.Composition;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
     using Kephas.Services;

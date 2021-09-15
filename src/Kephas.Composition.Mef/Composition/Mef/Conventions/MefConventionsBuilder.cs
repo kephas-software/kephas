@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Conventions;
+
 namespace Kephas.Composition.Mef.Conventions
 {
     using System;
     using System.Collections.Generic;
     using System.Composition.Convention;
-
-    using Kephas.Composition.Conventions;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

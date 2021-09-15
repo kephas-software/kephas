@@ -12,8 +12,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition.AttributedModel;
     using Kephas.Dynamic;
+    using Kephas.Injection.AttributedModel;
     using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.AspNetCore.Identity;

@@ -7,11 +7,11 @@
 
 using System;
 using Kephas.Dynamic;
+using Kephas.Injection;
 using Kephas.Workflow;
 
 namespace Kephas.Scheduling
 {
-    using Kephas.Composition;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
 

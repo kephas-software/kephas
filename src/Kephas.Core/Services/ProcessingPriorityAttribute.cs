@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Services
 {
     using System;
-
-    using Kephas.Composition.Metadata;
 
     /// <summary>
     /// Indicates a processing priority used when more services must be processed.

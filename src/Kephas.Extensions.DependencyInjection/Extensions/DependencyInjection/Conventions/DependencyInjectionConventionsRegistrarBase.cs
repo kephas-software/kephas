@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
-
-    using Kephas.Composition.Conventions;
     using Kephas.Extensions.DependencyInjection.Resources;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +34,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
@@ -57,6 +57,6 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         protected abstract void RegisterConventions(
             IServiceCollection serviceCollection,
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext);
+            IInjectionRegistrationContext registrationContext);
     }
 }

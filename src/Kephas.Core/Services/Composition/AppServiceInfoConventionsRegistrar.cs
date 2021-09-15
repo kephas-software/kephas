@@ -8,6 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.AttributedModel;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Services.Composition
 {
     using System;
@@ -15,11 +20,6 @@ namespace Kephas.Services.Composition
     using System.Linq;
     using System.Reflection;
     using System.Text;
-
-    using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
@@ -42,7 +42,7 @@ namespace Kephas.Services.Composition
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
@@ -109,7 +109,7 @@ namespace Kephas.Services.Composition
         /// </returns>
         protected internal virtual IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             var appServiceInfoProviders = this.GetAppServiceInfoProviders(candidateTypes, registrationContext);
             if (appServiceInfoProviders == null)
@@ -136,7 +136,7 @@ namespace Kephas.Services.Composition
         /// </returns>
         protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(
             IList<Type> candidateTypes,
-            ICompositionRegistrationContext registrationContext)
+            IInjectionRegistrationContext registrationContext)
         {
             var ambientServicesProviders = registrationContext.AmbientServices?.GetService<IEnumerable<Lazy<IAppServiceInfoProvider, AppServiceMetadata>>>();
             if (ambientServicesProviders != null)

@@ -10,13 +10,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
-    using Kephas.Composition;
     using Kephas.Model.AttributedModel;
     using Kephas.Services.Reflection;
 

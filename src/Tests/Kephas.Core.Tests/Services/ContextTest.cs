@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Tests.Services
 {
     using System;
     using System.Security;
     using System.Security.Principal;
-
-    using Kephas.Composition;
     using Kephas.Services;
 
     using NSubstitute;

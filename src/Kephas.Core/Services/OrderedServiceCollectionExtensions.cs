@@ -12,14 +12,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Kephas.Data;
 using Kephas.Diagnostics.Contracts;
+using Kephas.Injection;
 using Kephas.Resources;
 
 namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
-
-    using Kephas.Composition;
     using Kephas.Services.Composition;
 
     /// <summary>

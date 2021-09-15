@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.Hosting;
+
 namespace Kephas.Testing.Composition
 {
     using System;
@@ -21,7 +24,6 @@ namespace Kephas.Testing.Composition
     using Kephas.Composition;
     using Kephas.Composition.Autofac.Hosting;
     using Kephas.Composition.Autofac.Metadata;
-    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -70,7 +72,7 @@ namespace Kephas.Testing.Composition
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new AutofacInjectorBuilder(new CompositionRegistrationContext(ambientServices));
+            return new AutofacInjectorBuilder(new InjectionRegistrationContext(ambientServices));
         }
 
         /// <summary>

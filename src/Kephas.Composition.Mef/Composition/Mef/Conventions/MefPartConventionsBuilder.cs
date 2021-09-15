@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.AttributedModel;
+using Kephas.Injection.Conventions;
+
 namespace Kephas.Composition.Mef.Conventions
 {
     using System;
@@ -15,9 +19,6 @@ namespace Kephas.Composition.Mef.Conventions
     using System.Composition.Convention;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition.AttributedModel;
-    using Kephas.Composition.Conventions;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Diagnostics.Contracts;
 

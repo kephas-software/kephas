@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services
 {
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition;
     using Kephas.Resources;
     using Kephas.Services.Composition;
 

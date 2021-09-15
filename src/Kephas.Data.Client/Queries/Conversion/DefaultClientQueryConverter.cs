@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.Client.Queries.Conversion
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Data.Client.Queries.Conversion
     using System.Reflection;
 
     using Kephas.Collections;
-    using Kephas.Composition;
     using Kephas.Data.Client.Queries.Conversion.Composition;
     using Kephas.Data.Client.Queries.Conversion.ExpressionConverters;
     using Kephas.Data.Client.Resources;

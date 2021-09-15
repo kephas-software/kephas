@@ -9,11 +9,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.Services
 {
     using System;
-
-    using Kephas.Composition.Metadata;
 
     /// <summary>
     /// Indicates an override priority for services when more service implementations are defined for the same contract.

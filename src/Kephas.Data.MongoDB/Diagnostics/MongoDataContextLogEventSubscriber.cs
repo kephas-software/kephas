@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.MongoDB.Diagnostics
 {
     using System;
@@ -16,7 +18,6 @@ namespace Kephas.Data.MongoDB.Diagnostics
 
     using global::MongoDB.Bson;
     using global::MongoDB.Driver.Core.Events;
-    using Kephas.Composition;
     using Kephas.Logging;
 
     /// <summary>

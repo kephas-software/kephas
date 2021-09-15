@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+
 namespace Kephas.Core.Tests.Serialization
 {
     using System;
@@ -16,8 +19,6 @@ namespace Kephas.Core.Tests.Serialization
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;

@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Metadata;
+
 namespace Kephas.AspNetCore.SignalR.Composition
 {
     using System;
-
-    using Kephas.Composition.Metadata;
 
     /// <summary>
     /// Attribute for hub pattern.

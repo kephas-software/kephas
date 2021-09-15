@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services.Reflection
 {
     using System;
     using System.Runtime.CompilerServices;
-
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

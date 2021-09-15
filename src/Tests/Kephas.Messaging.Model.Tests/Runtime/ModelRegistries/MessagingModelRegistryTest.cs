@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Model.Elements;
     using Kephas.Messaging.Model.Runtime.ModelRegistries;

@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.LLBLGen.Entities
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Data.LLBLGen.Entities.Composition;
     using Kephas.Reflection;
     using Kephas.Runtime;

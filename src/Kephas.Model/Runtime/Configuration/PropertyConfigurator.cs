@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.AttributedModel;
+
 namespace Kephas.Model.Runtime.Configuration
 {
-    using Kephas.Composition.AttributedModel;
     using Kephas.Reflection;
 
     /// <summary>

@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Services.Behaviors
 {
     using System.Collections.Generic;
-
-    using Kephas.Composition;
 
     /// <summary>
     /// Interface for service behavior provider.

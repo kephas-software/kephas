@@ -8,15 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.ExportFactories;
+using Kephas.Injection.ExportFactoryImporters;
+
 namespace Kephas.Core.Tests.Composition
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.ExportFactoryImporters;
-
     using NSubstitute;
 
     using NUnit.Framework;

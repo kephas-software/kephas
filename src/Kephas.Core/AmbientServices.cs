@@ -8,6 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+using Kephas.Injection.AttributedModel;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
+using Kephas.Injection.Lite;
+using Kephas.Injection.Lite.Conventions;
+using Kephas.Injection.Lite.Internal;
+
 namespace Kephas
 {
     using System;
@@ -15,13 +23,6 @@ namespace Kephas
     using System.Linq;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
-    using Kephas.Composition.Conventions;
-    using Kephas.Composition.Hosting;
-    using Kephas.Composition.Lite;
-    using Kephas.Composition.Lite.Conventions;
-    using Kephas.Composition.Lite.Internal;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -198,7 +199,7 @@ namespace Kephas
         /// An enumerator that allows foreach to be used to process the application service infos in this
         /// collection.
         /// </returns>
-        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, IInjectionRegistrationContext registrationContext)
         {
             // Lite composition container does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,

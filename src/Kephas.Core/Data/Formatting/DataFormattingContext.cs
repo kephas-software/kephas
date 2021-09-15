@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.Formatting
 {
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>

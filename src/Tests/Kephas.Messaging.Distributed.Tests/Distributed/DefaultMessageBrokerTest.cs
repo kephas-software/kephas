@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Composition;
     using Kephas.Diagnostics.Logging;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;

@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Data.Commands.Factory
 {
     using System;
     using System.Collections.Concurrent;
-
-    using Kephas.Composition;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;

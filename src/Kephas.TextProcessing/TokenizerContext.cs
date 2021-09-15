@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.TextProcessing
 {
     using System;
-
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>

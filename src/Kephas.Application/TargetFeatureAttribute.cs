@@ -12,7 +12,7 @@ namespace Kephas.Application
 {
     using System;
 
-    using Kephas.Composition.Metadata;
+    using Kephas.Injection.Metadata;
 
     /// <summary>
     /// Attribute for indicating the feature for which a behavior apply.
