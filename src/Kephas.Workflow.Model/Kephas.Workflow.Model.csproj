@@ -13,19 +13,12 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>
-            Provides a modeling API framework for workflows.
-            Typically used areas and classes/interfaces/services:
-            - IStateMachineType, IActivityType.
-            - Dimensions: Workflow (area).
-
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+        <Description>Provides the infrastructure for the workflow model.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
@@ -34,7 +27,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas workflow activity</PackageTags>
+        <PackageTags>kephas workflow activity model</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -47,27 +40,6 @@
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-
-        
-        <Description>Provides the infrastructure for the workflow model.</Description>
-        <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
-        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
-        <PackageIcon>kephas.logo.stone.png</PackageIcon>
-        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
-        <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas workflow activity model</PackageTags>
-        <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </PackageReleaseNotes>
-
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-
-        <RootNamespace>Kephas.Workflow.Model</RootNamespace>
-        <NeutralLanguage>en</NeutralLanguage>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
         <DefineConstants>KEPHAS</DefineConstants>
     </PropertyGroup>
 
