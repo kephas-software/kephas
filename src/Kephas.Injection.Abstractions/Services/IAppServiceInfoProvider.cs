@@ -21,12 +21,14 @@ namespace Kephas.Services
     public interface IAppServiceInfoProvider
     {
         /// <summary>
-        /// Gets an enumeration of application service information objects.
+        /// Gets an enumeration of application service information objects and their contract declaration type.
+        /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
+        /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <returns>
-        /// An enumeration of application service information objects and their associated contract type.
+        /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes = null);
+        IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes = null);
     }
 }

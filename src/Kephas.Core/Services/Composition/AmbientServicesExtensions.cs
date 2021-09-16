@@ -47,7 +47,7 @@ namespace Kephas.Services.Composition
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appServiceInfos">An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.</param>
-        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> appServiceInfos)
+        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfos)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
@@ -57,7 +57,7 @@ namespace Kephas.Services.Composition
             if ((bool?)ambientServices[LiteConventionsBuilder.LiteCompositionKey] ?? false)
             {
                 var liteServiceInfos = (ambientServices as IAppServiceInfoProvider)?.GetAppServiceInfos(null);
-                var allServiceInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>();
+                var allServiceInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
                 if (liteServiceInfos != null)
                 {
                     allServiceInfos.AddRange(liteServiceInfos);

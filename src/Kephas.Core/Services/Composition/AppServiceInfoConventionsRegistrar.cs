@@ -103,13 +103,13 @@ namespace Kephas.Services.Composition
 
             registrationContext.AmbientServices?.SetAppServiceInfos(appServiceContractsInfos);
 
-            var appServiceContracts = appServiceContractsInfos.Select(e => e.contractType).ToList();
+            var contractDeclarationTypes = appServiceContractsInfos.Select(e => e.contractDeclarationType).ToList();
 
             var typeRegistry = registrationContext.AmbientServices?.TypeRegistry ?? RuntimeTypeRegistry.Instance;
             var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
-                var appServiceContract = appServiceContractInfo.contractType;
+                var appServiceContract = appServiceContractInfo.contractDeclarationType;
                 var appServiceInfo = appServiceContractInfo.appServiceInfo;
 
                 var isPartBuilder = this.TryConfigurePartBuilder(
@@ -129,7 +129,7 @@ namespace Kephas.Services.Composition
                         logger);
                     if (partConventionsBuilder != null)
                     {
-                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, appServiceContracts, metadataResolver, logger);
+                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, contractDeclarationTypes, metadataResolver, logger);
                     }
                     else
                     {
@@ -148,7 +148,7 @@ namespace Kephas.Services.Composition
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        protected internal virtual IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
+        protected internal virtual IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
             IList<Type> candidateTypes,
             IInjectionRegistrationContext registrationContext)
         {
@@ -708,7 +708,7 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
         /// <param name="appServiceInfo">The service contract metadata.</param>
-        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <param name="conventions">The conventions.</param>
         /// <param name="typeInfos">The type infos.</param>
         /// <param name="logger">The logger.</param>
@@ -717,12 +717,12 @@ namespace Kephas.Services.Composition
         /// </returns>
         private bool TryConfigurePartBuilder(
             IAppServiceInfo appServiceInfo,
-            Type serviceContract,
+            Type contractDeclarationType,
             IConventionsBuilder conventions,
             IEnumerable<Type> typeInfos,
             ILogger logger)
         {
-            var serviceContractType = serviceContract;
+            var serviceContractType = contractDeclarationType;
 
             if (appServiceInfo.Instance != null)
             {

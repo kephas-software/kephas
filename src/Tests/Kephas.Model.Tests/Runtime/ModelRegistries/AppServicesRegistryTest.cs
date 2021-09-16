@@ -58,8 +58,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
             var ambientServices = new AmbientServices();
-            var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
-                                       {
+            var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+            {
                                            (typeof(int), Substitute.For<IAppServiceInfo>()),
                                            (typeof(string), Substitute.For<IAppServiceInfo>()),
                                            (typeof(bool), Substitute.For<IAppServiceInfo>()),
@@ -72,7 +72,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
             Assert.AreEqual(3, types.Count);
-            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t.Type)));
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractDeclarationType == t.Type)));
             Assert.IsTrue(types.All(t => t[AppServicesRegistry.AppServiceKey] is IAppServiceInfo));
         }
 
@@ -80,7 +80,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_with_filter()
         {
             var ambientServices = new AmbientServices();
-            var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
+            var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
                 (typeof(int), Substitute.For<IAppServiceInfo>()),
                 (typeof(string), Substitute.For<IAppServiceInfo>()),
@@ -94,14 +94,14 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
             Assert.AreEqual(1, types.Count);
-            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t.Type)));
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractDeclarationType == t.Type)));
         }
 
         [Test]
         public async Task GetRuntimeElementsAsync_with_default_filter()
         {
             var ambientServices = new AmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
-            var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
+            var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
                 (typeof(int), Substitute.For<IAppServiceInfo>()),
                 (typeof(string), Substitute.For<IAppServiceInfo>()),

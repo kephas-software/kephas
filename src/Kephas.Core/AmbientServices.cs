@@ -198,7 +198,7 @@ namespace Kephas
         /// An enumerator that allows foreach to be used to process the application service infos in this
         /// collection.
         /// </returns>
-        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
+        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
         {
             // Lite composition container does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,

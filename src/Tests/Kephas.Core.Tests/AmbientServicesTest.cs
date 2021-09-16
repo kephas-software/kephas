@@ -30,6 +30,7 @@ namespace Kephas.Core.Tests
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -449,11 +450,11 @@ namespace Kephas.Core.Tests
             var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
             var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>());
 
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(ILogManager));
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(ILogManager));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
 
-            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAppRuntime));
+            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAppRuntime));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
         }
@@ -466,12 +467,12 @@ namespace Kephas.Core.Tests
 
             Assert.AreEqual(2, appServiceInfos.Count());
 
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAmbientServices));
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAmbientServices));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(ambientServices, info.InstanceFactory(null));
 
-            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IRuntimeTypeRegistry));
+            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IRuntimeTypeRegistry));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(RuntimeTypeRegistry.Instance, info.InstanceFactory(null));
@@ -494,7 +495,7 @@ namespace Kephas.Core.Tests
             ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
             var appServiceInfos = ambientServices.GetAppServiceInfos(null);
 
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAppRuntime));
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAppRuntime));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(ambientServices.AppRuntime, info.InstanceFactory(null));
