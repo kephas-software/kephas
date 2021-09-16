@@ -54,6 +54,7 @@ namespace Kephas.Analyzers.Injection
             var contractTypes = syntaxReceiver.ContractTypes;
             if (contractTypes.Count == 0)
             {
+                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KE1000", "Application service contracts generator", $"No application service contracts found in {context.Compilation.AssemblyName}", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), null));
                 return;
             }
 
@@ -64,7 +65,9 @@ using Kephas.Services;
 [assembly: AppServiceInfoProvider(");
             foreach (var typeSyntax in contractTypes)
             {
-                sb.AppendLine($"typeof({this.GetTypeFullName(typeSyntax)}), ");
+                var typeFullName = this.GetTypeFullName(typeSyntax);
+                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KE1001", "Application service contracts generator", $"Contract {typeFullName} found.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), null));
+                sb.AppendLine($"typeof({typeFullName}), ");
             }
 
             sb.Length -= 2;

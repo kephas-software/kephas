@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Kephas.Analyzers": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\Kephas.Core\\Kephas.Core.csproj"
+    }
+  }
+}
