@@ -461,7 +461,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
         public class ExportedClassWithFakeDependency : ExportedClass
         {
-            [InjectionConstructor]
+            [InjectConstructor]
             public ExportedClassWithFakeDependency()
             {
             }

@@ -661,7 +661,7 @@ namespace Kephas.Tests.Composition.Mef
             /// <summary>
             /// Initializes a new instance of the <see cref="MultipleCompositionConstructorAppService"/> class.
             /// </summary>
-            [InjectionConstructor]
+            [InjectConstructor]
             public MultipleCompositionConstructorAppService()
             {
             }
@@ -672,7 +672,7 @@ namespace Kephas.Tests.Composition.Mef
             /// <param name="injectionContainer">
             /// The composition container.
             /// </param>
-            [InjectionConstructor]
+            [InjectConstructor]
             public MultipleCompositionConstructorAppService(IInjector injectionContainer)
             {
             }
@@ -684,7 +684,7 @@ namespace Kephas.Tests.Composition.Mef
 
         public class ExportedClassWithFakeDependency : ExportedClass
         {
-            [InjectionConstructor]
+            [InjectConstructor]
             public ExportedClassWithFakeDependency()
             {
             }

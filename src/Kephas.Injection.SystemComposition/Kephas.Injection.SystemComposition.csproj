@@ -14,7 +14,7 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides the composition services implementation using the System.Composition DI framework.
+            Provides the dependency injection implementation using the System.Composition DI framework.
             Typically used areas and classes/interfaces/services:
             - IAmbientServices.BuildWithSystemComposition.
 
@@ -24,7 +24,7 @@
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageLicense>MIT</PackageLicense>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>

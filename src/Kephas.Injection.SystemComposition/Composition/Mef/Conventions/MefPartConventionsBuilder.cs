@@ -170,7 +170,7 @@ namespace Kephas.Composition.Mef.Conventions
                     var sortedConstructors = constructorsList.ToDictionary(c => c, c => c.GetParameters().Length).OrderByDescending(kv => kv.Value).ToList();
                     if (sortedConstructors[0].Value == sortedConstructors[1].Value)
                     {
-                        throw new InjectionException(string.Format(Strings.MefPartConventionsBuilder_AmbiguousCompositionConstructor, constructorsList.First().DeclaringType, typeof(InjectionConstructorAttribute)));
+                        throw new InjectionException(string.Format(Strings.MefPartConventionsBuilder_AmbiguousCompositionConstructor, constructorsList.First().DeclaringType, typeof(InjectConstructorAttribute)));
                     }
 
                     return sortedConstructors[0].Key;
