@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Kephas.Injection.Hosting;
-using Kephas.Services.Reflection;
-
 namespace Kephas.Injection.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Injection.Hosting;
+    using Kephas.Services.Reflection;
+
     /// <summary>
     /// Interface for application service information provider.
     /// </summary>

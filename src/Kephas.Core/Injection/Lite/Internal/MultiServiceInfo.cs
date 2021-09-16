@@ -8,16 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Collections;
-using Kephas.Services;
-using Kephas.Services.Reflection;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Collections;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
+
     internal class MultiServiceInfo : IServiceInfo, IEnumerable<IServiceInfo>, IDisposable
     {
         private IList<ServiceInfo> serviceInfos = new List<ServiceInfo>();
@@ -63,9 +64,9 @@ namespace Kephas.Injection.Lite.Internal
 
         bool IAppServiceInfo.AsOpenGeneric => false;
 
-        Type[] IAppServiceInfo.MetadataAttributes => null;
+        Type[]? IAppServiceInfo.MetadataAttributes => null;
 
-        public Type ContractType { get; }
+        public Type? ContractType { get; }
 
         object? IAppServiceInfo.Instance => null;
 

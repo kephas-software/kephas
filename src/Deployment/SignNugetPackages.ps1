@@ -19,6 +19,7 @@ $paths = @(
     "..\Kephas.Collections",
     "..\Kephas.Commands",
     "..\Kephas.Commands.Messaging",
+    "..\Kephas.Injection.Abstractions",
     "..\Kephas.Injection.Autofac",
     "..\Kephas.Injection.SystemComposition",
     "..\Kephas.Core",

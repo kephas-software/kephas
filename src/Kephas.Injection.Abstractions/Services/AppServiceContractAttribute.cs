@@ -10,14 +10,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using Kephas.Model.AttributedModel;
+
+    using Kephas.Injection;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -28,37 +25,6 @@ namespace Kephas.Services
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class AppServiceContractAttribute : Attribute, IAppServiceInfo
     {
-        /// <summary>
-        /// The default metadata attribute types.
-        /// </summary>
-        public static readonly IReadOnlyCollection<Type> DefaultMetadataAttributeTypes;
-
-        /// <summary>
-        /// The empty metadata attribute types.
-        /// </summary>
-        public static readonly IReadOnlyCollection<Type> EmptyMetadataAttributeTypes;
-
-        /// <summary>
-        /// The default metadata attribute types.
-        /// </summary>
-        private static readonly IList<Type> WritableDefaultMetadataAttributeTypes
-            = new List<Type>
-                  {
-                      typeof(ProcessingPriorityAttribute),
-                      typeof(OverridePriorityAttribute),
-                      typeof(ServiceNameAttribute),
-                      typeof(OverrideAttribute),
-                  };
-
-        /// <summary>
-        /// Initializes static members of the <see cref="AppServiceContractAttribute"/> class.
-        /// </summary>
-        static AppServiceContractAttribute()
-        {
-            DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
-            EmptyMetadataAttributeTypes = new ReadOnlyCollection<Type>(new List<Type>());
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
@@ -107,7 +73,7 @@ namespace Kephas.Services
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[] MetadataAttributes { get; set; }
+        public Type[]? MetadataAttributes { get; set; }
 
         /// <summary>
         /// Gets or sets the contract type of the export.
@@ -115,7 +81,7 @@ namespace Kephas.Services
         /// <value>
         /// The contract type of the export.
         /// </value>
-        public Type ContractType { get; set; }
+        public Type? ContractType { get; set; }
 
         /// <summary>
         /// Gets the service instance.
@@ -140,21 +106,6 @@ namespace Kephas.Services
         /// The service instance factory.
         /// </value>
         Func<IInjector, object>? IAppServiceInfo.InstanceFactory => null;
-
-        /// <summary>
-        /// Registers the provided metadata attribute types as default attributes.
-        /// </summary>
-        /// <param name="attributeTypes">A variable-length parameters list containing attribute types.</param>
-        public static void RegisterDefaultMetadataAttributeTypes(params Type[] attributeTypes)
-        {
-            foreach (var attributeType in attributeTypes)
-            {
-                if (!WritableDefaultMetadataAttributeTypes.Contains(attributeType))
-                {
-                    WritableDefaultMetadataAttributeTypes.Add(attributeType);
-                }
-            }
-        }
 
         /// <summary>
         /// Returns a string that represents the current object.

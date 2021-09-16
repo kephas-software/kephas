@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.Conventions
 {
+    using System;
+
     /// <summary>
     /// Contract for conventions builder.
     /// </summary>

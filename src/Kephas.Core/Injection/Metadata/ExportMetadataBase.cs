@@ -8,11 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Kephas.Dynamic;
-
 namespace Kephas.Injection.Metadata
 {
+    using System.Collections.Generic;
+
+    using Kephas.Dynamic;
+
     /// <summary>
     /// Base class for export metadata.
     /// </summary>

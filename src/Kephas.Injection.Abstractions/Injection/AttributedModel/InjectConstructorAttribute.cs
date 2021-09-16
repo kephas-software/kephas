@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionConstructorAttribute.cs" company="Kephas Software SRL">
+// <copyright file="InjectConstructorAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.AttributedModel
 {
+    using System;
+
     /// <summary>
     /// Specifies that a constructor should be used when constructing an attributed part.
     /// </summary>
@@ -21,7 +21,7 @@ namespace Kephas.Injection.AttributedModel
     ///                 should be used.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
-    public sealed class InjectionConstructorAttribute : Attribute
+    public sealed class InjectConstructorAttribute : Attribute
     {
     }
 }

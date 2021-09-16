@@ -8,14 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Threading;
-using System.Threading.Tasks;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Services;
-using Kephas.Threading.Tasks;
-
 namespace Kephas.Injection
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
+
     /// <summary>
     /// Non-generic contract used to import parts that wish to dynamically create instances of other parts.
     /// </summary>

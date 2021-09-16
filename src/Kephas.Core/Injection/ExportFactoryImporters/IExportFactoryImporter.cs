@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Injection.ExportFactoryImporters
 {
+    using Kephas.Services;
+
     /// <summary>
     /// Interface for importers of an export factory.
     /// </summary>

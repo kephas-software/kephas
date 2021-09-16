@@ -9,10 +9,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection
 {
+    using System;
+
     /// <summary>
     /// Non-generic contract for a handle allowing the graph of parts associated with an exported instance
     /// to be released.

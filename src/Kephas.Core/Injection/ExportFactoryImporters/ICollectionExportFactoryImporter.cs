@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Collections.Generic;
-using Kephas.Services;
-
 namespace Kephas.Injection.ExportFactoryImporters
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using Kephas.Services;
+
     /// <summary>
     /// Interface for importers of a collection of export factories.
     /// </summary>

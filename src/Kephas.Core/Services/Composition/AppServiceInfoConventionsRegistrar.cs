@@ -8,19 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.AttributedModel;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-
 namespace Kephas.Services.Composition
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Text;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
@@ -33,6 +34,46 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
+        /// <summary>
+        /// The default metadata attribute types.
+        /// </summary>
+        internal static readonly IReadOnlyCollection<Type> DefaultMetadataAttributeTypes;
+
+        /// <summary>
+        /// The default metadata attribute types.
+        /// </summary>
+        internal static readonly IList<Type> WritableDefaultMetadataAttributeTypes
+            = new List<Type>
+            {
+                typeof(ProcessingPriorityAttribute),
+                typeof(OverridePriorityAttribute),
+                typeof(ServiceNameAttribute),
+                typeof(OverrideAttribute),
+            };
+
+        /// <summary>
+        /// Initializes static members of the <see cref="AppServiceInfoConventionsRegistrar"/> class.
+        /// </summary>
+        static AppServiceInfoConventionsRegistrar()
+        {
+            DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
+        }
+
+        /// <summary>
+        /// Registers the provided metadata attribute types as default attributes.
+        /// </summary>
+        /// <param name="attributeTypes">A variable-length parameters list containing attribute types.</param>
+        public static void RegisterDefaultMetadataAttributeTypes(params Type[] attributeTypes)
+        {
+            foreach (var attributeType in attributeTypes)
+            {
+                if (!WritableDefaultMetadataAttributeTypes.Contains(attributeType))
+                {
+                    WritableDefaultMetadataAttributeTypes.Add(attributeType);
+                }
+            }
+        }
+
         /// <summary>
         /// Registers the conventions.
         /// </summary>
@@ -292,12 +333,12 @@ namespace Kephas.Services.Composition
             if (appServiceInfo.MetadataAttributes == null || appServiceInfo.MetadataAttributes.Length == 0)
             {
                 return appServiceInfo.AsOpenGeneric
-                           ? AppServiceContractAttribute.EmptyMetadataAttributeTypes
-                           : AppServiceContractAttribute.DefaultMetadataAttributeTypes;
+                           ? Type.EmptyTypes
+                           : DefaultMetadataAttributeTypes;
             }
 
             var attrs = appServiceInfo.MetadataAttributes.ToList();
-            foreach (var attr in AppServiceContractAttribute.DefaultMetadataAttributeTypes)
+            foreach (var attr in DefaultMetadataAttributeTypes)
             {
                 if (!attrs.Contains(attr))
                 {
@@ -333,7 +374,7 @@ namespace Kephas.Services.Composition
             {
                 var genericTypeDefinition = propertyType.GetGenericTypeDefinition();
                 if (genericTypeDefinition == typeof(IList<>) || genericTypeDefinition == typeof(ICollection<>)
-                    || genericTypeDefinition == typeof(IEnumerable<>))
+                                                             || genericTypeDefinition == typeof(IEnumerable<>))
                 {
                     serviceContractType = propertyType.GetTypeInfo().GenericTypeArguments[0];
                     serviceContractType = this.TryGetServiceContractTypeFromExportFactory(serviceContractType)
@@ -437,7 +478,7 @@ namespace Kephas.Services.Composition
             var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
 
             // get the one constructor marked as CompositionConstructor.
-            var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<InjectionConstructorAttribute>() != null).ToList();
+            var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<InjectConstructorAttribute>() != null).ToList();
             if (explicitlyMarkedConstructors.Count == 0)
             {
                 // none marked explicitly, leave the decision up to the IoC implementation.
@@ -446,7 +487,7 @@ namespace Kephas.Services.Composition
 
             if (explicitlyMarkedConstructors.Count > 1)
             {
-                throw new InjectionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(InjectionConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
+                throw new InjectionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(InjectConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
             return explicitlyMarkedConstructors[0];

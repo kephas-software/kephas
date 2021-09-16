@@ -8,17 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kephas.Reflection;
-using Kephas.Resources;
-using Kephas.Services;
-using Kephas.Services.Reflection;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Kephas.Reflection;
+    using Kephas.Resources;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
+
     /// <summary>
     /// Information about the service.
     /// </summary>
@@ -82,9 +83,9 @@ namespace Kephas.Injection.Lite.Internal
 
         bool IAppServiceInfo.AsOpenGeneric => this.ContractType.IsGenericType && this.ContractType.IsGenericTypeDefinition;
 
-        Type[] IAppServiceInfo.MetadataAttributes { get; } = Array.Empty<Type>();
+        Type[]? IAppServiceInfo.MetadataAttributes { get; } = Array.Empty<Type>();
 
-        public Type ContractType { get; }
+        public Type? ContractType { get; }
 
         public Type ServiceType { get; internal set; }
 

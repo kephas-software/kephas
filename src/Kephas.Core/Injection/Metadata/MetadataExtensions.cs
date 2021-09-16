@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Reflection;
-using Kephas.Diagnostics.Contracts;
-
 namespace Kephas.Injection.Metadata
 {
+    using System;
+    using System.Reflection;
+
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Helper extension methods for metadata.
     /// </summary>

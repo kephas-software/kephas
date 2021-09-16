@@ -1,39 +1,41 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProcessingPriorityAttribute.cs" company="Kephas Software SRL">
+// <copyright file="OverridePriorityAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Indicates a processing priority used when more services must be processed.
+//   Indicates an override priority for services when more service implementations are defined for the same contract.
+//   The service with the highest priority defined will be used.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection.Metadata;
 
 namespace Kephas.Services
 {
     using System;
 
+    using Kephas.Injection.Metadata;
+
     /// <summary>
-    /// Indicates a processing priority used when more services must be processed.
+    /// Indicates an override priority for services when more service implementations are defined for the same contract.
+    /// The service with the highest priority defined will be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ProcessingPriorityAttribute : Attribute, IMetadataValue<int>
+    public class OverridePriorityAttribute : Attribute, IMetadataValue<int>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessingPriorityAttribute" /> class.
+        /// Initializes a new instance of the <see cref="OverridePriorityAttribute" /> class.
         /// </summary>
-        /// <param name="priority">The processing priority.</param>
-        public ProcessingPriorityAttribute(int priority)
+        /// <param name="priority">The override priority.</param>
+        public OverridePriorityAttribute(int priority)
         {
             this.Value = priority;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessingPriorityAttribute" /> class.
+        /// Initializes a new instance of the <see cref="OverridePriorityAttribute" /> class.
         /// </summary>
-        /// <param name="priority">The processing priority.</param>
-        public ProcessingPriorityAttribute(Priority priority)
+        /// <param name="priority">The override priority.</param>
+        public OverridePriorityAttribute(Priority priority)
         {
             this.Value = (int)priority;
         }

@@ -110,12 +110,12 @@ namespace Kephas.Injection.Hosting
         protected IConventionsBuilder ConventionsBuilder { get; private set; }
 
         /// <summary>
-        /// Gets the composition parts.
+        /// Gets the injectable parts.
         /// </summary>
         /// <value>
-        /// The composition parts.
+        /// The injectable parts.
         /// </value>
-        protected HashSet<Type> CompositionParts { get; private set; }
+        protected HashSet<Type> InjectableParts { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
@@ -123,7 +123,7 @@ namespace Kephas.Injection.Hosting
         /// <value>
         /// The serviceRegistry.
         /// </value>
-        protected AppServiceInfoRegistry Registry { get; } = new AppServiceInfoRegistry();
+        protected AppServiceInfoRegistry Registry { get; } = new ();
 
         /// <summary>
         /// Gets the registration context.
@@ -244,13 +244,13 @@ namespace Kephas.Injection.Hosting
         {
             Requires.NotNull(parts, nameof(parts));
 
-            if (this.CompositionParts == null)
+            if (this.InjectableParts == null)
             {
-                this.CompositionParts = new HashSet<Type>(parts);
+                this.InjectableParts = new HashSet<Type>(parts);
             }
             else
             {
-                this.CompositionParts.AddRange(parts);
+                this.InjectableParts.AddRange(parts);
             }
 
             return (TBuilder)this;
@@ -520,9 +520,9 @@ namespace Kephas.Injection.Hosting
                 .SelectMany(a => this.TypeLoader.GetExportedTypes(a))
                 .Where(ConventionsBuilderExtensions.IsPartCandidate)
                 .ToList();
-            if (this.CompositionParts != null)
+            if (this.InjectableParts != null)
             {
-                parts.AddRange(this.CompositionParts.Where(ConventionsBuilderExtensions.IsPartCandidate));
+                parts.AddRange(this.InjectableParts.Where(ConventionsBuilderExtensions.IsPartCandidate));
             }
 
             return parts;

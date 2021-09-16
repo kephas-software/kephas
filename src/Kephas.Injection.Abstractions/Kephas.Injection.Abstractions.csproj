@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
-<!--        <WarningsAsErrors>nullable</WarningsAsErrors>-->
+        <WarningsAsErrors>nullable</WarningsAsErrors>
 
         <Version>10.0.0-dev.1</Version>
         <AssemblyVersion>10.0.0.0</AssemblyVersion>
@@ -15,27 +15,14 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides a common infrastructure for other framework components.
+            Provides abstractions for the dependency injection infrastructure.
             Typically used areas and classes/interfaces/services:
-            - Ambient services: IAmbientServices, AmbientServices.
-            - Reflection: ITypeRegistry, ITypeInfo, RuntimeTypeInfo.
-            - Injection: IInjector, LiteInjectorBuilder, IExportFactory.
-            - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior, AppIdentity.
-            - Serialization: ISerializationService.
-            - Operations: IOperation, OperationResult.
-            - Services: SingletonAppServiceContractAttribute, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
-            - Threading.Tasks: PreserveThreadContext extension method.
-            - Logging: ILogManager, ILogger.
-            - Cryptography: IEncryptionService, IHashingService.
-            - Data: IIdentifiable, IIdGenerator.
-            - Diagnostics: Profiler, IProcessStarter.
-            - Interaction: IEventHub, ISignal.
-            - Commands: Command, IArgs, Args.
+            - IInjector.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
-        
+
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
@@ -47,7 +34,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas core</PackageTags>
+        <PackageTags>kephas composition autofac</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -71,14 +58,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="stylecop.json" />
         <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
+            <Pack>true</Pack>
+            <PackagePath>\</PackagePath>
         </None>
     </ItemGroup>
 
@@ -92,44 +75,17 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-        <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
-        <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-        <PackageReference Include="System.Reflection" Version="4.3.0" />
-        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-        <PackageReference Include="System.Security.Principal" Version="4.3.0" />
-        <PackageReference Include="System.ValueTuple" Version="4.3.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Resources\Strings.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Strings.resx</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="Resources\Strings.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

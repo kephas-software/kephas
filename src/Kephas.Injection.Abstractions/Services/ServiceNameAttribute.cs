@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Metadata;
-
 namespace Kephas.Services
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
+
+    using Kephas.Injection.Metadata;
 
     /// <summary>
     /// Attribute for naming services.
@@ -27,9 +26,7 @@ namespace Kephas.Services
         /// <param name="value">The value.</param>
         public ServiceNameAttribute(string value)
         {
-            Requires.NotNullOrEmpty(value, nameof(value));
-
-            this.Value = value;
+            this.Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>Gets the metadata value.</summary>

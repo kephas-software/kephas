@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.ExportFactories
 {
+    using System;
+
     /// <summary>
     /// An export factory.
     /// </summary>

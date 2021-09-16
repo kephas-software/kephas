@@ -46,7 +46,7 @@ namespace Kephas.Injection.Hosting
         /// <value>
         /// The registrars.
         /// </value>
-        public IEnumerable<IConventionsRegistrar> Registrars { get; set; }
+        public IEnumerable<IConventionsRegistrar>? Registrars { get; set; }
 
         /// <summary>
         /// Gets or sets the application service information providers.

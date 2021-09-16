@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection
 {
+    using System;
+
     /// <summary>
     /// Exception which occurs on injection errors.
     /// </summary>

@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Kephas.Injection.Hosting;
-
 namespace Kephas.Injection.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Injection.Hosting;
+
     /// <summary>
     /// Registrar for composition conventions.
     /// </summary>

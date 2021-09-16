@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Dynamic;
-
 namespace Kephas.Injection.Configuration
 {
+    using Kephas.Dynamic;
+
     /// <summary>
     /// Stores injection settings.
     /// </summary>

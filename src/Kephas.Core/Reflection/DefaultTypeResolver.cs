@@ -40,7 +40,7 @@ namespace Kephas.Reflection
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        [InjectionConstructor]
+        [InjectConstructor]
         public DefaultTypeResolver(IAppRuntime appRuntime, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
             : base(logManager)
         {

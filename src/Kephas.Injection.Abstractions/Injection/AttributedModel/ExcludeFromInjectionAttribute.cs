@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.AttributedModel
 {
+    using System;
+
     /// <summary>
     /// Marks an eligible class for an application service implementation to be excluded from dependency injection.
     /// </summary>

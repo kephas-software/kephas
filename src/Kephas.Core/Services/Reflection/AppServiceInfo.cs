@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services.Reflection
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Injection;
 
     /// <summary>
     /// Information about the application service.
@@ -151,7 +151,7 @@ namespace Kephas.Services.Reflection
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[] MetadataAttributes { get; set; } = Array.Empty<Type>();
+        public Type[]? MetadataAttributes { get; set; } = Array.Empty<Type>();
 
         /// <summary>
         /// Gets the contract type of the export.
@@ -159,7 +159,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The contract type of the export.
         /// </value>
-        public Type ContractType { get; private set; }
+        public Type? ContractType { get; private set; }
 
         /// <summary>
         /// Gets the service instance.

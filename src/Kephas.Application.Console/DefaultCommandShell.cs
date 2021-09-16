@@ -47,7 +47,7 @@ namespace Kephas.Application.Console
         /// <param name="console">The console.</param>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
-        [InjectionConstructor]
+        [InjectConstructor]
         public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService)
         {
             Requires.NotNull(console, nameof(console));

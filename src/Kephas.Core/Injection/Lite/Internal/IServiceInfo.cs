@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Kephas.Services.Reflection;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Services.Reflection;
+
     /// <summary>
     /// Interface for service information.
     /// </summary>
