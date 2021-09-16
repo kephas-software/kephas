@@ -30,7 +30,7 @@ namespace Kephas.Core.Endpoints
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSettingsHandler"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
         public GetSettingsHandler(IInjector injector, ITypeResolver typeResolver)
         {

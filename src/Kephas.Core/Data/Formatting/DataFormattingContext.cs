@@ -38,7 +38,7 @@ namespace Kephas.Data.Formatting
         /// <summary>
         /// Initializes a new instance of the <see cref="DataFormattingContext"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         public DataFormattingContext(IInjector injector)
             : base(injector)
         {

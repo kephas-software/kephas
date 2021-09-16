@@ -33,7 +33,7 @@ namespace Kephas.Application.AspNetCore
         /// Initializes a new instance of the <see cref="AspNetAppManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>

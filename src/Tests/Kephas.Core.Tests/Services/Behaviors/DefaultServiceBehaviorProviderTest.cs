@@ -32,7 +32,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         [Test]
         public void WhereEnabled_no_behaviors()
         {
-            var ambientServicesMock = this.CreateCompositionContextWithFactories();
+            var ambientServicesMock = this.CreateInjectorWithFactories();
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
             var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
@@ -45,7 +45,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void WhereEnabled_exclude_all_behaviors()
         {
             var excludeAllBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false);
-            var ambientServicesMock = this.CreateCompositionContextWithFactories(excludeAllBehaviorMock);
+            var ambientServicesMock = this.CreateInjectorWithFactories(excludeAllBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
             var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeAllBehaviorMock });
@@ -58,7 +58,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         {
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: 1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: true, value: true, processingPriority: 0);
-            var ambientServicesMock = this.CreateCompositionContextWithFactories(excludeBehaviorMock, includeBehaviorMock);
+            var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
             var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
@@ -72,7 +72,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         {
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: 1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: true, processingPriority: 0);
-            var ambientServicesMock = this.CreateCompositionContextWithFactories(excludeBehaviorMock, includeBehaviorMock);
+            var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
             var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
@@ -81,7 +81,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         }
 
 
-        private IInjector CreateCompositionContextWithFactories(params IExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>[] ruleFactories)
+        private IInjector CreateInjectorWithFactories(params IExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>[] ruleFactories)
         {
             var exporter = Substitute.For<ICollectionExportFactoryImporter>();
             exporter.ExportFactories.Returns(ruleFactories);

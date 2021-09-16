@@ -43,7 +43,7 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultServiceBehaviorProvider"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultServiceBehaviorProvider(
             IInjector injector,

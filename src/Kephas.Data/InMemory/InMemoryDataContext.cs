@@ -50,7 +50,7 @@ namespace Kephas.Data.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="serializationService">The serialization service.</param>

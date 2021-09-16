@@ -30,7 +30,7 @@ namespace Kephas.Tests.Composition.Autofac
     public class AutofacScopedCompositionContextTest : AutofacCompositionTestBase
     {
         [Test]
-        public void CreateScopedContext_NestedScopes()
+        public void CreateScopedInjector_NestedScopes()
         {
             var container = this.CreateContainerWithBuilder(
                 b => b.WithRegistration(
@@ -54,7 +54,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void CreateScopedContext_CompositionContext_registration_root()
+        public void CreateScopedInjector_Injector_registration_root()
         {
             var container = this.CreateContainerWithBuilder();
             var selfContainer = container.Resolve<IInjector>();
@@ -62,7 +62,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void CreateScopedContext_CompositionContext_registration_scope()
+        public void CreateScopedInjector_Injector_registration_scope()
         {
             var container = this.CreateContainerWithBuilder();
             using (var scopedContext = container.CreateScopedInjector())
@@ -73,7 +73,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void CreateScopedContext_CompositionContext_registration_scope_consumers()
+        public void CreateScopedInjector_Injector_registration_scope_consumers()
         {
             var container = this.CreateContainerWithBuilder(
                 b => b.WithRegistration(

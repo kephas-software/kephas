@@ -60,7 +60,7 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
         /// <param name="targetResolverFactories">The target resolver factories.</param>
         public DefaultDataConversionService(

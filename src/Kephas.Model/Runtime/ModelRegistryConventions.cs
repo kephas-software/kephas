@@ -20,7 +20,7 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelRegistryConventions"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         public ModelRegistryConventions(IInjector injector)
             : base(injector)
         {

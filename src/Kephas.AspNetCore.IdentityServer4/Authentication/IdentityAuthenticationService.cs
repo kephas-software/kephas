@@ -32,7 +32,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityAuthenticationService"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="lazyUserStore">The lazy user store.</param>
         public IdentityAuthenticationService(

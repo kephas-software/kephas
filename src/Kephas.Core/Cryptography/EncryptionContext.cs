@@ -22,7 +22,7 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         public EncryptionContext(IInjector injector)
             : base(injector)
         {

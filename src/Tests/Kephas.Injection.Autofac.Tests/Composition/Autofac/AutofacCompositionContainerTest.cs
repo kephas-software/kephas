@@ -220,7 +220,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void CreateScopedContext_ScopeExportedClass()
+        public void CreateScopedInjector_ScopeExportedClass()
         {
             var container = this.CreateContainerWithBuilder(
                 b => b.WithRegistration(

@@ -27,7 +27,7 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Initializes a new instance of the <see cref="DataImportContext"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         public DataImportContext(IInjector injector)
             : base(injector)
         {

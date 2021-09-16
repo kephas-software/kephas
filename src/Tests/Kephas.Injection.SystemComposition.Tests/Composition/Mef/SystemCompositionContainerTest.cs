@@ -260,7 +260,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void CreateScopedContext_ScopeExportedClass()
+        public void CreateScopedInjector_ScopeExportedClass()
         {
             var container = this.CreateContainerWithBuilder(typeof(ScopeExportedClass));
             using (var scopedContext = container.CreateScopedInjector())

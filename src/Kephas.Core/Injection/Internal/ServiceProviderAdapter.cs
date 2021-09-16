@@ -3,20 +3,18 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the composition context service provider adapter class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Reflection;
 
 namespace Kephas.Injection.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
+
     /// <summary>
     /// Adapter for <see cref="IServiceProvider"/> based on <see cref="IInjector"/>.
     /// </summary>

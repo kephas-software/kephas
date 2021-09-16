@@ -26,7 +26,7 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
         /// class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata (optional).</param>
         /// <param name="context">Context for the behavior (optional).</param>
@@ -40,7 +40,7 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
         /// class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="serviceFactory">The service export factory.</param>
         /// <param name="context">Context for the behavior (optional).</param>
         public ServiceBehaviorContext(IInjector injector, IExportFactory<TServiceContract> serviceFactory, IContext? context = null)
@@ -53,7 +53,7 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
         /// class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="serviceFactory">The service export factory.</param>
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata.</param>

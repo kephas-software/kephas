@@ -114,9 +114,9 @@ namespace Kephas.Data.Tests
         }
 
         private static IInjector GetTestCompositionContext(IInjector injector, IRuntimeTypeRegistry typeRegistry)
-            => injector ?? CreateCompositionContext(typeRegistry);
+            => injector ?? CreateInjector(typeRegistry);
 
-        private static IInjector CreateCompositionContext(IRuntimeTypeRegistry typeRegistry)
+        private static IInjector CreateInjector(IRuntimeTypeRegistry typeRegistry)
         {
             var compositionContext = Substitute.For<IInjector>();
             compositionContext.Resolve<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);

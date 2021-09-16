@@ -46,7 +46,7 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataCommandProvider">Optional. The data command provider. If not
         ///                                   provided, the <see cref="DefaultDataCommandProvider"/>
         ///                                   will be used.</param>

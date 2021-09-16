@@ -48,7 +48,7 @@ namespace Kephas.Data.MongoDB.Diagnostics
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContextLogEventSubscriber" /> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         public MongoDataContextLogEventSubscriber(IInjector injector)
         {
             this.logger = injector.Resolve<ILogManager>().GetLogger<MongoDataContextLogEventSubscriber>();

@@ -64,7 +64,7 @@ namespace Kephas.Data.LLBLGen
         /// <summary>
         /// Initializes a new instance of the <see cref="LLBLGenDataContext" /> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataAccessAdapterFactory">The data access adapter factory.</param>
         /// <param name="modelTypeResolver">The model type resolver.</param>

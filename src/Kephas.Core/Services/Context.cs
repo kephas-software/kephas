@@ -41,7 +41,7 @@ namespace Kephas.Services
         ///                            <c>false</c>.</param>
         /// <param name="merge">Optional. True to merge the parent context into the new context.</param>
         public Context(IContext parentContext, bool isThreadSafe = false, bool merge = false)
-            : this(GetParentCompositionContext(parentContext), isThreadSafe)
+            : this(GetParentInjector(parentContext), isThreadSafe)
         {
             if (merge)
             {
@@ -85,7 +85,7 @@ namespace Kephas.Services
             : base(isThreadSafe)
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            this.SetCompositionContext(injector);
+            this.SetInjector(injector);
         }
 
         /// <summary>
@@ -173,13 +173,10 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Sets composition context.
+        /// Sets the injector.
         /// </summary>
-        /// <param name="injector">
-        /// The context for the composition. If not provided,
-        /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
-        /// </param>
-        protected virtual void SetCompositionContext(IInjector injector)
+        /// <param name="injector">The injector.</param>
+        protected virtual void SetInjector(IInjector injector)
         {
             Requires.NotNull(injector, nameof(injector));
 
@@ -188,15 +185,12 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Sets ambient services.
+        /// Sets the ambient services.
         /// </summary>
         /// <remarks>
         /// The composition context is also set as the one exposed by the ambient services.
         /// </remarks>
-        /// <param name="ambientServices">
-        /// The ambient services (optional). If not provided,
-        /// <see cref="M:AmbientServices.Instance"/> will be considered.
-        /// </param>
+        /// <param name="ambientServices">The ambient services.</param>
         protected virtual void SetAmbientServices(IAmbientServices ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
@@ -216,7 +210,7 @@ namespace Kephas.Services
             this.DisposeResources();
         }
 
-        private static IInjector GetParentCompositionContext(IContext parentContext)
+        private static IInjector GetParentInjector(IContext parentContext)
         {
             Requires.NotNull(parentContext, nameof(parentContext));
             Requires.NotNull(parentContext.Injector, nameof(parentContext.Injector));

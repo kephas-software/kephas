@@ -194,7 +194,7 @@ namespace Kephas.Injection
         /// </summary>
         /// <param name="injector">The injection context to act on.</param>
         /// <returns>
-        /// The composition context as an <see cref="IServiceProvider"/>.
+        /// The <see cref="IInjector"/> as an <see cref="IServiceProvider"/>.
         /// </returns>
         public static IServiceProvider ToServiceProvider(this IInjector injector)
         {

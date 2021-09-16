@@ -35,7 +35,7 @@ namespace Kephas.Core.Endpoints
         /// Initializes a new instance of the <see cref="GetServicesHandler"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         public GetServicesHandler(ITypeResolver typeResolver, IInjector injector)
         {
             this.typeResolver = typeResolver;

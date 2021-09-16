@@ -36,7 +36,7 @@ namespace Kephas.Core.Endpoints
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSettingsHandler"/> class.
         /// </summary>
-        /// <param name="injector">The composition context.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="logManager">Optional. The log manager.</param>
