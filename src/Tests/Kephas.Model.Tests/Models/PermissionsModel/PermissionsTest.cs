@@ -33,7 +33,7 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
                 new AmbientServices(typeRegistry: typeRegistry),
                 typeof(IDoPermission),
                 typeof(ISpecialDoPermission));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 

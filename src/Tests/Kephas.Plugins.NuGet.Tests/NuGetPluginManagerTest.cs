@@ -44,7 +44,7 @@ namespace Kephas.Plugins.NuGet.Tests
         public void Injection()
         {
             var container = this.CreateContainer();
-            var manager = container.GetExport<IPluginManager>();
+            var manager = container.Resolve<IPluginManager>();
 
             Assert.IsInstanceOf<NuGetPluginManager>(manager);
         }
@@ -64,7 +64,7 @@ namespace Kephas.Plugins.NuGet.Tests
                         isSingleton: true,
                         allowMultiple: true),
                     appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
-                var manager = container.GetExport<IPluginManager>();
+                var manager = container.Resolve<IPluginManager>();
 
                 var result = await manager.InstallPluginAsync(new AppIdentity("Kephas.Core", "9.0.0-dev.0"));
 
@@ -99,7 +99,7 @@ namespace Kephas.Plugins.NuGet.Tests
                         isSingleton: true,
                         allowMultiple: true),
                     appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
-                var manager = container.GetExport<IPluginManager>();
+                var manager = container.Resolve<IPluginManager>();
 
                 var result = await manager.InstallPluginAsync(new AppIdentity("Kis.Logging.Seq", "4.0.0"));
 

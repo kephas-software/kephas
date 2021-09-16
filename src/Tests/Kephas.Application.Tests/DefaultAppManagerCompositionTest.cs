@@ -53,9 +53,9 @@ namespace Kephas.Application.Tests
         public void Injection_compute_auto_feature_info()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TestFeatureManager) });
-            var appConfiguration = container.GetExport<IConfiguration<AppSettings>>();
+            var appConfiguration = container.Resolve<IConfiguration<AppSettings>>();
             appConfiguration.GetSettings().EnabledFeatures = new[] { "test" };
-            var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
+            var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
             Assert.AreEqual(1, factoryMetadata.Count);
@@ -70,7 +70,7 @@ namespace Kephas.Application.Tests
         public void Injection_not_required()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TestFeatureManager) });
-            var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
+            var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
             CollectionAssert.IsEmpty(factoryMetadata);
@@ -80,9 +80,9 @@ namespace Kephas.Application.Tests
         public void Injection_full_feature_info()
         {
             var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager) });
-            var appConfiguration = container.GetExport<IConfiguration<AppSettings>>();
+            var appConfiguration = container.Resolve<IConfiguration<AppSettings>>();
             appConfiguration.GetSettings().EnabledFeatures = new[] { "Annotated test" };
-            var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
+            var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
             Assert.AreEqual(1, factoryMetadata.Count);
@@ -99,7 +99,7 @@ namespace Kephas.Application.Tests
         public void Injection_enabled_feature_info()
         {
             var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
-            var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
+            var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
             Assert.AreEqual(1, factoryMetadata.Count);

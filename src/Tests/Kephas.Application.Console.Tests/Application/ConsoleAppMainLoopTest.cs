@@ -31,7 +31,7 @@ namespace Kephas.Application.Console.Tests.Application
         public void Injection()
         {
             var container = this.CreateContainer();
-            var awaiter = container.GetExport<IAppMainLoop>();
+            var awaiter = container.Resolve<IAppMainLoop>();
 
             Assert.IsInstanceOf<ConsoleAppMainLoop>(awaiter);
         }

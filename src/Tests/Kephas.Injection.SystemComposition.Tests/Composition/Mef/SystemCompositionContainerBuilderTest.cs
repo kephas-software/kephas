@@ -51,10 +51,10 @@ namespace Kephas.Tests.Composition.Mef
 
             var container = builder.CreateInjector();
 
-            var loggerManager = container.GetExport<ILogManager>();
+            var loggerManager = container.Resolve<ILogManager>();
             Assert.AreEqual(builder.LogManager, loggerManager);
 
-            var platformManager = container.GetExport<IAppRuntime>();
+            var platformManager = container.Resolve<IAppRuntime>();
             Assert.AreEqual(mockAppRuntime, platformManager);
         }
 
@@ -67,10 +67,10 @@ namespace Kephas.Tests.Composition.Mef
                 .WithPart(typeof(AppServiceInfoConventionsRegistrar))
                 .CreateInjector();
 
-            var loggerManager = container.GetExport<ILogManager>();
+            var loggerManager = container.Resolve<ILogManager>();
             Assert.AreEqual(builder.LogManager, loggerManager);
 
-            var platformManager = container.GetExport<IAppRuntime>();
+            var platformManager = container.Resolve<IAppRuntime>();
             Assert.AreEqual(builder.AppRuntime, platformManager);
         }
 
@@ -83,12 +83,12 @@ namespace Kephas.Tests.Composition.Mef
                 .WithAssembly(typeof(MefConventionsBuilder).GetTypeInfo().Assembly)
                 .CreateInjector();
 
-            var logger = container.GetExport<ILogger<SystemCompositionContainerTest.ExportedClass>>();
+            var logger = container.Resolve<ILogger<SystemCompositionContainerTest.ExportedClass>>();
             Assert.IsInstanceOf<TypedLogger<SystemCompositionContainerTest.ExportedClass>>(logger);
         }
 
         [Test]
-        public void GetExport_AppService_Singleton()
+        public void Resolve_AppService_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -96,14 +96,14 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateInjector();
 
-            var exported = container.GetExport<ITestAppService>();
-            var secondExported = container.GetExport<ITestAppService>();
+            var exported = container.Resolve<ITestAppService>();
+            var secondExported = container.Resolve<ITestAppService>();
 
             Assert.AreSame(exported, secondExported);
         }
 
         [Test]
-        public void GetExport_AppService_Single_Success()
+        public void Resolve_AppService_Single_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -111,13 +111,13 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateInjector();
 
-            var exported = container.GetExport<ITestAppService>();
+            var exported = container.Resolve<ITestAppService>();
 
             Assert.IsInstanceOf<TestAppService>(exported);
         }
 
         [Test]
-        public void GetExport_AppService_Single_Override_Success()
+        public void Resolve_AppService_Single_Override_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -125,13 +125,13 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .CreateInjector();
 
-            var exported = container.GetExport<ITestAppService>();
+            var exported = container.Resolve<ITestAppService>();
 
             Assert.IsInstanceOf<TestOverrideAppService>(exported);
         }
 
         [Test]
-        public void GetExports_AppService_Multiple_Singleton()
+        public void ResolveMany_AppService_Multiple_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -139,15 +139,15 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateInjector();
 
-            var exports = container.GetExports<ITestMultiAppService>().ToList();
-            var exports2 = container.GetExports<ITestMultiAppService>().ToList();
+            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
+            var exports2 = container.ResolveMany<ITestMultiAppService>().ToList();
 
             Assert.AreSame(exports[0], exports2[0]);
             Assert.AreSame(exports[1], exports2[1]);
         }
 
         [Test]
-        public void GetExports_AppService_Multiple_Success()
+        public void ResolveMany_AppService_Multiple_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -155,13 +155,13 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateInjector();
 
-            var exports = container.GetExports<ITestMultiAppService>().ToList();
+            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
 
             Assert.AreEqual(2, exports.Count);
         }
 
         [Test]
-        public void GetExports_AppService_IExportFactory_Success()
+        public void ResolveMany_AppService_IExportFactory_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -169,14 +169,14 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
                 .CreateInjector();
 
-            var export = (TestMultiAppServiceConsumer)container.GetExport<ITestMultiAppServiceConsumer>();
+            var export = (TestMultiAppServiceConsumer)container.Resolve<ITestMultiAppServiceConsumer>();
 
             Assert.AreEqual(2, export.Factories.Count());
             Assert.AreEqual(2, export.MetadataFactories.Count());
         }
 
         [Test]
-        public void GetExport_AppService_generic_export()
+        public void Resolve_AppService_generic_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -184,12 +184,12 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateInjector();
 
-            var export = container.GetExport<ITestGenericExport<string>>();
+            var export = container.Resolve<ITestGenericExport<string>>();
             Assert.IsInstanceOf<TestGenericExport>(export);
         }
 
         [Test]
-        public void GetExport_AppService_generic_export_with_non_generic_contract()
+        public void Resolve_AppService_generic_export_with_non_generic_contract()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -197,12 +197,12 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
                 .CreateInjector();
 
-            var export = container.GetExport<ITestGenericWithNonGenericExport>();
+            var export = container.Resolve<ITestGenericWithNonGenericExport>();
             Assert.IsInstanceOf<TestGenericWithNonGenericExport>(export);
         }
 
         [Test]
-        public void GetExport_AppService_with_injection_constructor()
+        public void Resolve_AppService_with_injection_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -211,7 +211,7 @@ namespace Kephas.Tests.Composition.Mef
                     new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
                     new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
                 .CreateInjector();
-            var exported = container.GetExport<ExportedClassWithFakeDependency>();
+            var exported = container.Resolve<ExportedClassWithFakeDependency>();
 
             Assert.IsNotNull(exported);
             Assert.IsInstanceOf<ExportedClassWithFakeDependency>(exported);
@@ -219,7 +219,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_ScopedAppService_no_scope()
+        public void Resolve_ScopedAppService_no_scope()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -227,11 +227,11 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateInjector();
 
-            Assert.Throws<CompositionFailedException>(() => container.GetExport<ITestScopedExport>());
+            Assert.Throws<CompositionFailedException>(() => container.Resolve<ITestScopedExport>());
         }
 
         [Test]
-        public void GetExport_ScopedAppService_export()
+        public void Resolve_ScopedAppService_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -242,22 +242,22 @@ namespace Kephas.Tests.Composition.Mef
             ITestScopedExport exportScope1;
             using (var scopedContext = container.CreateScopedInjector())
             {
-                exportScope1 = scopedContext.GetExport<ITestScopedExport>();
+                exportScope1 = scopedContext.Resolve<ITestScopedExport>();
                 Assert.IsInstanceOf<TestScopedExport>(exportScope1);
 
-                var export = scopedContext.GetExport<ITestScopedExport>();
+                var export = scopedContext.Resolve<ITestScopedExport>();
                 Assert.AreSame(exportScope1, export);
             }
 
             using (var scopedContext2 = container.CreateScopedInjector())
             {
-                var export2 = scopedContext2.GetExport<ITestScopedExport>();
+                var export2 = scopedContext2.Resolve<ITestScopedExport>();
                 Assert.AreNotSame(exportScope1, export2);
             }
         }
 
         [Test, Ignore("Custom scope factories not supported from version 7.0.0")]
-        public void GetExport_ScopedAppService_custom_scope_export()
+        public void Resolve_ScopedAppService_custom_scope_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -269,22 +269,22 @@ namespace Kephas.Tests.Composition.Mef
             ITestMyScopedExport exportScope1;
             using (var scopedContext = container.CreateScopedInjector())
             {
-                exportScope1 = scopedContext.GetExport<ITestMyScopedExport>();
+                exportScope1 = scopedContext.Resolve<ITestMyScopedExport>();
                 Assert.IsInstanceOf<TestMyScopedExport>(exportScope1);
 
-                var export = scopedContext.GetExport<ITestMyScopedExport>();
+                var export = scopedContext.Resolve<ITestMyScopedExport>();
                 Assert.AreSame(exportScope1, export);
             }
 
             using (var scopedContext2 = container.CreateScopedInjector())
             {
-                var export2 = scopedContext2.GetExport<ITestMyScopedExport>();
+                var export2 = scopedContext2.Resolve<ITestMyScopedExport>();
                 Assert.AreNotSame(exportScope1, export2);
             }
         }
 
         [Test]
-        public void GetExport_ScopedAppService_scopefactory_composed_only_once()
+        public void Resolve_ScopedAppService_scopefactory_composed_only_once()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -298,7 +298,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_AppService_no_constructor()
+        public void Resolve_AppService_no_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<InjectionException>(() => builder
@@ -308,7 +308,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_AppService_ambiguous_constructor()
+        public void Resolve_AppService_ambiguous_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<InjectionException>(() => builder
@@ -318,7 +318,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_AppService_largest_constructor()
+        public void Resolve_AppService_largest_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -326,12 +326,12 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(LargestCompositionConstructorAppService) })
                 .CreateInjector();
 
-            var component = container.GetExport<IConstructorAppService>();
+            var component = container.Resolve<IConstructorAppService>();
             Assert.IsNotNull(component);
         }
 
         [Test]
-        public void GetExport_AppService_multiple_constructor()
+        public void Resolve_AppService_multiple_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<InjectionException>(() => builder
@@ -341,7 +341,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_AppService_default_constructor()
+        public void Resolve_AppService_default_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -349,13 +349,13 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
                 .CreateInjector();
 
-            var export = container.GetExport<IConstructorAppService>();
+            var export = container.Resolve<IConstructorAppService>();
 
             Assert.IsInstanceOf<DefaultConstructorAppService>(export);
         }
 
         [Test]
-        public void GetExport_AppService_single_constructor()
+        public void Resolve_AppService_single_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -363,7 +363,7 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
                 .CreateInjector();
 
-            var export = container.GetExport<IConstructorAppService>();
+            var export = container.Resolve<IConstructorAppService>();
 
             Assert.IsInstanceOf<SingleConstructorAppService>(export);
         }
@@ -384,7 +384,7 @@ namespace Kephas.Tests.Composition.Mef
 
             var container = factory.CreateInjector();
 
-            var instance = container.GetExport<string>();
+            var instance = container.Resolve<string>();
             Assert.AreEqual("123", instance);
         }
 
@@ -404,7 +404,7 @@ namespace Kephas.Tests.Composition.Mef
 
             var container = factory.CreateInjector();
 
-            var instance = container.GetExport<string>();
+            var instance = container.Resolve<string>();
             Assert.AreEqual("123", instance);
         }
 
@@ -424,7 +424,7 @@ namespace Kephas.Tests.Composition.Mef
 
             var container = factory.CreateInjector();
 
-            var instance = container.GetExport<string>();
+            var instance = container.Resolve<string>();
             Assert.AreEqual("123", instance);
         }
 
@@ -444,7 +444,7 @@ namespace Kephas.Tests.Composition.Mef
 
             var container = factory.CreateInjector();
 
-            var instance = container.GetExport<string>();
+            var instance = container.Resolve<string>();
             Assert.AreEqual("123", instance);
         }
 

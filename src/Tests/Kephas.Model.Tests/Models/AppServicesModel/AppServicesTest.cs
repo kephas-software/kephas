@@ -25,7 +25,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         public async Task InitializeAsync_simple_app_service()
         {
             var container = this.CreateContainerForModel(typeof(ISimpleService));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -40,7 +40,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         public async Task InitializeAsync_simple_app_service_methods()
         {
             var container = this.CreateContainerForModel(typeof(ISimpleService), typeof(IDisposableService));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -63,7 +63,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         public async Task InitializeAsync_app_service_with_contract_type()
         {
             var container = this.CreateContainerForModel(typeof(IGenericDisposableService<>), typeof(IDisposable));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -78,7 +78,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         public async Task InitializeAsync_app_service_with_contract_type_multiple_bases()
         {
             var container = this.CreateContainerForModel(typeof(IGenericDisposableService<>), typeof(IDisposable), typeof(ICloneable));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -93,7 +93,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         public async Task InitializeAsync_open_generic_app_service()
         {
             var container = this.CreateContainerForModel(typeof(IOpenGenericService<>));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -108,7 +108,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         public async Task InitializeAsync_closed_generic_app_service()
         {
             var container = this.CreateContainerForModel(typeof(IClosedGenericService<>));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 

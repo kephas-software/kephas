@@ -25,7 +25,7 @@ namespace Kephas.Commands.Messaging.Tests
         public void Injection()
         {
             var container = this.CreateContainer();
-            var registries = container.GetExports<ICommandRegistry>();
+            var registries = container.ResolveMany<ICommandRegistry>();
 
             var msgRegistry = registries.OfType<MessagingCommandRegistry>().Single();
             var commandTypes = msgRegistry.GetCommandTypes().ToList();
@@ -40,7 +40,7 @@ namespace Kephas.Commands.Messaging.Tests
         public async Task ProcessAsync_injection_help()
         {
             var container = this.CreateContainer();
-            var processor = container.GetExport<ICommandProcessor>();
+            var processor = container.Resolve<ICommandProcessor>();
 
             var response = await processor.ProcessAsync("help");
 
@@ -57,7 +57,7 @@ namespace Kephas.Commands.Messaging.Tests
         public async Task ProcessAsync_injection_help_indexed_params()
         {
             var container = this.CreateContainer();
-            var processor = container.GetExport<ICommandProcessor>();
+            var processor = container.Resolve<ICommandProcessor>();
 
             var response = await processor.ProcessAsync("help", new Expando { ["help"] = true });
 

@@ -42,7 +42,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         public void Injection()
         {
             var container = this.CreateContainer();
-            var router = container.GetExports<IMessageRouter>().OfType<PipesAppMessageRouter>().SingleOrDefault();
+            var router = container.ResolveMany<IMessageRouter>().OfType<PipesAppMessageRouter>().SingleOrDefault();
 
             Assert.IsNotNull(router);
         }
@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     isRoot: true,
                     appId: masterId,
                     appInstanceId: masterInstanceId));
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -72,12 +72,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     isRoot: false,
                     appId: slaveId,
                     appInstanceId: slaveInstanceId));
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
             await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -109,7 +109,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appId: masterId,
                     appInstanceId: masterInstanceId,
                     defaultAssemblyFilter: this.IsNotTestAssembly));
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var sbSlave = new StringBuilder();
@@ -125,12 +125,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appId: slaveId,
                     appInstanceId: slaveInstanceId,
                     defaultAssemblyFilter: this.IsNotTestAssembly));
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
             await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -163,7 +163,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     isRoot: true,
                     appId: masterId,
                     appInstanceId: masterInstanceId));
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -176,12 +176,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     isRoot: false,
                     appId: slaveId,
                     appInstanceId: slaveInstanceId));
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
             await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -210,7 +210,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     isRoot: true,
                     appId: masterId,
                     appInstanceId: masterInstanceId));
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -223,12 +223,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     isRoot: false,
                     appId: slaveId,
                     appInstanceId: slaveInstanceId));
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
             await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -251,25 +251,25 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
 
         private async Task InitializeAppAsync(IInjector container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
         {
-            var appManager = container.GetExport<IAppManager>();
+            var appManager = container.Resolve<IAppManager>();
             var appContext = new AppContext(
-                container.GetExport<IAmbientServices>(),
-                container.GetExport<IAppRuntime>(),
+                container.Resolve<IAmbientServices>(),
+                container.Resolve<IAppRuntime>(),
                 appArgs);
             await appManager.InitializeAppAsync(appContext);
 
             if (slaveAppInfo != null)
             {
-                var eventHub = container.GetExport<IEventHub>();
+                var eventHub = container.Resolve<IEventHub>();
                 await eventHub.PublishAsync(new AppStartingEvent { AppInfo = slaveAppInfo }, appContext);
             }
         }
 
         private async Task FinalizeAppAsync(IInjector container)
         {
-            var appManager = container.GetExport<IAppManager>();
+            var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAppAsync(
-                new AppContext(container.GetExport<IAmbientServices>(), container.GetExport<IAppRuntime>()));
+                new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 
         public class PipesSettingsProvider : ISettingsProvider

@@ -41,13 +41,13 @@ namespace Kephas.Tests.Composition.Autofac
             using (var scopedContext = container.CreateScopedInjector())
             {
                 Assert.IsInstanceOf<AutofacScopedInjector>(scopedContext);
-                var scopedInstance1 = scopedContext.GetExport<AutofacCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance1 = scopedContext.Resolve<AutofacCompositionContainerTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedInjector())
                 {
                     Assert.AreNotSame(scopedContext, nestedContext);
 
-                    var scopedInstance2 = nestedContext.GetExport<AutofacCompositionContainerTest.ScopeExportedClass>();
+                    var scopedInstance2 = nestedContext.Resolve<AutofacCompositionContainerTest.ScopeExportedClass>();
                     Assert.AreNotSame(scopedInstance1, scopedInstance2);
                 }
             }
@@ -57,7 +57,7 @@ namespace Kephas.Tests.Composition.Autofac
         public void CreateScopedContext_CompositionContext_registration_root()
         {
             var container = this.CreateContainerWithBuilder();
-            var selfContainer = container.GetExport<IInjector>();
+            var selfContainer = container.Resolve<IInjector>();
             Assert.AreSame(container, selfContainer);
         }
 
@@ -67,7 +67,7 @@ namespace Kephas.Tests.Composition.Autofac
             var container = this.CreateContainerWithBuilder();
             using (var scopedContext = container.CreateScopedInjector())
             {
-                var selfScopedContext = scopedContext.GetExport<IInjector>();
+                var selfScopedContext = scopedContext.Resolve<IInjector>();
                 Assert.AreSame(selfScopedContext, scopedContext);
             }
         }
@@ -83,7 +83,7 @@ namespace Kephas.Tests.Composition.Autofac
                         AppServiceLifetime.Scoped)));
             using (var scopedContext = container.CreateScopedInjector())
             {
-                var scopedInstance = scopedContext.GetExport<AutofacCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance = scopedContext.Resolve<AutofacCompositionContainerTest.ScopeExportedClass>();
                 Assert.AreSame(scopedContext, scopedInstance.Injector);
             }
         }

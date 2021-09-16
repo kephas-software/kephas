@@ -39,7 +39,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             var compositionContext = Substitute.For<IInjector>();
-            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
             var context = new ModelConstructionContext(compositionContext);
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;

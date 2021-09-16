@@ -33,9 +33,9 @@ namespace Kephas.Model.Tests
             var ambientServices = new AmbientServices()
                 .WithModel();
             var container = this.CreateContainer(ambientServices);
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
             await provider.InitializeAsync(new Context(container));
-            var modelSpace = container.GetExport<IModelSpace>();
+            var modelSpace = container.Resolve<IModelSpace>();
 
             Assert.IsInstanceOf<DefaultModelSpace>(modelSpace);
         }

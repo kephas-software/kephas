@@ -38,7 +38,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         public void Injection()
         {
             var container = this.CreateContainer();
-            var router = container.GetExports<IMessageRouter>().OfType<RedisAppMessageRouter>().SingleOrDefault();
+            var router = container.ResolveMany<IMessageRouter>().OfType<RedisAppMessageRouter>().SingleOrDefault();
 
             Assert.IsNotNull(router);
         }
@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
@@ -60,12 +60,12 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
             await this.InitializeAppAsync(slaveContainer);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -93,7 +93,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                     .WithDebugLogManager(sbMaster)
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -103,12 +103,12 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                     .WithDebugLogManager(sbSlave)
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
             await this.InitializeAppAsync(slaveContainer);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -138,7 +138,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
@@ -146,12 +146,12 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
             await this.InitializeAppAsync(slaveContainer);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -177,7 +177,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+            var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
@@ -185,12 +185,12 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+            var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
             await this.InitializeAppAsync(slaveContainer);
 
-            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+            var masterMessageBroker = masterContainer.Resolve<IMessageBroker>();
 
             try
             {
@@ -213,16 +213,16 @@ namespace Kephas.Messaging.Redis.Tests.Routing
 
         private async Task InitializeAppAsync(IInjector container)
         {
-            var appManager = container.GetExport<IAppManager>();
+            var appManager = container.Resolve<IAppManager>();
             await appManager.InitializeAppAsync(
-                new AppContext(container.GetExport<IAmbientServices>(), container.GetExport<IAppRuntime>()));
+                new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 
         private async Task FinalizeAppAsync(IInjector container)
         {
-            var appManager = container.GetExport<IAppManager>();
+            var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAppAsync(
-                new AppContext(container.GetExport<IAmbientServices>(), container.GetExport<IAppRuntime>()));
+                new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 
         public class RedisSettingsProvider : ISettingsProvider

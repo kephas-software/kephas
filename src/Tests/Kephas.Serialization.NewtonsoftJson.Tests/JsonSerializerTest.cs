@@ -44,7 +44,7 @@ namespace Kephas.Serialization.Json.Tests
         public async Task SerializeAsync_Composition()
         {
             var container = this.CreateContainer();
-            var serializationService = container.GetExport<ISerializationService>();
+            var serializationService = container.Resolve<ISerializationService>();
 
             var obj = new TestEntity
             {

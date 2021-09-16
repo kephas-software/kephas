@@ -217,7 +217,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         {
             var container = appContext.Injector;
             var middlewareConfigurators = container
-                .GetExport<IOrderedServiceFactoryCollection<IMiddlewareConfigurator, AppServiceMetadata>>()
+                .Resolve<IOrderedServiceFactoryCollection<IMiddlewareConfigurator, AppServiceMetadata>>()
                 .GetServices()
                 .Select(s => (Action<IAspNetAppContext>)s.Configure);
             return middlewareConfigurators;

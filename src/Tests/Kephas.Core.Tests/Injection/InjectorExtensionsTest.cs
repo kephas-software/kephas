@@ -25,7 +25,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactory_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
+            context.Resolve(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
 
             var result = context.GetExportFactory<string>();
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -35,7 +35,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactory_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
+            context.Resolve(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
 
             var result = (IExportFactory<string>)context.GetExportFactory(typeof(string));
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -45,7 +45,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactory_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            context.Resolve(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
 
             var result = context.GetExportFactory<string, string>();
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -56,7 +56,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactory_metadata_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            context.Resolve(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
 
             var result = (IExportFactory<string, string>)context.GetExportFactory(typeof(string), typeof(string));
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -67,7 +67,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactories_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
 
             var result = context.GetExportFactories<string>();
             Assert.AreEqual(1, result.Count());
@@ -78,7 +78,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactories_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
 
             var result = (IEnumerable<IExportFactory<string>>)context.GetExportFactories(typeof(string));
             Assert.AreEqual(1, result.Count());
@@ -89,7 +89,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactories_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
 
             var result = context.GetExportFactories<string, string>();
             Assert.AreEqual(1, result.Count());
@@ -101,7 +101,7 @@ namespace Kephas.Core.Tests.Injection
         public void GetExportFactories_metadata_success()
         {
             var context = Substitute.For<IInjector>();
-            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
 
             var result = (IEnumerable<IExportFactory<string, string>>)context.GetExportFactories(typeof(string), typeof(string));
             Assert.AreEqual(1, result.Count());

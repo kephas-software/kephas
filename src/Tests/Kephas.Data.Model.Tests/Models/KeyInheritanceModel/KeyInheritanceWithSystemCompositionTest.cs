@@ -15,7 +15,7 @@
         public async Task InitializeAsync_key_inheritance()
         {
             var container = this.CreateContainerForModel(typeof(IUniqueName), typeof(IUniqueGuid), typeof(IPlugin));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 

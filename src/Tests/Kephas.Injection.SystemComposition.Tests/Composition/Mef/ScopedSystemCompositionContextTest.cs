@@ -32,13 +32,13 @@ namespace Kephas.Tests.Composition.Mef
             using (var scopedContext = container.CreateScopedInjector())
             {
                 Assert.IsInstanceOf<ScopedSystemInjector>(scopedContext);
-                var scopedInstance1 = scopedContext.GetExport<SystemCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance1 = scopedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedInjector())
                 {
                     Assert.AreNotSame(scopedContext, nestedContext);
 
-                    var scopedInstance2 = nestedContext.GetExport<SystemCompositionContainerTest.ScopeExportedClass>();
+                    var scopedInstance2 = nestedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
                     Assert.AreNotSame(scopedInstance1, scopedInstance2);
                 }
             }
@@ -48,7 +48,7 @@ namespace Kephas.Tests.Composition.Mef
         public void CreateScopedContext_CompositionContext_registration_root()
         {
             var container = this.CreateContainerWithBuilder();
-            var selfContainer = container.GetExport<IInjector>();
+            var selfContainer = container.Resolve<IInjector>();
             Assert.AreSame(container, selfContainer);
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Composition.Mef
             var container = this.CreateContainerWithBuilder();
             using (var scopedContext = container.CreateScopedInjector())
             {
-                var selfScopedContext = scopedContext.GetExport<IInjector>();
+                var selfScopedContext = scopedContext.Resolve<IInjector>();
                 Assert.AreSame(selfScopedContext, scopedContext);
             }
         }
@@ -69,7 +69,7 @@ namespace Kephas.Tests.Composition.Mef
             var container = this.CreateContainerWithBuilder(typeof(SystemCompositionContainerTest.ScopeExportedClass));
             using (var scopedContext = container.CreateScopedInjector())
             {
-                var scopedInstance = scopedContext.GetExport<SystemCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance = scopedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
                 Assert.AreSame(scopedContext, scopedInstance.Injector);
             }
         }

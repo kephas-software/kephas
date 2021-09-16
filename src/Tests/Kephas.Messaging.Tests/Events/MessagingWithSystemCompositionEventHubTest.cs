@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Tests.Events
         public void Injection()
         {
             var container = this.CreateContainer();
-            var hub = container.GetExport<IEventHub>();
+            var hub = container.Resolve<IEventHub>();
 
             Assert.IsNotNull(hub);
             Assert.IsInstanceOf<MessagingEventHub>(hub);

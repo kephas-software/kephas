@@ -42,7 +42,7 @@ namespace Kephas.Tests.Orchestration
         {
             var container = this.CreateContainer(new AmbientServices());
 
-            var manager = container.GetExport<IOrchestrationManager>();
+            var manager = container.Resolve<IOrchestrationManager>();
 
             Assert.IsInstanceOf<DefaultOrchestrationManager>(manager);
         }
@@ -53,11 +53,11 @@ namespace Kephas.Tests.Orchestration
             var ambientServices = new AmbientServices();
             var container = this.CreateContainer(ambientServices);
 
-            var appManager = container.GetExport<IAppManager>();
-            var orchManager = (DefaultOrchestrationManager)container.GetExport<IOrchestrationManager>();
+            var appManager = container.Resolve<IAppManager>();
+            var orchManager = (DefaultOrchestrationManager)container.Resolve<IOrchestrationManager>();
             orchManager.HeartbeatDueTime = TimeSpan.FromMilliseconds(100);
             orchManager.HeartbeatInterval = TimeSpan.FromMilliseconds(100);
-            var registry = container.GetExport<IMessageHandlerRegistry>();
+            var registry = container.Resolve<IMessageHandlerRegistry>();
 
             AppHeartbeatEvent? heartbeat = null;
             registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => (heartbeat = e).ToEvent());

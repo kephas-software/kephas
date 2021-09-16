@@ -32,7 +32,7 @@ namespace Kephas.Workflow.Model.Tests.Models.StateMachinesModel
             var container = this.CreateContainerForModel(
                 new AmbientServices(typeRegistry: typeRegistry),
                 typeof(IDocumentStateMachine));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 

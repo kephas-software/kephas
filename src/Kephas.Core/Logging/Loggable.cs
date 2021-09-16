@@ -45,7 +45,7 @@ namespace Kephas.Logging
         /// </summary>
         /// <param name="injector">Context for the composition.</param>
         protected Loggable(IInjector injector)
-            : this(() => injector?.GetExport<ILogManager>())
+            : this(() => injector?.Resolve<ILogManager>())
         {
         }
 

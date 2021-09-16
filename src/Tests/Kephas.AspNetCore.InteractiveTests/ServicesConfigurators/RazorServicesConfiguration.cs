@@ -30,7 +30,7 @@ namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
                     options =>
                     {
                         var jsonSettingsProvider = ambientServices.Injector
-                            .GetExport<IJsonSerializerSettingsProvider>();
+                            .Resolve<IJsonSerializerSettingsProvider>();
                         jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
                     });
         }

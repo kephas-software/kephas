@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Services
         {
             var compositionContext = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
-            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
             var context = new Context(compositionContext);
             Assert.AreSame(ambientServices, context.AmbientServices);
         }

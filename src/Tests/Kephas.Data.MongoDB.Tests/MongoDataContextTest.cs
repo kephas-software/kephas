@@ -23,7 +23,7 @@ namespace Kephas.Data.MongoDB.Tests
         public void Injection()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             Assert.IsInstanceOf<MongoDataContext>(dataContext);
@@ -33,11 +33,11 @@ namespace Kephas.Data.MongoDB.Tests
         public async Task CreateEntityAsync()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
-            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Id = container.Resolve<IIdGenerator>().GenerateId();
 
             await dataContext.PersistChangesAsync();
 
@@ -50,18 +50,18 @@ namespace Kephas.Data.MongoDB.Tests
         public async Task UpdateEntityAsync_with_find()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
-            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Id = container.Resolve<IIdGenerator>().GenerateId();
             entity.Description = $"Description for {entity.Id}";
             await dataContext.PersistChangesAsync();
 
             entity.Description = $"Description for {entity.Id} updated!";
             await dataContext.PersistChangesAsync();
 
-            using var dataSpace2 = container.GetExport<IDataSpace>();
+            using var dataSpace2 = container.Resolve<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
             var entity2 = await dataContext.FindAsync<NotificationMongoEntity>(entity.Id).PreserveThreadContext();
 
@@ -75,15 +75,15 @@ namespace Kephas.Data.MongoDB.Tests
         public async Task Query_CountAsync()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
-            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Id = container.Resolve<IIdGenerator>().GenerateId();
             entity.Description = $"Description for 1";
             await dataContext.PersistChangesAsync();
 
-            using var dataSpace2 = container.GetExport<IDataSpace>();
+            using var dataSpace2 = container.Resolve<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
             var count = await dataContext
                 .Query<NotificationMongoEntity>()
@@ -100,15 +100,15 @@ namespace Kephas.Data.MongoDB.Tests
         public async Task Query_SingleAsync()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
-            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Id = container.Resolve<IIdGenerator>().GenerateId();
             entity.Description = $"Description for 1";
             await dataContext.PersistChangesAsync();
 
-            using var dataSpace2 = container.GetExport<IDataSpace>();
+            using var dataSpace2 = container.Resolve<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
             var entity2 = await dataContext
                 .Query<NotificationMongoEntity>()
@@ -124,15 +124,15 @@ namespace Kephas.Data.MongoDB.Tests
         public async Task Query_ToListAsync()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
-            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Id = container.Resolve<IIdGenerator>().GenerateId();
             entity.Description = $"Description for {entity.Id}";
             await dataContext.PersistChangesAsync();
 
-            using var dataSpace2 = container.GetExport<IDataSpace>();
+            using var dataSpace2 = container.Resolve<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
             var entities = await dataContext
                 .Query<NotificationMongoEntity>()
@@ -150,15 +150,15 @@ namespace Kephas.Data.MongoDB.Tests
         public async Task Query_ToList()
         {
             var container = this.CreateContainer();
-            using var dataSpace = container.GetExport<IDataSpace>();
+            using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
             var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
-            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Id = container.Resolve<IIdGenerator>().GenerateId();
             entity.Description = $"Description for {entity.Id}";
             await dataContext.PersistChangesAsync();
 
-            using var dataSpace2 = container.GetExport<IDataSpace>();
+            using var dataSpace2 = container.Resolve<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
             var entities = dataContext
                 .Query<NotificationMongoEntity>()

@@ -88,7 +88,7 @@ namespace Kephas.Data
         {
             var dataContext = this.GetDataContext(this.GetContainerEntityEntry());
             var compositionContext = dataContext.Injector;
-            return compositionContext.GetExport<INamedServiceProvider>();
+            return compositionContext.Resolve<INamedServiceProvider>();
         }
     }
 }

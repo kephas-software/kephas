@@ -37,7 +37,7 @@ namespace Kephas.Messaging.Tests
                                                                 typeof(HiTestHandler)
                                                             });
 
-            var handlers = container.GetExports<IMessageHandler>().ToList();
+            var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
             Assert.AreEqual(1, handlers.Count);
             Assert.IsInstanceOf<HiTestHandler>(handlers[0]);
@@ -60,7 +60,7 @@ namespace Kephas.Messaging.Tests
                                                                 typeof(ThereTestHandler)
                                                             });
 
-            var handlers = container.GetExports<IMessageHandler>().ToList();
+            var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
             Assert.AreEqual(2, handlers.Count);
             Assert.IsInstanceOf<HiTestHandler>(handlers[0]);

@@ -34,7 +34,7 @@ namespace Kephas.Model
                 typeof(IModelSpace),
                 new AppServiceInfo(
                     typeof(IModelSpace),
-                    ctx => ctx.GetExport<IModelSpaceProvider>().GetModelSpace(),
+                    ctx => ctx.Resolve<IModelSpaceProvider>().GetModelSpace(),
                     AppServiceLifetime.Singleton));
         }
     }

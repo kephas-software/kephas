@@ -244,7 +244,7 @@ namespace Kephas.Application
             try
             {
                 var container = this.AmbientServices.Injector;
-                var mainLoop = container.GetExport<IAppMainLoop>();
+                var mainLoop = container.Resolve<IAppMainLoop>();
                 var (result, instruction) = await mainLoop.Main(cancellationToken)
                     .PreserveThreadContext();
                 this.AppContext!.AppResult = result;
@@ -319,7 +319,7 @@ namespace Kephas.Application
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
 
                 var container = appContext.Injector;
-                var appManager = container.GetExport<IAppManager>();
+                var appManager = container.Resolve<IAppManager>();
 
                 await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
 
@@ -370,8 +370,8 @@ namespace Kephas.Application
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
                 var container = this.AmbientServices.Injector;
-                appContext = container.GetExport<IAppContext>();
-                var appManager = container.GetExport<IAppManager>();
+                appContext = container.Resolve<IAppContext>();
+                var appManager = container.Resolve<IAppManager>();
 
                 await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
 

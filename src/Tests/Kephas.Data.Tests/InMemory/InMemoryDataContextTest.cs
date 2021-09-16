@@ -274,7 +274,7 @@ namespace Kephas.Data.Tests.InMemory
         private IInjector CreateCompositionContext(IRuntimeTypeRegistry typeRegistry)
         {
             var compositionContext = Substitute.For<IInjector>();
-            compositionContext.GetExport<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
+            compositionContext.Resolve<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
             return compositionContext;
         }
     }

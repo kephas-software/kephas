@@ -149,7 +149,7 @@ namespace Kephas.Services
                     if (appServiceInfo != null && appServiceInfo.Value.appServiceInfo != null && !appServiceInfo.Value.appServiceInfo.AllowMultiple)
                     {
                         argIndexMap.Add(-argResolverMap.Count);
-                        argResolverMap.Add(() => this.injector.GetExport(paramType));
+                        argResolverMap.Add(() => this.injector.Resolve(paramType));
                     }
                     else if (paramInfo.HasDefaultValue)
                     {

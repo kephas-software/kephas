@@ -67,7 +67,7 @@ namespace Kephas.Messaging.Tests.Mef
         public void DefaultMessageProcessor_Injection_success()
         {
             var container = this.CreateContainer();
-            var requestProcessor = container.GetExport<IMessageProcessor>();
+            var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
             var typedRequestProcessor = (DefaultMessageProcessor)requestProcessor;
@@ -78,7 +78,7 @@ namespace Kephas.Messaging.Tests.Mef
         public async Task ProcessAsync_Injection_success()
         {
             var container = this.CreateContainer();
-            var requestProcessor = container.GetExport<IMessageProcessor>();
+            var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
             var result = await requestProcessor.ProcessAsync(new PingMessage(), null, CancellationToken.None);
@@ -89,9 +89,9 @@ namespace Kephas.Messaging.Tests.Mef
         public async Task ProcessAsync_injection_non_message_success()
         {
             var container = this.CreateContainer();
-            var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
+            var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<string>((s, c, token) => Task.FromResult<IMessage>(new ResponseMessage { Message = s + " handled" }));
-            var requestProcessor = container.GetExport<IMessageProcessor>();
+            var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
             var result = await requestProcessor.ProcessAsync("hello", null, CancellationToken.None);
@@ -103,9 +103,9 @@ namespace Kephas.Messaging.Tests.Mef
         public async Task ProcessAsync_injection_non_message_sync_success()
         {
             var container = this.CreateContainer();
-            var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
+            var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<string>((s, c) => new ResponseMessage { Message = s + " handled" });
-            var requestProcessor = container.GetExport<IMessageProcessor>();
+            var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
             var result = await requestProcessor.ProcessAsync("hello", null, CancellationToken.None);

@@ -42,7 +42,7 @@ namespace Kephas.Scheduling.Tests
         public void Injection()
         {
             var container = this.CreateContainer(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
-            var scheduler = container.GetExport<IScheduler>();
+            var scheduler = container.Resolve<IScheduler>();
             Assert.IsInstanceOf<InProcessScheduler>(scheduler);
         }
 

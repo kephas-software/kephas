@@ -25,7 +25,7 @@ namespace Kephas.Tests.Composition.Autofac
             var container = ambientServices
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
                 .BuildWithAutofac(b => b.WithPart(typeof(CustomAmbientServices))).Injector;
-            var otherAmbientServices = container.GetExport<IAmbientServices>();
+            var otherAmbientServices = container.Resolve<IAmbientServices>();
 
             Assert.AreSame(ambientServices, otherAmbientServices);
         }

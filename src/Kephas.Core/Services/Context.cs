@@ -183,7 +183,7 @@ namespace Kephas.Services
         {
             Requires.NotNull(injector, nameof(injector));
 
-            this.AmbientServices = injector.GetExport<IAmbientServices>();
+            this.AmbientServices = injector.Resolve<IAmbientServices>();
             this.Injector = injector;
         }
 

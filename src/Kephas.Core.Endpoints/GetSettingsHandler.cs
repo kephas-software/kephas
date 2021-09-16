@@ -75,7 +75,7 @@ namespace Kephas.Core.Endpoints
             }
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
-            var configuration = this.injector.GetExport(configurationType);
+            var configuration = this.injector.Resolve(configurationType);
             var getSettings = configurationType.GetMethod(nameof(IConfiguration<CoreSettings>.GetSettings));
             var settings = getSettings?.Call(configuration, context);
             return new GetSettingsResponseMessage

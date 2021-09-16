@@ -34,7 +34,7 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
                 new AmbientServices(typeRegistry: typeRegistry),
                 typeof(ILaughActivity),
                 typeof(IEnjoyActivity));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 

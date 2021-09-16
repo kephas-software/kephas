@@ -41,7 +41,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
             Lazy<IUserStoreService<IdentityUser>> lazyUserStore)
             : base(
                 contextFactory,
-                new Lazy<IPasswordHasher<IdentityUser>>(() => injector.GetExport<IPasswordHasher<IdentityUser>>()),
+                new Lazy<IPasswordHasher<IdentityUser>>(() => injector.Resolve<IPasswordHasher<IdentityUser>>()),
                 lazyUserStore)
         {
         }

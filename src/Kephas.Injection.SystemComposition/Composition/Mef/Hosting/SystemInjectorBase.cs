@@ -44,7 +44,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        public virtual object GetExport(Type contractType, string? serviceName = null)
+        public virtual object Resolve(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
 
@@ -59,7 +59,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        public virtual IEnumerable<object> GetExports(Type contractType)
+        public virtual IEnumerable<object> ResolveMany(Type contractType)
         {
             this.AssertNotDisposed();
 
@@ -75,7 +75,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual T GetExport<T>(string? serviceName = null)
+        public virtual T Resolve<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
@@ -93,7 +93,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual IEnumerable<T> GetExports<T>()
+        public virtual IEnumerable<T> ResolveMany<T>()
             where T : class
         {
             this.AssertNotDisposed();
@@ -110,7 +110,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual object? TryGetExport(Type contractType, string? serviceName = null)
+        public virtual object? TryResolve(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
 
@@ -129,7 +129,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual T? TryGetExport<T>(string? serviceName = null)
+        public virtual T? TryResolve<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
@@ -148,7 +148,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         public virtual IInjector CreateScopedInjector()
         {
-            var scopeProvider = this.GetExport<IMefScopeFactory>(InjectionScopeNames.Default);
+            var scopeProvider = this.Resolve<IMefScopeFactory>(InjectionScopeNames.Default);
 
             var scopedContextExport = scopeProvider.CreateScopedContextExport();
             return GetOrAddCompositionContext(scopedContextExport);

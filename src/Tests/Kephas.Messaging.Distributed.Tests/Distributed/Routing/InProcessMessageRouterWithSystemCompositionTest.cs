@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public void InProcessMessageRouter_Injection_success()
         {
             var container = this.CreateContainer();
-            var messageRouters = container.GetExports<IMessageRouter>();
+            var messageRouters = container.ResolveMany<IMessageRouter>();
             Assert.IsTrue(messageRouters.OfType<InProcessAppMessageRouter>().Any());
         }
 
@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public async Task DispatchAsync_with_request()
         {
             var container = this.CreateContainer();
-            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
+            using (var inProcessRouter = container.ResolveMany<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
             {
                 var appContext = new Context(container);
                 await ServiceHelper.InitializeAsync(inProcessRouter, appContext);
@@ -63,7 +63,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public async Task DispatchAsync_with_reply()
         {
             var container = this.CreateContainer();
-            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
+            using (var inProcessRouter = container.ResolveMany<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
             {
                 var appContext = new Context(container);
                 await ServiceHelper.InitializeAsync(inProcessRouter, appContext);

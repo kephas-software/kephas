@@ -35,7 +35,7 @@ namespace Kephas.Data.Client.Tests.Queries
         public void Injection()
         {
             var container = this.CreateContainer();
-            var processor = container.GetExport<IClientQueryProcessor>();
+            var processor = container.Resolve<IClientQueryProcessor>();
 
             Assert.IsInstanceOf<DefaultClientQueryProcessor>(processor);
         }

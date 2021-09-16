@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Tests
                     Substitute.For<IAuthenticationService>(),
                     args.Length > 0 ? args[0] : null);
 
-            container.GetExport(typeof(IExportFactoryImporter<IContextFactory>), Arg.Any<string>())
+            container.Resolve(typeof(IExportFactoryImporter<IContextFactory>), Arg.Any<string>())
                 .Returns(ci =>
                     new ExportFactoryImporter<IContextFactory>(
                         new ExportFactory<IContextFactory>(
@@ -70,10 +70,10 @@ namespace Kephas.Messaging.Tests
                                 return this.CreateContextFactoryMock(ctxCreator);
                             })));
 
-            container.GetExport(typeof(IContextFactory), Arg.Any<string>())
+            container.Resolve(typeof(IContextFactory), Arg.Any<string>())
                 .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
 
-            container.GetExport<IContextFactory>(Arg.Any<string>())
+            container.Resolve<IContextFactory>(Arg.Any<string>())
                 .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
 
             return container;

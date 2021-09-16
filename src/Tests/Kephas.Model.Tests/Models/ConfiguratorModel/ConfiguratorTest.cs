@@ -24,7 +24,7 @@ namespace Kephas.Model.Tests.Models.ConfiguratorModel
         public async Task InitializeAsync_named_configurator()
         {
             var container = this.CreateContainerForModel(new[] { typeof(NamedConfigurator) }, new[] { typeof(INamed) });
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -43,7 +43,7 @@ namespace Kephas.Model.Tests.Models.ConfiguratorModel
         public async Task InitializeAsync_named_configurator_does_not_interfere_with_other()
         {
             var container = this.CreateContainerForModel(new[] { typeof(NamedConfigurator) }, new[] { typeof(INamed), typeof(IOtherNamed) });
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
@@ -62,7 +62,7 @@ namespace Kephas.Model.Tests.Models.ConfiguratorModel
         public void InitializeAsync_derived_named_configurator_does_not_override_base_named()
         {
             var container = this.CreateContainerForModel(new[] { typeof(DerivedNamedConfigurator) }, new[] { typeof(INamed), typeof(IDerivedNamed) });
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             Assert.ThrowsAsync<ModelConfigurationException>(() => provider.InitializeAsync());
         }

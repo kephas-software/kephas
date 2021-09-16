@@ -8,19 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Reflection;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Injection.ExportFactoryImporters;
-using Kephas.Injection.Internal;
-using Kephas.Logging;
-using Kephas.Reflection;
-
 namespace Kephas.Injection
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Reflection;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.ExportFactoryImporters;
+    using Kephas.Injection.Internal;
+    using Kephas.Logging;
+    using Kephas.Reflection;
+
     /// <summary>
     /// Public interface for the injection context.
     /// </summary>
@@ -32,14 +33,14 @@ namespace Kephas.Injection
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        object GetExport(Type contractType, string? serviceName = null);
+        object Resolve(Type contractType, string? serviceName = null);
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        IEnumerable<object> GetExports(Type contractType);
+        IEnumerable<object> ResolveMany(Type contractType);
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -49,7 +50,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        T GetExport<T>(string? serviceName = null)
+        T Resolve<T>(string? serviceName = null)
             where T : class;
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        IEnumerable<T> GetExports<T>()
+        IEnumerable<T> ResolveMany<T>()
             where T : class;
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Kephas.Injection
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the provided contract was not found.</returns>
-        object? TryGetExport(Type contractType, string? serviceName = null);
+        object? TryResolve(Type contractType, string? serviceName = null);
 
         /// <summary>
         /// Tries to resolve the specified contract type.
@@ -78,7 +79,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        T? TryGetExport<T>(string? serviceName = null)
+        T? TryResolve<T>(string? serviceName = null)
             where T : class;
 
         /// <summary>
@@ -152,7 +153,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
             Requires.NotNullOrEmpty(loggerName, nameof(loggerName));
 
-            return injector.GetExport<ILogManager>().GetLogger(loggerName);
+            return injector.Resolve<ILogManager>().GetLogger(loggerName);
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
             Requires.NotNull(type, nameof(type));
 
-            return injector.GetExport<ILogManager>().GetLogger(type);
+            return injector.Resolve<ILogManager>().GetLogger(type);
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Kephas.Injection
         {
             Requires.NotNull(injector, nameof(injector));
 
-            return new TypedLogger<T>(injector.GetExport<ILogManager>());
+            return new TypedLogger<T>(injector.Resolve<ILogManager>());
         }
 
         /// <summary>
@@ -231,7 +232,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
-            var importer = (IExportFactoryImporter)injector.GetExport(importerType);
+            var importer = (IExportFactoryImporter)injector.Resolve(importerType);
             return (IExportFactory<T>)importer.ExportFactory;
         }
 
@@ -249,7 +250,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
-            var importer = (IExportFactoryImporter)injector.GetExport(importerType);
+            var importer = (IExportFactoryImporter)injector.Resolve(importerType);
             return (IExportFactory<T, TMetadata>)importer.ExportFactory;
         }
 
@@ -266,7 +267,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
 
             var importerType = typeof(ICollectionExportFactoryImporter<>).MakeGenericType(typeof(T));
-            var importer = (ICollectionExportFactoryImporter)injector.GetExport(importerType);
+            var importer = (ICollectionExportFactoryImporter)injector.Resolve(importerType);
             return (IEnumerable<IExportFactory<T>>)importer.ExportFactories;
         }
 
@@ -284,7 +285,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
 
             var importerType = typeof(ICollectionExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
-            var importer = (ICollectionExportFactoryImporter)injector.GetExport(importerType);
+            var importer = (ICollectionExportFactoryImporter)injector.Resolve(importerType);
             return (IEnumerable<IExportFactory<T, TMetadata>>)importer.ExportFactories;
         }
 
@@ -301,7 +302,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
-            var importer = (IExportFactoryImporter?)injector.TryGetExport(importerType);
+            var importer = (IExportFactoryImporter?)injector.TryResolve(importerType);
             return (IExportFactory<T>?)importer?.ExportFactory;
         }
 
@@ -319,7 +320,7 @@ namespace Kephas.Injection
             Requires.NotNull(injector, nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
-            var importer = (IExportFactoryImporter?)injector.TryGetExport(importerType);
+            var importer = (IExportFactoryImporter?)injector.TryResolve(importerType);
             return (IExportFactory<T, TMetadata>?)importer?.ExportFactory;
         }
 

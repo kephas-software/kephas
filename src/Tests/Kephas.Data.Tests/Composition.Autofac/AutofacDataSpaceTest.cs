@@ -21,7 +21,7 @@ namespace Kephas.Data.Tests.Composition.Autofac
         public void Injection_success()
         {
             var container = CreateContainer();
-            var dataSpace = container.GetExport<IDataSpace>();
+            var dataSpace = container.Resolve<IDataSpace>();
 
             Assert.IsInstanceOf<DataSpace>(dataSpace);
         }

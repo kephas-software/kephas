@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public void AppServicesRegistry_Injection_success()
         {
             var container = this.CreateContainer();
-            var registry = container.GetExports<IRuntimeModelRegistry>().OfType<AppServicesRegistry>().SingleOrDefault();
+            var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }
 

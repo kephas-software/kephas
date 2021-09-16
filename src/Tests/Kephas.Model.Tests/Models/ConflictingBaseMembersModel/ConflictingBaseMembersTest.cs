@@ -23,7 +23,7 @@ namespace Kephas.Model.Tests.Models.ConflictingBaseMembersModel
         public async Task InitializeAsync_conflicting_base_members_solved()
         {
             var container = this.CreateContainerForModel(typeof(INamed), typeof(IIdentifiable), typeof(EntityBase), typeof(NamedEntityBase));
-            var provider = container.GetExport<IModelSpaceProvider>();
+            var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 

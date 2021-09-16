@@ -775,7 +775,7 @@ namespace Kephas.Application.Tests
             exporter.ExportFactories.Returns(new IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[0]);
 
             var compositionContext = Substitute.For<IInjector>();
-            compositionContext.GetExport(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
+            compositionContext.Resolve(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
                 .Returns(exporter);
 
             return compositionContext;

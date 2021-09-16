@@ -51,7 +51,7 @@ namespace Kephas.Data.MongoDB.Diagnostics
         /// <param name="injector">The composition context.</param>
         public MongoDataContextLogEventSubscriber(IInjector injector)
         {
-            this.logger = injector.GetExport<ILogManager>().GetLogger<MongoDataContextLogEventSubscriber>();
+            this.logger = injector.Resolve<ILogManager>().GetLogger<MongoDataContextLogEventSubscriber>();
             this.subscriber = new ReflectionEventSubscriber(this, nameof(this.Handle), BindingFlags.Instance | BindingFlags.NonPublic);
         }
 

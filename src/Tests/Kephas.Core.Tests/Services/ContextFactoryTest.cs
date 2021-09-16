@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Services
             var serializationService = Substitute.For<ISerializationService>();
 
             var (ambientServices, compositionContext) = this.GetServices(new AppServiceInfo(typeof(ISerializationService), serializationService));
-            compositionContext.GetExport(typeof(ISerializationService), Arg.Any<string>()).Returns(serializationService);
+            compositionContext.Resolve(typeof(ISerializationService), Arg.Any<string>()).Returns(serializationService);
             var factory = new ContextFactory(compositionContext, ambientServices, Substitute.For<ILogManager>());
             var context = factory.CreateContext<SerializationContext>(typeof(string));
 
@@ -73,10 +73,10 @@ namespace Kephas.Core.Tests.Services
             ambientServices.GetService(typeof(IInjector)).Returns(compositionContext);
             ambientServices["__AppServiceInfosKey"].Returns(infos);
 
-            compositionContext.GetExport(typeof(IAmbientServices), Arg.Any<string>()).Returns(ambientServices);
-            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            compositionContext.GetExport(typeof(IInjector), Arg.Any<string>()).Returns(compositionContext);
-            compositionContext.GetExport<IInjector>(Arg.Any<string>()).Returns(compositionContext);
+            compositionContext.Resolve(typeof(IAmbientServices), Arg.Any<string>()).Returns(ambientServices);
+            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            compositionContext.Resolve(typeof(IInjector), Arg.Any<string>()).Returns(compositionContext);
+            compositionContext.Resolve<IInjector>(Arg.Any<string>()).Returns(compositionContext);
 
             return (ambientServices, compositionContext);
         }

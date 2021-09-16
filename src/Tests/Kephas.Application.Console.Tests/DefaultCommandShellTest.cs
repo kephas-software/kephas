@@ -30,7 +30,7 @@ namespace Kephas.Application.Console.Tests
         public void Injection()
         {
             var container = this.CreateContainer();
-            var shell = container.GetExport<ICommandShell>();
+            var shell = container.Resolve<ICommandShell>();
 
             Assert.IsInstanceOf<DefaultCommandShell>(shell);
         }

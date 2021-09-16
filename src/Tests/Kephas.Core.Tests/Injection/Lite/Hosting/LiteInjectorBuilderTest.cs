@@ -43,7 +43,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
             Assert.IsInstanceOf<InjectorAdapter>(ambientServices.Injector);
 
-            var appManager = ambientServices.Injector.GetExport<IEncryptionService>();
+            var appManager = ambientServices.Injector.Resolve<IEncryptionService>();
             Assert.IsInstanceOf<NullEncryptionService>(appManager);
         }
 
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         }
 
         [Test]
-        public void GetExport_AppService_Singleton()
+        public void Resolve_AppService_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -144,14 +144,14 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateInjector();
 
-            var exported = container.GetExport<ITestAppService>();
-            var secondExported = container.GetExport<ITestAppService>();
+            var exported = container.Resolve<ITestAppService>();
+            var secondExported = container.Resolve<ITestAppService>();
 
             Assert.AreSame(exported, secondExported);
         }
 
         [Test]
-        public void GetExport_AppService_Single_Success()
+        public void Resolve_AppService_Single_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -159,13 +159,13 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateInjector();
 
-            var exported = container.GetExport<ITestAppService>();
+            var exported = container.Resolve<ITestAppService>();
 
             Assert.IsInstanceOf<TestAppService>(exported);
         }
 
         [Test]
-        public void GetExport_AppService_Single_Override_Success()
+        public void Resolve_AppService_Single_Override_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -173,57 +173,57 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .CreateInjector();
 
-            var exported = container.GetExport<ITestAppService>();
+            var exported = container.Resolve<ITestAppService>();
 
             Assert.IsInstanceOf<TestOverrideAppService>(exported);
         }
 
         [Test]
-        public void GetExport_ExportFactory_NotFound()
+        public void Resolve_ExportFactory_NotFound()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateInjector();
 
-            Assert.Throws<InjectionException>(() => container.GetExport<IExportFactory<ITestAppService>>());
+            Assert.Throws<InjectionException>(() => container.Resolve<IExportFactory<ITestAppService>>());
         }
 
         [Test]
-        public void GetExport_ExportFactoryWithMetadata_NotFound()
+        public void Resolve_ExportFactoryWithMetadata_NotFound()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateInjector();
 
-            Assert.Throws<InjectionException>(() => container.GetExport<IExportFactory<ITestAppService, AppServiceMetadata>>());
+            Assert.Throws<InjectionException>(() => container.Resolve<IExportFactory<ITestAppService, AppServiceMetadata>>());
         }
 
         [Test]
-        public void GetExport_Lazy_NotFound()
+        public void Resolve_Lazy_NotFound()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateInjector();
 
-            Assert.Throws<InjectionException>(() => container.GetExport<Lazy<ITestAppService>>());
+            Assert.Throws<InjectionException>(() => container.Resolve<Lazy<ITestAppService>>());
         }
 
         [Test]
-        public void GetExport_LazyWithMetadata_NotFound()
+        public void Resolve_LazyWithMetadata_NotFound()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .CreateInjector();
 
-            Assert.Throws<InjectionException>(() => container.GetExport<Lazy<ITestAppService, AppServiceMetadata>>());
+            Assert.Throws<InjectionException>(() => container.Resolve<Lazy<ITestAppService, AppServiceMetadata>>());
         }
 
         [Test]
-        public void GetExports_AppService_Multiple_Singleton()
+        public void ResolveMany_AppService_Multiple_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -231,15 +231,15 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateInjector();
 
-            var exports = container.GetExports<ITestMultiAppService>().ToList();
-            var exports2 = container.GetExports<ITestMultiAppService>().ToList();
+            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
+            var exports2 = container.ResolveMany<ITestMultiAppService>().ToList();
 
             Assert.AreSame(exports[0], exports2[0]);
             Assert.AreSame(exports[1], exports2[1]);
         }
 
         [Test]
-        public void GetExports_AppService_Multiple_Success()
+        public void ResolveMany_AppService_Multiple_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -247,13 +247,13 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateInjector();
 
-            var exports = container.GetExports<ITestMultiAppService>().ToList();
+            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
 
             Assert.AreEqual(2, exports.Count);
         }
 
         [Test]
-        public void GetExports_AppService_IExportFactory_Success()
+        public void ResolveMany_AppService_IExportFactory_Success()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -261,14 +261,14 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
                 .CreateInjector();
 
-            var export = (TestMultiAppServiceConsumer)container.GetExport<ITestMultiAppServiceConsumer>();
+            var export = (TestMultiAppServiceConsumer)container.Resolve<ITestMultiAppServiceConsumer>();
 
             Assert.AreEqual(2, export.Factories.Count());
             Assert.AreEqual(2, export.MetadataFactories.Count());
         }
 
         [Test]
-        public void GetExport_AppService_generic_export()
+        public void Resolve_AppService_generic_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -276,12 +276,12 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateInjector();
 
-            var export = container.GetExport<ITestGenericExport<string>>();
+            var export = container.Resolve<ITestGenericExport<string>>();
             Assert.IsInstanceOf<TestGenericExport>(export);
         }
 
         [Test]
-        public void GetExport_AppService_generic_export_with_non_generic_contract()
+        public void Resolve_AppService_generic_export_with_non_generic_contract()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -289,13 +289,13 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
                 .CreateInjector();
 
-            var export = container.GetExport<ITestGenericWithNonGenericExport>();
+            var export = container.Resolve<ITestGenericWithNonGenericExport>();
             Assert.IsInstanceOf<TestGenericWithNonGenericExport>(export);
         }
 
         [Test]
         [Ignore("Ignore until the CompositionConstructor attribute will be supported.")]
-        public void GetExport_AppService_with_injection_constructor()
+        public void Resolve_AppService_with_injection_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -304,7 +304,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                     new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
                     new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
                 .CreateInjector();
-            var exported = container.GetExport<ExportedClassWithFakeDependency>();
+            var exported = container.Resolve<ExportedClassWithFakeDependency>();
 
             Assert.IsNotNull(exported);
             Assert.IsInstanceOf<ExportedClassWithFakeDependency>(exported);

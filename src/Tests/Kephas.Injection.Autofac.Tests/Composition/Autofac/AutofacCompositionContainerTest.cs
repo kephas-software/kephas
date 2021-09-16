@@ -50,12 +50,12 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_from_ambient_services_self()
+        public void Resolve_from_ambient_services_self()
         {
             var ambientServices = new AmbientServices();
             var container = this.CreateContainerWithBuilder(ambientServices);
-            var containerExport = container.GetExport(typeof(IAmbientServices));
-            var ambientExport = container.GetExport(typeof(IAmbientServices));
+            var containerExport = container.Resolve(typeof(IAmbientServices));
+            var ambientExport = container.Resolve(typeof(IAmbientServices));
 
             Assert.IsNotNull(containerExport);
             Assert.AreSame(ambientExport, containerExport);
@@ -63,99 +63,99 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_from_ambient_services_instance()
+        public void Resolve_from_ambient_services_instance()
         {
             var ambientServices = new AmbientServices();
             var container = this.CreateContainerWithBuilder(ambientServices);
-            var containerExport = container.GetExport(typeof(ILogManager));
-            var ambientExport = container.GetExport(typeof(ILogManager));
+            var containerExport = container.Resolve(typeof(ILogManager));
+            var ambientExport = container.Resolve(typeof(ILogManager));
 
             Assert.IsNotNull(containerExport);
             Assert.AreSame(ambientExport, containerExport);
         }
 
         [Test]
-        public void GetExport_from_ambient_services_instance_type()
+        public void Resolve_from_ambient_services_instance_type()
         {
             var ambientServices = new AmbientServices();
             var container = this.CreateContainerWithBuilder(ambientServices);
-            var containerExport = container.GetExport(typeof(ITypeLoader));
-            var ambientExport = container.GetExport(typeof(ITypeLoader));
+            var containerExport = container.Resolve(typeof(ITypeLoader));
+            var ambientExport = container.Resolve(typeof(ITypeLoader));
 
             Assert.IsNotNull(containerExport);
             Assert.AreSame(ambientExport, containerExport);
         }
 
         [Test]
-        public void GetExport_success()
+        public void Resolve_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.GetExport(typeof(ExportedClass));
+            var exported = container.Resolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
             Assert.IsInstanceOf<ExportedClass>(exported);
         }
 
         [Test]
-        public void TryGetExport_success()
+        public void TryResolve_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.TryGetExport(typeof(ExportedClass));
+            var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
             Assert.IsInstanceOf<ExportedClass>(exported);
         }
 
         [Test]
-        public void TryGetExport_failure()
+        public void TryResolve_failure()
         {
             var container = this.CreateContainer();
-            var exported = container.TryGetExport(typeof(ExportedClass));
+            var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNull(exported);
         }
 
         [Test]
-        public void GetExport_generic_success()
+        public void Resolve_generic_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.GetExport<ExportedClass>();
+            var exported = container.Resolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
             Assert.IsInstanceOf<ExportedClass>(exported);
         }
 
         [Test]
-        public void TryGetExport_generic_success()
+        public void TryResolve_generic_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.TryGetExport<ExportedClass>();
+            var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
             Assert.IsInstanceOf<ExportedClass>(exported);
         }
 
         [Test]
-        public void TryGetExport_generic_failure()
+        public void TryResolve_generic_failure()
         {
             var container = this.CreateContainer();
-            var exported = container.TryGetExport<ExportedClass>();
+            var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNull(exported);
         }
 
         [Test]
-        public void GetExport_failure()
+        public void Resolve_failure()
         {
             var container = this.CreateContainer();
-            Assert.Throws<ComponentNotRegisteredException>(() => container.GetExport(typeof(ExportedClass)));
+            Assert.Throws<ComponentNotRegisteredException>(() => container.Resolve(typeof(ExportedClass)));
         }
 
         [Test]
-        public void GetExports_success()
+        public void ResolveMany_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.GetExports(typeof(ExportedClass));
+            var exported = container.ResolveMany(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
             var exportedList = exported.ToList();
@@ -164,10 +164,10 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExports_empty()
+        public void ResolveMany_empty()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.GetExports(typeof(string));
+            var exported = container.ResolveMany(typeof(string));
 
             Assert.IsNotNull(exported);
             var exportedList = exported.ToList();
@@ -175,13 +175,13 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExports_various_same_contract_registrations()
+        public void ResolveMany_various_same_contract_registrations()
         {
             var container = this.CreateContainer(
                 parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
                 config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
 
-            var filters = container.GetExports(typeof(IFilter));
+            var filters = container.ResolveMany(typeof(IFilter));
 
             Assert.AreEqual(3, filters.Count());
             Assert.IsTrue(filters.OfType<OneFilter>().Any());
@@ -208,7 +208,7 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var container = this.CreateContainer();
             container.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => container.TryGetExport<IList<string>>());
+            Assert.Throws<ObjectDisposedException>(() => container.TryResolve<IList<string>>());
         }
 
         [Test]
@@ -231,18 +231,18 @@ namespace Kephas.Tests.Composition.Autofac
             using (var scopedContext = container.CreateScopedInjector())
             using (var otherScopedContext = container.CreateScopedInjector())
             {
-                var scopedInstance1 = scopedContext.GetExport<ScopeExportedClass>();
-                var scopedInstance2 = scopedContext.GetExport<ScopeExportedClass>();
+                var scopedInstance1 = scopedContext.Resolve<ScopeExportedClass>();
+                var scopedInstance2 = scopedContext.Resolve<ScopeExportedClass>();
 
                 Assert.AreSame(scopedInstance1, scopedInstance2);
 
-                var otherScopedInstance = otherScopedContext.GetExport<ScopeExportedClass>();
+                var otherScopedInstance = otherScopedContext.Resolve<ScopeExportedClass>();
                 Assert.AreNotSame(scopedInstance1, otherScopedInstance);
             }
         }
 
         [Test]
-        public void GetExport_ambient_services()
+        public void Resolve_ambient_services()
         {
             var ambientServices = new AmbientServices();
             var service = Substitute.For<IAsyncInitializable>();
@@ -250,37 +250,37 @@ namespace Kephas.Tests.Composition.Autofac
 
             var container = this.CreateContainerWithBuilder(ambientServices);
 
-            var actualService = container.GetExport<IAsyncInitializable>();
+            var actualService = container.Resolve<IAsyncInitializable>();
             Assert.AreSame(service, actualService);
         }
 
         [Test]
-        public void GetExport_ambient_services_factory()
+        public void Resolve_ambient_services_factory()
         {
             var ambientServices = new AmbientServices();
             ambientServices.RegisterTransient(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             var container = this.CreateContainerWithBuilder(ambientServices);
 
-            var service1 = container.GetExport<IAsyncInitializable>();
-            var service2 = container.GetExport<IAsyncInitializable>();
+            var service1 = container.Resolve<IAsyncInitializable>();
+            var service2 = container.Resolve<IAsyncInitializable>();
             Assert.AreNotSame(service1, service2);
         }
 
         [Test]
-        public void GetExport_ambient_services_not_available_after_first_failed_request()
+        public void Resolve_ambient_services_not_available_after_first_failed_request()
         {
             var ambientServices = new AmbientServices();
             var container = this.CreateContainerWithBuilder(ambientServices);
 
-            var service = container.TryGetExport<IAsyncInitializable>();
+            var service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);
 
             ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             // This is null because the composition container caches the export providers, and after a first request
             // when the export was not available, will cache the empty export providers.
-            service = container.TryGetExport<IAsyncInitializable>();
+            service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);
         }
 

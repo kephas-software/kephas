@@ -30,7 +30,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var broker = Substitute.For<IMessageBroker>();
             var container = this.CreateMessagingContainerMock();
-            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
+            var context = container.Resolve<IContextFactory>().CreateContext<DispatchingContext>();
 
             object content = null;
             broker.DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
@@ -47,7 +47,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var broker = Substitute.For<IMessageBroker>();
             var container = this.CreateMessagingContainerMock();
-            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
+            var context = container.Resolve<IContextFactory>().CreateContext<DispatchingContext>();
 
             object content = null;
             broker.DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
@@ -64,7 +64,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var broker = Substitute.For<IMessageBroker>();
             var container = this.CreateMessagingContainerMock();
-            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
+            var context = container.Resolve<IContextFactory>().CreateContext<DispatchingContext>();
 
             object content = null;
             broker.DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
@@ -81,7 +81,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var broker = Substitute.For<IMessageBroker>();
             var container = this.CreateMessagingContainerMock();
-            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
+            var context = container.Resolve<IContextFactory>().CreateContext<DispatchingContext>();
 
             object content = null;
             broker.DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
@@ -98,7 +98,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var broker = Substitute.For<IMessageBroker>();
             var container = this.CreateMessagingContainerMock();
-            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
+            var context = container.Resolve<IContextFactory>().CreateContext<DispatchingContext>();
 
             object content = null;
             broker.DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
@@ -118,7 +118,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var broker = Substitute.For<IMessageBroker>();
             var container = this.CreateMessagingContainerMock();
-            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
+            var context = container.Resolve<IContextFactory>().CreateContext<DispatchingContext>();
 
             object content = null;
             broker.DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())

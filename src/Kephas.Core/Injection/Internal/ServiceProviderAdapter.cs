@@ -89,7 +89,7 @@ namespace Kephas.Injection.Internal
                         return this.injector.GetExportFactories(contractType, metadataType);
                     }
 
-                    var exports = this.injector.GetExports(exportType);
+                    var exports = this.injector.ResolveMany(exportType);
                     if (serviceType.IsClass)
                     {
                         var toList = ToListMethod.MakeGenericMethod(exportType);
@@ -103,7 +103,7 @@ namespace Kephas.Injection.Internal
                 }
             }
 
-            return this.injector.TryGetExport(serviceType);
+            return this.injector.TryResolve(serviceType);
         }
 
         private TEnumerable ToEnumerable<TEnumerable>(IEnumerable<object> exports)

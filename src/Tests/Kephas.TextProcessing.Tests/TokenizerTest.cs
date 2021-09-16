@@ -21,7 +21,7 @@ namespace Kephas.TextProcessing.Tests
         public void Injection()
         {
             var container = this.CreateContainer();
-            var tokenizer = container.GetExport<ITokenizer>();
+            var tokenizer = container.Resolve<ITokenizer>();
 
             Assert.IsInstanceOf<Tokenizer>(tokenizer);
         }
@@ -32,7 +32,7 @@ namespace Kephas.TextProcessing.Tests
         public void Tokenize_simple(string text, string[] expectedTokens)
         {
             var container = this.CreateContainer();
-            var tokenizer = container.GetExport<ITokenizer>();
+            var tokenizer = container.Resolve<ITokenizer>();
 
             var tokens = tokenizer.Tokenize(text).ToArray();
 

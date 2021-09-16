@@ -37,7 +37,7 @@ namespace Kephas.Injection.Internal
         /// <returns>
         /// An object implementing <paramref name="contractType"/>.
         /// </returns>
-        public object GetExport(Type contractType, string? serviceName = null)
+        public object Resolve(Type contractType, string? serviceName = null)
         {
             return this.serviceProvider.GetService(contractType);
         }
@@ -49,7 +49,7 @@ namespace Kephas.Injection.Internal
         /// <returns>
         /// An enumeration of objects implementing <paramref name="contractType"/>.
         /// </returns>
-        public IEnumerable<object> GetExports(Type contractType)
+        public IEnumerable<object> ResolveMany(Type contractType)
         {
             var collectionType = typeof(IEnumerable<>).MakeGenericType(contractType);
             return (IEnumerable<object>)this.serviceProvider.GetService(collectionType);
@@ -63,7 +63,7 @@ namespace Kephas.Injection.Internal
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T GetExport<T>(string? serviceName = null)
+        public T Resolve<T>(string? serviceName = null)
             where T : class
         {
             return (T)this.serviceProvider.GetService(typeof(T));
@@ -76,7 +76,7 @@ namespace Kephas.Injection.Internal
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        public IEnumerable<T> GetExports<T>()
+        public IEnumerable<T> ResolveMany<T>()
             where T : class
         {
             var collectionType = typeof(IEnumerable<>).MakeGenericType(typeof(T));
@@ -92,7 +92,7 @@ namespace Kephas.Injection.Internal
         /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object TryGetExport(Type contractType, string? serviceName = null)
+        public object TryResolve(Type contractType, string? serviceName = null)
         {
             return this.serviceProvider.GetService(contractType);
         }
@@ -106,7 +106,7 @@ namespace Kephas.Injection.Internal
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T? TryGetExport<T>(string? serviceName = null)
+        public T? TryResolve<T>(string? serviceName = null)
             where T : class
         {
             return (T?)this.serviceProvider.GetService(typeof(T));

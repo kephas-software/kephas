@@ -29,7 +29,7 @@ namespace Kephas.Data.Tests
         public void Injection()
         {
             var container = this.CreateContainer();
-            var dataSpace = container.GetExport<IDataSpace>();
+            var dataSpace = container.Resolve<IDataSpace>();
 
             Assert.IsNotNull(dataSpace);
         }

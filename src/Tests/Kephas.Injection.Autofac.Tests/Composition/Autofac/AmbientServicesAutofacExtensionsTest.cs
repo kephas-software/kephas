@@ -44,7 +44,7 @@ namespace Kephas.Tests.Composition.Autofac
                 .BuildWithAutofac(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
             var compositionContext = ambientServices.Injector;
-            var moreOpen = compositionContext.GetExport<IOpen<int>>();
+            var moreOpen = compositionContext.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Composition.Autofac
                 .BuildWithAutofac(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
             var compositionContext = ambientServices.Injector;
-            var moreOpen = compositionContext.GetExport<IOpen<int>>();
+            var moreOpen = compositionContext.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);
         }
 

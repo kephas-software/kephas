@@ -57,7 +57,7 @@ namespace Kephas.Extensions.Configuration.Providers
         /// </returns>
         public virtual object? GetSettings(Type settingsType, IContext? context)
         {
-            var options = this.injector.TryGetExport(typeof(IOptions<>).MakeGenericType(settingsType));
+            var options = this.injector.TryResolve(typeof(IOptions<>).MakeGenericType(settingsType));
             return options?.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
         }
 
@@ -80,10 +80,10 @@ namespace Kephas.Extensions.Configuration.Providers
         protected virtual FileSettingsProvider CreateFileSettingsProvider()
         {
             return new FileSettingsProvider(
-                this.injector.GetExport<IAppRuntime>(),
-                this.injector.GetExport<ISerializationService>(),
-                this.injector.GetExport<ICollection<Lazy<IMediaType, MediaTypeMetadata>>>(),
-                this.injector.GetExport<ILogManager>());
+                this.injector.Resolve<IAppRuntime>(),
+                this.injector.Resolve<ISerializationService>(),
+                this.injector.Resolve<ICollection<Lazy<IMediaType, MediaTypeMetadata>>>(),
+                this.injector.Resolve<ILogManager>());
         }
     }
 }

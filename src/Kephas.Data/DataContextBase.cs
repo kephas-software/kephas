@@ -65,7 +65,7 @@ namespace Kephas.Data
             this.Id = Guid.NewGuid();
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
             this.Logger = this.AmbientServices.GetLogger(this.GetType());
-            this.typeRegistry = injector.GetExport<IRuntimeTypeRegistry>();
+            this.typeRegistry = injector.Resolve<IRuntimeTypeRegistry>();
         }
 
         /// <summary>

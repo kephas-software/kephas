@@ -137,7 +137,7 @@ namespace Kephas.Model.Elements
             }
 
             // TODO resolve or exception for generic services
-            return this.injector.GetExport(this.ContractType);
+            return this.injector.Resolve(this.ContractType);
         }
 
         /// <summary>Adds a part to the aggregated element.</summary>

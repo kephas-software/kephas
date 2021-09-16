@@ -21,7 +21,7 @@ namespace Kephas.Serialization.Json.Tests.Integration.Reflection.Dynamic
         public void Deserialize_Schema1()
         {
             var container = this.CreateContainer();
-            var serializationService = container.GetExport<ISerializationService>();
+            var serializationService = container.Resolve<ISerializationService>();
             var dynTypeRegistry = serializationService.JsonDeserialize<DynamicTypeRegistry>(
                 this.GetJson("Schema1.json").ReadAllString());
 
@@ -49,7 +49,7 @@ namespace Kephas.Serialization.Json.Tests.Integration.Reflection.Dynamic
         public void Serialize_Schema1()
         {
             var container = this.CreateContainer();
-            var serializationService = container.GetExport<ISerializationService>();
+            var serializationService = container.Resolve<ISerializationService>();
             var dynTypeRegistry = serializationService.JsonDeserialize<DynamicTypeRegistry>(
                 this.GetJson("Schema1.json").ReadAllString());
 

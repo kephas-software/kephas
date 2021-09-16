@@ -81,7 +81,7 @@ namespace Kephas.Core.Tests.Configuration
             // specific provider
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
 
-            var config = container.GetExport<IConfiguration<TestSettings>>();
+            var config = container.Resolve<IConfiguration<TestSettings>>();
             Assert.AreSame(TestConfigurationProvider.Settings, config.GetSettings());
         }
 
@@ -90,15 +90,15 @@ namespace Kephas.Core.Tests.Configuration
         {
             // specific provider
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
-            var eventHub = container.GetExport<IEventHub>();
-            var appRuntime = container.GetExport<IAppRuntime>();
+            var eventHub = container.Resolve<IEventHub>();
+            var appRuntime = container.Resolve<IAppRuntime>();
             var configChanged = 0;
             using var subscription = eventHub.Subscribe<ConfigurationChangedSignal>(
                 (s, ctx) =>
                     configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId()
                                      && s.SettingsType == typeof(TestSettings).FullName ? 1 : 0);
 
-            var config = container.GetExport<IConfiguration<TestSettings>>();
+            var config = container.Resolve<IConfiguration<TestSettings>>();
             await config.UpdateSettingsAsync();
 
             Assert.AreEqual(0, configChanged);
@@ -109,15 +109,15 @@ namespace Kephas.Core.Tests.Configuration
         {
             // specific provider
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
-            var eventHub = container.GetExport<IEventHub>();
-            var appRuntime = container.GetExport<IAppRuntime>();
+            var eventHub = container.Resolve<IEventHub>();
+            var appRuntime = container.Resolve<IAppRuntime>();
             var configChanged = 0;
             using var subscription = eventHub.Subscribe<ConfigurationChangedSignal>(
                 (s, ctx) =>
                     configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId()
                                      && s.SettingsType == typeof(TestSettings).FullName ? 1 : 0);
 
-            var config = container.GetExport<IConfiguration<TestSettings>>();
+            var config = container.Resolve<IConfiguration<TestSettings>>();
             await config.UpdateSettingsAsync(new TestSettings());
 
             Assert.AreEqual(1, configChanged);

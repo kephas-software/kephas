@@ -26,7 +26,7 @@ namespace Kephas.Tests.Commands.Messaging
         public void Injection()
         {
             var container = this.CreateContainer();
-            var resolver = container.GetExport<ICommandResolver>();
+            var resolver = container.Resolve<ICommandResolver>();
 
             Assert.IsInstanceOf<DistributedMessagingCommandResolver>(resolver);
         }

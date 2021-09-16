@@ -81,7 +81,7 @@ namespace Kephas.Data.Commands.Factory
         private Func<IDataCommand> CreateCommandFactory(Type dataContextType, Type commandType)
         {
             var dataCommandFactoryType = typeof(IDataCommandFactory<>).MakeGenericType(commandType);
-            var dataCommandFactory = (IDataCommandFactory)this.injector.TryGetExport(dataCommandFactoryType);
+            var dataCommandFactory = (IDataCommandFactory)this.injector.TryResolve(dataCommandFactoryType);
             if (dataCommandFactory == null)
             {
                 return () => null;

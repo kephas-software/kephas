@@ -32,7 +32,7 @@ namespace Kephas.Core.Endpoints.Tests
             var config = Substitute.For<IConfiguration<CoreSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
             var container = Substitute.For<IInjector>();
-            container.GetExport(typeof(IConfiguration<CoreSettings>))
+            container.Resolve(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });
             var handler = new GetSettingsHandler(container, typeResolver);

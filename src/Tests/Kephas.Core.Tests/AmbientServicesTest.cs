@@ -437,9 +437,9 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var compositionContextMock = Substitute.For<IInjector>();
-            compositionContextMock.TryGetExport<IInjector>(null).Returns((IInjector)null);
+            compositionContextMock.TryResolve<IInjector>(null).Returns((IInjector)null);
             ambientServices.Register(compositionContextMock);
-            var noService = ambientServices.Injector.TryGetExport<IInjector>();
+            var noService = ambientServices.Injector.TryResolve<IInjector>();
             Assert.IsNull(noService);
         }
 

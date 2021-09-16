@@ -29,7 +29,7 @@ namespace Kephas.Core.Endpoints.Tests
         public async Task ProcessAsync_missing_contracttype()
         {
             var container = this.CreateContainer();
-            var handler = new GetServicesHandler(container.GetExport<ITypeResolver>(), container);
+            var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.ProcessAsync(
                 new GetServicesMessage(),
@@ -41,7 +41,7 @@ namespace Kephas.Core.Endpoints.Tests
         public async Task ProcessAsync_single()
         {
             var container = this.CreateContainer();
-            var handler = new GetServicesHandler(container.GetExport<ITypeResolver>(), container);
+            var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
                 new GetServicesMessage { ContractType = typeof(IIdGenerator).Name },
@@ -58,7 +58,7 @@ namespace Kephas.Core.Endpoints.Tests
             var container = this.CreateContainer(
                 assemblies: new Assembly[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesMessage).Assembly },
                 parts: new Type[] { typeof(TestGetServicesHandler) });
-            var handler = new GetServicesHandler(container.GetExport<ITypeResolver>(), container);
+            var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
                 new GetServicesMessage { ContractType = typeof(IMessageHandler).Name },
@@ -77,7 +77,7 @@ namespace Kephas.Core.Endpoints.Tests
             var container = this.CreateContainer(
                 assemblies: new Assembly[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesMessage).Assembly },
                 parts: new Type[] { typeof(TestGetServicesHandler) });
-            var handler = new GetServicesHandler(container.GetExport<ITypeResolver>(), container);
+            var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
                 new GetServicesMessage { ContractType = typeof(IMessageHandler).Name, Ordered = true },
