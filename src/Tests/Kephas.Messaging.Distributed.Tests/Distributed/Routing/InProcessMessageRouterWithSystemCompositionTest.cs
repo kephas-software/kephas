@@ -22,10 +22,10 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using NUnit.Framework;
 
     [TestFixture]
-    public class InProcessMessageRouterTest : MefMessagingTestBase
+    public class InProcessMessageRouterWithSystemCompositionTest : MessagingWithSystemCompositionTestBase
     {
         [Test]
-        public void InProcessMessageRouter_Composition_success()
+        public void InProcessMessageRouter_Injection_success()
         {
             var container = this.CreateContainer();
             var messageRouters = container.GetExports<IMessageRouter>();

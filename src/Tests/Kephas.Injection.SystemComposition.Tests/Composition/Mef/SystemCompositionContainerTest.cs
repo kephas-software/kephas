@@ -1,17 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionContainerTest.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionContainerTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Tests for <see cref="MefCompositionContainer" />.
+//   Tests for <see cref="SystemCompositionContainer" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Composition.Mef;
-using Kephas.Injection;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
 
 namespace Kephas.Tests.Composition.Mef
 {
@@ -23,15 +18,17 @@ namespace Kephas.Tests.Composition.Mef
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Injection;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -39,7 +36,7 @@ namespace Kephas.Tests.Composition.Mef
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefCompositionContainerTest : MefCompositionTestBase
+    public class SystemCompositionContainerTest : SystemCompositionTestBase
     {
         public SystemCompositionContainer CreateContainer(params Type[] types)
         {

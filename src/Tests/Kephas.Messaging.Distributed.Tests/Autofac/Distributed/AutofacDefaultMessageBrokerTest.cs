@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         }
 
         [Test]
-        public void DefaultMessageBroker_Composition_success()
+        public void DefaultMessageBroker_Injection_success()
         {
             var container = CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();

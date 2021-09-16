@@ -5,11 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.AttributedModel;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-
 namespace Kephas.Tests.Composition.Mef
 {
     using System;
@@ -22,19 +17,20 @@ namespace Kephas.Tests.Composition.Mef
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Composition.Mef.ScopeFactory;
+    using Kephas.Injection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
     using Kephas.Testing.Composition;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -42,7 +38,7 @@ namespace Kephas.Tests.Composition.Mef
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class SystemCompositionContainerBuilderTest : MefCompositionTestBase
+    public class SystemCompositionContainerBuilderTest : SystemCompositionTestBase
     {
         [Test]
         public async Task CreateContainer_simple_ambient_services_exported()
@@ -87,8 +83,8 @@ namespace Kephas.Tests.Composition.Mef
                 .WithAssembly(typeof(MefConventionsBuilder).GetTypeInfo().Assembly)
                 .CreateInjector();
 
-            var logger = container.GetExport<ILogger<MefCompositionContainerTest.ExportedClass>>();
-            Assert.IsInstanceOf<TypedLogger<MefCompositionContainerTest.ExportedClass>>(logger);
+            var logger = container.GetExport<ILogger<SystemCompositionContainerTest.ExportedClass>>();
+            Assert.IsInstanceOf<TypedLogger<SystemCompositionContainerTest.ExportedClass>>(logger);
         }
 
         [Test]
@@ -206,7 +202,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_AppService_with_composition_constructor()
+        public void GetExport_AppService_with_injection_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder

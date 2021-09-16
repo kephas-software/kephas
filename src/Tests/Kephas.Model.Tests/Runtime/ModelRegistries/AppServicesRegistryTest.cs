@@ -47,7 +47,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         }
 
         [Test]
-        public void AppServicesRegistry_Composition_success()
+        public void AppServicesRegistry_Injection_success()
         {
             var container = this.CreateContainer();
             var registry = container.GetExports<IRuntimeModelRegistry>().OfType<AppServicesRegistry>().SingleOrDefault();

@@ -8,16 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Tests.Composition.Mef
 {
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Injection;
     using Kephas.Testing.Composition;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -25,22 +23,22 @@ namespace Kephas.Tests.Composition.Mef
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ScopedSystemCompositionContextTest : MefCompositionTestBase
+    public class ScopedSystemCompositionContextTest : SystemCompositionTestBase
     {
         [Test]
         public void CreateScopedContext_NestedScopes()
         {
-            var container = this.CreateContainerWithBuilder(typeof(MefCompositionContainerTest.ScopeExportedClass));
+            var container = this.CreateContainerWithBuilder(typeof(SystemCompositionContainerTest.ScopeExportedClass));
             using (var scopedContext = container.CreateScopedInjector())
             {
                 Assert.IsInstanceOf<ScopedSystemInjector>(scopedContext);
-                var scopedInstance1 = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance1 = scopedContext.GetExport<SystemCompositionContainerTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedInjector())
                 {
                     Assert.AreNotSame(scopedContext, nestedContext);
 
-                    var scopedInstance2 = nestedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
+                    var scopedInstance2 = nestedContext.GetExport<SystemCompositionContainerTest.ScopeExportedClass>();
                     Assert.AreNotSame(scopedInstance1, scopedInstance2);
                 }
             }
@@ -68,10 +66,10 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void CreateScopedContext_CompositionContext_registration_scope_consumers()
         {
-            var container = this.CreateContainerWithBuilder(typeof(MefCompositionContainerTest.ScopeExportedClass));
+            var container = this.CreateContainerWithBuilder(typeof(SystemCompositionContainerTest.ScopeExportedClass));
             using (var scopedContext = container.CreateScopedInjector())
             {
-                var scopedInstance = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance = scopedContext.GetExport<SystemCompositionContainerTest.ScopeExportedClass>();
                 Assert.AreSame(scopedContext, scopedInstance.Injector);
             }
         }

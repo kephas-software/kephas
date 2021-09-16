@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefDefaultMessageProcessorTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultMessageProcessorWithSystemCompositionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -67,7 +67,7 @@ namespace Kephas.Messaging.Tests.Autofac
         }
 
         [Test]
-        public void DefaultMessageProcessor_Composition_success()
+        public void DefaultMessageProcessor_Injection_success()
         {
             var container = this.CreateContainer();
             var requestProcessor = container.GetExport<IMessageProcessor>();
@@ -78,7 +78,7 @@ namespace Kephas.Messaging.Tests.Autofac
         }
 
         [Test]
-        public async Task ProcessAsync_Composition_success()
+        public async Task ProcessAsync_Injection_success()
         {
             var container = this.CreateContainer();
             var requestProcessor = container.GetExport<IMessageProcessor>();
@@ -89,7 +89,7 @@ namespace Kephas.Messaging.Tests.Autofac
         }
 
         [Test]
-        public async Task ProcessAsync_Composition_non_message_success()
+        public async Task ProcessAsync_injection_non_message_success()
         {
             var container = this.CreateContainer();
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
@@ -103,7 +103,7 @@ namespace Kephas.Messaging.Tests.Autofac
         }
 
         [Test]
-        public async Task ProcessAsync_Composition_non_message_sync_success()
+        public async Task ProcessAsync_injection_non_message_sync_success()
         {
             var container = this.CreateContainer();
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();

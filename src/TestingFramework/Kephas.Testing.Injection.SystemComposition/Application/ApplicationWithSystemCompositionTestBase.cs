@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefApplicationTestBase.cs" company="Kephas Software SRL">
+// <copyright file="ApplicationWithSystemCompositionTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,7 +16,7 @@ namespace Kephas.Testing.Application
     using Kephas.Application;
     using Kephas.Testing.Composition;
 
-    public class MefApplicationTestBase : MefCompositionTestBase
+    public class ApplicationWithSystemCompositionTestBase : SystemCompositionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

@@ -15,7 +15,7 @@ namespace Kephas.Scripting.Tests.Composition.Mef
 
     using Kephas.Testing.Composition;
 
-    public class MefScriptingTestBase : MefCompositionTestBase
+    public class MefScriptingTestBase : SystemCompositionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

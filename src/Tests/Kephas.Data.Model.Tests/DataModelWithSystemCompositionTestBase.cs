@@ -1,6 +1,4 @@
-﻿using Kephas.Injection;
-
-namespace Kephas.Data.Model.Tests
+﻿namespace Kephas.Data.Model.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -9,16 +7,16 @@ namespace Kephas.Data.Model.Tests
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Injection;
     using Kephas.Model;
     using Kephas.Model.Runtime;
     using Kephas.Testing.Composition;
-
     using NSubstitute;
 
     /// <summary>
     /// A model test base.
     /// </summary>
-    public abstract class DataModelTestBase : MefCompositionTestBase
+    public abstract class DataModelWithSystemCompositionTestBase : SystemCompositionTestBase
     {
         public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
         {

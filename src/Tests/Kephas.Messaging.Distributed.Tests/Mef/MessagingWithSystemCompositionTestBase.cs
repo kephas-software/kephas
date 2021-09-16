@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefMessagingTestBase.cs" company="Kephas Software SRL">
+// <copyright file="MessagingWithSystemCompositionTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Testing.Application;
     using NSubstitute;
 
-    public class MefMessagingTestBase : MefApplicationTestBase
+    public class MessagingWithSystemCompositionTestBase : ApplicationWithSystemCompositionTestBase
     {
         public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,

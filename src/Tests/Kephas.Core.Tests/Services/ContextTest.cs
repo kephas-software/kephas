@@ -46,7 +46,7 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void Constructor_sync_composition_context_and_ambient_services()
+        public void Constructor_sync_injection_context_and_ambient_services()
         {
             var compositionContext = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
@@ -56,7 +56,7 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void Constructor_sync_ambient_services_and_composition_context()
+        public void Constructor_sync_ambient_services_and_injection_context()
         {
             var compositionContext = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServicesTest.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesWithSystemCompositionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,7 +19,7 @@ namespace Kephas.Data.Model.Tests.Models.AppServicesModel
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesTest : DataModelTestBase
+    public class AppServicesWithSystemCompositionTest : DataModelWithSystemCompositionTestBase
     {
         [Test]
         public async Task InitializeAsync_data_app_service()

@@ -488,7 +488,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void GetAppServiceInfos_all_services_for_lite_composition_when_null_registration_context()
+        public void GetAppServiceInfos_all_services_for_lite_injection_when_null_registration_context()
         {
             var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
             ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;

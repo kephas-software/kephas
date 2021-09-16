@@ -8,19 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
 using Kephas.Injection;
 using Kephas.Injection.ExportFactories;
 using Kephas.Injection.ExportFactoryImporters;
 using Kephas.Injection.Internal;
+using NSubstitute;
+using NUnit.Framework;
 
-namespace Kephas.Core.Tests.Composition.Internal
+namespace Kephas.Core.Tests.Injection.Internal
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using NSubstitute;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class ServiceProviderAdapterTest
     {

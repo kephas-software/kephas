@@ -18,7 +18,7 @@ namespace Kephas.Scripting.Tests.Composition.Autofac
     public class AutofacDefaultScriptProcessorTest : AutofacScriptingTestBase
     {
         [Test]
-        public void DefaultMessageProcessor_Composition_success()
+        public void DefaultMessageProcessor_Injection_success()
         {
             var container = CreateContainer();
             var scriptingEngine = container.GetExport<IScriptProcessor>();
@@ -29,7 +29,7 @@ namespace Kephas.Scripting.Tests.Composition.Autofac
         }
 
         [Test]
-        public async Task ExecuteAsync_composition_success()
+        public async Task ExecuteAsync_Injection_success()
         {
             var container = CreateContainer(parts: new[] { typeof(TestLanguageService) });
             var scriptingEngine = container.GetExport<IScriptProcessor>();

@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Composition
-{
-    using Kephas.Injection.Hosting;
-    using NSubstitute;
+using Kephas.Injection.Hosting;
+using NSubstitute;
 
+namespace Kephas.Core.Tests.Injection
+{
     /// <summary>
     /// The test registration context.
     /// </summary>

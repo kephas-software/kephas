@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefDefaultMessageBrokerTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultMessageBrokerWithSystemCompositionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -40,7 +40,7 @@ namespace Kephas.Messaging.Tests.Mef.Distributed
     using NUnit.Framework;
 
     [TestFixture]
-    public class MefDefaultMessageBrokerTest : MefMessagingTestBase
+    public class DefaultMessageBrokerWithSystemCompositionTest : MessagingWithSystemCompositionTestBase
     {
         public async Task<IMessageBroker> GetMessageBrokerAsync(IInjector injector)
         {
@@ -51,7 +51,7 @@ namespace Kephas.Messaging.Tests.Mef.Distributed
         }
 
         [Test]
-        public void DefaultMessageBroker_Composition_success()
+        public void DefaultMessageBroker_Injection_success()
         {
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();

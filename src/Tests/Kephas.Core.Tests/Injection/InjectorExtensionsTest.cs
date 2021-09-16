@@ -8,18 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
 using Kephas.Injection;
 using Kephas.Injection.ExportFactories;
 using Kephas.Injection.ExportFactoryImporters;
+using NSubstitute;
+using NUnit.Framework;
 
-namespace Kephas.Core.Tests.Composition
+namespace Kephas.Core.Tests.Injection
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using NSubstitute;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class InjectorExtensionsTest
     {

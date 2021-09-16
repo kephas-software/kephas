@@ -241,7 +241,7 @@ namespace Kephas.Core.Tests.Dynamic
 
     public class TestExpando : ExpandoBase
     {
-        public TestExpando(object inner, IDictionary<string, object> innerDictionary = null, ExpandoMemberBinderKind? binders = null)
+        public TestExpando(object inner, IDictionary<string, object?>? innerDictionary = null, ExpandoMemberBinderKind? binders = null)
             : base(inner, innerDictionary)
         {
             if (binders != null)
@@ -257,7 +257,7 @@ namespace Kephas.Core.Tests.Dynamic
 
     public class TestExpandoNonConflicting : ExpandoBase
     {
-        public TestExpandoNonConflicting(object inner, IDictionary<string, object> innerDictionary = null)
+        public TestExpandoNonConflicting(object inner, IDictionary<string, object?>? innerDictionary = null)
             : base(inner, innerDictionary)
         {
         }

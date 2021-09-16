@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesMefExtensions.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesSystemCompositionExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,18 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Hosting;
-
 namespace Kephas
 {
     using System;
+
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Hosting;
 
     /// <summary>
     /// MEF extensions for the ambient services.
     /// </summary>
-    public static class AmbientServicesMefExtensions
+    public static class AmbientServicesSystemCompositionExtensions
     {
         /// <summary>
         /// Builds the composition container using System.Composition and adds it to the ambient services.

@@ -8,18 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Kephas.Injection.Conventions;
+using Kephas.Injection.Hosting;
 using Kephas.Injection.Lite;
+using NUnit.Framework;
 
-namespace Kephas.Core.Tests.Composition.Conventions
+namespace Kephas.Core.Tests.Injection.Conventions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
-    using NUnit.Framework;
-
     /// <summary>
     /// The conventions builder extensions test.
     /// </summary>

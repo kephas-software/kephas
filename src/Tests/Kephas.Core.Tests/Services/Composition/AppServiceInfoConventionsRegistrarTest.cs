@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Core.Tests.Injection;
 using Kephas.Injection;
 using Kephas.Injection.Conventions;
 using Kephas.Injection.Metadata;
@@ -19,7 +20,6 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Linq;
     using System.Reflection;
     using System.Text;
-    using Kephas.Core.Tests.Composition;
     using Kephas.Core.Tests.Services.Composition.CustomNamedValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.CustomValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.DefaultAppServiceMetadata;

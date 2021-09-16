@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefDefaultMessageProcessorTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultMessageProcessorWithSystemCompositionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,9 +7,6 @@
 //   Test class for <see cref="DefaultMessageProcessor" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
 
 namespace Kephas.Messaging.Tests.Mef
 {
@@ -26,6 +23,8 @@ namespace Kephas.Messaging.Tests.Mef
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
+    using Kephas.Injection;
+    using Kephas.Injection.ExportFactories;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
@@ -47,34 +46,36 @@ namespace Kephas.Messaging.Tests.Mef
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefDefaultMessageProcessorTest : MefCompositionTestBase
+    public class DefaultMessageProcessorWithSystemCompositionTest : SystemCompositionTestBase
     {
         public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<SystemInjectorBuilder> config = null,
+            Action<SystemInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
+            {
+                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+            };
             return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
-        public void DefaultMessageProcessor_Composition_success()
+        public void DefaultMessageProcessor_Injection_success()
         {
             var container = this.CreateContainer();
             var requestProcessor = container.GetExport<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
-            var typedRequestprocessor = (DefaultMessageProcessor)requestProcessor;
-            Assert.IsNotNull(typedRequestprocessor.Logger);
+            var typedRequestProcessor = (DefaultMessageProcessor)requestProcessor;
+            Assert.IsNotNull(typedRequestProcessor.Logger);
         }
 
         [Test]
-        public async Task ProcessAsync_Composition_success()
+        public async Task ProcessAsync_Injection_success()
         {
             var container = this.CreateContainer();
             var requestProcessor = container.GetExport<IMessageProcessor>();
@@ -85,7 +86,7 @@ namespace Kephas.Messaging.Tests.Mef
         }
 
         [Test]
-        public async Task ProcessAsync_Composition_non_message_success()
+        public async Task ProcessAsync_injection_non_message_success()
         {
             var container = this.CreateContainer();
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
@@ -99,7 +100,7 @@ namespace Kephas.Messaging.Tests.Mef
         }
 
         [Test]
-        public async Task ProcessAsync_Composition_non_message_sync_success()
+        public async Task ProcessAsync_injection_non_message_sync_success()
         {
             var container = this.CreateContainer();
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();

@@ -14,7 +14,7 @@ namespace Kephas.Serialization.Json.Tests.Mef
     using System.Reflection;
     using Kephas.Testing.Composition;
 
-    public class MefSerializationTestBase : MefCompositionTestBase
+    public class MefSerializationTestBase : SystemCompositionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

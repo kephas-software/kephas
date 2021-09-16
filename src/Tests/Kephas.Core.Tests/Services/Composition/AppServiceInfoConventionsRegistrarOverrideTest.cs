@@ -1,6 +1,9 @@
-﻿using Kephas.Injection.AttributedModel;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AppServiceInfoConventionsRegistrarOverrideTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Core.Tests.Services.Composition
 {
@@ -8,11 +11,14 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Kephas.Core.Tests.Composition;
+
+    using Kephas.Core.Tests.Injection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
-
     using NUnit.Framework;
 
     /// <summary>

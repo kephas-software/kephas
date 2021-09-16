@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
         <RootNamespace>Kephas.Tests</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>

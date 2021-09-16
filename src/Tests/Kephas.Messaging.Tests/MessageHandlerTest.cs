@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageHandlerTest : MefCompositionTestBase
+    public class MessageHandlerTest : SystemCompositionTestBase
     {
         [Test]
         public void Injection_single_handler()

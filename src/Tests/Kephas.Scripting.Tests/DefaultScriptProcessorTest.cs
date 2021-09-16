@@ -18,7 +18,7 @@ namespace Kephas.Scripting.Tests
     public class DefaultScriptProcessorTest : ScriptingTestBase
     {
         [Test]
-        public void DefaultMessageProcessor_Composition_success()
+        public void DefaultMessageProcessor_Injection_success()
         {
             var container = this.CreateContainer();
             var scriptingEngine = container.GetExport<IScriptProcessor>();
@@ -29,7 +29,7 @@ namespace Kephas.Scripting.Tests
         }
 
         [Test]
-        public async Task ExecuteAsync_composition_success()
+        public async Task ExecuteAsync_Injection_success()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TestLanguageService) });
             var scriptingEngine = container.GetExport<IScriptProcessor>();

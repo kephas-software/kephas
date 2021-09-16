@@ -8,18 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Threading;
+using System.Threading.Tasks;
 using Kephas.Injection;
+using Kephas.Services;
+using NSubstitute;
+using NUnit.Framework;
 
-namespace Kephas.Core.Tests.Composition
+namespace Kephas.Core.Tests.Injection
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Kephas.Services;
-
-    using NSubstitute;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class ExportFactoryExtensionsTest
     {

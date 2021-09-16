@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         }
 
         [Test]
-        public void ModelAssemblyRegistry_Composition_success()
+        public void ModelAssemblyRegistry_Injection_success()
         {
             var container = this.CreateContainer();
             var registry = container.GetExports<IRuntimeModelRegistry>().OfType<ModelAssemblyRegistry>().SingleOrDefault();

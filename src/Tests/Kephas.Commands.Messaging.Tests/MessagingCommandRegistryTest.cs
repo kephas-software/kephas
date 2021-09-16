@@ -37,7 +37,7 @@ namespace Kephas.Commands.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_composition_help()
+        public async Task ProcessAsync_injection_help()
         {
             var container = this.CreateContainer();
             var processor = container.GetExport<ICommandProcessor>();
@@ -54,7 +54,7 @@ namespace Kephas.Commands.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_composition_help_indexed_params()
+        public async Task ProcessAsync_injection_help_indexed_params()
         {
             var container = this.CreateContainer();
             var processor = container.GetExport<ICommandProcessor>();

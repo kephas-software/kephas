@@ -86,7 +86,7 @@ namespace Kephas.Core.Tests.Configuration
         }
 
         [Test]
-        public async Task Composition_Configuration_change_signal_skipped_when_not_changed()
+        public async Task Injection_Configuration_change_signal_skipped_when_not_changed()
         {
             // specific provider
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
@@ -105,7 +105,7 @@ namespace Kephas.Core.Tests.Configuration
         }
 
         [Test]
-        public async Task Composition_Configuration_change_signal_when_changed()
+        public async Task Injection_Configuration_change_signal_when_changed()
         {
             // specific provider
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });

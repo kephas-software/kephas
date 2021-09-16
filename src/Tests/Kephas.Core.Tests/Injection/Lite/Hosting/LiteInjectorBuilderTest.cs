@@ -8,30 +8,28 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Kephas.Application;
+using Kephas.Collections;
+using Kephas.Cryptography;
 using Kephas.Injection;
 using Kephas.Injection.AttributedModel;
 using Kephas.Injection.Hosting;
 using Kephas.Injection.Internal;
 using Kephas.Injection.Lite.Hosting;
+using Kephas.Logging;
+using Kephas.Reflection;
+using Kephas.Services;
+using Kephas.Services.Composition;
+using Kephas.Services.Reflection;
+using NSubstitute;
+using NUnit.Framework;
 
-namespace Kephas.Core.Tests.Composition.Lite.Hosting
+namespace Kephas.Core.Tests.Injection.Lite.Hosting
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    using Kephas.Application;
-    using Kephas.Collections;
-    using Kephas.Cryptography;
-    using Kephas.Logging;
-    using Kephas.Reflection;
-    using Kephas.Services;
-    using Kephas.Services.Composition;
-    using Kephas.Services.Reflection;
-    using NSubstitute;
-    using NUnit.Framework;
-
     [TestFixture]
     public class LiteInjectorBuilderTest
     {
@@ -297,7 +295,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
         [Test]
         [Ignore("Ignore until the CompositionConstructor attribute will be supported.")]
-        public void GetExport_AppService_with_composition_constructor()
+        public void GetExport_AppService_with_injection_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder

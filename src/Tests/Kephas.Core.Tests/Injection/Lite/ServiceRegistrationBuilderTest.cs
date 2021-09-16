@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using Kephas.Injection.Lite;
+using NSubstitute;
+using NUnit.Framework;
 
-namespace Kephas.Core.Tests.Composition.Lite
+namespace Kephas.Core.Tests.Injection.Lite
 {
-    using NSubstitute;
-    using NUnit.Framework;
-    using System;
-
     [TestFixture]
     public class ServiceRegistrationBuilderTest
     {

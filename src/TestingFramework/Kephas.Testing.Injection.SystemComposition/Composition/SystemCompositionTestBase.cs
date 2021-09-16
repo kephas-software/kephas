@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionTestBase.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,9 +7,6 @@
 //   Base class for tests using composition.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection;
-using Kephas.Injection.Hosting;
 
 namespace Kephas.Testing.Composition
 {
@@ -24,6 +21,8 @@ namespace Kephas.Testing.Composition
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Diagnostics.Logging;
+    using Kephas.Injection;
+    using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -33,7 +32,7 @@ namespace Kephas.Testing.Composition
     /// Base class for tests using composition.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefCompositionTestBase : TestBase
+    public class SystemCompositionTestBase : TestBase
     {
         public virtual ContainerConfiguration WithEmptyConfiguration()
         {

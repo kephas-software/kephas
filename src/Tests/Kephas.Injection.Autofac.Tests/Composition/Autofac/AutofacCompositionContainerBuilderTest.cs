@@ -205,7 +205,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_AppService_with_composition_constructor()
+        public void GetExport_AppService_with_injection_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
