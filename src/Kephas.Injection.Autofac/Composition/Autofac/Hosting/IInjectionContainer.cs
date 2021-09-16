@@ -26,7 +26,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// The composition context.
         /// </returns>
-        IInjector GetCompositionContext(ILifetimeScope scope);
+        IInjector GetInjector(ILifetimeScope scope);
 
         /// <summary>
         /// Tries to get the composition context wrapper for the provided composition context.
@@ -36,7 +36,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        IInjector? TryGetCompositionContext(IComponentContext context, bool createNewIfMissing);
+        IInjector? TryGetInjector(IComponentContext context, bool createNewIfMissing);
 
         /// <summary>
         /// Cleanups the given composition context.

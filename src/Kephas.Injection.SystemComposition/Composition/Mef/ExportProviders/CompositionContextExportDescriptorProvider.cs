@@ -70,7 +70,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                         dependencies => ExportDescriptor.Create(
                             (c, o) =>
                                 {
-                                    var instance = SystemInjectorBase.TryGetCompositionContext(c, createNewIfMissing: false) ?? this.injectionContainer;
+                                    var instance = SystemCompositionInjectorBase.TryGetCompositionContext(c, createNewIfMissing: false) ?? this.injectionContainer;
                                     return instance;
                                 },
                         ExportDescriptorProvider.NoMetadata))

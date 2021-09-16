@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScopedSystemCompositionContextTest.cs" company="Kephas Software SRL">
+// <copyright file="ScopedSystemCompositionInjectorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,29 +19,25 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="ScopedSystemInjector"/>.
+    /// Tests for <see cref="ScopedSystemCompositionInjector"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ScopedSystemCompositionContextTest : SystemCompositionTestBase
+    public class ScopedSystemCompositionInjectorTest : SystemCompositionTestBase
     {
         [Test]
         public void CreateScopedContext_NestedScopes()
         {
             var container = this.CreateContainerWithBuilder(typeof(SystemCompositionContainerTest.ScopeExportedClass));
-            using (var scopedContext = container.CreateScopedInjector())
-            {
-                Assert.IsInstanceOf<ScopedSystemInjector>(scopedContext);
-                var scopedInstance1 = scopedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
+            using var scopedContext = container.CreateScopedInjector();
+            Assert.IsInstanceOf<ScopedSystemCompositionInjector>(scopedContext);
+            var scopedInstance1 = scopedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
 
-                using (var nestedContext = scopedContext.CreateScopedInjector())
-                {
-                    Assert.AreNotSame(scopedContext, nestedContext);
+            using var nestedContext = scopedContext.CreateScopedInjector();
+            Assert.AreNotSame(scopedContext, nestedContext);
 
-                    var scopedInstance2 = nestedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
-                    Assert.AreNotSame(scopedInstance1, scopedInstance2);
-                }
-            }
+            var scopedInstance2 = nestedContext.Resolve<SystemCompositionContainerTest.ScopeExportedClass>();
+            Assert.AreNotSame(scopedInstance1, scopedInstance2);
         }
 
         [Test]

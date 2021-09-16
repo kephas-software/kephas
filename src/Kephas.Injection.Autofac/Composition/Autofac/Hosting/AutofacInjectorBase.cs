@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacCompositionContextBase.cs" company="Kephas Software SRL">
+// <copyright file="AutofacInjectorBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,17 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Composition.Autofac.Hosting
 {
     using System;
     using System.Collections.Generic;
 
     using global::Autofac;
-
     using Kephas.Composition.Autofac.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Logging;
 
     /// <summary>
@@ -206,7 +204,7 @@ namespace Kephas.Composition.Autofac.Hosting
             this.AssertNotDisposed();
 
             var scope = this.innerContainer!.BeginLifetimeScope();
-            return (this.root ?? (IInjectionContainer)this).GetCompositionContext(scope);
+            return (this.root ?? (IInjectionContainer)this).GetInjector(scope);
         }
 
         /// <summary>

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Composition.Mef.Hosting
 {
     using System;
@@ -20,11 +18,12 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
 
     /// <summary>
     /// A MEF composition context.
     /// </summary>
-    public abstract class SystemInjectorBase : IInjector
+    public abstract class SystemCompositionInjectorBase : IInjector
     {
         private static ConcurrentDictionary<CompositionContext, IInjector> map = new ConcurrentDictionary<CompositionContext, IInjector>();
 
@@ -178,7 +177,7 @@ namespace Kephas.Composition.Mef.Hosting
             }
 
             return createNewIfMissing
-                ? new ScopedSystemInjector(new Export<CompositionContext>(context, () => { }))
+                ? new ScopedSystemCompositionInjector(new Export<CompositionContext>(context, () => { }))
                 : null;
         }
 
@@ -201,7 +200,7 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemInjectorBase"/> class.
+        /// Initializes a new instance of the <see cref="SystemCompositionInjectorBase"/> class.
         /// </summary>
         /// <param name="context">The inner container.</param>
         protected void Initialize(CompositionContext context)
@@ -238,7 +237,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         private static IInjector GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
         {
-            return map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemInjector(scopedContextExport));
+            return map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionInjector(scopedContextExport));
         }
     }
 }

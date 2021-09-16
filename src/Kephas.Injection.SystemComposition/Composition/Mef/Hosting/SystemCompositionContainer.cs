@@ -19,7 +19,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class SystemCompositionContainer : SystemInjectorBase
+    public class SystemCompositionContainer : SystemCompositionInjectorBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionContainer" /> class.

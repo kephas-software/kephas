@@ -18,13 +18,13 @@ namespace Kephas.Composition.Autofac.Hosting
     using global::Autofac.Builder;
 
     /// <summary>
-    /// An Autofac composition container.
+    /// An Autofac injection container.
     /// </summary>
     public class AutofacInjectionContainer : AutofacInjectorBase, IInjectionContainer
     {
         private readonly ConcurrentDictionary<IComponentContext, IInjector> map;
 
-        private IContainer container;
+        private readonly IContainer container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacInjectionContainer"/> class.
@@ -36,7 +36,7 @@ namespace Kephas.Composition.Autofac.Hosting
             this.map = new ConcurrentDictionary<IComponentContext, IInjector>();
 
             var registration = RegistrationBuilder
-                .ForDelegate((c, p) => this.TryGetCompositionContext(c, createNewIfMissing: true)!)
+                .ForDelegate((c, p) => this.TryGetInjector(c, createNewIfMissing: true)!)
                 .As<IInjector>()
                 .InstancePerLifetimeScope()
                 .CreateRegistration();
@@ -48,20 +48,20 @@ namespace Kephas.Composition.Autofac.Hosting
         }
 
         /// <summary>
-        /// Tries to get the composition context wrapper for the provided composition context.
+        /// Tries to get the injection wrapper for the provided component context.
         /// </summary>
         /// <param name="context">The component context.</param>
         /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
-        /// The composition context wrapper.
+        /// The injection wrapper.
         /// </returns>
-        public IInjector? TryGetCompositionContext(IComponentContext context, bool createNewIfMissing)
+        public IInjector? TryGetInjector(IComponentContext context, bool createNewIfMissing)
         {
             var lifetimeScope = context.GetLifetimeScope();
             var key = "root".Equals(lifetimeScope.Tag) ? this.container : lifetimeScope;
-            if (this.map.TryGetValue(key, out var compositionContext))
+            if (this.map.TryGetValue(key, out var injector))
             {
-                return compositionContext;
+                return injector;
             }
 
             if (!createNewIfMissing)
@@ -69,7 +69,7 @@ namespace Kephas.Composition.Autofac.Hosting
                 return null;
             }
 
-            return this.GetCompositionContext(lifetimeScope);
+            return this.GetInjector(lifetimeScope);
         }
 
         /// <summary>
@@ -82,13 +82,13 @@ namespace Kephas.Composition.Autofac.Hosting
         }
 
         /// <summary>
-        /// Gets the composition context wrapper for the provided composition context.
+        /// Gets the injector wrapper for the provided lifetime scope.
         /// </summary>
         /// <param name="scope">The lifetime scope.</param>
         /// <returns>
-        /// The composition context.
+        /// The injector.
         /// </returns>
-        public IInjector GetCompositionContext(ILifetimeScope scope)
+        public IInjector GetInjector(ILifetimeScope scope)
         {
             return this.map.GetOrAdd(scope, _ => new AutofacScopedInjector(this, scope));
         }
