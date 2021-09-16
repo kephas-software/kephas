@@ -796,7 +796,7 @@ namespace Kephas
 
             injectorBuilderConfig?.Invoke(containerBuilder);
 
-            return ambientServices.WithInjector(containerBuilder.CreateInjector());
+            return ambientServices.WithInjector(containerBuilder.Build());
         }
 
         /// <summary>
@@ -815,7 +815,7 @@ namespace Kephas
 
             injectorBuilderConfig?.Invoke(containerBuilder);
 
-            var container = containerBuilder.CreateInjector();
+            var container = containerBuilder.Build();
             return ambientServices.WithInjector(container);
         }
     }

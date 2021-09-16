@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Hosting;
-
 namespace Kephas
 {
     using System;
 
     using Kephas.Composition.Autofac.Hosting;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Hosting;
 
     /// <summary>
     /// Autofac related ambient services builder extensions.
@@ -36,7 +35,7 @@ namespace Kephas
 
             injectorBuilderConfig?.Invoke(containerBuilder);
 
-            var container = containerBuilder.CreateInjector();
+            var container = containerBuilder.Build();
             return ambientServices.WithInjector(container);
         }
     }

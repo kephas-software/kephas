@@ -35,7 +35,7 @@ namespace Kephas
 
             injectorBuilderConfig?.Invoke(containerBuilder);
 
-            var container = containerBuilder.CreateInjector();
+            var container = containerBuilder.Build();
             return ambientServices.WithInjector(container);
         }
     }

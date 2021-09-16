@@ -19,6 +19,6 @@ namespace Kephas.Injection.Hosting
         /// Creates the injector.
         /// </summary>
         /// <returns>The newly created injector.</returns>
-        IInjector CreateInjector();
+        IInjector Build();
     }
 }

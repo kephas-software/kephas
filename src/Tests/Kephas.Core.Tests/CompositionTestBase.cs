@@ -59,7 +59,7 @@ namespace Kephas.Core.Tests
 
             config?.Invoke(containerBuilder);
 
-            var container = containerBuilder.CreateInjector();
+            var container = containerBuilder.Build();
             ambientServices.Register(container);
             return container;
         }
@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests
             var builder = WithContainerBuilder()
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly);
             config?.Invoke(builder);
-            return builder.CreateInjector();
+            return builder.Build();
         }
 
         public IInjector CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
@@ -77,7 +77,7 @@ namespace Kephas.Core.Tests
             return this.WithContainerBuilder(ambientServices)
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(types)
-                .CreateInjector();
+                .Build();
         }
 
         public virtual IEnumerable<Assembly> GetDefaultConventionAssemblies()

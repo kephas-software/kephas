@@ -347,7 +347,7 @@ namespace Kephas.Injection.Hosting
         /// Creates the injector.
         /// </summary>
         /// <returns>The newly created injector.</returns>
-        public virtual IInjector CreateInjector()
+        public virtual IInjector Build()
         {
             IInjector? container = null;
             Profiler.WithInfoStopwatch(

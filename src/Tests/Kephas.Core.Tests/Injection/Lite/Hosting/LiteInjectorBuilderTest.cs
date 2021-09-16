@@ -142,7 +142,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
-                .CreateInjector();
+                .Build();
 
             var exported = container.Resolve<ITestAppService>();
             var secondExported = container.Resolve<ITestAppService>();
@@ -157,7 +157,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
-                .CreateInjector();
+                .Build();
 
             var exported = container.Resolve<ITestAppService>();
 
@@ -171,7 +171,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
-                .CreateInjector();
+                .Build();
 
             var exported = container.Resolve<ITestAppService>();
 
@@ -184,7 +184,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .CreateInjector();
+                .Build();
 
             Assert.Throws<InjectionException>(() => container.Resolve<IExportFactory<ITestAppService>>());
         }
@@ -195,7 +195,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .CreateInjector();
+                .Build();
 
             Assert.Throws<InjectionException>(() => container.Resolve<IExportFactory<ITestAppService, AppServiceMetadata>>());
         }
@@ -206,7 +206,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .CreateInjector();
+                .Build();
 
             Assert.Throws<InjectionException>(() => container.Resolve<Lazy<ITestAppService>>());
         }
@@ -217,7 +217,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .CreateInjector();
+                .Build();
 
             Assert.Throws<InjectionException>(() => container.Resolve<Lazy<ITestAppService, AppServiceMetadata>>());
         }
@@ -229,7 +229,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
-                .CreateInjector();
+                .Build();
 
             var exports = container.ResolveMany<ITestMultiAppService>().ToList();
             var exports2 = container.ResolveMany<ITestMultiAppService>().ToList();
@@ -245,7 +245,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
-                .CreateInjector();
+                .Build();
 
             var exports = container.ResolveMany<ITestMultiAppService>().ToList();
 
@@ -259,7 +259,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
-                .CreateInjector();
+                .Build();
 
             var export = (TestMultiAppServiceConsumer)container.Resolve<ITestMultiAppServiceConsumer>();
 
@@ -274,7 +274,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
-                .CreateInjector();
+                .Build();
 
             var export = container.Resolve<ITestGenericExport<string>>();
             Assert.IsInstanceOf<TestGenericExport>(export);
@@ -287,7 +287,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
-                .CreateInjector();
+                .Build();
 
             var export = container.Resolve<ITestGenericWithNonGenericExport>();
             Assert.IsInstanceOf<TestGenericWithNonGenericExport>(export);
@@ -303,7 +303,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 .WithRegistration(
                     new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
                     new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
-                .CreateInjector();
+                .Build();
             var exported = container.Resolve<ExportedClassWithFakeDependency>();
 
             Assert.IsNotNull(exported);
