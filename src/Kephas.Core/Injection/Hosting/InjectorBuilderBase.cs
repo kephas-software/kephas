@@ -8,26 +8,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using Kephas.Application;
-using Kephas.Collections;
-using Kephas.Diagnostics;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Injection.Configuration;
-using Kephas.Injection.Conventions;
-using Kephas.Logging;
-using Kephas.Reflection;
-using Kephas.Resources;
-using Kephas.Services;
-using Kephas.Services.Reflection;
-
 namespace Kephas.Injection.Hosting
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+
+    using Kephas.Application;
+    using Kephas.Collections;
+    using Kephas.Diagnostics;
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Configuration;
+    using Kephas.Injection.Conventions;
+    using Kephas.Logging;
+    using Kephas.Reflection;
+    using Kephas.Resources;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
+
     /// <summary>
     /// Base class for composition container builders.
     /// </summary>
@@ -35,9 +36,9 @@ namespace Kephas.Injection.Hosting
     public abstract class InjectorBuilderBase<TBuilder> : IInjectorBuilder
         where TBuilder : InjectorBuilderBase<TBuilder>
     {
+        private readonly InjectionSettings settings = new ();
         private HashSet<Assembly> compositionAssemblies;
         private HashSet<Assembly> conventionAssemblies;
-        private InjectionSettings settings = new InjectionSettings();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectorBuilderBase{TBuilder}"/> class.
@@ -375,7 +376,7 @@ namespace Kephas.Injection.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected abstract IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
+        protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
 
         /// <summary>
         /// Gets the composition assemblies.
@@ -504,7 +505,7 @@ namespace Kephas.Injection.Hosting
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);
             var conventions = this.GetConventions(conventionAssemblies, parts);
 
-            var container = this.CreateContainerCore(conventions, parts);
+            var container = this.CreateInjectorCore(conventions, parts);
             return container;
         }
 

@@ -8,19 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Application.Tests
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Application;
+    using Kephas.Injection;
     using Kephas.Operations;
     using Kephas.Services;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -29,10 +28,10 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task ConfigureAmbientServicesAsync_ambient_services_static_instance_set()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
 
             IAmbientServices? ambientServices = null;
-            var app = new TestApp(async b => ambientServices = b.WithInjector(compositionContext));
+            var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
             var (appContext, instruction) = await app.BootstrapAsync();
 
             Assert.IsNotNull(ambientServices);
@@ -43,10 +42,10 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task ConfigureAmbientServicesAsync_ambient_services_explicit_instance_set()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
 
             IAmbientServices? ambientServices = null;
-            var app = new TestApp(async b => ambientServices = b.WithInjector(compositionContext));
+            var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
             var (appContext, instruction) = await app.BootstrapAsync();
 
             Assert.AreSame(app.AmbientServices, ambientServices);
@@ -58,11 +57,11 @@ namespace Kephas.Application.Tests
         {
             var appManager = Substitute.For<IAppManager>();
 
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAppManager>(Arg.Any<string>()).Returns(appManager);
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
             IAmbientServices? ambientServices = null;
-            var app = new TestApp(async b => ambientServices = b.WithInjector(compositionContext));
+            var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
             await app.BootstrapAsync();
 
             appManager.Received(1).InitializeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -76,13 +75,13 @@ namespace Kephas.Application.Tests
             termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns<(IOperationResult result, AppShutdownInstruction instruction)>(ci => throw new InvalidOperationException("bad thing happened"));
 
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAppManager>(Arg.Any<string>())
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
-            compositionContext.Resolve<IAppMainLoop>(Arg.Any<string>())
+            injector.Resolve<IAppMainLoop>(Arg.Any<string>())
                 .Returns(termAwaiter);
 
-            var app = new TestApp(async b => b.WithInjector(compositionContext));
+            var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.BootstrapAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -98,13 +97,13 @@ namespace Kephas.Application.Tests
             mainLoop.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAppManager>(Arg.Any<string>())
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
-            compositionContext.Resolve<IAppMainLoop>(Arg.Any<string>())
+            injector.Resolve<IAppMainLoop>(Arg.Any<string>())
                 .Returns(mainLoop);
 
-            var app = new TestApp(async b => b.WithInjector(compositionContext));
+            var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.BootstrapAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -120,13 +119,13 @@ namespace Kephas.Application.Tests
             termAwaiter.Main(Arg.Any<CancellationToken>())
                 .Returns((new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAppManager>(Arg.Any<string>())
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>(Arg.Any<string>())
                 .Returns(appManager);
-            compositionContext.Resolve<IAppMainLoop>(Arg.Any<string>())
+            injector.Resolve<IAppMainLoop>(Arg.Any<string>())
                 .Returns(termAwaiter);
 
-            var app = new TestApp(async b => b.WithInjector(compositionContext));
+            var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.BootstrapAsync();
 
             appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -151,11 +150,11 @@ namespace Kephas.Application.Tests
         {
             var appManager = Substitute.For<IAppManager>();
 
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAppManager>(Arg.Any<string>()).Returns(appManager);
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
             var ambientServices = new AmbientServices()
-                .WithInjector(compositionContext);
+                .WithInjector(injector);
             var app = new TestApp(ambientServices: ambientServices);
             await app.ShutdownAsync();
 
@@ -204,9 +203,9 @@ namespace Kephas.Application.Tests
 
     public class TestApp : AppBase
     {
-        private readonly Func<IAmbientServices, Task> asyncConfig;
+        private readonly Func<IAmbientServices, Task>? asyncConfig;
 
-        public TestApp(Func<IAmbientServices, Task> asyncConfig = null, IAmbientServices? ambientServices = null)
+        public TestApp(Func<IAmbientServices, Task>? asyncConfig = null, IAmbientServices? ambientServices = null)
             : base(ambientServices ?? new AmbientServices())
         {
             this.asyncConfig = asyncConfig;
@@ -218,9 +217,9 @@ namespace Kephas.Application.Tests
         /// <param name="ambientServices">The ambient services.</param>
         protected override async void BuildServicesContainer(IAmbientServices ambientServices)
         {
-            if (asyncConfig != null)
+            if (this.asyncConfig != null)
             {
-                await asyncConfig(ambientServices);
+                await this.asyncConfig(ambientServices);
             }
         }
     }

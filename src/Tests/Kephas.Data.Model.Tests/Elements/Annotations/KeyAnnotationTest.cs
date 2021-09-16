@@ -38,9 +38,9 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
         public void Configure()
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            var context = new ModelConstructionContext(compositionContext);
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            var context = new ModelConstructionContext(injector);
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 

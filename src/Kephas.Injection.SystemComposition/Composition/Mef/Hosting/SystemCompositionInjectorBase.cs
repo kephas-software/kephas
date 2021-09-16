@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemCompositionContextBase.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionInjectorBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// </summary>
     public abstract class SystemCompositionInjectorBase : IInjector
     {
-        private static ConcurrentDictionary<CompositionContext, IInjector> map = new ConcurrentDictionary<CompositionContext, IInjector>();
+        private static readonly ConcurrentDictionary<CompositionContext, IInjector> Map = new ();
 
         private CompositionContext? innerCompositionContext;
 
@@ -140,14 +140,14 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Creates a new scoped composition context.
+        /// Creates a new scoped injector.
         /// </summary>
         /// <returns>
-        /// The new scoped context.
+        /// The new scoped injector.
         /// </returns>
         public virtual IInjector CreateScopedInjector()
         {
-            var scopeProvider = this.Resolve<IMefScopeFactory>(InjectionScopeNames.Default);
+            var scopeProvider = this.Resolve<IScopeFactory>(InjectionScopeNames.Default);
 
             var scopedContextExport = scopeProvider.CreateScopedContextExport();
             return GetOrAddCompositionContext(scopedContextExport);
@@ -162,16 +162,16 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Tries to get the composition context wrapper for the provided composition context.
+        /// Tries to get the injector wrapper for the provided composition context.
         /// </summary>
         /// <param name="context">The inner container.</param>
         /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        internal static IInjector? TryGetCompositionContext(CompositionContext context, bool createNewIfMissing)
+        internal static IInjector? TryGetInjector(CompositionContext context, bool createNewIfMissing)
         {
-            if (map.TryGetValue(context, out var compositionContext))
+            if (Map.TryGetValue(context, out var compositionContext))
             {
                 return compositionContext;
             }
@@ -192,7 +192,7 @@ namespace Kephas.Composition.Mef.Hosting
                 return;
             }
 
-            map.TryRemove(this.innerCompositionContext, out _);
+            Map.TryRemove(this.innerCompositionContext, out _);
             var disposableInnerContainer = this.innerCompositionContext as IDisposable;
             disposableInnerContainer?.Dispose();
 
@@ -208,12 +208,12 @@ namespace Kephas.Composition.Mef.Hosting
             Requires.NotNull(context, nameof(context));
 
             this.innerCompositionContext = context;
-            map.TryAdd(context, this);
+            Map.TryAdd(context, this);
 
             if (this.IsRoot)
             {
                 var rootContext = context.GetExport<CompositionContext>();
-                map.TryAdd(rootContext, this);
+                Map.TryAdd(rootContext, this);
             }
         }
 
@@ -237,7 +237,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         private static IInjector GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
         {
-            return map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionInjector(scopedContextExport));
+            return Map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionInjector(scopedContextExport));
         }
     }
 }

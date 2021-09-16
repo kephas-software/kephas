@@ -1,23 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DependencyInjectionCompositionContextBase.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionInjectorBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the medi composition context base class.
+//   Implements the injector base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection;
 
 namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
+
+    using Kephas.Injection;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// A composition context base for Microsoft.Extensions.DependencyInjection.
+    /// An injector base for Microsoft.Extensions.DependencyInjection.
     /// </summary>
     public abstract class DependencyInjectionInjectorBase : IInjector, IServiceProvider
     {
@@ -127,7 +127,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// </returns>
         public IInjector CreateScopedInjector()
         {
-            return new DependencyInjectionScopedInjectionContext(this.ServiceProvider.CreateScope());
+            return new DependencyInjectionScopedInjector(this.ServiceProvider.CreateScope());
         }
 
         /// <summary>

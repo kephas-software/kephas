@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefScopeFactoryBase.cs" company="Kephas Software SRL">
+// <copyright file="ScopeFactoryBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,7 +17,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
     /// <summary>
     /// A MEF scope provider.
     /// </summary>
-    public abstract class MefScopeFactoryBase : IMefScopeFactory
+    public abstract class ScopeFactoryBase : IScopeFactory
     {
         /// <summary>
         /// The scoped context factory.
@@ -25,10 +25,10 @@ namespace Kephas.Composition.Mef.ScopeFactory
         private readonly ExportFactory<CompositionContext> scopedContextFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
+        /// Initializes a new instance of the <see cref="ScopeFactoryBase"/> class.
         /// </summary>
         /// <param name="scopedContextFactory">The scoped context factory.</param>
-        protected MefScopeFactoryBase(ExportFactory<CompositionContext> scopedContextFactory)
+        protected ScopeFactoryBase(ExportFactory<CompositionContext> scopedContextFactory)
         {
             Requires.NotNull(scopedContextFactory, nameof(scopedContextFactory));
 

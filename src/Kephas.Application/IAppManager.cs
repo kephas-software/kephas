@@ -23,7 +23,7 @@ namespace Kephas.Application
     /// </remarks>
     /// <example>
     /// <code language="csharp">
-    /// var appManager = compositionContext.Resolve&lt;IAppManager&gt;();
+    /// var appManager = injector.Resolve&lt;IAppManager&gt;();
     /// var appContext = new AppContext();
     /// await appManager.InitializeAppManagerAsync(appContext);
     /// ...

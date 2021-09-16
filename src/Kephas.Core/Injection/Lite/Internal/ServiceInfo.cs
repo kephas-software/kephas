@@ -70,10 +70,10 @@ namespace Kephas.Injection.Lite.Internal
             this.ContractType = contractType;
             this.InstanceFactory = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            var compositionContext = ambientServices.AsInjector();
+            var injector = ambientServices.AsInjector();
             this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => serviceFactory(compositionContext), contractType)
-                                   : new LazyFactory(() => serviceFactory(compositionContext), contractType);
+                                   ? new LazyValue(() => serviceFactory(injector), contractType)
+                                   : new LazyFactory(() => serviceFactory(injector), contractType);
         }
 
         public AppServiceLifetime Lifetime { get; }

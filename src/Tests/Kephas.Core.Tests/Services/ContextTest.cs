@@ -8,17 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Core.Tests.Services
 {
     using System;
     using System.Security;
     using System.Security.Principal;
+
+    using Kephas.Injection;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -48,21 +46,21 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Constructor_sync_injection_context_and_ambient_services()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
-            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            var context = new Context(compositionContext);
+            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            var context = new Context(injector);
             Assert.AreSame(ambientServices, context.AmbientServices);
         }
 
         [Test]
         public void Constructor_sync_ambient_services_and_injection_context()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
-            ambientServices.Injector.Returns(compositionContext);
+            ambientServices.Injector.Returns(injector);
             var context = new Context(ambientServices);
-            Assert.AreSame(compositionContext, context.Injector);
+            Assert.AreSame(injector, context.Injector);
         }
 
         [Test]

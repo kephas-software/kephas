@@ -37,14 +37,14 @@ namespace Kephas.Data.Tests
         [Test]
         public void GetEnumerator()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
 
             var dataContexts = dataSpace.ToList();
@@ -55,14 +55,14 @@ namespace Kephas.Data.Tests
         [Test]
         public void Indexer_type()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
             Assert.AreSame(dataContext, dc);
         }
@@ -70,14 +70,14 @@ namespace Kephas.Data.Tests
         [Test]
         public void Indexer_typeInfo()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider);
             var ti = (ITypeInfo)typeof(string).AsRuntimeTypeInfo();
             var dc = dataSpace[ti];
             Assert.AreSame(dataContext, dc);
@@ -86,14 +86,14 @@ namespace Kephas.Data.Tests
         [Test]
         public void Indexer_same_data_context_when_same_type()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider);
             var dc1 = dataSpace[typeof(string)];
             var dc2 = dataSpace[typeof(string)];
             Assert.AreSame(dc1, dc2);
@@ -103,14 +103,14 @@ namespace Kephas.Data.Tests
         [Test]
         public void Dispose()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
 
             dataSpace.Dispose();
@@ -120,13 +120,13 @@ namespace Kephas.Data.Tests
         [Test]
         public void Initialize_Identity_set()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
             var identity = Substitute.For<IIdentity>();
-            var context = new Context(compositionContext) { Identity = identity };
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            var context = new Context(injector) { Identity = identity };
+            var dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider);
             dataSpace.Initialize(context);
 
             Assert.AreSame(identity, dataSpace.Identity);
@@ -135,13 +135,13 @@ namespace Kephas.Data.Tests
         [Test]
         public void Initialize_Identity_not_overwritten()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
             var identity = Substitute.For<IIdentity>();
             var context = new Context(Substitute.For<IInjector>()) { Identity = identity };
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
+            var dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);
 
             Assert.AreNotSame(identity, dataSpace.Identity);
@@ -150,7 +150,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Initialize_initial_data()
         {
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
@@ -183,7 +183,7 @@ namespace Kephas.Data.Tests
                         new EntityEntry("gigi") { ChangeState = ChangeState.Added },
                         new EntityEntry(new StringBuilder("belogea")) { ChangeState = ChangeState.Changed }
                     });
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
+            var dataSpace = new DataSpace(injector, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);
 
             Assert.AreNotSame(identity, dataSpace.Identity);

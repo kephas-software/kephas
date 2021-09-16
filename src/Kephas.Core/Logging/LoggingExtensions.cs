@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Logging
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -58,9 +58,9 @@ namespace Kephas.Logging
                 return ambientServices.LogManager.GetLogger(objType);
             }
 
-            if (obj is IInjector compositionContext)
+            if (obj is IInjector injector)
             {
-                return compositionContext.GetLogger(objType);
+                return injector.GetLogger(objType);
             }
 
             if (obj is IContext contextObj)
@@ -71,10 +71,10 @@ namespace Kephas.Logging
                     return ambientServices.LogManager.GetLogger(objType);
                 }
 
-                compositionContext = contextObj.Injector;
-                if (compositionContext != null)
+                injector = contextObj.Injector;
+                if (injector != null)
                 {
-                    return compositionContext.GetLogger(objType);
+                    return injector.GetLogger(objType);
                 }
             }
 

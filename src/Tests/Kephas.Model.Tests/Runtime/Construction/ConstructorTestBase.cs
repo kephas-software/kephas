@@ -42,9 +42,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IRuntimeModelElementFactory? factory = null)
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry()).WithStaticAppRuntime();
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            return new ModelConstructionContext(compositionContext)
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            return new ModelConstructionContext(injector)
             {
                 ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),
                 RuntimeModelElementFactory = factory ?? this.GetNullRuntimeModelElementFactory(),

@@ -57,12 +57,12 @@ namespace Kephas.Core.Tests
                 .Register(Substitute.For<ILogManager>())
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
-            var compositionContext = Substitute.For<IInjector>();
+            var injector = Substitute.For<IInjector>();
             ambientServices.WithInjector<TestInjectorBuilder>(
                 b => b.WithAssembly(this.GetType().Assembly)
-                    .WithCompositionContext(compositionContext));
+                    .WithInjector(injector));
 
-            Assert.AreSame(compositionContext, ambientServices.Injector);
+            Assert.AreSame(injector, ambientServices.Injector);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Kephas.Core.Tests
             {
             }
 
-            public TestInjectorBuilder WithCompositionContext(IInjector injector)
+            public TestInjectorBuilder WithInjector(IInjector injector)
             {
                 this.injector = injector;
                 return this;
@@ -92,7 +92,7 @@ namespace Kephas.Core.Tests
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
                 return this.injector ?? Substitute.For<IInjector>();
             }
@@ -113,7 +113,7 @@ namespace Kephas.Core.Tests
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
                 return Substitute.For<IInjector>();
             }

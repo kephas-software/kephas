@@ -121,7 +121,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                             (c, o) =>
                                 {
                                     var instance = this.factory == null
-                                                       ? this.contextFactory(SystemCompositionInjectorBase.TryGetCompositionContext(c, createNewIfMissing: false))
+                                                       ? this.contextFactory(SystemCompositionInjectorBase.TryGetInjector(c, createNewIfMissing: false))
                                                        : this.factory();
                                     if (instance is IDisposable disposable)
                                     {

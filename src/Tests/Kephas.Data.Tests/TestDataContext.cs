@@ -32,7 +32,7 @@ namespace Kephas.Data.Tests
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
-            : base(GetTestCompositionContext(injector, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
+            : base(GetTestInjector(injector, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
         {
         }
 
@@ -113,14 +113,14 @@ namespace Kephas.Data.Tests
             return dataStore;
         }
 
-        private static IInjector GetTestCompositionContext(IInjector injector, IRuntimeTypeRegistry typeRegistry)
+        private static IInjector GetTestInjector(IInjector injector, IRuntimeTypeRegistry typeRegistry)
             => injector ?? CreateInjector(typeRegistry);
 
         private static IInjector CreateInjector(IRuntimeTypeRegistry typeRegistry)
         {
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
-            return compositionContext;
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
+            return injector;
         }
 
         private static IDataCommandProvider GetTestDataCommandProvider(IDataCommandProvider dataCommandProvider)

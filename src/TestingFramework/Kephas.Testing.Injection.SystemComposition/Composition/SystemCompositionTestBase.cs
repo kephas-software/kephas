@@ -55,9 +55,9 @@ namespace Kephas.Testing.Composition
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <returns>
-        /// A SystemInjectorBuilder.
+        /// A SystemCompositionInjectorBuilder.
         /// </returns>
-        public virtual SystemInjectorBuilder WithContainerBuilder(
+        public virtual SystemCompositionInjectorBuilder WithContainerBuilder(
             IAmbientServices? ambientServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
@@ -71,7 +71,7 @@ namespace Kephas.Testing.Composition
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new SystemInjectorBuilder(new InjectionRegistrationContext(ambientServices));
+            return new SystemCompositionInjectorBuilder(new InjectionRegistrationContext(ambientServices));
         }
 
         public IInjector CreateContainer(params Assembly[] assemblies)
@@ -95,7 +95,7 @@ namespace Kephas.Testing.Composition
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<SystemInjectorBuilder>? config = null,
+            Action<SystemCompositionInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

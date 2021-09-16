@@ -774,11 +774,11 @@ namespace Kephas.Application.Tests
             var exporter = Substitute.For<ICollectionExportFactoryImporter>();
             exporter.ExportFactories.Returns(Array.Empty<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
 
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
                 .Returns(exporter);
 
-            return compositionContext;
+            return injector;
         }
     }
 }

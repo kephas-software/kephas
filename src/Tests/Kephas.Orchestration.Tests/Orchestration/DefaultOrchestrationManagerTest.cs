@@ -84,8 +84,8 @@ namespace Kephas.Tests.Orchestration
 
             var eventHub = this.CreateEventHubMock();
 
-            var compositionContext = Substitute.For<IInjector>();
-            ambientServices.WithAppRuntime(appRuntime).WithInjector(compositionContext);
+            var injector = Substitute.For<IInjector>();
+            ambientServices.WithAppRuntime(appRuntime).WithInjector(injector);
             var appContext = new AppContext(ambientServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
@@ -118,7 +118,7 @@ namespace Kephas.Tests.Orchestration
                 });
 
             await manager.InitializeAsync(appContext);
-            await eventHub.PublishAsync(new AppStartedEvent { AppInfo = new RuntimeAppInfo { AppId = "hi", AppInstanceId = "there" } }, new Context(compositionContext));
+            await eventHub.PublishAsync(new AppStartedEvent { AppInfo = new RuntimeAppInfo { AppId = "hi", AppInstanceId = "there" } }, new Context(injector));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
             await manager.FinalizeAsync(appContext);
 

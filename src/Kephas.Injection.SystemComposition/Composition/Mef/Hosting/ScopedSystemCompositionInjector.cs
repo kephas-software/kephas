@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScopedSystemCompositionContext.cs" company="Kephas Software SRL">
+// <copyright file="ScopedSystemCompositionInjector.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   The MEF composition container.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Composition.Mef.Hosting

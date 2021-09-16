@@ -52,7 +52,7 @@ namespace Kephas.Composition.Mef.Hosting
         protected virtual CompositionContext CreateCompositionContext(ContainerConfiguration configuration)
         {
             // TODO the composition context should return the scoped composition context, not the global one.
-            configuration.WithProvider(new CompositionContextExportDescriptorProvider(this));
+            configuration.WithProvider(new InjectorExportDescriptorProvider(this));
             var compositionHost = configuration.CreateContainer();
             return compositionHost;
         }

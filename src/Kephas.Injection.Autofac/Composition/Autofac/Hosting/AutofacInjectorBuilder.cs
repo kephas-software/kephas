@@ -90,7 +90,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
 

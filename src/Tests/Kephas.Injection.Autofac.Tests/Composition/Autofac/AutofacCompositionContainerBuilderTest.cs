@@ -259,48 +259,6 @@ namespace Kephas.Tests.Composition.Autofac
             }
         }
 
-        //[Test, Ignore("Named scopes not supported by Autofac")]
-        //public void Resolve_ScopeSharedAppService_custom_scope_export()
-        //{
-        //    var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-        //    var container = builder
-        //        .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-        //        .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport) })
-        //        .WithScopeFactory<MyScopeFactory>()
-        //        .CreateInjector();
-
-        //    ITestMyScopedExport exportScope1;
-        //    using (var scopedContext = container.CreateScopedInjector())
-        //    {
-        //        exportScope1 = scopedContext.Resolve<ITestMyScopedExport>();
-        //        Assert.IsInstanceOf<TestMyScopedExport>(exportScope1);
-
-        //        var export = scopedContext.Resolve<ITestMyScopedExport>();
-        //        Assert.AreSame(exportScope1, export);
-        //    }
-
-        //    using (var scopedContext2 = container.CreateScopedInjector())
-        //    {
-        //        var export2 = scopedContext2.Resolve<ITestMyScopedExport>();
-        //        Assert.AreNotSame(exportScope1, export2);
-        //    }
-        //}
-
-        //[Test, Ignore("Named scopes not supported by Autofac")]
-        //public void Resolve_ScopeSharedAppService_scopefactory_composed_only_once()
-        //{
-        //    var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-        //    var container = builder
-        //        .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-        //        .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport), typeof(MyScopeFactory) })
-        //        .WithScopeFactory<MyScopeFactory>()
-        //        .CreateInjector();
-
-        //    var scopedContext = container.CreateScopedInjector();
-        //    Assert.AreNotSame(container, scopedContext);
-        //    Assert.IsNotNull(scopedContext);
-        //}
-
         [Test]
         public void Resolve_AppService_no_constructor()
         {

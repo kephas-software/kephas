@@ -87,7 +87,7 @@ namespace Kephas.Core.Tests.Injection
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override IInjector CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
                 return Substitute.For<IInjector>();
             }

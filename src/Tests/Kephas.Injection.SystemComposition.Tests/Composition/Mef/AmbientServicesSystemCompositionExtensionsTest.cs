@@ -33,8 +33,8 @@ namespace Kephas.Tests.Composition.Mef
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
                 .BuildWithSystemComposition();
 
-            var compositionContext = ambientServices.Injector;
-            Assert.IsInstanceOf<SystemCompositionContainer>(compositionContext);
+            var injector = ambientServices.Injector;
+            Assert.IsInstanceOf<SystemCompositionContainer>(injector);
         }
 
         [Test]
@@ -46,8 +46,8 @@ namespace Kephas.Tests.Composition.Mef
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
                 .BuildWithSystemComposition(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
-            var compositionContext = ambientServices.Injector;
-            var moreOpen = compositionContext.Resolve<IOpen<int>>();
+            var injector = ambientServices.Injector;
+            var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
         }
 
@@ -61,8 +61,8 @@ namespace Kephas.Tests.Composition.Mef
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
                 .BuildWithSystemComposition(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
-            var compositionContext = ambientServices.Injector;
-            var moreOpen = compositionContext.Resolve<IOpen<int>>();
+            var injector = ambientServices.Injector;
+            var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);
         }
 

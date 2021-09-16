@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContextExportDescriptorProvider.cs" company="Kephas Software SRL">
+// <copyright file="InjectorExportDescriptorProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,9 +19,9 @@ namespace Kephas.Composition.Mef.ExportProviders
     using Kephas.Injection;
 
     /// <summary>
-    /// A composition context export descriptor provider.
+    /// An export descriptor provider for <see cref="IInjector"/>.
     /// </summary>
-    public class CompositionContextExportDescriptorProvider : ExportDescriptorProvider, IExportProvider
+    public class InjectorExportDescriptorProvider : ExportDescriptorProvider, IExportProvider
     {
         /// <summary>
         /// The composition container.
@@ -29,11 +29,11 @@ namespace Kephas.Composition.Mef.ExportProviders
         private readonly IInjector injectionContainer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionContextExportDescriptorProvider"/>
+        /// Initializes a new instance of the <see cref="InjectorExportDescriptorProvider"/>
         /// class.
         /// </summary>
         /// <param name="injectionContainer">The composition container.</param>
-        public CompositionContextExportDescriptorProvider(IInjector injectionContainer)
+        public InjectorExportDescriptorProvider(IInjector injectionContainer)
         {
             Requires.NotNull(injectionContainer, nameof(injectionContainer));
             this.injectionContainer = injectionContainer;
@@ -70,7 +70,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                         dependencies => ExportDescriptor.Create(
                             (c, o) =>
                                 {
-                                    var instance = SystemCompositionInjectorBase.TryGetCompositionContext(c, createNewIfMissing: false) ?? this.injectionContainer;
+                                    var instance = SystemCompositionInjectorBase.TryGetInjector(c, createNewIfMissing: false) ?? this.injectionContainer;
                                     return instance;
                                 },
                         ExportDescriptorProvider.NoMetadata))

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacScopedCompositionContextTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacScopedInjectorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,18 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Tests.Composition.Autofac
 {
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Composition;
     using Kephas.Composition.Autofac.Hosting;
+    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Kephas.Testing.Composition;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -27,7 +25,7 @@ namespace Kephas.Tests.Composition.Autofac
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacScopedCompositionContextTest : AutofacCompositionTestBase
+    public class AutofacScopedInjectorTest : AutofacCompositionTestBase
     {
         [Test]
         public void CreateScopedInjector_NestedScopes()

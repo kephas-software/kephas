@@ -32,7 +32,7 @@ namespace Kephas.Services
     public class ContextFactory : IContextFactory
     {
         private const int AmbientServicesIndex = -1;
-        private const int CompositionContextIndex = -2;
+        private const int InjectorIndex = -2;
         private const int LogManagerIndex = -3;
 
         private readonly IInjector injector;
@@ -175,7 +175,7 @@ namespace Kephas.Services
             }
             else if (paramType == typeof(IInjector))
             {
-                return CompositionContextIndex;
+                return InjectorIndex;
             }
             else if (paramType == typeof(ILogManager))
             {

@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Tests
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<SystemInjectorBuilder>? config = null,
+            Action<SystemCompositionInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

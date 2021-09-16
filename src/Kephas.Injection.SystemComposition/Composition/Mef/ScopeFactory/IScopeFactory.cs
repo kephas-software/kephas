@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMefScopeFactory.cs" company="Kephas Software SRL">
+// <copyright file="IScopeFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IMefScopeFactory interface.
+//   Declares the IScopeFactory interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
     /// <summary>
     /// Interface for MEF scope factory.
     /// </summary>
-    public interface IMefScopeFactory
+    public interface IScopeFactory
     {
         /// <summary>
         /// Creates the scoped context export.

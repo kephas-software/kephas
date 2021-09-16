@@ -160,9 +160,9 @@ namespace Kephas.Model.Tests.Elements
         private ModelConstructionContext CreateModelConstructionContext()
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var compositionContext = Substitute.For<IInjector>();
-            compositionContext.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            var context = new ModelConstructionContext(compositionContext);
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            var context = new ModelConstructionContext(injector);
             return context;
         }
 

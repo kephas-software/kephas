@@ -34,7 +34,7 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="SystemInjectorBuilder"/>.
+    /// Tests for <see cref="SystemCompositionInjectorBuilder"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -448,7 +448,7 @@ namespace Kephas.Tests.Composition.Mef
             Assert.AreEqual("123", instance);
         }
 
-        private SystemInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionRegistrationContext> config = null)
+        private SystemCompositionInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -457,11 +457,11 @@ namespace Kephas.Tests.Composition.Mef
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);
-            var factory = new SystemInjectorBuilder(context);
+            var factory = new SystemCompositionInjectorBuilder(context);
             return factory;
         }
 
-        private SystemInjectorBuilder CreateCompositionContainerBuilderWithStringLogger()
+        private SystemCompositionInjectorBuilder CreateCompositionContainerBuilderWithStringLogger()
         {
             var builder = this.CreateCompositionContainerBuilder();
 
@@ -559,12 +559,8 @@ namespace Kephas.Tests.Composition.Mef
         public class TestMyScopedExport : ITestMyScopedExport { }
 
         [InjectionScope]
-        public class MyScopeFactory : MefScopeFactoryBase
+        public class MyScopeFactory : ScopeFactoryBase
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
-            /// </summary>
-            /// <param name="scopedContextFactory">The scoped context factory.</param>
             public MyScopeFactory([SharingBoundary(InjectionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
                 : base(scopedContextFactory)
             {
