@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.Conventions
+namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Injection.Hosting;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -25,12 +24,9 @@ namespace Kephas.Injection.Conventions
         /// Gets an enumeration of application service information objects.
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
-            IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext);
+        IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes = null);
     }
 }

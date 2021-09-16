@@ -194,17 +194,16 @@ namespace Kephas
         /// Gets the application service infos in this collection.
         /// </summary>
         /// <param name="candidateTypes">List of types of the candidates.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process the application service infos in this
         /// collection.
         /// </returns>
-        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, IInjectionRegistrationContext registrationContext)
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
         {
             // Lite composition container does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,
             // this is a message that ALL registration infos should be returned.
-            if (registrationContext != null && candidateTypes != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
+            if (candidateTypes != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
             {
                 return Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
             }

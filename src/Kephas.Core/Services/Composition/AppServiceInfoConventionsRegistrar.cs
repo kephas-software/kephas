@@ -160,7 +160,7 @@ namespace Kephas.Services.Composition
 
             foreach (var appServiceInfoProvider in appServiceInfoProviders)
             {
-                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(candidateTypes, registrationContext))
+                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(candidateTypes))
                 {
                     yield return item;
                 }

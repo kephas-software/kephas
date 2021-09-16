@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Kephas.Injection.Hosting;
-using Kephas.Services;
-using Kephas.Services.Reflection;
-
 namespace Kephas.Injection.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
+
     /// <summary>
     /// An attributed application service information provider.
     /// </summary>
@@ -26,13 +26,10 @@ namespace Kephas.Injection.Conventions
         /// Gets an enumeration of application service information objects.
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
-            IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
         {
             foreach (var candidateType in candidateTypes)
             {
@@ -51,7 +48,7 @@ namespace Kephas.Injection.Conventions
         /// <returns>
         /// An <see cref="IAppServiceInfo"/> or <c>null</c>, if the provided type is not a service contract.
         /// </returns>
-        protected virtual IAppServiceInfo TryGetAppServiceInfo(Type type)
+        protected virtual IAppServiceInfo? TryGetAppServiceInfo(Type type)
         {
             return type.GetCustomAttribute<AppServiceContractAttribute>();
         }

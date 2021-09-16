@@ -10,6 +10,8 @@ using Kephas.Injection.Lite;
 
 namespace Kephas.Model
 {
+    using Kephas.Services;
+
     /// <summary>
     /// Extension methods for <see cref="IAmbientServices"/>. 
     /// </summary>

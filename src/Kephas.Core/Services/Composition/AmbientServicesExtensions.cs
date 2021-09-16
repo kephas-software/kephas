@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Lite.Conventions;
-
 namespace Kephas.Services.Composition
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Lite.Conventions;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Kephas.Services.Composition
             // did not add them already, so after that do not call SetAppServiceInfos!
             if ((bool?)ambientServices[LiteConventionsBuilder.LiteCompositionKey] ?? false)
             {
-                var liteServiceInfos = (ambientServices as IAppServiceInfoProvider)?.GetAppServiceInfos(null, null);
+                var liteServiceInfos = (ambientServices as IAppServiceInfoProvider)?.GetAppServiceInfos(null);
                 var allServiceInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>();
                 if (liteServiceInfos != null)
                 {

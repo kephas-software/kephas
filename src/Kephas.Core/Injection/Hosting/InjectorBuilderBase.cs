@@ -548,11 +548,10 @@ namespace Kephas.Injection.Hosting
             /// Gets an enumeration of application service information objects.
             /// </summary>
             /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-            /// <param name="registrationContext">Context for the registration.</param>
             /// <returns>
             /// An enumeration of application service information objects and their associated contract type.
             /// </returns>
-            public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, IInjectionRegistrationContext registrationContext)
+            public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(                IList<Type>? candidateTypes)
             {
                 return this.appServiceInfos.Select(i => (i.ContractType, i));
             }

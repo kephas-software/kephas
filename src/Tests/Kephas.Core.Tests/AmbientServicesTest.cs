@@ -447,7 +447,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_default_services()
         {
             var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
-            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new InjectionRegistrationContext(ambientServices));
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>());
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(ILogManager));
             Assert.IsNotNull(info);
@@ -462,7 +462,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_no_default_services()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false);
-            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new InjectionRegistrationContext(ambientServices));
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>());
 
             Assert.AreEqual(2, appServiceInfos.Count());
 
@@ -482,7 +482,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
-            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new InjectionRegistrationContext(ambientServices));
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>());
 
             Assert.IsFalse(appServiceInfos.Any());
         }
@@ -492,7 +492,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
             ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
-            var appServiceInfos = ambientServices.GetAppServiceInfos(null, null);
+            var appServiceInfos = ambientServices.GetAppServiceInfos(null);
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAppRuntime));
             Assert.IsNotNull(info);

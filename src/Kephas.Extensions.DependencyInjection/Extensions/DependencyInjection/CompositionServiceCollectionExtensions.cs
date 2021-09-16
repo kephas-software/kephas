@@ -40,7 +40,7 @@ namespace Kephas.Extensions.DependencyInjection
             // make sure to register the service collection *BEFORE* the attributed service provider.
             ambientServices
                 .Register(serviceCollection)
-                .Register<IAppServiceInfoProvider>(b => b.WithType<ServiceCollectionAppServiceInfoProvider>().AllowMultiple().ProcessingPriority(Priority.High - 100));
+                .Register<IAppServiceInfoProvider>(b => b.WithInstance(new ServiceCollectionAppServiceInfoProvider(ambientServices)).AllowMultiple().ProcessingPriority(Priority.High - 100));
             serviceCollection.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, CompositionServiceScopeFactory>());
             serviceCollection.TryAddSingleton<IServiceProvider>(provider => provider);
 

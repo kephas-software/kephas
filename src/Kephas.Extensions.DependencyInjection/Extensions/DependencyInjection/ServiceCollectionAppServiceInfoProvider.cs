@@ -8,18 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-
 namespace Kephas.Extensions.DependencyInjection
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -27,20 +24,27 @@ namespace Kephas.Extensions.DependencyInjection
     /// </summary>
     public class ServiceCollectionAppServiceInfoProvider : IAppServiceInfoProvider
     {
+        private readonly IAmbientServices ambientServices;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCollectionAppServiceInfoProvider"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        public ServiceCollectionAppServiceInfoProvider(IAmbientServices ambientServices)
+        {
+            this.ambientServices = ambientServices;
+        }
+
         /// <summary>
         /// Gets an enumeration of application service information objects.
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
-            IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
         {
-            var ambientServices = registrationContext.AmbientServices;
-            var serviceCollection = ambientServices.GetService<IServiceCollection>();
+            var serviceCollection = this.ambientServices.GetRequiredService<IServiceCollection>();
             var openGenericServiceTypes = new List<Type>();
 
             // make sure to register first the open generics, so that the constructed generics
@@ -60,7 +64,7 @@ namespace Kephas.Extensions.DependencyInjection
                     }
                 }
 
-                if (!candidateTypes.Contains(serviceType))
+                if (candidateTypes?.Contains(serviceType) is true)
                 {
                     candidateTypes.Add(serviceType);
                 }
