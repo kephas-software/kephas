@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
@@ -15,9 +15,8 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides abstractions for the dependency injection infrastructure.
-            Typically used areas and classes/interfaces/services:
-            - IInjector.
+            Provides analysis of Kephas based assemblies.
+            - Generates code for application services registered through [AppServiceContract] attributes.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -34,7 +33,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas composition autofac</PackageTags>
+        <PackageTags>kephas analyzers</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -46,11 +45,10 @@
         <DefineConstants>KEPHAS</DefineConstants>
 
         <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
+        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
 
-    <PropertyGroup>
-        <RootNamespace>Kephas</RootNamespace>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -58,7 +56,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
+        <None Remove="stylecop.json"/>
         <None Update="kephas.logo.stone.png">
             <Pack>true</Pack>
             <PackagePath>\</PackagePath>
@@ -66,11 +64,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <None Include="..\..\Kephas.snk" Link="Kephas.snk"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -85,7 +83,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj"/>
     </ItemGroup>
 
 </Project>
