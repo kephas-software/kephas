@@ -46,7 +46,7 @@ namespace Kephas.Injection.Lite.Hosting
             var liteConventions = (LiteConventionsBuilder)conventions;
             liteConventions.Build(parts);
 
-            return this.ambientServices.ToCompositionContext();
+            return this.ambientServices.ToInjector();
         }
 
         /// <summary>

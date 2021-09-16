@@ -27,7 +27,7 @@ namespace Kephas.Injection.Lite.Internal
                 return injector;
             }
 
-            injector = ambientServices.ToCompositionContext();
+            injector = ambientServices.ToInjector();
             ambientServices[AsInjectorKey] = injector;
             return injector;
         }

@@ -211,7 +211,7 @@ namespace Kephas.Injection
         /// <returns>
         /// The service provider as an <see cref="IInjector"/>.
         /// </returns>
-        public static IInjector ToCompositionContext(this IServiceProvider serviceProvider)
+        public static IInjector ToInjector(this IServiceProvider serviceProvider)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
@@ -223,7 +223,7 @@ namespace Kephas.Injection
         /// Resolves the specified contract type as an export factory.
         /// </summary>
         /// <typeparam name="T">The contract type.</typeparam>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
@@ -241,7 +241,7 @@ namespace Kephas.Injection
         /// </summary>
         /// <typeparam name="T">The contract type.</typeparam>
         /// <typeparam name="TMetadata">The metadata type.</typeparam>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
@@ -258,7 +258,7 @@ namespace Kephas.Injection
         /// Resolves the specified contract type as an enumeration of export factories.
         /// </summary>
         /// <typeparam name="T">The contract type.</typeparam>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
@@ -276,7 +276,7 @@ namespace Kephas.Injection
         /// </summary>
         /// <typeparam name="T">The contract type.</typeparam>
         /// <typeparam name="TMetadata">The metadata type.</typeparam>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
@@ -293,7 +293,7 @@ namespace Kephas.Injection
         /// Tries to resolve the specified contract type as an export factory.
         /// </summary>
         /// <typeparam name="T">The contract type.</typeparam>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c>.
         /// </returns>
@@ -311,7 +311,7 @@ namespace Kephas.Injection
         /// </summary>
         /// <typeparam name="T">The contract type.</typeparam>
         /// <typeparam name="TMetadata">The metadata type.</typeparam>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c>.
         /// </returns>
@@ -327,7 +327,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Resolves the specified contract type as an export factory.
         /// </summary>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>
         /// A export factory of an object implementing <paramref name="contractType"/>.
@@ -344,7 +344,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Resolves the specified contract type as an export factory with metadata.
         /// </summary>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="metadataType">Type of the metadata.</param>
         /// <returns>
@@ -363,7 +363,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Resolves the specified contract type as an enumeration of export factories.
         /// </summary>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>
         /// An enumeration of export factories of an object implementing <paramref name="contractType"/>.
@@ -380,7 +380,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Resolves the specified contract type as an enumeration of export factories with metadata.
         /// </summary>
-        /// <param name="injector">The compositionContext to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="metadataType">Type of the metadata.</param>
         /// <returns>
