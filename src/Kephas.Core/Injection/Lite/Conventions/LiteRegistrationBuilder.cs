@@ -196,11 +196,11 @@ namespace Kephas.Injection.Lite.Conventions
 
                 if (this.Lifetime == AppServiceLifetime.Singleton)
                 {
-                    b.AsSingleton();
+                    b.Singleton();
                 }
                 else if (this.Lifetime == AppServiceLifetime.Transient)
                 {
-                    b.AsTransient();
+                    b.Transient();
                 }
                 else if (this.Lifetime == AppServiceLifetime.Scoped)
                 {
@@ -214,7 +214,7 @@ namespace Kephas.Injection.Lite.Conventions
 
                 if (this.ContractType != null && this.ContractType != this.ServiceType)
                 {
-                    b.Keyed(this.ContractType);
+                    b.As(this.ContractType);
                 }
             }
 

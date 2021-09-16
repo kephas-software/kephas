@@ -8,27 +8,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.Lite
 {
+    using System;
+
     /// <summary>
     /// Interface for service registration builder.
     /// </summary>
     public interface IServiceRegistrationBuilder
     {
         /// <summary>
-        /// Sets the registration key to a super type of the service type.
+        /// Sets the registration contract to a super type of the service type.
         /// </summary>
         /// <remarks>
-        /// The registration type is the key to find the service.
+        /// The registration contract is the key to find the service.
         /// The registered service type is a subtype providing additional information, typically metadata.
         /// </remarks>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder Keyed(Type contractType);
+        IServiceRegistrationBuilder As(Type contractType);
 
         /// <summary>
         /// Registers the service as a singleton.
@@ -36,7 +36,15 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder AsSingleton();
+        IServiceRegistrationBuilder Singleton();
+
+        /// <summary>
+        /// Registers the service as scoped.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        IServiceRegistrationBuilder Scoped();
 
         /// <summary>
         /// Registers the service as transient.
@@ -44,7 +52,7 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder AsTransient();
+        IServiceRegistrationBuilder Transient();
 
         /// <summary>
         /// Registers the service with multiple instances.

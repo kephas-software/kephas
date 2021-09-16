@@ -192,7 +192,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithType(typeof(TServiceImplementation))
-                            .AsSingleton());
+                            .Singleton());
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithType(typeof(TServiceImplementation))
-                      .AsSingleton()
+                      .Singleton()
                       .AllowMultiple());
         }
 
@@ -233,7 +233,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithType(typeof(TServiceImplementation))
-                            .AsTransient());
+                            .Transient());
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithType(typeof(TServiceImplementation))
-                      .AsTransient()
+                      .Transient()
                       .AllowMultiple());
         }
 
@@ -277,7 +277,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsSingleton());
+                      .Singleton());
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsSingleton()
+                      .Singleton()
                       .AllowMultiple());
         }
 
@@ -324,7 +324,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsTransient());
+                      .Transient());
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsTransient()
+                      .Transient()
                       .AllowMultiple());
         }
 
@@ -372,7 +372,7 @@ namespace Kephas
             return ambientServices.Register(
                 serviceType,
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsSingleton());
+                      .Singleton());
         }
 
         /// <summary>
@@ -396,7 +396,7 @@ namespace Kephas
             return ambientServices.Register(
                 serviceType,
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsSingleton()
+                      .Singleton()
                       .AllowMultiple());
         }
 
@@ -421,7 +421,7 @@ namespace Kephas
             return ambientServices.Register(
                 serviceType,
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsTransient());
+                      .Transient());
         }
 
         /// <summary>
@@ -445,7 +445,7 @@ namespace Kephas
             return ambientServices.Register(
                 serviceType,
                 b => b.WithFactory(ctx => serviceFactory())
-                      .AsTransient()
+                      .Transient()
                       .AllowMultiple());
         }
 
@@ -513,7 +513,7 @@ namespace Kephas
 
             ambientServices.Register(
                 serviceType,
-                b => b.WithType(serviceImplementationType).AsSingleton());
+                b => b.WithType(serviceImplementationType).Singleton());
             return ambientServices;
         }
 
@@ -537,7 +537,7 @@ namespace Kephas
 
             ambientServices.Register(
                 serviceType,
-                b => b.WithType(serviceImplementationType).AsSingleton().AllowMultiple());
+                b => b.WithType(serviceImplementationType).Singleton().AllowMultiple());
             return ambientServices;
         }
 
@@ -561,7 +561,7 @@ namespace Kephas
 
             ambientServices.Register(
                 serviceType,
-                b => b.WithType(serviceImplementationType).AsTransient());
+                b => b.WithType(serviceImplementationType).Transient());
             return ambientServices;
         }
 
@@ -585,7 +585,7 @@ namespace Kephas
 
             ambientServices.Register(
                 serviceType,
-                b => b.WithType(serviceImplementationType).AsTransient().AllowMultiple());
+                b => b.WithType(serviceImplementationType).Transient().AllowMultiple());
             return ambientServices;
         }
 

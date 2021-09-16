@@ -197,8 +197,8 @@ namespace Kephas.Core.Tests
         public void Register_circular_dependency_transient()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register<CircularDependency1>(b => b.WithType<CircularDependency1>().AsTransient());
-            ambientServices.Register<CircularDependency2>(b => b.WithType<CircularDependency2>().AsTransient());
+            ambientServices.Register<CircularDependency1>(b => b.WithType<CircularDependency1>().Transient());
+            ambientServices.Register<CircularDependency2>(b => b.WithType<CircularDependency2>().Transient());
 
             Assert.Throws<CircularDependencyException>(() => ambientServices.GetService<CircularDependency1>());
         }
@@ -213,7 +213,7 @@ namespace Kephas.Core.Tests
                         {
                             Thread.Sleep(100);
                             return Substitute.For<IService>();
-                        }).AsTransient());
+                        }).Transient());
 
             var tasks = new List<Task>();
             for (var i = 0; i < 20; i++)
@@ -234,7 +234,7 @@ namespace Kephas.Core.Tests
                         {
                             Thread.Sleep(100);
                             return Substitute.For<IService>();
-                        }).AsSingleton());
+                        }).Singleton());
 
             var tasks = new List<Task>();
             for (var i = 0; i < 20; i++)

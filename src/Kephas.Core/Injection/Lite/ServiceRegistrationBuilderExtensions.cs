@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Services;
-using Kephas.Services.Composition;
-
 namespace Kephas.Injection.Lite
 {
+    using System;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
+    using Kephas.Services.Composition;
+
     /// <summary>
     /// Extensions for the service registration builder.
     /// </summary>
@@ -67,7 +68,7 @@ namespace Kephas.Injection.Lite
         {
             Requires.NotNull(builder, nameof(builder));
 
-            return builder.Keyed(typeof(TContract));
+            return builder.As(typeof(TContract));
         }
 
         /// <summary>

@@ -8,16 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Injection.Lite.Internal;
-using Kephas.Resources;
-using Kephas.Services;
-
 namespace Kephas.Injection.Lite
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Lite.Internal;
+    using Kephas.Resources;
+    using Kephas.Services;
+
     /// <summary>
     /// A service registration builder.
     /// </summary>
@@ -63,7 +64,7 @@ namespace Kephas.Injection.Lite
             {
                 case Type implementationType:
                     this.EnsureContractTypeMatchesImplementationType(this.contractType, implementationType);
-                    return new ServiceInfo(this.ambientServices, this.contractType, implementationType, this.lifetime == AppServiceLifetime.Singleton)
+                    return new ServiceInfo(this.ambientServices, this.contractType, implementationType, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
@@ -71,7 +72,7 @@ namespace Kephas.Injection.Lite
                         Metadata = this.metadata,
                     };
                 case Func<IInjector, object> factory:
-                    return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime == AppServiceLifetime.Singleton)
+                    return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
@@ -107,7 +108,7 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder Keyed(Type contractType)
+        public IServiceRegistrationBuilder As(Type contractType)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
@@ -131,9 +132,21 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder AsSingleton()
+        public IServiceRegistrationBuilder Singleton()
         {
             this.lifetime = AppServiceLifetime.Singleton;
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the service as a scoped.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IServiceRegistrationBuilder Scoped()
+        {
+            this.lifetime = AppServiceLifetime.Scoped;
             return this;
         }
 
@@ -143,7 +156,7 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder AsTransient()
+        public IServiceRegistrationBuilder Transient()
         {
             this.lifetime = AppServiceLifetime.Transient;
             return this;

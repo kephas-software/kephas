@@ -15,9 +15,25 @@ using NUnit.Framework;
 
 namespace Kephas.Core.Tests.Injection.Lite
 {
+    using Kephas.Services.Reflection;
+
     [TestFixture]
     public class ServiceRegistrationBuilderTest
     {
+        [Test]
+        public void Build_scoped_makes_singleton()
+        {
+            var ambientServices = Substitute.For<IAmbientServices>();
+            var builder = new ServiceRegistrationBuilder(ambientServices, typeof(string));
+            builder.WithType(typeof(string)).Scoped();
+
+            var svcInfo = builder.Build();
+            Assert.AreSame(typeof(string), svcInfo.ContractType);
+            Assert.AreSame(typeof(string), svcInfo.ServiceType);
+            Assert.AreSame(typeof(string), svcInfo.InstanceType);
+            Assert.IsTrue(svcInfo.IsSingleton());
+        }
+
         [Test]
         public void Build_generic_service_generic_type()
         {
@@ -48,7 +64,7 @@ namespace Kephas.Core.Tests.Injection.Lite
             var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>));
             builder
                 .WithType(typeof(UnknownIntSvc))
-                .Keyed(typeof(ISvc));
+                .As(typeof(ISvc));
 
             var svcInfo = builder.Build();
 
