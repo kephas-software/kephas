@@ -36,18 +36,18 @@ namespace Kephas
         /// Sets the composition container to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <param name="injectorBuilderConfig">The injector builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static IAmbientServices BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? containerBuilderConfig = null)
+        public static IAmbientServices BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? injectorBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var containerBuilder = new DependencyInjectionInjectorBuilder(new InjectionRegistrationContext(ambientServices));
 
-            containerBuilderConfig?.Invoke(containerBuilder);
+            injectorBuilderConfig?.Invoke(containerBuilder);
 
             var container = containerBuilder.CreateInjector();
-            return ambientServices.WithCompositionContainer(container);
+            return ambientServices.WithInjector(container);
         }
 
         /// <summary>

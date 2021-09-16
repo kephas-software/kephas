@@ -58,7 +58,7 @@ namespace Kephas.Core.Tests
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
             var compositionContext = Substitute.For<IInjector>();
-            ambientServices.WithCompositionContainer<TestInjectorBuilder>(
+            ambientServices.WithInjector<TestInjectorBuilder>(
                 b => b.WithAssembly(this.GetType().Assembly)
                     .WithCompositionContext(compositionContext));
 
@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests
         public void WithCompositionContainer_builder_missing_required_constructor()
         {
             var ambientServices = new AmbientServices();
-            Assert.Throws<InvalidOperationException>(() => ambientServices.WithCompositionContainer<BadTestInjectorBuilder>());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.WithInjector<BadTestInjectorBuilder>());
         }
 
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>

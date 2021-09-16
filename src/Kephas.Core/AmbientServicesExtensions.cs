@@ -760,16 +760,16 @@ namespace Kephas
         /// Sets the composition container to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="injectionContainer">The composition container.</param>
+        /// <param name="injector">The injector.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithCompositionContainer(this IAmbientServices ambientServices, IInjector injectionContainer)
+        public static IAmbientServices WithInjector(this IAmbientServices ambientServices, IInjector injector)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(injectionContainer, nameof(injectionContainer));
+            Requires.NotNull(injector, nameof(injector));
 
-            ambientServices.Register(injectionContainer);
+            ambientServices.Register(injector);
 
             return ambientServices;
         }
@@ -777,46 +777,46 @@ namespace Kephas
         /// <summary>
         /// Sets the composition container to the ambient services.
         /// </summary>
-        /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
+        /// <typeparam name="TInjectorBuilder">Type of the injector builder.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <param name="injectorBuilderConfig">The injector builder configuration.</param>
         /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithCompositionContainer<TContainerBuilder>(this IAmbientServices ambientServices, Action<TContainerBuilder>? containerBuilderConfig = null)
-            where TContainerBuilder : IInjectorBuilder
+        public static IAmbientServices WithInjector<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? injectorBuilderConfig = null)
+            where TInjectorBuilder : IInjectorBuilder
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TContainerBuilder));
+            var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TInjectorBuilder));
             var context = new InjectionRegistrationContext(ambientServices);
 
-            var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
+            var containerBuilder = (TInjectorBuilder)builderType.CreateInstance(new[] { context });
 
-            containerBuilderConfig?.Invoke(containerBuilder);
+            injectorBuilderConfig?.Invoke(containerBuilder);
 
-            return ambientServices.WithCompositionContainer(containerBuilder.CreateInjector());
+            return ambientServices.WithInjector(containerBuilder.CreateInjector());
         }
 
         /// <summary>
         /// Builds the composition container using Lite and adds it to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="containerBuilderConfig">Optional. The container builder configuration.</param>
+        /// <param name="injectorBuilderConfig">Optional. The injector builder configuration.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? containerBuilderConfig = null)
+        public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? injectorBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var containerBuilder = new LiteInjectorBuilder(new InjectionRegistrationContext(ambientServices));
 
-            containerBuilderConfig?.Invoke(containerBuilder);
+            injectorBuilderConfig?.Invoke(containerBuilder);
 
             var container = containerBuilder.CreateInjector();
-            return ambientServices.WithCompositionContainer(container);
+            return ambientServices.WithInjector(container);
         }
     }
 }

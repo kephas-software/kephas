@@ -85,7 +85,7 @@ namespace Kephas.Tests.Orchestration
             var eventHub = this.CreateEventHubMock();
 
             var compositionContext = Substitute.For<IInjector>();
-            ambientServices.WithAppRuntime(appRuntime).WithCompositionContainer(compositionContext);
+            ambientServices.WithAppRuntime(appRuntime).WithInjector(compositionContext);
             var appContext = new AppContext(ambientServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
