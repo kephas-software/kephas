@@ -24,7 +24,7 @@ namespace Kephas.Logging.Serilog
     {
         private readonly LogLevel staticMinimumLevel = LogLevel.Info;
         private readonly LoggingLevelSwitch? levelSwitch;
-        private readonly ConcurrentDictionary<string, global::Kephas.Logging.ILogger> loggers = new ConcurrentDictionary<string, global::Kephas.Logging.ILogger>();
+        private readonly ConcurrentDictionary<string, global::Kephas.Logging.ILogger> loggers = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SerilogManager"/> class.

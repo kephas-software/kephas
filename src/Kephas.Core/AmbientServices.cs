@@ -8,14 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.AttributedModel;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-using Kephas.Injection.Lite;
-using Kephas.Injection.Lite.Conventions;
-using Kephas.Injection.Lite.Internal;
-
 namespace Kephas
 {
     using System;
@@ -26,6 +18,13 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Injection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Lite;
+    using Kephas.Injection.Lite.Conventions;
+    using Kephas.Injection.Lite.Internal;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
