@@ -81,7 +81,7 @@ namespace Kephas.Model.Elements
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[] MetadataAttributes => this.appServiceInfo.MetadataAttributes;
+        public Type[]? MetadataAttributes => this.appServiceInfo.MetadataAttributes;
 
         /// <summary>
         /// Gets the type of the contract.
@@ -136,6 +136,12 @@ namespace Kephas.Model.Elements
                 throw new AmbiguousMatchException($"The service {this.Name} allows multiple service implementation types.");
             }
 
+            if (this.ContractType == null)
+            {
+                // TODO localization
+                throw new InvalidOperationException($"The service {this.Name} does not have a contract type.");
+            }
+
             // TODO resolve or exception for generic services
             return this.injector.Resolve(this.ContractType);
         }
@@ -146,10 +152,7 @@ namespace Kephas.Model.Elements
         {
             base.AddPart(part);
 
-            if (this.ContractType == null)
-            {
-                this.ContractType = (part as IRuntimeTypeInfo)?.Type;
-            }
+            this.ContractType ??= (part as IRuntimeTypeInfo)?.Type;
         }
 
         /// <summary>Calculates the base mixins.</summary>

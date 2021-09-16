@@ -23,36 +23,5 @@ namespace Kephas.Core.Tests.Services
     [TestFixture]
     public class AppServiceContractAttributeTest
     {
-        [Test]
-        public void DefaultMetadataAttributeTypes()
-        {
-            Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(OverridePriorityAttribute)));
-            Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(ProcessingPriorityAttribute)));
-            Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(ServiceNameAttribute)));
-        }
-
-        [Test]
-        public void RegisterDefaultMetadataAttributeTypes_success()
-        {
-            Assert.IsFalse(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(DummyAttribute)));
-
-            AppServiceContractAttribute.RegisterDefaultMetadataAttributeTypes(typeof(DummyAttribute));
-
-            Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(DummyAttribute)));
-        }
-
-        [Test]
-        public void RegisterDefaultMetadataAttributeTypes_unique_types()
-        {
-            Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(ServiceNameAttribute)));
-
-            AppServiceContractAttribute.RegisterDefaultMetadataAttributeTypes(typeof(ServiceNameAttribute));
-
-            Assert.AreEqual(1, AppServiceContractAttribute.DefaultMetadataAttributeTypes.Count(t => t == typeof(ServiceNameAttribute)));
-        }
-
-        public class DummyAttribute : Attribute
-        {
-        }
     }
 }

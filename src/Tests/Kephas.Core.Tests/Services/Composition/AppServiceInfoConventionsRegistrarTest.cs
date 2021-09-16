@@ -20,6 +20,7 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Linq;
     using System.Reflection;
     using System.Text;
+
     using Kephas.Core.Tests.Services.Composition.CustomNamedValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.CustomValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.DefaultAppServiceMetadata;
@@ -470,6 +471,38 @@ namespace Kephas.Core.Tests.Services.Composition
                                   typeof(BadAppService).GetTypeInfo(),
                               },
                 new TestRegistrationContext(new AmbientServices())));
+        }
+
+        [Test]
+        public void DefaultMetadataAttributeTypes()
+        {
+            Assert.IsTrue(AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Contains(typeof(OverridePriorityAttribute)));
+            Assert.IsTrue(AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Contains(typeof(ProcessingPriorityAttribute)));
+            Assert.IsTrue(AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Contains(typeof(ServiceNameAttribute)));
+        }
+
+        [Test]
+        public void RegisterDefaultMetadataAttributeTypes_success()
+        {
+            Assert.IsFalse(AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Contains(typeof(DummyAttribute)));
+
+            AppServiceInfoConventionsRegistrar.RegisterDefaultMetadataAttributeTypes(typeof(DummyAttribute));
+
+            Assert.IsTrue(AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Contains(typeof(DummyAttribute)));
+        }
+
+        [Test]
+        public void RegisterDefaultMetadataAttributeTypes_unique_types()
+        {
+            Assert.IsTrue(AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Contains(typeof(ServiceNameAttribute)));
+
+            AppServiceInfoConventionsRegistrar.RegisterDefaultMetadataAttributeTypes(typeof(ServiceNameAttribute));
+
+            Assert.AreEqual(1, AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Count(t => t == typeof(ServiceNameAttribute)));
+        }
+
+        public class DummyAttribute : Attribute
+        {
         }
 
         private IAmbientServices GetTestAmbientServices(Action<string> logAction = null)
