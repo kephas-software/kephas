@@ -52,7 +52,6 @@
         <GenerateRepositoryUrlAttribute>true</GenerateRepositoryUrlAttribute>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)KephasGenerated</CompilerGeneratedFilesOutputPath>
-        <EnableNETAnalyzers>false</EnableNETAnalyzers>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
