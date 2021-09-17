@@ -7,13 +7,14 @@
 
 namespace Kephas.Analyzers.Injection
 {
-    using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
+    using System.Collections.Generic;
 
-/// <summary>
-/// Source generator for collecting application services (contract implementations) and declaring them at assembly level.
-/// </summary>
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+    /// <summary>
+    /// Source generator for collecting application services (contract implementations) and declaring them at assembly level.
+    /// </summary>
     [Generator]
     public class AppServiceSourceGenerator : ISourceGenerator
     {
@@ -32,7 +33,7 @@ using System.Collections.Generic;
         /// </remarks>
         public void Execute(GeneratorExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            // TODO implement me!
         }
 
         /// <summary>

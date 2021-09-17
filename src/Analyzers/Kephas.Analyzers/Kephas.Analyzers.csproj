@@ -37,9 +37,7 @@
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <IncludeSymbols>false</IncludeSymbols>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
@@ -47,11 +45,15 @@
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
 
+        <developmentDependency>true</developmentDependency>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
         <IsRoslynComponent>true</IsRoslynComponent>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <GenerateRepositoryUrlAttribute>true</GenerateRepositoryUrlAttribute>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)KephasGenerated</CompilerGeneratedFilesOutputPath>
+        <CompilerGeneratedFilesOutputPath>$(MSBuildProjectDirectory)\Kephas\.generated</CompilerGeneratedFilesOutputPath>
+        <DebugSymbols>True</DebugSymbols>
+        <DebugType>Embedded</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -71,11 +73,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" PrivateAssets="all" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -88,10 +87,6 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

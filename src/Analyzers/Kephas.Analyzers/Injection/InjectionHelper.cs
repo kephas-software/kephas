@@ -11,8 +11,7 @@ namespace Kephas.Analyzers.Injection
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using Kephas.Injection.AttributedModel;
-    using Kephas.Services;
+
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     /// <summary>
@@ -26,11 +25,11 @@ namespace Kephas.Analyzers.Injection
 
         static InjectionHelper()
         {
-            ExcludedAttrs = GetAttrNames(typeof(ExcludeFromInjectionAttribute)).ToList();
+            ExcludedAttrs = GetAttrNames("Kephas.Injection.AttributedModel.ExcludeFromInjectionAttribute").ToList();
             AppServiceContractAttrs = new List<string>();
-            AppServiceContractAttrs.AddRange(GetAttrNames(typeof(AppServiceContractAttribute)));
-            AppServiceContractAttrs.AddRange(GetAttrNames(typeof(SingletonAppServiceContractAttribute)));
-            AppServiceContractAttrs.AddRange(GetAttrNames(typeof(ScopedAppServiceContractAttribute)));
+            AppServiceContractAttrs.AddRange(GetAttrNames("Kephas.Services.AppServiceContractAttribute"));
+            AppServiceContractAttrs.AddRange(GetAttrNames("Kephas.Services.SingletonAppServiceContractAttribute"));
+            AppServiceContractAttrs.AddRange(GetAttrNames("Kephas.Services.ScopedAppServiceContractAttribute"));
         }
 
         public static bool IsAppServiceContract(TypeDeclarationSyntax type)
@@ -101,12 +100,18 @@ namespace Kephas.Analyzers.Injection
             return attrs.Contains(attrName);
         }
 
-        private static IEnumerable<string> GetAttrNames(Type attributeType)
+        private static IEnumerable<string> GetAttrNames(string attrFullName)
         {
-            yield return attributeType.Name;
-            yield return attributeType.FullName;
-            yield return attributeType.Name.Substring(0, attributeType.Name.Length - AttributeEnding.Length);
-            yield return attributeType.FullName!.Substring(0, attributeType.FullName.Length - AttributeEnding.Length);
+            yield return attrFullName.Substring(0, attrFullName.Length - AttributeEnding.Length);
+            yield return attrFullName;
+
+            var dotIndex = attrFullName.LastIndexOf('.');
+            if (dotIndex > 0)
+            {
+                var attrName = attrFullName.Substring(0, dotIndex);
+                yield return attrName.Substring(0, attrName.Length - AttributeEnding.Length);
+                yield return attrName;
+            }
         }
     }
 }
