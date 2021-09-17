@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceInfoProviderAttribute.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,20 +14,23 @@ namespace Kephas.Services
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Assembly attribute collecting the app service contract types.
+    /// Assembly attribute decorating an assembly and collecting the application services, both contract types and implementation types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-    public sealed class AppServiceInfoProviderAttribute : Attribute, IAppServiceInfoProvider
+    public sealed class AppServicesAttribute : Attribute, IAppServiceInfoProvider, IAppServiceTypesProvider
     {
-        private readonly Type[] contractTypes;
+        private readonly Type[] contractDeclarationTypes;
+        private readonly Type[] serviceTypes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceInfoProviderAttribute"/> class.
+        /// Initializes a new instance of the <see cref="AppServicesAttribute"/> class.
         /// </summary>
-        /// <param name="contractTypes">The contract types.</param>
-        public AppServiceInfoProviderAttribute(params Type[] contractTypes)
+        /// <param name="contractDeclarationTypes">The contract declaration types.</param>
+        /// <param name="serviceTypes">The service types (contract implementations).</param>
+        public AppServicesAttribute(Type[]? contractDeclarationTypes = null, Type[]? serviceTypes = null)
         {
-            this.contractTypes = contractTypes;
+            this.contractDeclarationTypes = contractDeclarationTypes ?? Type.EmptyTypes;
+            this.serviceTypes = serviceTypes ?? Type.EmptyTypes;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes = null)
         {
-            foreach (var contractType in this.contractTypes)
+            foreach (var contractType in this.contractDeclarationTypes)
             {
                 var appServiceInfo = this.TryGetAppServiceInfo(contractType);
                 if (appServiceInfo != null)
@@ -47,6 +50,17 @@ namespace Kephas.Services
                     yield return (contractType, appServiceInfo);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets an enumeration of types implementing application service contracts.
+        /// </summary>
+        /// <returns>
+        /// An enumeration of types implementing application service contracts.
+        /// </returns>
+        public IEnumerable<Type> GetAppServiceTypes()
+        {
+            return this.serviceTypes;
         }
 
         private IAppServiceInfo? TryGetAppServiceInfo(Type type)

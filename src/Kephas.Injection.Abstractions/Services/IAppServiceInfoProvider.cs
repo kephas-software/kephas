@@ -16,7 +16,8 @@ namespace Kephas.Services
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Interface for application service information provider.
+    /// Interface providing the <see cref="GetAppServiceInfos(System.Collections.Generic.IList{System.Type}?)"/> method,
+    /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
     public interface IAppServiceInfoProvider
     {
