@@ -12,6 +12,7 @@ namespace Kephas.Analyzers.Injection
     using System.Linq;
     using System.Text;
 
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     /// <summary>
@@ -38,10 +39,21 @@ namespace Kephas.Analyzers.Injection
             var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
             return !attrs.Any(a => ContainsAttribute(a, ExcludedAttrs))
                    && attrs.Any(a => ContainsAttribute(a, AppServiceContractAttrs))
-                   && type.Modifiers.Any(m => m.ValueText == "public");
+                   && type.Modifiers.Any(m => m.ValueText == "public")
+                   && !type.Modifiers.Any(m => m.ValueText == "static");
         }
 
-        public static bool CanBeAppService(TypeDeclarationSyntax type)
+        public static bool IsAppService(ClassDeclarationSyntax type, GeneratorExecutionContext context)
+        {
+            if (IsAppServiceContract(type))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool CanBeAppService(ClassDeclarationSyntax type)
         {
             var attrLists = type.AttributeLists;
             var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
@@ -50,9 +62,9 @@ namespace Kephas.Analyzers.Injection
                 return false;
             }
 
-            // TODO public and not abstract
-
-            return type.Modifiers.Any(m => m.ValueText == "public");
+            return type.Modifiers.Any(m => m.ValueText == "public")
+                && !type.Modifiers.Any(m => m.ValueText == "static")
+                && !type.Modifiers.Any(m => m.ValueText == "abstract");
         }
 
         public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax)
@@ -108,7 +120,7 @@ namespace Kephas.Analyzers.Injection
             var dotIndex = attrFullName.LastIndexOf('.');
             if (dotIndex > 0)
             {
-                var attrName = attrFullName.Substring(0, dotIndex);
+                var attrName = attrFullName.Substring(dotIndex + 1);
                 yield return attrName.Substring(0, attrName.Length - AttributeEnding.Length);
                 yield return attrName;
             }
