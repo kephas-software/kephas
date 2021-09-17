@@ -9,13 +9,15 @@ namespace Kephas.Analyzers.Injection
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
-
+    using System.Threading;
     using Kephas.Injection.AttributedModel;
     using Kephas.Services;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Text;
 
     /// <summary>
     /// Source generator for application service contracts.
@@ -23,6 +25,8 @@ namespace Kephas.Analyzers.Injection
     [Generator]
     public class AppServiceContractSourceGenerator : ISourceGenerator
     {
+        private static int Index = 0;
+
         /// <summary>
         /// Called before generation occurs. A generator can use the <paramref name="context" />
         /// to register callbacks required to perform generation.
@@ -54,26 +58,29 @@ namespace Kephas.Analyzers.Injection
             var contractTypes = syntaxReceiver.ContractTypes;
             if (contractTypes.Count == 0)
             {
-                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KE1000", "Application service contracts generator", $"No application service contracts found in {context.Compilation.AssemblyName}", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), null));
                 return;
             }
 
-            var sb = new StringBuilder();
-            sb.Append($@"
+            var types = new StringBuilder();
+            var source = new StringBuilder();
+            source.Append($@"
 using Kephas.Services;
 
 [assembly: AppServiceInfoProvider(");
             foreach (var typeSyntax in contractTypes)
             {
                 var typeFullName = this.GetTypeFullName(typeSyntax);
-                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KE1001", "Application service contracts generator", $"Contract {typeFullName} found.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), null));
-                sb.AppendLine($"typeof({typeFullName}), ");
+                source.AppendLine($"typeof({typeFullName}), ");
+                types.Append($"{typeSyntax.Identifier}, ");
             }
 
-            sb.Length -= 2;
-            sb.Append($@")]
+            types.Length -= 2;
+            source.Length -= Environment.NewLine.Length;
+            source.Length -= 2;
+            source.Append($@")]
 ");
-            context.AddSource("app-service-contracts", sb.ToString());
+            context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", typeof(AppServiceContractSourceGenerator).Name, $"Identified following application service contracts: {types}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+            context.AddSource("Kephas.AppServiceContracts.cs", SourceText.From(source.ToString(), Encoding.UTF8));
         }
 
         private string GetTypeFullName(TypeDeclarationSyntax typeSyntax)
@@ -97,11 +104,6 @@ using Kephas.Services;
                 }
 
                 parent = parent?.Parent;
-            }
-
-            if (sb.Length > 0)
-            {
-                sb.Append('.');
             }
 
             sb.Append(typeSyntax.Identifier.Text);

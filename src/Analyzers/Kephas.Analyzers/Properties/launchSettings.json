@@ -2,7 +2,7 @@
   "profiles": {
     "Kephas.Analyzers": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\..\\Kephas.Core\\Kephas.Core.csproj"
+      "targetProject": "..\\..\\Tests\\Analyzers\\Kephas.Analyzers.TestAssembly\\Kephas.Analyzers.TestAssembly.csproj"
     }
   }
 }
