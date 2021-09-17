@@ -6,7 +6,7 @@
 )
 
 function get-packagename([string]$pathname) {
-    return $pathname.Replace("..\", "").Replace("TestingFramework\", "")
+    return $pathname.Replace("..\", "").Replace("TestingFramework\", "").Replace("Analyzers\", "")
 }
 
 $paths = @(
@@ -70,6 +70,7 @@ $paths = @(
     "..\Kephas.TextProcessing",
     "..\Kephas.Workflow",
     "..\Kephas.Workflow.Model",
+    "..\Analyzers\Kephas.Analyzers",
     "..\TestingFramework\Kephas.Testing",
     "..\TestingFramework\Kephas.Testing.Injection.Autofac",
     "..\TestingFramework\Kephas.Testing.Injection.SystemComposition",
