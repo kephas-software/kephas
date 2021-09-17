@@ -50,7 +50,7 @@ namespace Kephas.Commands
         public static TArgs AsArgs<TArgs>(this IDictionary<string, object?> args)
         {
             Requires.NotNull(args, nameof(args));
-            return (TArgs)Activator.CreateInstance(typeof(TArgs), args);
+            return (TArgs)Activator.CreateInstance(typeof(TArgs), args)!;
         }
 
         /// <summary>

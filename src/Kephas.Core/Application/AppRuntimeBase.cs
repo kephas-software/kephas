@@ -168,7 +168,7 @@ namespace Kephas.Application
         /// <value>
         /// The logger.
         /// </value>
-        protected virtual ILogger Logger => this.getLogger(this.GetType().FullName);
+        protected virtual ILogger Logger => this.getLogger(this.GetType().FullName!);
 
         /// <summary>
         /// Gets the check license delegate.

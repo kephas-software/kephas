@@ -8,11 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Hosting;
-using Kephas.Injection.Lite;
-using Kephas.Injection.Lite.Hosting;
-
 namespace Kephas
 {
     using System;
@@ -21,6 +16,10 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Cryptography;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
+    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Lite;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -598,12 +597,12 @@ namespace Kephas
         /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no
         /// service object of type <typeparamref name="TService"/>.
         /// </returns>
-        public static TService GetService<TService>(this IServiceProvider ambientServices)
+        public static TService? GetService<TService>(this IServiceProvider ambientServices)
             where TService : class
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return (TService)ambientServices.GetService(typeof(TService));
+            return (TService?)ambientServices.GetService(typeof(TService));
         }
 
         /// <summary>
