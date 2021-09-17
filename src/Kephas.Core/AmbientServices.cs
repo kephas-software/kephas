@@ -211,7 +211,7 @@ namespace Kephas
             // of each composition context implementation to register itself in the DI container.
             return this.registry
                 .Where(s => !ReferenceEquals(s.ContractType, typeof(IInjector)))
-                .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType, si)))
+                .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType!, si)))
                 .ToList();
         }
 
