@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
+namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
 {
     using Kephas.Services;
     using Microsoft.AspNetCore.Http;

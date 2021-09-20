@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Hosting.EndpointConfigurators
+namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.EndpointConfigurators
 {
     using Kephas.Application.AspNetCore;
+    using Kephas.Application.AspNetCore.Hosting;
     using Kephas.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;

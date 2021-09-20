@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.EndpointConfigurators
+namespace Kephas.AspNetCore.InteractiveTests.EndpointConfigurators
 {
     using Kephas.Application.AspNetCore;
     using Kephas.Application.AspNetCore.Hosting;

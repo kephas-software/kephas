@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
+namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurators
 {
     using Kephas.Services;
     using Microsoft.AspNetCore.Http;
