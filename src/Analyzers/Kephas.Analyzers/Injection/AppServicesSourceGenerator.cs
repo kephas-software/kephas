@@ -62,21 +62,28 @@ using Kephas.Services;
             source.AppendLine(",");
             this.AppendServiceTypes(source, context, syntaxReceiver.ServiceTypes);
 
-            source.AppendLine($@")]");
+            source.AppendLine($@"
+)]");
             context.AddSource("Kephas.AppServiceContracts.cs", SourceText.From(source.ToString(), Encoding.UTF8));
         }
 
         private void AppendServiceTypes(StringBuilder source, GeneratorExecutionContext context, IList<ClassDeclarationSyntax> serviceTypes)
         {
-            source.AppendLine($@"   serviceTypes: new Type[] {{");
+            source.AppendLine($@"   serviceTypes: new (Type serviceType, Type contactDeclarationType)[] {{");
 
             if (serviceTypes.Count > 0)
             {
                 var types = new StringBuilder();
-                foreach (var classSyntax in serviceTypes.Where(t => InjectionHelper.IsAppService(t, context)))
+                foreach (var classSyntax in serviceTypes)
                 {
+                    var appServiceContract = InjectionHelper.TryGetAppServiceContract(classSyntax, context);
+                    if (appServiceContract == null)
+                    {
+                        continue;
+                    }
+
                     var typeFullName = InjectionHelper.GetTypeFullName(classSyntax);
-                    source.AppendLine($"        typeof({typeFullName}),");
+                    source.AppendLine($"        (serviceType: typeof({typeFullName}), contactDeclarationType: typeof({InjectionHelper.GetTypeFullName(appServiceContract)})),");
                     types.Append($"{classSyntax.Identifier}, ");
                 }
 

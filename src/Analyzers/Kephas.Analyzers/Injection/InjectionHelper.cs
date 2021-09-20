@@ -40,17 +40,47 @@ namespace Kephas.Analyzers.Injection
             return !attrs.Any(a => ContainsAttribute(a, ExcludedAttrs))
                    && attrs.Any(a => ContainsAttribute(a, AppServiceContractAttrs))
                    && type.Modifiers.Any(m => m.ValueText == "public")
-                   && !type.Modifiers.Any(m => m.ValueText == "static");
+                   && type.Modifiers.All(m => m.ValueText != "static");
         }
 
-        public static bool IsAppService(ClassDeclarationSyntax type, GeneratorExecutionContext context)
+        public static bool IsAppServiceContract(INamedTypeSymbol type)
         {
+            var attrs = type.GetAttributes();
+            return !attrs.Any(a => ContainsAttribute(a, ExcludedAttrs))
+                   && attrs.Any(a => ContainsAttribute(a, AppServiceContractAttrs))
+                   && !type.IsStatic
+                   && type.DeclaredAccessibility == Accessibility.Public;
+        }
+
+        public static INamedTypeSymbol? TryGetAppServiceContract(ClassDeclarationSyntax type, GeneratorExecutionContext context)
+        {
+            var semanticModel = context.Compilation.GetSemanticModel(type.SyntaxTree);
+            var classSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(type)!;
+
             if (IsAppServiceContract(type))
             {
-                return true;
+                return classSymbol;
             }
 
-            return false;
+            if (type.BaseList == null)
+            {
+                return null;
+            }
+
+            foreach (var baseInterface in classSymbol.AllInterfaces)
+            {
+                if (IsAppServiceContract(baseInterface))
+                {
+                    return baseInterface;
+                }
+            }
+
+            if (classSymbol.BaseType != null && IsAppServiceContract(classSymbol.BaseType))
+            {
+                return classSymbol.BaseType;
+            }
+
+            return null;
         }
 
         public static bool CanBeAppService(ClassDeclarationSyntax type)
@@ -63,8 +93,21 @@ namespace Kephas.Analyzers.Injection
             }
 
             return type.Modifiers.Any(m => m.ValueText == "public")
-                && !type.Modifiers.Any(m => m.ValueText == "static")
-                && !type.Modifiers.Any(m => m.ValueText == "abstract");
+                && type.Modifiers.All(m => m.ValueText != "static")
+                && type.Modifiers.All(m => m.ValueText != "abstract");
+        }
+
+        public static string GetTypeFullName(INamedTypeSymbol typeSymbol)
+        {
+            var fullName = typeSymbol.Name;
+            var ns = typeSymbol.ContainingNamespace;
+            while (ns != null)
+            {
+                fullName = ns.Name + "." + fullName;
+                ns = ns.ContainingNamespace;
+            }
+
+            return fullName;
         }
 
         public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax)
@@ -109,6 +152,12 @@ namespace Kephas.Analyzers.Injection
         private static bool ContainsAttribute(AttributeSyntax attributeSyntax, IEnumerable<string> attrs)
         {
             var attrName = attributeSyntax.Name.ToString();
+            return attrs.Contains(attrName);
+        }
+
+        private static bool ContainsAttribute(AttributeData attributeSyntax, IEnumerable<string> attrs)
+        {
+            var attrName = GetTypeFullName(attributeSyntax.AttributeClass!);
             return attrs.Contains(attrName);
         }
 
