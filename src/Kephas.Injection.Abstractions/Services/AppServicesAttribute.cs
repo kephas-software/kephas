@@ -20,17 +20,17 @@ namespace Kephas.Services
     public sealed class AppServicesAttribute : Attribute, IAppServiceInfoProvider, IAppServiceTypesProvider
     {
         private readonly Type[] contractDeclarationTypes;
-        private readonly Type[] serviceTypes;
+        private readonly (Type serviceType, Type contractDeclarationType)[] serviceTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesAttribute"/> class.
         /// </summary>
         /// <param name="contractDeclarationTypes">The contract declaration types.</param>
-        /// <param name="serviceTypes">The service types (contract implementations).</param>
-        public AppServicesAttribute(Type[]? contractDeclarationTypes = null, Type[]? serviceTypes = null)
+        /// <param name="serviceTypes">The service types (contract implementations) with their respective contract.</param>
+        public AppServicesAttribute(Type[]? contractDeclarationTypes = null, (Type serviceType, Type contractDeclarationType)[]? serviceTypes = null)
         {
             this.contractDeclarationTypes = contractDeclarationTypes ?? Type.EmptyTypes;
-            this.serviceTypes = serviceTypes ?? Type.EmptyTypes;
+            this.serviceTypes = serviceTypes ?? Array.Empty<(Type serviceType, Type contractDeclarationType)>();
         }
 
         /// <summary>
@@ -53,12 +53,12 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Gets an enumeration of types implementing application service contracts.
+        /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
         /// <returns>
-        /// An enumeration of types implementing application service contracts.
+        /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<Type> GetAppServiceTypes()
+        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes()
         {
             return this.serviceTypes;
         }

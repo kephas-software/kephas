@@ -19,11 +19,11 @@ namespace Kephas.Services
     public interface IAppServiceTypesProvider
     {
         /// <summary>
-        /// Gets an enumeration of types implementing application service contracts.
+        /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
         /// <returns>
-        /// An enumeration of types implementing application service contracts.
+        /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        IEnumerable<Type> GetAppServiceTypes();
+        IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes();
     }
 }
