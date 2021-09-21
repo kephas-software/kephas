@@ -6,4 +6,8 @@ namespace Kephas.Analyzers.TestAssembly
     public interface ISingletonServiceContract
     {
     }
+    
+    public class SingletonService : ISingletonServiceContract
+    {
+    }
 }

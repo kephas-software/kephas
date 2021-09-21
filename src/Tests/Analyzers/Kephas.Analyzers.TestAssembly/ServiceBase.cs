@@ -6,4 +6,8 @@ namespace Kephas.Analyzers.TestAssembly
     public abstract class ServiceBase
     {
     }
+
+    public class DerivedService : ServiceBase
+    {
+    }
 }
