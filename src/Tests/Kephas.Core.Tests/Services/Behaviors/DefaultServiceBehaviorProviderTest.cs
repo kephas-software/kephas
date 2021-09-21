@@ -56,7 +56,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         [Test]
         public void WhereEnabled_priority_with_end_rule()
         {
-            var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: 1);
+            var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: (Priority)1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: true, value: true, processingPriority: 0);
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         [Test]
         public void WhereEnabled_priority_without_end_rule()
         {
-            var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: 1);
+            var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: (Priority)1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: true, processingPriority: 0);
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
@@ -97,13 +97,13 @@ namespace Kephas.Core.Tests.Services.Behaviors
                 bool canApply,
                 bool isEndRule,
                 bool value,
-                int processingPriority = 0)
+                Priority processingPriority = 0)
         {
             var service = this.CreateEnabledServiceBehaviorRule(canApply, isEndRule, value, processingPriority);
             return new ExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>(() => service, new ServiceBehaviorRuleMetadata(typeof(ITestService), processingPriority: processingPriority));
         }
 
-        private IEnabledServiceBehaviorRule<ITestService> CreateEnabledServiceBehaviorRule(bool canApply, bool isEndRule, bool value, int processingPriority = 0)
+        private IEnabledServiceBehaviorRule<ITestService> CreateEnabledServiceBehaviorRule(bool canApply, bool isEndRule, bool value, Priority processingPriority = 0)
         {
             var behaviorMock = Substitute.For<IEnabledServiceBehaviorRule<ITestService>>();
             behaviorMock

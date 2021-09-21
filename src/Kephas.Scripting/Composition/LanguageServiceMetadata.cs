@@ -14,6 +14,7 @@ namespace Kephas.Scripting.Composition
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -43,7 +44,7 @@ namespace Kephas.Scripting.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public LanguageServiceMetadata(string[] language, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
+        public LanguageServiceMetadata(string[] language, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             Requires.NotNullOrEmpty(language, nameof(language));

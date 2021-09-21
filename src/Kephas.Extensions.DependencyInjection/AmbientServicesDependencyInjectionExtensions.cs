@@ -8,19 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.AttributedModel;
-using Kephas.Injection.ExportFactories;
-using Kephas.Injection.Hosting;
-
 namespace Kephas
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.DependencyInjection.Hosting;
+    using Kephas.Injection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.ExportFactories;
+    using Kephas.Injection.Hosting;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -60,7 +60,7 @@ namespace Kephas
             AppServiceMetadata GetAppServiceMetadata(IRuntimeTypeInfo t)
             {
                 var overridePriority = t.GetAttribute<OverridePriorityAttribute>()?.Value ?? 0;
-                var processingPriority = t.GetAttribute<ProcessingPriorityAttribute>()?.Value ?? 0;
+                var processingPriority = t.GetAttribute<ProcessingPriorityAttribute>()?.Value ?? Priority.Normal;
                 var isOverride = t.GetAttribute<OverrideAttribute>() != null;
                 var serviceName = t.GetAttribute<ServiceNameAttribute>()?.Value;
                 return new AppServiceMetadata(processingPriority, overridePriority, serviceName, isOverride)

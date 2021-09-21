@@ -412,7 +412,7 @@ namespace Kephas.Core.Tests.Serialization
             ISerializer serializer = null,
             Priority overridePriority = Priority.Normal)
         {
-            var metadata = new SerializerMetadata(mediaType, overridePriority: (int)overridePriority);
+            var metadata = new SerializerMetadata(mediaType, overridePriority: overridePriority);
             serializer = serializer ?? Substitute.For<ISerializer>();
             var factory = new ExportFactory<ISerializer, SerializerMetadata>(() => serializer, metadata);
             return factory;

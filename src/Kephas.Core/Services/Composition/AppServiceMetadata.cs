@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Metadata;
-
 namespace Kephas.Services.Composition
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Services.Composition
     using System.Linq;
 
     using Kephas.Collections;
+    using Kephas.Injection.Metadata;
     using Kephas.Model.AttributedModel;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -24,7 +23,7 @@ namespace Kephas.Services.Composition
     /// <summary>
     /// Metadata for application services.
     /// </summary>
-    public class AppServiceMetadata : ExportMetadataBase
+    public class AppServiceMetadata : ExportMetadataBase, IHasProcessingPriority
     {
         private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver(RuntimeTypeRegistry.Instance);
 
@@ -40,8 +39,8 @@ namespace Kephas.Services.Composition
                 return;
             }
 
-            this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
-            this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
+            this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, Priority>(metadata);
+            this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, Priority>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
             this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata, (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!);
             this.ServiceInstanceType = (Type?)metadata.TryGetValue(nameof(this.ServiceInstanceType));
@@ -54,10 +53,10 @@ namespace Kephas.Services.Composition
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
         /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
-        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string? serviceName = null, bool isOverride = false)
+        public AppServiceMetadata(Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
             : base(new Dictionary<string, object?>())
         {
-            this.ProcessingPriority = processingPriority;
+            this.ProcessingPriority = (Priority)processingPriority;
             this.OverridePriority = overridePriority;
             this.ServiceName = serviceName;
             this.IsOverride = isOverride;
@@ -69,7 +68,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// The processing priority.
         /// </value>
-        public int ProcessingPriority { get; }
+        public Priority ProcessingPriority { get; }
 
         /// <summary>
         /// Gets the priority of the service in the override chain.
@@ -77,7 +76,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// The override priority.
         /// </value>
-        public int OverridePriority { get; }
+        public Priority OverridePriority { get; }
 
         /// <summary>
         /// Gets a value indicating whether the service overrides the

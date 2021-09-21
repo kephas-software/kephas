@@ -39,7 +39,7 @@ namespace Kephas.Behaviors
         /// <value>
         /// The processing priority.
         /// </value>
-        public int ProcessingPriority { get; protected set; }
+        public Priority ProcessingPriority { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this rule ends the processing flow.
@@ -67,7 +67,7 @@ namespace Kephas.Behaviors
         /// <returns>
         /// The calculated value of the <see cref="ProcessingPriority"/> property.
         /// </returns>
-        protected virtual int ComputeProcessingPriority()
+        protected virtual Priority ComputeProcessingPriority()
         {
             var priorityOrderAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<ProcessingPriorityAttribute>().FirstOrDefault();
             return priorityOrderAttribute?.Value ?? 0;

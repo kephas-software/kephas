@@ -14,6 +14,7 @@ namespace Kephas.Data.Client.Queries.Conversion.Composition
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -42,7 +43,7 @@ namespace Kephas.Data.Client.Queries.Conversion.Composition
         /// <param name="operator">The operator.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public ExpressionConverterMetadata(string @operator, int processingPriority = 0, int overridePriority = 0)
+        public ExpressionConverterMetadata(string @operator, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             Requires.NotNullOrEmpty(@operator, nameof(@operator));

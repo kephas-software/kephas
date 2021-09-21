@@ -65,7 +65,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         {
             var typeResolver = this.GetTypeResolverMock(data);
             var eqConverter = this.EqConverter();
-            var altEqConverter = this.GetExpressionConverter(eqConverter.Metadata.Operator, args => LinqExpression.NotEqual(args[0], args[1]), overridePriority: -100);
+            var altEqConverter = this.GetExpressionConverter(eqConverter.Metadata.Operator, args => LinqExpression.NotEqual(args[0], args[1]), overridePriority: (Priority)(-100));
             var converter = new DefaultClientQueryConverter(
                 typeResolver,
                 this.GetIdempotentProjectedTypeResolver(),
@@ -423,7 +423,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> GetExpressionConverter(
             string op,
             Func<IList<LinqExpression>, LinqExpression> conversionFunc,
-            int overridePriority = 0)
+            Priority overridePriority = 0)
         {
             var converter = Substitute.For<IExpressionConverter>();
             converter.ConvertExpression(Arg.Any<IList<LinqExpression>>(), Arg.Any<Type>(), Arg.Any<ParameterExpression>())

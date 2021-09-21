@@ -14,6 +14,7 @@ namespace Kephas.Configuration.Providers.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -42,7 +43,7 @@ namespace Kephas.Configuration.Providers.Composition
         /// <param name="settingsType">The type of the settings.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public SettingsProviderMetadata(Type settingsType, int processingPriority = 0, int overridePriority = 0)
+        public SettingsProviderMetadata(Type settingsType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.SettingsType = settingsType;

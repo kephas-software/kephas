@@ -1,28 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IBehaviorRuleFlowControl.cs" company="Kephas Software SRL">
+// <copyright file="IHasProcessingPriority.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Declares the IBehaviorRuleFlowControl interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behaviors
+namespace Kephas.Services
 {
-    using Kephas.Services;
-
     /// <summary>
-    /// Contract for controlling the flow of behavior rules.
+    /// Provides the <see cref="ProcessingPriority"/> property.
     /// </summary>
-    public interface IBehaviorRuleFlowControl : IHasProcessingPriority
+    public interface IHasProcessingPriority
     {
         /// <summary>
-        /// Gets a value indicating whether this rule ends the processing flow.
+        /// Gets the processing priority.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this rule ends the processing flow, <c>false</c> if not.
+        /// The processing priority.
         /// </value>
-        bool IsEndRule { get; }
+        public Priority ProcessingPriority { get; }
     }
 }

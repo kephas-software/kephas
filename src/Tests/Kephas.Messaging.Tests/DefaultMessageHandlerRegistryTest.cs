@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Tests
             var handlers = registry.ResolveMessageHandlers(new MessageEnvelope { Message = "hello" });
 
             var handler2 = Substitute.For<IMessageHandler>();
-            registry.RegisterHandler(handler2, new MessageHandlerMetadata(typeof(string), overridePriority: (int)Priority.High));
+            registry.RegisterHandler(handler2, new MessageHandlerMetadata(typeof(string), overridePriority: Priority.High));
 
             handlers = registry.ResolveMessageHandlers(new MessageEnvelope { Message = "hello" });
             Assert.AreSame(handler2, handlers.Single());

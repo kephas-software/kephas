@@ -197,7 +197,7 @@ namespace Kephas.Data.IO.Tests.Import
                         return Task.FromResult(0);
                     });
 
-            return new ExportFactory<IDataImportBehavior, AppServiceMetadata>(() => b, new AppServiceMetadata(processingPriority: (int)processingPriority));
+            return new ExportFactory<IDataImportBehavior, AppServiceMetadata>(() => b, new AppServiceMetadata(processingPriority: processingPriority));
         }
 
         private IProjectedTypeResolver CreateProjectedTypeResolver()

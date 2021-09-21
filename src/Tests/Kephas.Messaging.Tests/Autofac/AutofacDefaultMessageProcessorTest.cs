@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultMessageProcessorWithSystemCompositionTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacDefaultMessageProcessorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,9 +7,6 @@
 //   Test class for <see cref="DefaultMessageProcessor" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
 
 namespace Kephas.Messaging.Tests.Autofac
 {
@@ -27,6 +24,8 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
+    using Kephas.Injection;
+    using Kephas.Injection.ExportFactories;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
@@ -168,8 +167,8 @@ namespace Kephas.Messaging.Tests.Autofac
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.High))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.High))
                                                             });
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -192,8 +191,8 @@ namespace Kephas.Messaging.Tests.Autofac
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: (int)Priority.High))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: Priority.High))
                                                             });
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -216,8 +215,8 @@ namespace Kephas.Messaging.Tests.Autofac
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: "hi", messageIdMatching: MessageIdMatching.Id, overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: "not-hi", messageIdMatching: MessageIdMatching.Id, overridePriority: (int)Priority.High))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: "hi", messageIdMatching: MessageIdMatching.Id, overridePriority: Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: "not-hi", messageIdMatching: MessageIdMatching.Id, overridePriority: Priority.High))
                                                             });
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -239,8 +238,8 @@ namespace Kephas.Messaging.Tests.Autofac
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.Low))
                                                             });
 
             Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<AmbiguousMatchException>());
@@ -320,11 +319,11 @@ namespace Kephas.Messaging.Tests.Autofac
             var f1 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(1); return Task.CompletedTask; },
                 (c, t) => { afterlist.Add(1); return Task.CompletedTask; },
-                processingPriority: 2);
+                processingPriority: (Priority)2);
             var f2 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(2); return Task.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return Task.CompletedTask; },
-                processingPriority: 1);
+                processingPriority: (Priority)1);
 
             var processor = this.CreateMessageProcessor(new[] { f1, f2 }, handler, message);
             var result = await processor.ProcessAsync(message, null, default);
@@ -462,8 +461,8 @@ namespace Kephas.Messaging.Tests.Autofac
             var message = Substitute.For<IEvent>();
             var handlerFactories = new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                        {
-                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
-                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low))
+                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.Low)),
+                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.Low))
                                        };
             var processor = this.CreateMessageProcessor(
                 handlerProviderFactories: new List<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>>
@@ -495,8 +494,8 @@ namespace Kephas.Messaging.Tests.Autofac
             var processor = this.CreateMessageProcessor(
                 handlerProviderFactories: new List<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
-                                                  new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new EventMessageHandlerProvider(mms), new AppServiceMetadata(processingPriority: (int)Priority.High))
+                                                  new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata(processingPriority: Priority.Low)),
+                                                  new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new EventMessageHandlerProvider(mms), new AppServiceMetadata(processingPriority: Priority.High))
                                               },
                 handlerFactories: handlerFactories);
 
@@ -516,7 +515,7 @@ namespace Kephas.Messaging.Tests.Autofac
             MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy,
             object messageId = null,
             MessageIdMatching messageIdMatching = MessageIdMatching.Id,
-            int processingPriority = 0,
+            Priority processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
             messageType = messageType ?? typeof(IMessage);
@@ -530,14 +529,14 @@ namespace Kephas.Messaging.Tests.Autofac
             var factory =
                 new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
                     () => Tuple.Create(behavior, (Action)(() => { })),
-                    new MessagingBehaviorMetadata(messageType, messageTypeMatching: messageTypeMatching, messageId: messageId, messageIdMatching: messageIdMatching, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                    new MessagingBehaviorMetadata(messageType, messageTypeMatching: messageTypeMatching, messageId: messageId, messageIdMatching: messageIdMatching, processingPriority: processingPriority, overridePriority: overridePriority));
             return factory;
         }
 
         private IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata> CreateTestBehaviorFactory(
             Type messageType = null,
             object messageId = null,
-            int processingPriority = 0,
+            Priority processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
             messageType ??= typeof(IMessage);
@@ -545,7 +544,7 @@ namespace Kephas.Messaging.Tests.Autofac
             var factory =
                 new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
                     () => Tuple.Create((IMessagingBehavior)behavior, (Action)(() => { })),
-                    new MessagingBehaviorMetadata(messageType, messageId: messageId, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                    new MessagingBehaviorMetadata(messageType, messageId: messageId, processingPriority: processingPriority, overridePriority: overridePriority));
             return factory;
         }
 

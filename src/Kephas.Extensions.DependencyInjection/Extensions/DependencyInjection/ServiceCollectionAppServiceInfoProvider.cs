@@ -8,6 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Extensions.DependencyInjection;
+using Kephas.Services;
+
+[assembly: AppServices(
+    processingPriority: Priority.High - 100,
+    serviceProviderTypes: new[] { typeof(ServiceCollectionAppServiceInfoProvider) })]
+
 namespace Kephas.Extensions.DependencyInjection
 {
     using System;
@@ -25,17 +32,6 @@ namespace Kephas.Extensions.DependencyInjection
     /// </summary>
     public class ServiceCollectionAppServiceInfoProvider : IAppServiceInfoProvider
     {
-        private readonly IAmbientServices ambientServices;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCollectionAppServiceInfoProvider"/> class.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public ServiceCollectionAppServiceInfoProvider(IAmbientServices ambientServices)
-        {
-            this.ambientServices = ambientServices;
-        }
-
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.
         /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
@@ -47,7 +43,13 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            var serviceCollection = this.ambientServices.GetRequiredService<IServiceCollection>();
+            var ambientServices = ((IInjectionRegistrationContext?)context)?.AmbientServices;
+            if (ambientServices == null)
+            {
+                yield break;
+            }
+
+            var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
             var openGenericServiceTypes = new List<Type>();
 
             // make sure to register first the open generics, so that the constructed generics

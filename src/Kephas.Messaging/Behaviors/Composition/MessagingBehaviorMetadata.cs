@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingBehaviorMetadata.cs" company="Kephas Software SRL">
+// <copyright file="MessagingBehaviorMetadata.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Behaviors.Composition
     using Kephas.Collections;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Composition;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -58,7 +59,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         /// <param name="messageIdMatching">The message ID matching (optional).</param>
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
-        public MessagingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object? messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)
+        public MessagingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object? messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;

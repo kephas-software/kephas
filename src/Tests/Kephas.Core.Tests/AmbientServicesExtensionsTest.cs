@@ -44,7 +44,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void WithLogManager_success()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             ambientServices.WithLogManager(new DebugLogManager());
 
             Assert.IsTrue(ambientServices.LogManager is DebugLogManager);

@@ -42,10 +42,10 @@ namespace Kephas.Core.Tests.Services
                     {
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
+                            new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: 3, processingPriority: -1)),
+                            new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)(-1))),
                     }).ToList();
 
 
@@ -66,16 +66,16 @@ namespace Kephas.Core.Tests.Services
                     {
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
+                            new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: 2, processingPriority: 2)),
+                            new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance3,
-                            new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                            new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance4,
-                            new AppServiceMetadata(overridePriority: 1, processingPriority: 1)),
+                            new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
                     }).ToList();
 
 
@@ -98,22 +98,22 @@ namespace Kephas.Core.Tests.Services
                 {
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: 3, processingPriority: 1)
+                        new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)
                             {
                                 ServiceInstanceType = typeof(TestDerived),
                             }),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: 2, processingPriority: 2)
+                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)
                             {
                                 ServiceInstanceType = typeof(Test),
                             }),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: 1, processingPriority: 1, isOverride: true)
+                        new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1, isOverride: true)
                             {
                                 ServiceInstanceType = typeof(TestMostDerived),
                             }),
@@ -138,22 +138,22 @@ namespace Kephas.Core.Tests.Services
                 {
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: 3, processingPriority: 1, isOverride: true)
+                        new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1, isOverride: true)
                             {
                                 ServiceInstanceType = typeof(TestDerived),
                             }),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: 2, processingPriority: 2, isOverride: true)
+                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2, isOverride: true)
                             {
                                 ServiceInstanceType = typeof(Test),
                             }),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: 1, processingPriority: 1, isOverride: true)
+                        new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1, isOverride: true)
                             {
                                 ServiceInstanceType = typeof(TestMostDerived),
                             }),
@@ -177,18 +177,18 @@ namespace Kephas.Core.Tests.Services
                     {
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
+                            new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: 2, processingPriority: 2)),
+                            new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance3,
-                            new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                            new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
                         new ExportFactory<IInstance, AppServiceMetadata>(
                             () => instance4,
-                            new AppServiceMetadata(overridePriority: 1, processingPriority: 1)),
+                            new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
                     })
-                .GetServiceFactories(f => f.Metadata.ProcessingPriority == 1)
+                .GetServiceFactories(f => f.Metadata.ProcessingPriority == (Priority)1)
                 .ToList();
 
 
@@ -209,18 +209,18 @@ namespace Kephas.Core.Tests.Services
                         {
                             new ExportFactory<IInstance, AppServiceMetadata>(
                                 () => instance1,
-                                new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
+                                new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
                             new ExportFactory<IInstance, AppServiceMetadata>(
                                 () => instance2,
-                                new AppServiceMetadata(overridePriority: 2, processingPriority: 2)),
+                                new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
                             new ExportFactory<IInstance, AppServiceMetadata>(
                                 () => instance3,
-                                new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                                new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
                             new ExportFactory<IInstance, AppServiceMetadata>(
                                 () => instance4,
-                                new AppServiceMetadata(overridePriority: 1, processingPriority: 1)),
+                                new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
                         })
-                .GetServices(f => f.Metadata.OverridePriority < 3)
+                .GetServices(f => f.Metadata.OverridePriority < (Priority)3)
                 .ToList();
 
 

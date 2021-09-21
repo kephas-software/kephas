@@ -12,9 +12,10 @@ namespace Kephas.Services.Composition
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.Conventions;
     using Kephas.Injection.Lite.Conventions;
     using Kephas.Services.Reflection;
 
@@ -23,7 +24,39 @@ namespace Kephas.Services.Composition
     /// </summary>
     internal static class AmbientServicesExtensions
     {
+        private const string AppServiceInfoProvidersKey = "__" + nameof(AppServiceInfoProvidersKey);
+        private const string AppServiceTypesProvidersKey = "__" + nameof(AppServiceTypesProvidersKey);
         private const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
+
+        /// <summary>
+        /// Gets the ordered application service type providers.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceTypesProvider"/>.
+        /// </returns>
+        internal static IEnumerable<IAppServiceTypesProvider> GetAppServiceTypesProviders(this IAmbientServices ambientServices)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            return ambientServices[AppServiceTypesProvidersKey] as IEnumerable<IAppServiceTypesProvider>
+                   ?? (IEnumerable<IAppServiceTypesProvider>)(ambientServices[AppServiceTypesProvidersKey] = ComputeAppServiceTypesProviders(ambientServices));
+        }
+
+        /// <summary>
+        /// Gets the ordered application service info providers.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceInfoProvider"/>.
+        /// </returns>
+        internal static IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(this IAmbientServices ambientServices)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            return ambientServices[AppServiceInfoProvidersKey] as IEnumerable<IAppServiceInfoProvider>
+                   ?? (IEnumerable<IAppServiceInfoProvider>)(ambientServices[AppServiceInfoProvidersKey] = ComputeAppServiceInfoProviders(ambientServices));
+        }
 
         /// <summary>
         /// Gets the registered application service contracts.
@@ -72,6 +105,32 @@ namespace Kephas.Services.Composition
             }
 
             ambientServices[AppServiceInfosKey] = appServiceInfos;
+        }
+
+        /// <summary>
+        /// Computes the <see cref="IAppServiceInfoProvider"/> services in order of their priority.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>An enumeration of <see cref="IAppServiceInfoProvider"/>.</returns>
+        internal static IEnumerable<IAppServiceInfoProvider> ComputeAppServiceInfoProviders(IAmbientServices ambientServices)
+        {
+            return ambientServices.AppRuntime.GetAppAssemblies()
+                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfoProvider>())
+                .OrderBy(p => (p as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Computes the <see cref="IAppServiceTypesProvider"/> services in order of their priority.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>An enumeration of <see cref="IAppServiceTypesProvider"/>.</returns>
+        internal static IEnumerable<IAppServiceTypesProvider> ComputeAppServiceTypesProviders(IAmbientServices ambientServices)
+        {
+            return ambientServices.AppRuntime.GetAppAssemblies()
+                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceTypesProvider>())
+                .OrderBy(p => (p as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
+                .ToList();
         }
     }
 }

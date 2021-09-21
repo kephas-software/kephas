@@ -93,9 +93,9 @@ namespace Kephas.Data.Tests.Conversion
                 new DefaultDataConversionService(Substitute.For<IInjector>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
-                        new DataConverterMetadata(typeof(int), typeof(long), processingPriority:  (int)Priority.Low)),
+                        new DataConverterMetadata(typeof(int), typeof(long), processingPriority:  Priority.Low)),
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
-                        new DataConverterMetadata(typeof(int), typeof(long), processingPriority: (int)Priority.High))
+                        new DataConverterMetadata(typeof(int), typeof(long), processingPriority: Priority.High))
                 },
                     this.GetDefaultTargetResolverFactories());
 
@@ -238,7 +238,7 @@ namespace Kephas.Data.Tests.Conversion
                        {
                            new ExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>(
                                () => new IdDataConversionTargetResolver(),
-                               new DataConversionTargetResolverMetadata(typeof(object), typeof(object), (int)Priority.High))
+                               new DataConversionTargetResolverMetadata(typeof(object), typeof(object), Priority.High))
                        };
         }
 

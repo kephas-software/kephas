@@ -24,7 +24,6 @@ namespace Kephas.Services.Composition
     using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
-    using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
     using Kephas.Services.Reflection;
@@ -129,11 +128,13 @@ namespace Kephas.Services.Composition
                         logger);
                     if (partConventionsBuilder != null)
                     {
-                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, contractDeclarationTypes, metadataResolver, logger);
+                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo,
+                            contractDeclarationTypes, metadataResolver, logger);
                     }
                     else
                     {
-                        logger.Warn("No part conventions builders nor part builders found for {serviceContractType}.", appServiceContract);
+                        logger.Warn("No part conventions builders nor part builders found for {serviceContractType}.",
+                            appServiceContract);
                     }
                 }
             }
@@ -148,16 +149,12 @@ namespace Kephas.Services.Composition
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        protected internal virtual IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
-            IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+        protected internal virtual IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+            GetAppServiceContracts(
+                IList<Type> candidateTypes,
+                IInjectionRegistrationContext registrationContext)
         {
             var appServiceInfoProviders = this.GetAppServiceInfoProviders(registrationContext);
-            if (appServiceInfoProviders == null)
-            {
-                yield break;
-            }
-
             var parts = new List<Type>(candidateTypes);
             if (registrationContext.Parts != null)
             {
@@ -185,13 +182,13 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IInjectionRegistrationContext registrationContext)
+        protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(
+            IInjectionRegistrationContext registrationContext)
         {
-            var ambientServicesProviders = registrationContext.AmbientServices?.GetService<IEnumerable<Lazy<IAppServiceInfoProvider, AppServiceMetadata>>>();
-            if (ambientServicesProviders != null)
+            var ambientServices = registrationContext.AmbientServices;
+            if (ambientServices != null)
             {
-                var orderedProviders = ambientServicesProviders.Order().Select(p => p.Value);
-                foreach (var provider in orderedProviders)
+                foreach (var provider in ambientServices.GetAppServiceInfoProviders())
                 {
                     yield return provider;
                 }
@@ -244,7 +241,8 @@ namespace Kephas.Services.Composition
                 {
                     partBuilder.ExportInterface(
                         exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes, metadataResolver));
+                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes,
+                            metadataResolver));
 
                     if (metadataAttributes.Count > 0)
                     {
@@ -254,7 +252,10 @@ namespace Kephas.Services.Composition
                         // warn about metadata on open generic exports only if custom attributes are provided.
                         if (hasCustomMetadataAttributes)
                         {
-                            logger.Warn(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract);
+                            logger.Warn(
+                                Strings
+                                    .AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning,
+                                exportedContract);
                         }
                     }
                 }
@@ -268,7 +269,8 @@ namespace Kephas.Services.Composition
             else
             {
                 partBuilder.Export(
-                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes, metadataResolver));
+                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes,
+                        metadataResolver));
             }
 
             partBuilder.SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(serviceContract, ctorInfos));
@@ -341,8 +343,8 @@ namespace Kephas.Services.Composition
             if (appServiceInfo.MetadataAttributes == null || appServiceInfo.MetadataAttributes.Length == 0)
             {
                 return appServiceInfo.AsOpenGeneric
-                           ? Type.EmptyTypes
-                           : DefaultMetadataAttributeTypes;
+                    ? Type.EmptyTypes
+                    : DefaultMetadataAttributeTypes;
             }
 
             var attrs = appServiceInfo.MetadataAttributes.ToList();
@@ -461,9 +463,9 @@ namespace Kephas.Services.Composition
             else if (!exportedContract.IsAssignableFrom(serviceContract))
             {
                 var contractValidationMessage = string.Format(
-                        Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract,
-                        exportedContractType,
-                        serviceContractType);
+                    Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract,
+                    exportedContractType,
+                    serviceContractType);
                 logger.Error(contractValidationMessage);
                 throw new InjectionException(contractValidationMessage);
             }
@@ -486,7 +488,8 @@ namespace Kephas.Services.Composition
             var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
 
             // get the one constructor marked as CompositionConstructor.
-            var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<InjectConstructorAttribute>() != null).ToList();
+            var explicitlyMarkedConstructors = constructorsList
+                .Where(c => c.GetCustomAttribute<InjectConstructorAttribute>() != null).ToList();
             if (explicitlyMarkedConstructors.Count == 0)
             {
                 // none marked explicitly, leave the decision up to the IoC implementation.
@@ -495,13 +498,15 @@ namespace Kephas.Services.Composition
 
             if (explicitlyMarkedConstructors.Count > 1)
             {
-                throw new InjectionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(InjectConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
+                throw new InjectionException(string.Format(Strings.AppServiceMultipleCompositionConstructors,
+                    typeof(InjectConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
             return explicitlyMarkedConstructors[0];
         }
 
-        private void AddCompositionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract, IAppServiceMetadataResolver metadataResolver)
+        private void AddCompositionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract,
+            IAppServiceMetadataResolver metadataResolver)
         {
             if (!serviceContract.IsGenericTypeDefinition)
             {
@@ -520,7 +525,8 @@ namespace Kephas.Services.Composition
             }
         }
 
-        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes, IAppServiceMetadataResolver metadataResolver)
+        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType,
+            IEnumerable<Type> attributeTypes, IAppServiceMetadataResolver metadataResolver)
         {
             // add the service type.
             builder.AddMetadata(nameof(AppServiceMetadata.ServiceInstanceType), t => serviceImplementationType ?? t);
@@ -538,7 +544,8 @@ namespace Kephas.Services.Composition
                 {
                     builder.AddMetadata(
                         valuePropertyEntry.Key,
-                        t => metadataResolver.GetMetadataValueFromAttribute(t, attributeType, valuePropertyEntry.Value));
+                        t => metadataResolver.GetMetadataValueFromAttribute(t, attributeType,
+                            valuePropertyEntry.Value));
                 }
             }
         }
@@ -556,7 +563,8 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType, appServiceInfo.InstanceType);
+                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType,
+                        appServiceInfo.InstanceType);
                 }
 
                 return conventions
@@ -569,19 +577,22 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Service {serviceContractType} matches open generic contract types.", serviceContractType);
+                    logger.Debug("Service {serviceContractType} matches open generic contract types.",
+                        serviceContractType);
                 }
 
                 // for open generics select a single implementation type
                 if (appServiceInfo.AsOpenGeneric)
                 {
                     var (isOverride, selectedInstanceType) = this.TrySelectSingleServiceImplementationType(
-                                                                     serviceContract,
-                                                                     typeInfos,
-                                                                     t => this.MatchOpenGenericContractType(t, serviceContractType));
+                        serviceContract,
+                        typeInfos,
+                        t => this.MatchOpenGenericContractType(t, serviceContractType));
                     if (logger.IsDebugEnabled())
                     {
-                        logger.Debug("Service {serviceContractType} matches open generic implementation type {serviceInstanceType}.", serviceContractType, selectedInstanceType?.ToString() ?? "<not found>");
+                        logger.Debug(
+                            "Service {serviceContractType} matches open generic implementation type {serviceInstanceType}.",
+                            serviceContractType, selectedInstanceType?.ToString() ?? "<not found>");
                     }
 
                     // TODO HACK: remove the *isOverride* check when the BUG https://github.com/dotnet/corefx/issues/40094 is fixed
@@ -598,7 +609,8 @@ namespace Kephas.Services.Composition
 
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Service {serviceContractType} matches open generic contract types.", serviceContractType);
+                    logger.Debug("Service {serviceContractType} matches open generic contract types.",
+                        serviceContractType);
                 }
 
                 // if there is non-generic service contract with the same full name
@@ -613,7 +625,8 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Service {serviceContractType} matches multiple derived from it.", serviceContractType);
+                    logger.Debug("Service {serviceContractType} matches multiple derived from it.",
+                        serviceContractType);
                 }
 
                 // if the service contract metadata allows multiple service registrations
@@ -633,7 +646,8 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType, selectedPart);
+                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType,
+                        selectedPart);
                 }
 
                 return conventions
@@ -810,7 +824,8 @@ namespace Kephas.Services.Composition
             }
 
             var implementedInterfaces = partTypeInfo.ImplementedInterfaces;
-            return implementedInterfaces.Any(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType);
+            return implementedInterfaces.Any(i =>
+                i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType);
         }
     }
 }

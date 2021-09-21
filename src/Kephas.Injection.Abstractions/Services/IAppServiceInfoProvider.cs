@@ -41,22 +41,7 @@ namespace Kephas.Services
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
-        {
-            var contractDeclarationTypes = this.GetContractDeclarationTypes(context);
-            if (contractDeclarationTypes == null)
-            {
-                yield break;
-            }
-
-            foreach (var contractType in contractDeclarationTypes)
-            {
-                var appServiceInfo = this.TryGetAppServiceInfo(contractType);
-                if (appServiceInfo != null)
-                {
-                    yield return (contractType, appServiceInfo);
-                }
-            }
-        }
+            => GetAppServiceInfos(this, context);
 
         /// <summary>
         /// Tries the get the application service information from the custom attributes.
@@ -66,6 +51,34 @@ namespace Kephas.Services
         protected IAppServiceInfo? TryGetAppServiceInfo(Type type)
         {
             return type.GetCustomAttributes(inherit: false).OfType<IAppServiceInfo>().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets an enumeration of application service information objects and their contract declaration type.
+        /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
+        /// is not provided, the contract declaration type is also the contract type.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
+        /// <returns>
+        /// An enumeration of application service information objects and their contract declaration type.
+        /// </returns>
+        protected static IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IAppServiceInfoProvider provider, dynamic? context = null)
+        {
+            var contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
+            if (contractDeclarationTypes == null)
+            {
+                yield break;
+            }
+
+            foreach (var contractType in contractDeclarationTypes)
+            {
+                var appServiceInfo = provider.TryGetAppServiceInfo(contractType);
+                if (appServiceInfo != null)
+                {
+                    yield return (contractType, appServiceInfo);
+                }
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -63,7 +64,7 @@ namespace Kephas.Messaging.Composition
         /// <param name="envelopeTypeMatching">Optional. The envelope type matching.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public MessageHandlerMetadata(Type? messageType = null, MessageTypeMatching messageTypeMatching = default, object? messageId = null, MessageIdMatching messageIdMatching = default, Type? envelopeType = null, MessageTypeMatching envelopeTypeMatching = default, int processingPriority = 0, int overridePriority = 0)
+        public MessageHandlerMetadata(Type? messageType = null, MessageTypeMatching messageTypeMatching = default, object? messageId = null, MessageIdMatching messageIdMatching = default, Type? envelopeType = null, MessageTypeMatching envelopeTypeMatching = default, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;

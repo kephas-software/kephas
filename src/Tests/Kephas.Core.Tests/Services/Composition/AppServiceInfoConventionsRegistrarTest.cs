@@ -8,29 +8,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Core.Tests.Injection;
-using Kephas.Injection;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Metadata;
-using Kephas.Model.AttributedModel;
-
 namespace Kephas.Core.Tests.Services.Composition
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Text;
 
+    using Kephas.Core.Tests.Injection;
     using Kephas.Core.Tests.Services.Composition.CustomNamedValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.CustomValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.DefaultAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.DefaultExplicitAppServiceMetadata;
+    using Kephas.Injection;
+    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Metadata;
     using Kephas.Logging;
+    using Kephas.Model.AttributedModel;
     using Kephas.Services;
     using Kephas.Services.Composition;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -499,6 +497,21 @@ namespace Kephas.Core.Tests.Services.Composition
             AppServiceInfoConventionsRegistrar.RegisterDefaultMetadataAttributeTypes(typeof(ServiceNameAttribute));
 
             Assert.AreEqual(1, AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Count(t => t == typeof(ServiceNameAttribute)));
+        }
+
+        /// <summary>
+        /// An attributed application service information provider.
+        /// </summary>
+        public class AttributedAppServiceInfoProvider : IAppServiceInfoProvider
+        {
+            /// <summary>
+            /// Gets the contract declaration types.
+            /// </summary>
+            /// <param name="context">Optional. The context in which the service types are requested.</param>
+            /// <returns>
+            ///     The contract declaration types.
+            /// </returns>
+            IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionRegistrationContext?)context)?.Parts;
         }
 
         public class DummyAttribute : Attribute

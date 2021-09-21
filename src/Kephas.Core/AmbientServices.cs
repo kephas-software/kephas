@@ -72,12 +72,8 @@ namespace Kephas
                     .Register<ILogManager, NullLogManager>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<ILicensingManager, NullLicensingManager>()
-                    // .Register<IAppRuntime>(this.CreateDefaultInitializedAppRuntime)
 
-                    .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>())
-
-                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithInstance(this).ProcessingPriority(Priority.Highest))
-                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>().ProcessingPriority(Priority.High));
+                    .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>());
             }
 
             this.registry

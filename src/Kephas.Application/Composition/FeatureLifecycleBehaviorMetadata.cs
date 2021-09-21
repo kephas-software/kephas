@@ -11,7 +11,7 @@
 namespace Kephas.Application.Composition
 {
     using System.Collections.Generic;
-
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace Kephas.Application.Composition
         /// <param name="version">Optional. The version.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public FeatureLifecycleBehaviorMetadata(string? feature = null, string? version = null, int processingPriority = 0, int overridePriority = 0)
+        public FeatureLifecycleBehaviorMetadata(string? feature = null, string? version = null, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             if (!string.IsNullOrEmpty(feature))

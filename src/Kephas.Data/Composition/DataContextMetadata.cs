@@ -10,9 +10,11 @@
 
 namespace Kephas.Data.Composition
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Data.Store;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -41,10 +43,10 @@ namespace Kephas.Data.Composition
         /// <param name="supportedDataStoreKinds">The supported data store kinds.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public DataContextMetadata(IEnumerable<string> supportedDataStoreKinds, int processingPriority = 0, int overridePriority = 0)
+        public DataContextMetadata(IEnumerable<string> supportedDataStoreKinds, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            this.SupportedDataStoreKinds = supportedDataStoreKinds ?? new string[0];
+            this.SupportedDataStoreKinds = supportedDataStoreKinds ?? Array.Empty<string>();
         }
 
         /// <summary>

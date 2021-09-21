@@ -15,6 +15,7 @@ namespace Kephas.Data.Commands.Composition
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -43,7 +44,7 @@ namespace Kephas.Data.Commands.Composition
         /// <param name="dataContextType">The type of the supported data context.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public DataCommandMetadata(Type dataContextType, int processingPriority = 0, int overridePriority = 0)
+        public DataCommandMetadata(Type dataContextType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             Requires.NotNull(dataContextType, nameof(dataContextType));

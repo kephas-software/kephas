@@ -13,6 +13,7 @@ namespace Kephas.Data.Setup.Composition
     using System.Collections.Generic;
 
     using Kephas.Data.Setup.AttributedModel;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -42,7 +43,7 @@ namespace Kephas.Data.Setup.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        public DataInstallerMetadata(string target, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
+        public DataInstallerMetadata(string target, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             this.Target = target;

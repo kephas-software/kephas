@@ -20,7 +20,7 @@ namespace Kephas.Services
     /// The service with the highest priority defined will be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class OverridePriorityAttribute : Attribute, IMetadataValue<int>
+    public class OverridePriorityAttribute : Attribute, IMetadataValue<Priority>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OverridePriorityAttribute" /> class.
@@ -28,7 +28,7 @@ namespace Kephas.Services
         /// <param name="priority">The override priority.</param>
         public OverridePriorityAttribute(int priority)
         {
-            this.Value = priority;
+            this.Value = (Priority)priority;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Kephas.Services
         /// <param name="priority">The override priority.</param>
         public OverridePriorityAttribute(Priority priority)
         {
-            this.Value = (int)priority;
+            this.Value = priority;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Kephas.Services
         /// <value>
         /// The priority value.
         /// </value>
-        public int Value { get; }
+        public Priority Value { get; }
 
         /// <summary>
         /// Gets the metadata value.

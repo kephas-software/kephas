@@ -14,6 +14,7 @@ namespace Kephas.Serialization.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -44,7 +45,7 @@ namespace Kephas.Serialization.Composition
         /// <param name="overridePriority"> override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
         /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
-        public SerializerMetadata(Type mediaType, int processingPriority = 0, int overridePriority = 0, string? serviceName = null, bool isOverride = false)
+        public SerializerMetadata(Type mediaType, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
             : base(processingPriority, overridePriority, serviceName, isOverride)
         {
             this.MediaType = mediaType;

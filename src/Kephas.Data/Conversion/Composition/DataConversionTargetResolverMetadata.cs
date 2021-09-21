@@ -14,6 +14,7 @@ namespace Kephas.Data.Conversion.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -45,7 +46,7 @@ namespace Kephas.Data.Conversion.Composition
         /// <param name="targetType">The type of the target.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public DataConversionTargetResolverMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0)
+        public DataConversionTargetResolverMetadata(Type sourceType, Type targetType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.SourceType = sourceType;

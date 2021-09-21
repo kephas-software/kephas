@@ -19,7 +19,7 @@ namespace Kephas.Data.Tests.Commands.Factory
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Composition;
     using Kephas.Data.Commands.Factory;
-
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -62,7 +62,7 @@ namespace Kephas.Data.Tests.Commands.Factory
             var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
                                                                    {
                                                                        new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string))),
-                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string), overridePriority: -100))
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string), overridePriority: (Priority)(-100)))
                                                                    });
 
             var actualCmd = factory.GetCommandFactory(typeof(string));

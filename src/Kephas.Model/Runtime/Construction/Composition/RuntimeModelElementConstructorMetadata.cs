@@ -15,6 +15,7 @@ namespace Kephas.Model.Runtime.Construction.Composition
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -42,7 +43,7 @@ namespace Kephas.Model.Runtime.Construction.Composition
         /// <param name="runtimeType">Type of the runtime information.</param>
         /// <param name="processingPriority">The processing priority.</param>
         /// <param name="overridePriority">The override priority.</param>
-        public RuntimeModelElementConstructorMetadata(Type modelType, Type modelContractType, Type runtimeType, int processingPriority = 0, int overridePriority = 0)
+        public RuntimeModelElementConstructorMetadata(Type modelType, Type modelContractType, Type runtimeType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             Requires.NotNull(modelType, nameof(modelType));

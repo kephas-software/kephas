@@ -22,7 +22,7 @@ namespace Kephas.Data.Tests.Setup
     using Kephas.Data.Setup;
     using Kephas.Data.Setup.Composition;
     using Kephas.Operations;
-
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -118,10 +118,10 @@ namespace Kephas.Data.Tests.Setup
                                          {
                                              new ExportFactory<IDataInstaller, DataInstallerMetadata>(
                                                  () => installer1,
-                                                 new DataInstallerMetadata("1", processingPriority: 2)),
+                                                 new DataInstallerMetadata("1", processingPriority: (Priority)2)),
                                              new ExportFactory<IDataInstaller, DataInstallerMetadata>(
                                                  () => installer2,
-                                                 new DataInstallerMetadata("2", processingPriority: 1))
+                                                 new DataInstallerMetadata("2", processingPriority: (Priority)1))
                                          };
             return installerFactories;
         }

@@ -11,6 +11,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
 
     using Kephas.Net.Mime;
     using Kephas.Serialization.Composition;
+    using Kephas.Services;
     using Kephas.Services.Composition;
     using NUnit.Framework;
 
@@ -22,7 +23,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
-            var obj = new AppServiceMetadata(processingPriority: 12, overridePriority: 24, serviceName: "gigi", isOverride: true)
+            var obj = new AppServiceMetadata(processingPriority: (Priority)12, overridePriority: (Priority)24, serviceName: "gigi", isOverride: true)
             {
                 ServiceInstanceType = typeof(int),
             };
@@ -54,7 +55,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
-            var obj = new SerializerMetadata(typeof(XmlMediaType), processingPriority: 12, overridePriority: 24, serviceName: "gigi", isOverride: true)
+            var obj = new SerializerMetadata(typeof(XmlMediaType), processingPriority: (Priority)12, overridePriority: (Priority)24, serviceName: "gigi", isOverride: true)
             {
                 ServiceInstanceType = typeof(int),
             };
