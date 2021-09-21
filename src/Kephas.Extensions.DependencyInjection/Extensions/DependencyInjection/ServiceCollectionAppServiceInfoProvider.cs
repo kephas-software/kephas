@@ -15,6 +15,7 @@ namespace Kephas.Extensions.DependencyInjection
     using System.Linq;
 
     using Kephas.Injection;
+    using Kephas.Injection.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Microsoft.Extensions.DependencyInjection;
@@ -36,13 +37,15 @@ namespace Kephas.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Gets an enumeration of application service information objects.
+        /// Gets an enumeration of application service information objects and their contract declaration type.
+        /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
+        /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
-        /// An enumeration of application service information objects and their associated contract type.
+        /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
+        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
             var serviceCollection = this.ambientServices.GetRequiredService<IServiceCollection>();
             var openGenericServiceTypes = new List<Type>();
@@ -64,11 +67,6 @@ namespace Kephas.Extensions.DependencyInjection
                     }
                 }
 
-                if (candidateTypes?.Contains(serviceType) is true)
-                {
-                    candidateTypes.Add(serviceType);
-                }
-
                 if (descriptor.ImplementationInstance != null)
                 {
                     yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance));
@@ -88,10 +86,6 @@ namespace Kephas.Extensions.DependencyInjection
                                        : descriptor.Lifetime == ServiceLifetime.Scoped
                                            ? AppServiceLifetime.Scoped
                                            : AppServiceLifetime.Transient;
-                    if (!candidateTypes.Contains(instanceType))
-                    {
-                        candidateTypes.Add(instanceType);
-                    }
 
                     yield return (serviceType,
                                      new AppServiceInfo(
