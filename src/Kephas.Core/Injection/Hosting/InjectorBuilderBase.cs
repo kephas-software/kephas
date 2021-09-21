@@ -533,7 +533,7 @@ namespace Kephas.Injection.Hosting
         /// </summary>
         protected class AppServiceInfoRegistry : IAppServiceInfoProvider
         {
-            private IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
+            private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
 
             /// <summary>
             /// Adds an <see cref="IAppServiceInfo"/>.
@@ -547,13 +547,13 @@ namespace Kephas.Injection.Hosting
             /// <summary>
             /// Gets an enumeration of application service information objects.
             /// </summary>
-            /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+            /// <param name="context">Optional. The context in which the service types are requested.</param>
             /// <returns>
             /// An enumeration of application service information objects and their associated contract type.
             /// </returns>
-            public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(                IList<Type>? candidateTypes)
+            public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
             {
-                return this.appServiceInfos.Select(i => (i.ContractType, i));
+                return this.appServiceInfos.Select(i => (i.ContractType!, i));
             }
         }
     }
