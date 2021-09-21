@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Composition.Autofac.Hosting
 {
     using System.Collections.Concurrent;
 
     using global::Autofac;
     using global::Autofac.Builder;
+    using Kephas.Injection;
 
     /// <summary>
     /// An Autofac injection container.
