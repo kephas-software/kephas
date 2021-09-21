@@ -109,7 +109,7 @@ namespace Kephas.Composition.Autofac.Hosting
                                           : throw new InvalidOperationException(
                                                 $"The conventions instance must implement either {typeof(IAutofacContainerBuilder)} or {typeof(IAutofacContainerBuilderProvider)}.");
 
-            return new AutofacInjectionContainer(containerBuilder);
+            return new AutofacInjector(containerBuilder);
         }
     }
 }

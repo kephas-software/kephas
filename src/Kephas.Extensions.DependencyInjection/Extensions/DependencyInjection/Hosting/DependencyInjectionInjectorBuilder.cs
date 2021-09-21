@@ -62,7 +62,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
                                           : throw new InvalidOperationException(
                                                 $"The conventions instance must implement either {typeof(IServiceProviderBuilder)} or {typeof(IServiceCollectionProvider)}.");
 
-            return new DependencyInjectionInjectionContainer(serviceProvider);
+            return new DependencyInjectionInjector(serviceProvider);
         }
     }
 }

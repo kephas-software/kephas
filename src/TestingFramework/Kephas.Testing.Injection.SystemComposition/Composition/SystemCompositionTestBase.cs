@@ -135,7 +135,7 @@ namespace Kephas.Testing.Composition
             return new List<Assembly>
                        {
                            typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Core*/
-                           typeof(SystemCompositionContainer).GetTypeInfo().Assembly, /* Kephas.Composition.Mef */
+                           typeof(SystemCompositionInjector).GetTypeInfo().Assembly, /* Kephas.Composition.Mef */
                        };
         }
 

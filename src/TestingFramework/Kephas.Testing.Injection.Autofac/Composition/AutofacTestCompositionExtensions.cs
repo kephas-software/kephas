@@ -20,11 +20,11 @@ namespace Kephas.Testing.Composition
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class AutofacTestCompositionExtensions
     {
-        public static AutofacInjectionContainer CreateCompositionContainer(this ContainerBuilder configuration)
+        public static AutofacInjector CreateCompositionContainer(this ContainerBuilder configuration)
         {
             Requires.NotNull(configuration, nameof(configuration));
 
-            return new AutofacInjectionContainer(configuration);
+            return new AutofacInjector(configuration);
         }
     }
 }

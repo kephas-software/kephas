@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemCompositionContainer.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionInjector.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,13 +19,13 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class SystemCompositionContainer : SystemCompositionInjectorBase
+    public class SystemCompositionInjector : SystemCompositionInjectorBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemCompositionContainer" /> class.
+        /// Initializes a new instance of the <see cref="SystemCompositionInjector" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        protected internal SystemCompositionContainer(ContainerConfiguration configuration)
+        protected internal SystemCompositionInjector(ContainerConfiguration configuration)
         {
             Requires.NotNull(configuration, nameof(configuration));
 

@@ -1,21 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICompositionContainer.cs" company="Kephas Software SRL">
+// <copyright file="IInjectionContainer.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Declares the ICompositionContainer interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection;
 
 namespace Kephas.Composition.Autofac.Hosting
 {
     using global::Autofac;
+    using Kephas.Injection;
 
     /// <summary>
-    /// Interface for composition container.
+    /// Interface for injection container.
     /// </summary>
     internal interface IInjectionContainer : IInjector
     {

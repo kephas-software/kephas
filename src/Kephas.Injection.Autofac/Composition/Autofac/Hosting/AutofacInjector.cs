@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacCompositionContainer.cs" company="Kephas Software SRL">
+// <copyright file="AutofacInjector.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,17 +19,17 @@ namespace Kephas.Composition.Autofac.Hosting
     /// <summary>
     /// An Autofac injection container.
     /// </summary>
-    public class AutofacInjectionContainer : AutofacInjectorBase, IInjectionContainer
+    public class AutofacInjector : AutofacInjectorBase, IInjectionContainer
     {
         private readonly ConcurrentDictionary<IComponentContext, IInjector> map;
 
         private readonly IContainer container;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacInjectionContainer"/> class.
+        /// Initializes a new instance of the <see cref="AutofacInjector"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
-        public AutofacInjectionContainer(ContainerBuilder containerBuilder)
+        public AutofacInjector(ContainerBuilder containerBuilder)
             : base(null)
         {
             this.map = new ConcurrentDictionary<IComponentContext, IInjector>();

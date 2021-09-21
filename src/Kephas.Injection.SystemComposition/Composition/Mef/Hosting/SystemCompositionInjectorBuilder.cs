@@ -228,7 +228,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         protected virtual IInjector CreateCompositionContext(ContainerConfiguration containerConfiguration)
         {
-            return new SystemCompositionContainer(containerConfiguration);
+            return new SystemCompositionInjector(containerConfiguration);
         }
 
         /// <summary>
