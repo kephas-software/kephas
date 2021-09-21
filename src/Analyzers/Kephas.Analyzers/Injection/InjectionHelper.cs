@@ -99,19 +99,30 @@ namespace Kephas.Analyzers.Injection
 
         public static string GetTypeFullName(INamedTypeSymbol typeSymbol)
         {
-            var fullName = typeSymbol.Name;
+            var fullNameBuilder = new StringBuilder(typeSymbol.Name);
             var ns = typeSymbol.ContainingNamespace;
             while (ns != null)
             {
                 if (!string.IsNullOrEmpty(ns.Name))
                 {
-                    fullName = ns.Name + "." + fullName;
+                    fullNameBuilder.Insert(0, ns.Name + ".");
                 }
 
                 ns = ns.ContainingNamespace;
             }
 
-            return fullName;
+            if (typeSymbol.TypeParameters.Length > 0)
+            {
+                fullNameBuilder.Append('<');
+                for (var i = 0; i < typeSymbol.TypeParameters.Length - 1; i++)
+                {
+                    fullNameBuilder.Append(',');
+                }
+
+                fullNameBuilder.Append('>');
+            }
+
+            return fullNameBuilder.ToString();
         }
 
         public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax)
