@@ -36,17 +36,17 @@ namespace Kephas.Tests.Composition.Autofac
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="AutofacInjectionContainer"/>.
+    /// Tests for <see cref="AutofacInjector"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacCompositionContainerTest : AutofacCompositionTestBase
     {
-        public AutofacInjectionContainer CreateContainer(params Type[] types)
+        public AutofacInjector CreateContainer(params Type[] types)
         {
             var builder = this.WithEmptyConfiguration();
             builder.RegisterTypes(types);
-            return new AutofacInjectionContainer(builder);
+            return new AutofacInjector(builder);
         }
 
         [Test]

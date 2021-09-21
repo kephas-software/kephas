@@ -24,20 +24,20 @@ namespace Kephas.Tests.Composition.Autofac
         [Test]
         public void BuildWithAutofac_defaults()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
                 .BuildWithAutofac();
 
             var injector = ambientServices.Injector;
-            Assert.IsInstanceOf<AutofacInjectionContainer>(injector);
+            Assert.IsInstanceOf<AutofacInjector>(injector);
         }
 
         [Test]
         public void BuildWithAutofac_with_open_generic_override()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
@@ -51,7 +51,7 @@ namespace Kephas.Tests.Composition.Autofac
         [Test]
         public void BuildWithAutofac_with_open_generic_override_and_dependency()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))

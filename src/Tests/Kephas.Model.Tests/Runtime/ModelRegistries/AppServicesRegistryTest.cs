@@ -57,7 +57,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
                                            (typeof(int), Substitute.For<IAppServiceInfo>()),
@@ -79,7 +79,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_with_filter()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
                 (typeof(int), Substitute.For<IAppServiceInfo>()),

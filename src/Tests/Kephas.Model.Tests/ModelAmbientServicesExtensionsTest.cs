@@ -30,9 +30,7 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task WithModel_EnsureModelSpaceRegistered()
         {
-            var ambientServices = new AmbientServices()
-                .WithModel();
-            var container = this.CreateContainer(ambientServices);
+            var container = this.CreateContainer();
             var provider = container.Resolve<IModelSpaceProvider>();
             await provider.InitializeAsync(new Context(container));
             var modelSpace = container.Resolve<IModelSpace>();

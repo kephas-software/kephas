@@ -50,7 +50,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockAppRuntime = builder.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
 
             var container = builder.Build();
 
@@ -342,7 +342,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockAppRuntime = factory.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
@@ -362,7 +362,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
@@ -382,7 +382,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
@@ -402,7 +402,7 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjectionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 

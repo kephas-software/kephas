@@ -27,20 +27,20 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void BuildWithSystemComposition_defaults()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
                 .BuildWithSystemComposition();
 
             var injector = ambientServices.Injector;
-            Assert.IsInstanceOf<SystemCompositionContainer>(injector);
+            Assert.IsInstanceOf<SystemCompositionInjector>(injector);
         }
 
         [Test]
         public void BuildWithSystemComposition_with_open_generic_override()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
@@ -55,7 +55,7 @@ namespace Kephas.Tests.Composition.Mef
         [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
         public void BuildWithSystemComposition_with_open_generic_override_and_dependency()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))

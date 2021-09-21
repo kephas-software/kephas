@@ -58,7 +58,7 @@ namespace Kephas.Tests.Plugins.Transactions
 
         private IPluginContext CreatePluginContext()
         {
-            var ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = new AmbientServices();
             var context = new PluginContext(ambientServices.Injector);
             return context;
         }

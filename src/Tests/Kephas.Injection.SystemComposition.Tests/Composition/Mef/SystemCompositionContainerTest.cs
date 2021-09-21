@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Tests for <see cref="SystemCompositionContainer" />.
+//   Tests for <see cref="SystemCompositionInjector" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,20 +32,20 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="SystemCompositionContainer"/>.
+    /// Tests for <see cref="SystemCompositionInjector"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class SystemCompositionContainerTest : SystemCompositionTestBase
     {
-        public SystemCompositionContainer CreateContainer(params Type[] types)
+        public SystemCompositionInjector CreateContainer(params Type[] types)
         {
             return this.WithEmptyConfiguration()
                 .WithParts(types)
                 .CreateCompositionContainer();
         }
 
-        public SystemCompositionContainer CreateExportProvidersContainer(params Type[] types)
+        public SystemCompositionInjector CreateExportProvidersContainer(params Type[] types)
         {
             var config = this.WithEmptyConfiguration();
             return this.WithExportProviders(config).WithParts(types).CreateCompositionContainer();

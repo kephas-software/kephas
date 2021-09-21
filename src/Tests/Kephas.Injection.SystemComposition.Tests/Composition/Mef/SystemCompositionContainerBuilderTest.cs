@@ -47,7 +47,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockAppRuntime = builder.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
 
             var container = builder.Build();
 
@@ -380,7 +380,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
@@ -400,7 +400,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
@@ -420,7 +420,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
@@ -440,7 +440,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
 
             var container = factory.Build();
 
