@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Lite;
-
 namespace Kephas
 {
     using System;
@@ -18,6 +15,8 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Dynamic;
+    using Kephas.Injection;
+    using Kephas.Injection.Lite;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -28,34 +27,27 @@ namespace Kephas
     /// </summary>
     public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
     {
+
         /// <summary>
         /// Gets the configuration store.
         /// </summary>
         /// <value>
         /// The configuration store.
         /// </value>
-        IConfigurationStore ConfigurationStore { get; }
+        public IConfigurationStore ConfigurationStore => this.GetService<IConfigurationStore>();
 
         /// <summary>
-        /// Gets the injector.
+        /// Gets the composition container.
         /// </summary>
         /// <value>
-        /// The injector.
+        /// The composition container.
         /// </value>
-        IInjector Injector { get; }
+        public IInjector Injector => this.GetService<IInjector>();
 
         /// <summary>
-        /// Gets the application runtime.
+        /// Gets the type serviceRegistry.
         /// </summary>
-        /// <value>
-        /// The application runtime.
-        /// </value>
-        IAppRuntime AppRuntime { get; }
-
-        /// <summary>
-        /// Gets the runtime type serviceRegistry.
-        /// </summary>
-        IRuntimeTypeRegistry TypeRegistry { get; }
+        public IRuntimeTypeRegistry TypeRegistry => this.GetService<IRuntimeTypeRegistry>();
 
         /// <summary>
         /// Gets the type loader.
@@ -63,7 +55,15 @@ namespace Kephas
         /// <value>
         /// The type loader.
         /// </value>
-        ITypeLoader TypeLoader { get; }
+        public ITypeLoader TypeLoader => this.GetService<ITypeLoader>();
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <value>
+        /// The application runtime.
+        /// </value>
+        public IAppRuntime AppRuntime => this.GetService<IAppRuntime>();
 
         /// <summary>
         /// Gets the log manager.
@@ -71,7 +71,7 @@ namespace Kephas
         /// <value>
         /// The log manager.
         /// </value>
-        ILogManager LogManager { get; }
+        public ILogManager LogManager => this.GetService<ILogManager>();
 
         /// <summary>
         /// Gets the manager for licensing.
@@ -79,7 +79,7 @@ namespace Kephas
         /// <value>
         /// The licensing manager.
         /// </value>
-        ILicensingManager LicensingManager { get; }
+        public ILicensingManager LicensingManager => this.GetService<ILicensingManager>();
 
         /// <summary>
         /// Registers the provided service using a registration builder.

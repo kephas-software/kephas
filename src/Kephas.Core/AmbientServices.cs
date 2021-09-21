@@ -93,59 +93,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets the configuration store.
-        /// </summary>
-        /// <value>
-        /// The configuration store.
-        /// </value>
-        public IConfigurationStore ConfigurationStore => this.GetService<IConfigurationStore>();
-
-        /// <summary>
-        /// Gets the composition container.
-        /// </summary>
-        /// <value>
-        /// The composition container.
-        /// </value>
-        public IInjector Injector => this.GetService<IInjector>();
-
-        /// <summary>
-        /// Gets the type serviceRegistry.
-        /// </summary>
-        public IRuntimeTypeRegistry TypeRegistry => this.GetService<IRuntimeTypeRegistry>();
-
-        /// <summary>
-        /// Gets the type loader.
-        /// </summary>
-        /// <value>
-        /// The type loader.
-        /// </value>
-        public ITypeLoader TypeLoader => this.GetService<ITypeLoader>();
-
-        /// <summary>
-        /// Gets the application runtime.
-        /// </summary>
-        /// <value>
-        /// The application runtime.
-        /// </value>
-        public IAppRuntime AppRuntime => this.GetService<IAppRuntime>();
-
-        /// <summary>
-        /// Gets the log manager.
-        /// </summary>
-        /// <value>
-        /// The log manager.
-        /// </value>
-        public ILogManager LogManager => this.GetService<ILogManager>();
-
-        /// <summary>
-        /// Gets the manager for licensing.
-        /// </summary>
-        /// <value>
-        /// The licensing manager.
-        /// </value>
-        public ILicensingManager LicensingManager => this.GetService<ILicensingManager>();
-
-        /// <summary>
         /// Registers the provided service using a registration builder.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
@@ -192,17 +139,17 @@ namespace Kephas
         /// <summary>
         /// Gets the application service infos in this collection.
         /// </summary>
-        /// <param name="candidateTypes">List of types of the candidates.</param>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process the application service infos in this
         /// collection.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
+        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
             // Lite composition container does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,
             // this is a message that ALL registration infos should be returned.
-            if (candidateTypes != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
+            if (context != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
             {
                 return Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
             }
@@ -233,19 +180,6 @@ namespace Kephas
         protected virtual void Dispose(bool disposing)
         {
             this.registry?.Dispose();
-        }
-
-        /// <summary>
-        /// Creates the default application runtime and initializes it.
-        /// </summary>
-        /// <returns>
-        /// The new application runtime.
-        /// </returns>
-        protected virtual IAppRuntime CreateDefaultInitializedAppRuntime()
-        {
-            var appRuntime = new StaticAppRuntime(name => this.LogManager.GetLogger(name), (appid, ctx) => this.LicensingManager.CheckLicense(appid, ctx));
-            ServiceHelper.Initialize(appRuntime);
-            return appRuntime;
         }
 
         private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IServiceInfo appServiceInfo)
