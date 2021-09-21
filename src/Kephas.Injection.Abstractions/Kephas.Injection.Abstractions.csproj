@@ -4,6 +4,8 @@
         <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
         <WarningsAsErrors>nullable</WarningsAsErrors>
 
         <Version>10.0.0-dev.2</Version>

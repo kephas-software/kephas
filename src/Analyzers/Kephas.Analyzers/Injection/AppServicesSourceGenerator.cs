@@ -52,7 +52,8 @@ namespace Kephas.Analyzers.Injection
             var syntaxReceiver = (SyntaxReceiver)context.SyntaxContextReceiver!;
 
             var source = new StringBuilder();
-            source.AppendLine($@"
+            source.AppendLine($@"#nullable enable
+
 using System;
 using System.Collections.Generic;
 
@@ -119,6 +120,10 @@ using Kephas.Services;
                     source.AppendLine();
 
                     context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {types}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+                }
+                else
+                {
+                    source.AppendLine($"            yield break;");
                 }
             }
 

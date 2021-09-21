@@ -5,6 +5,8 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 <!--        <WarningsAsErrors>nullable</WarningsAsErrors>-->
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
         <Version>10.0.0-dev.2</Version>
         <AssemblyVersion>10.0.0.0</AssemblyVersion>

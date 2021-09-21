@@ -4,6 +4,8 @@
         <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
         <Version>10.0.0-dev.2</Version>
         <AssemblyVersion>10.0.0.0</AssemblyVersion>
@@ -57,15 +59,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
+        <None Remove="stylecop.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <None Include="..\Kephas.snk" Link="Kephas.snk"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -95,12 +97,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
-      <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj"/>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj"/>
     </ItemGroup>
 
 </Project>

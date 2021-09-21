@@ -4,6 +4,8 @@
         <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
         <Version>10.0.0-dev.2</Version>
         <AssemblyVersion>10.0.0.0</AssemblyVersion>
@@ -65,6 +67,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Plugins\Kephas.Plugins.csproj" />
     </ItemGroup>
