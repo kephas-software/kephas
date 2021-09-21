@@ -152,32 +152,40 @@ namespace Kephas.Services.Composition
             IList<Type> candidateTypes,
             IInjectionRegistrationContext registrationContext)
         {
-            var appServiceInfoProviders = this.GetAppServiceInfoProviders(candidateTypes, registrationContext);
+            var appServiceInfoProviders = this.GetAppServiceInfoProviders(registrationContext);
             if (appServiceInfoProviders == null)
             {
                 yield break;
             }
 
+            var parts = new List<Type>(candidateTypes);
+            if (registrationContext.Parts != null)
+            {
+                parts.AddRange(registrationContext.Parts);
+            }
+
+            var oldParts = registrationContext.Parts;
+            registrationContext.Parts = parts;
+
             foreach (var appServiceInfoProvider in appServiceInfoProviders)
             {
-                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(candidateTypes))
+                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(registrationContext))
                 {
                     yield return item;
                 }
             }
+
+            registrationContext.Parts = oldParts;
         }
 
         /// <summary>
         /// Gets the application service information providers.
         /// </summary>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(
-            IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+        protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IInjectionRegistrationContext registrationContext)
         {
             var ambientServicesProviders = registrationContext.AmbientServices?.GetService<IEnumerable<Lazy<IAppServiceInfoProvider, AppServiceMetadata>>>();
             if (ambientServicesProviders != null)
