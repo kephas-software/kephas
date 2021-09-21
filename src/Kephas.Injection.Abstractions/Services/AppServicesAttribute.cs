@@ -11,61 +11,56 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Services.Reflection;
-
     /// <summary>
     /// Assembly attribute decorating an assembly and collecting the application services, both contract types and implementation types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public sealed class AppServicesAttribute : Attribute, IAppServiceInfoProvider, IAppServiceTypesProvider
     {
-        private readonly Type[] contractDeclarationTypes;
-        private readonly (Type serviceType, Type contractDeclarationType)[] serviceTypes;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesAttribute"/> class.
         /// </summary>
-        /// <param name="contractDeclarationTypes">The contract declaration types.</param>
-        /// <param name="serviceTypes">The service types (contract implementations) with their respective contract.</param>
-        public AppServicesAttribute(Type[]? contractDeclarationTypes = null, (Type serviceType, Type contractDeclarationType)[]? serviceTypes = null)
+        /// <param name="contractDeclarationTypes">Optional. The contract declaration types.</param>
+        /// <param name="serviceProviderTypes">Optional. The app service provider types implementing <see cref="IAppServiceTypesProvider"/>.</param>
+        public AppServicesAttribute(Type[]? contractDeclarationTypes = null, Type[]? serviceProviderTypes = null)
         {
-            this.contractDeclarationTypes = contractDeclarationTypes ?? Type.EmptyTypes;
-            this.serviceTypes = serviceTypes ?? Array.Empty<(Type serviceType, Type contractDeclarationType)>();
+            this.ContractDeclarationTypes = contractDeclarationTypes ?? Type.EmptyTypes;
+            this.ServiceProviderTypes = serviceProviderTypes ?? Type.EmptyTypes;
         }
 
         /// <summary>
-        /// Gets an enumeration of application service information objects.
+        /// Gets the contract declaration types.
         /// </summary>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        public Type[] ContractDeclarationTypes { get; }
+
+        /// <summary>
+        /// Gets the service provider types.
+        /// </summary>
+        public Type[] ServiceProviderTypes { get; }
+
+        /// <summary>
+        /// Gets the contract declaration types.
+        /// </summary>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
-        /// An enumeration of application service information objects and their associated contract type.
+        ///     The contract declaration types.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes = null)
-        {
-            foreach (var contractType in this.contractDeclarationTypes)
-            {
-                var appServiceInfo = this.TryGetAppServiceInfo(contractType);
-                if (appServiceInfo != null)
-                {
-                    yield return (contractType, appServiceInfo);
-                }
-            }
-        }
+        IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => this.ContractDeclarationTypes;
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes()
+        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
         {
-            return this.serviceTypes;
+            return this.ServiceProviderTypes
+                .Select(providerType => providerType == null ? null : Activator.CreateInstance(providerType) as IAppServiceTypesProvider)
+                .Where(provider => provider != null)
+                .SelectMany<IAppServiceTypesProvider?, (Type serviceType, Type contractDeclarationType)>(provider => provider!.GetAppServiceTypes(context));
         }
 
-        private IAppServiceInfo? TryGetAppServiceInfo(Type type)
-        {
-            return type.GetCustomAttributes(inherit: false).OfType<IAppServiceInfo>().FirstOrDefault();
-        }
     }
 }

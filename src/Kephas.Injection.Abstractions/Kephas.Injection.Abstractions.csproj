@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
@@ -83,6 +83,14 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
+    
+    <Choose>
+        <When Condition="$(TargetFramework) == 'netstandard2.1'">
+            <ItemGroup>
+                <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+            </ItemGroup>
+        </When>
+    </Choose>
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />

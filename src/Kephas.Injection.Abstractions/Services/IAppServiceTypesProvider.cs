@@ -13,7 +13,7 @@ namespace Kephas.Services
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Interface providing the <see cref="GetAppServiceTypes()"/> method,
+    /// Interface providing the <see cref="GetAppServiceTypes"/> method,
     /// which collects the types implementing application service contracts.
     /// </summary>
     public interface IAppServiceTypesProvider
@@ -21,9 +21,10 @@ namespace Kephas.Services
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes();
+        IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null);
     }
 }
