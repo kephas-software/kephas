@@ -63,7 +63,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        protected static IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IAppServiceInfoProvider provider, dynamic? context = null)
+        protected internal static IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IAppServiceInfoProvider provider, dynamic? context = null)
         {
             var contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
             if (contractDeclarationTypes == null)
