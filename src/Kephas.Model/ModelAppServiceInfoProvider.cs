@@ -5,12 +5,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Model;
+using Kephas.Services;
+
+[assembly: AppServices(serviceProviderTypes: new[] { typeof(ModelAppServiceInfoProvider) })]
+
 namespace Kephas.Model
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
@@ -20,14 +23,13 @@ namespace Kephas.Model
     public class ModelAppServiceInfoProvider : IAppServiceInfoProvider
     {
         /// <summary>
-        /// Gets an enumeration of application service information objects.
+        /// Gets the contract declaration types.
         /// </summary>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
-            IList<Type>? candidateTypes)
+        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
             yield return (
                 typeof(IModelSpace),
