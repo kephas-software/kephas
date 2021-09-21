@@ -54,22 +54,47 @@ namespace Kephas.Analyzers.Injection
             var source = new StringBuilder();
             source.AppendLine($@"
 using System;
+using System.Collections.Generic;
+
 using Kephas.Services;
 
 [assembly: AppServices(");
 
-            this.AppendContractTypes(source, context, syntaxReceiver.ContractTypes);
-            source.AppendLine(",");
-            this.AppendServiceTypes(source, context, syntaxReceiver.ServiceTypes);
+            this.AppendContractDeclarationTypes(source, context, syntaxReceiver.ContractTypes);
+
+            var serviceTypeProvider = this.GetServiceTypeProviderClassName(context);
+
+            if (syntaxReceiver.ServiceTypes.Count > 0)
+            {
+                source.AppendLine(",");
+                this.AppendServiceProviderTypes(serviceTypeProvider, source);
+            }
 
             source.AppendLine($@"
-)]");
-            context.AddSource("Kephas.AppServiceContracts.cs", SourceText.From(source.ToString(), Encoding.UTF8));
+)]
+");
+
+            if (syntaxReceiver.ServiceTypes.Count > 0)
+            {
+                this.AppendServiceProviderClass(serviceTypeProvider, source, context, syntaxReceiver.ServiceTypes);
+            }
+
+            context.AddSource("Kephas.AppServices.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
         }
 
-        private void AppendServiceTypes(StringBuilder source, GeneratorExecutionContext context, IList<ClassDeclarationSyntax> serviceTypes)
+        private (string typeNamespace, string typeName) GetServiceTypeProviderClassName(GeneratorExecutionContext context)
         {
-            source.AppendLine($@"   serviceTypes: new (Type serviceType, Type contactDeclarationType)[] {{");
+            return ("Kephas.Generated", $"AppServiceTypesProvider_{Guid.NewGuid():N}");
+        }
+
+        private void AppendServiceProviderClass((string typeNamespace, string typeName) serviceTypeProvider, StringBuilder source, GeneratorExecutionContext context, IList<ClassDeclarationSyntax> serviceTypes)
+        {
+            source.AppendLine($@"namespace {serviceTypeProvider.typeNamespace}");
+            source.AppendLine($@"{{");
+            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: Kephas.Services.IAppServiceTypesProvider");
+            source.AppendLine($@"   {{");
+            source.AppendLine($@"       public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)");
+            source.AppendLine($@"       {{");
 
             if (serviceTypes.Count > 0)
             {
@@ -83,7 +108,7 @@ using Kephas.Services;
                     }
 
                     var typeFullName = InjectionHelper.GetTypeFullName(classSyntax);
-                    source.AppendLine($"        (serviceType: typeof({typeFullName}), contactDeclarationType: typeof({InjectionHelper.GetTypeFullName(appServiceContract)})),");
+                    source.AppendLine($"            yield return (typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
                     types.Append($"{classSyntax.Identifier}, ");
                 }
 
@@ -91,17 +116,23 @@ using Kephas.Services;
                 {
                     types.Length -= 2;
                     source.Length -= Environment.NewLine.Length;
-                    source.Length -= 1;
                     source.AppendLine();
 
-                    context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", typeof(AppServicesSourceGenerator).Name, $"Identified following application service contracts: {types}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+                    context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {types}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
                 }
             }
 
-            source.Append($@"   }}");
+            source.AppendLine($@"       }}");
+            source.AppendLine($@"   }}");
+            source.AppendLine($@"}}");
         }
 
-        private void AppendContractTypes(StringBuilder source, GeneratorExecutionContext context, IList<TypeDeclarationSyntax> contractTypes)
+        private void AppendServiceProviderTypes((string typeNamespace, string typeName) serviceTypeProvider, StringBuilder source)
+        {
+            source.AppendLine($@"   serviceProviderTypes: new Type[] {{ typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}) }}");
+        }
+
+        private void AppendContractDeclarationTypes(StringBuilder source, GeneratorExecutionContext context, IList<TypeDeclarationSyntax> contractTypes)
         {
             source.AppendLine($@"   contractDeclarationTypes: new Type[] {{");
 

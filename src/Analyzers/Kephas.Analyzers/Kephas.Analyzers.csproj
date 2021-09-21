@@ -50,8 +50,6 @@
         <IsRoslynComponent>true</IsRoslynComponent>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <GenerateRepositoryUrlAttribute>true</GenerateRepositoryUrlAttribute>
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-        <CompilerGeneratedFilesOutputPath>$(MSBuildProjectDirectory)\Kephas\.generated</CompilerGeneratedFilesOutputPath>
         <DebugSymbols>True</DebugSymbols>
         <DebugType>Embedded</DebugType>
     </PropertyGroup>

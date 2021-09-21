@@ -103,7 +103,11 @@ namespace Kephas.Analyzers.Injection
             var ns = typeSymbol.ContainingNamespace;
             while (ns != null)
             {
-                fullName = ns.Name + "." + fullName;
+                if (!string.IsNullOrEmpty(ns.Name))
+                {
+                    fullName = ns.Name + "." + fullName;
+                }
+
                 ns = ns.ContainingNamespace;
             }
 
