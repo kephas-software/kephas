@@ -176,12 +176,12 @@ namespace Kephas.Core.Tests.Services.Composition
                 this.attrProvider = attrProvider;
             }
 
-            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IList<Type> candidateTypes, IInjectionRegistrationContext registrationContext)
+            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IInjectionRegistrationContext registrationContext)
             {
                 yield return new TestAppServiceInfoProvider(this.attrProvider);
             }
 
-            private class TestAppServiceInfoProvider : AttributedAppServiceInfoProvider
+            private class TestAppServiceInfoProvider : IAppServiceInfoProvider
             {
                 private readonly Func<Type, AppServiceContractAttribute> attrProvider;
 
@@ -190,7 +190,9 @@ namespace Kephas.Core.Tests.Services.Composition
                     this.attrProvider = attrProvider;
                 }
 
-                protected override IAppServiceInfo TryGetAppServiceInfo(Type type)
+                IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionRegistrationContext?)context)?.Parts;
+
+                IAppServiceInfo? IAppServiceInfoProvider.TryGetAppServiceInfo(Type type)
                 {
                     return this.attrProvider(type);
                 }

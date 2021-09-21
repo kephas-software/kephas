@@ -12,10 +12,9 @@ namespace Kephas.Injection.Conventions
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
+    using Kephas.Injection.Hosting;
     using Kephas.Services;
-    using Kephas.Services.Reflection;
 
     /// <summary>
     /// An attributed application service information provider.
@@ -23,34 +22,12 @@ namespace Kephas.Injection.Conventions
     public class AttributedAppServiceInfoProvider : IAppServiceInfoProvider
     {
         /// <summary>
-        /// Gets an enumeration of application service information objects.
+        /// Gets the contract declaration types.
         /// </summary>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
-        /// An enumeration of application service information objects and their associated contract type.
+        ///     The contract declaration types.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type>? candidateTypes)
-        {
-            foreach (var candidateType in candidateTypes)
-            {
-                var appServiceInfo = this.TryGetAppServiceInfo(candidateType);
-                if (appServiceInfo != null)
-                {
-                    yield return (candidateType, appServiceInfo);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Tries to get the <see cref="IAppServiceInfo"/> for the provided type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// An <see cref="IAppServiceInfo"/> or <c>null</c>, if the provided type is not a service contract.
-        /// </returns>
-        protected virtual IAppServiceInfo? TryGetAppServiceInfo(Type type)
-        {
-            return type.GetCustomAttribute<AppServiceContractAttribute>();
-        }
+        IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionRegistrationContext?)context)?.Parts;
     }
 }
