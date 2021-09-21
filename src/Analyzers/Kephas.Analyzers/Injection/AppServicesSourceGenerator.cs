@@ -84,7 +84,7 @@ using Kephas.Services;
 
         private (string typeNamespace, string typeName) GetServiceTypeProviderClassName(GeneratorExecutionContext context)
         {
-            return ("Kephas.Generated", $"AppServiceTypesProvider_{Guid.NewGuid():N}");
+            return ("Kephas.Generated", $"AppServiceTypesProvider_{context.Compilation.Assembly.Name.Replace(".", "_")}");
         }
 
         private void AppendServiceProviderClass((string typeNamespace, string typeName) serviceTypeProvider, StringBuilder source, GeneratorExecutionContext context, IList<ClassDeclarationSyntax> serviceTypes)
