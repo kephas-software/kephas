@@ -353,7 +353,7 @@ namespace Kephas.Injection.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    var assemblies = this.GetCompositionAssemblies();
+                    var assemblies = this.GetInjectionAssemblies();
 
                     container = this.CreateContainerWithConventions(assemblies);
                 },
@@ -379,10 +379,10 @@ namespace Kephas.Injection.Hosting
         protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
 
         /// <summary>
-        /// Gets the composition assemblies.
+        /// Gets the assemblies used for dependency injection.
         /// </summary>
-        /// <returns>An enumeration of assemblies used for composition.</returns>
-        protected IEnumerable<Assembly> GetCompositionAssemblies()
+        /// <returns>An enumeration of assemblies used for dependency injection.</returns>
+        protected IEnumerable<Assembly> GetInjectionAssemblies()
         {
             return (IEnumerable<Assembly>)this.compositionAssemblies ?? this.GetAssemblies();
         }

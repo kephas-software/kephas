@@ -8,20 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-using Kephas.Injection.Lite.Conventions;
-
 namespace Kephas.Injection.Lite.Hosting
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Lite.Conventions;
+
     /// <summary>
     /// A lightweight composition container builder.
     /// </summary>
     public class LiteInjectorBuilder : InjectorBuilderBase<LiteInjectorBuilder>
     {
-        private IAmbientServices ambientServices;
+        private readonly IAmbientServices ambientServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LiteInjectorBuilder"/> class.

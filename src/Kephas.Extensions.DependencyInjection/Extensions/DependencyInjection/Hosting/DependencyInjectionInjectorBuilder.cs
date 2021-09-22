@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-
 namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Extensions.DependencyInjection.Conventions;
+    using Kephas.Injection;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
