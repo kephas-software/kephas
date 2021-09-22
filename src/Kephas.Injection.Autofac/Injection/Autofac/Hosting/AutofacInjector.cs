@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the autofac composition container class.
+//   Implements the autofac injector class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ namespace Kephas.Injection.Autofac.Hosting
         }
 
         /// <summary>
-        /// Cleanups the given composition context.
+        /// Cleanups the given injector.
         /// </summary>
         /// <param name="lifetimeScope">The lifetime scope.</param>
         public void HandleDispose(ILifetimeScope lifetimeScope)

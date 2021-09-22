@@ -37,7 +37,7 @@ namespace Kephas.Extensions.Configuration.Providers
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsSettingsProviderBase"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         protected OptionsSettingsProviderBase(IInjector injector)
         {
             Requires.NotNull(injector, nameof(injector));

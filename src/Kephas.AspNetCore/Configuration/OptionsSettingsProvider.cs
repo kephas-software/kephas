@@ -24,7 +24,7 @@ namespace Kephas.Application.AspNetCore.Configuration
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsSettingsProvider"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public OptionsSettingsProvider(IInjector injector)
             : base(injector)
         {

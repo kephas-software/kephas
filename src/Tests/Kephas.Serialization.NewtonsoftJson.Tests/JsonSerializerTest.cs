@@ -39,7 +39,7 @@ namespace Kephas.Serialization.Json.Tests
     public class JsonSerializerTest : SerializationTestBase
     {
         [Test]
-        public async Task SerializeAsync_Composition()
+        public async Task SerializeAsync_injection()
         {
             var container = this.CreateInjector();
             var serializationService = container.Resolve<ISerializationService>();
@@ -438,7 +438,7 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
-        public async Task JsonSerializer_Composition()
+        public async Task JsonSerializer_injection()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime()

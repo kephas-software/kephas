@@ -16,7 +16,6 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
-    using Kephas.Configuration.Providers.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;

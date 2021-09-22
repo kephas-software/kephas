@@ -89,10 +89,10 @@ namespace Kephas.Application
         protected IAppRuntime AppRuntime { get; }
 
         /// <summary>
-        /// Gets the composition context.
+        /// Gets the injector.
         /// </summary>
         /// <value>
-        /// The composition context.
+        /// The injector.
         /// </value>
         protected IInjector Injector { get; }
 

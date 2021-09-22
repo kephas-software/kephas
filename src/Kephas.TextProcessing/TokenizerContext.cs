@@ -23,7 +23,7 @@ namespace Kephas.TextProcessing
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenizerContext"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public TokenizerContext(IInjector injector)
             : base(injector)
         {

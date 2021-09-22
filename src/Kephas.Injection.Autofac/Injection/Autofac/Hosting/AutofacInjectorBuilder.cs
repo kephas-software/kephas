@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the autofac composition container builder class.
+//   Implements the autofac injector builder class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ namespace Kephas.Injection.Autofac.Hosting
     using Kephas.Injection.Hosting;
 
     /// <summary>
-    /// An Autofac composition container builder.
+    /// An Autofac injector builder.
     /// </summary>
     public class AutofacInjectorBuilder : InjectorBuilderBase<AutofacInjectorBuilder>
     {
@@ -80,12 +80,12 @@ namespace Kephas.Injection.Autofac.Hosting
         }
 
         /// <summary>
-        /// Creates a new composition container based on the provided conventions and assembly parts.
+        /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
         /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
-        /// A new composition container.
+        /// A new injector.
         /// </returns>
         protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {

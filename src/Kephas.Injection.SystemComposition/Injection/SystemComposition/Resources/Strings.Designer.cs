@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace Kephas.Injection.SystemComposition.Resources {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -36,7 +39,7 @@ namespace Kephas.Injection.SystemComposition.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Composition.Mef.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Injection.SystemComposition.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,33 +70,6 @@ namespace Kephas.Injection.SystemComposition.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The composition container is disposed!.
-        /// </summary>
-        public static string MefCompositionContainer_Disposed_Exception {
-            get {
-                return ResourceManager.GetString("MefCompositionContainer_Disposed_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multiple eligible constructors declared for service implementation &apos;{0}&apos;. Use &apos;{1}&apos; to disambiguate among them..
-        /// </summary>
-        public static string MefPartConventionsBuilder_AmbiguousCompositionConstructor {
-            get {
-                return ResourceManager.GetString("MefPartConventionsBuilder_AmbiguousCompositionConstructor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are no constructors defined for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;..
-        /// </summary>
-        public static string MefPartConventionsBuilder_MissingCompositionConstructor {
-            get {
-                return ResourceManager.GetString("MefPartConventionsBuilder_MissingCompositionConstructor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; cannot be used as a metadata view. A metadata view must be a concrete class with a parameterless or dictionary constructor..
         /// </summary>
         public static string MetadataViewProvider_InvalidViewImplementation {
@@ -108,6 +84,33 @@ namespace Kephas.Injection.SystemComposition.Resources {
         public static string MetadataViewProvider_MissingMetadata {
             get {
                 return ResourceManager.GetString("MetadataViewProvider_MissingMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The injector is disposed!.
+        /// </summary>
+        public static string SystemCompositionInjector_Disposed_Exception {
+            get {
+                return ResourceManager.GetString("SystemCompositionInjector_Disposed_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple eligible constructors declared for service implementation &apos;{0}&apos;. Use &apos;{1}&apos; to disambiguate among them..
+        /// </summary>
+        public static string SystemCompositionPartConventionsBuilder_AmbiguousCompositionConstructor {
+            get {
+                return ResourceManager.GetString("SystemCompositionPartConventionsBuilder_AmbiguousCompositionConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no constructors defined for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;..
+        /// </summary>
+        public static string SystemCompositionPartConventionsBuilder_MissingCompositionConstructor {
+            get {
+                return ResourceManager.GetString("SystemCompositionPartConventionsBuilder_MissingCompositionConstructor", resourceCulture);
             }
         }
     }

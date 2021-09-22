@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Scheduling.Quartz.JobStore
 {
     using System;
+
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -26,8 +26,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// Initializes a new instance of the <see cref="SchedulingJobStoreContext"/> class.
         /// </summary>
         /// <param name="dataContextFactory">The data context factory.</param>
-        /// <param name="injector">Optional. Context for the composition.</param>
-        public SchedulingJobStoreContext(Func<IContext, IDataContext> dataContextFactory, IInjector injector = null)
+        /// <param name="injector">The injector.</param>
+        public SchedulingJobStoreContext(Func<IContext, IDataContext> dataContextFactory, IInjector injector)
             : base(injector)
         {
             Requires.NotNull(dataContextFactory, nameof(dataContextFactory));

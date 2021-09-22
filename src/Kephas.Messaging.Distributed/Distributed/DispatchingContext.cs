@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="DispatchingContext"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="appRuntime">The application runtime.</param>

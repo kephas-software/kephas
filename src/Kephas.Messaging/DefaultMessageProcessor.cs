@@ -21,7 +21,6 @@ namespace Kephas.Messaging
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

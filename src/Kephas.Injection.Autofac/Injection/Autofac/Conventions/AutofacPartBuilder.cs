@@ -38,7 +38,7 @@ namespace Kephas.Injection.Autofac.Conventions
         }
 
         /// <summary>
-        /// Mark the part as being shared within the entire composition.
+        /// Marks the part as singleton within the injection.
         /// </summary>
         /// <returns>
         /// A part builder allowing further configuration of the part.
@@ -50,7 +50,7 @@ namespace Kephas.Injection.Autofac.Conventions
         }
 
         /// <summary>
-        /// Mark the part as being shared within the scope.
+        /// Mark the part as singleton within a scope.
         /// </summary>
         /// <returns>
         /// A part builder allowing further configuration of the part.

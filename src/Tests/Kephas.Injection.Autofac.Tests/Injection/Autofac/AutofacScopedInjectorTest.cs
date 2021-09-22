@@ -3,14 +3,12 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the MEF scoped composition context test class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Tests.Injection.Autofac
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Hosting;
     using Kephas.Services;
@@ -34,19 +32,15 @@ namespace Kephas.Tests.Injection.Autofac
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
-            using (var scopedContext = container.CreateScopedInjector())
-            {
-                Assert.IsInstanceOf<AutofacScopedInjector>(scopedContext);
-                var scopedInstance1 = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
+            using var scopedContext = container.CreateScopedInjector();
+            Assert.IsInstanceOf<AutofacScopedInjector>(scopedContext);
+            var scopedInstance1 = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
 
-                using (var nestedContext = scopedContext.CreateScopedInjector())
-                {
-                    Assert.AreNotSame(scopedContext, nestedContext);
+            using var nestedContext = scopedContext.CreateScopedInjector();
+            Assert.AreNotSame(scopedContext, nestedContext);
 
-                    var scopedInstance2 = nestedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
-                    Assert.AreNotSame(scopedInstance1, scopedInstance2);
-                }
-            }
+            var scopedInstance2 = nestedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
+            Assert.AreNotSame(scopedInstance1, scopedInstance2);
         }
 
         [Test]
@@ -61,11 +55,9 @@ namespace Kephas.Tests.Injection.Autofac
         public void CreateScopedInjector_Injector_registration_scope()
         {
             var container = this.CreateInjectorWithBuilder();
-            using (var scopedContext = container.CreateScopedInjector())
-            {
-                var selfScopedContext = scopedContext.Resolve<IInjector>();
-                Assert.AreSame(selfScopedContext, scopedContext);
-            }
+            using var scopedContext = container.CreateScopedInjector();
+            var selfScopedContext = scopedContext.Resolve<IInjector>();
+            Assert.AreSame(selfScopedContext, scopedContext);
         }
 
         [Test]
@@ -77,11 +69,9 @@ namespace Kephas.Tests.Injection.Autofac
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
-            using (var scopedContext = container.CreateScopedInjector())
-            {
-                var scopedInstance = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
-                Assert.AreSame(scopedContext, scopedInstance.Injector);
-            }
+            using var scopedContext = container.CreateScopedInjector();
+            var scopedInstance = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
+            Assert.AreSame(scopedContext, scopedInstance.Injector);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.SystemComposition.Hosting;
@@ -30,7 +31,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
@@ -38,7 +39,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
-        protected virtual IInjector CreateMessagingContainerMock()
+        protected virtual IInjector CreateMessagingInjectorMock()
         {
             var container = Substitute.For<IInjector>();
 

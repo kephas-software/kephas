@@ -26,7 +26,7 @@ namespace Kephas.Serialization.Json.Tests.Autofac
     public class AutofacJsonSerializerTest : AutofacSerializationTestBase
     {
         [Test]
-        public async Task SerializeAsync_Composition()
+        public async Task SerializeAsync_injection()
         {
             var container = this.CreateInjector();
             var serializationService = container.Resolve<ISerializationService>();

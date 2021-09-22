@@ -29,14 +29,7 @@ namespace Kephas.Model.Elements
     /// </summary>
     public class AppServiceType : ClassifierBase<IAppServiceType>, IAppServiceType
     {
-        /// <summary>
-        /// The application service attribute.
-        /// </summary>
         private readonly IAppServiceInfo appServiceInfo;
-
-        /// <summary>
-        /// Context for the composition.
-        /// </summary>
         private readonly IInjector injector;
 
         /// <summary>

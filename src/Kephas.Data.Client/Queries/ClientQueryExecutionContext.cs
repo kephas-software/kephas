@@ -25,7 +25,7 @@ namespace Kephas.Data.Client.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryExecutionContext"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public ClientQueryExecutionContext(IInjector injector)
             : base(injector)
         {

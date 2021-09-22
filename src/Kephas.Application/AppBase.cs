@@ -286,7 +286,7 @@ namespace Kephas.Application
         /// This is the last step in the app's configuration, when all the services are set up
         /// and the container is built. For inheritors, this is the last place where services can
         /// be added before calling. By default, it only builds the Lite container, but any other container adapter
-        /// can be used, like Autofac or System.Composition (MEF 2).
+        /// can be used, like Autofac or System.Composition.
         /// </summary>
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.

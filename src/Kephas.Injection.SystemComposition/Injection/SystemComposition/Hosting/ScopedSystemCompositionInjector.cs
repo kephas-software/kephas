@@ -11,12 +11,12 @@ namespace Kephas.Injection.SystemComposition.Hosting
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// The MEF composition container.
+    /// The MEF injector.
     /// </summary>
     public class ScopedSystemCompositionInjector : SystemCompositionInjectorBase
     {
         /// <summary>
-        /// The composition context export.
+        /// The injector export.
         /// </summary>
         private Export<CompositionContext> export;
 

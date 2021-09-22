@@ -17,12 +17,12 @@ namespace Kephas.Testing.Application
     using Kephas.Testing.Injection;
 
     /// <summary>
-    /// Base class for application tests using composition.
+    /// Base class for application tests using dependency injection.
     /// </summary>
     /// <content>
     /// It includes:
     /// * The default convention assemblies contain:
-    ///   * Kephas.Core 
+    ///   * Kephas.Core
     ///   * Kephas.Application
     /// </content>
     public class ApplicationTestBase : InjectionTestBase

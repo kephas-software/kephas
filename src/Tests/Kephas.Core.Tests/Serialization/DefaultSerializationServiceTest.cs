@@ -62,7 +62,6 @@ namespace Kephas.Core.Tests.Serialization
             Assert.AreSame(context.MediaType, typeof(JsonMediaType));
         }
 
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void GetSerializer_proper_serializer_override()
         {
@@ -82,29 +81,7 @@ namespace Kephas.Core.Tests.Serialization
             newSerializer.Received(1)
                 .Deserialize(Arg.Any<string>(), Arg.Any<ISerializationContext>());
         }
-#else
-        [Test]
-        public void GetSerializer_proper_serializer_override()
-        {
-            var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
-            var oldSerializer = Substitute.For<ISerializer>();
-            var newSerializer = Substitute.For<ISerializer>();
-            factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), oldSerializer, Priority.Normal));
-            factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), newSerializer, Priority.AboveNormal));
-            var contextFactory = Substitute.For<IContextFactory>();
-            var serializationService = new DefaultSerializationService(contextFactory, factories);
-            contextFactory.CreateContext<SerializationContext>(serializationService)
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
 
-            serializationService.Deserialize("123");
-            oldSerializer.Received(0)
-                .DeserializeAsync(Arg.Any<string>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>());
-            newSerializer.Received(1)
-                .DeserializeAsync(Arg.Any<string>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>());
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_object()
         {
@@ -117,22 +94,7 @@ namespace Kephas.Core.Tests.Serialization
 
             Assert.AreEqual("234", result);
         }
-#else
-        [Test]
-        public void Deserialize_object()
-        {
-            var serializer = Substitute.For<ISerializer>();
-            var serializationService = this.CreateSerializationServiceForJson(serializer);
-            serializer.DeserializeAsync("123", Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult<object>("234"));
 
-            var result = serializationService.Deserialize("123");
-
-            Assert.AreEqual("234", result);
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_object_sync()
         {
@@ -145,22 +107,7 @@ namespace Kephas.Core.Tests.Serialization
 
             Assert.AreEqual("234", result);
         }
-#else
-        [Test]
-        public void Deserialize_object_sync()
-        {
-            var serializer = Substitute.For<ISerializer, ISyncSerializer>();
-            var serializationService = this.CreateSerializationServiceForJson(serializer);
-            ((ISyncSerializer)serializer).Deserialize("123", Arg.Any<ISerializationContext>())
-                .Returns(ci => "234");
 
-            var result = serializationService.Deserialize("123");
-
-            Assert.AreEqual("234", result);
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_textreader()
         {
@@ -174,23 +121,7 @@ namespace Kephas.Core.Tests.Serialization
 
             Assert.AreEqual("234", result);
         }
-#else
-        [Test]
-        public void Deserialize_textreader()
-        {
-            var serializer = Substitute.For<ISerializer>();
-            var serializationService = this.CreateSerializationServiceForJson(serializer);
-            var reader = Substitute.For<TextReader>();
-            serializer.DeserializeAsync(reader, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult<object>("234"));
 
-            var result = serializationService.Deserialize(reader);
-
-            Assert.AreEqual("234", result);
-        }
-#endif
-
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void Deserialize_textreader_sync()
         {
@@ -204,21 +135,6 @@ namespace Kephas.Core.Tests.Serialization
 
             Assert.AreEqual("234", result);
         }
-#else
-        [Test]
-        public void Deserialize_textreader_sync()
-        {
-            var serializer = Substitute.For<ISerializer, ISyncSerializer>();
-            var serializationService = this.CreateSerializationServiceForJson(serializer);
-            var reader = Substitute.For<TextReader>();
-            ((ISyncSerializer)serializer).Deserialize(reader, Arg.Any<ISerializationContext>())
-                .Returns(ci => "234");
-
-            var result = serializationService.Deserialize(reader);
-
-            Assert.AreEqual("234", result);
-        }
-#endif
 
         [Test]
         public async Task DeserializeAsync_object()

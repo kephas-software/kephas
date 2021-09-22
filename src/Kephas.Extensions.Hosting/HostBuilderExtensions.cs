@@ -67,7 +67,7 @@ namespace Kephas.Extensions.Hosting
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             hostBuilder
-                .UseServiceProviderFactory(new CompositionServiceProviderFactory(ambientServices))
+                .UseServiceProviderFactory(new InjectionServiceProviderFactory(ambientServices))
                 .ConfigureServices(services =>
                 {
                     services.AddAmbientServices(ambientServices);

@@ -50,7 +50,7 @@
                     "files": [
                         "*.csproj"
                     ],
-                    "cwd": "./Kephas.Composition.Autofac",
+                    "cwd": "./Kephas.Injection.Autofac",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",
@@ -61,7 +61,7 @@
                     "files": [
                         "*.csproj"
                     ],
-                    "cwd": "./Kephas.Composition.Mef",
+                    "cwd": "./Kephas.Injection.SystemComposition",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",

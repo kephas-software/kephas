@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the autofac scoped composition context class.
+//   Implements the autofac scoped injector class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace Kephas.Injection.Autofac.Hosting
     using global::Autofac;
 
     /// <summary>
-    /// An Autofac scoped composition context.
+    /// An Autofac scoped injector.
     /// </summary>
     internal class AutofacScopedInjector : AutofacInjectorBase
     {

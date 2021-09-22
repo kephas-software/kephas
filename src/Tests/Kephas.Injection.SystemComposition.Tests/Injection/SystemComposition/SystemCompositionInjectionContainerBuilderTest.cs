@@ -78,7 +78,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssembly(typeof(MefConventionsBuilder).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(SystemCompositionConventionsBuilder).GetTypeInfo().Assembly)
                 .Build();
 
             var logger = container.Resolve<ILogger<SystemCompositionInjectionContainerTest.ExportedClass>>();
@@ -595,7 +595,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             /// Initializes a new instance of the <see cref="SingleConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
             public SingleConstructorAppService(IInjector injectionContainer)
             {
@@ -617,7 +617,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             /// Initializes a new instance of the <see cref="AmbiguousCompositionConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
             public AmbiguousCompositionConstructorAppService(IInjector injectionContainer)
             {
@@ -637,7 +637,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             /// Initializes a new instance of the <see cref="LargestCompositionConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
             public LargestCompositionConstructorAppService(IInjector injectionContainer)
             {
@@ -668,7 +668,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             /// Initializes a new instance of the <see cref="MultipleCompositionConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
             [InjectConstructor]
             public MultipleCompositionConstructorAppService(IInjector injectionContainer)

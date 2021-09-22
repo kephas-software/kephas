@@ -23,14 +23,13 @@ namespace Kephas.Core.Tests.Configuration
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
     using Kephas.Configuration.Providers;
-    using Kephas.Configuration.Providers.Composition;
     using Kephas.Core.Tests;
     using Kephas.Interaction;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class ConfigurationTest : CompositionTestBase
+    public class ConfigurationTest : InjectionTestBase
     {
         [Test]
         public void GetSettings_default_provider()
@@ -79,7 +78,7 @@ namespace Kephas.Core.Tests.Configuration
         public void Injection_Configuration_specific_provider()
         {
             // specific provider
-            var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestConfigurationProvider) });
 
             var config = container.Resolve<IConfiguration<TestSettings>>();
             Assert.AreSame(TestConfigurationProvider.Settings, config.GetSettings());
@@ -89,7 +88,7 @@ namespace Kephas.Core.Tests.Configuration
         public async Task Injection_Configuration_change_signal_skipped_when_not_changed()
         {
             // specific provider
-            var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestConfigurationProvider) });
             var eventHub = container.Resolve<IEventHub>();
             var appRuntime = container.Resolve<IAppRuntime>();
             var configChanged = 0;
@@ -108,7 +107,7 @@ namespace Kephas.Core.Tests.Configuration
         public async Task Injection_Configuration_change_signal_when_changed()
         {
             // specific provider
-            var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestConfigurationProvider) });
             var eventHub = container.Resolve<IEventHub>();
             var appRuntime = container.Resolve<IAppRuntime>();
             var configChanged = 0;

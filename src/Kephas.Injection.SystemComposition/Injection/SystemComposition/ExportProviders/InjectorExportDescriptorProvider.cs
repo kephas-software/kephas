@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the composition context export descriptor provider class.
+//   Implements the injector export descriptor provider class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
     public class InjectorExportDescriptorProvider : ExportDescriptorProvider, IExportProvider
     {
         /// <summary>
-        /// The composition container.
+        /// The injector.
         /// </summary>
         private readonly IInjector injectionContainer;
 
@@ -30,7 +30,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// Initializes a new instance of the <see cref="InjectorExportDescriptorProvider"/>
         /// class.
         /// </summary>
-        /// <param name="injectionContainer">The composition container.</param>
+        /// <param name="injectionContainer">The injector.</param>
         public InjectorExportDescriptorProvider(IInjector injectionContainer)
         {
             Requires.NotNull(injectionContainer, nameof(injectionContainer));
@@ -38,7 +38,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         }
 
         /// <summary>
-        /// Promise export descriptors for composition context.
+        /// Promise export descriptors for injector.
         /// </summary>
         /// <param name="contract">The export key required by another component.</param><param name="descriptorAccessor">Accesses the other export descriptors present in the composition.</param>
         /// <returns>

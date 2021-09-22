@@ -13,7 +13,6 @@ namespace Kephas.Data.Tests
     using System.Collections.Generic;
 
     using Kephas.Data;
-    using Kephas.Data.Composition;
     using Kephas.Data.Store;
     using Kephas.Injection;
     using Kephas.Injection.ExportFactories;

@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the dependency injection composition container builder class.
+//   Implements the dependency injection injector builder class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// A dependency injection composition container builder.
+    /// A dependency injection injector builder.
     /// </summary>
     public class DependencyInjectionInjectorBuilder : InjectorBuilderBase<DependencyInjectionInjectorBuilder>
     {
@@ -46,12 +46,12 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         }
 
         /// <summary>
-        /// Creates a new composition container based on the provided conventions and assembly parts.
+        /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
         /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
-        /// A new composition container.
+        /// A new injector.
         /// </returns>
         protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {

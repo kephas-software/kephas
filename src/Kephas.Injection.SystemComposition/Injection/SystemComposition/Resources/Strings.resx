@@ -120,8 +120,8 @@
   <data name="InvalidConventions" xml:space="preserve">
     <value>The provided conventions must implement {0}.</value>
   </data>
-  <data name="MefCompositionContainer_Disposed_Exception" xml:space="preserve">
-    <value>The composition container is disposed!</value>
+  <data name="SystemCompositionInjector_Disposed_Exception" xml:space="preserve">
+    <value>The injector is disposed!</value>
   </data>
   <data name="MetadataViewProvider_InvalidViewImplementation" xml:space="preserve">
     <value>The type '{0}' cannot be used as a metadata view. A metadata view must be a concrete class with a parameterless or dictionary constructor.</value>
@@ -129,10 +129,10 @@
   <data name="MetadataViewProvider_MissingMetadata" xml:space="preserve">
     <value>Export metadata for '{0}' is missing and no default value was supplied.</value>
   </data>
-  <data name="MefPartConventionsBuilder_AmbiguousCompositionConstructor" xml:space="preserve">
+  <data name="SystemCompositionPartConventionsBuilder_AmbiguousCompositionConstructor" xml:space="preserve">
     <value>Multiple eligible constructors declared for service implementation '{0}'. Use '{1}' to disambiguate among them.</value>
   </data>
-  <data name="MefPartConventionsBuilder_MissingCompositionConstructor" xml:space="preserve">
+  <data name="SystemCompositionPartConventionsBuilder_MissingCompositionConstructor" xml:space="preserve">
     <value>There are no constructors defined for service implementation '{0}' with contract '{1}'.</value>
   </data>
 </root>

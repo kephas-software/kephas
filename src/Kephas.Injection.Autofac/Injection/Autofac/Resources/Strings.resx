@@ -120,10 +120,10 @@
   <data name="InvalidConventions" xml:space="preserve">
     <value>The provided conventions must implement {0}.</value>
   </data>
-  <data name="AutofacCompositionContainer_MismatchedLifetimeScope_Exception" xml:space="preserve">
+  <data name="AutofacInjector_MismatchedLifetimeScope_Exception" xml:space="preserve">
     <value>Cannot get a lifetime scope from the provided component context: {0}.</value>
   </data>
-  <data name="AutofacCompositionContainer_Disposed_Exception" xml:space="preserve">
-    <value>The composition container is disposed.</value>
+  <data name="AutofacInjector_Disposed_Exception" xml:space="preserve">
+    <value>The injector is disposed.</value>
   </data>
 </root>

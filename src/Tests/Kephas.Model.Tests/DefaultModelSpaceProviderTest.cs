@@ -19,9 +19,7 @@ namespace Kephas.Model.Tests
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Runtime.Configuration;
-    using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
-    using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Testing.Model;
@@ -48,7 +46,7 @@ namespace Kephas.Model.Tests
         }
 
         [Test]
-        public async Task InitializeAsync_using_composition()
+        public async Task InitializeAsync_using_injection()
         {
             var container = this.CreateInjector(typeof(IModelSpace).GetTypeInfo().Assembly);
             var provider = container.Resolve<IModelSpaceProvider>();

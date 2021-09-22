@@ -170,11 +170,11 @@
   <data name="DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all exported types from {assembly}. Only the loadable types will be considered.</value>
   </data>
-  <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+  <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
     <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
     <comment>The specified contract type '{0}' is not assignable from the service contract '{1}'.</comment>
   </data>
-  <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
+  <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
     <comment>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</comment>
   </data>
@@ -350,8 +350,8 @@
     <comment>'{0}' has at least two constructors with the same length which can be resolved through composition: ({1}) and ({2}).</comment>
   </data>
   <data name="AmbientServices_MissingCompositionConstructor_Exception" xml:space="preserve">
-    <value>No composition constructor could be identified for '{0}'. The following parameters could not be resolved: {1}.</value>
-    <comment>No composition constructor could be identified for '{0}'. The following parameters could not be resolved: {1}.</comment>
+    <value>No injection constructor could be identified for '{0}'. The following parameters could not be resolved: {1}.</value>
+    <comment>No injection constructor could be identified for '{0}'. The following parameters could not be resolved: {1}.</comment>
   </data>
   <data name="ServiceRegistry_MismatchedMultipleServiceRegistration_Exception" xml:space="preserve">
     <value>The service {0} is registered both as multiple and single service.</value>

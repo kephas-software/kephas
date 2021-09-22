@@ -16,7 +16,7 @@ namespace Kephas.Messaging
     using Kephas.Services;
 
     /// <summary>
-    /// Composition metadata for <see cref="IMessageHandler"/>.
+    /// Injection metadata for <see cref="IMessageHandler"/>.
     /// </summary>
     public class MessageHandlerMetadata : AppServiceMetadata
     {

@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services.Behaviors
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
 
     /// <summary>
     /// A default service behavior provider.
@@ -24,19 +24,8 @@ namespace Kephas.Services.Behaviors
     [OverridePriority(Priority.Low)]
     public class DefaultServiceBehaviorProvider : IServiceBehaviorProvider
     {
-        /// <summary>
-        /// The composition context.
-        /// </summary>
         private readonly IInjector injector;
-
-        /// <summary>
-        /// The behavior factories.
-        /// </summary>
         private readonly ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> behaviorFactories;
-
-        /// <summary>
-        /// The enabled rules.
-        /// </summary>
         private readonly ConcurrentDictionary<Type, IList<IEnabledServiceBehaviorRule>> enabledRules = new ConcurrentDictionary<Type, IList<IEnabledServiceBehaviorRule>>();
 
         /// <summary>

@@ -257,7 +257,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger()
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) });
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(NoInjectConstructorAppService) });
             Assert.Throws<NoConstructorsFoundException>(() => builder.Build());
         }
 
@@ -267,7 +267,7 @@ namespace Kephas.Tests.Injection.Autofac
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(AmbiguousCompositionConstructorAppService) })
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(AmbiguousInjectConstructorAppService) })
                 .Build();
             Assert.Throws<DependencyResolutionException>(() => container.Resolve<IConstructorAppService>());
         }
@@ -278,7 +278,7 @@ namespace Kephas.Tests.Injection.Autofac
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(LargestCompositionConstructorAppService) })
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(LargestInjectConstructorAppService) })
                 .Build();
 
             var component = container.Resolve<IConstructorAppService>();
@@ -291,7 +291,7 @@ namespace Kephas.Tests.Injection.Autofac
             var builder = this.CreateInjectorBuilderWithStringLogger();
             Assert.Throws<InjectionException>(() => builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleInjectConstructorAppService) })
                 .Build());
         }
 
@@ -481,15 +481,6 @@ namespace Kephas.Tests.Injection.Autofac
             public IEnumerable<IExportFactory<ITestMultiAppService, AppServiceMetadata>> MetadataFactories { get; set; }
         }
 
-        //public class TestMetadataConsumer
-        //{
-        //    /// <summary>
-        //    /// Gets or sets the test services.
-        //    /// </summary>
-        //    [Kephas.Composition.AttributedModel.ImportMany]
-        //    public ICollection<ExportFactoryAdapter<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
-        //}
-
         public interface IConverter { }
 
         [SingletonAppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) },
@@ -501,32 +492,10 @@ namespace Kephas.Tests.Injection.Autofac
 
         public class SecondStringToIntConverter : IConverter<string, int> { }
 
-        //public class TestConverterConsumer
-        //{
-        //    /// <summary>
-        //    /// Gets or sets the converters.
-        //    /// </summary>
-        //    [ImportMany]
-        //    public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
-        //}
-
         [ScopedAppServiceContract()]
         public interface ITestMyScopedExport { }
 
         public class TestMyScopedExport : ITestMyScopedExport { }
-
-        //[CompositionScope]
-        //public class MyScopeFactory : MefScopeFactoryBase
-        //{
-        //    /// <summary>
-        //    /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
-        //    /// </summary>
-        //    /// <param name="scopedContextFactory">The scoped context factory.</param>
-        //    public MyScopeFactory([SharingBoundary(CompositionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
-        //        : base(scopedContextFactory)
-        //    {
-        //    }
-        //}
 
         [ScopedAppServiceContract]
         public interface ITestScopedExport { }
@@ -558,72 +527,72 @@ namespace Kephas.Tests.Injection.Autofac
             /// Initializes a new instance of the <see cref="SingleConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
             public SingleConstructorAppService(IInjector injectionContainer)
             {
             }
         }
 
-        public class AmbiguousCompositionConstructorAppService : IConstructorAppService
+        public class AmbiguousInjectConstructorAppService : IConstructorAppService
         {
-            public AmbiguousCompositionConstructorAppService(IAmbientServices ambientServices)
+            public AmbiguousInjectConstructorAppService(IAmbientServices ambientServices)
             {
             }
 
-            public AmbiguousCompositionConstructorAppService(IInjector injectionContainer)
+            public AmbiguousInjectConstructorAppService(IInjector injectionContainer)
             {
             }
         }
 
-        public class LargestCompositionConstructorAppService : IConstructorAppService
+        public class LargestInjectConstructorAppService : IConstructorAppService
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="LargestCompositionConstructorAppService"/> class.
+            /// Initializes a new instance of the <see cref="LargestInjectConstructorAppService"/> class.
             /// </summary>
-            public LargestCompositionConstructorAppService()
+            public LargestInjectConstructorAppService()
             {
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="LargestCompositionConstructorAppService"/> class.
+            /// Initializes a new instance of the <see cref="LargestInjectConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
-            public LargestCompositionConstructorAppService(IInjector injectionContainer)
+            public LargestInjectConstructorAppService(IInjector injectionContainer)
             {
             }
         }
 
-        public class NoCompositionConstructorAppService : IConstructorAppService
+        public class NoInjectConstructorAppService : IConstructorAppService
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="NoCompositionConstructorAppService"/> class.
+            /// Initializes a new instance of the <see cref="NoInjectConstructorAppService"/> class.
             /// </summary>
-            private NoCompositionConstructorAppService()
+            private NoInjectConstructorAppService()
             {
             }
         }
 
-        public class MultipleCompositionConstructorAppService : IConstructorAppService
+        public class MultipleInjectConstructorAppService : IConstructorAppService
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="MultipleCompositionConstructorAppService"/> class.
+            /// Initializes a new instance of the <see cref="MultipleInjectConstructorAppService"/> class.
             /// </summary>
             [InjectConstructor]
-            public MultipleCompositionConstructorAppService()
+            public MultipleInjectConstructorAppService()
             {
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="MultipleCompositionConstructorAppService"/> class.
+            /// Initializes a new instance of the <see cref="MultipleInjectConstructorAppService"/> class.
             /// </summary>
             /// <param name="injectionContainer">
-            /// The composition container.
+            /// The injector.
             /// </param>
             [InjectConstructor]
-            public MultipleCompositionConstructorAppService(IInjector injectionContainer)
+            public MultipleInjectConstructorAppService(IInjector injectionContainer)
             {
             }
         }

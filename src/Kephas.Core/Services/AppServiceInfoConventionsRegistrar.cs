@@ -92,7 +92,7 @@ namespace Kephas.Services
             var conventions = builder;
             var typeInfos = candidateTypes;
 
-            // get all type infos from the composition assemblies
+            // get all type infos from the injection assemblies
             var appServiceContractsInfos = this.GetAppServiceContracts(typeInfos, registrationContext)?.ToList();
             if (appServiceContractsInfos == null)
             {
@@ -142,7 +142,7 @@ namespace Kephas.Services
         /// <summary>
         /// Gets the application service contracts to register.
         /// </summary>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="candidateTypes">The candidate types which can take part in the injection.</param>
         /// <param name="registrationContext">The registration context.</param>
         /// <returns>
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
@@ -433,14 +433,14 @@ namespace Kephas.Services
             IAppServiceMetadataResolver metadataResolver)
         {
             exportBuilder.AsContractType(exportedContractType);
-            this.AddCompositionMetadata(exportBuilder, serviceImplementationType, metadataAttributes, metadataResolver);
-            this.AddCompositionMetadataForGenerics(exportBuilder, serviceContract, metadataResolver);
+            this.AddInjectionMetadata(exportBuilder, serviceImplementationType, metadataAttributes, metadataResolver);
+            this.AddInjectionMetadataForGenerics(exportBuilder, serviceContract, metadataResolver);
         }
 
         /// <summary>
         /// Checks the type of the exported contract.
         /// </summary>
-        /// <exception cref="InjectionException">Thrown when a Composition error condition occurs.</exception>
+        /// <exception cref="InjectionException">Thrown when an injection error condition occurs.</exception>
         /// <param name="exportedContractType">Type of the exported contract.</param>
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="serviceContractType">Type of the service contract.</param>
@@ -462,7 +462,7 @@ namespace Kephas.Services
             else if (!exportedContract.IsAssignableFrom(serviceContract))
             {
                 var contractValidationMessage = string.Format(
-                    Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract,
+                    Strings.AppServiceContractTypeDoesNotMatchServiceContract,
                     exportedContractType,
                     serviceContractType);
                 logger.Error(contractValidationMessage);
@@ -486,7 +486,7 @@ namespace Kephas.Services
         {
             var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
 
-            // get the one constructor marked as CompositionConstructor.
+            // get the one constructor marked as InjectConstructor.
             var explicitlyMarkedConstructors = constructorsList
                 .Where(c => c.GetCustomAttribute<InjectConstructorAttribute>() != null).ToList();
             if (explicitlyMarkedConstructors.Count == 0)
@@ -497,15 +497,14 @@ namespace Kephas.Services
 
             if (explicitlyMarkedConstructors.Count > 1)
             {
-                throw new InjectionException(string.Format(Strings.AppServiceMultipleCompositionConstructors,
+                throw new InjectionException(string.Format(Strings.AppServiceMultipleInjectConstructors,
                     typeof(InjectConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
             return explicitlyMarkedConstructors[0];
         }
 
-        private void AddCompositionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract,
-            IAppServiceMetadataResolver metadataResolver)
+        private void AddInjectionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract, IAppServiceMetadataResolver metadataResolver)
         {
             if (!serviceContract.IsGenericTypeDefinition)
             {
@@ -524,7 +523,7 @@ namespace Kephas.Services
             }
         }
 
-        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType,
+        private void AddInjectionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType,
             IEnumerable<Type> attributeTypes, IAppServiceMetadataResolver metadataResolver)
         {
             // add the service type.

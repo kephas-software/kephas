@@ -120,7 +120,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         }
 
         /// <summary>
-        /// Creates a new scoped composition context.
+        /// Creates a new scoped injector.
         /// </summary>
         /// <returns>
         /// The new scoped context.

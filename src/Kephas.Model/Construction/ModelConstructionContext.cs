@@ -40,7 +40,7 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public ModelConstructionContext(IInjector injector)
             : base(injector)
         {

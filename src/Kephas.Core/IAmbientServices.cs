@@ -37,10 +37,10 @@ namespace Kephas
         public IConfigurationStore ConfigurationStore => this.GetService<IConfigurationStore>();
 
         /// <summary>
-        /// Gets the composition container.
+        /// Gets the injector.
         /// </summary>
         /// <value>
-        /// The composition container.
+        /// The injector.
         /// </value>
         public IInjector Injector => this.GetService<IInjector>();
 

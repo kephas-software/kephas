@@ -8,18 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Kephas.Injection.Conventions;
-
 namespace Kephas.Injection.Lite.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Injection.Conventions;
+
     /// <summary>
     /// A lightweight conventions builder.
     /// </summary>
     internal class LiteConventionsBuilder : IConventionsBuilder
     {
-        public const string LiteCompositionKey = "__LiteComposition";
+        public const string LiteInjectionKey = "__LiteInjection";
 
         private readonly IAmbientServices ambientServices;
 
@@ -32,7 +33,7 @@ namespace Kephas.Injection.Lite.Conventions
         public LiteConventionsBuilder(IAmbientServices ambientServices)
         {
             this.ambientServices = ambientServices;
-            this.ambientServices[LiteCompositionKey] = true;
+            this.ambientServices[LiteInjectionKey] = true;
         }
 
         /// <summary>

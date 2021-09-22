@@ -32,7 +32,7 @@ namespace Kephas
     public static class AmbientServicesDependencyInjectionExtensions
     {
         /// <summary>
-        /// Sets the composition container to the ambient services.
+        /// Sets the injector to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="injectorBuilderConfig">The injector builder configuration.</param>

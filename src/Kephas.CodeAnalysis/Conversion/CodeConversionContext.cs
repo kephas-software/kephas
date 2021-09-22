@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.CodeAnalysis.Conversion
 {
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -23,7 +22,7 @@ namespace Kephas.CodeAnalysis.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeConversionContext"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="codeConverter">The code converter.</param>
         public CodeConversionContext(
             IInjector injector,

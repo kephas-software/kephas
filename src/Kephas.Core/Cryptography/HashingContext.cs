@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Cryptography
 {
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -22,7 +21,7 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="HashingContext"/> class.
         /// </summary>
-        /// <param name="injector">Optional. Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="isThreadSafe">Optional. True if this object is thread safe.</param>
         public HashingContext(IInjector injector, bool isThreadSafe = false)
             : base(injector, isThreadSafe)

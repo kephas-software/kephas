@@ -23,10 +23,8 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
-    using Kephas.Messaging.Distributed.Routing.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Model.AttributedModel;

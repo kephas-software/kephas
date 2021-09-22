@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Tests for <see cref="AutofacCompositionContainer" />.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Tests.Injection.Autofac
@@ -14,6 +11,7 @@ namespace Kephas.Tests.Injection.Autofac
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+
     using global::Autofac;
     using global::Autofac.Core.Registration;
     using Kephas.Injection;
@@ -271,43 +269,36 @@ namespace Kephas.Tests.Injection.Autofac
 
             ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
-            // This is null because the composition container caches the export providers, and after a first request
+            // This is null because the injector caches the export providers, and after a first request
             // when the export was not available, will cache the empty export providers.
             service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);
         }
 
-        //[Export]
-        //[Scoped(CompositionScopeNames.Default)]
         public class ScopeExportedClass
         {
             public IInjector Injector { get; }
 
-            //[ImportingConstructor]
             public ScopeExportedClass(IInjector injector)
             {
                 this.Injector = injector;
             }
         }
 
-        //[Export]
         public class ExportedClass
         {
         }
 
-        //[Export]
         public class ExportedClassImplicitImporter
         {
             public ExportedClass ExportedClass { get; set; }
         }
 
-        //[Export]
         public class ExportedClassImplicitFactoryImporter
         {
             public IExportFactory<ExportedClass> ExportedClassFactory { get; set; }
         }
 
-        //[Export]
         public class ExportedClassImplicitManyFactoryImporter
         {
             public ICollection<IExportFactory<ExportedClass>> ExportedClassFactoryCollection { get; set; }

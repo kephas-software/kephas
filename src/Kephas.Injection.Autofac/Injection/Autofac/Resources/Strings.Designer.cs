@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace Kephas.Injection.Autofac.Resources {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -36,7 +39,7 @@ namespace Kephas.Injection.Autofac.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Composition.Autofac.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Injection.Autofac.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,20 +61,20 @@ namespace Kephas.Injection.Autofac.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The composition container is disposed..
+        ///   Looks up a localized string similar to The injector is disposed..
         /// </summary>
-        public static string AutofacCompositionContainer_Disposed_Exception {
+        public static string AutofacInjector_Disposed_Exception {
             get {
-                return ResourceManager.GetString("AutofacCompositionContainer_Disposed_Exception", resourceCulture);
+                return ResourceManager.GetString("AutofacInjector_Disposed_Exception", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cannot get a lifetime scope from the provided component context: {0}..
         /// </summary>
-        public static string AutofacCompositionContainer_MismatchedLifetimeScope_Exception {
+        public static string AutofacInjector_MismatchedLifetimeScope_Exception {
             get {
-                return ResourceManager.GetString("AutofacCompositionContainer_MismatchedLifetimeScope_Exception", resourceCulture);
+                return ResourceManager.GetString("AutofacInjector_MismatchedLifetimeScope_Exception", resourceCulture);
             }
         }
         

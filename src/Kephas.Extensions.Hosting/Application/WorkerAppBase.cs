@@ -80,7 +80,7 @@ namespace Kephas.Extensions.Hosting.Application
             this.HostBuilder = this.CreateHostBuilder(appArgs ?? this.AppArgs);
 
             this.HostBuilder
-                .UseServiceProviderFactory(new CompositionServiceProviderFactory(this.AmbientServices));
+                .UseServiceProviderFactory(new InjectionServiceProviderFactory(this.AmbientServices));
 
             this.PreConfigureWorker(this.HostBuilder)
                 .ConfigureServices(services =>

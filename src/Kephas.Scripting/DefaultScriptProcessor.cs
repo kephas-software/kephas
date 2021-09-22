@@ -21,7 +21,6 @@ namespace Kephas.Scripting
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Scripting.Composition;
     using Kephas.Scripting.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

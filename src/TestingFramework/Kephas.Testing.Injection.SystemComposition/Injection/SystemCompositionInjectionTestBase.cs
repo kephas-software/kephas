@@ -132,7 +132,7 @@ namespace Kephas.Testing.Injection
             return new List<Assembly>
                        {
                            typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Core*/
-                           typeof(SystemCompositionInjector).GetTypeInfo().Assembly, /* Kephas.Composition.Mef */
+                           typeof(SystemCompositionInjector).GetTypeInfo().Assembly, /* Kephas.Injection.SystemComposition */
                        };
         }
 

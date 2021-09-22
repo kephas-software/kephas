@@ -30,7 +30,7 @@ namespace Kephas.Services
         /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The composition context.
+        /// The injector.
         /// </value>
         IInjector Injector { get; }
 

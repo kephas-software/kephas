@@ -478,10 +478,10 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void GetAppServiceInfos_no_services_for_lite_composition()
+        public void GetAppServiceInfos_no_services_for_lite_injection()
         {
             var ambientServices = new AmbientServices();
-            ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
+            ambientServices[LiteConventionsBuilder.LiteInjectionKey] = true;
             var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>());
 
             Assert.IsFalse(appServiceInfos.Any());
@@ -491,7 +491,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_all_services_for_lite_injection_when_null_registration_context()
         {
             var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
-            ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
+            ambientServices[LiteConventionsBuilder.LiteInjectionKey] = true;
             var appServiceInfos = ambientServices.GetAppServiceInfos(null);
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAppRuntime));

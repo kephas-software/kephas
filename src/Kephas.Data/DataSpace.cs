@@ -36,7 +36,7 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
         public DataSpace(
@@ -50,7 +50,7 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
         /// <param name="isThreadSafe">True if this object is thread safe.</param>

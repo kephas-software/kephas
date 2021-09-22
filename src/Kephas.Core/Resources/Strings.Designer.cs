@@ -88,7 +88,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No composition constructor could be identified for &apos;{0}&apos;. The following parameters could not be resolved: {1}..
+        ///   Looks up a localized string similar to No injection constructor could be identified for &apos;{0}&apos;. The following parameters could not be resolved: {1}..
         /// </summary>
         public static string AmbientServices_MissingCompositionConstructor_Exception {
             get {
@@ -243,9 +243,9 @@ namespace Kephas.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The specified contract type &apos;{0}&apos; is not assignable from the service contract &apos;{1}&apos;..
         /// </summary>
-        public static string AppServiceCompositionContractTypeDoesNotMatchServiceContract {
+        public static string AppServiceContractTypeDoesNotMatchServiceContract {
             get {
-                return ResourceManager.GetString("AppServiceCompositionContractTypeDoesNotMatchServiceContract", resourceCulture);
+                return ResourceManager.GetString("AppServiceContractTypeDoesNotMatchServiceContract", resourceCulture);
             }
         }
         
@@ -262,9 +262,9 @@ namespace Kephas.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service implementation &apos;{1}&apos; with contract &apos;{2}&apos;..
         /// </summary>
-        public static string AppServiceMultipleCompositionConstructors {
+        public static string AppServiceMultipleInjectConstructors {
             get {
-                return ResourceManager.GetString("AppServiceMultipleCompositionConstructors", resourceCulture);
+                return ResourceManager.GetString("AppServiceMultipleInjectConstructors", resourceCulture);
             }
         }
         

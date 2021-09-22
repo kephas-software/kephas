@@ -19,8 +19,6 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Configuration;
-    using Kephas.Model.Runtime.Configuration.Composition;
-    using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;

@@ -81,7 +81,7 @@ namespace Kephas.Data.Conversion
         /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The composition context.
+        /// The injector.
         /// </value>
         public IInjector Injector { get; }
 

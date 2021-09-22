@@ -756,7 +756,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Sets the composition container to the ambient services.
+        /// Sets the injector to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="injector">The injector.</param>
@@ -774,7 +774,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Sets the composition container to the ambient services.
+        /// Sets the injector to the ambient services.
         /// </summary>
         /// <typeparam name="TInjectorBuilder">Type of the injector builder.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
@@ -799,7 +799,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Builds the composition container using Lite and adds it to the ambient services.
+        /// Builds the injector using Lite and adds it to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="injectorBuilderConfig">Optional. The injector builder configuration.</param>

@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Registrar for composition conventions.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Injection.Conventions
@@ -16,7 +13,7 @@ namespace Kephas.Injection.Conventions
     using Kephas.Injection.Hosting;
 
     /// <summary>
-    /// Registrar for composition conventions.
+    /// Registrar for injection conventions.
     /// </summary>
     public interface IConventionsRegistrar
     {

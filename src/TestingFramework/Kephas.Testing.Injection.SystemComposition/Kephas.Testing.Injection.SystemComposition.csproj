@@ -16,9 +16,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides base classes for testing using the System.Composition (MEF) composition services.
+            Provides base classes for testing using the System.Composition dependency injection services.
             Typically used areas and classes/interfaces/services:
-            - Injection: AutofacInjectionTestBase.
+            - Injection: SystemCompositionInjectionTestBase.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>

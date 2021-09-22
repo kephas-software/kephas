@@ -311,7 +311,7 @@ namespace Kephas.Tests.Injection.SystemComposition
 
             ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
-            // This is null because the composition container caches the export providers, and after a first request
+            // This is null because the injector caches the export providers, and after a first request
             // when the export was not available, will cache the empty export providers.
             service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);

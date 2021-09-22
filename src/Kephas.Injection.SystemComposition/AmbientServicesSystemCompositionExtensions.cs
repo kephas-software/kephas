@@ -11,6 +11,7 @@
 namespace Kephas
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Hosting;
     using Kephas.Injection.SystemComposition.Hosting;
@@ -21,7 +22,7 @@ namespace Kephas
     public static class AmbientServicesSystemCompositionExtensions
     {
         /// <summary>
-        /// Builds the composition container using System.Composition and adds it to the ambient services.
+        /// Builds the injector using System.Composition and adds it to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="injectorBuilderConfig">The injector builder configuration.</param>

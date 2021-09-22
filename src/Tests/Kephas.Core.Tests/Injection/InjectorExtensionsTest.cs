@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the composition context extensions test class.
+//   Implements the injector extensions test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

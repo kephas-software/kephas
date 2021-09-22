@@ -47,7 +47,7 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextFactory"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logManager">Manager for log.</param>
         public ContextFactory(IInjector injector, IAmbientServices ambientServices, ILogManager logManager)

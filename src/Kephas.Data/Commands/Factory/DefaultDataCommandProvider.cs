@@ -14,6 +14,7 @@ namespace Kephas.Data.Commands.Factory
 {
     using System;
     using System.Collections.Concurrent;
+
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
@@ -24,20 +25,13 @@ namespace Kephas.Data.Commands.Factory
     [OverridePriority(Priority.Low)]
     public class DefaultDataCommandProvider : IDataCommandProvider
     {
-        /// <summary>
-        /// Context for the composition.
-        /// </summary>
         private readonly IInjector injector;
-
-        /// <summary>
-        /// The command factories.
-        /// </summary>
         private readonly ConcurrentDictionary<DataCommandFactoryKey, Func<IDataCommand>> commandFactories = new ConcurrentDictionary<DataCommandFactoryKey, Func<IDataCommand>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataCommandProvider"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public DefaultDataCommandProvider(IInjector injector)
         {
             Requires.NotNull(injector, nameof(injector));

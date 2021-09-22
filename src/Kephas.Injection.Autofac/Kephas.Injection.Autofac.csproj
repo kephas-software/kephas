@@ -35,7 +35,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas composition autofac</PackageTags>
+        <PackageTags>kephas injection autofac</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -92,7 +92,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Composition\Autofac\Resources\Strings.Designer.cs">
+      <Compile Update="Injection\Autofac\Resources\Strings.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Strings.resx</DependentUpon>
@@ -100,7 +100,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Composition\Autofac\Resources\Strings.resx">
+      <EmbeddedResource Update="Injection\Autofac\Resources\Strings.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>

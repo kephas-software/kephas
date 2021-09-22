@@ -19,7 +19,7 @@
             Provides a common infrastructure for testing Kephas based services.
             Typically used areas and classes/interfaces/services:
             - TestBase.
-            - Composition: CompositionTestBase.
+            - Injection: InjectionTestBase.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>

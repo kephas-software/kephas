@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Base class for tests using composition.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Testing.Injection
@@ -26,11 +23,11 @@ namespace Kephas.Testing.Injection
     using Kephas.Testing;
 
     /// <summary>
-    /// Base class for tests using composition.
+    /// Base class for tests using dependency injection.
     /// </summary>
     /// <content>
     /// It includes:
-    /// * Creating composition container in different configurations.
+    /// * Creating injector in different configurations.
     /// </content>
     public class InjectionTestBase : TestBase
     {

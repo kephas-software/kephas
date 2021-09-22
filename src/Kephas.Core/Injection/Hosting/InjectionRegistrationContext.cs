@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the composition container builder context class.
+//   Implements the injector builder context class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace Kephas.Injection.Hosting
     using Kephas.Services;
 
     /// <summary>
-    /// A composition container builder context.
+    /// A injector builder context.
     /// </summary>
     public class InjectionRegistrationContext : Context, IInjectionRegistrationContext
     {

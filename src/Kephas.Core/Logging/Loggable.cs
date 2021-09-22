@@ -43,7 +43,7 @@ namespace Kephas.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         protected Loggable(IInjector injector)
             : this(() => injector?.Resolve<ILogManager>())
         {

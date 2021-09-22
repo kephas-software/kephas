@@ -5,12 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Elements
 {
     using Kephas.Configuration.Reflection;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Model.Construction;
 
     /// <summary>
@@ -18,14 +17,7 @@ namespace Kephas.Model.Elements
     /// </summary>
     public class SettingsType : ClassifierBase<ISettingsType>, ISettingsType
     {
-        /// <summary>
-        /// The application service attribute.
-        /// </summary>
         private readonly ISettingsInfo settingsInfo;
-
-        /// <summary>
-        /// Context for the composition.
-        /// </summary>
         private readonly IInjector injector;
 
         /// <summary>

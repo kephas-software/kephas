@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   The MEF composition container.
+//   The MEF injector.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
     using Kephas.Injection.SystemComposition.ExportProviders;
 
     /// <summary>
-    /// The MEF composition container.
+    /// The MEF injector.
     /// </summary>
     public class SystemCompositionInjector : SystemCompositionInjectorBase
     {
@@ -42,15 +42,15 @@ namespace Kephas.Injection.SystemComposition.Hosting
         protected override bool IsRoot => true;
 
         /// <summary>
-        /// Creates the composition context.
+        /// Creates the injector.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <returns>
-        /// The new composition context.
+        /// The new injector.
         /// </returns>
         protected virtual CompositionContext CreateCompositionContext(ContainerConfiguration configuration)
         {
-            // TODO the composition context should return the scoped composition context, not the global one.
+            // TODO the injector should return the scoped injector, not the global one.
             configuration.WithProvider(new InjectorExportDescriptorProvider(this));
             var compositionHost = configuration.CreateContainer();
             return compositionHost;

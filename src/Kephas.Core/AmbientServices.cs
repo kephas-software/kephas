@@ -141,16 +141,16 @@ namespace Kephas
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            // Lite composition container does not need to add to ambient services again its services
+            // Lite injector does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,
             // this is a message that ALL registration infos should be returned.
-            if (context != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
+            if (context != null && ((bool?)this[LiteConventionsBuilder.LiteInjectionKey] ?? false))
             {
                 return Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
             }
 
-            // exclude the composition context from the list as it is the responsibility
-            // of each composition context implementation to register itself in the DI container.
+            // exclude the injector from the list as it is the responsibility
+            // of each injector implementation to register itself in the DI container.
             return this.registry
                 .Where(s => !ReferenceEquals(s.ContractType, typeof(IInjector)))
                 .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType!, si)))

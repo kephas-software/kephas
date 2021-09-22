@@ -83,10 +83,10 @@ namespace Kephas.Services
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            // Lite composition container exclude its own services, so add them now.
+            // Lite injector exclude its own services, so add them now.
             // CAUTION: this assumes that the app service infos from the other registration sources
             // did not add them already, so after that do not call SetAppServiceInfos!
-            if ((bool?)ambientServices[LiteConventionsBuilder.LiteCompositionKey] ?? false)
+            if ((bool?)ambientServices[LiteConventionsBuilder.LiteInjectionKey] ?? false)
             {
                 var liteServiceInfos = (ambientServices as IAppServiceInfoProvider)?.GetAppServiceInfos(null);
                 var allServiceInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();

@@ -10,7 +10,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// A composition container for Microsoft.Extensions.DependencyInjection.
+    /// A injector for Microsoft.Extensions.DependencyInjection.
     /// </summary>
     public class DependencyInjectionInjector : DependencyInjectionInjectorBase
     {

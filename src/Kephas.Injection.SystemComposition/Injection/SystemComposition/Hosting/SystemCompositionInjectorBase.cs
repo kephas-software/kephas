@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the MEF composition context class.
+//   Implements the MEF injector class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
     using Kephas.Injection.SystemComposition.ScopeFactory;
 
     /// <summary>
-    /// A MEF composition context.
+    /// A MEF injector.
     /// </summary>
     public abstract class SystemCompositionInjectorBase : IInjector
     {
@@ -161,12 +161,12 @@ namespace Kephas.Injection.SystemComposition.Hosting
         }
 
         /// <summary>
-        /// Tries to get the injector wrapper for the provided composition context.
+        /// Tries to get the injector wrapper for the provided injector.
         /// </summary>
         /// <param name="context">The inner container.</param>
         /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
-        /// The composition context wrapper.
+        /// The injector wrapper.
         /// </returns>
         internal static IInjector? TryGetInjector(CompositionContext context, bool createNewIfMissing)
         {
@@ -223,16 +223,16 @@ namespace Kephas.Injection.SystemComposition.Hosting
         {
             if (this.innerCompositionContext == null)
             {
-                throw new ObjectDisposedException(Strings.MefCompositionContainer_Disposed_Exception);
+                throw new ObjectDisposedException(Strings.SystemCompositionInjector_Disposed_Exception);
             }
         }
 
         /// <summary>
-        /// Gets the composition context wrapper for the provided composition context.
+        /// Gets the injector wrapper for the provided injector.
         /// </summary>
         /// <param name="scopedContextExport">The scoped context export.</param>
         /// <returns>
-        /// The composition context.
+        /// The injector.
         /// </returns>
         private static IInjector GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
         {

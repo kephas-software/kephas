@@ -16,26 +16,26 @@ namespace Kephas.Injection.Autofac.Hosting
     internal interface IInjectionContainer : IInjector
     {
         /// <summary>
-        /// Gets the composition context wrapper for the provided composition context.
+        /// Gets the injector wrapper for the provided injector.
         /// </summary>
         /// <param name="scope">The lifetime scope.</param>
         /// <returns>
-        /// The composition context.
+        /// The injector.
         /// </returns>
         IInjector GetInjector(ILifetimeScope scope);
 
         /// <summary>
-        /// Tries to get the composition context wrapper for the provided composition context.
+        /// Tries to get the injector wrapper for the provided injector.
         /// </summary>
         /// <param name="context">The inner container.</param>
         /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
-        /// The composition context wrapper.
+        /// The injector wrapper.
         /// </returns>
         IInjector? TryGetInjector(IComponentContext context, bool createNewIfMissing);
 
         /// <summary>
-        /// Cleanups the given composition context.
+        /// Cleanups the given injector.
         /// </summary>
         /// <param name="lifetimeScope">The lifetime scope.</param>
         void HandleDispose(ILifetimeScope lifetimeScope);

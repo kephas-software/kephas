@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Base class for composition container builders.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Injection.Hosting
@@ -30,7 +27,7 @@ namespace Kephas.Injection.Hosting
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Base class for composition container builders.
+    /// Base class for injector builders.
     /// </summary>
     /// <typeparam name="TBuilder">The type of the builder.</typeparam>
     public abstract class InjectorBuilderBase<TBuilder> : IInjectorBuilder
@@ -44,7 +41,7 @@ namespace Kephas.Injection.Hosting
         /// Initializes a new instance of the <see cref="InjectorBuilderBase{TBuilder}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the composition context.")]
+        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the injector.")]
         protected InjectorBuilderBase(IInjectionRegistrationContext context)
         {
             Requires.NotNull(context, nameof(context));
@@ -369,12 +366,12 @@ namespace Kephas.Injection.Hosting
         protected abstract IConventionsBuilder CreateConventionsBuilder();
 
         /// <summary>
-        /// Creates a new composition container based on the provided conventions and assembly parts.
+        /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
         /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
-        /// A new composition container.
+        /// A new injector.
         /// </returns>
         protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
 
@@ -498,7 +495,7 @@ namespace Kephas.Injection.Hosting
         /// Creates the container with the registered conventions.
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
-        /// <returns>The composition container.</returns>
+        /// <returns>The injector.</returns>
         private IInjector CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
         {
             var parts = this.GetInjectionParts(assemblies);

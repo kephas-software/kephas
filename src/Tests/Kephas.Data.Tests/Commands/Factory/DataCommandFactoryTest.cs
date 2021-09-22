@@ -15,7 +15,6 @@ namespace Kephas.Data.Tests.Commands.Factory
 {
     using System.Collections.Generic;
     using Kephas.Data.Commands;
-    using Kephas.Data.Commands.Composition;
     using Kephas.Data.Commands.Factory;
     using Kephas.Services;
     using NSubstitute;

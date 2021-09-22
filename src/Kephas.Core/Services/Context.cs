@@ -45,10 +45,7 @@ namespace Kephas.Services
         {
             if (merge)
             {
-                if (parentContext != null)
-                {
-                    this.Merge(parentContext);
-                }
+                this.Merge(parentContext);
             }
             else
             {
@@ -74,9 +71,7 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="injector">The context for the composition (optional). If not provided,
-        /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
-        /// </param>
+        /// <param name="injector">The injector.</param>
         /// <param name="isThreadSafe">
         /// <c>true</c> if this object is thread safe when working
         /// with the internal dictionary, <c>false</c> otherwise. Default is <c>false</c>.
@@ -102,10 +97,10 @@ namespace Kephas.Services
         public IAmbientServices AmbientServices { get; private set; }
 
         /// <summary>
-        /// Gets the dependency injection/composition context.
+        /// Gets the dependency injection/injector.
         /// </summary>
         /// <newValue>
-        /// The composition context.
+        /// The injector.
         /// </newValue>
         public IInjector Injector { get; private set; }
 
@@ -188,7 +183,7 @@ namespace Kephas.Services
         /// Sets the ambient services.
         /// </summary>
         /// <remarks>
-        /// The composition context is also set as the one exposed by the ambient services.
+        /// The injector is also set as the one exposed by the ambient services.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
         protected virtual void SetAmbientServices(IAmbientServices ambientServices)

@@ -17,7 +17,6 @@ namespace Kephas.Data.Setup
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Data.Setup.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Operations;

@@ -21,7 +21,7 @@ namespace Kephas.Serialization.Bson.Tests
     {
         [Test]
         [Ignore("Not relevant for the moment, should be fixed in the future.")]
-        public async Task SerializeAsync_Composition()
+        public async Task SerializeAsync_Injection()
         {
             var container = this.CreateInjector();
             var serializationService = container.Resolve<ISerializationService>();

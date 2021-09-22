@@ -14,6 +14,7 @@ namespace Kephas.Services
 {
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Resources;
 
     /// <summary>
@@ -22,15 +23,12 @@ namespace Kephas.Services
     [OverridePriority(Priority.Low)]
     public class DefaultNamedServiceProvider : INamedServiceProvider
     {
-        /// <summary>
-        /// Context for the composition.
-        /// </summary>
         private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultNamedServiceProvider"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public DefaultNamedServiceProvider(IInjector injector)
         {
             this.injector = injector;

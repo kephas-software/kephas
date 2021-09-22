@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Builder for the MEF composition container.
+//   Builder for the MEF injector.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
     using Kephas.Injection.SystemComposition.ScopeFactory;
 
     /// <summary>
-    /// Builder for the System.Composition container.
+    /// Builder for the System.injector.
     /// </summary>
     /// <remarks>
     /// This class is not thread safe.
@@ -70,10 +70,10 @@ namespace Kephas.Injection.SystemComposition.Hosting
         public override SystemCompositionInjectorBuilder WithConventions(IConventionsBuilder conventions)
         {
             // ReSharper disable once SuspiciousTypeConversion.Global
-            var mefConventions = conventions as IMefConventionBuilderProvider;
+            var mefConventions = conventions as ISystemCompositionConventionBuilderProvider;
             if (mefConventions == null)
             {
-                throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(IMefConventionBuilderProvider).FullName));
+                throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(ISystemCompositionConventionBuilderProvider).FullName));
             }
 
             return base.WithConventions(conventions);
@@ -151,7 +151,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// </returns>
         protected SystemCompositionInjectorBuilder RegisterScopeFactory(IConventionsBuilder conventions, Type factoryType)
         {
-            var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
+            var mefConventions = ((ISystemCompositionConventionBuilderProvider)conventions).GetConventionBuilder();
 
             var scopeName = factoryType.ExtractMetadataValue<InjectionScopeAttribute, string>(a => a.Value);
             mefConventions
@@ -169,16 +169,16 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// <returns>A newly created MEF conventions builder.</returns>
         protected override IConventionsBuilder CreateConventionsBuilder()
         {
-            return new MefConventionsBuilder();
+            return new SystemCompositionConventionsBuilder();
         }
 
         /// <summary>
-        /// Creates a new composition container based on the provided conventions and assembly parts.
+        /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
         /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
-        /// A new composition container.
+        /// A new injector.
         /// </returns>
         protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
@@ -219,11 +219,11 @@ namespace Kephas.Injection.SystemComposition.Hosting
         }
 
         /// <summary>
-        /// Creates the composition context based on the provided container configuration.
+        /// Creates the injector based on the provided container configuration.
         /// </summary>
         /// <param name="containerConfiguration">The container configuration.</param>
         /// <returns>
-        /// The new composition context.
+        /// The new injector.
         /// </returns>
         protected virtual IInjector CreateCompositionContext(ContainerConfiguration containerConfiguration)
         {
@@ -239,7 +239,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// </returns>
         protected virtual ConventionBuilder GetConventionBuilder(IConventionsBuilder conventions)
         {
-            var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
+            var mefConventions = ((ISystemCompositionConventionBuilderProvider)conventions).GetConventionBuilder();
             return mefConventions;
         }
 
@@ -250,9 +250,9 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// <returns>
         /// An enumerator that allows foreach to be used to process the part builders in this collection.
         /// </returns>
-        protected virtual IEnumerable<MefPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
+        protected virtual IEnumerable<SystemCompositionPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
         {
-            return (conventions as MefConventionsBuilder)?.GetPartBuilders();
+            return (conventions as SystemCompositionConventionsBuilder)?.GetPartBuilders();
         }
 
         /// <summary>

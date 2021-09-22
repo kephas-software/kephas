@@ -19,7 +19,6 @@ namespace Kephas.Data
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Data.Composition;
     using Kephas.Data.Resources;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;

@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the composition context adapter class.
+//   Implements the injector adapter class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ namespace Kephas.Injection.Internal
         }
 
         /// <summary>
-        /// Creates a new scoped composition context.
+        /// Creates a new scoped injector.
         /// </summary>
         /// <returns>
         /// The new scoped context.

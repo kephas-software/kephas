@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the autofac composition context base class.
+//   Implements the autofac injector base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace Kephas.Injection.Autofac.Hosting
     using Kephas.Logging;
 
     /// <summary>
-    /// An Autofac composition context base.
+    /// An Autofac injector base.
     /// </summary>
     public abstract class AutofacInjectorBase : IInjector
     {
@@ -193,7 +193,7 @@ namespace Kephas.Injection.Autofac.Hosting
         }
 
         /// <summary>
-        /// Creates a new scoped composition context.
+        /// Creates a new scoped injector.
         /// </summary>
         /// <returns>
         /// The new scoped context.
@@ -248,7 +248,7 @@ namespace Kephas.Injection.Autofac.Hosting
         {
             if (this.innerContainer == null)
             {
-                throw new ObjectDisposedException(Strings.AutofacCompositionContainer_Disposed_Exception);
+                throw new ObjectDisposedException(Strings.AutofacInjector_Disposed_Exception);
             }
         }
 

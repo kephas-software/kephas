@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Injection;
@@ -25,7 +26,6 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using Kephas.Injection.SystemComposition.Hosting;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;

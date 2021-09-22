@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the MEF scoped composition context test class.
+//   Implements the MEF scoped injector test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

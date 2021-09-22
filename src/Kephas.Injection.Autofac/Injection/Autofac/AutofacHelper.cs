@@ -35,7 +35,7 @@ namespace Kephas.Injection.Autofac
                 ILifetimeScope lifetimeScope => lifetimeScope,
                 ResolveRequestContext resolveRequestContext => resolveRequestContext.ActivationScope,
                 _ => throw new InvalidOperationException(
-                    string.Format(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception, c))
+                    string.Format(Strings.AutofacInjector_MismatchedLifetimeScope_Exception, c))
             };
         }
     }

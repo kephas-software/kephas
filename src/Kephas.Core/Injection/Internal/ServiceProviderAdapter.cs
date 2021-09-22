@@ -26,16 +26,13 @@ namespace Kephas.Injection.Internal
         private static readonly MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
             _ => ((ServiceProviderAdapter)null).ToList<int>(null));
 
-        /// <summary>
-        /// Context for the composition.
-        /// </summary>
         private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceProviderAdapter"/>
         /// class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public ServiceProviderAdapter(IInjector injector)
         {
             Requires.NotNull(injector, nameof(injector));

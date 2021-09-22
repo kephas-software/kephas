@@ -20,10 +20,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;
-    using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Annotations;
-    using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Runtime;
     using NSubstitute;
 

@@ -27,7 +27,7 @@ namespace Kephas.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginContext"/> class.
         /// </summary>
-        /// <param name="injector">Context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public PluginContext(IInjector injector)
             : base(injector)
         {

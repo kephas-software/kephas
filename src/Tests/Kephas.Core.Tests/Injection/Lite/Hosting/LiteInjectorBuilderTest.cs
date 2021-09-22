@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the lite composition container builder test class.
+//   Implements the lite injector builder test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -310,7 +310,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             Assert.IsNull(exported.Dependency);
         }
 
-        private LiteInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionRegistrationContext> config = null)
+        private LiteInjectorBuilder CreateInjectorBuilder(Action<IInjectionRegistrationContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -325,7 +325,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
         private LiteInjectorBuilder CreateInjectorBuilderWithStringLogger()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateInjectorBuilder();
 
             var mockLoggerManager = builder.LogManager;
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());

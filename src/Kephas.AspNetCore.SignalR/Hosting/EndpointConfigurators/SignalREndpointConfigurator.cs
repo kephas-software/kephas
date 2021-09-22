@@ -19,6 +19,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.AspNetCore.SignalR;
+    using HubMetadata = Kephas.AspNetCore.SignalR.HubMetadata;
 
     /// <summary>
     /// SignalR endpoint configurator registering all declared hubs.
@@ -32,13 +33,13 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
         public const Priority ProcessingPriority = Priority.BelowNormal;
 
         private static readonly MethodInfo MapHubMethod = ReflectionHelper.GetGenericMethodOf(_ => ((SignalREndpointConfigurator)null!).MapHub<Hub>(null!, null!, null!));
-        private readonly ICollection<Lazy<IHubService, Composition.HubMetadata>> lazyHubs;
+        private readonly ICollection<Lazy<IHubService, HubMetadata>> lazyHubs;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SignalREndpointConfigurator"/> class.
         /// </summary>
         /// <param name="lazyHubs">The lazy hubs.</param>
-        public SignalREndpointConfigurator(ICollection<Lazy<IHubService, Composition.HubMetadata>> lazyHubs)
+        public SignalREndpointConfigurator(ICollection<Lazy<IHubService, HubMetadata>> lazyHubs)
         {
             this.lazyHubs = lazyHubs;
         }
@@ -66,7 +67,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
         /// <param name="metadata">The hub metadata.</param>
         /// <typeparam name="T">The hub type.</typeparam>
         /// <returns>The <see cref="HubEndpointConventionBuilder"/>.</returns>
-        protected virtual HubEndpointConventionBuilder MapHub<T>(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext, Composition.HubMetadata metadata)
+        protected virtual HubEndpointConventionBuilder MapHub<T>(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext, HubMetadata metadata)
             where T : Hub
         {
             return endpoints.MapHub<T>(metadata.Pattern);

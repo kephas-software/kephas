@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Security.Authentication
 {
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -23,7 +22,7 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="injector">The context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         public AuthenticationContext(IInjector injector)
             : base(injector)
         {
@@ -32,7 +31,7 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="injector">The context for the composition.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="credentials">The credentials.</param>
         public AuthenticationContext(IInjector injector, ICredentials credentials)
             : base(injector)

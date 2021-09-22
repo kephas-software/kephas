@@ -8,8 +8,6 @@
 namespace Kephas.AspNetCore.SignalR
 {
     using System;
-
-    using Kephas.AspNetCore.SignalR.Composition;
     using Kephas.Services;
 
     /// <summary>

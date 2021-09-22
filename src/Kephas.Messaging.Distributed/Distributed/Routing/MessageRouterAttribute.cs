@@ -11,7 +11,6 @@
 namespace Kephas.Messaging.Distributed.Routing
 {
     using System;
-    using Kephas.Messaging.Distributed.Routing.Composition;
     using Kephas.Services;
 
     /// <summary>
