@@ -12,8 +12,6 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Lite.Conventions;
@@ -24,39 +22,7 @@ namespace Kephas.Services
     /// </summary>
     internal static class AmbientServicesExtensions
     {
-        private const string AppServiceInfosProvidersKey = "__" + nameof(AppServiceInfosProvidersKey);
-        private const string AppServiceTypesProvidersKey = "__" + nameof(AppServiceTypesProvidersKey);
         private const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
-
-        /// <summary>
-        /// Gets the ordered application service type providers.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// An enumeration of <see cref="IAppServiceTypesProvider"/>.
-        /// </returns>
-        internal static IEnumerable<IAppServiceTypesProvider> GetAppServiceTypesProviders(this IAmbientServices ambientServices)
-        {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-
-            return ambientServices[AppServiceTypesProvidersKey] as IEnumerable<IAppServiceTypesProvider>
-                   ?? (IEnumerable<IAppServiceTypesProvider>)(ambientServices[AppServiceTypesProvidersKey] = ComputeAppServiceTypesProviders(ambientServices));
-        }
-
-        /// <summary>
-        /// Gets the ordered application service info providers.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/>.
-        /// </returns>
-        internal static IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(this IAmbientServices ambientServices)
-        {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-
-            return ambientServices[AppServiceInfosProvidersKey] as IEnumerable<IAppServiceInfosProvider>
-                   ?? (IEnumerable<IAppServiceInfosProvider>)(ambientServices[AppServiceInfosProvidersKey] = ComputeAppServiceInfosProviders(ambientServices));
-        }
 
         /// <summary>
         /// Gets the registered application service contracts.
@@ -105,32 +71,6 @@ namespace Kephas.Services
             }
 
             ambientServices[AppServiceInfosKey] = appServiceInfos;
-        }
-
-        /// <summary>
-        /// Computes the <see cref="IAppServiceInfosProvider"/> services in order of their priority.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>An enumeration of <see cref="IAppServiceInfosProvider"/>.</returns>
-        internal static IEnumerable<IAppServiceInfosProvider> ComputeAppServiceInfosProviders(IAmbientServices ambientServices)
-        {
-            return ambientServices.AppRuntime.GetAppAssemblies()
-                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfosProvider>())
-                .OrderBy(p => (p as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
-                .ToList();
-        }
-
-        /// <summary>
-        /// Computes the <see cref="IAppServiceTypesProvider"/> services in order of their priority.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>An enumeration of <see cref="IAppServiceTypesProvider"/>.</returns>
-        internal static IEnumerable<IAppServiceTypesProvider> ComputeAppServiceTypesProviders(IAmbientServices ambientServices)
-        {
-            return ambientServices.AppRuntime.GetAppAssemblies()
-                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceTypesProvider>())
-                .OrderBy(p => (p as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
-                .ToList();
         }
     }
 }

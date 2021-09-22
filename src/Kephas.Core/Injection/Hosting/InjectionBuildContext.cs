@@ -10,7 +10,6 @@
 
 namespace Kephas.Injection.Hosting
 {
-    using System;
     using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
@@ -30,14 +29,6 @@ namespace Kephas.Injection.Hosting
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
         }
-
-        /// <summary>
-        /// Gets or sets the parts.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        public IEnumerable<Type>? Parts { get; set; }
 
         /// <summary>
         /// Gets or sets the application service information providers.

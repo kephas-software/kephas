@@ -88,15 +88,22 @@ namespace Kephas.Services
             var conventions = builder;
 
             // get all type infos from the injection assemblies
-            var appServiceContractsInfos = this.GetAppServiceContracts(buildContext).ToList();
+            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext);
+            var appServiceInfos = appServiceInfoProviders
+                .SelectMany(p => p.GetAppServiceInfos(buildContext))
+                .ToList();
+            var appServiceTypes = appServiceInfoProviders
+                .OfType<IAppServiceTypesProvider>()
+                .SelectMany(p => p.GetAppServiceTypes(buildContext))
+                .ToList();
 
-            buildContext.AmbientServices?.SetAppServiceInfos(appServiceContractsInfos);
+            buildContext.AmbientServices.SetAppServiceInfos(appServiceInfos);
 
-            var contractDeclarationTypes = appServiceContractsInfos.Select(e => e.contractDeclarationType).ToList();
+            var contractDeclarationTypes = appServiceInfos.Select(e => e.contractDeclarationType).ToList();
 
-            var typeRegistry = buildContext.AmbientServices?.TypeRegistry ?? RuntimeTypeRegistry.Instance;
+            var typeRegistry = buildContext.AmbientServices.TypeRegistry ?? RuntimeTypeRegistry.Instance;
             var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
-            foreach (var (appServiceContract, appServiceInfo) in appServiceContractsInfos)
+            foreach (var (appServiceContract, appServiceInfo) in appServiceInfos)
             {
                 var isPartBuilder = this.TryConfigurePartBuilder(
                     appServiceInfo,
@@ -128,64 +135,15 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Gets the application service contracts to register.
-        /// </summary>
-        /// <param name="buildContext">The registration context.</param>
-        /// <returns>
-        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
-        /// value is the <see cref="IAppServiceInfo"/>.
-        /// </returns>
-        protected internal virtual IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
-            GetAppServiceContracts(IInjectionBuildContext buildContext)
-        {
-            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext);
-            var parts = new List<Type>();
-            if (buildContext.Parts != null)
-            {
-                parts.AddRange(buildContext.Parts);
-            }
-
-            var oldParts = buildContext.Parts;
-            buildContext.Parts = parts;
-
-            foreach (var appServiceInfoProvider in appServiceInfoProviders)
-            {
-                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(buildContext))
-                {
-                    yield return item;
-                }
-            }
-
-            buildContext.Parts = oldParts;
-        }
-
-        /// <summary>
         /// Gets the application service information providers.
         /// </summary>
         /// <param name="buildContext">Context for the registration.</param>
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
         /// </returns>
-        protected virtual IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(
-            IInjectionBuildContext buildContext)
+        protected virtual IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
         {
-            var ambientServices = buildContext.AmbientServices;
-            if (ambientServices != null)
-            {
-                foreach (var provider in ambientServices.GetAppServiceInfosProviders())
-                {
-                    yield return provider;
-                }
-            }
-
-            var contextProviders = buildContext.AppServiceInfosProviders;
-            if (contextProviders != null)
-            {
-                foreach (var provider in contextProviders)
-                {
-                    yield return provider;
-                }
-            }
+            return buildContext.AppServiceInfosProviders ?? Array.Empty<IAppServiceInfosProvider>();
         }
 
         /// <summary>

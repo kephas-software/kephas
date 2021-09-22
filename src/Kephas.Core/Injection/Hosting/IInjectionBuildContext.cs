@@ -10,7 +10,6 @@
 
 namespace Kephas.Injection.Hosting
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -21,14 +20,6 @@ namespace Kephas.Injection.Hosting
     /// </summary>
     public interface IInjectionBuildContext : IContext
     {
-        /// <summary>
-        /// Gets or sets the parts.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        IEnumerable<Type>? Parts { get; set; }
-
         /// <summary>
         /// Gets or sets the application service information providers.
         /// </summary>
