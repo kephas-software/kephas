@@ -12,8 +12,8 @@ namespace Kephas
 {
     using System;
 
-    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Autofac.Hosting;
     using Kephas.Injection.Hosting;
 
     /// <summary>

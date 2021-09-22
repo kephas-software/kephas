@@ -10,7 +10,6 @@
 
 namespace Kephas.Messaging.Tests
 {
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Events;
 
     using NUnit.Framework;

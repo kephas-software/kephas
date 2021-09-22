@@ -11,7 +11,6 @@
 namespace Kephas.Messaging.Tests
 {
     using Kephas.Data;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using NSubstitute;

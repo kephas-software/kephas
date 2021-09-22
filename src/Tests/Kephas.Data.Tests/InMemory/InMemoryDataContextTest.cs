@@ -17,7 +17,6 @@ namespace Kephas.Data.Tests.InMemory
     using System.Threading.Tasks;
 
     using Kephas.Activation;
-    using Kephas.Composition;
     using Kephas.Data;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;

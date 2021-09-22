@@ -16,9 +16,6 @@ namespace Kephas.Messaging.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;
     using Kephas.Services;

@@ -12,9 +12,6 @@ namespace Kephas.Messaging.Tests.Composition
 {
     using System;
     using System.Collections.Generic;
-
-    using Kephas.Messaging.Composition;
-
     using NUnit.Framework;
 
     /// <summary>

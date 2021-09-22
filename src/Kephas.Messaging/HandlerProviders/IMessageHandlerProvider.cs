@@ -14,7 +14,6 @@ namespace Kephas.Messaging.HandlerProviders
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>

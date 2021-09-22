@@ -13,7 +13,6 @@ using Kephas.Injection;
 namespace Kephas.Messaging.Tests
 {
     using System.Security.Principal;
-    using Kephas.Composition;
     using NSubstitute;
 
     using NUnit.Framework;

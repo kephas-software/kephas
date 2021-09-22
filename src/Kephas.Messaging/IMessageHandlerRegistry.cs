@@ -16,7 +16,6 @@ namespace Kephas.Messaging
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>

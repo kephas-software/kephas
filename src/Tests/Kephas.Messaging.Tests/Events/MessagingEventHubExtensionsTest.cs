@@ -14,7 +14,6 @@ namespace Kephas.Messaging.Tests.Events
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Interaction;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Services;
 

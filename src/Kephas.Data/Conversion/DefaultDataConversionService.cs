@@ -21,7 +21,6 @@ namespace Kephas.Data.Conversion
     using System.Threading.Tasks;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-    using Kephas.Data.Conversion.Composition;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;

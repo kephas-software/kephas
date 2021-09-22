@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
     using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.AttributedModel;
-    using Kephas.Messaging.Composition;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

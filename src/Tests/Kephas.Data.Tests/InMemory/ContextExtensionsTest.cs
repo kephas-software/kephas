@@ -13,8 +13,6 @@ using Kephas.Injection;
 namespace Kephas.Data.Tests.InMemory
 {
     using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Services;
 

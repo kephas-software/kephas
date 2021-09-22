@@ -18,7 +18,6 @@ namespace Kephas.Messaging.Tests.Distributed
 
     using Kephas.Application;
     using Kephas.Behaviors;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Logging;
     using Kephas.Dynamic;
     using Kephas.Injection;

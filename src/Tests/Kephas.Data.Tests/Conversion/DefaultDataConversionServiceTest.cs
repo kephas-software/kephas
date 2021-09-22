@@ -18,11 +18,9 @@ namespace Kephas.Data.Tests.Conversion
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion;
-    using Kephas.Data.Conversion.Composition;
     using Kephas.Data.Conversion.TargetResolvers;
     using Kephas.Reflection;
     using Kephas.Services;

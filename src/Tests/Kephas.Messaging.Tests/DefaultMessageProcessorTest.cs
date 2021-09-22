@@ -8,10 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
-using Kephas.Injection.Lite.Hosting;
-
 namespace Kephas.Messaging.Tests
 {
     using System;
@@ -23,14 +19,14 @@ namespace Kephas.Messaging.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Mef;
-    using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
+    using Kephas.Injection;
+    using Kephas.Injection.ExportFactories;
+    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.SystemComposition;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;

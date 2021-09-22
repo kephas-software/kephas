@@ -13,7 +13,6 @@ namespace Kephas.Messaging
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Messaging.Composition;
 
     /// <summary>
     /// Criteria for event matching.

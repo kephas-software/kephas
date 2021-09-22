@@ -14,6 +14,7 @@ namespace Kephas.Data.Composition.Tests
     using System.Reflection;
 
     using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public class AutofacDataTestBase : AutofacInjectionTestBase
     {

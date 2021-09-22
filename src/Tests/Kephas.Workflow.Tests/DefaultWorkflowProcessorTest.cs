@@ -19,7 +19,6 @@ namespace Kephas.Workflow.Tests
     using Kephas.Runtime;
     using Kephas.Testing;
     using Kephas.Workflow.Behaviors;
-    using Kephas.Workflow.Behaviors.Composition;
     using Kephas.Workflow.Reflection;
     using NSubstitute;
     using NUnit.Framework;

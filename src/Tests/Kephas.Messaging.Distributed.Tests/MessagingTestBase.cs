@@ -20,7 +20,6 @@ namespace Kephas.Messaging.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;

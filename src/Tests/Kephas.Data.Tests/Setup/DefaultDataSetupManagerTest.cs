@@ -17,8 +17,6 @@ namespace Kephas.Data.Tests.Setup
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Data.Setup;
     using Kephas.Data.Setup.Composition;
     using Kephas.Operations;

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Messaging.Tests.Autofac.Distributed
 {
     using System;
@@ -20,9 +18,9 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
 
     using Kephas.Application;
     using Kephas.Behaviors;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Logging;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;

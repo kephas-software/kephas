@@ -21,7 +21,6 @@ namespace Kephas.Serialization.Json.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Net.Mime;

@@ -51,7 +51,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void WithCompositionContainer_builder()
+        public void WithInjector_builder()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false)
                 .Register(Substitute.For<ILogManager>())
@@ -66,7 +66,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void WithCompositionContainer_builder_missing_required_constructor()
+        public void WithInjector_builder_missing_required_constructor()
         {
             var ambientServices = new AmbientServices();
             Assert.Throws<InvalidOperationException>(() => ambientServices.WithInjector<BadTestInjectorBuilder>());

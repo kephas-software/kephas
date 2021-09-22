@@ -37,7 +37,7 @@ namespace Kephas.Injection.Hosting
         where TBuilder : InjectorBuilderBase<TBuilder>
     {
         private readonly InjectionSettings settings = new ();
-        private HashSet<Assembly> compositionAssemblies;
+        private HashSet<Assembly> injectionAssemblies;
         private HashSet<Assembly> conventionAssemblies;
 
         /// <summary>
@@ -201,13 +201,13 @@ namespace Kephas.Injection.Hosting
         {
             Requires.NotNull(assemblies, nameof(assemblies));
 
-            if (this.compositionAssemblies == null)
+            if (this.injectionAssemblies == null)
             {
-                this.compositionAssemblies = new HashSet<Assembly>(assemblies);
+                this.injectionAssemblies = new HashSet<Assembly>(assemblies);
             }
             else
             {
-                this.compositionAssemblies.AddRange(assemblies);
+                this.injectionAssemblies.AddRange(assemblies);
             }
 
             return (TBuilder)this;
@@ -384,7 +384,7 @@ namespace Kephas.Injection.Hosting
         /// <returns>An enumeration of assemblies used for dependency injection.</returns>
         protected IEnumerable<Assembly> GetInjectionAssemblies()
         {
-            return (IEnumerable<Assembly>)this.compositionAssemblies ?? this.GetAssemblies();
+            return (IEnumerable<Assembly>)this.injectionAssemblies ?? this.GetAssemblies();
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace Kephas.Injection.Hosting
         /// <returns>The composition container.</returns>
         private IInjector CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
         {
-            var parts = this.GetCompositionParts(assemblies);
+            var parts = this.GetInjectionParts(assemblies);
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);
             var conventions = this.GetConventions(conventionAssemblies, parts);
 
@@ -514,7 +514,7 @@ namespace Kephas.Injection.Hosting
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns>The composition parts.</returns>
-        private IList<Type> GetCompositionParts(IEnumerable<Assembly> assemblies)
+        private IList<Type> GetInjectionParts(IEnumerable<Assembly> assemblies)
         {
             var parts = assemblies
                 .SelectMany(a => this.TypeLoader.GetExportedTypes(a))

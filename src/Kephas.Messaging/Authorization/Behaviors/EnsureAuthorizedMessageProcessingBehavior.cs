@@ -23,7 +23,6 @@ namespace Kephas.Messaging.Authorization.Behaviors
     using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.AttributedModel;
-    using Kephas.Messaging.Composition;
     using Kephas.Security.Authorization;
     using Kephas.Security.Permissions.AttributedModel;
     using Kephas.Services;

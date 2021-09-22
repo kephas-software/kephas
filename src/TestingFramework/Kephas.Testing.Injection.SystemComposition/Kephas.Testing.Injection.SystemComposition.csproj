@@ -18,7 +18,7 @@
         <Description>
             Provides base classes for testing using the System.Composition (MEF) composition services.
             Typically used areas and classes/interfaces/services:
-            - Composition: AutofacCompositionTestBase.
+            - Injection: AutofacInjectionTestBase.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -35,7 +35,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas framework testing composition mef</PackageTags>
+        <PackageTags>kephas framework testing dependency injection system-composition</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>

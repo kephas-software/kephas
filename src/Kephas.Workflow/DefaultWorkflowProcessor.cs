@@ -25,7 +25,6 @@ namespace Kephas.Workflow
     using Kephas.Services;
     using Kephas.Threading.Tasks;
     using Kephas.Workflow.Behaviors;
-    using Kephas.Workflow.Behaviors.Composition;
     using Kephas.Workflow.Reflection;
 
     /// <summary>

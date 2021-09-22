@@ -8,20 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
-using Kephas.Injection.ExportFactoryImporters;
-
-namespace Kephas.Messaging.Tests
+namespace Kephas.Messaging.Tests.Autofac
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Configuration;
+    using Kephas.Injection;
+    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.ExportFactories;
+    using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;

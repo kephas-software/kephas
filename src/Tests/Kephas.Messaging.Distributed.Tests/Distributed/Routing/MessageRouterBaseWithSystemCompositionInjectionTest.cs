@@ -18,10 +18,10 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
+    using Kephas.Messaging.Tests.SystemComposition;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

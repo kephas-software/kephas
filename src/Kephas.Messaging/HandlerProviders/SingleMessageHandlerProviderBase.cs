@@ -17,7 +17,6 @@ namespace Kephas.Messaging.HandlerProviders
     using System.Linq;
     using System.Reflection;
     using Kephas.Messaging;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Resources;
 
     /// <summary>

@@ -14,7 +14,6 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>

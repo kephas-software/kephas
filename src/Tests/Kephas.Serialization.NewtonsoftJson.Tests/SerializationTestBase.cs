@@ -16,8 +16,6 @@ namespace Kephas.Serialization.Json.Tests
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-
-    using Kephas.Composition;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;

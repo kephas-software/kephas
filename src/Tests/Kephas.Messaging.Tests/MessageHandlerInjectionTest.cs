@@ -16,12 +16,9 @@ namespace Kephas.Messaging.Tests
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Messaging.AttributedModel;
-    using Kephas.Messaging.Composition;
     using Kephas.Testing.Composition;
-
+    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]

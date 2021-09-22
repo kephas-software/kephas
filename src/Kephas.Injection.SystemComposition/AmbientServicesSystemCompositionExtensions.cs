@@ -11,10 +11,9 @@
 namespace Kephas
 {
     using System;
-
-    using Kephas.Composition.Mef.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Hosting;
+    using Kephas.Injection.SystemComposition.Hosting;
 
     /// <summary>
     /// MEF extensions for the ambient services.

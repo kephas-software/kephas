@@ -13,7 +13,6 @@ namespace Kephas.Messaging
     using System;
 
     using Kephas.Data;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
 

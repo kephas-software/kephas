@@ -16,8 +16,6 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Data.Model.AttributedModel;
     using Kephas.Data.Model.Elements.Annotations;
     using Kephas.Model;

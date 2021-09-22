@@ -14,6 +14,7 @@ namespace Kephas.Scripting.Tests.Composition.Mef
     using System.Reflection;
 
     using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public class MefScriptingInjectionTestBase : SystemCompositionInjectionTestBase
     {

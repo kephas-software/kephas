@@ -14,7 +14,6 @@ using Kephas.Services;
 namespace Kephas.Messaging.Tests.Distributed
 {
     using Kephas.Application;
-    using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Messaging.Distributed;
     using Kephas.Security;

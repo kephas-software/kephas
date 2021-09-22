@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Behaviors.Composition
 
     using Kephas.Collections;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>

@@ -13,7 +13,6 @@ namespace Kephas.Messaging.AttributedModel
     using System;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>

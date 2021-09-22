@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
+    using Kephas.Messaging.Tests.SystemComposition;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;

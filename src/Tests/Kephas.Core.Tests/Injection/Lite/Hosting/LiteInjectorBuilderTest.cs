@@ -137,7 +137,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_AppService_Singleton()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
@@ -152,7 +152,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_AppService_Single_Success()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
@@ -166,7 +166,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_AppService_Single_Override_Success()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
@@ -180,7 +180,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_ExportFactory_NotFound()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .Build();
@@ -191,7 +191,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_ExportFactoryWithMetadata_NotFound()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .Build();
@@ -202,7 +202,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_Lazy_NotFound()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .Build();
@@ -213,7 +213,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_LazyWithMetadata_NotFound()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .Build();
@@ -224,7 +224,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void ResolveMany_AppService_Multiple_Singleton()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
@@ -240,7 +240,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void ResolveMany_AppService_Multiple_Success()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
@@ -254,7 +254,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void ResolveMany_AppService_IExportFactory_Success()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
@@ -269,7 +269,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_AppService_generic_export()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
@@ -282,7 +282,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void Resolve_AppService_generic_export_with_non_generic_contract()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
@@ -296,7 +296,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Ignore("Ignore until the CompositionConstructor attribute will be supported.")]
         public void Resolve_AppService_with_injection_constructor()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithRegistration(
@@ -323,7 +323,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             return factory;
         }
 
-        private LiteInjectorBuilder CreateCompositionContainerBuilderWithStringLogger()
+        private LiteInjectorBuilder CreateInjectorBuilderWithStringLogger()
         {
             var builder = this.CreateCompositionContainerBuilder();
 

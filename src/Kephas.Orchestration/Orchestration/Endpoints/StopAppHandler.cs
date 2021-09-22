@@ -19,7 +19,6 @@ namespace Kephas.Orchestration.Endpoints
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.AttributedModel;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Distributed;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

@@ -10,8 +10,6 @@ using Kephas.Injection;
 namespace Kephas.Serialization.Json.Tests.Converters
 {
     using System.Threading.Tasks;
-
-    using Kephas.Composition;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using NSubstitute;

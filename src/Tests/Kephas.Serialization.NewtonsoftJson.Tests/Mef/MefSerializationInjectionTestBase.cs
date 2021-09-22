@@ -13,6 +13,7 @@ namespace Kephas.Serialization.Json.Tests.Mef
     using System.Collections.Generic;
     using System.Reflection;
     using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public class MefSerializationInjectionTestBase : SystemCompositionInjectionTestBase
     {

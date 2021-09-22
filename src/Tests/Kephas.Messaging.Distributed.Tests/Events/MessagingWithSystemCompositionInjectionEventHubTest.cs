@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Tests.Events
     using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Messages;
+    using Kephas.Messaging.Tests.SystemComposition;
     using Kephas.Services;
     using NUnit.Framework;
 

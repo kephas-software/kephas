@@ -8,17 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
-namespace Kephas.Messaging.Tests
+namespace Kephas.Messaging.Tests.Autofac
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.Autofac.Hosting;
+    using Kephas.Injection;
+    using Kephas.Injection.Autofac.Hosting;
     using Kephas.Logging;
     using Kephas.Testing.Application;
     using NSubstitute;

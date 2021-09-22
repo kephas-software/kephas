@@ -16,7 +16,6 @@ namespace Kephas.Messaging.Events
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Interaction;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
