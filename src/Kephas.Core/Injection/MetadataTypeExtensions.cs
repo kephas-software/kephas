@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MetadataExtensions.cs" company="Kephas Software SRL">
+// <copyright file="MetadataTypeExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.Metadata
+namespace Kephas.Injection
 {
     using System;
     using System.Reflection;
@@ -18,7 +18,7 @@ namespace Kephas.Injection.Metadata
     /// <summary>
     /// Helper extension methods for metadata.
     /// </summary>
-    public static class MetadataExtensions
+    public static class MetadataTypeExtensions
     {
         /// <summary>
         /// Extracts the metadata value from the attribute with the provided type.

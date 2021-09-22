@@ -11,8 +11,7 @@
 namespace Kephas.Application
 {
     using System;
-
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute declaring a required feature for the annotated entity.

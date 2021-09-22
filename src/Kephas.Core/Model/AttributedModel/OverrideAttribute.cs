@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Metadata;
-
 namespace Kephas.Model.AttributedModel
 {
     using System;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for indicating that classifiers or members override their base. This class cannot be inherited.

@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Metadata;
-
 namespace Kephas.Scripting.AttributedModel
 {
     using System;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for language.

@@ -20,7 +20,6 @@ namespace Kephas.Injection.SystemComposition.Hosting
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
     using Kephas.Injection.Hosting;
-    using Kephas.Injection.Metadata;
     using Kephas.Injection.SystemComposition.Conventions;
     using Kephas.Injection.SystemComposition.ExportProviders;
     using Kephas.Injection.SystemComposition.Resources;

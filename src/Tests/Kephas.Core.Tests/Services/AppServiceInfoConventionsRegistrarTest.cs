@@ -23,7 +23,6 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Core.Tests.Services.DefaultExplicitAppServiceMetadata;
     using Kephas.Injection;
     using Kephas.Injection.Hosting;
-    using Kephas.Injection.Metadata;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.Metadata
+namespace Kephas.Injection
 {
     /// <summary>
     /// Non-typed contract for metadata values.

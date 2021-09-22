@@ -13,15 +13,16 @@ namespace Kephas.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Collections;
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
     using Kephas.Model.AttributedModel;
     using Kephas.Runtime;
 
     /// <summary>
     /// Metadata for application services.
     /// </summary>
-    public class AppServiceMetadata : ExportMetadataBase, IHasProcessingPriority
+    public class AppServiceMetadata : InjectionMetadataBase, IHasProcessingPriority
     {
         private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver(RuntimeTypeRegistry.Instance);
 

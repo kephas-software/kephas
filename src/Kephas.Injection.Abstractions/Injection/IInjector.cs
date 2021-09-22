@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Public interface for the injection context.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Injection
@@ -14,7 +11,7 @@ namespace Kephas.Injection
     using System.Collections.Generic;
 
     /// <summary>
-    /// Public interface for the injection context.
+    /// Public interface for the injector.
     /// </summary>
     public interface IInjector : IDisposable
     {

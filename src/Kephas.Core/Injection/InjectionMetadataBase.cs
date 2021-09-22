@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExportMetadataBase.cs" company="Kephas Software SRL">
+// <copyright file="InjectionMetadataBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.Metadata
+namespace Kephas.Injection
 {
     using System.Collections.Generic;
 
@@ -17,13 +17,13 @@ namespace Kephas.Injection.Metadata
     /// <summary>
     /// Base class for export metadata.
     /// </summary>
-    public abstract class ExportMetadataBase : Expando
+    public abstract class InjectionMetadataBase : Expando
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportMetadataBase"/> class.
+        /// Initializes a new instance of the <see cref="InjectionMetadataBase"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        protected ExportMetadataBase(IDictionary<string, object?>? metadata)
+        protected InjectionMetadataBase(IDictionary<string, object?>? metadata)
             : base(metadata ?? new Dictionary<string, object?>())
         {
         }

@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Metadata;
-
 namespace Kephas.Data.Setup.AttributedModel
 {
     using System;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for indicating the package targeted by the <see cref="IDataInstaller"/>.

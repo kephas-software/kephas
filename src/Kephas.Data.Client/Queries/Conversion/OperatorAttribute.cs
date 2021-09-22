@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Metadata;
-
 namespace Kephas.Data.Client.Queries.Conversion
 {
     using System;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
 
     /// <summary>
     /// Metadata attribute providing the operator.

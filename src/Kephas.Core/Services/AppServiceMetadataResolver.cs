@@ -14,7 +14,7 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Runtime;
 

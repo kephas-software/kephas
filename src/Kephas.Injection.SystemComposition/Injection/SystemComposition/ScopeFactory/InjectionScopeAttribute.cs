@@ -11,7 +11,6 @@
 namespace Kephas.Injection.SystemComposition.ScopeFactory
 {
     using System;
-    using Kephas.Injection.Metadata;
 
     /// <summary>
     /// Attribute indicating the MEF scope.

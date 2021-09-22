@@ -13,7 +13,7 @@ namespace Kephas.Core.Tests.Services
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
     using Kephas.Services;
     using NUnit.Framework;
 

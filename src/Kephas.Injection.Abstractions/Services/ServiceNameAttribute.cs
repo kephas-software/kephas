@@ -11,8 +11,7 @@
 namespace Kephas.Services
 {
     using System;
-
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for naming services.

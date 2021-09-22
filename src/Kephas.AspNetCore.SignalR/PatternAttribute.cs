@@ -8,7 +8,7 @@
 namespace Kephas.AspNetCore.SignalR
 {
     using System;
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for hub pattern.

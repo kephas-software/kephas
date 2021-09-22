@@ -12,8 +12,7 @@
 namespace Kephas.Services
 {
     using System;
-
-    using Kephas.Injection.Metadata;
+    using Kephas.Injection;
 
     /// <summary>
     /// Indicates an override priority for services when more service implementations are defined for the same contract.

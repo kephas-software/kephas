@@ -70,7 +70,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>
-        /// <param name="injector">The injection context to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>
         /// A logger for the provided name.
@@ -87,7 +87,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Gets the logger for the provided type.
         /// </summary>
-        /// <param name="injector">The injection context to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <param name="type">The type.</param>
         /// <returns>
         /// A logger for the provided type.
@@ -105,7 +105,7 @@ namespace Kephas.Injection
         /// Gets the logger for the provided type.
         /// </summary>
         /// <typeparam name="T">The type for which a logger should be created.</typeparam>
-        /// <param name="injector">The injection context to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
@@ -120,7 +120,7 @@ namespace Kephas.Injection
         /// <summary>
         /// Converts a <see cref="IInjector"/> to a <see cref="IServiceProvider"/>.
         /// </summary>
-        /// <param name="injector">The injection context to act on.</param>
+        /// <param name="injector">The injector to act on.</param>
         /// <returns>
         /// The <see cref="IInjector"/> as an <see cref="IServiceProvider"/>.
         /// </returns>
