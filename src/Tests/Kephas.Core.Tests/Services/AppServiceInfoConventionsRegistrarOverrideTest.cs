@@ -44,7 +44,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(TestDerivedImporter).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
+            registrar.RegisterConventions(conventions, new TestBuildContext().WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(Generic2).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
+            registrar.RegisterConventions(conventions, new TestBuildContext().WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -99,7 +99,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(IntClassifierFactory).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
+            registrar.RegisterConventions(conventions, new TestBuildContext().WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -130,7 +130,7 @@ namespace Kephas.Core.Tests.Services
                             {
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
+            registrar.RegisterConventions(conventions, new TestBuildContext().WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             var builderEntry = conventions.TypeConventionsBuilders.First();
@@ -157,7 +157,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(ConverterBase<,>),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
+            registrar.RegisterConventions(conventions, new TestBuildContext().WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -165,7 +165,7 @@ namespace Kephas.Core.Tests.Services
         }
 
         [ExcludeFromInjection]
-        public class TestRegistrar : AppServiceInfoConventionsRegistrar
+        internal class TestRegistrar : AppServiceInfoConventionsRegistrar
         {
             private readonly Func<Type, AppServiceContractAttribute> attrProvider;
 
@@ -174,23 +174,23 @@ namespace Kephas.Core.Tests.Services
                 this.attrProvider = attrProvider;
             }
 
-            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IInjectionBuildContext buildContext)
+            protected override IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
             {
-                yield return new TestAppServiceInfoProvider(this.attrProvider);
+                yield return new TestAppServiceInfosProvider(this.attrProvider);
             }
 
-            private class TestAppServiceInfoProvider : IAppServiceInfoProvider
+            private class TestAppServiceInfosProvider : IAppServiceInfosProvider
             {
                 private readonly Func<Type, AppServiceContractAttribute> attrProvider;
 
-                public TestAppServiceInfoProvider(Func<Type, AppServiceContractAttribute> attrProvider)
+                public TestAppServiceInfosProvider(Func<Type, AppServiceContractAttribute> attrProvider)
                 {
                     this.attrProvider = attrProvider;
                 }
 
-                IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionBuildContext?)context)?.Parts;
+                IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionBuildContext?)context)?.Parts;
 
-                IAppServiceInfo? IAppServiceInfoProvider.TryGetAppServiceInfo(Type type)
+                IAppServiceInfo? IAppServiceInfosProvider.TryGetAppServiceInfo(Type type)
                 {
                     return this.attrProvider(type);
                 }
