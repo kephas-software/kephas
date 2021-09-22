@@ -61,12 +61,17 @@ namespace Kephas.Services.Reflection
         Type? ContractType { get; }
 
         /// <summary>
+        /// Gets the instancing strategy: factory, type, or instance.
+        /// </summary>
+        object? InstancingStrategy { get; }
+
+        /// <summary>
         /// Gets the service instance.
         /// </summary>
         /// <value>
         /// The service instance.
         /// </value>
-        object? Instance { get; }
+        object? Instance => this.InstanceType != null || this.InstanceFactory != null ? null : this.InstancingStrategy;
 
         /// <summary>
         /// Gets the type of the service instance.
@@ -74,7 +79,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The type of the service instance.
         /// </value>
-        Type? InstanceType { get; }
+        Type? InstanceType => this.InstancingStrategy as Type;
 
         /// <summary>
         /// Gets the service instance factory.
@@ -82,6 +87,6 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<IInjector, object>? InstanceFactory { get; }
+        Func<IInjector, object>? InstanceFactory => this.InstancingStrategy as Func<IInjector, object>;
     }
 }

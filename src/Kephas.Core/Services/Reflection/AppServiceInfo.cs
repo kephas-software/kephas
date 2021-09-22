@@ -50,7 +50,7 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(serviceInstance, nameof(serviceInstance));
 
             this.SetContractType(contractType);
-            this.Instance = serviceInstance;
+            this.InstancingStrategy = serviceInstance;
             this.SetLifetime(AppServiceLifetime.Singleton);
         }
 
@@ -66,7 +66,7 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(serviceInstanceFactory, nameof(serviceInstanceFactory));
 
             this.SetContractType(contractType);
-            this.InstanceFactory = serviceInstanceFactory;
+            this.InstancingStrategy = serviceInstanceFactory;
             this.SetLifetime(lifetime);
         }
 
@@ -86,7 +86,7 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
 
             this.SetContractType(contractType);
-            this.InstanceType = serviceInstanceType;
+            this.InstancingStrategy = serviceInstanceType;
             this.AsOpenGeneric = asOpenGeneric;
             this.SetLifetime(lifetime);
         }
@@ -102,18 +102,7 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
             this.SetContractType(contractType ?? appServiceInfo.ContractType);
-            if (appServiceInfo.Instance != null)
-            {
-                this.Instance = appServiceInfo.Instance;
-            }
-            else if (appServiceInfo.InstanceFactory != null)
-            {
-                this.InstanceFactory = appServiceInfo.InstanceFactory;
-            }
-            else if (appServiceInfo.InstanceType != null)
-            {
-                this.InstanceType = appServiceInfo.InstanceType;
-            }
+            this.InstancingStrategy = appServiceInfo.InstancingStrategy;
 
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
             this.SetLifetime(appServiceInfo.Lifetime);
@@ -162,28 +151,9 @@ namespace Kephas.Services.Reflection
         public Type? ContractType { get; private set; }
 
         /// <summary>
-        /// Gets the service instance.
+        /// Gets the instancing strategy: factory, type, or instance.
         /// </summary>
-        /// <value>
-        /// The service instance.
-        /// </value>
-        public object? Instance { get; }
-
-        /// <summary>
-        /// Gets the type of the service instance.
-        /// </summary>
-        /// <value>
-        /// The type of the service instance.
-        /// </value>
-        public Type? InstanceType { get; }
-
-        /// <summary>
-        /// Gets the service instance factory.
-        /// </summary>
-        /// <value>
-        /// The service instance factory.
-        /// </value>
-        public Func<IInjector, object>? InstanceFactory { get; }
+        public object? InstancingStrategy { get; }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -195,11 +165,12 @@ namespace Kephas.Services.Reflection
         {
             var multiple = this.AllowMultiple ? ", multi" : string.Empty;
             var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
-            var instanceType = this.InstanceType != null ? $"/type:{this.InstanceType}" : string.Empty;
-            var instance = this.Instance != null ? $"/instance:{this.Instance}" : string.Empty;
-            var factory = this.InstanceFactory != null ? $"/instanceFactory" : string.Empty;
+            IAppServiceInfo serviceInfo = this;
+            var instanceTypeString = serviceInfo.InstanceType != null ? $"/type:{serviceInfo.InstanceType}" : string.Empty;
+            var instanceString = serviceInfo.Instance != null ? $"/instance:{serviceInfo.Instance}" : string.Empty;
+            var factoryString = serviceInfo.InstanceFactory != null ? $"/instanceFactory" : string.Empty;
 
-            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceType}{instance}{factory}";
+            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceTypeString}{instanceString}{factoryString}";
         }
 
         private void SetContractType(Type contractType)

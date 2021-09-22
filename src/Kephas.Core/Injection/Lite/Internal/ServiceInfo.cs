@@ -37,7 +37,7 @@ namespace Kephas.Injection.Lite.Internal
         public ServiceInfo(Type contractType, object instance)
         {
             this.ContractType = contractType;
-            this.Instance = instance;
+            this.InstancingStrategy = instance;
             this.Lifetime = AppServiceLifetime.Singleton;
             this.lazyFactory = new LazyValue(instance);
         }
@@ -52,7 +52,7 @@ namespace Kephas.Injection.Lite.Internal
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Type instanceType, bool isSingleton)
         {
             this.ContractType = contractType;
-            this.InstanceType = instanceType;
+            this.InstancingStrategy = instanceType;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             this.lazyFactory = isSingleton
                                    ? new LazyValue(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType)
@@ -69,7 +69,7 @@ namespace Kephas.Injection.Lite.Internal
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
         {
             this.ContractType = contractType;
-            this.InstanceFactory = serviceFactory;
+            this.InstancingStrategy = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             var injector = ambientServices.AsInjector();
             this.lazyFactory = isSingleton
@@ -87,15 +87,11 @@ namespace Kephas.Injection.Lite.Internal
 
         public Type? ContractType { get; }
 
+        public object? InstancingStrategy { get; }
+
         public Type ServiceType { get; internal set; }
 
-        public object? Instance { get; internal set; }
-
         public bool ExternallyOwned { get; internal set; }
-
-        public Type? InstanceType { get; }
-
-        public Func<IInjector, object>? InstanceFactory { get; }
 
         /// <summary>
         /// Makes a generic service information with closed generic types.
@@ -113,14 +109,15 @@ namespace Kephas.Injection.Lite.Internal
                 throw new NotSupportedException($"Only open generic registrations may be constructed, {this} does not support this operation.");
             }
 
-            if (this.InstanceType == null)
+            IAppServiceInfo self = this;
+            if (self.InstanceType == null)
             {
                 throw new NotSupportedException($"Only open generic registrations may be constructed, {this} does not support this operation.");
             }
 
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
             var closedServiceType = this.ServiceType?.MakeGenericType(genericArgs);
-            var closedInstanceType = this.InstanceType.MakeGenericType(genericArgs);
+            var closedInstanceType = self.InstanceType.MakeGenericType(genericArgs);
 
             var closedServiceInfo = new ServiceInfo(ambientServices, closedContractType, closedInstanceType, this.IsSingleton())
             {

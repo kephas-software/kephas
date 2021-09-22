@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Elements
 {
     using System;
@@ -18,6 +16,7 @@ namespace Kephas.Model.Elements
     using System.Linq;
     using System.Reflection;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -85,28 +84,9 @@ namespace Kephas.Model.Elements
         public Type? ContractType { get; private set; }
 
         /// <summary>
-        /// Gets the service instance.
+        /// Gets the instancing strategy: factory, type, or instance.
         /// </summary>
-        /// <value>
-        /// The service instance.
-        /// </value>
-        public object? Instance => this.appServiceInfo.Instance;
-
-        /// <summary>
-        /// Gets the type of the service instance.
-        /// </summary>
-        /// <value>
-        /// The type of the service instance.
-        /// </value>
-        public Type InstanceType => this.appServiceInfo.InstanceType;
-
-        /// <summary>
-        /// Gets the service instance factory.
-        /// </summary>
-        /// <value>
-        /// The service instance factory.
-        /// </value>
-        public Func<IInjector, object>? InstanceFactory => this.appServiceInfo.InstanceFactory;
+        public object? InstancingStrategy => this.appServiceInfo.InstancingStrategy;
 
         /// <summary>
         /// Gets the service lifetime.

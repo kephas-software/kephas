@@ -84,28 +84,9 @@ namespace Kephas.Services
         public Type? ContractType { get; set; }
 
         /// <summary>
-        /// Gets the service instance.
+        /// Gets the instancing strategy: factory, type, or instance.
         /// </summary>
-        /// <value>
-        /// The service instance.
-        /// </value>
-        object? IAppServiceInfo.Instance => null;
-
-        /// <summary>
-        /// Gets the type of the service instance.
-        /// </summary>
-        /// <value>
-        /// The type of the service instance.
-        /// </value>
-        Type? IAppServiceInfo.InstanceType => null;
-
-        /// <summary>
-        /// Gets the service instance factory.
-        /// </summary>
-        /// <value>
-        /// The service instance factory.
-        /// </value>
-        Func<IInjector, object>? IAppServiceInfo.InstanceFactory => null;
+        public object? InstancingStrategy => null;
 
         /// <summary>
         /// Returns a string that represents the current object.

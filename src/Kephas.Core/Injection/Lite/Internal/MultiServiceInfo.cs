@@ -41,7 +41,7 @@ namespace Kephas.Injection.Lite.Internal
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceType">Type of the service.</param>
         internal MultiServiceInfo(Type contractType, Type serviceType)
-            : this(contractType, serviceType, new ServiceInfo[0])
+            : this(contractType, serviceType, Array.Empty<ServiceInfo>())
         {
         }
 
@@ -68,11 +68,7 @@ namespace Kephas.Injection.Lite.Internal
 
         public Type? ContractType { get; }
 
-        object? IAppServiceInfo.Instance => null;
-
-        Type IAppServiceInfo.InstanceType => null;
-
-        Func<IInjector, object>? IAppServiceInfo.InstanceFactory => null;
+        public object? InstancingStrategy => null;
 
         public Type ServiceType { get; }
 
