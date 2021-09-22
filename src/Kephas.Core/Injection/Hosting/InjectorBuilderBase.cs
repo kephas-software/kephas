@@ -61,9 +61,9 @@ namespace Kephas.Injection.Hosting
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
-            context.AppServiceInfoProviders = context.AppServiceInfoProviders == null
-                ? new List<IAppServiceInfoProvider> { this.Registry }
-                : new List<IAppServiceInfoProvider>(context.AppServiceInfoProviders) { this.Registry };
+            context.AppServiceInfosProviders = context.AppServiceInfosProviders == null
+                ? new List<IAppServiceInfosProvider> { this.Registry }
+                : new List<IAppServiceInfosProvider>(context.AppServiceInfosProviders) { this.Registry };
         }
 
         /// <summary>
@@ -105,14 +105,6 @@ namespace Kephas.Injection.Hosting
         /// The conventions builder.
         /// </value>
         protected IConventionsBuilder ConventionsBuilder { get; private set; }
-
-        /// <summary>
-        /// Gets the injectable parts.
-        /// </summary>
-        /// <value>
-        /// The injectable parts.
-        /// </value>
-        protected HashSet<Type> InjectableParts { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
@@ -237,37 +229,11 @@ namespace Kephas.Injection.Hosting
         /// <remarks>
         /// Can be used multiple times, the provided parts are added to the existing ones.
         /// </remarks>
-        public virtual TBuilder WithParts(IEnumerable<Type> parts)
+        internal virtual TBuilder WithParts(IEnumerable<Type> parts)
         {
             Requires.NotNull(parts, nameof(parts));
 
-            if (this.InjectableParts == null)
-            {
-                this.InjectableParts = new HashSet<Type>(parts);
-            }
-            else
-            {
-                this.InjectableParts.AddRange(parts);
-            }
-
-            return (TBuilder)this;
-        }
-
-        /// <summary>
-        /// Adds the composition parts.
-        /// </summary>
-        /// <param name="part">The composition part.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        /// <remarks>
-        /// Can be used multiple times, the provided part is added to the existing ones.
-        /// </remarks>
-        public virtual TBuilder WithPart(Type part)
-        {
-            Requires.NotNull(part, nameof(part));
-
-            return this.WithParts(new[] { part });
+            return this.WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts));
         }
 
         /// <summary>
@@ -309,33 +275,28 @@ namespace Kephas.Injection.Hosting
         {
             Requires.NotNull(registrations, nameof(registrations));
 
-            registrations.ForEach(r =>
-                {
-                    this.Registry.Add(r);
-                    if (r.ContractType != null) { this.WithPart(r.ContractType); }
-                    if (r.InstanceType != null) { this.WithPart(r.InstanceType); }
-                });
+            registrations.ForEach(this.Registry.Add);
 
             return (TBuilder)this;
         }
 
         /// <summary>
-        /// Adds the export provider.
+        /// Adds the <see cref="IAppServiceInfosProvider"/>.
         /// </summary>
         /// <remarks>
         /// Can be used multiple times, the factories are added to the existing ones.
         /// </remarks>
-        /// <param name="conventionsRegistrar">The conventions registrar.</param>
+        /// <param name="appServiceInfosProvider">The <see cref="IAppServiceInfosProvider"/>.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public virtual TBuilder WithConventionsRegistrar(IConventionsRegistrar conventionsRegistrar)
+        public virtual TBuilder WithAppServiceInfosProvider(IAppServiceInfosProvider appServiceInfosProvider)
         {
-            Requires.NotNull(conventionsRegistrar, nameof(conventionsRegistrar));
+            Requires.NotNull(appServiceInfosProvider, nameof(appServiceInfosProvider));
 
-            var registrars = this.BuildContext.Registrars?.ToList() ?? new List<IConventionsRegistrar>();
-            registrars.Add(conventionsRegistrar);
-            this.BuildContext.Registrars = registrars;
+            var registrars = this.BuildContext.AppServiceInfosProviders?.ToList() ?? new List<IAppServiceInfosProvider>();
+            registrars.Add(appServiceInfosProvider);
+            this.BuildContext.AppServiceInfosProviders = registrars;
 
             return (TBuilder)this;
         }
@@ -398,11 +359,10 @@ namespace Kephas.Injection.Hosting
         /// Gets the convention builder.
         /// </summary>
         /// <param name="assemblies">The assemblies containing the conventions.</param>
-        /// <param name="parts">The parts.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        protected virtual IConventionsBuilder GetConventions(IEnumerable<Assembly> assemblies, IList<Type> parts)
+        protected virtual IConventionsBuilder GetConventions(IEnumerable<Assembly> assemblies)
         {
             var conventions = this.ConventionsBuilder ?? this.CreateConventionsBuilder();
 
@@ -415,7 +375,7 @@ namespace Kephas.Injection.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    conventions.RegisterConventionsFrom(assemblies, parts, this.BuildContext);
+                    conventions.RegisterConventionsFrom(assemblies, this.BuildContext);
                 },
                 this.Logger);
 
@@ -500,7 +460,7 @@ namespace Kephas.Injection.Hosting
         {
             var parts = this.GetInjectionParts(assemblies);
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);
-            var conventions = this.GetConventions(conventionAssemblies, parts);
+            var conventions = this.GetConventions(conventionAssemblies);
 
             var container = this.CreateInjectorCore(conventions, parts);
             return container;
@@ -517,10 +477,6 @@ namespace Kephas.Injection.Hosting
                 .SelectMany(a => this.TypeLoader.GetExportedTypes(a))
                 .Where(ConventionsBuilderExtensions.IsPartCandidate)
                 .ToList();
-            if (this.InjectableParts != null)
-            {
-                parts.AddRange(this.InjectableParts.Where(ConventionsBuilderExtensions.IsPartCandidate));
-            }
 
             return parts;
         }
@@ -528,7 +484,7 @@ namespace Kephas.Injection.Hosting
         /// <summary>
         /// An application service information serviceRegistry.
         /// </summary>
-        protected class AppServiceInfoRegistry : IAppServiceInfoProvider
+        protected class AppServiceInfoRegistry : IAppServiceInfosProvider
         {
             private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
 
