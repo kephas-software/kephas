@@ -19,7 +19,7 @@ namespace Kephas.Testing.Model
     using System.Threading.Tasks;
     using Kephas.Model;
     using Kephas.Model.Runtime;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
     /// <summary>
@@ -42,7 +42,7 @@ namespace Kephas.Testing.Model
 
         public IInjector CreateContainerForModel(IAmbientServices? ambientServices, params Type[] elements)
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
@@ -57,7 +57,7 @@ namespace Kephas.Testing.Model
 
         public IInjector CreateContainerForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 parts: parts,

@@ -40,7 +40,7 @@ namespace Kephas.Tests.Orchestration
             return assemblies;
         }
 
-        public override IInjector CreateContainer(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -55,7 +55,7 @@ namespace Kephas.Tests.Orchestration
                 b.WithFactory(() => appContext);
                 oldConfig?.Invoke(b);
             };
-            return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            return base.CreateInjector(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }
 }

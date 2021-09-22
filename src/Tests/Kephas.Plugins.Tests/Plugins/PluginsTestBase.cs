@@ -26,7 +26,7 @@ namespace Kephas.Tests.Plugins
     using Kephas.Operations;
     using Kephas.Plugins;
     using Kephas.Services;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
     public abstract class PluginsTestBase : InjectionTestBase

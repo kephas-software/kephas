@@ -21,7 +21,7 @@ namespace Kephas.Plugins.NuGet.Tests
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Plugins.Application;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]
@@ -43,7 +43,7 @@ namespace Kephas.Plugins.NuGet.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var manager = container.Resolve<IPluginManager>();
 
             Assert.IsInstanceOf<NuGetPluginManager>(manager);
@@ -58,7 +58,7 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.CreateContainer(
+                var container = this.CreateInjector(
                     config: b => b.WithFactory<ISettingsProvider>(
                         () => new PluginsSettingsProvider("tags:kephas"),
                         isSingleton: true,
@@ -93,7 +93,7 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.CreateContainer(
+                var container = this.CreateInjector(
                     config: b => b.WithFactory<ISettingsProvider>(
                         () => new PluginsSettingsProvider("tags:kismsspplugin"),
                         isSingleton: true,

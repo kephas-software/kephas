@@ -18,7 +18,7 @@ namespace Kephas.Data.Tests.Composition.Lite
         [Test]
         public void Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var dataSpace = container.Resolve<IDataSpace>();
 
             Assert.IsInstanceOf<DataSpace>(dataSpace);

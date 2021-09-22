@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Tests
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Messaging.AttributedModel;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
     using NUnit.Framework;
 
@@ -27,7 +26,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void Injection_single_handler()
         {
-            var container = this.CreateContainer(parts: new[]
+            var container = this.CreateInjector(parts: new[]
                                                             {
                                                                 typeof(IMessageHandler),
                                                                 typeof(IMessageHandler<>),
@@ -49,7 +48,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void Injection_two_handlers()
         {
-            var container = this.CreateContainer(parts: new[]
+            var container = this.CreateInjector(parts: new[]
                                                             {
                                                                 typeof(IMessageHandler),
                                                                 typeof(IMessageHandler<>),

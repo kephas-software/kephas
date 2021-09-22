@@ -12,8 +12,7 @@ namespace Kephas.Serialization.Bson.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public class SerializationTestBase : InjectionTestBase
     {

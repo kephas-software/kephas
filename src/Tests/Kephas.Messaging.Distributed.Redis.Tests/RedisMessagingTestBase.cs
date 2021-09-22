@@ -23,7 +23,7 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Messaging.Redis.Routing;
     using Kephas.Redis;
     using Kephas.Serialization.Json;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public abstract class RedisMessagingTestBase : InjectionTestBase
     {
@@ -40,7 +40,7 @@ namespace Kephas.Messaging.Redis.Tests
             };
         }
 
-        public override IInjector CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null,
+        public override IInjector CreateInjector(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices();
@@ -50,7 +50,7 @@ namespace Kephas.Messaging.Redis.Tests
                 ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateContainer(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            return base.CreateInjector(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }
 }

@@ -31,7 +31,6 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
@@ -46,7 +45,7 @@ namespace Kephas.Messaging.Tests.Autofac
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacDefaultMessageProcessorTest : AutofacInjectionTestBase
     {
-        public override IInjector CreateContainer(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -59,13 +58,13 @@ namespace Kephas.Messaging.Tests.Autofac
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
 
-            return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);
+            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
         [Test]
         public void DefaultMessageProcessor_Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
@@ -76,7 +75,7 @@ namespace Kephas.Messaging.Tests.Autofac
         [Test]
         public async Task ProcessAsync_Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
@@ -87,7 +86,7 @@ namespace Kephas.Messaging.Tests.Autofac
         [Test]
         public async Task ProcessAsync_injection_non_message_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<string>((s, c, token) => Task.FromResult<IMessage>(new ResponseMessage { Message = s + " handled" }));
             var requestProcessor = container.Resolve<IMessageProcessor>();
@@ -101,7 +100,7 @@ namespace Kephas.Messaging.Tests.Autofac
         [Test]
         public async Task ProcessAsync_injection_non_message_sync_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<string>((s, c) => new ResponseMessage { Message = s + " handled" });
             var requestProcessor = container.Resolve<IMessageProcessor>();

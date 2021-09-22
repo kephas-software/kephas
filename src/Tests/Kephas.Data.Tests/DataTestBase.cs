@@ -12,8 +12,7 @@ namespace Kephas.Data.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public abstract class DataTestBase : InjectionTestBase
     {

@@ -14,7 +14,7 @@ namespace Kephas.Testing.Application
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     /// <summary>
     /// Base class for application tests using composition.

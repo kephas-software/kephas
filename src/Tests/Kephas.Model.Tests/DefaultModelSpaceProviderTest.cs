@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_using_composition()
         {
-            var container = this.CreateContainer(typeof(IModelSpace).GetTypeInfo().Assembly);
+            var container = this.CreateInjector(typeof(IModelSpace).GetTypeInfo().Assembly);
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

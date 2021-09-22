@@ -26,14 +26,14 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
     public class AppServicesRegistryTest : InjectionTestBase
     {
-        public override IInjector CreateContainer(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -43,13 +43,13 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(AppServicesRegistry).GetTypeInfo().Assembly); /* Kephas.Model */
-            return base.CreateContainer(ambientServices, assemblyList, parts, config);
+            return base.CreateInjector(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
         public void AppServicesRegistry_Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }

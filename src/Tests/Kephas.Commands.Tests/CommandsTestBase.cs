@@ -20,11 +20,11 @@ namespace Kephas.Commands.Tests
 
     using Kephas.Application;
     using Kephas.Logging;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public abstract class CommandsTestBase : InjectionTestBase
     {
-        public override IInjector CreateContainer(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -39,7 +39,7 @@ namespace Kephas.Commands.Tests
                 ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateContainer(ambientServices, assemblies, parts, config);
+            return base.CreateInjector(ambientServices, assemblies, parts, config);
         }
 
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()

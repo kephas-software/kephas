@@ -24,7 +24,7 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 

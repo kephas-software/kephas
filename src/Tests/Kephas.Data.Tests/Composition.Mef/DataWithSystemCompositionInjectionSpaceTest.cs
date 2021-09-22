@@ -18,7 +18,7 @@ namespace Kephas.Data.Tests.Composition.Mef
         [Test]
         public void Injection_success()
         {
-            var container = CreateContainer();
+            var container = CreateInjector();
             var dataSpace = container.Resolve<IDataSpace>();
 
             Assert.IsInstanceOf<DataSpace>(dataSpace);

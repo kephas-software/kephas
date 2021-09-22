@@ -54,7 +54,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// A SystemCompositionInjectorBuilder.
         /// </returns>
-        public virtual SystemCompositionInjectorBuilder WithContainerBuilder(
+        public virtual SystemCompositionInjectorBuilder WithInjectorBuilder(
             IAmbientServices? ambientServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
@@ -71,9 +71,9 @@ namespace Kephas.Testing.Injection
             return new SystemCompositionInjectorBuilder(new InjectionRegistrationContext(ambientServices));
         }
 
-        public IInjector CreateContainer(params Assembly[] assemblies)
+        public IInjector CreateInjector(params Assembly[] assemblies)
         {
-            return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
+            return this.CreateInjector(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// The new container.
         /// </returns>
-        public virtual IInjector CreateContainer(
+        public virtual IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -97,7 +97,7 @@ namespace Kephas.Testing.Injection
             IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var containerBuilder = this.WithContainerBuilder(ambientServices, logManager, appRuntime)
+            var containerBuilder = this.WithInjectorBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
                     .WithParts(parts ?? Type.EmptyTypes);
@@ -109,19 +109,19 @@ namespace Kephas.Testing.Injection
             return container;
         }
 
-        public IInjector CreateContainerWithBuilder(params Type[] types)
+        public IInjector CreateInjectorWithBuilder(params Type[] types)
         {
             var configuration = WithEmptyConfiguration().WithParts(types);
-            return WithContainerBuilder()
+            return WithInjectorBuilder()
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithConfiguration(configuration)
                 .Build();
         }
 
-        public IInjector CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             var configuration = WithEmptyConfiguration().WithParts(types);
-            return WithContainerBuilder(ambientServices)
+            return WithInjectorBuilder(ambientServices)
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithConfiguration(configuration)
                 .Build();

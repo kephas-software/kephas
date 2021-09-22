@@ -23,7 +23,7 @@ namespace Kephas.Scheduling.Tests
     using Kephas.Scheduling.JobStore;
     using Kephas.Scheduling.Runtime;
     using Kephas.Scheduling.Triggers;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using Kephas.Workflow;
     using NSubstitute;
     using NUnit.Framework;
@@ -41,7 +41,7 @@ namespace Kephas.Scheduling.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateContainer(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
+            var container = this.CreateInjector(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
             var scheduler = container.Resolve<IScheduler>();
             Assert.IsInstanceOf<InProcessScheduler>(scheduler);
         }

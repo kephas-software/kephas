@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
 
     public class MessagingWithSystemCompositionInjectionTestBase : ApplicationWithSystemCompositionInjectionTestBase
     {
-        public override IInjector CreateContainer(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -35,7 +35,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
 
-            return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);
+            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
         protected virtual IInjector CreateMessagingContainerMock()

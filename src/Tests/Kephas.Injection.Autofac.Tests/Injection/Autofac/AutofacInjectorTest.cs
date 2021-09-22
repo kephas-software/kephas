@@ -24,7 +24,6 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
@@ -47,7 +46,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_from_ambient_services_self()
         {
             var ambientServices = new AmbientServices();
-            var container = this.CreateContainerWithBuilder(ambientServices);
+            var container = this.CreateInjectorWithBuilder(ambientServices);
             var containerExport = container.Resolve(typeof(IAmbientServices));
             var ambientExport = container.Resolve(typeof(IAmbientServices));
 
@@ -60,7 +59,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_from_ambient_services_instance()
         {
             var ambientServices = new AmbientServices();
-            var container = this.CreateContainerWithBuilder(ambientServices);
+            var container = this.CreateInjectorWithBuilder(ambientServices);
             var containerExport = container.Resolve(typeof(ILogManager));
             var ambientExport = container.Resolve(typeof(ILogManager));
 
@@ -72,7 +71,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_from_ambient_services_instance_type()
         {
             var ambientServices = new AmbientServices();
-            var container = this.CreateContainerWithBuilder(ambientServices);
+            var container = this.CreateInjectorWithBuilder(ambientServices);
             var containerExport = container.Resolve(typeof(ITypeLoader));
             var ambientExport = container.Resolve(typeof(ITypeLoader));
 
@@ -171,7 +170,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void ResolveMany_various_same_contract_registrations()
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
                 config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
 
@@ -185,7 +184,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void GetService_various_same_contract_registrations()
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
                 config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
 
@@ -216,7 +215,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateScopedInjector_ScopeExportedClass()
         {
-            var container = this.CreateContainerWithBuilder(
+            var container = this.CreateInjectorWithBuilder(
                 b => b.WithRegistration(
                     new AppServiceInfo(
                         typeof(ScopeExportedClass),
@@ -242,7 +241,7 @@ namespace Kephas.Tests.Injection.Autofac
             var service = Substitute.For<IAsyncInitializable>();
             ambientServices.Register(typeof(IAsyncInitializable), service);
 
-            var container = this.CreateContainerWithBuilder(ambientServices);
+            var container = this.CreateInjectorWithBuilder(ambientServices);
 
             var actualService = container.Resolve<IAsyncInitializable>();
             Assert.AreSame(service, actualService);
@@ -254,7 +253,7 @@ namespace Kephas.Tests.Injection.Autofac
             var ambientServices = new AmbientServices();
             ambientServices.RegisterTransient(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
-            var container = this.CreateContainerWithBuilder(ambientServices);
+            var container = this.CreateInjectorWithBuilder(ambientServices);
 
             var service1 = container.Resolve<IAsyncInitializable>();
             var service2 = container.Resolve<IAsyncInitializable>();
@@ -265,7 +264,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_ambient_services_not_available_after_first_failed_request()
         {
             var ambientServices = new AmbientServices();
-            var container = this.CreateContainerWithBuilder(ambientServices);
+            var container = this.CreateInjectorWithBuilder(ambientServices);
 
             var service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);

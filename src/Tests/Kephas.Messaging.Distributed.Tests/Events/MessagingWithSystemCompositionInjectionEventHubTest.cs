@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Tests.Events
         [Test]
         public async Task Subscribe_integration_subscription_called()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var hub = container.Resolve<IEventHub>();
             var broker = container.Resolve<IMessageBroker>();
             await (broker as IAsyncInitializable).InitializeAsync(new Context(container));

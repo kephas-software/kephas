@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public void InProcessMessageRouter_Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var messageRouters = container.ResolveMany<IMessageRouter>();
             Assert.IsTrue(messageRouters.OfType<InProcessAppMessageRouter>().Any());
         }
@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task DispatchAsync_with_request()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using (var inProcessRouter = container.ResolveMany<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
             {
                 var appContext = new Context(container);
@@ -63,7 +63,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task DispatchAsync_with_reply()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using (var inProcessRouter = container.ResolveMany<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
             {
                 var appContext = new Context(container);

@@ -27,7 +27,6 @@ namespace Kephas.Tests.Plugins
     using Kephas.Plugins.Reflection;
     using Kephas.Plugins.Transactions;
     using Kephas.Services;
-    using Kephas.Testing.Composition;
     using NSubstitute;
     using NUnit.Framework;
 

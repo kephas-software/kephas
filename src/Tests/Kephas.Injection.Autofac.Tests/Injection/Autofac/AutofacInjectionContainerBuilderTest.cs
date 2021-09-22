@@ -25,7 +25,6 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;

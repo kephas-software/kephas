@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void DefaultMessageBroker_Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var messageBroker = container.Resolve<IMessageBroker>();
             Assert.IsInstanceOf<DefaultMessageBroker>(messageBroker);
         }
@@ -60,7 +60,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task InitializeAsync_ignore_router_error()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(OptionalMessageRouter) });
+            var container = this.CreateInjector(parts: new[] { typeof(OptionalMessageRouter) });
             var messageBroker = container.Resolve<IMessageBroker>();
             await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
         }
@@ -68,7 +68,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task InitializeAsync_override_router()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(OverrideMessageRouter) });
+            var container = this.CreateInjector(parts: new[] { typeof(OverrideMessageRouter) });
             var messageBroker = (DefaultMessageBroker)container.Resolve<IMessageBroker>();
             
             // TODO ensure that the InProcessMessageRouter is overwritten.
@@ -78,7 +78,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void InitializeAsync_throw_router_error()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(RequiredMessageRouter) });
+            var container = this.CreateInjector(parts: new[] { typeof(RequiredMessageRouter) });
             var messageBroker = container.Resolve<IMessageBroker>();
             Assert.ThrowsAsync<NotImplementedException>(() => (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container)));
         }
@@ -86,7 +86,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task InitializeAsync_with_match_provider()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(WithProviderMessageRouter) });
+            var container = this.CreateInjector(parts: new[] { typeof(WithProviderMessageRouter) });
             var messageBroker = container.Resolve<IMessageBroker>();
             await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
         }
@@ -94,7 +94,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void InitializeAsync_with_bad_match_provider()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(WithBadProviderMessageRouter) });
+            var container = this.CreateInjector(parts: new[] { typeof(WithBadProviderMessageRouter) });
             var messageBroker = container.Resolve<IMessageBroker>();
             Assert.ThrowsAsync<InvalidOperationException>(() => (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container)));
         }
@@ -102,7 +102,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task DispatchAsync_timeout()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var appRuntime = container.Resolve<IAppRuntime>();
             var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
@@ -127,7 +127,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var sb = new StringBuilder();
             var logger = this.GetLogger<IMessageBroker>(sb);
 
-            var container = this.CreateContainer(parts: new[] { typeof(LoggableMessageBroker) });
+            var container = this.CreateInjector(parts: new[] { typeof(LoggableMessageBroker) });
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
             ((LoggableMessageBroker)messageBroker).SetLogger(logger);
@@ -162,7 +162,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task DispatchAsync_Ping_argument_missing_recipients()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
             Assert.ThrowsAsync<ArgumentException>(() => messageBroker.DispatchAsync(new PingMessage()));
@@ -171,7 +171,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task DispatchAsync_Ping_success_with_timeout()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
@@ -189,7 +189,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task DispatchAsync_Ping_with_enabled_switch()
         {
-            var container = this.CreateContainer(parts: new[]
+            var container = this.CreateInjector(parts: new[]
             {
                 typeof(CanDisableMessageRouterEnabledRule),
                 typeof(CanDisableMessageRouter),
@@ -227,7 +227,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task DispatchAsync_dispose_created_context()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestMessageProcessor) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestMessageProcessor) });
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
             var messageProcessor = (TestMessageProcessor)container.Resolve<IMessageProcessor>();
@@ -256,7 +256,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task ProcessAsync_Ping_over_serialization_success()
         {
-            var container = this.CreateContainer(assemblies: new[] { typeof(IJsonSerializerSettingsProvider).Assembly }, parts: new[] { typeof(RemoteMessageBroker) });
+            var container = this.CreateInjector(assemblies: new[] { typeof(IJsonSerializerSettingsProvider).Assembly }, parts: new[] { typeof(RemoteMessageBroker) });
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
@@ -268,7 +268,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task ProcessAsync_Ping_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
@@ -280,7 +280,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task ProcessAsync_Ping_exception()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(ExceptionEventHandler) });
+            var container = this.CreateInjector(parts: new[] { typeof(ExceptionEventHandler) });
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
@@ -290,7 +290,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task ProcessAsync_null_response_event_no_handlers()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
             var nullResponse = await messageBroker.DispatchAsync(new TestEvent());
@@ -301,7 +301,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task PublishAsync_event()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestEventHandler) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestEventHandler) });
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
             var message = new TestEvent { TaskCompletionSource = new TaskCompletionSource<(string, IBrokeredMessage)>() };
@@ -314,7 +314,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task ProcessOneWayAsync_event()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestEventHandler) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestEventHandler) });
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
             var message = new TestEvent { TaskCompletionSource = new TaskCompletionSource<(string, IBrokeredMessage)>() };

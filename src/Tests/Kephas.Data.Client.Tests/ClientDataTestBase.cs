@@ -14,7 +14,7 @@ namespace Kephas.Data.Client.Tests
     using System.Reflection;
 
     using Kephas.Data.Client.Queries;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public abstract class ClientDataTestBase : InjectionTestBase
     {

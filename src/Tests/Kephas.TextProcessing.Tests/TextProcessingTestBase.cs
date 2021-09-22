@@ -12,7 +12,7 @@ namespace Kephas.TextProcessing.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public abstract class TextProcessingTestBase : InjectionTestBase
     {

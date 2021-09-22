@@ -136,7 +136,7 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task BootstrapAsync_composition()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestApp), typeof(TestMainLoop), typeof(TestShutdownFeatureManager) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestApp), typeof(TestMainLoop), typeof(TestShutdownFeatureManager) });
             var app = new TestApp(ambientServices: container.Resolve<IAmbientServices>());
             var (appContext, instruction) = await app.BootstrapAsync();
 

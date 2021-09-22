@@ -22,7 +22,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
@@ -32,7 +32,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public async Task CreateEntityAsync()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
@@ -49,7 +49,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public async Task UpdateEntityAsync_with_find()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
@@ -74,7 +74,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public async Task Query_CountAsync()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
@@ -99,7 +99,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public async Task Query_SingleAsync()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
@@ -123,7 +123,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public async Task Query_ToListAsync()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 
@@ -149,7 +149,7 @@ namespace Kephas.Data.MongoDB.Tests
         [Test]
         public async Task Query_ToList()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             using var dataSpace = container.Resolve<IDataSpace>();
             var dataContext = dataSpace[typeof(NotificationMongoEntity)];
 

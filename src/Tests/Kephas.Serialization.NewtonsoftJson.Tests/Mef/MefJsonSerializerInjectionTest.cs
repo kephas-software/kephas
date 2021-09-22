@@ -28,7 +28,7 @@ namespace Kephas.Serialization.Json.Tests.Mef
         [Test]
         public async Task SerializeAsync_Composition()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var serializationService = container.Resolve<ISerializationService>();
 
             var obj = new TestEntity

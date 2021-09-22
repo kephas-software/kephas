@@ -15,7 +15,7 @@ namespace Kephas.Data.MongoDB.Tests
     using Kephas.Data.MongoDB.Application;
     using Kephas.Data.Store;
     using Kephas.Services;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using Kephas.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;

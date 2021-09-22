@@ -28,7 +28,7 @@ namespace Kephas.Data.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var dataSpace = container.Resolve<IDataSpace>();
 
             Assert.IsNotNull(dataSpace);

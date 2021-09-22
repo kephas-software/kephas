@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Tests.Autofac
 
     public class AutofacMessagingTestBase : AutofacApplicationTestBase
     {
-        public override IInjector CreateContainer(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -42,7 +42,7 @@ namespace Kephas.Messaging.Tests.Autofac
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
 
-            return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);
+            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
         protected virtual IInjector CreateMessagingContainerMock()

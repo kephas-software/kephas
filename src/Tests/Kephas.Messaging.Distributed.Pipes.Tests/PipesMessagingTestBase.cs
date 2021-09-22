@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
     using Kephas.Serialization.Json;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
 
     public abstract class PipesMessagingTestBase : InjectionTestBase
     {
@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Pipes.Tests
             };
         }
 
-        public override IInjector CreateContainer(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null, IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
+        public override IInjector CreateInjector(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null, IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))
@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Pipes.Tests
                 ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateContainer(ambientServices, assemblies, parts, config);
+            return base.CreateInjector(ambientServices, assemblies, parts, config);
         }
     }
 }

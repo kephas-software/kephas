@@ -8,7 +8,6 @@
     using Kephas.Injection;
     using Kephas.Model;
     using Kephas.Model.Runtime;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
     using NSubstitute;
 
@@ -27,7 +26,7 @@
 
         public IInjector CreateContainerForModel(params Type[] elements)
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
 

@@ -20,7 +20,7 @@ namespace Kephas.Scripting.Tests
         [Test]
         public void DefaultMessageProcessor_Injection_success()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var scriptingEngine = container.Resolve<IScriptProcessor>();
             Assert.IsInstanceOf<DefaultScriptProcessor>(scriptingEngine);
 
@@ -31,7 +31,7 @@ namespace Kephas.Scripting.Tests
         [Test]
         public async Task ExecuteAsync_Injection_success()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestLanguageService) });
+            var container = this.CreateInjector(parts: new[] { typeof(TestLanguageService) });
             var scriptingEngine = container.Resolve<IScriptProcessor>();
 
             var script = new Script("test", "dummy");

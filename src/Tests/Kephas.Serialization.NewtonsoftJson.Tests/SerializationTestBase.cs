@@ -19,7 +19,7 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
     public class SerializationTestBase : InjectionTestBase

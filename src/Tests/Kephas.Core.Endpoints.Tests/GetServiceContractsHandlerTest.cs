@@ -13,7 +13,7 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Services;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -23,7 +23,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_all()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var handler = new GetServiceContractsHandler(container.Resolve<IAmbientServices>());
 
             var result = await handler.ProcessAsync(
@@ -43,7 +43,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_filter_asopengeneric()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var handler = new GetServiceContractsHandler(container.Resolve<IAmbientServices>());
 
             var result = await handler.ProcessAsync(

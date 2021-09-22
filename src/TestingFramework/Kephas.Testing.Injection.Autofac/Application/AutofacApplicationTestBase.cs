@@ -14,7 +14,6 @@ namespace Kephas.Testing.Application
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
 
     public class AutofacApplicationTestBase : AutofacInjectionTestBase

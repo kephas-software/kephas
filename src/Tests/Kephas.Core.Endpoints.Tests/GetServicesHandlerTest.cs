@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Messaging.Endpoints;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -28,7 +28,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_missing_contracttype()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.ProcessAsync(
@@ -40,7 +40,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_single()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
@@ -55,7 +55,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_multiple()
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 assemblies: new Assembly[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesMessage).Assembly },
                 parts: new Type[] { typeof(TestGetServicesHandler) });
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
@@ -74,7 +74,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_multiple_with_override()
         {
-            var container = this.CreateContainer(
+            var container = this.CreateInjector(
                 assemblies: new Assembly[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesMessage).Assembly },
                 parts: new Type[] { typeof(TestGetServicesHandler) });
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);

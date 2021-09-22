@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Composition
+namespace Kephas.Testing.Injection
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Text;
+
     using Kephas.Application;
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection;
@@ -43,7 +44,7 @@ namespace Kephas.Testing.Composition
         /// <returns>
         /// A LiteInjectorBuilder.
         /// </returns>
-        public virtual LiteInjectorBuilder WithContainerBuilder(
+        public virtual LiteInjectorBuilder WithInjectorBuilder(
             IAmbientServices? ambientServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
@@ -66,9 +67,9 @@ namespace Kephas.Testing.Composition
         /// <returns>
         /// The new container.
         /// </returns>
-        public IInjector CreateContainer(params Assembly[] assemblies)
+        public IInjector CreateInjector(params Assembly[] assemblies)
         {
-            return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
+            return this.CreateInjector(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace Kephas.Testing.Composition
         /// <returns>
         /// The new container.
         /// </returns>
-        public virtual IInjector CreateContainer(
+        public virtual IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -94,7 +95,7 @@ namespace Kephas.Testing.Composition
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             var allParts = this.GetDefaultParts().ToList();
             allParts.AddRange(parts ?? Type.EmptyTypes);
-            var containerBuilder = this.WithContainerBuilder(ambientServices, logManager, appRuntime)
+            var containerBuilder = this.WithInjectorBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
                     .WithParts(allParts);
@@ -106,17 +107,17 @@ namespace Kephas.Testing.Composition
             return container;
         }
 
-        public IInjector CreateContainerWithBuilder(Action<LiteInjectorBuilder>? config = null)
+        public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
         {
-            var builder = this.WithContainerBuilder()
+            var builder = this.WithInjectorBuilder()
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
 
-        public IInjector CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
-            return this.WithContainerBuilder(ambientServices)
+            return this.WithInjectorBuilder(ambientServices)
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
                 .WithParts(types)
                 .Build();

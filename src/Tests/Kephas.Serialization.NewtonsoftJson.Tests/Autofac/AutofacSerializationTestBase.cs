@@ -12,7 +12,6 @@ namespace Kephas.Serialization.Json.Tests.Autofac
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
 
     public class AutofacSerializationTestBase : AutofacInjectionTestBase

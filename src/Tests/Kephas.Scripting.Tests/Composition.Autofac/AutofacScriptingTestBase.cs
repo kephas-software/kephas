@@ -12,8 +12,6 @@ namespace Kephas.Scripting.Tests.Composition.Autofac
 {
     using System.Collections.Generic;
     using System.Reflection;
-
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
 
     public class AutofacScriptingTestBase : AutofacInjectionTestBase

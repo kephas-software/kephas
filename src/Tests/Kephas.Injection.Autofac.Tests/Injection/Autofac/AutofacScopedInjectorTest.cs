@@ -15,7 +15,6 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Injection.Autofac.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition;
     using Kephas.Testing.Injection;
     using NUnit.Framework;
 
@@ -29,7 +28,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateScopedInjector_NestedScopes()
         {
-            var container = this.CreateContainerWithBuilder(
+            var container = this.CreateInjectorWithBuilder(
                 b => b.WithRegistration(
                     new AppServiceInfo(
                         typeof(AutofacInjectorTest.ScopeExportedClass),
@@ -53,7 +52,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateScopedInjector_Injector_registration_root()
         {
-            var container = this.CreateContainerWithBuilder();
+            var container = this.CreateInjectorWithBuilder();
             var selfContainer = container.Resolve<IInjector>();
             Assert.AreSame(container, selfContainer);
         }
@@ -61,7 +60,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateScopedInjector_Injector_registration_scope()
         {
-            var container = this.CreateContainerWithBuilder();
+            var container = this.CreateInjectorWithBuilder();
             using (var scopedContext = container.CreateScopedInjector())
             {
                 var selfScopedContext = scopedContext.Resolve<IInjector>();
@@ -72,7 +71,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateScopedInjector_Injector_registration_scope_consumers()
         {
-            var container = this.CreateContainerWithBuilder(
+            var container = this.CreateInjectorWithBuilder(
                 b => b.WithRegistration(
                     new AppServiceInfo(
                         typeof(AutofacInjectorTest.ScopeExportedClass),
