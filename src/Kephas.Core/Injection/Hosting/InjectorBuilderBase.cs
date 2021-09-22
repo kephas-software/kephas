@@ -34,8 +34,7 @@ namespace Kephas.Injection.Hosting
         where TBuilder : InjectorBuilderBase<TBuilder>
     {
         private readonly InjectionSettings settings = new ();
-        private HashSet<Assembly> injectionAssemblies;
-        private HashSet<Assembly> conventionAssemblies;
+        private HashSet<Assembly>? injectionAssemblies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectorBuilderBase{TBuilder}"/> class.
@@ -60,6 +59,8 @@ namespace Kephas.Injection.Hosting
             this.AssertRequiredService(this.TypeLoader);
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
+
+            this.Registry = new AppServiceInfoRegistry(() => this.injectionAssemblies ?? Enumerable.Empty<Assembly>());
 
             context.AppServiceInfosProviders = context.AppServiceInfosProviders == null
                 ? new List<IAppServiceInfosProvider> { this.Registry }
@@ -112,55 +113,12 @@ namespace Kephas.Injection.Hosting
         /// <value>
         /// The serviceRegistry.
         /// </value>
-        protected AppServiceInfoRegistry Registry { get; } = new ();
+        protected AppServiceInfoRegistry Registry { get; }
 
         /// <summary>
         /// Gets the registration context.
         /// </summary>
         protected IInjectionBuildContext BuildContext { get; }
-
-        /// <summary>
-        /// Adds the assemblies containing the conventions.
-        /// </summary>
-        /// <param name="assemblies">The convention assemblies.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        /// <remarks>
-        /// Can be used multiple times, the provided assemblies are added to the existing ones.
-        /// </remarks>
-        public virtual TBuilder WithConventionAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            Requires.NotNull(assemblies, nameof(assemblies));
-
-            if (this.conventionAssemblies == null)
-            {
-                this.conventionAssemblies = new HashSet<Assembly>(assemblies);
-            }
-            else
-            {
-                this.conventionAssemblies.AddRange(assemblies);
-            }
-
-            return (TBuilder)this;
-        }
-
-        /// <summary>
-        /// Adds the assembly containing the conventions.
-        /// </summary>
-        /// <param name="assembly">The convention assembly.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        /// <remarks>
-        /// Can be used multiple times, the provided assembly is added to the existing ones.
-        /// </remarks>
-        public virtual TBuilder WithConventionAssembly(Assembly assembly)
-        {
-            Requires.NotNull(assembly, nameof(assembly));
-
-            return this.WithConventionAssemblies(new[] { assembly });
-        }
 
         /// <summary>
         /// Sets the composition conventions.
@@ -311,7 +269,7 @@ namespace Kephas.Injection.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    var assemblies = this.GetInjectionAssemblies();
+                    var assemblies = this.GetAssemblies();
 
                     container = this.CreateInjectorWithConventions(assemblies);
                 },
@@ -336,25 +294,6 @@ namespace Kephas.Injection.Hosting
         protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions);
 
         /// <summary>
-        /// Gets the assemblies used for dependency injection.
-        /// </summary>
-        /// <returns>An enumeration of assemblies used for dependency injection.</returns>
-        protected IEnumerable<Assembly> GetInjectionAssemblies()
-        {
-            return (IEnumerable<Assembly>)this.injectionAssemblies ?? this.GetAssemblies();
-        }
-
-        /// <summary>
-        /// Gets the convention assemblies.
-        /// </summary>
-        /// <param name="fallbackAssemblies">The fallback assemblies, used if no convention assemblies are provided.</param>
-        /// <returns>An enumeration of assemblies used for conventions.</returns>
-        protected IEnumerable<Assembly> GetConventionAssemblies(IEnumerable<Assembly> fallbackAssemblies)
-        {
-            return this.conventionAssemblies ?? fallbackAssemblies;
-        }
-
-        /// <summary>
         /// Gets the convention builder.
         /// </summary>
         /// <param name="assemblies">The assemblies containing the conventions.</param>
@@ -374,7 +313,7 @@ namespace Kephas.Injection.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    conventions.RegisterConventionsFrom(assemblies, this.BuildContext);
+                    conventions.RegisterConventions(this.BuildContext);
                 },
                 this.Logger);
 
@@ -419,8 +358,8 @@ namespace Kephas.Injection.Hosting
             Profiler.WithDebugStopwatch(
                 () =>
                 {
-                    var appAssemblies = this.AppRuntime.GetAppAssemblies();
-                    appAssemblies = this.WhereNotSystemAssemblies(appAssemblies);
+                    var appAssemblies = this.injectionAssemblies
+                                        ?? this.WhereNotSystemAssemblies(this.AppRuntime.GetAppAssemblies());
 
                     if (string.IsNullOrWhiteSpace(searchPattern))
                     {
@@ -429,7 +368,7 @@ namespace Kephas.Injection.Hosting
                     else
                     {
                         var regex = new Regex(searchPattern);
-                        assemblies = appAssemblies.Where(a => regex.IsMatch(a.FullName)).ToList();
+                        assemblies = appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
                     }
                 },
                 this.Logger);
@@ -457,8 +396,7 @@ namespace Kephas.Injection.Hosting
         /// <returns>The injector.</returns>
         private IInjector CreateInjectorWithConventions(IEnumerable<Assembly> assemblies)
         {
-            var parts = this.GetInjectionParts(assemblies);
-            var conventionAssemblies = this.GetConventionAssemblies(assemblies);
+            var conventionAssemblies = assemblies;
             var conventions = this.GetConventions(conventionAssemblies);
 
             var container = this.CreateInjectorCore(conventions);
@@ -466,26 +404,21 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Gets the composition parts.
-        /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <returns>The composition parts.</returns>
-        private IList<Type> GetInjectionParts(IEnumerable<Assembly> assemblies)
-        {
-            var parts = assemblies
-                .SelectMany(a => this.TypeLoader.GetExportedTypes(a))
-                .Where(ConventionsBuilderExtensions.IsPartCandidate)
-                .ToList();
-
-            return parts;
-        }
-
-        /// <summary>
         /// An application service information serviceRegistry.
         /// </summary>
         protected class AppServiceInfoRegistry : IAppServiceInfosProvider
         {
+            private readonly Func<IEnumerable<Assembly>> getAssemblies;
             private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="AppServiceInfoRegistry"/> class.
+            /// </summary>
+            /// <param name="getAssemblies">A function for retrieving the assemblies to scan for <see cref="IAppServiceInfosProvider"/> attributes.</param>
+            public AppServiceInfoRegistry(Func<IEnumerable<Assembly>> getAssemblies)
+            {
+                this.getAssemblies = getAssemblies;
+            }
 
             /// <summary>
             /// Adds an <see cref="IAppServiceInfo"/>.

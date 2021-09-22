@@ -24,7 +24,7 @@ namespace Kephas.Injection.Lite.Conventions
 
         private readonly IAmbientServices ambientServices;
 
-        private IList<LiteRegistrationBuilder> descriptorBuilders = new List<LiteRegistrationBuilder>();
+        private readonly IList<LiteRegistrationBuilder> descriptorBuilders = new List<LiteRegistrationBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LiteConventionsBuilder"/> class.
@@ -94,12 +94,11 @@ namespace Kephas.Injection.Lite.Conventions
         /// <summary>
         /// Builds the container using the given parts.
         /// </summary>
-        /// <param name="parts">The parts.</param>
-        public void Build(IEnumerable<Type> parts)
+        public void Build()
         {
             foreach (var descriptorBuilder in this.descriptorBuilders)
             {
-                descriptorBuilder.Build(parts);
+                descriptorBuilder.Build();
             }
         }
     }

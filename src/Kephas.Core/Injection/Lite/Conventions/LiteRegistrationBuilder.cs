@@ -57,7 +57,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <value>
         /// The service instance.
         /// </value>
-        public object Instance { get; set; }
+        public object? Instance { get; set; }
 
         /// <summary>
         /// Gets or sets the factory.
@@ -65,7 +65,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <value>
         /// A function delegate that yields an object.
         /// </value>
-        public Func<IInjector, object> Factory { get; set; }
+        public Func<IInjector, object>? Factory { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the implementation.
@@ -73,15 +73,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <value>
         /// The type of the implementation.
         /// </value>
-        public Type ImplementationType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the implementation type predicate.
-        /// </summary>
-        /// <value>
-        /// The implementation type predicate.
-        /// </value>
-        public Predicate<Type> ImplementationTypePredicate { get; set; }
+        public Type? ImplementationType { get; set; }
 
         /// <summary>
         /// Gets or sets the lifetime.
@@ -166,8 +158,7 @@ namespace Kephas.Injection.Lite.Conventions
         public override string ToString()
         {
             var implementationString = this.ImplementationType?.ToString()
-                                       ?? (this.ImplementationTypePredicate != null ? "type predicate" :
-                                           this.Factory != null
+                                       ?? (this.Factory != null
                                                 ? "factory"
                                                 : this.Instance != null ? "instance" : "unknown");
             var serviceTypeString = this.ContractType == null || this.ContractType == this.ServiceType
@@ -177,7 +168,7 @@ namespace Kephas.Injection.Lite.Conventions
         }
 
 
-        internal void Build(IEnumerable<Type> parts)
+        internal void Build()
         {
             void ConfigureService(IServiceRegistrationBuilder b)
             {
@@ -233,43 +224,7 @@ namespace Kephas.Injection.Lite.Conventions
                 return;
             }
 
-            if (this.ImplementationTypePredicate != null)
-            {
-                var isGenericTypeDefinition = this.ServiceType?.IsGenericTypeDefinition ?? false;
-                var genericServiceType = this.ServiceType;
-
-                var anyImplementations = false;
-                foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
-                {
-                    anyImplementations = true;
-                    this.ImplementationType = type;
-                    if (isGenericTypeDefinition && !type.IsGenericTypeDefinition)
-                    {
-                        var constructedServiceType = type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericServiceType);
-                        if (constructedServiceType == null)
-                        {
-                            throw new InvalidOperationException(string.Format(Strings.LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception, genericServiceType, type));
-                        }
-
-                        this.ExportConfiguration?.Invoke(constructedServiceType, this);
-                    }
-                    else
-                    {
-                        this.ExportConfiguration?.Invoke(type, this);
-                    }
-
-                    this.ambientServices.Register(this.ServiceType, ConfigureService);
-                }
-
-                if (!anyImplementations)
-                {
-                    this.ambientServices.Register(this.ServiceType, ConfigureService);
-                }
-
-                return;
-            }
-
-            throw new InvalidOperationException(string.Format(Strings.LiteRegistrationBuilder_InvalidRegistration_Exception, nameof(this.ImplementationType), nameof(this.ImplementationTypePredicate), nameof(this.Factory)));
+            throw new InvalidOperationException(string.Format(Strings.LiteRegistrationBuilder_InvalidRegistration_Exception, nameof(this.ImplementationType), nameof(this.Factory)));
         }
     }
 }

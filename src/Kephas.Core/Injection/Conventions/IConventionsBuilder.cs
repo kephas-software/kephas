@@ -11,6 +11,12 @@
 namespace Kephas.Injection.Conventions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Hosting;
+    using Kephas.Logging;
 
     /// <summary>
     /// Contract for conventions builder.
@@ -39,5 +45,37 @@ namespace Kephas.Injection.Conventions
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
         IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory);
+
+        /// <summary>
+        /// Adds the conventions from the provided types implementing
+        /// <see cref="IConventionsRegistrar" />.
+        /// </summary>
+        /// <param name="buildContext">Context for the registration.</param>
+        /// <returns>
+        /// The convention builder.
+        /// </returns>
+        public IConventionsBuilder RegisterConventions(IInjectionBuildContext buildContext)
+        {
+            Requires.NotNull(buildContext, nameof(buildContext));
+
+            var builder = this;
+            var conventionRegistrars = buildContext.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
+            var registrars = conventionRegistrars?.ToList() ?? new List<IConventionsRegistrar>();
+
+            var logger = this.GetType().GetLogger(buildContext);
+
+            // apply the convention builders
+            foreach (var registrar in registrars)
+            {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug("Registering conventions from '{conventionsRegistrar}...", registrar.GetType());
+                }
+
+                registrar.RegisterConventions(builder, buildContext);
+            }
+
+            return builder;
+        }
     }
 }

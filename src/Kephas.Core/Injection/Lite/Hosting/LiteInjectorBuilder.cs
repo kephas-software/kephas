@@ -41,7 +41,7 @@ namespace Kephas.Injection.Lite.Hosting
         protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
         {
             var liteConventions = (LiteConventionsBuilder)conventions;
-            liteConventions.Build(parts);
+            liteConventions.Build();
 
             return this.ambientServices.ToInjector();
         }
