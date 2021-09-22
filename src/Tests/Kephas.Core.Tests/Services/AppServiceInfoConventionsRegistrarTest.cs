@@ -65,8 +65,8 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
                 {
-                    typeof(ISingleTestAppService).GetTypeInfo(),
-                    typeof(SingleTestService).GetTypeInfo(),
+                    typeof(ISingleTestAppService),
+                    typeof(SingleTestService),
                 };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -84,10 +84,10 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ISingleTestAppService).GetTypeInfo(),
-                typeof(SingleTestService).GetTypeInfo(),
-                typeof(SingleOverrideTestService).GetTypeInfo(),
-                typeof(ChainSingleOverrideTestService).GetTypeInfo(),
+                typeof(ISingleTestAppService),
+                typeof(SingleTestService),
+                typeof(SingleOverrideTestService),
+                typeof(ChainSingleOverrideTestService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -105,9 +105,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ISingleTestAppService).GetTypeInfo(),
-                typeof(SingleTestService).GetTypeInfo(),
-                typeof(DerivedOverrideSingleTestService).GetTypeInfo(),
+                typeof(ISingleTestAppService),
+                typeof(SingleTestService),
+                typeof(DerivedOverrideSingleTestService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -125,9 +125,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ISingleTestAppService).GetTypeInfo(),
-                typeof(SingleTestService).GetTypeInfo(),
-                typeof(SingleOverrideTestService).GetTypeInfo(),
+                typeof(ISingleTestAppService),
+                typeof(SingleTestService),
+                typeof(SingleOverrideTestService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -145,9 +145,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ISingleTestAppService).GetTypeInfo(),
-                typeof(SingleTestService).GetTypeInfo(),
-                typeof(SingleSameOverrideTestService).GetTypeInfo(),
+                typeof(ISingleTestAppService),
+                typeof(SingleTestService),
+                typeof(SingleSameOverrideTestService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             Assert.Throws<AmbiguousServiceResolutionException>(() => registrar.RegisterConventions(
@@ -162,7 +162,7 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(IGenericAppService<>).GetTypeInfo(),
+                typeof(IGenericAppService<>),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -182,8 +182,8 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(IDefaultMetadataAppService).GetTypeInfo(),
-                typeof(DefaultMetadataAppService).GetTypeInfo(),
+                typeof(IDefaultMetadataAppService),
+                typeof(DefaultMetadataAppService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -218,7 +218,7 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(IOneGenericAppService<>).GetTypeInfo(),
+                typeof(IOneGenericAppService<>),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -237,7 +237,7 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(IOneGenericAppService<>).GetTypeInfo(),
+                typeof(IOneGenericAppService<>),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -261,7 +261,7 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ITwoGenericAppService<,>).GetTypeInfo(),
+                typeof(ITwoGenericAppService<,>),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -291,7 +291,7 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ILogger<>).GetTypeInfo(),
+                typeof(ILogger<>),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -314,9 +314,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(IExplicitMetadataAppService).GetTypeInfo(),
-                typeof(ExplicitMetadataAppService).GetTypeInfo(),
-                typeof(NullExplicitMetadataAppService).GetTypeInfo(),
+                typeof(IExplicitMetadataAppService),
+                typeof(ExplicitMetadataAppService),
+                typeof(NullExplicitMetadataAppService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -345,9 +345,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ICustomValueMetadataAppService).GetTypeInfo(),
-                typeof(CustomValueMetadataAppService).GetTypeInfo(),
-                typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
+                typeof(ICustomValueMetadataAppService),
+                typeof(CustomValueMetadataAppService),
+                typeof(CustomValueNullMetadataAppService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -376,9 +376,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ICustomValueMetadataAppService).GetTypeInfo(),
-                typeof(CustomValueMetadataAppService).GetTypeInfo(),
-                typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
+                typeof(ICustomValueMetadataAppService),
+                typeof(CustomValueMetadataAppService),
+                typeof(CustomValueNullMetadataAppService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -407,9 +407,9 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(ICustomNamedValueMetadataAppService).GetTypeInfo(),
-                typeof(CustomNamedValueMetadataAppService).GetTypeInfo(),
-                typeof(CustomNamedValueNullMetadataAppService).GetTypeInfo(),
+                typeof(ICustomNamedValueMetadataAppService),
+                typeof(CustomNamedValueMetadataAppService),
+                typeof(CustomNamedValueNullMetadataAppService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
@@ -443,8 +443,8 @@ namespace Kephas.Core.Tests.Services
 
             var parts = new[]
             {
-                typeof(IBadAppService).GetTypeInfo(),
-                typeof(BadAppService).GetTypeInfo(),
+                typeof(IBadAppService),
+                typeof(BadAppService),
             };
             var registrar = new AppServiceInfoConventionsRegistrar();
             Assert.Throws<InjectionException>(
