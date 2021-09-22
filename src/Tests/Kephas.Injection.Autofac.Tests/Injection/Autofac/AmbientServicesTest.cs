@@ -24,7 +24,7 @@ namespace Kephas.Tests.Injection.Autofac
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
             var container = ambientServices
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
-                .BuildWithAutofac(b => b.WithPart(typeof(CustomAmbientServices))).Injector;
+                .BuildWithAutofac().Injector;
             var otherAmbientServices = container.Resolve<IAmbientServices>();
 
             Assert.AreSame(ambientServices, otherAmbientServices);
@@ -34,7 +34,6 @@ namespace Kephas.Tests.Injection.Autofac
         {
             private CustomAmbientServices()
             {
-
             }
 
             public static CustomAmbientServices CreateAmbientServices() => new CustomAmbientServices();

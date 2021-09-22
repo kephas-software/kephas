@@ -24,7 +24,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
             var container = ambientServices
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
-                .BuildWithSystemComposition(b => b.WithPart(typeof(CustomAmbientServices))).Injector;
+                .BuildWithSystemComposition().Injector;
             var otherAmbientServices = container.Resolve<IAmbientServices>();
 
             Assert.AreSame(ambientServices, otherAmbientServices);
@@ -34,7 +34,6 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             private CustomAmbientServices()
             {
-
             }
 
             public static CustomAmbientServices CreateAmbientServices() => new CustomAmbientServices();

@@ -59,8 +59,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilder();
             var container = builder
-                .WithAssemblies(new Assembly[0])
-                .WithPart(typeof(AppServiceInfoConventionsRegistrar))
+                .WithAssemblies(Array.Empty<Assembly>())
                 .Build();
 
             var loggerManager = container.Resolve<ILogManager>();
@@ -326,12 +325,11 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public async Task CreateContainer_instance_registration()
         {
-            var registrar = Substitute.For<IConventionsRegistrar>();
-            registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
-                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance(typeof(string), "123"); });
+            var registrar = Substitute.For<IAppServiceInfosProvider>();
+            registrar.GetAppServiceInfos(Arg.Any<dynamic>())
+                .Returns((typeof(string), new AppServiceInfo(typeof(string), "123")));
 
-            var factory = this.CreateInjectorBuilder(ctx => ctx.Registrars = new[] { registrar });
+            var factory = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders = new[] { registrar });
             var mockAppRuntime = factory.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
@@ -344,34 +342,13 @@ namespace Kephas.Tests.Injection.Autofac
         }
 
         [Test]
-        public async Task CreateContainer_instance_extension_registration()
-        {
-            var registrar = Substitute.For<IConventionsRegistrar>();
-            registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
-                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance<string>("123"); });
-
-            var factory = this.CreateInjectorBuilder(ctx => ctx.Registrars = new[] { registrar });
-            var mockPlatformManager = factory.AppRuntime;
-
-            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
-
-            var container = factory.Build();
-
-            var instance = container.Resolve<string>();
-            Assert.AreEqual("123", instance);
-        }
-
-        [Test]
         public async Task CreateContainer_instance_factory_registration()
         {
-            var registrar = Substitute.For<IConventionsRegistrar>();
-            registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
-                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory(typeof(string), ctx => "123"); });
+            var registrar = Substitute.For<IAppServiceInfosProvider>();
+            registrar.GetAppServiceInfos(Arg.Any<dynamic>())
+                .Returns((typeof(string), new AppServiceInfo(typeof(string), injector => "123")));
 
-            var factory = this.CreateInjectorBuilder(ctx => ctx.Registrars = new[] { registrar });
+            var factory = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders = new[] { registrar });
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
@@ -383,27 +360,7 @@ namespace Kephas.Tests.Injection.Autofac
             Assert.AreEqual("123", instance);
         }
 
-        [Test]
-        public async Task CreateContainer_instance_factory_extension_registration()
-        {
-            var registrar = Substitute.For<IConventionsRegistrar>();
-            registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
-                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory<string>(ctx => "123"); });
-
-            var factory = this.CreateInjectorBuilder(ctx => ctx.Registrars = new[] { registrar });
-            var mockPlatformManager = factory.AppRuntime;
-
-            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
-
-            var container = factory.Build();
-
-            var instance = container.Resolve<string>();
-            Assert.AreEqual("123", instance);
-        }
-
-        private AutofacInjectorBuilder CreateInjectorBuilder(Action<IInjectionBuildContext> config = null)
+        private AutofacInjectorBuilder CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();

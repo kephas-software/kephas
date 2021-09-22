@@ -18,13 +18,12 @@ namespace Kephas.Tests.Injection.SystemComposition
     using System.Linq;
 
     using Kephas.Injection;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
     using Kephas.Injection.SystemComposition;
     using Kephas.Injection.SystemComposition.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Reflection;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
@@ -217,7 +216,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var container = this.CreateInjector(
                 parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
-                config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
+                config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
 
             var filters = container.ResolveMany(typeof(IFilter));
 
@@ -231,7 +230,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var container = this.CreateInjector(
                 parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
-                config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
+                config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
 
             var rawFilters = container.ToServiceProvider().GetService(typeof(IEnumerable<IFilter>));
             var filters = rawFilters as IEnumerable<IFilter>;
@@ -396,21 +395,13 @@ namespace Kephas.Tests.Injection.SystemComposition
             public ExportedClass ExportedClass { get; set; }
         }
 
-        public class MultiFilterConventionsRegistrar : IConventionsRegistrar
+        public class MultiFilterAppServiceInfosProvider : IAppServiceInfosProvider
         {
-            public void RegisterConventions(
-                IConventionsBuilder builder,
-                IList<Type> candidateTypes,
-                IInjectionBuildContext buildContext)
+            public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
             {
-                builder.ForType(typeof(OneFilter)).ExportInterface(
-                    typeof(IFilter),
-                    (t, b) => b.AsContractType(typeof(IFilter)))
-                    .Singleton();
-                builder.ForType(typeof(TwoFilter)).ExportInterface(
-                        typeof(IFilter),
-                        (t, b) => b.AsContractType(typeof(IFilter)));
-                builder.ForInstance(typeof(IFilter), Substitute.For<IFilter>());
+                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton));
+                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient));
+                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), Substitute.For<IFilter>()));
             }
         }
 
