@@ -11,6 +11,7 @@
 namespace Kephas.Services.Reflection
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -107,6 +108,7 @@ namespace Kephas.Services.Reflection
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
             this.SetLifetime(appServiceInfo.Lifetime);
             this.MetadataAttributes = appServiceInfo.MetadataAttributes;
+            this.Metadata = appServiceInfo.Metadata;
         }
 
         /// <summary>
@@ -143,6 +145,11 @@ namespace Kephas.Services.Reflection
         public Type[]? MetadataAttributes { get; set; } = Array.Empty<Type>();
 
         /// <summary>
+        /// Gets the metadata attached to the service information.
+        /// </summary>
+        public IDictionary<string, object?>? Metadata { get; private set; }
+
+        /// <summary>
         /// Gets the contract type of the export.
         /// </summary>
         /// <value>
@@ -154,6 +161,18 @@ namespace Kephas.Services.Reflection
         /// Gets the instancing strategy: factory, type, or instance.
         /// </summary>
         public object? InstancingStrategy { get; }
+
+        /// <summary>
+        /// Adds the metadata with the provided name and value.
+        /// </summary>
+        /// <param name="name">The metadata name.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>This <see cref="AppServiceInfo"/>.</returns>
+        public AppServiceInfo AddMetadata(string name, object? value)
+        {
+            ((this.Metadata ??= new Dictionary<string, object?>())!)[name] = value;
+            return this;
+        }
 
         /// <summary>
         /// Returns a string that represents the current object.

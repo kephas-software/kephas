@@ -11,6 +11,7 @@
 namespace Kephas.Services.Reflection
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Injection;
 
@@ -50,7 +51,15 @@ namespace Kephas.Services.Reflection
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        Type[]? MetadataAttributes { get; }
+        Type[]? MetadataAttributes => null;
+
+        /// <summary>
+        /// Gets the supported metadata.
+        /// </summary>
+        /// <value>
+        /// The metadata.
+        /// </value>
+        IDictionary<string, object?>? Metadata => null;
 
         /// <summary>
         /// Gets the contract type of the export.
@@ -88,5 +97,14 @@ namespace Kephas.Services.Reflection
         /// The service instance factory.
         /// </value>
         Func<IInjector, object>? InstanceFactory => this.InstancingStrategy as Func<IInjector, object>;
+
+        /// <summary>
+        /// Indicates whether the service information is only a contract definition (<c>true</c>)
+        /// or can be used for service registration.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the service information is only a contract definition;
+        /// otherwise <c>false</c>.</returns>
+        bool IsContractDefinition() => this.InstancingStrategy == null;
     }
 }

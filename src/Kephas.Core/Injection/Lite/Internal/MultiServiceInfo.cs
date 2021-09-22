@@ -82,7 +82,7 @@ namespace Kephas.Injection.Lite.Internal
             throw new NotSupportedException("Only single service infos may provide services.");
         }
 
-        public IDictionary<string, object>? Metadata { get; }
+        public IDictionary<string, object?>? Metadata { get; }
 
         public IEnumerator<IServiceInfo> GetEnumerator() => serviceInfos.GetEnumerator();
 
