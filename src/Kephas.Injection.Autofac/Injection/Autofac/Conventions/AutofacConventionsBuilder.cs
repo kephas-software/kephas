@@ -48,7 +48,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
         /// <returns>
-        /// A <see cref="T:Kephas.Composition.Conventions.IPartConventionsBuilder" /> that must be used
+        /// A <see cref="IPartConventionsBuilder" /> that must be used
         /// to specify the rule.
         /// </returns>
         public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
@@ -61,7 +61,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </summary>
         /// <param name="typePredicate">The type predicate.</param>
         /// <returns>
-        /// A <see cref="T:Kephas.Composition.Conventions.IPartConventionsBuilder" /> that must be used
+        /// A <see cref="IPartConventionsBuilder" /> that must be used
         /// to specify the rule.
         /// </returns>
         public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
@@ -80,7 +80,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
         /// <returns>
-        /// A <see cref="T:Kephas.Composition.Conventions.IPartConventionsBuilder" /> that must be used
+        /// A <see cref="IPartConventionsBuilder" /> that must be used
         /// to specify the rule.
         /// </returns>
         public IPartConventionsBuilder ForType(Type type)
@@ -117,7 +117,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>
-        /// A <see cref="T:Kephas.Composition.Conventions.IPartBuilder" /> to further configure the rule.
+        /// A <see cref="IPartBuilder" /> to further configure the rule.
         /// </returns>
         public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
         {
