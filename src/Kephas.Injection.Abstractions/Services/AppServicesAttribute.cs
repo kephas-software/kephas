@@ -16,14 +16,14 @@ namespace Kephas.Services
     /// Assembly attribute decorating an assembly and collecting the application services, both contract types and implementation types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-    public sealed class AppServicesAttribute : Attribute, IAppServiceInfoProvider, IAppServiceTypesProvider, IHasProcessingPriority
+    public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, IAppServiceTypesProvider, IHasProcessingPriority
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesAttribute"/> class.
         /// </summary>
         /// <param name="providerType">
         /// The type providing the application services.
-        /// Should implement at least one of <see cref="IAppServiceInfoProvider"/> and <see cref="IAppServiceTypesProvider"/> interfaces.
+        /// Should implement at least one of <see cref="IAppServiceInfosProvider"/> and <see cref="IAppServiceTypesProvider"/> interfaces.
         /// </param>
         /// <param name="processingPriority">Adds the processing priority in which the attributes will be processed.</param>
         public AppServicesAttribute(Type providerType, Priority processingPriority = Priority.Normal)
@@ -53,7 +53,7 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfoProvider;
+            var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
             return provider?.GetAppServiceInfos(context) ?? Array.Empty<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
         }
 

@@ -12,6 +12,7 @@ namespace Kephas.Injection.Autofac.Hosting
 {
     using System;
     using System.Collections.Generic;
+
     using global::Autofac;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;

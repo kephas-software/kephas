@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesAppServiceInfoProvider.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesAppServiceInfosProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,7 +9,7 @@ using Kephas.Services;
 
 [assembly: AppServices(
     processingPriority: Priority.Highest,
-    providerType: typeof(AmbientServicesAppServiceInfoProvider))]
+    providerType: typeof(AmbientServicesAppServiceInfosProvider))]
 
 namespace Kephas.Services
 {
@@ -22,7 +22,7 @@ namespace Kephas.Services
     /// <summary>
     /// Provider of <see cref="IAppServiceInfo"/> from the <see cref="IAmbientServices"/>.
     /// </summary>
-    public class AmbientServicesAppServiceInfoProvider : IAppServiceInfoProvider
+    public class AmbientServicesAppServiceInfosProvider : IAppServiceInfosProvider
     {
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.
@@ -35,7 +35,7 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            if (((IInjectionBuildContext?)context)?.AmbientServices is not IAppServiceInfoProvider ambientServicesProvider)
+            if (((IInjectionBuildContext?)context)?.AmbientServices is not IAppServiceInfosProvider ambientServicesProvider)
             {
                 return Array.Empty<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
             }

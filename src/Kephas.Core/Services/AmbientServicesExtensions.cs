@@ -14,6 +14,7 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Lite.Conventions;
     using Kephas.Services.Reflection;
@@ -23,7 +24,7 @@ namespace Kephas.Services
     /// </summary>
     internal static class AmbientServicesExtensions
     {
-        private const string AppServiceInfoProvidersKey = "__" + nameof(AppServiceInfoProvidersKey);
+        private const string AppServiceInfosProvidersKey = "__" + nameof(AppServiceInfosProvidersKey);
         private const string AppServiceTypesProvidersKey = "__" + nameof(AppServiceTypesProvidersKey);
         private const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
 
@@ -47,14 +48,14 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfoProvider"/>.
+        /// An enumeration of <see cref="IAppServiceInfosProvider"/>.
         /// </returns>
-        internal static IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(this IAmbientServices ambientServices)
+        internal static IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(this IAmbientServices ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices[AppServiceInfoProvidersKey] as IEnumerable<IAppServiceInfoProvider>
-                   ?? (IEnumerable<IAppServiceInfoProvider>)(ambientServices[AppServiceInfoProvidersKey] = ComputeAppServiceInfoProviders(ambientServices));
+            return ambientServices[AppServiceInfosProvidersKey] as IEnumerable<IAppServiceInfosProvider>
+                   ?? (IEnumerable<IAppServiceInfosProvider>)(ambientServices[AppServiceInfosProvidersKey] = ComputeAppServiceInfosProviders(ambientServices));
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace Kephas.Services
             // did not add them already, so after that do not call SetAppServiceInfos!
             if ((bool?)ambientServices[LiteConventionsBuilder.LiteInjectionKey] ?? false)
             {
-                var liteServiceInfos = (ambientServices as IAppServiceInfoProvider)?.GetAppServiceInfos(null);
+                var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceInfos(null);
                 var allServiceInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
                 if (liteServiceInfos != null)
                 {
@@ -107,14 +108,14 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Computes the <see cref="IAppServiceInfoProvider"/> services in order of their priority.
+        /// Computes the <see cref="IAppServiceInfosProvider"/> services in order of their priority.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>An enumeration of <see cref="IAppServiceInfoProvider"/>.</returns>
-        internal static IEnumerable<IAppServiceInfoProvider> ComputeAppServiceInfoProviders(IAmbientServices ambientServices)
+        /// <returns>An enumeration of <see cref="IAppServiceInfosProvider"/>.</returns>
+        internal static IEnumerable<IAppServiceInfosProvider> ComputeAppServiceInfosProviders(IAmbientServices ambientServices)
         {
             return ambientServices.AppRuntime.GetAppAssemblies()
-                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfoProvider>())
+                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfosProvider>())
                 .OrderBy(p => (p as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
                 .ToList();
         }

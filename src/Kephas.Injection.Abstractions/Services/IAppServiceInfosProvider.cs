@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppServiceInfoProvider.cs" company="Kephas Software SRL">
+// <copyright file="IAppServiceInfosProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAppServiceInfoProvider interface.
+//   Declares the IAppServiceInfosProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Services
     /// Interface providing the <see cref="GetAppServiceInfos"/> method,
     /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
-    public interface IAppServiceInfoProvider
+    public interface IAppServiceInfosProvider
     {
         /// <summary>
         /// Gets the contract declaration types.
@@ -41,14 +41,14 @@ namespace Kephas.Services
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
-            => GetAppServiceInfos(this, context);
+            => GetAppServiceInfosCore(this, context);
 
         /// <summary>
         /// Tries the get the application service information from the custom attributes.
         /// </summary>
         /// <param name="type">The contract declaration type.</param>
         /// <returns>The <see cref="IAppServiceInfo"/> instance or <c>null</c>.</returns>
-        protected IAppServiceInfo? TryGetAppServiceInfo(Type type)
+        protected internal IAppServiceInfo? TryGetAppServiceInfo(Type type)
         {
             return type.GetCustomAttributes(inherit: false).OfType<IAppServiceInfo>().FirstOrDefault();
         }
@@ -63,7 +63,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        protected internal static IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IAppServiceInfoProvider provider, dynamic? context = null)
+        protected internal static IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfosCore(IAppServiceInfosProvider provider, dynamic? context = null)
         {
             var contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
             if (contractDeclarationTypes == null)

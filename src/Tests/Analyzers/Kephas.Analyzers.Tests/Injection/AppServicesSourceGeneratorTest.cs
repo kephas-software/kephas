@@ -57,7 +57,7 @@ namespace Kephas.Analyzers.Tests.Injection
                     service => services.Any(
                         s => s.serviceType == service.serviceType && s.contractDeclarationType == service.contractDeclarationType)));
 
-            var contractsProvider = (IAppServiceInfoProvider)provider;
+            var contractsProvider = (IAppServiceInfosProvider)provider;
             CollectionAssert.AreEquivalent(
                 new[]
                 {

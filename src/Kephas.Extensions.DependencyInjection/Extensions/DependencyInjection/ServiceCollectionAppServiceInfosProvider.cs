@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceCollectionAppServiceInfoProvider.cs" company="Kephas Software SRL">
+// <copyright file="ServiceCollectionAppServiceInfosProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,7 +13,7 @@ using Kephas.Services;
 
 [assembly: AppServices(
     processingPriority: Priority.High - 100,
-    providerType: typeof(ServiceCollectionAppServiceInfoProvider))]
+    providerType: typeof(ServiceCollectionAppServiceInfosProvider))]
 
 namespace Kephas.Extensions.DependencyInjection
 {
@@ -30,7 +30,7 @@ namespace Kephas.Extensions.DependencyInjection
     /// <summary>
     /// A conventions registrar for a collection of service definitions.
     /// </summary>
-    public class ServiceCollectionAppServiceInfoProvider : IAppServiceInfoProvider
+    public class ServiceCollectionAppServiceInfosProvider : IAppServiceInfosProvider
     {
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.
