@@ -60,7 +60,7 @@ namespace Kephas.Injection.Hosting
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
-            this.Registry = new AppServiceInfoRegistry(() => this.injectionAssemblies ?? Enumerable.Empty<Assembly>());
+            this.Registry = new AppServiceInfoRegistry(this.GetAssemblies);
 
             context.AppServiceInfosProviders = context.AppServiceInfosProviders == null
                 ? new List<IAppServiceInfosProvider> { this.Registry }
@@ -105,7 +105,7 @@ namespace Kephas.Injection.Hosting
         /// <value>
         /// The conventions builder.
         /// </value>
-        protected IConventionsBuilder ConventionsBuilder { get; private set; }
+        protected IConventionsBuilder? ConventionsBuilder { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
@@ -175,23 +175,6 @@ namespace Kephas.Injection.Hosting
             Requires.NotNull(assembly, nameof(assembly));
 
             return this.WithAssemblies(new[] { assembly });
-        }
-
-        /// <summary>
-        /// Adds the composition parts.
-        /// </summary>
-        /// <param name="parts">The parts.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        /// <remarks>
-        /// Can be used multiple times, the provided parts are added to the existing ones.
-        /// </remarks>
-        internal virtual TBuilder WithParts(IEnumerable<Type> parts)
-        {
-            Requires.NotNull(parts, nameof(parts));
-
-            return this.WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts));
         }
 
         /// <summary>
@@ -269,13 +252,28 @@ namespace Kephas.Injection.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    var assemblies = this.GetAssemblies();
-
-                    container = this.CreateInjectorWithConventions(assemblies);
+                    container = this.CreateInjectorCore(this.GetConventions());
                 },
                 this.Logger);
 
             return container!;
+        }
+
+        /// <summary>
+        /// Adds the composition parts.
+        /// </summary>
+        /// <param name="parts">The parts.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        /// <remarks>
+        /// Can be used multiple times, the provided parts are added to the existing ones.
+        /// </remarks>
+        internal virtual TBuilder WithParts(IEnumerable<Type> parts)
+        {
+            Requires.NotNull(parts, nameof(parts));
+
+            return this.WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts));
         }
 
         /// <summary>
@@ -296,19 +294,12 @@ namespace Kephas.Injection.Hosting
         /// <summary>
         /// Gets the convention builder.
         /// </summary>
-        /// <param name="assemblies">The assemblies containing the conventions.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        protected virtual IConventionsBuilder GetConventions(IEnumerable<Assembly> assemblies)
+        protected virtual IConventionsBuilder GetConventions()
         {
             var conventions = this.ConventionsBuilder ?? this.CreateConventionsBuilder();
-
-            if (this.Logger.IsDebugEnabled())
-            {
-                var assemblyNames = assemblies.Select(a => a.GetName().Name).ToList();
-                this.Logger.Debug("{operation}. Convention assemblies: {assemblies}.", nameof(this.GetConventions), assemblyNames);
-            }
 
             Profiler.WithInfoStopwatch(
                 () =>
@@ -345,11 +336,10 @@ namespace Kephas.Injection.Hosting
         /// <summary>
         /// Gets the assemblies.
         /// </summary>
-        /// <param name="searchPattern">The search pattern.</param>
         /// <returns>The assemblies.</returns>
-        private IList<Assembly> GetAssemblies(string? searchPattern = null)
+        private IList<Assembly> GetAssemblies()
         {
-            searchPattern ??= this.GetSettings()?.AssemblyFileNamePattern;
+            var searchPattern = this.GetSettings()?.AssemblyFileNamePattern;
 
             this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetAssemblies), searchPattern);
 
@@ -390,23 +380,9 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Creates the container with the registered conventions.
-        /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <returns>The injector.</returns>
-        private IInjector CreateInjectorWithConventions(IEnumerable<Assembly> assemblies)
-        {
-            var conventionAssemblies = assemblies;
-            var conventions = this.GetConventions(conventionAssemblies);
-
-            var container = this.CreateInjectorCore(conventions);
-            return container;
-        }
-
-        /// <summary>
         /// An application service information serviceRegistry.
         /// </summary>
-        protected class AppServiceInfoRegistry : IAppServiceInfosProvider
+        protected class AppServiceInfoRegistry : IAppServiceInfosProvider, IAppServiceTypesProvider
         {
             private readonly Func<IEnumerable<Assembly>> getAssemblies;
             private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
@@ -438,7 +414,27 @@ namespace Kephas.Injection.Hosting
             /// </returns>
             public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
             {
-                return this.appServiceInfos.Select(i => (i.ContractType!, i));
+                return this.GetAppServices<IAppServiceInfosProvider>().SelectMany(p => p.GetAppServiceInfos())
+                    .Union(this.appServiceInfos.Select(i => (i.ContractType!, i)));
+            }
+
+            /// <summary>
+            /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
+            /// </summary>
+            /// <param name="context">Optional. The context in which the service types are requested.</param>
+            /// <returns>
+            /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
+            /// </returns>
+            public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
+            {
+                return this.GetAppServices<IAppServiceTypesProvider>().SelectMany(p => p.GetAppServiceTypes());
+            }
+
+            private IEnumerable<T> GetAppServices<T>()
+            {
+                return this.getAssemblies()
+                    .SelectMany(a => a.GetCustomAttributes().OfType<T>())
+                    .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
             }
         }
     }
