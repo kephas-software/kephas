@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Injection.Conventions
             var builder = new InjectorBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
                 new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
-                new TestRegistrationContext(new AmbientServices().Register<IConventionsRegistrar>(b => b.WithType<CalculatorConventionsRegistrar>().AllowMultiple())));
+                new TestBuildContext(new AmbientServices().Register<IConventionsRegistrar>(b => b.WithType<CalculatorConventionsRegistrar>().AllowMultiple())));
 
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Injection.Conventions
             var builder = new InjectorBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
                 new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
-                new TestRegistrationContext
+                new TestBuildContext
                 {
                     Registrars = new IConventionsRegistrar[] { new CalculatorConventionsRegistrar() }
                 });
@@ -81,7 +81,7 @@ namespace Kephas.Core.Tests.Injection.Conventions
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+            IInjectionBuildContext buildContext)
         {
             builder
                 .ForTypesDerivedFrom(typeof(ICalculator))

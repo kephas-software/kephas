@@ -43,7 +43,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            var ambientServices = ((IInjectionRegistrationContext?)context)?.AmbientServices;
+            var ambientServices = ((IInjectionBuildContext?)context)?.AmbientServices;
             if (ambientServices == null)
             {
                 yield break;

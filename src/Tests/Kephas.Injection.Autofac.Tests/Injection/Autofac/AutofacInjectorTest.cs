@@ -320,7 +320,7 @@ namespace Kephas.Tests.Injection.Autofac
             public void RegisterConventions(
                 IConventionsBuilder builder,
                 IList<Type> candidateTypes,
-                IInjectionRegistrationContext registrationContext)
+                IInjectionBuildContext buildContext)
             {
                 builder.ForType(typeof(OneFilter)).ExportInterface(
                     typeof(IFilter),

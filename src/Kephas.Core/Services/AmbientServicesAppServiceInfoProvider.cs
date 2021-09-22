@@ -35,7 +35,7 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            if (((IInjectionRegistrationContext?)context)?.AmbientServices is not IAppServiceInfoProvider ambientServicesProvider)
+            if (((IInjectionBuildContext?)context)?.AmbientServices is not IAppServiceInfoProvider ambientServicesProvider)
             {
                 return Array.Empty<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
             }

@@ -28,7 +28,7 @@ namespace Kephas.Injection.Lite.Hosting
         /// Initializes a new instance of the <see cref="LiteInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public LiteInjectorBuilder(IInjectionRegistrationContext context)
+        public LiteInjectorBuilder(IInjectionBuildContext context)
             : base(context)
         {
             this.ambientServices = context.AmbientServices;

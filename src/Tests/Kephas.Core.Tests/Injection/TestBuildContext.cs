@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestRegistrationContext.cs" company="Kephas Software SRL">
+// <copyright file="TestBuildContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,13 +16,13 @@ namespace Kephas.Core.Tests.Injection
     /// <summary>
     /// The test registration context.
     /// </summary>
-    public class TestRegistrationContext : InjectionRegistrationContext
+    public class TestBuildContext : InjectionBuildContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestRegistrationContext"/> class.
+        /// Initializes a new instance of the <see cref="TestBuildContext"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional).</param>
-        public TestRegistrationContext(IAmbientServices? ambientServices = null)
+        public TestBuildContext(IAmbientServices? ambientServices = null)
             : base(ambientServices ?? Substitute.For<IAmbientServices>())
         {
         }

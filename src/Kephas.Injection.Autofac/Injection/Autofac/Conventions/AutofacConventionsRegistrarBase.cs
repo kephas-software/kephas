@@ -29,22 +29,22 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+            IInjectionBuildContext buildContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
-            Requires.NotNull(registrationContext, nameof(registrationContext));
+            Requires.NotNull(buildContext, nameof(buildContext));
 
             if (!(builder is IAutofacContainerBuilderProvider autofacBuilder))
             {
                 throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(IAutofacContainerBuilderProvider)));
             }
 
-            this.RegisterConventions(autofacBuilder.GetContainerBuilder(), candidateTypes, registrationContext);
+            this.RegisterConventions(autofacBuilder.GetContainerBuilder(), candidateTypes, buildContext);
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </summary>
         /// <param name="builder">The container builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         protected abstract void RegisterConventions(
             ContainerBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext);
+            IInjectionBuildContext buildContext);
     }
 }

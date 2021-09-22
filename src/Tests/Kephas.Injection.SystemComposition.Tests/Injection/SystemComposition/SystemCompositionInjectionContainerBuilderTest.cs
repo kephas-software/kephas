@@ -371,7 +371,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance(typeof(string), "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -391,7 +391,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance<string>("123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -411,7 +411,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory(typeof(string), ctx => "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -431,7 +431,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<IInjectionBuildContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory<string>(ctx => "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -446,12 +446,12 @@ namespace Kephas.Tests.Injection.SystemComposition
             Assert.AreEqual("123", instance);
         }
 
-        private SystemCompositionInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionRegistrationContext> config = null)
+        private SystemCompositionInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionBuildContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new InjectionRegistrationContext(new AmbientServices()
+            var context = new InjectionBuildContext(new AmbientServices()
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);

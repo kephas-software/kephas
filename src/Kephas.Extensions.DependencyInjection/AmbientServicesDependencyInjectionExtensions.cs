@@ -41,7 +41,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var injectorBuilder = new DependencyInjectionInjectorBuilder(new InjectionRegistrationContext(ambientServices));
+            var injectorBuilder = new DependencyInjectionInjectorBuilder(new InjectionBuildContext(ambientServices));
 
             injectorBuilderConfig?.Invoke(injectorBuilder);
 

@@ -77,33 +77,33 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+            IInjectionBuildContext buildContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
-            Requires.NotNull(registrationContext, nameof(registrationContext));
+            Requires.NotNull(buildContext, nameof(buildContext));
 
-            var logger = this.GetLogger(registrationContext);
+            var logger = this.GetLogger(buildContext);
 
             var conventions = builder;
             var typeInfos = candidateTypes;
 
             // get all type infos from the injection assemblies
-            var appServiceContractsInfos = this.GetAppServiceContracts(typeInfos, registrationContext)?.ToList();
+            var appServiceContractsInfos = this.GetAppServiceContracts(typeInfos, buildContext)?.ToList();
             if (appServiceContractsInfos == null)
             {
                 return;
             }
 
-            registrationContext.AmbientServices?.SetAppServiceInfos(appServiceContractsInfos);
+            buildContext.AmbientServices?.SetAppServiceInfos(appServiceContractsInfos);
 
             var contractDeclarationTypes = appServiceContractsInfos.Select(e => e.contractDeclarationType).ToList();
 
-            var typeRegistry = registrationContext.AmbientServices?.TypeRegistry ?? RuntimeTypeRegistry.Instance;
+            var typeRegistry = buildContext.AmbientServices?.TypeRegistry ?? RuntimeTypeRegistry.Instance;
             var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
@@ -143,7 +143,7 @@ namespace Kephas.Services
         /// Gets the application service contracts to register.
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the injection.</param>
-        /// <param name="registrationContext">The registration context.</param>
+        /// <param name="buildContext">The registration context.</param>
         /// <returns>
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.
@@ -151,40 +151,40 @@ namespace Kephas.Services
         protected internal virtual IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             GetAppServiceContracts(
                 IList<Type> candidateTypes,
-                IInjectionRegistrationContext registrationContext)
+                IInjectionBuildContext buildContext)
         {
-            var appServiceInfoProviders = this.GetAppServiceInfoProviders(registrationContext);
+            var appServiceInfoProviders = this.GetAppServiceInfoProviders(buildContext);
             var parts = new List<Type>(candidateTypes);
-            if (registrationContext.Parts != null)
+            if (buildContext.Parts != null)
             {
-                parts.AddRange(registrationContext.Parts);
+                parts.AddRange(buildContext.Parts);
             }
 
-            var oldParts = registrationContext.Parts;
-            registrationContext.Parts = parts;
+            var oldParts = buildContext.Parts;
+            buildContext.Parts = parts;
 
             foreach (var appServiceInfoProvider in appServiceInfoProviders)
             {
-                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(registrationContext))
+                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(buildContext))
                 {
                     yield return item;
                 }
             }
 
-            registrationContext.Parts = oldParts;
+            buildContext.Parts = oldParts;
         }
 
         /// <summary>
         /// Gets the application service information providers.
         /// </summary>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
         protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(
-            IInjectionRegistrationContext registrationContext)
+            IInjectionBuildContext buildContext)
         {
-            var ambientServices = registrationContext.AmbientServices;
+            var ambientServices = buildContext.AmbientServices;
             if (ambientServices != null)
             {
                 foreach (var provider in ambientServices.GetAppServiceInfoProviders())
@@ -193,7 +193,7 @@ namespace Kephas.Services
                 }
             }
 
-            var contextProviders = registrationContext.AppServiceInfoProviders;
+            var contextProviders = buildContext.AppServiceInfoProviders;
             if (contextProviders != null)
             {
                 foreach (var provider in contextProviders)

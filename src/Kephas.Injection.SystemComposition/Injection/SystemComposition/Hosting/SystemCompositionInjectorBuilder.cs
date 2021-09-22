@@ -47,7 +47,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// Initializes a new instance of the <see cref="SystemCompositionInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public SystemCompositionInjectorBuilder(IInjectionRegistrationContext context)
+        public SystemCompositionInjectorBuilder(IInjectionBuildContext context)
             : base(context)
         {
             Requires.NotNull(context, nameof(context));

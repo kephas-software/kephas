@@ -42,13 +42,13 @@ namespace Kephas.Injection.Hosting
         /// </summary>
         /// <param name="context">The context.</param>
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the injector.")]
-        protected InjectorBuilderBase(IInjectionRegistrationContext context)
+        protected InjectorBuilderBase(IInjectionBuildContext context)
         {
             Requires.NotNull(context, nameof(context));
             var ambientServices = context.AmbientServices;
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            this.RegistrationContext = context;
+            this.BuildContext = context;
 
             this.LogManager = ambientServices.LogManager;
             this.AssertRequiredService(this.LogManager);
@@ -125,7 +125,7 @@ namespace Kephas.Injection.Hosting
         /// <summary>
         /// Gets the registration context.
         /// </summary>
-        protected IInjectionRegistrationContext RegistrationContext { get; }
+        protected IInjectionBuildContext BuildContext { get; }
 
         /// <summary>
         /// Adds the assemblies containing the conventions.
@@ -333,9 +333,9 @@ namespace Kephas.Injection.Hosting
         {
             Requires.NotNull(conventionsRegistrar, nameof(conventionsRegistrar));
 
-            var registrars = this.RegistrationContext.Registrars?.ToList() ?? new List<IConventionsRegistrar>();
+            var registrars = this.BuildContext.Registrars?.ToList() ?? new List<IConventionsRegistrar>();
             registrars.Add(conventionsRegistrar);
-            this.RegistrationContext.Registrars = registrars;
+            this.BuildContext.Registrars = registrars;
 
             return (TBuilder)this;
         }
@@ -415,7 +415,7 @@ namespace Kephas.Injection.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    conventions.RegisterConventionsFrom(assemblies, parts, this.RegistrationContext);
+                    conventions.RegisterConventionsFrom(assemblies, parts, this.BuildContext);
                 },
                 this.Logger);
 

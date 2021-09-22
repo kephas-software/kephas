@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(MultipleTestService).GetTypeInfo(),
                         typeof(NewMultipleTestService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.Single();
@@ -73,7 +73,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo()
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleTestService)));
@@ -95,7 +95,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(SingleOverrideTestService).GetTypeInfo(),
                         typeof(ChainSingleOverrideTestService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(ChainSingleOverrideTestService)));
@@ -116,7 +116,7 @@ namespace Kephas.Core.Tests.Services
                     typeof(SingleTestService).GetTypeInfo(),
                     typeof(DerivedOverrideSingleTestService).GetTypeInfo(),
                 },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(DerivedOverrideSingleTestService)));
@@ -137,7 +137,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleOverrideTestService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
@@ -158,7 +158,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleSameOverrideTestService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices())));
+                new TestBuildContext(new AmbientServices())));
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IGenericAppService<>).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var match = conventions.MatchingConventionsBuilders.Keys.First();
@@ -196,7 +196,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(IDefaultMetadataAppService).GetTypeInfo(),
                         typeof(DefaultMetadataAppService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(DefaultMetadataAppService)];
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -232,7 +232,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IOneGenericAppService<>).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
@@ -252,7 +252,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IOneGenericAppService<>).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -277,7 +277,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ITwoGenericAppService<,>).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -308,7 +308,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ILogger<>).GetTypeInfo(),
                     },
-                new TestRegistrationContext(this.GetTestAmbientServices(m => log.AppendLine(m))));
+                new TestBuildContext(this.GetTestAmbientServices(m => log.AppendLine(m))));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.Single();
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -334,7 +334,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(ExplicitMetadataAppService).GetTypeInfo(),
                         typeof(NullExplicitMetadataAppService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -366,7 +366,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(CustomValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -398,7 +398,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(CustomValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -430,7 +430,7 @@ namespace Kephas.Core.Tests.Services
                         typeof(CustomNamedValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomNamedValueNullMetadataAppService).GetTypeInfo(),
                     },
-                new TestRegistrationContext(new AmbientServices()));
+                new TestBuildContext(new AmbientServices()));
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -466,7 +466,7 @@ namespace Kephas.Core.Tests.Services
                                   typeof(IBadAppService).GetTypeInfo(), 
                                   typeof(BadAppService).GetTypeInfo(),
                               },
-                new TestRegistrationContext(new AmbientServices())));
+                new TestBuildContext(new AmbientServices())));
         }
 
         [Test]
@@ -509,7 +509,7 @@ namespace Kephas.Core.Tests.Services
             /// <returns>
             ///     The contract declaration types.
             /// </returns>
-            IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionRegistrationContext?)context)?.Parts;
+            IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionBuildContext?)context)?.Parts;
         }
 
         public class DummyAttribute : Attribute

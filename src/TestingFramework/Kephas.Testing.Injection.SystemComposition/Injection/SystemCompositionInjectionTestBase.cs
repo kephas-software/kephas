@@ -68,7 +68,7 @@ namespace Kephas.Testing.Injection
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new SystemCompositionInjectorBuilder(new InjectionRegistrationContext(ambientServices));
+            return new SystemCompositionInjectorBuilder(new InjectionBuildContext(ambientServices));
         }
 
         public IInjector CreateInjector(params Assembly[] assemblies)

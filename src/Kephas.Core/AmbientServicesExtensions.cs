@@ -789,7 +789,7 @@ namespace Kephas
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TInjectorBuilder));
-            var context = new InjectionRegistrationContext(ambientServices);
+            var context = new InjectionBuildContext(ambientServices);
 
             var containerBuilder = (TInjectorBuilder)builderType.CreateInstance(new[] { context });
 
@@ -810,7 +810,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var injectorBuilder = new LiteInjectorBuilder(new InjectionRegistrationContext(ambientServices));
+            var injectorBuilder = new LiteInjectorBuilder(new InjectionBuildContext(ambientServices));
 
             injectorBuilderConfig?.Invoke(injectorBuilder);
 

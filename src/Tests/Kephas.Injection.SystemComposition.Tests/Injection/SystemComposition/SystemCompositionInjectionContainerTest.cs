@@ -401,7 +401,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             public void RegisterConventions(
                 IConventionsBuilder builder,
                 IList<Type> candidateTypes,
-                IInjectionRegistrationContext registrationContext)
+                IInjectionBuildContext buildContext)
             {
                 builder.ForType(typeof(OneFilter)).ExportInterface(
                     typeof(IFilter),

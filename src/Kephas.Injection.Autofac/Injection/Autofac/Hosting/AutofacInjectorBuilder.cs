@@ -33,7 +33,7 @@ namespace Kephas.Injection.Autofac.Hosting
         /// Initializes a new instance of the <see cref="AutofacInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public AutofacInjectorBuilder(IInjectionRegistrationContext context)
+        public AutofacInjectorBuilder(IInjectionBuildContext context)
             : base(context)
         {
         }
@@ -92,7 +92,7 @@ namespace Kephas.Injection.Autofac.Hosting
             var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
 
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
-            autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource(this.RegistrationContext.AmbientServices.TypeRegistry));
+            autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource(this.BuildContext.AmbientServices.TypeRegistry));
 
             foreach (var builderConfig in this.builderConfigs)
             {

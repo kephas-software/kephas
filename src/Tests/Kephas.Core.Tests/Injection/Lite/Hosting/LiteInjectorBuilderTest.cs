@@ -310,12 +310,12 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             Assert.IsNull(exported.Dependency);
         }
 
-        private LiteInjectorBuilder CreateInjectorBuilder(Action<IInjectionRegistrationContext>? config = null)
+        private LiteInjectorBuilder CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new InjectionRegistrationContext(new AmbientServices()
+            var context = new InjectionBuildContext(new AmbientServices()
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);

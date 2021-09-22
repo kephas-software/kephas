@@ -25,10 +25,10 @@ namespace Kephas.Injection.Conventions
         /// </remarks>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext);
+            IInjectionBuildContext buildContext);
     }
 }

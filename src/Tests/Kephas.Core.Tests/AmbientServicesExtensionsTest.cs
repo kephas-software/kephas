@@ -76,7 +76,7 @@ namespace Kephas.Core.Tests
         {
             private IInjector injector;
 
-            public TestInjectorBuilder(IInjectionRegistrationContext context)
+            public TestInjectorBuilder(IInjectionBuildContext context)
                 : base(context)
             {
             }
@@ -104,7 +104,7 @@ namespace Kephas.Core.Tests
         public class BadTestInjectorBuilder : InjectorBuilderBase<AmbientServicesExtensionsTest.BadTestInjectorBuilder>
         {
             public BadTestInjectorBuilder()
-                : base(Substitute.For<IInjectionRegistrationContext>())
+                : base(Substitute.For<IInjectionBuildContext>())
             {
             }
 

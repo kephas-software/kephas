@@ -29,7 +29,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <see cref="DependencyInjectionInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public DependencyInjectionInjectorBuilder(IInjectionRegistrationContext context)
+        public DependencyInjectionInjectorBuilder(IInjectionBuildContext context)
             : base(context)
         {
         }

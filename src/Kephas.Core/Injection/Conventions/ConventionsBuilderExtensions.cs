@@ -59,17 +59,17 @@ namespace Kephas.Injection.Conventions
         /// </summary>
         /// <param name="builder">The builder.</param>
         /// <param name="parts">The parts.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IList<Type> parts, IInjectionRegistrationContext registrationContext)
+        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IList<Type> parts, IInjectionBuildContext buildContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(parts, nameof(parts));
-            Requires.NotNull(registrationContext, nameof(registrationContext));
+            Requires.NotNull(buildContext, nameof(buildContext));
 
-            return RegisterConventionsCore(builder, parts, registrationContext);
+            return RegisterConventionsCore(builder, parts, buildContext);
         }
 
         /// <summary>
@@ -79,18 +79,18 @@ namespace Kephas.Injection.Conventions
         /// <param name="builder">The builder.</param>
         /// <param name="assemblies">The assemblies.</param>
         /// <param name="parts">The parts.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IList<Type> parts, IInjectionRegistrationContext registrationContext)
+        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IList<Type> parts, IInjectionBuildContext buildContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(assemblies, nameof(assemblies));
             Requires.NotNull(parts, nameof(parts));
-            Requires.NotNull(registrationContext, nameof(registrationContext));
+            Requires.NotNull(buildContext, nameof(buildContext));
 
-            return RegisterConventionsCore(builder, parts, registrationContext);
+            return RegisterConventionsCore(builder, parts, buildContext);
         }
 
         /// <summary>
@@ -111,27 +111,27 @@ namespace Kephas.Injection.Conventions
         /// </summary>
         /// <param name="builder">The builder.</param>
         /// <param name="parts">The convention types.</param>
-        /// <param name="registrationContext">The registration context.</param>
+        /// <param name="buildContext">The registration context.</param>
         /// <returns>
         /// The registration builder.
         /// </returns>
-        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, IList<Type> parts, IInjectionRegistrationContext registrationContext)
+        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, IList<Type> parts, IInjectionBuildContext buildContext)
         {
             Requires.NotNull(builder, nameof(builder));
 
-            if (registrationContext.Parts != null)
+            if (buildContext.Parts != null)
             {
-                parts.AddRange(registrationContext.Parts.Where(IsPartCandidate));
+                parts.AddRange(buildContext.Parts.Where(IsPartCandidate));
             }
 
-            var conventionRegistrars = registrationContext.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
+            var conventionRegistrars = buildContext.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
             var registrars = conventionRegistrars?.ToList() ?? new List<IConventionsRegistrar>();
-            if (registrationContext.Registrars != null)
+            if (buildContext.Registrars != null)
             {
-                registrars.AddRange(registrationContext.Registrars);
+                registrars.AddRange(buildContext.Registrars);
             }
 
-            var logger = typeof(ConventionsBuilderExtensions).GetLogger(registrationContext);
+            var logger = typeof(ConventionsBuilderExtensions).GetLogger(buildContext);
 
             // apply the convention builders
             foreach (var registrar in registrars)
@@ -141,7 +141,7 @@ namespace Kephas.Injection.Conventions
                     logger.Debug("Registering conventions from '{conventionsRegistrar}...", registrar.GetType());
                 }
 
-                registrar.RegisterConventions(builder, parts, registrationContext);
+                registrar.RegisterConventions(builder, parts, buildContext);
             }
 
             return builder;

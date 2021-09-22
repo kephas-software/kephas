@@ -29,22 +29,22 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <exception cref="InvalidOperationException">Thrown when the provided conventions are not MEF conventions.</exception>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         public void RegisterConventions(
             IConventionsBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext)
+            IInjectionBuildContext buildContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
-            Requires.NotNull(registrationContext, nameof(registrationContext));
+            Requires.NotNull(buildContext, nameof(buildContext));
 
             if (!(builder is ISystemCompositionConventionBuilderProvider mefBuilder))
             {
                 throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(ISystemCompositionConventionBuilderProvider)));
             }
 
-            this.RegisterConventions(mefBuilder.GetConventionBuilder(), candidateTypes, registrationContext);
+            this.RegisterConventions(mefBuilder.GetConventionBuilder(), candidateTypes, buildContext);
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </summary>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <param name="registrationContext">Context for the registration.</param>
+        /// <param name="buildContext">Context for the registration.</param>
         protected abstract void RegisterConventions(
             ConventionBuilder builder,
             IList<Type> candidateTypes,
-            IInjectionRegistrationContext registrationContext);
+            IInjectionBuildContext buildContext);
     }
 }

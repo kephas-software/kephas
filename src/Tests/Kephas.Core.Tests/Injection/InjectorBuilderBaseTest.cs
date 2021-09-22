@@ -68,12 +68,12 @@ namespace Kephas.Core.Tests.Injection
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
             public TestInjectorBuilder(IAmbientServices? ambientServices = null)
-                : base(new InjectionRegistrationContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
+                : base(new InjectionBuildContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
             {
             }
 
             public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
-                : base(new InjectionRegistrationContext(new AmbientServices().Register(logManager).Register(appRuntime)))
+                : base(new InjectionBuildContext(new AmbientServices().Register(logManager).Register(appRuntime)))
             {
             }
 

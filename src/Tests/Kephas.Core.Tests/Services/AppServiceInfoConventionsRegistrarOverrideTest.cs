@@ -44,7 +44,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(TestDerivedImporter).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
+            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(Generic2).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
+            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -99,7 +99,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(IntClassifierFactory).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
+            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -130,7 +130,7 @@ namespace Kephas.Core.Tests.Services
                             {
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
+            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             var builderEntry = conventions.TypeConventionsBuilders.First();
@@ -157,7 +157,7 @@ namespace Kephas.Core.Tests.Services
                                 typeof(ConverterBase<,>),
                             };
 
-            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
+            registrar.RegisterConventions(conventions, parts, new TestBuildContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -174,7 +174,7 @@ namespace Kephas.Core.Tests.Services
                 this.attrProvider = attrProvider;
             }
 
-            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IInjectionRegistrationContext registrationContext)
+            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IInjectionBuildContext buildContext)
             {
                 yield return new TestAppServiceInfoProvider(this.attrProvider);
             }
@@ -188,7 +188,7 @@ namespace Kephas.Core.Tests.Services
                     this.attrProvider = attrProvider;
                 }
 
-                IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionRegistrationContext?)context)?.Parts;
+                IEnumerable<Type>? IAppServiceInfoProvider.GetContractDeclarationTypes(dynamic? context) => ((IInjectionBuildContext?)context)?.Parts;
 
                 IAppServiceInfo? IAppServiceInfoProvider.TryGetAppServiceInfo(Type type)
                 {
