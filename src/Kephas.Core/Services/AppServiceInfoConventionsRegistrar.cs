@@ -97,6 +97,9 @@ namespace Kephas.Services
                 .SelectMany(p => p.GetAppServiceTypes(buildContext))
                 .ToList();
 
+            // TODO check which of the service infos are contract descriptions
+            // take care: closed generic types.
+            
             buildContext.AmbientServices.SetAppServiceInfos(appServiceInfos);
 
             var contractDeclarationTypes = appServiceInfos.Select(e => e.contractDeclarationType).ToList();
