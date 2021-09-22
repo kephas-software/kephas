@@ -44,7 +44,7 @@ namespace Kephas
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
     [ExcludeFromInjection]
-    public class AmbientServices : Expando, IAmbientServices, IAppServiceInfoProvider
+    public class AmbientServices : Expando, IAmbientServices, IAppServiceInfosProvider
     {
         private readonly IServiceRegistry registry = new ServiceRegistry();
 
@@ -72,7 +72,7 @@ namespace Kephas
                     .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<ILicensingManager, NullLicensingManager>()
 
-                    .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>());
+                    .RegisterMultiple<IConventionsRegistrar>(new AppServiceInfoConventionsRegistrar());
             }
 
             this.registry
