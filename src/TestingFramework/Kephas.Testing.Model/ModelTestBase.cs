@@ -35,12 +35,12 @@ namespace Kephas.Testing.Model
             return registry;
         }
 
-        public IInjector CreateContainerForModel(params Type[] elements)
+        public IInjector CreateInjectorForModel(params Type[] elements)
         {
-            return this.CreateContainerForModel(ambientServices: null, elements: elements);
+            return this.CreateInjectorForModel(ambientServices: null, elements: elements);
         }
 
-        public IInjector CreateContainerForModel(IAmbientServices? ambientServices, params Type[] elements)
+        public IInjector CreateInjectorForModel(IAmbientServices? ambientServices, params Type[] elements)
         {
             var container = this.CreateInjector(
                 ambientServices: ambientServices,
@@ -50,12 +50,12 @@ namespace Kephas.Testing.Model
             return container;
         }
 
-        public IInjector CreateContainerForModel(Type[] parts, Type[] elements)
+        public IInjector CreateInjectorForModel(Type[] parts, Type[] elements)
         {
-            return this.CreateContainerForModel(ambientServices: null, parts: parts, elements: elements);
+            return this.CreateInjectorForModel(ambientServices: null, parts: parts, elements: elements);
         }
 
-        public IInjector CreateContainerForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
+        public IInjector CreateInjectorForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
         {
             var container = this.CreateInjector(
                 ambientServices: ambientServices,

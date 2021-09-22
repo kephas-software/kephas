@@ -30,7 +30,7 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
             var behavior = new WorkflowAppLifecycleBehavior(typeRegistry);
             await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
 
-            var container = this.CreateContainerForModel(
+            var container = this.CreateInjectorForModel(
                 new AmbientServices(typeRegistry: typeRegistry),
                 typeof(ILaughActivity),
                 typeof(IEnjoyActivity));

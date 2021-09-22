@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Injection
         }
 
         [Test]
-        public void CreateContainer()
+        public void Build_success()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false)
                 .Register(Substitute.For<ILogManager>())

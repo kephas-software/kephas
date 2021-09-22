@@ -14,7 +14,7 @@
         [Test]
         public async Task InitializeAsync_key_inheritance()
         {
-            var container = this.CreateContainerForModel(typeof(IUniqueName), typeof(IUniqueGuid), typeof(IPlugin));
+            var container = this.CreateInjectorForModel(typeof(IUniqueName), typeof(IUniqueGuid), typeof(IPlugin));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

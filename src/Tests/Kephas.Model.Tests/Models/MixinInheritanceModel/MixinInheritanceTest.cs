@@ -24,7 +24,7 @@ namespace Kephas.Model.Tests.Models.MixinInheritanceModel
         [Test]
         public async Task InitializeAsync_mixin_inheritance()
         {
-            var container = this.CreateContainerForModel(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter));
+            var container = this.CreateInjectorForModel(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -44,7 +44,7 @@ namespace Kephas.Model.Tests.Models.MixinInheritanceModel
         [Test]
         public async Task InitializeAsync_mixin_not_inherited()
         {
-            var container = this.CreateContainerForModel(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter));
+            var container = this.CreateInjectorForModel(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -61,7 +61,7 @@ namespace Kephas.Model.Tests.Models.MixinInheritanceModel
         [Test]
         public async Task InitializeAsync_aspect_inheritance_model()
         {
-            var container = this.CreateContainerForModel(typeof(IStringAspect), typeof(IStringBuilderAspect));
+            var container = this.CreateInjectorForModel(typeof(IStringAspect), typeof(IStringBuilderAspect));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

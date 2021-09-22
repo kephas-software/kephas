@@ -83,11 +83,9 @@ namespace Kephas.Tests.Injection.SystemComposition
                 .WithParts(new[] { typeof(IOpen<>), typeof(MoreOpenWithDependency<>) })
                 .WithAssembly(this.GetType().Assembly, conventions);
 
-            using (var container = configuration.CreateContainer())
-            {
-                var myService = container.GetExport(typeof(IOpen<object>));
-                Assert.IsInstanceOf<MoreOpenWithDependency<object>>(myService);
-            }
+            using var container = configuration.CreateContainer();
+            var myService = container.GetExport(typeof(IOpen<object>));
+            Assert.IsInstanceOf<MoreOpenWithDependency<object>>(myService);
         }
 
         [SingletonAppServiceContract(AsOpenGeneric = true)]

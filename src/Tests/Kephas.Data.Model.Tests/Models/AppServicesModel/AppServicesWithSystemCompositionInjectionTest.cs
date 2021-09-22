@@ -24,7 +24,7 @@ namespace Kephas.Data.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_data_app_service()
         {
-            var container = this.CreateContainerForModel(typeof(IDataContext));
+            var container = this.CreateInjectorForModel(typeof(IDataContext));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

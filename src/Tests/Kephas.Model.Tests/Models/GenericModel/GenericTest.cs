@@ -24,7 +24,7 @@ namespace Kephas.Model.Tests.Models.GenericModel
         [Test]
         public async Task InitializeAsync_generic_inheritance()
         {
-            var container = this.CreateContainerForModel(typeof(IComplex<,>), typeof(IIntComplex), typeof(IFloatComplex));
+            var container = this.CreateInjectorForModel(typeof(IComplex<,>), typeof(IIntComplex), typeof(IFloatComplex));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -42,7 +42,7 @@ namespace Kephas.Model.Tests.Models.GenericModel
         [Test]
         public async Task TryGetClassifier_generic_inheritance()
         {
-            var container = this.CreateContainerForModel(typeof(IComplex<,>), typeof(IIntComplex), typeof(IFloatComplex));
+            var container = this.CreateInjectorForModel(typeof(IComplex<,>), typeof(IIntComplex), typeof(IFloatComplex));
             var typeRegistry = container.Resolve<IRuntimeTypeRegistry>();
             var provider = container.Resolve<IModelSpaceProvider>();
 

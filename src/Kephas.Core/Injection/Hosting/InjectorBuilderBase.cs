@@ -313,7 +313,7 @@ namespace Kephas.Injection.Hosting
                 {
                     var assemblies = this.GetInjectionAssemblies();
 
-                    container = this.CreateContainerWithConventions(assemblies);
+                    container = this.CreateInjectorWithConventions(assemblies);
                 },
                 this.Logger);
 
@@ -456,7 +456,7 @@ namespace Kephas.Injection.Hosting
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns>The injector.</returns>
-        private IInjector CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
+        private IInjector CreateInjectorWithConventions(IEnumerable<Assembly> assemblies)
         {
             var parts = this.GetInjectionParts(assemblies);
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);

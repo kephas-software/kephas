@@ -29,7 +29,7 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
             var behavior = new SecurityAppLifecycleBehavior(typeRegistry);
             await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
 
-            var container = this.CreateContainerForModel(
+            var container = this.CreateInjectorForModel(
                 new AmbientServices(typeRegistry: typeRegistry),
                 typeof(IDoPermission),
                 typeof(ISpecialDoPermission));

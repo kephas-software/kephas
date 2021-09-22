@@ -39,7 +39,7 @@ namespace Kephas.Tests.Injection.SystemComposition
     public class SystemCompositionInjectionContainerBuilderTest : SystemCompositionInjectionTestBase
     {
         [Test]
-        public async Task CreateContainer_simple_ambient_services_exported()
+        public async Task CreateInjector_simple_ambient_services_exported()
         {
             var builder = this.CreateCompositionContainerBuilder();
             var mockAppRuntime = builder.AppRuntime;
@@ -57,7 +57,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         }
 
         [Test]
-        public void CreateContainer_simple_ambient_services_exported_no_assemblies()
+        public void CreateInjector_simple_ambient_services_exported_no_assemblies()
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
@@ -72,7 +72,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         }
 
         [Test]
-        public void CreateContainer_composed_loggers_exported()
+        public void CreateInjector_composed_loggers_exported()
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
@@ -366,7 +366,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         }
 
         [Test]
-        public async Task CreateContainer_instance_registration()
+        public async Task CreateInjector_instance_registration()
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
@@ -385,7 +385,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         }
 
         [Test]
-        public async Task CreateContainer_instance_factory_registration()
+        public async Task CreateInjector_instance_factory_registration()
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())

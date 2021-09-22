@@ -35,7 +35,7 @@ namespace Kephas.Tests.Injection.SystemComposition
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class SystemCompositionInjectionContainerTest : SystemCompositionInjectionTestBase
     {
-        public SystemCompositionInjector CreateContainer(params Type[] types)
+        public SystemCompositionInjector CreateInjector(params Type[] types)
         {
             return this.WithEmptyConfiguration()
                 .WithParts(types)
@@ -88,7 +88,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void Resolve_success()
         {
-            var container = this.CreateContainer(typeof(ExportedClass));
+            var container = this.CreateInjector(typeof(ExportedClass));
             var exported = container.Resolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -98,7 +98,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void TryResolve_success()
         {
-            var container = this.CreateContainer(typeof(ExportedClass));
+            var container = this.CreateInjector(typeof(ExportedClass));
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -108,7 +108,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void TryResolve_failure()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNull(exported);
@@ -117,7 +117,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void Resolve_generic_success()
         {
-            var container = this.CreateContainer(typeof(ExportedClass));
+            var container = this.CreateInjector(typeof(ExportedClass));
             var exported = container.Resolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -127,7 +127,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void TryResolve_generic_success()
         {
-            var container = this.CreateContainer(typeof(ExportedClass));
+            var container = this.CreateInjector(typeof(ExportedClass));
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -137,7 +137,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void TryResolve_generic_failure()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNull(exported);
@@ -184,14 +184,14 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void Resolve_failure()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             Assert.Throws<CompositionFailedException>(() => container.Resolve(typeof(ExportedClass)));
         }
 
         [Test]
         public void ResolveMany_success()
         {
-            var container = this.CreateContainer(typeof(ExportedClass));
+            var container = this.CreateInjector(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -203,7 +203,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void ResolveMany_empty()
         {
-            var container = this.CreateContainer(typeof(ExportedClass));
+            var container = this.CreateInjector(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(IEnumerable<object>));
 
             Assert.IsNotNull(exported);
@@ -243,7 +243,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void Dispose()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             container.Dispose();
             Assert.Throws<ObjectDisposedException>(() => container.TryResolve<IList<string>>());
         }
@@ -251,7 +251,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void Dispose_multiple()
         {
-            var container = this.CreateContainer();
+            var container = this.CreateInjector();
             container.Dispose();
             container.Dispose();
         }

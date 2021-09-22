@@ -24,7 +24,7 @@
             return registry;
         }
 
-        public IInjector CreateContainerForModel(params Type[] elements)
+        public IInjector CreateInjectorForModel(params Type[] elements)
         {
             var container = this.CreateInjector(
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },
