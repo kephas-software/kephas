@@ -15,7 +15,7 @@ namespace Kephas.Injection.Conventions
     /// <summary>
     /// Registrar for injection conventions.
     /// </summary>
-    public interface IConventionsRegistrar
+    internal interface IConventionsRegistrar
     {
         /// <summary>
         /// Registers the conventions.
@@ -24,11 +24,7 @@ namespace Kephas.Injection.Conventions
         /// The candidate types provided may be changed, typically by adding new types.
         /// </remarks>
         /// <param name="builder">The registration builder.</param>
-        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="buildContext">Context for the registration.</param>
-        void RegisterConventions(
-            IConventionsBuilder builder,
-            IList<Type> candidateTypes,
-            IInjectionBuildContext buildContext);
+        void RegisterConventions(IConventionsBuilder builder, IInjectionBuildContext buildContext);
     }
 }

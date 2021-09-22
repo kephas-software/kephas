@@ -12,8 +12,8 @@ namespace Kephas.Injection.Hosting
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
-    using Kephas.Injection.Conventions;
     using Kephas.Services;
 
     /// <summary>
@@ -30,19 +30,33 @@ namespace Kephas.Injection.Hosting
         IEnumerable<Type>? Parts { get; set; }
 
         /// <summary>
-        /// Gets or sets the registrars.
-        /// </summary>
-        /// <value>
-        /// The registrars.
-        /// </value>
-        IEnumerable<IConventionsRegistrar>? Registrars { get; set; }
-
-        /// <summary>
         /// Gets or sets the application service information providers.
         /// </summary>
         /// <value>
         /// The application service information providers.
         /// </value>
-        IEnumerable<IAppServiceInfoProvider>? AppServiceInfoProviders { get; set; }
+        IEnumerable<IAppServiceInfosProvider>? AppServiceInfosProviders { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IInjectionBuildContext"/>.
+    /// </summary>
+    public static class InjectionBuildContextExtensions
+    {
+        /// <summary>
+        /// Adds a new <see cref="IAppServiceInfosProvider"/> to the <see cref="IInjectionBuildContext.AppServiceInfosProviders"/>.
+        /// </summary>
+        /// <typeparam name="TContext">The context type.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="provider">The provider.</param>
+        /// <returns>This <see cref="IInjectionBuildContext"/> instance.</returns>
+        public static TContext WithAppServiceInfosProvider<TContext>(this TContext context, IAppServiceInfosProvider provider)
+            where TContext : IInjectionBuildContext
+        {
+            var providers = context.AppServiceInfosProviders?.ToList() ?? new List<IAppServiceInfosProvider>();
+            providers.Add(provider);
+            context.AppServiceInfosProviders = providers;
+            return context;
+        }
     }
 }

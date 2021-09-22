@@ -14,7 +14,6 @@ namespace Kephas.Injection.Hosting
     using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.Conventions;
     using Kephas.Services;
 
     /// <summary>
@@ -41,19 +40,11 @@ namespace Kephas.Injection.Hosting
         public IEnumerable<Type>? Parts { get; set; }
 
         /// <summary>
-        /// Gets or sets the registrars.
-        /// </summary>
-        /// <value>
-        /// The registrars.
-        /// </value>
-        public IEnumerable<IConventionsRegistrar>? Registrars { get; set; }
-
-        /// <summary>
         /// Gets or sets the application service information providers.
         /// </summary>
         /// <value>
         /// The application service information providers.
         /// </value>
-        public IEnumerable<IAppServiceInfoProvider>? AppServiceInfoProviders { get; set; }
+        public IEnumerable<IAppServiceInfosProvider>? AppServiceInfosProviders { get; set; }
     }
 }
