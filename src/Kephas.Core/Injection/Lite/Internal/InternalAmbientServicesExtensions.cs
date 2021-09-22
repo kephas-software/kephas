@@ -8,15 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Kephas.Collections;
-using Kephas.Runtime;
-using Kephas.Services.Composition;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Kephas.Collections;
+    using Kephas.Runtime;
+    using Kephas.Services;
+
     internal static class InternalAmbientServicesExtensions
     {
         internal static IInjector AsInjector(this IAmbientServices ambientServices)

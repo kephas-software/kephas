@@ -19,7 +19,6 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// An ordered service collection extensions.

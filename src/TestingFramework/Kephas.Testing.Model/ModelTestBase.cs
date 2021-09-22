@@ -25,7 +25,7 @@ namespace Kephas.Testing.Model
     /// <summary>
     /// A model test base.
     /// </summary>
-    public abstract class ModelTestBase : CompositionTestBase
+    public abstract class ModelTestBase : InjectionTestBase
     {
         public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
         {

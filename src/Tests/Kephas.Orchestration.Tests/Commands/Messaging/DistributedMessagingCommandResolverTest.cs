@@ -14,7 +14,7 @@ namespace Kephas.Tests.Commands.Messaging
     using Kephas.Commands.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Reflection;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
     using Kephas.Tests.Orchestration;
     using NSubstitute;
     using NUnit.Framework;

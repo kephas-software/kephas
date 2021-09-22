@@ -15,7 +15,6 @@ namespace Kephas.Data.Conversion.Composition
 
     using Kephas.Collections;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A data conversion target resolver metadata.

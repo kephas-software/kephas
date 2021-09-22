@@ -15,8 +15,6 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Services.Composition;
-
     /// <summary>
     /// Collection of ordered lazy services.
     /// </summary>

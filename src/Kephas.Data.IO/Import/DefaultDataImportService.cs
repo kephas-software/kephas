@@ -30,7 +30,6 @@ namespace Kephas.Data.IO.Import
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>

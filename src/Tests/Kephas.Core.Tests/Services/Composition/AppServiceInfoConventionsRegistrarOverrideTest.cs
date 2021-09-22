@@ -17,7 +17,6 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Injection.Conventions;
     using Kephas.Injection.Hosting;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
     using NUnit.Framework;
 

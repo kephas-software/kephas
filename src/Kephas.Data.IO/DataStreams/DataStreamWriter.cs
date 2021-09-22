@@ -67,7 +67,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task WriteAsync(object data, DataStream dataStream, IDataIOContext? context = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(data, nameof(data));
             Requires.NotNull(dataStream, nameof(dataStream));
@@ -81,16 +81,14 @@ namespace Kephas.Data.IO.DataStreams
                     context?.SerializationConfig?.Invoke(ctx);
                 };
 
-            using (var writer = this.CreateEncodedStreamWriter(dataStream))
-            {
-                var rawResult = await this.serializationService.SerializeAsync(data, serializationConfig, cancellationToken).PreserveThreadContext();
+            using var writer = this.CreateEncodedStreamWriter(dataStream);
+            var rawResult = await this.serializationService.SerializeAsync(data, serializationConfig, cancellationToken).PreserveThreadContext();
 
-                cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
-                await writer.WriteAsync(rawResult).PreserveThreadContext();
+            await writer.WriteAsync(rawResult).PreserveThreadContext();
 
-                cancellationToken.ThrowIfCancellationRequested();
-            }
+            cancellationToken.ThrowIfCancellationRequested();
         }
 
         /// <summary>

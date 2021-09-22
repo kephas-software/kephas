@@ -12,7 +12,7 @@ namespace Kephas.Core.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Messaging;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>

@@ -17,7 +17,6 @@ namespace Kephas.Net.Mime
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Net.Mime.Composition;
     using Kephas.Resources;
     using Kephas.Services;
 

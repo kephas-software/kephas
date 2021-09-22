@@ -14,8 +14,6 @@ namespace Kephas.Application.Tests
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application.Composition;
     using Kephas.Logging;
     using Kephas.Operations;
     using NSubstitute;

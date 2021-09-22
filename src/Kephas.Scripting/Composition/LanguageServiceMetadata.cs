@@ -15,7 +15,6 @@ namespace Kephas.Scripting.Composition
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// The language service metadata.

@@ -27,7 +27,6 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Serialization.Composition;
     using Kephas.Serialization.Json;
     using Kephas.Services;
     using NSubstitute;

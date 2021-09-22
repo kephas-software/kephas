@@ -21,7 +21,6 @@ namespace Kephas.Core.Tests
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Serialization;
-    using Kephas.Serialization.Composition;
     using Kephas.Services;
     using NSubstitute;
 

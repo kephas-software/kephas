@@ -13,8 +13,6 @@ namespace Kephas.Application.Reflection
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
-    using Kephas.Application.Composition;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;

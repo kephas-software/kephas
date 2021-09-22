@@ -12,8 +12,6 @@ namespace Kephas.Application
 {
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application.Composition;
     using Kephas.Operations;
     using Kephas.Services;
 

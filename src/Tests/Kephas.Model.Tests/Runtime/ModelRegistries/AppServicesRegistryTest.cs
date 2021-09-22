@@ -24,14 +24,14 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Runtime;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
     using Kephas.Services.Reflection;
     using Kephas.Testing.Composition;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesRegistryTest : CompositionTestBase
+    public class AppServicesRegistryTest : InjectionTestBase
     {
         public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,

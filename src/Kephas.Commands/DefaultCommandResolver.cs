@@ -17,7 +17,6 @@ namespace Kephas.Commands
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// The default implementation of a command resolver.

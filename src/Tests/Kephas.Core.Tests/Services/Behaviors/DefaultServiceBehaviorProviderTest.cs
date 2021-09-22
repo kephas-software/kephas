@@ -20,8 +20,6 @@ namespace Kephas.Core.Tests.Services.Behaviors
     using Kephas.Behaviors;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
-    using Kephas.Services.Behaviors.Composition;
-
     using NSubstitute;
 
     using NUnit.Framework;

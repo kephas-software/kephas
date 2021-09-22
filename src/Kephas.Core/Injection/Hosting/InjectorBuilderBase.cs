@@ -435,7 +435,7 @@ namespace Kephas.Injection.Hosting
         {
             if (service == null)
             {
-                throw new InvalidOperationException(string.Format(Strings.CompositionContainerBuilderBase_RequiredServiceMissing_Exception, typeof(TService).FullName));
+                throw new InvalidOperationException(string.Format(Strings.InjectorBuilderBase_RequiredServiceMissing_Exception, typeof(TService).FullName));
             }
         }
 

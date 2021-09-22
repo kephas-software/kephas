@@ -25,7 +25,7 @@ namespace Kephas.Plugins.NuGet.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class NuGetPluginManagerTest : CompositionTestBase
+    public class NuGetPluginManagerTest : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

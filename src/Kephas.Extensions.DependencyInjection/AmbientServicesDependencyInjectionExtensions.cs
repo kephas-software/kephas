@@ -25,7 +25,6 @@ namespace Kephas
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Microsoft.Extensions.DependencyInjection related ambient services extensions.

@@ -21,7 +21,6 @@ namespace Kephas.Core.Tests.Serialization
     using System.Threading.Tasks;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
-    using Kephas.Serialization.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
     using NSubstitute;

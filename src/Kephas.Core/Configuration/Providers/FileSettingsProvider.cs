@@ -23,7 +23,6 @@ namespace Kephas.Configuration.Providers
     using Kephas.ExceptionHandling;
     using Kephas.Logging;
     using Kephas.Net.Mime;
-    using Kephas.Net.Mime.Composition;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Serialization;

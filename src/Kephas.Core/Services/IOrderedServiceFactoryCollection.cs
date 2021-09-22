@@ -14,7 +14,6 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Interface for ordered service factory collection.

@@ -17,7 +17,6 @@ namespace Kephas.Application
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>

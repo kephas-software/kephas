@@ -186,7 +186,7 @@
   <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
     <value>Mehrere mit {0} gekennzeichnete Konstruktoren werden für die Service-Implementierung '{1}' mit dem Contract '{2}' deklariert.</value>
   </data>
-  <data name="CompositionContainerBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
+  <data name="InjectorBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
     <value>Der erforderliche Dienst vom Typ '{0}' wurde nicht bereitgestellt.</value>
   </data>
   <data name="CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">

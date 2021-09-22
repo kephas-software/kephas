@@ -16,7 +16,6 @@ namespace Kephas.Model.Runtime.Construction.Composition
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata for model element constructors.

@@ -22,7 +22,6 @@ namespace Kephas.Services
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
 
     /// <summary>

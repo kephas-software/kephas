@@ -45,7 +45,7 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A formatted message.
         /// </returns>
-        private static string GetMessage(object entity, string message = null)
+        private static string GetMessage(object entity, string? message = null)
         {
             return string.Format(Strings.ImportEntitySuccessfulMessage_Message, entity, entity.GetType(), message);
         }

@@ -15,7 +15,6 @@ namespace Kephas.Data.Client.Queries.Conversion.Composition
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// An expression converter metadata.

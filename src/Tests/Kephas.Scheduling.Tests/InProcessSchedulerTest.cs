@@ -29,7 +29,7 @@ namespace Kephas.Scheduling.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class InProcessSchedulerTest : CompositionTestBase
+    public class InProcessSchedulerTest : InjectionTestBase
     {
         private readonly RuntimeTypeRegistry typeRegistry;
 

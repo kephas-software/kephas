@@ -15,7 +15,6 @@ namespace Kephas.Configuration.Providers.Composition
 
     using Kephas.Collections;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A settings provider metadata.

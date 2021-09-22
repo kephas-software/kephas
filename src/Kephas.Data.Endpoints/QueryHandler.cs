@@ -31,7 +31,7 @@ namespace Kephas.Data.Endpoints
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryHandler"/> class.
         /// </summary>
-        /// <param name="contextFactory">The dependency injection/composition context.</param>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public QueryHandler(IContextFactory contextFactory, IClientQueryProcessor clientQueryExecutor)
         {

@@ -17,11 +17,9 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Resources;
-    using Kephas.Application.Composition;
     using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// An OWIN application manager.

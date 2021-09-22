@@ -20,7 +20,6 @@ namespace Kephas.Commands.Messaging.Endpoints
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A help message handler.

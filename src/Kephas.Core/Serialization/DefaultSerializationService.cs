@@ -22,7 +22,6 @@ namespace Kephas.Serialization
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Resources;
-    using Kephas.Serialization.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

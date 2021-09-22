@@ -14,7 +14,6 @@ namespace Kephas.Application.Interaction
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Composition;
     using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Services;

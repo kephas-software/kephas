@@ -20,7 +20,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 

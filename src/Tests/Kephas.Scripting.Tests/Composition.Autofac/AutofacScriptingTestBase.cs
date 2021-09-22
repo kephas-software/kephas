@@ -15,7 +15,7 @@ namespace Kephas.Scripting.Tests.Composition.Autofac
 
     using Kephas.Testing.Composition;
 
-    public class AutofacScriptingTestBase : AutofacCompositionTestBase
+    public class AutofacScriptingTestBase : AutofacInjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

@@ -8,20 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
-
 namespace Kephas.Messaging
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
+    using Kephas.Injection.ExportFactories;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A default message handler registry.

@@ -23,7 +23,6 @@ using Kephas.Injection.Lite.Hosting;
 using Kephas.Logging;
 using Kephas.Reflection;
 using Kephas.Services;
-using Kephas.Services.Composition;
 using Kephas.Services.Reflection;
 using NSubstitute;
 using NUnit.Framework;

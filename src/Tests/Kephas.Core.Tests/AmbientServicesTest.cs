@@ -29,7 +29,6 @@ namespace Kephas.Core.Tests
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
     using NSubstitute;
     using NUnit.Framework;

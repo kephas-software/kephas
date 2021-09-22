@@ -15,7 +15,6 @@ namespace Kephas.Data.Composition
 
     using Kephas.Data.Store;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata for <see cref="IDataContext"/> services.

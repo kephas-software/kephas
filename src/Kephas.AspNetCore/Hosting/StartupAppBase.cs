@@ -21,7 +21,6 @@ namespace Kephas.Application.AspNetCore.Hosting
     using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;

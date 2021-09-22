@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Serialization.Json;
     using Kephas.Testing.Composition;
 
-    public abstract class PipesMessagingTestBase : CompositionTestBase
+    public abstract class PipesMessagingTestBase : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

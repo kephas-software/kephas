@@ -11,7 +11,7 @@ namespace Kephas.AspNetCore.SignalR.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
 
     /// <summary>
     /// Metadata class for hubs.

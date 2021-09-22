@@ -13,8 +13,6 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application.Composition;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;

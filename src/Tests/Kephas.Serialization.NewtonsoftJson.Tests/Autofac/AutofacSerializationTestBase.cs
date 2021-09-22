@@ -14,7 +14,7 @@ namespace Kephas.Serialization.Json.Tests.Autofac
     using System.Reflection;
     using Kephas.Testing.Composition;
 
-    public class AutofacSerializationTestBase : AutofacCompositionTestBase
+    public class AutofacSerializationTestBase : AutofacInjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

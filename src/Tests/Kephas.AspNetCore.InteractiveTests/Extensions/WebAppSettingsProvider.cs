@@ -15,7 +15,6 @@ namespace Kephas.AspNetCore.InteractiveTests.Extensions
     using Kephas.Configuration.Providers;
     using Kephas.Logging;
     using Kephas.Net.Mime;
-    using Kephas.Net.Mime.Composition;
     using Kephas.Serialization;
     using Kephas.Services;
 

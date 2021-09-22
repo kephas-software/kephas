@@ -29,7 +29,7 @@ namespace Kephas.Tests.Plugins
     using Kephas.Testing.Composition;
     using NSubstitute;
 
-    public abstract class PluginsTestBase : CompositionTestBase
+    public abstract class PluginsTestBase : InjectionTestBase
     {
         protected TestPluginManager CreatePluginManager(
             PluginsTestContext context,

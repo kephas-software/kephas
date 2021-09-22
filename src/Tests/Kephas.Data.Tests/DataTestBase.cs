@@ -15,7 +15,7 @@ namespace Kephas.Data.Tests
 
     using Kephas.Testing.Composition;
 
-    public abstract class DataTestBase : CompositionTestBase
+    public abstract class DataTestBase : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

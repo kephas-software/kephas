@@ -11,8 +11,6 @@ using Kephas.Injection.ExportFactories;
 namespace Kephas.Application.Tests
 {
     using System.Collections.Generic;
-
-    using Kephas.Application.Composition;
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Configuration;

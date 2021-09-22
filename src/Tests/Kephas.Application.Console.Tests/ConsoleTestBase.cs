@@ -22,7 +22,7 @@ namespace Kephas.Application.Console.Tests
     using Kephas.Logging;
     using Kephas.Testing.Composition;
 
-    public abstract class ConsoleTestBase : CompositionTestBase
+    public abstract class ConsoleTestBase : InjectionTestBase
     {
         public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,

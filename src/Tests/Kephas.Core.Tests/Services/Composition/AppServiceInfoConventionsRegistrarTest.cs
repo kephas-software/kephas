@@ -27,7 +27,6 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using NSubstitute;
     using NUnit.Framework;
 

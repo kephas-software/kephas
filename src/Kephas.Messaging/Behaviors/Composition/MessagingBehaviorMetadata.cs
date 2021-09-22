@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Behaviors.Composition
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Composition;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Composition metadata for <see cref="IMessagingBehavior"/>.

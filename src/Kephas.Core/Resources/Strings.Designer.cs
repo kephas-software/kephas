@@ -269,15 +269,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The required service of type &apos;{0}&apos; was not provided..
-        /// </summary>
-        public static string CompositionContainerBuilderBase_RequiredServiceMissing_Exception {
-            get {
-                return ResourceManager.GetString("CompositionContainerBuilderBase_RequiredServiceMissing_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
         /// </summary>
         public static string CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception {
@@ -535,6 +526,15 @@ namespace Kephas.Resources {
         public static string GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception {
             get {
                 return ResourceManager.GetString("GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The required service of type &apos;{0}&apos; was not provided..
+        /// </summary>
+        public static string InjectorBuilderBase_RequiredServiceMissing_Exception {
+            get {
+                return ResourceManager.GetString("InjectorBuilderBase_RequiredServiceMissing_Exception", resourceCulture);
             }
         }
         

@@ -23,7 +23,7 @@ namespace Kephas.Commands.Messaging.Tests
     using Kephas.Messaging;
     using Kephas.Testing.Composition;
 
-    public abstract class CommandsTestBase : CompositionTestBase
+    public abstract class CommandsTestBase : InjectionTestBase
     {
         public override IInjector CreateContainer(
             IAmbientServices? ambientServices = null,

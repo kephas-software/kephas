@@ -20,7 +20,7 @@ namespace Kephas.Data.MongoDB.Tests
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
 
-    public abstract class MongoTestBase : CompositionTestBase
+    public abstract class MongoTestBase : InjectionTestBase
     {
         private const string MongoTestDataStoreName = "mongotest";
 

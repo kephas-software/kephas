@@ -14,7 +14,6 @@ namespace Kephas.Data.Setup.Composition
 
     using Kephas.Data.Setup.AttributedModel;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata for data installer services.

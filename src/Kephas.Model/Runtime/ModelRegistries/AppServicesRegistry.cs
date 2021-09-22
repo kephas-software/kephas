@@ -17,7 +17,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using System.Threading.Tasks;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -82,11 +82,11 @@ namespace Kephas.Model.Runtime.ModelRegistries
             }
 
             var types = new HashSet<IRuntimeTypeInfo>(appServiceInfos.Select(i =>
-            {
-                var typeInfo = this.typeRegistry.GetTypeInfo(i.contractType);
-                typeInfo[AppServiceKey] = i.appServiceInfo;
-                return typeInfo;
-            }));
+                {
+                    var typeInfo = this.typeRegistry.GetTypeInfo(i.contractType);
+                    typeInfo[AppServiceKey] = i.appServiceInfo;
+                    return typeInfo;
+                }));
 
             return Task.FromResult<IEnumerable<object>>(types);
         }

@@ -15,7 +15,7 @@ namespace Kephas.Serialization.Bson.Tests
 
     using Kephas.Testing.Composition;
 
-    public class SerializationTestBase : CompositionTestBase
+    public class SerializationTestBase : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

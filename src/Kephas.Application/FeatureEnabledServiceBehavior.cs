@@ -10,8 +10,6 @@ namespace Kephas.Application
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Application.Composition;
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Behaviors;

@@ -16,7 +16,6 @@ namespace Kephas.Workflow.Behaviors.Composition
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata class for activity behaviors.

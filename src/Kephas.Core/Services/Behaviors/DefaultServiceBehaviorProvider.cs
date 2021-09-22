@@ -17,7 +17,6 @@ namespace Kephas.Services.Behaviors
     using System.Collections.Generic;
     using System.Linq;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services.Behaviors.Composition;
 
     /// <summary>
     /// A default service behavior provider.

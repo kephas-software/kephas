@@ -15,7 +15,6 @@ namespace Kephas.Application.AspNetCore.Hosting.MiddlewareConfigurators
     using Kephas.Application.AspNetCore.Hosting;
     using Kephas.Logging;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Microsoft.AspNetCore.Builder;
 
     /// <summary>

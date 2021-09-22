@@ -18,7 +18,6 @@ namespace Kephas.Data.Store
     using System.Linq;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A data store provider.

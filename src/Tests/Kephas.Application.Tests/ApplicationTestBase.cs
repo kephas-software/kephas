@@ -15,7 +15,7 @@ namespace Kephas.Application.Tests
 
     using Kephas.Testing.Composition;
 
-    public class ApplicationTestBase : CompositionTestBase
+    public class ApplicationTestBase : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

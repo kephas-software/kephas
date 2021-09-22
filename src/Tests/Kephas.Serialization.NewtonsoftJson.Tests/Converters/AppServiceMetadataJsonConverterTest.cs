@@ -10,9 +10,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
     using System.Threading.Tasks;
 
     using Kephas.Net.Mime;
-    using Kephas.Serialization.Composition;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using NUnit.Framework;
 
     [TestFixture]

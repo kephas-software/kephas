@@ -14,7 +14,6 @@ namespace Kephas.Data.Conversion.Composition
     using System.Collections.Generic;
     using Kephas.Collections;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A metadata information for <see cref="IDataConverter"/>.

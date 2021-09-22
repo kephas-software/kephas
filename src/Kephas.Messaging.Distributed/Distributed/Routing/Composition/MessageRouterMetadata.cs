@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
 
     using Kephas.Collections;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A message router metadata.

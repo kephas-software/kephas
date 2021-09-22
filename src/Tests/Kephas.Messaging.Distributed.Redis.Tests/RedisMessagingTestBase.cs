@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Serialization.Json;
     using Kephas.Testing.Composition;
 
-    public abstract class RedisMessagingTestBase : CompositionTestBase
+    public abstract class RedisMessagingTestBase : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

@@ -19,7 +19,6 @@ namespace Kephas.Data.DataSources
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A default data source service.

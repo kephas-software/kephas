@@ -14,7 +14,6 @@ namespace Kephas.Injection.Lite
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Extensions for the service registration builder.

@@ -8,18 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.IO.DataStreams
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Data.IO.DataStreams.Composition;
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>

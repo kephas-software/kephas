@@ -14,8 +14,7 @@ namespace Kephas.Core.Tests.Services.Composition
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Services.Composition;
-
+    using Kephas.Services;
     using NUnit.Framework;
 
     /// <summary>

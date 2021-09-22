@@ -22,7 +22,6 @@ namespace Kephas.Application.Tests
     using System.Linq;
 
     using Kephas.Application;
-    using Kephas.Application.Composition;
     using Kephas.Behaviors;
     using Kephas.Services.Behaviors;
     using Kephas.Testing.Composition;

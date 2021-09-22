@@ -25,7 +25,7 @@ namespace Kephas.Tests.Composition.Autofac
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacScopedInjectorTest : AutofacCompositionTestBase
+    public class AutofacScopedInjectorTest : AutofacInjectionTestBase
     {
         [Test]
         public void CreateScopedInjector_NestedScopes()
@@ -33,19 +33,19 @@ namespace Kephas.Tests.Composition.Autofac
             var container = this.CreateContainerWithBuilder(
                 b => b.WithRegistration(
                     new AppServiceInfo(
-                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
-                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
+                        typeof(AutofacInjectorTest.ScopeExportedClass),
+                        typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
             using (var scopedContext = container.CreateScopedInjector())
             {
                 Assert.IsInstanceOf<AutofacScopedInjector>(scopedContext);
-                var scopedInstance1 = scopedContext.Resolve<AutofacCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance1 = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedInjector())
                 {
                     Assert.AreNotSame(scopedContext, nestedContext);
 
-                    var scopedInstance2 = nestedContext.Resolve<AutofacCompositionContainerTest.ScopeExportedClass>();
+                    var scopedInstance2 = nestedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
                     Assert.AreNotSame(scopedInstance1, scopedInstance2);
                 }
             }
@@ -76,12 +76,12 @@ namespace Kephas.Tests.Composition.Autofac
             var container = this.CreateContainerWithBuilder(
                 b => b.WithRegistration(
                     new AppServiceInfo(
-                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
-                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
+                        typeof(AutofacInjectorTest.ScopeExportedClass),
+                        typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
             using (var scopedContext = container.CreateScopedInjector())
             {
-                var scopedInstance = scopedContext.Resolve<AutofacCompositionContainerTest.ScopeExportedClass>();
+                var scopedInstance = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
                 Assert.AreSame(scopedContext, scopedInstance.Injector);
             }
         }

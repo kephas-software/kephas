@@ -13,7 +13,6 @@ using Kephas.Injection;
 namespace Kephas.Services.Behaviors
 {
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// The default implementation of a service behavior context.

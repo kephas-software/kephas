@@ -15,7 +15,7 @@ namespace Kephas.Data.Composition.Tests
 
     using Kephas.Testing.Composition;
 
-    public class AutofacDataTestBase : AutofacCompositionTestBase
+    public class AutofacDataTestBase : AutofacInjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

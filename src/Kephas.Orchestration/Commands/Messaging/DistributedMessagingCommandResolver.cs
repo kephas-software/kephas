@@ -16,7 +16,6 @@ namespace Kephas.Commands.Messaging
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Distributed messaging command resolver when messaging is available.

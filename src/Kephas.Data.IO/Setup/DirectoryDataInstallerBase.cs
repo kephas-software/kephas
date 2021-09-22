@@ -8,14 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.IO.Setup
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
     using Kephas.Data.IO.Import;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -72,7 +73,7 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// An enumeration of file names.
         /// </returns>
-        protected virtual IEnumerable<string> GetInstallDataFileNames()
+        protected virtual IEnumerable<string>? GetInstallDataFileNames()
         {
             return null;
         }
@@ -88,7 +89,7 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// An enumeration of file names.
         /// </returns>
-        protected virtual IEnumerable<string> GetUninstallDataFileNames()
+        protected virtual IEnumerable<string>? GetUninstallDataFileNames()
         {
             return null;
         }
@@ -123,7 +124,7 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// An enumeration of file paths.
         /// </returns>
-        protected virtual IEnumerable<string> GetDataFilePaths(string operationPath, IEnumerable<string> fileNames)
+        protected virtual IEnumerable<string> GetDataFilePaths(string operationPath, IEnumerable<string>? fileNames)
         {
             var dataPath = Path.Combine(this.DataPath, operationPath);
 
@@ -131,7 +132,7 @@ namespace Kephas.Data.IO.Setup
             if (fileNames == null)
             {
                 fileNames = this.GetDataFilePatterns()
-                    .SelectMany(p => Directory.Exists(dataPath) ? Directory.EnumerateFiles(dataPath, p) : new string[0])
+                    .SelectMany(p => Directory.Exists(dataPath) ? Directory.EnumerateFiles(dataPath, p) : Array.Empty<string>())
                     .OrderBy(n => n)
                     .ToArray();
             }

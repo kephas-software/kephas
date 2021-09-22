@@ -22,7 +22,6 @@ namespace Kephas.Extensions.Configuration.Providers
     using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Net.Mime;
-    using Kephas.Net.Mime.Composition;
     using Kephas.Serialization;
     using Kephas.Services;
     using Microsoft.Extensions.Options;

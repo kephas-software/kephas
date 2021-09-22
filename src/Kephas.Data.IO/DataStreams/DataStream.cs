@@ -36,7 +36,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <param name="mediaType">Type of the media (optional).</param>
         /// <param name="encoding">The encoding (optional).</param>
         /// <param name="ownsStream">If set to true, upon disposing the raw stream will also be disposed (optional).</param>
-        public DataStream(Stream rawStream, string name = null, string mediaType = null, Encoding encoding = null, bool ownsStream = false)
+        public DataStream(Stream rawStream, string? name = null, string? mediaType = null, Encoding? encoding = null, bool ownsStream = false)
         {
             Requires.NotNull(rawStream, nameof(rawStream));
 

@@ -29,7 +29,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A DataStream.
         /// </returns>
-        public static DataStream FromJsonString(string data, string name = null)
+        public static DataStream FromJsonString(string data, string? name = null)
         {
             return new DataStream(
                 new MemoryStream(Encoding.UTF8.GetBytes(data)),
@@ -47,7 +47,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A DataStream.
         /// </returns>
-        public static DataStream FromJsonFile(string filePath, string name = null)
+        public static DataStream FromJsonFile(string filePath, string? name = null)
         {
             Requires.NotNullOrEmpty(filePath, nameof(filePath));
 
@@ -69,7 +69,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A DataStream.
         /// </returns>
-        public static DataStream FromXmlString(string data, string name = null)
+        public static DataStream FromXmlString(string data, string? name = null)
         {
             return new DataStream(
                 new MemoryStream(Encoding.UTF8.GetBytes(data)),
@@ -87,7 +87,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A DataStream.
         /// </returns>
-        public static DataStream FromXmlFile(string filePath, string name = null)
+        public static DataStream FromXmlFile(string filePath, string? name = null)
         {
             Requires.NotNullOrEmpty(filePath, nameof(filePath));
 

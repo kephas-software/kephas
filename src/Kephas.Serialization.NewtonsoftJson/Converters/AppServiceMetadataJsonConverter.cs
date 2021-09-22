@@ -11,7 +11,6 @@ namespace Kephas.Serialization.Json.Converters
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// JSON converter for <see cref="AppServiceMetadata"/>.

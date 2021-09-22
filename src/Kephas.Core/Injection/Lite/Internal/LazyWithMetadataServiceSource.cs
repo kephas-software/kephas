@@ -8,17 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kephas.Reflection;
-using Kephas.Resources;
-using Kephas.Runtime;
-using Kephas.Services.Composition;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Kephas.Reflection;
+    using Kephas.Resources;
+    using Kephas.Runtime;
+    using Kephas.Services;
+
     internal class LazyWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =

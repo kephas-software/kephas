@@ -22,7 +22,6 @@ namespace Kephas.Messaging.Tests
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using NSubstitute;
     using NUnit.Framework;
 

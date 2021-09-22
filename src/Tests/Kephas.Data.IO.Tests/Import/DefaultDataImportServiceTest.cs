@@ -28,7 +28,6 @@ namespace Kephas.Data.IO.Tests.Import
     using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;

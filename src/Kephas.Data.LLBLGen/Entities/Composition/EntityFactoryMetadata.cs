@@ -14,7 +14,7 @@ namespace Kephas.Data.LLBLGen.Entities.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
 
     /// <summary>
     /// Metadata for <see cref="IEntityFactory"/> service.

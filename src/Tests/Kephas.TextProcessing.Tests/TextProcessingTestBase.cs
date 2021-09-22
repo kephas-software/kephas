@@ -14,7 +14,7 @@ namespace Kephas.TextProcessing.Tests
     using System.Reflection;
     using Kephas.Testing.Composition;
 
-    public abstract class TextProcessingTestBase : CompositionTestBase
+    public abstract class TextProcessingTestBase : InjectionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

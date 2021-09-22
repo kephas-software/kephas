@@ -15,7 +15,6 @@ namespace Kephas.Services
     using System.Linq;
     using System.Reflection;
     using Kephas.Resources;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// A default named service provider.

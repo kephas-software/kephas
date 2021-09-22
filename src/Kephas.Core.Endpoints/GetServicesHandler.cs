@@ -18,7 +18,6 @@ namespace Kephas.Core.Endpoints
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Message handler for <see cref="GetServicesMessage"/>.

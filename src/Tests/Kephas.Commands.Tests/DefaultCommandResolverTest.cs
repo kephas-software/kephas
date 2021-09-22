@@ -8,8 +8,7 @@
 namespace Kephas.Commands.Tests
 {
     using System;
-
-    using Kephas.Services.Composition;
+    using Kephas.Services;
     using NUnit.Framework;
 
     [TestFixture]

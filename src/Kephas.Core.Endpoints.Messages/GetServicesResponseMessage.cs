@@ -8,7 +8,7 @@
 namespace Kephas.Core.Endpoints
 {
     using Kephas.Messaging.Messages;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
 
     /// <summary>
     /// The response message for <see cref="GetServicesMessage"/>.

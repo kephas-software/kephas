@@ -25,7 +25,7 @@ namespace Kephas.Testing.Application
     ///   * Kephas.Core 
     ///   * Kephas.Application
     /// </content>
-    public class ApplicationTestBase : CompositionTestBase
+    public class ApplicationTestBase : InjectionTestBase
     {
         /// <summary>
         /// Gets the default convention assemblies to be considered when building the container. By

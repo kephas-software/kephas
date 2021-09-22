@@ -23,7 +23,7 @@ namespace Kephas.Core.Endpoints.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class GetServicesHandlerTest : CompositionTestBase
+    public class GetServicesHandlerTest : InjectionTestBase
     {
         [Test]
         public async Task ProcessAsync_missing_contracttype()

@@ -23,14 +23,11 @@ namespace Kephas.Application.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Composition;
     using Kephas.Application.Reflection;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
-    using Kephas.Services.Behaviors.Composition;
-    using Kephas.Services.Composition;
     using NSubstitute;
     using NSubstitute.Core;
     using NUnit.Framework;

@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class GetServiceContractsHandlerTest : CompositionTestBase
+    public class GetServiceContractsHandlerTest : InjectionTestBase
     {
         [Test]
         public async Task ProcessAsync_all()

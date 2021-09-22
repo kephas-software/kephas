@@ -26,7 +26,6 @@ namespace Kephas.Serialization.Json
     using Kephas.Serialization.Json.Logging;
     using Kephas.Serialization.Json.Resources;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 

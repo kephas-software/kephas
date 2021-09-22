@@ -17,7 +17,6 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Injection;
     using Kephas.Injection.ExportFactories;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using NUnit.Framework;
 
     [TestFixture]
