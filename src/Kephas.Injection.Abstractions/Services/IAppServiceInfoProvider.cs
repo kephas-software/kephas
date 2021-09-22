@@ -29,7 +29,7 @@ namespace Kephas.Services
         /// <returns>
         /// The contract declaration types.
         /// </returns>
-        protected IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null) => null;
+        public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null) => null;
 
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.

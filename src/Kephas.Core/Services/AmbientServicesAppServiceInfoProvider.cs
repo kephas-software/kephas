@@ -9,7 +9,7 @@ using Kephas.Services;
 
 [assembly: AppServices(
     processingPriority: Priority.Highest,
-    serviceProviderTypes: new[] { typeof(AmbientServicesAppServiceInfoProvider) })]
+    providerType: typeof(AmbientServicesAppServiceInfoProvider))]
 
 namespace Kephas.Services
 {

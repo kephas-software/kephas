@@ -13,7 +13,7 @@ using Kephas.Services;
 
 [assembly: AppServices(
     processingPriority: Priority.High - 100,
-    serviceProviderTypes: new[] { typeof(ServiceCollectionAppServiceInfoProvider) })]
+    providerType: typeof(ServiceCollectionAppServiceInfoProvider))]
 
 namespace Kephas.Extensions.DependencyInjection
 {

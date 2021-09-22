@@ -8,7 +8,7 @@
 using Kephas.Model;
 using Kephas.Services;
 
-[assembly: AppServices(serviceProviderTypes: new[] { typeof(ModelAppServiceInfoProvider) })]
+[assembly: AppServices(providerType: typeof(ModelAppServiceInfoProvider))]
 
 namespace Kephas.Model
 {

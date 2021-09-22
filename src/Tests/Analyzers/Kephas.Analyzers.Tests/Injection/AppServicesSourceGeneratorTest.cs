@@ -26,21 +26,8 @@ namespace Kephas.Analyzers.Tests.Injection
             var appServicesAttrs = testAssembly.GetCustomAttributes<AppServicesAttribute>().ToList();
             Assert.AreEqual(1, appServicesAttrs.Count);
 
-            var appServicesAttr = appServicesAttrs[0];
-            CollectionAssert.AreEquivalent(
-                new[]
-                {
-                    typeof(ISingletonServiceContract),
-                    typeof(ServiceAndContract),
-                    typeof(ServiceBase),
-                    typeof(IOpenGenericContract<>),
-                    typeof(IGenericContract<>),
-                    typeof(IGenericContractDeclaration<>),
-                },
-                appServicesAttr.ContractDeclarationTypes);
-
-            Assert.AreEqual(1, appServicesAttr.ServiceProviderTypes.Length);
-            Assert.IsTrue(typeof(IAppServiceTypesProvider).IsAssignableFrom(appServicesAttr.ServiceProviderTypes[0]));
+            var serviceProviderType = appServicesAttrs[0].ProviderType;
+            Assert.AreEqual("Kephas.Injection.Generated.AppServices_Kephas_Analyzers_TestAssembly", serviceProviderType.FullName);
         }
 
         [Test]
@@ -49,10 +36,10 @@ namespace Kephas.Analyzers.Tests.Injection
             var testAssembly = typeof(NoService).Assembly;
 
             var appServicesAttr = testAssembly.GetCustomAttributes<AppServicesAttribute>().Single();
-            var serviceProviderType = appServicesAttr.ServiceProviderTypes.Single();
 
-            var serviceProvider = (IAppServiceTypesProvider)Activator.CreateInstance(serviceProviderType)!;
-            var services = serviceProvider.GetAppServiceTypes();
+            var provider = Activator.CreateInstance(appServicesAttr.ProviderType)!;
+            var typesProvider = (IAppServiceTypesProvider)provider;
+            var services = typesProvider.GetAppServiceTypes();
 
             var expectedServices = new (Type serviceType, Type contractDeclarationType)[]
             {
@@ -69,6 +56,19 @@ namespace Kephas.Analyzers.Tests.Injection
                 expectedServices.All(
                     service => services.Any(
                         s => s.serviceType == service.serviceType && s.contractDeclarationType == service.contractDeclarationType)));
+
+            var contractsProvider = (IAppServiceInfoProvider)provider;
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    typeof(ISingletonServiceContract),
+                    typeof(ServiceAndContract),
+                    typeof(ServiceBase),
+                    typeof(IOpenGenericContract<>),
+                    typeof(IGenericContract<>),
+                    typeof(IGenericContractDeclaration<>),
+                },
+                contractsProvider.GetContractDeclarationTypes());
         }
     }
 }
