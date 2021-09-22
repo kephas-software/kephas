@@ -175,11 +175,10 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
-        /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
         {
             this.RegisterScopeFactoryConventions(conventions);
 
@@ -187,10 +186,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
             var conventionBuilder = this.GetConventionBuilder(conventions);
 
             containerConfiguration
-                .WithDefaultConventions(conventionBuilder)
-                .WithParts(parts);
-
-            this.RegisterScopeFactoryParts(containerConfiguration, parts);
+                .WithDefaultConventions(conventionBuilder);
 
             foreach (var provider in this.ExportProviders)
             {
@@ -204,14 +200,14 @@ namespace Kephas.Injection.SystemComposition.Hosting
 
             foreach (var partBuilder in this.GetPartBuilders(conventions))
             {
-                if (partBuilder.Instance != null)
-                {
-                    containerConfiguration.WithProvider(new FactoryExportDescriptorProvider(partBuilder.ContractType, () => partBuilder.Instance));
-                }
-                else
-                {
-                    containerConfiguration.WithProvider(new FactoryExportDescriptorProvider(partBuilder.ContractType, ctx => partBuilder.InstanceFactory(ctx), partBuilder.IsSingleton || partBuilder.IsScoped));
-                }
+                containerConfiguration.WithProvider(partBuilder.Instance != null
+                    ? new FactoryExportDescriptorProvider(
+                        partBuilder.ContractType,
+                        () => partBuilder.Instance)
+                    : new FactoryExportDescriptorProvider(
+                        partBuilder.ContractType,
+                        ctx => partBuilder.InstanceFactory(ctx),
+                        partBuilder.IsSingleton || partBuilder.IsScoped));
             }
 
             return this.CreateCompositionContext(containerConfiguration);
@@ -251,7 +247,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// </returns>
         protected virtual IEnumerable<SystemCompositionPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
         {
-            return (conventions as SystemCompositionConventionsBuilder)?.GetPartBuilders();
+            return ((SystemCompositionConventionsBuilder)conventions).GetPartBuilders();
         }
 
         /// <summary>
@@ -265,21 +261,6 @@ namespace Kephas.Injection.SystemComposition.Hosting
             {
                 this.RegisterScopeFactory(conventions, scopeFactory);
             }
-        }
-
-        /// <summary>
-        /// Registers the scope factory parts into the container configuration.
-        /// </summary>
-        /// <param name="containerConfiguration">The container configuration.</param>
-        /// <param name="registeredParts">The registered parts.</param>
-        private void RegisterScopeFactoryParts(ContainerConfiguration containerConfiguration, IEnumerable<Type> registeredParts)
-        {
-            if (this.scopeFactories.Count == 0)
-            {
-                return;
-            }
-
-            containerConfiguration.WithParts(this.scopeFactories.Where(f => !registeredParts.Contains(f)));
         }
     }
 }

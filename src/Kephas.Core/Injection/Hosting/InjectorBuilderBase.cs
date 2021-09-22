@@ -330,11 +330,10 @@ namespace Kephas.Injection.Hosting
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
-        /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
+        protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions);
 
         /// <summary>
         /// Gets the assemblies used for dependency injection.
@@ -462,7 +461,7 @@ namespace Kephas.Injection.Hosting
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);
             var conventions = this.GetConventions(conventionAssemblies);
 
-            var container = this.CreateInjectorCore(conventions, parts);
+            var container = this.CreateInjectorCore(conventions);
             return container;
         }
 

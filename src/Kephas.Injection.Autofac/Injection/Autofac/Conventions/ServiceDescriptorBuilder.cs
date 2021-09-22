@@ -14,6 +14,7 @@ namespace Kephas.Injection.Autofac.Conventions
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection.Conventions;
@@ -60,14 +61,6 @@ namespace Kephas.Injection.Autofac.Conventions
         public Type? ImplementationType { get; set; }
 
         /// <summary>
-        /// Gets or sets the implementation type predicate.
-        /// </summary>
-        /// <value>
-        /// The implementation type predicate.
-        /// </value>
-        public Predicate<Type>? ImplementationTypePredicate { get; set; }
-
-        /// <summary>
         /// Gets or sets the lifetime.
         /// </summary>
         /// <value>
@@ -95,8 +88,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// Builds the information into a service descriptor.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="parts">The parts.</param>
-        public void Build(IEnumerable<Type> parts)
+        public void Build()
         {
             if (this.ImplementationType != null)
             {
@@ -104,18 +96,8 @@ namespace Kephas.Injection.Autofac.Conventions
                 return;
             }
 
-            if (this.ImplementationTypePredicate != null)
-            {
-                foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
-                {
-                    this.RegisterService(type);
-                }
-
-                return;
-            }
-
             throw new InvalidOperationException(
-                $"One of {nameof(this.ImplementationType)} or {nameof(this.ImplementationTypePredicate)} must be set.");
+                $"{nameof(this.ImplementationType)} must be set to build this descriptor.");
         }
 
         /// <summary>
@@ -126,8 +108,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </returns>
         public override string ToString()
         {
-            var implementationString = this.ImplementationType?.ToString()
-                                       ?? (this.ImplementationTypePredicate != null ? "type predicate" : "unknown");
+            var implementationString = this.ImplementationType?.ToString();
             return $"{this.ServiceType}/{this.Lifetime}/{implementationString}";
         }
 

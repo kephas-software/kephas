@@ -11,7 +11,6 @@
 namespace Kephas.Injection.Autofac.Conventions
 {
     using System;
-    using System.Collections.Generic;
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection.Conventions;
@@ -78,8 +77,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// Builds the information into a service descriptor.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="parts">The parts.</param>
-        public void Build(IEnumerable<Type> parts)
+        public void Build()
         {
             var registration = this.registrationBuilder.CreateRegistration();
             this.containerBuilder.RegisterComponent(registration);

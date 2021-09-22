@@ -11,6 +11,7 @@
 namespace Kephas.Injection.SystemComposition.Conventions
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
@@ -25,7 +26,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instance">The instance.</param>
-        public SystemCompositionPartBuilder(Type contractType, object instance)
+        public SystemCompositionPartBuilder(Type contractType, object? instance)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(instance, nameof(instance));
@@ -71,7 +72,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <value>
         /// The instance.
         /// </value>
-        public object Instance { get; }
+        public object? Instance { get; }
 
         /// <summary>
         /// Gets a value indicating whether this object is shared.

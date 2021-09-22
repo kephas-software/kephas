@@ -15,7 +15,6 @@ using Kephas.Injection.Hosting;
 namespace Kephas.Core.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Kephas.Application;
@@ -92,7 +91,7 @@ namespace Kephas.Core.Tests
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
             {
                 return this.injector ?? Substitute.For<IInjector>();
             }
@@ -113,7 +112,7 @@ namespace Kephas.Core.Tests
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
             {
                 return Substitute.For<IInjector>();
             }

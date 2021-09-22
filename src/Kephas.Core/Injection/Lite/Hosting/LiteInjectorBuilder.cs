@@ -10,9 +10,6 @@
 
 namespace Kephas.Injection.Lite.Hosting
 {
-    using System;
-    using System.Collections.Generic;
-
     using Kephas.Injection.Conventions;
     using Kephas.Injection.Hosting;
     using Kephas.Injection.Lite.Conventions;
@@ -38,11 +35,10 @@ namespace Kephas.Injection.Lite.Hosting
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
-        /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
         {
             var liteConventions = (LiteConventionsBuilder)conventions;
             liteConventions.Build(parts);

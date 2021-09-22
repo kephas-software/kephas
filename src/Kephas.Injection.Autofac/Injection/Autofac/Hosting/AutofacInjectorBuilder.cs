@@ -84,13 +84,12 @@ namespace Kephas.Injection.Autofac.Hosting
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
-        /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
         {
-            var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
+            var autofacBuilder = ((IAutofacContainerBuilderFactory)conventions).CreateContainerBuilder();
 
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
             autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource(this.BuildContext.AmbientServices.TypeRegistry));
@@ -100,14 +99,12 @@ namespace Kephas.Injection.Autofac.Hosting
                 builderConfig(autofacBuilder);
             }
 
-            var containerBuilder = conventions is IAutofacContainerBuilder autofacContainerBuilder
-                                      ? autofacContainerBuilder.GetContainerBuilder(parts)
-                                      : conventions is IAutofacContainerBuilderProvider autofacContainerBuilderProvider
-                                          ? autofacContainerBuilderProvider.GetContainerBuilder()
+            var builder = conventions is IAutofacContainerBuilderFactory autofacContainerBuilderFactory
+                                          ? autofacContainerBuilderFactory.CreateContainerBuilder()
                                           : throw new InvalidOperationException(
-                                                $"The conventions instance must implement either {typeof(IAutofacContainerBuilder)} or {typeof(IAutofacContainerBuilderProvider)}.");
+                                                $"The conventions instance must implement {nameof(IAutofacContainerBuilderFactory)}.");
 
-            return new AutofacInjector(containerBuilder);
+            return new AutofacInjector(builder);
         }
     }
 }

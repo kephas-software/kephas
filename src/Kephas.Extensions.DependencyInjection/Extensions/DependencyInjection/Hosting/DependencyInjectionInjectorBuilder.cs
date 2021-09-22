@@ -11,8 +11,6 @@
 namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using System;
-    using System.Collections.Generic;
-
     using Kephas.Extensions.DependencyInjection.Conventions;
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
@@ -49,16 +47,15 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
-        /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
         {
-            var serviceProvider = conventions is IServiceProviderBuilder mediServiceProviderBuilder
-                                      ? mediServiceProviderBuilder.BuildServiceProvider(parts)
-                                      : conventions is IServiceCollectionProvider mediServiceCollectionProvider
-                                          ? mediServiceCollectionProvider.GetServiceCollection().BuildServiceProvider()
+            var serviceProvider = conventions is IServiceProviderBuilder serviceProviderBuilder
+                                      ? serviceProviderBuilder.BuildServiceProvider()
+                                      : conventions is IServiceCollectionProvider serviceCollectionProvider
+                                          ? serviceCollectionProvider.GetServiceCollection().BuildServiceProvider()
                                           : throw new InvalidOperationException(
                                                 $"The conventions instance must implement either {typeof(IServiceProviderBuilder)} or {typeof(IServiceCollectionProvider)}.");
 

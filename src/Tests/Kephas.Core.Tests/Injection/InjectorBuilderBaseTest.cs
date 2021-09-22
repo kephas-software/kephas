@@ -87,7 +87,7 @@ namespace Kephas.Core.Tests.Injection
                 return Substitute.For<IConventionsBuilder>();
             }
 
-            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
             {
                 return Substitute.For<IInjector>();
             }
@@ -107,20 +107,6 @@ namespace Kephas.Core.Tests.Injection
             public IDictionary<Type, IPartConventionsBuilder> TypeConventionsBuilders { get; private set; }
 
             public IDictionary<Predicate<Type>, IPartConventionsBuilder> MatchingConventionsBuilders { get; private set; }
-
-            public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
-            {
-                var partBuilder = this.CreateBuilder(type);
-                this.DerivedConventionsBuilders.Add(type, partBuilder);
-                return partBuilder;
-            }
-
-            public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
-            {
-                var partBuilder = this.CreateBuilder(typePredicate);
-                this.MatchingConventionsBuilders.Add(typePredicate, partBuilder);
-                return partBuilder;
-            }
 
             public IPartConventionsBuilder ForType(Type type)
             {

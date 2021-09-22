@@ -92,35 +92,6 @@ namespace Kephas.Injection.Lite.Conventions
         }
 
         /// <summary>
-        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
-        /// </summary>
-        /// <param name="type">The type from which matching types derive.</param>
-        /// <returns>
-        /// A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.
-        /// </returns>
-        public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
-        {
-            return this.ForTypesMatching(t => t.IsClass && !t.IsAbstract && !ReferenceEquals(type, t) && type.IsAssignableFrom(t));
-        }
-
-        /// <summary>
-        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
-        /// </summary>
-        /// <param name="typePredicate">The type predicate.</param>
-        /// <returns>
-        /// A <see cref="IPartConventionsBuilder" /> that must be used to specify the rule.
-        /// </returns>
-        public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
-        {
-            var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
-            {
-                ImplementationTypePredicate = typePredicate,
-            };
-            this.descriptorBuilders.Add(descriptorBuilder);
-            return new LitePartConventionsBuilder(this.ambientServices.LogManager, descriptorBuilder);
-        }
-
-        /// <summary>
         /// Builds the container using the given parts.
         /// </summary>
         /// <param name="parts">The parts.</param>

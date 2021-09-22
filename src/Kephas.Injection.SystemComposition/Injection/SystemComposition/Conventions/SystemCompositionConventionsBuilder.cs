@@ -52,32 +52,6 @@ namespace Kephas.Injection.SystemComposition.Conventions
         }
 
         /// <summary>
-        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
-        /// </summary>
-        /// <param name="type">The type from which matching types derive.</param>
-        /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
-        public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
-        {
-            Requires.NotNull(type, nameof(type));
-
-            return new SystemCompositionPartConventionsBuilder(this.innerConventionBuilder.ForTypesDerivedFrom(type));
-        }
-
-        /// <summary>
-        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
-        /// </summary>
-        /// <param name="typePredicate">The type predicate.</param>
-        /// <returns>
-        /// A <see cref="IPartConventionsBuilder" /> that must be used to specify the rule.
-        /// </returns>
-        public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
-        {
-            Requires.NotNull(typePredicate, nameof(typePredicate));
-
-            return new SystemCompositionPartConventionsBuilder(this.innerConventionBuilder.ForTypesMatching(typePredicate));
-        }
-
-        /// <summary>
         /// Define a rule that will apply to the specified type.
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>

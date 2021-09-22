@@ -20,11 +20,11 @@ namespace Kephas.Injection.Autofac.Conventions
     /// <summary>
     /// An Autofac conventions builder.
     /// </summary>
-    public class AutofacConventionsBuilder : IConventionsBuilder, IAutofacContainerBuilderProvider, IAutofacContainerBuilder
+    public class AutofacConventionsBuilder : IConventionsBuilder, IAutofacContainerBuilderFactory
     {
         private readonly ContainerBuilder containerBuilder;
 
-        private readonly IList<Action<IEnumerable<Type>>> builders = new List<Action<IEnumerable<Type>>>();
+        private readonly IList<Action> builders = new List<Action>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacConventionsBuilder"/> class.
@@ -44,38 +44,6 @@ namespace Kephas.Injection.Autofac.Conventions
         }
 
         /// <summary>
-        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
-        /// </summary>
-        /// <param name="type">The type from which matching types derive.</param>
-        /// <returns>
-        /// A <see cref="IPartConventionsBuilder" /> that must be used
-        /// to specify the rule.
-        /// </returns>
-        public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
-        {
-            return this.ForTypesMatching(t => t.IsClass && !t.IsAbstract && !ReferenceEquals(type, t) && type.IsAssignableFrom(t));
-        }
-
-        /// <summary>
-        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
-        /// </summary>
-        /// <param name="typePredicate">The type predicate.</param>
-        /// <returns>
-        /// A <see cref="IPartConventionsBuilder" /> that must be used
-        /// to specify the rule.
-        /// </returns>
-        public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
-        {
-            var descriptorBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
-            {
-                ImplementationTypePredicate = typePredicate,
-            };
-            this.builders.Add(parts => descriptorBuilder.Build(parts));
-
-            return new AutofacPartConventionsBuilder(descriptorBuilder);
-        }
-
-        /// <summary>
         /// Define a rule that will apply to the specified type.
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
@@ -89,7 +57,7 @@ namespace Kephas.Injection.Autofac.Conventions
             {
                 ImplementationType = type,
             };
-            this.builders.Add(parts => descriptorBuilder.Build(parts));
+            this.builders.Add(() => descriptorBuilder.Build());
 
             return new AutofacPartConventionsBuilder(descriptorBuilder);
         }
@@ -104,7 +72,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </returns>
         public IPartBuilder ForInstance(Type type, object instance)
         {
-            this.builders.Add(_ => this.containerBuilder
+            this.builders.Add(() => this.containerBuilder
                 .RegisterInstance(instance)
                 .As(type));
 
@@ -129,31 +97,22 @@ namespace Kephas.Injection.Autofac.Conventions
                         return factory(serviceProvider);
                     });
             var partBuilder = new AutofacPartBuilder(this.containerBuilder, registrationBuilder);
-            this.builders.Add(parts => partBuilder.Build(parts));
+            this.builders.Add(() => partBuilder.Build());
 
             return partBuilder;
         }
 
         /// <summary>
-        /// Gets the container builder.
-        /// </summary>
-        /// <returns>
-        /// The container builder.
-        /// </returns>
-        public ContainerBuilder GetContainerBuilder() => this.containerBuilder;
-
-        /// <summary>
         /// Configures the container builder with the given parts.
         /// </summary>
-        /// <param name="parts">The parts.</param>
         /// <returns>
         /// The container builder.
         /// </returns>
-        public ContainerBuilder GetContainerBuilder(IEnumerable<Type> parts)
+        public ContainerBuilder CreateContainerBuilder()
         {
             foreach (var builder in this.builders)
             {
-                builder(parts);
+                builder();
             }
 
             return this.containerBuilder;
