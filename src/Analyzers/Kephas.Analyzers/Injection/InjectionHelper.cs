@@ -75,9 +75,15 @@ namespace Kephas.Analyzers.Injection
                 }
             }
 
-            if (classSymbol.BaseType != null && IsAppServiceContract(classSymbol.BaseType))
+            var baseType = classSymbol.BaseType;
+            while (baseType != null)
             {
-                return classSymbol.BaseType;
+                if (IsAppServiceContract(baseType))
+                {
+                    return baseType;
+                }
+
+                baseType = baseType.BaseType;
             }
 
             return null;

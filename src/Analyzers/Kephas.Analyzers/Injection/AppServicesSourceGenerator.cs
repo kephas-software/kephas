@@ -87,7 +87,7 @@ using Kephas.Services;
 
             source.AppendLine($@"namespace {serviceTypeProvider.typeNamespace}");
             source.AppendLine($@"{{");
-            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceTypesProvider, IAppServiceInfoProvider");
+            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceTypesProvider, IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
             source.AppendLine($@"       public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null)");
             source.AppendLine($@"       {{");
