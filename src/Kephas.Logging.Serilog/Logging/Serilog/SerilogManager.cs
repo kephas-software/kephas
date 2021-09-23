@@ -98,6 +98,7 @@ namespace Kephas.Logging.Serilog
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
