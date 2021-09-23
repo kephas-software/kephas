@@ -238,10 +238,30 @@ namespace Kephas.Services
             Type serviceType,
             ILogger logger)
         {
+            var contractFound = false;
             if (!appServiceInfoMap.TryGetValue(contractDeclarationType, out var serviceInfo))
             {
+                if (contractDeclarationType.IsConstructedGenericType)
+                {
+                    var contractGenericDefinitionType = contractDeclarationType.GetGenericTypeDefinition();
+                    if (appServiceInfoMap.TryGetValue(contractGenericDefinitionType, out serviceInfo))
+                    {
+                        var appServiceInfo = new AppServiceInfo(serviceInfo.appServiceInfo, serviceInfo.appServiceInfo.ContractType ?? contractDeclarationType);
+                        serviceInfo = (appServiceInfo, new List<(Type serviceType, IDictionary<string, object?> metadata)>());
+                        appServiceInfoMap[contractDeclarationType] = serviceInfo;
+                        contractFound = true;
+                    }
+                }
+            }
+            else
+            {
+                contractFound = true;
+            }
+
+            if (!contractFound)
+            {
                 logger.Warn(
-                    "Service type {serviceType} declares a contract of {}, but the contract is not registered as an application service contract.",
+                    "Service type {serviceType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
                     serviceType,
                     contractDeclarationType);
                 return;
