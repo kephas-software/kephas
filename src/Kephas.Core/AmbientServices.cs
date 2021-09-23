@@ -71,8 +71,9 @@ namespace Kephas
                     .Register<ILogManager, NullLogManager>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<ILicensingManager, NullLicensingManager>()
+                    .Register<IAppServiceMetadataResolver, AppServiceMetadataResolver>()
 
-                    .RegisterMultiple<IConventionsRegistrar>(new AppServiceInfoConventionsRegistrar());
+                    .RegisterMultiple<IConventionsRegistrar, AppServiceInfoConventionsRegistrar>();
             }
 
             this.registry

@@ -14,10 +14,14 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
+    /// <summary>
+    /// Default implementation of <see cref="IAppServiceMetadataResolver"/>.
+    /// </summary>
     internal class AppServiceMetadataResolver : IAppServiceMetadataResolver
     {
         /// <summary>
