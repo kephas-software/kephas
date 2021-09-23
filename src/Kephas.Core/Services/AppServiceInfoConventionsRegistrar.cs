@@ -17,6 +17,7 @@ namespace Kephas.Services
     using System.Reflection;
     using System.Text;
 
+    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
@@ -88,25 +89,28 @@ namespace Kephas.Services
             var conventions = builder;
 
             // get all type infos from the injection assemblies
-            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext);
-            var appServiceInfos = appServiceInfoProviders
+            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext).ToList();
+            var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .ToList();
-            var appServiceTypes = appServiceInfoProviders
-                .OfType<IAppServiceTypesProvider>()
+            var appServiceInfoMap = appServiceInfoList
+                .ToDictionary(
+                    i => i.contractDeclarationType,
+                    i => (appServiceInfo: i.appServiceInfo, serviceTypes: new List<(Type serviceType, IDictionary<string, object?> metadata)>()));
+            appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceTypes(buildContext))
-                .ToList();
+                .ForEach(si => this.AddServiceType(appServiceInfoMap, si.contractDeclarationType, si.serviceType, logger));
 
             // TODO check which of the service infos are contract descriptions
             // take care: closed generic types.
-            
-            buildContext.AmbientServices.SetAppServiceInfos(appServiceInfos);
 
-            var contractDeclarationTypes = appServiceInfos.Select(e => e.contractDeclarationType).ToList();
+            buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
+
+            var contractDeclarationTypes = appServiceInfoMap.Select(e => e.contractDeclarationType).ToList();
 
             var typeRegistry = buildContext.AmbientServices.TypeRegistry ?? RuntimeTypeRegistry.Instance;
             var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
-            foreach (var (appServiceContract, appServiceInfo) in appServiceInfos)
+            foreach (var (appServiceContract, appServiceInfo) in appServiceInfoMap)
             {
                 var isPartBuilder = this.TryConfigurePartBuilder(
                     appServiceInfo,
@@ -144,7 +148,8 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
         /// </returns>
-        protected virtual IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
+        protected virtual IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(
+            IInjectionBuildContext buildContext)
         {
             return buildContext.AppServiceInfosProviders ?? Array.Empty<IAppServiceInfosProvider>();
         }
@@ -197,10 +202,7 @@ namespace Kephas.Services
                         // warn about metadata on open generic exports only if custom attributes are provided.
                         if (hasCustomMetadataAttributes)
                         {
-                            logger.Warn(
-                                Strings
-                                    .AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning,
-                                exportedContract);
+                            logger.Warn(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract);
                         }
                     }
                 }
@@ -230,14 +232,30 @@ namespace Kephas.Services
             }
         }
 
-        /// <summary>
-        /// Serializes the service contract metadata.
-        /// </summary>
-        /// <param name="serviceContract">The service contract.</param>
-        /// <param name="contractMetadata">The contract metadata.</param>
-        /// <returns>
-        /// The serialized service contract information.
-        /// </returns>
+        private void AddServiceType(
+            IDictionary<Type, (IAppServiceInfo appServiceInfo, List<(Type serviceType, IDictionary<string, object?> metadata)> serviceTypes)> appServiceInfoMap,
+            Type contractDeclarationType,
+            Type serviceType,
+            ILogger logger)
+        {
+            if (!appServiceInfoMap.TryGetValue(contractDeclarationType, out var serviceInfo))
+            {
+                logger.Warn(
+                    "Service type {serviceType} declares a contract of {}, but the contract is not registered as an application service contract.",
+                    serviceType,
+                    contractDeclarationType);
+                return;
+            }
+
+            serviceInfo.serviceTypes.Add((serviceType, this.GetServiceMetadata(serviceType, serviceInfo.appServiceInfo, logger)));
+        }
+
+        private IDictionary<string, object?> GetServiceMetadata(Type serviceType, IAppServiceInfo appServiceInfo, ILogger logger)
+        {
+            // TODO
+            return new Dictionary<string, object?>();
+        }
+
         private string SerializeServiceContractMetadata(Type serviceContract, IAppServiceInfo contractMetadata)
         {
             var sb = new StringBuilder();
@@ -450,7 +468,8 @@ namespace Kephas.Services
             return explicitlyMarkedConstructors[0];
         }
 
-        private void AddInjectionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract, IAppServiceMetadataResolver metadataResolver)
+        private void AddInjectionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract,
+            IAppServiceMetadataResolver metadataResolver)
         {
             if (!serviceContract.IsGenericTypeDefinition)
             {
