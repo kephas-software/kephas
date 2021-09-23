@@ -87,7 +87,7 @@ using Kephas.Services;
 
             source.AppendLine($@"namespace {serviceTypeProvider.typeNamespace}");
             source.AppendLine($@"{{");
-            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceTypesProvider, IAppServiceInfosProvider");
+            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
             source.AppendLine($@"       public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null)");
             source.AppendLine($@"       {{");
@@ -130,7 +130,15 @@ using Kephas.Services;
                     }
 
                     var typeFullName = InjectionHelper.GetTypeFullName(classSyntax);
-                    source.AppendLine($"            yield return (typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                    try
+                    {
+                        source.AppendLine($"            yield return (typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                    }
+                    catch (Exception ex)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG2000", nameof(AppServicesSourceGenerator), $"Error while generating the service type for {typeFullName}: {ex.Message}", "Kephas", DiagnosticSeverity.Warning, isEnabledByDefault: true), Location.None));
+                    }
+
                     serviceTypesBuilder.Append($"{classSyntax.Identifier}, ");
 
                     isProviderEmpty = false;

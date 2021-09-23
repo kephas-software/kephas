@@ -7,11 +7,11 @@
     } 
     
     [AppServiceContract(ContractType = typeof(INonGenericContract))]
-    public interface IGenericContractDeclaration<TValue>
+    public interface IGenericContractDeclaration<TName, TValue>
     {
     }
 
-    public class GenericService<TValue> : IGenericContractDeclaration<TValue>
+    public class GenericService<TName, TValue> : IGenericContractDeclaration<TName, TValue>
     {
     }
 

@@ -117,7 +117,9 @@ namespace Kephas.Analyzers.Injection
                 ns = ns.ContainingNamespace;
             }
 
-            if (typeSymbol.TypeParameters.Length > 0)
+            var isBoundGenericType = false;
+            var isUnboundGenericType = false;
+            if (typeSymbol.IsUnboundGenericType)
             {
                 fullNameBuilder.Append('<');
                 for (var i = 0; i < typeSymbol.TypeParameters.Length - 1; i++)
@@ -127,8 +129,31 @@ namespace Kephas.Analyzers.Injection
 
                 fullNameBuilder.Append('>');
             }
+            else if (typeSymbol.IsGenericType)
+            {
+                fullNameBuilder.Append('<');
+                foreach (var typeArg in typeSymbol.TypeArguments)
+                {
+                    if (typeArg is INamedTypeSymbol namedTypeArg)
+                    {
+                        fullNameBuilder.Append(GetTypeFullName(namedTypeArg));
+                        isBoundGenericType = true;
+                    }
+                    else
+                    {
+                        isUnboundGenericType = true;
+                    }
 
-            return fullNameBuilder.ToString();
+                    fullNameBuilder.Append(", ");
+                }
+
+                fullNameBuilder.Length -= 2;
+                fullNameBuilder.Append('>');
+            }
+
+            return isBoundGenericType && isUnboundGenericType
+                ? throw new InvalidOperationException($"Generic type '{fullNameBuilder}' is partially bound, while it should be either unbound or fully bound. Possible reason: the [AppServiceContract] attribute is applied on a base type instead of the type itself. Check also the 'AsOpenGeneric' option.")
+                : fullNameBuilder.ToString();
         }
 
         public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax)

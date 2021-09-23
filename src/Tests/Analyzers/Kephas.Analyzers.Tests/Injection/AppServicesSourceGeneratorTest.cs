@@ -38,14 +38,14 @@ namespace Kephas.Analyzers.Tests.Injection
             var appServicesAttr = testAssembly.GetCustomAttributes<AppServicesAttribute>().Single();
 
             var provider = Activator.CreateInstance(appServicesAttr.ProviderType)!;
-            var typesProvider = (IAppServiceTypesProvider)provider;
+            var typesProvider = (IAppServiceInfosProvider)provider;
             var services = typesProvider.GetAppServiceTypes();
 
             var expectedServices = new (Type serviceType, Type contractDeclarationType)[]
             {
-                (typeof(StringService), typeof(IGenericContract<>)),
-                (typeof(IntService), typeof(IGenericContract<>)),
-                (typeof(GenericService<>), typeof(IGenericContractDeclaration<>)),
+                (typeof(StringService), typeof(IGenericContract<string>)),
+                (typeof(IntService), typeof(IGenericContract<int>)),
+                (typeof(GenericService<,>), typeof(IGenericContractDeclaration<,>)),
                 (typeof(OpenGenericService<>), typeof(IOpenGenericContract<>)),
                 (typeof(ServiceAndContract), typeof(ServiceAndContract)),
                 (typeof(DerivedService), typeof(ServiceBase)),
@@ -66,7 +66,7 @@ namespace Kephas.Analyzers.Tests.Injection
                     typeof(ServiceBase),
                     typeof(IOpenGenericContract<>),
                     typeof(IGenericContract<>),
-                    typeof(IGenericContractDeclaration<>),
+                    typeof(IGenericContractDeclaration<,>),
                 },
                 contractsProvider.GetContractDeclarationTypes());
         }
