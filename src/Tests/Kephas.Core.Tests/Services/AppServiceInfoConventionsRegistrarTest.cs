@@ -11,9 +11,7 @@
 namespace Kephas.Core.Tests.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
 
     using Kephas.Core.Tests.Injection;
@@ -25,6 +23,7 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
+    using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
@@ -46,7 +45,7 @@ namespace Kephas.Core.Tests.Services
                     typeof(MultipleTestService),
                     typeof(NewMultipleTestService),
                 };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -68,7 +67,7 @@ namespace Kephas.Core.Tests.Services
                     typeof(ISingleTestAppService),
                     typeof(SingleTestService),
                 };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -89,7 +88,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(SingleOverrideTestService),
                 typeof(ChainSingleOverrideTestService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -109,7 +108,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(SingleTestService),
                 typeof(DerivedOverrideSingleTestService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -129,7 +128,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(SingleTestService),
                 typeof(SingleOverrideTestService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -149,7 +148,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(SingleTestService),
                 typeof(SingleSameOverrideTestService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             Assert.Throws<AmbiguousServiceResolutionException>(() => registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts))));
@@ -164,7 +163,7 @@ namespace Kephas.Core.Tests.Services
             {
                 typeof(IGenericAppService<>),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -185,7 +184,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(IDefaultMetadataAppService),
                 typeof(DefaultMetadataAppService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -220,7 +219,7 @@ namespace Kephas.Core.Tests.Services
             {
                 typeof(IOneGenericAppService<>),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -239,7 +238,7 @@ namespace Kephas.Core.Tests.Services
             {
                 typeof(IOneGenericAppService<>),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -263,7 +262,7 @@ namespace Kephas.Core.Tests.Services
             {
                 typeof(ITwoGenericAppService<,>),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -293,7 +292,7 @@ namespace Kephas.Core.Tests.Services
             {
                 typeof(ILogger<>),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(this.GetTestAmbientServices(m => log.AppendLine(m))).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -318,7 +317,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(ExplicitMetadataAppService),
                 typeof(NullExplicitMetadataAppService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -349,7 +348,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(CustomValueMetadataAppService),
                 typeof(CustomValueNullMetadataAppService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -380,7 +379,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(CustomValueMetadataAppService),
                 typeof(CustomValueNullMetadataAppService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -411,7 +410,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(CustomNamedValueMetadataAppService),
                 typeof(CustomNamedValueNullMetadataAppService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
@@ -446,7 +445,7 @@ namespace Kephas.Core.Tests.Services
                 typeof(IBadAppService),
                 typeof(BadAppService),
             };
-            var registrar = new AppServiceInfoConventionsRegistrar();
+            var registrar = CreateAppServiceInfoConventionsRegistrar();
             Assert.Throws<InjectionException>(
                 () => registrar.RegisterConventions(
                     conventions,
@@ -481,11 +480,17 @@ namespace Kephas.Core.Tests.Services
             Assert.AreEqual(1, AppServiceInfoConventionsRegistrar.DefaultMetadataAttributeTypes.Count(t => t == typeof(ServiceNameAttribute)));
         }
 
+        private static AppServiceInfoConventionsRegistrar CreateAppServiceInfoConventionsRegistrar()
+        {
+            var registrar = new AppServiceInfoConventionsRegistrar(new AppServiceMetadataResolver(new RuntimeTypeRegistry()));
+            return registrar;
+        }
+
         public class DummyAttribute : Attribute
         {
         }
 
-        private IAmbientServices GetTestAmbientServices(Action<string> logAction = null)
+        private IAmbientServices GetTestAmbientServices(Action<string>? logAction = null)
         {
             var logger = Substitute.For<ILogger>();
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);

@@ -34,6 +34,8 @@ namespace Kephas.Services
     /// </summary>
     internal class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
+        private readonly IAppServiceMetadataResolver metadataResolver;
+
         /// <summary>
         /// The default metadata attribute types.
         /// </summary>
@@ -57,6 +59,15 @@ namespace Kephas.Services
         static AppServiceInfoConventionsRegistrar()
         {
             DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceInfoConventionsRegistrar"/> class.
+        /// </summary>
+        /// <param name="metadataResolver">The metadata resolver.</param>
+        public AppServiceInfoConventionsRegistrar(IAppServiceMetadataResolver metadataResolver)
+        {
+            this.metadataResolver = metadataResolver;
         }
 
         /// <summary>
@@ -93,6 +104,10 @@ namespace Kephas.Services
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .ToList();
+
+            // TODO the app service infos may come with multiple contract declaration types
+            // especially when they come from external sources, like ServiceCollection.
+            // Therefore, a direct conversion to dictionary will likely fail.
             var appServiceInfoMap = appServiceInfoList
                 .ToDictionary(
                     i => i.contractDeclarationType,
@@ -101,15 +116,36 @@ namespace Kephas.Services
                 .SelectMany(p => p.GetAppServiceTypes(buildContext))
                 .ForEach(si => this.AddServiceType(appServiceInfoMap, si.contractDeclarationType, si.serviceType, logger));
 
+            buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
+
             // TODO check which of the service infos are contract descriptions
             // take care: closed generic types.
 
-            buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
+            foreach (var (contractDeclarationType, (appServiceInfo, serviceTypes)) in appServiceInfoMap)
+            {
+                var contractType = appServiceInfo.ContractType ?? contractDeclarationType;
+                if (appServiceInfo.IsContractDefinition())
+                {
+                    if (serviceTypes.Count == 0)
+                    {
+                        logger.Warn("No service types registered for {contractDeclarationType}/{contractType}.", contractDeclarationType, contractType);
+                        continue;
+                    }
 
-            var contractDeclarationTypes = appServiceInfoMap.Select(e => e.contractDeclarationType).ToList();
+                    // select from service types the ordered ones.
+                }
+                else
+                {
+                    if (serviceTypes.Count > 0 && !appServiceInfo.AllowMultiple)
+                    {
+                        logger.Warn("Explicit registration {appServiceInfo} overrides collected service types: {serviceTypes}.", appServiceInfo, serviceTypes);
+                        continue;
+                    }
+                }
+            }
+            
+            var contractDeclarationTypes = appServiceInfoList.Select(e => e.contractDeclarationType).ToList();
 
-            var typeRegistry = buildContext.AmbientServices.TypeRegistry ?? RuntimeTypeRegistry.Instance;
-            var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
             foreach (var (appServiceContract, appServiceInfo) in appServiceInfoMap)
             {
                 var isPartBuilder = this.TryConfigurePartBuilder(
@@ -130,7 +166,7 @@ namespace Kephas.Services
                     if (partConventionsBuilder != null)
                     {
                         this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo,
-                            contractDeclarationTypes, metadataResolver, logger);
+                            contractDeclarationTypes, logger);
                     }
                     else
                     {
@@ -161,14 +197,12 @@ namespace Kephas.Services
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="appServiceInfo">The application service metadata.</param>
         /// <param name="appServiceContracts">The application service contracts.</param>
-        /// <param name="metadataResolver">The metadata resolver.</param>
         /// <param name="logger">The logger.</param>
         protected void ConfigurePartBuilder(
             IPartConventionsBuilder partBuilder,
             Type serviceContract,
             IAppServiceInfo appServiceInfo,
             IList<Type> appServiceContracts,
-            IAppServiceMetadataResolver metadataResolver,
             ILogger logger)
         {
             var serviceContractType = serviceContract;
@@ -191,8 +225,7 @@ namespace Kephas.Services
                 {
                     partBuilder.ExportInterface(
                         exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes,
-                            metadataResolver));
+                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
 
                     if (metadataAttributes.Count > 0)
                     {
@@ -210,14 +243,13 @@ namespace Kephas.Services
                 {
                     partBuilder.ExportInterface(
                         exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes, metadataResolver));
+                        (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
                 }
             }
             else
             {
                 partBuilder.Export(
-                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes,
-                        metadataResolver));
+                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
             }
 
             partBuilder.SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(serviceContract, ctorInfos));
@@ -413,12 +445,11 @@ namespace Kephas.Services
             IExportConventionsBuilder exportBuilder,
             Type exportedContractType,
             Type? serviceImplementationType,
-            IEnumerable<Type> metadataAttributes,
-            IAppServiceMetadataResolver metadataResolver)
+            IEnumerable<Type> metadataAttributes)
         {
             exportBuilder.AsContractType(exportedContractType);
-            this.AddInjectionMetadata(exportBuilder, serviceImplementationType, metadataAttributes, metadataResolver);
-            this.AddInjectionMetadataForGenerics(exportBuilder, serviceContract, metadataResolver);
+            this.AddInjectionMetadata(exportBuilder, serviceImplementationType, metadataAttributes);
+            this.AddInjectionMetadataForGenerics(exportBuilder, serviceContract);
         }
 
         /// <summary>
@@ -488,8 +519,7 @@ namespace Kephas.Services
             return explicitlyMarkedConstructors[0];
         }
 
-        private void AddInjectionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract,
-            IAppServiceMetadataResolver metadataResolver)
+        private void AddInjectionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract)
         {
             if (!serviceContract.IsGenericTypeDefinition)
             {
@@ -503,13 +533,12 @@ namespace Kephas.Services
                 var genericTypeParameter = genericTypeParameters[i];
                 var position = i;
                 builder.AddMetadata(
-                    metadataResolver.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
-                    t => metadataResolver.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
+                    this.metadataResolver.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
+                    t => this.metadataResolver.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
             }
         }
 
-        private void AddInjectionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType,
-            IEnumerable<Type> attributeTypes, IAppServiceMetadataResolver metadataResolver)
+        private void AddInjectionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes)
         {
             // add the service type.
             builder.AddMetadata(nameof(AppServiceMetadata.ServiceInstanceType), t => serviceImplementationType ?? t);
@@ -522,13 +551,12 @@ namespace Kephas.Services
 
             foreach (var attributeType in attributeTypes)
             {
-                var valueProperties = metadataResolver.GetMetadataValueProperties(attributeType);
+                var valueProperties = this.metadataResolver.GetMetadataValueProperties(attributeType);
                 foreach (var valuePropertyEntry in valueProperties)
                 {
                     builder.AddMetadata(
                         valuePropertyEntry.Key,
-                        t => metadataResolver.GetMetadataValueFromAttribute(t, attributeType,
-                            valuePropertyEntry.Value));
+                        t => this.metadataResolver.GetMetadataValueFromAttribute(t, attributeType, valuePropertyEntry.Value));
                 }
             }
         }
