@@ -18,7 +18,7 @@ namespace Kephas.Injection.Hosting
     /// <summary>
     /// Implementation of <see cref="IAppServiceInfosProvider"/> for an enumeration of types.
     /// </summary>
-    internal class PartsAppServiceInfosProvider : IAppServiceInfosProvider, IAppServiceTypesProvider
+    internal class PartsAppServiceInfosProvider : IAppServiceInfosProvider
     {
         private readonly IList<Type> parts;
 

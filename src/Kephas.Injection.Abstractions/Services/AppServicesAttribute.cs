@@ -16,20 +16,25 @@ namespace Kephas.Services
     /// Assembly attribute decorating an assembly and collecting the application services, both contract types and implementation types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-    public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, IAppServiceTypesProvider, IHasProcessingPriority
+    public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, IHasProcessingPriority
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesAttribute"/> class.
         /// </summary>
         /// <param name="providerType">
         /// The type providing the application services.
-        /// Should implement at least one of <see cref="IAppServiceInfosProvider"/> and <see cref="IAppServiceTypesProvider"/> interfaces.
+        /// Should implement the <see cref="IAppServiceInfosProvider"/> interface.
         /// </param>
         /// <param name="processingPriority">Adds the processing priority in which the attributes will be processed.</param>
         public AppServicesAttribute(Type providerType, Priority processingPriority = Priority.Normal)
         {
             this.ProviderType = providerType ?? throw new ArgumentNullException(nameof(providerType));
             this.ProcessingPriority = processingPriority;
+
+            if (!typeof(IAppServiceInfosProvider).IsAssignableFrom(this.ProviderType))
+            {
+                throw new ArgumentException($"The provider type must implement {nameof(IAppServiceInfosProvider)}", nameof(providerType));
+            }
         }
 
         /// <summary>
@@ -66,7 +71,7 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
         {
-            var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceTypesProvider;
+            var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
             return provider?.GetAppServiceTypes(context) ?? Array.Empty<(Type serviceType, Type contractDeclarationType)>();
         }
     }

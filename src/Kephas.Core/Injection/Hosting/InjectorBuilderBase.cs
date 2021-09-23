@@ -382,7 +382,7 @@ namespace Kephas.Injection.Hosting
         /// <summary>
         /// An application service information serviceRegistry.
         /// </summary>
-        protected class AppServiceInfoRegistry : IAppServiceInfosProvider, IAppServiceTypesProvider
+        protected class AppServiceInfoRegistry : IAppServiceInfosProvider
         {
             private readonly Func<IEnumerable<Assembly>> getAssemblies;
             private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
@@ -427,7 +427,7 @@ namespace Kephas.Injection.Hosting
             /// </returns>
             public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
             {
-                return this.GetAppServices<IAppServiceTypesProvider>().SelectMany(p => p.GetAppServiceTypes());
+                return this.GetAppServices<IAppServiceInfosProvider>().SelectMany(p => p.GetAppServiceTypes());
             }
 
             private IEnumerable<T> GetAppServices<T>()

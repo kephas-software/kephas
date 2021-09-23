@@ -44,6 +44,16 @@ namespace Kephas.Services
             => GetAppServiceInfosCore(this, context);
 
         /// <summary>
+        /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
+        /// </summary>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
+        /// <returns>
+        /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
+        /// </returns>
+        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
+            => Enumerable.Empty<(Type serviceType, Type contractDeclarationType)>();
+
+        /// <summary>
         /// Tries the get the application service information from the custom attributes.
         /// </summary>
         /// <param name="type">The contract declaration type.</param>

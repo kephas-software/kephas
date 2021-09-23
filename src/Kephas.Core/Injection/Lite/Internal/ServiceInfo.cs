@@ -93,6 +93,8 @@ namespace Kephas.Injection.Lite.Internal
 
         public bool ExternallyOwned { get; internal set; }
 
+        public IDictionary<string, object?>? Metadata { get; internal set; }
+
         /// <summary>
         /// Makes a generic service information with closed generic types.
         /// </summary>
@@ -138,8 +140,6 @@ namespace Kephas.Injection.Lite.Internal
         }
 
         public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
-
-        public IDictionary<string, object>? Metadata { get; internal set; }
 
         public void Dispose()
         {
