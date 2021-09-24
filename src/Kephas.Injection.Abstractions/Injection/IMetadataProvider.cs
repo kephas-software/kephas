@@ -90,7 +90,7 @@ namespace Kephas.Injection
             for (var i = 0; i < genericTypeParameters.Length; i++)
             {
                 var genericTypeParameter = genericTypeParameters[i];
-                yield return (this.GetNameFromGenericTypeParameter(genericTypeParameter), this.GetValueFromGenericTypeArgument(genericTypeArguments[i]))
+                yield return (this.GetNameFromGenericTypeParameter(genericTypeParameter), this.GetValueFromGenericTypeArgument(genericTypeArguments[i]));
             }
         }
 
