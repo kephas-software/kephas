@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Conventions;
-
 namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
@@ -18,8 +15,9 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
+    using Kephas.Injection.Conventions;
     using Kephas.Logging;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -29,7 +27,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
     {
         private readonly IServiceCollection serviceCollection;
 
-        private IList<ServiceDescriptorBuilder> descriptorBuilders = new List<ServiceDescriptorBuilder>();
+        private readonly IList<ServiceDescriptorBuilder> descriptorBuilders = new List<ServiceDescriptorBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionsBuilder"/> class.
@@ -124,7 +122,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         {
             foreach (var descriptorBuilder in this.descriptorBuilders)
             {
-                this.serviceCollection.AddRange(descriptorBuilder.Build(parts));
+                this.serviceCollection.AddRange(descriptorBuilder.Build());
             }
 
             return this.serviceCollection.BuildServiceProvider();

@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Conventions;
-
 namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Kephas.Logging;
 
+    using Kephas.Injection;
+    using Kephas.Injection.Conventions;
+    using Kephas.Logging;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -38,7 +38,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <value>
         /// The instance.
         /// </value>
-        public object Instance { get; set; }
+        public object? Instance { get; set; }
 
         /// <summary>
         /// Gets or sets the factory.
@@ -46,7 +46,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <value>
         /// A function delegate that yields an object.
         /// </value>
-        public Func<IServiceProvider, object> Factory { get; set; }
+        public Func<IServiceProvider, object>? Factory { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the implementation.
@@ -54,15 +54,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <value>
         /// The type of the implementation.
         /// </value>
-        public Type ImplementationType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the implementation type predicate.
-        /// </summary>
-        /// <value>
-        /// The implementation type predicate.
-        /// </value>
-        public Predicate<Type> ImplementationTypePredicate { get; set; }
+        public Type? ImplementationType { get; set; }
 
         /// <summary>
         /// Gets or sets the lifetime.
@@ -84,11 +76,10 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// Builds the information into a service descriptor.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="parts">The parts.</param>
         /// <returns>
         /// A ServiceDescriptor.
         /// </returns>
-        public IEnumerable<ServiceDescriptor> Build(IEnumerable<Type> parts)
+        public IEnumerable<ServiceDescriptor> Build()
         {
             var descriptor = this.Instance != null
                                  ? new ServiceDescriptor(this.ServiceType ?? this.Instance.GetType(), this.Instance)
@@ -105,19 +96,8 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
                 yield break;
             }
 
-            if (this.ImplementationTypePredicate != null)
-            {
-                foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
-                {
-                    this.ExportConfiguration?.Invoke(type, this);
-                    yield return new ServiceDescriptor(this.ServiceType ?? type, type, this.Lifetime);
-                }
-
-                yield break;
-            }
-
-            throw new InvalidOperationException(
-                $"One of {nameof(this.Instance)}, {nameof(this.ImplementationType)}, {nameof(this.ImplementationTypePredicate)}, or {nameof(this.Factory)} must be set.");
+            throw new InjectionException(
+                $"One of {nameof(this.Instance)}, {nameof(this.ImplementationType)}, or {nameof(this.Factory)} must be set.");
         }
 
         /// <summary>
@@ -129,8 +109,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         public override string ToString()
         {
             var implementationString = this.ImplementationType?.ToString()
-                                       ?? (this.ImplementationTypePredicate != null ? "type predicate" :
-                                           this.Factory != null ? "factory" :
+                                       ?? (this.Factory != null ? "factory" :
                                            this.Instance != null ? "instance" : "unknown");
             return $"{this.ServiceType}/{this.Lifetime}/{implementationString}";
         }
