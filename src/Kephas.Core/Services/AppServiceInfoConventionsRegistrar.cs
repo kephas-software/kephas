@@ -105,21 +105,12 @@ namespace Kephas.Services
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .ToList();
 
-            // TODO the app service infos may come with multiple contract declaration types
-            // especially when they come from external sources, like ServiceCollection.
-            // Therefore, a direct conversion to dictionary will likely fail.
-            var appServiceInfoMap = appServiceInfoList
-                .ToDictionary(
-                    i => i.contractDeclarationType,
-                    i => (appServiceInfo: i.appServiceInfo, serviceTypes: new List<(Type serviceType, IDictionary<string, object?> metadata)>()));
-            appServiceInfoProviders
-                .SelectMany(p => p.GetAppServiceTypes(buildContext))
-                .ForEach(si => this.AddServiceType(appServiceInfoMap, si.contractDeclarationType, si.serviceType, logger));
+            var appServiceInfoMap = this.BuildAppServiceInfoMap(
+                appServiceInfoList,
+                appServiceInfoProviders.SelectMany(p => p.GetAppServiceTypes(buildContext)),
+                logger);
 
             buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
-
-            // TODO check which of the service infos are contract descriptions
-            // take care: closed generic types.
 
             foreach (var (contractDeclarationType, (appServiceInfo, serviceTypes)) in appServiceInfoMap)
             {
@@ -264,42 +255,73 @@ namespace Kephas.Services
             }
         }
 
+        private IDictionary<Type, IList<IAppServiceInfo>> BuildAppServiceInfoMap(
+                IList<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfoList,
+                IEnumerable<(Type serviceType, Type contractDeclarationType)> serviceTypes,
+                ILogger logger)
+        {
+            var dictionary = new Dictionary<Type, IList<IAppServiceInfo>>();
+
+            foreach (var (contractDeclarationType, appServiceInfo) in appServiceInfoList)
+            {
+                if (!dictionary.TryGetValue(contractDeclarationType, out var appServiceInfos))
+                {
+                    appServiceInfos = new List<IAppServiceInfo>();
+                    dictionary.Add(contractDeclarationType, appServiceInfos);
+                }
+
+                appServiceInfos.Add(appServiceInfo);
+            }
+
+            serviceTypes.ForEach(si => this.AddServiceType(dictionary, si.contractDeclarationType, si.serviceType, logger));
+
+            return dictionary;
+        }
+
         private void AddServiceType(
-            IDictionary<Type, (IAppServiceInfo appServiceInfo, List<(Type serviceType, IDictionary<string, object?> metadata)> serviceTypes)> appServiceInfoMap,
+            IDictionary<Type, IList<IAppServiceInfo>> appServiceInfoMap,
             Type contractDeclarationType,
             Type serviceType,
             ILogger logger)
         {
-            var contractFound = false;
-            if (!appServiceInfoMap.TryGetValue(contractDeclarationType, out var serviceInfo))
+            if (!appServiceInfoMap.TryGetValue(contractDeclarationType, out var appServiceInfos))
             {
+                // if the contract declaration type is not found in the map,
+                // it may be because it is a constructed generic type and the
+                // registration contains the generic type definition.
                 if (contractDeclarationType.IsConstructedGenericType)
                 {
                     var contractGenericDefinitionType = contractDeclarationType.GetGenericTypeDefinition();
-                    if (appServiceInfoMap.TryGetValue(contractGenericDefinitionType, out serviceInfo))
+                    if (appServiceInfoMap.TryGetValue(contractGenericDefinitionType, out appServiceInfos))
                     {
-                        var appServiceInfo = new AppServiceInfo(serviceInfo.appServiceInfo, serviceInfo.appServiceInfo.ContractType ?? contractDeclarationType);
-                        serviceInfo = (appServiceInfo, new List<(Type serviceType, IDictionary<string, object?> metadata)>());
-                        appServiceInfoMap[contractDeclarationType] = serviceInfo;
-                        contractFound = true;
+                        // if the contract declaration based on the generic type definition is found,
+                        // build a new contract declaration based on the constructed generic type
+                        // and add a new entry in the map.
+                        var appServiceInfoOpenGeneric = appServiceInfos.First();
+                        var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoOpenGeneric, contractDeclarationType);
+                        var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType)
+                            .AddMetadata(this.GetServiceMetadata(serviceType, appServiceInfoDeclaration, logger));
+
+                        // add to the list of service infos on the first place the declaration.
+                        appServiceInfoMap[contractDeclarationType] = new List<IAppServiceInfo> { appServiceInfoDeclaration, appServiceInfo };
+                        return;
                     }
                 }
             }
             else
             {
-                contractFound = true;
-            }
-
-            if (!contractFound)
-            {
-                logger.Warn(
-                    "Service type {serviceType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
-                    serviceType,
-                    contractDeclarationType);
+                // The first app service info in the list must be the contract declaration.
+                var appServiceInfoDeclaration = appServiceInfos.First();
+                var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType)
+                    .AddMetadata(this.GetServiceMetadata(serviceType, appServiceInfoDeclaration, logger));
+                appServiceInfos.Add(appServiceInfo);
                 return;
             }
 
-            serviceInfo.serviceTypes.Add((serviceType, this.GetServiceMetadata(serviceType, serviceInfo.appServiceInfo, logger)));
+            logger.Warn(
+                "Service type {serviceType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
+                serviceType,
+                contractDeclarationType);
         }
 
         private IDictionary<string, object?> GetServiceMetadata(Type serviceType, IAppServiceInfo appServiceInfo, ILogger logger)
@@ -346,20 +368,11 @@ namespace Kephas.Services
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Gets metadata attributes.
-        /// </summary>
-        /// <param name="appServiceInfo">The contract information.</param>
-        /// <returns>
-        /// An collection of attribute types.
-        /// </returns>
         private IReadOnlyCollection<Type> GetMetadataAttributes(IAppServiceInfo appServiceInfo)
         {
             if (appServiceInfo.MetadataAttributes == null || appServiceInfo.MetadataAttributes.Length == 0)
             {
-                return appServiceInfo.AsOpenGeneric
-                    ? Type.EmptyTypes
-                    : DefaultMetadataAttributeTypes;
+                return DefaultMetadataAttributeTypes;
             }
 
             var attrs = appServiceInfo.MetadataAttributes.ToList();
