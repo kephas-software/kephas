@@ -8,21 +8,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using Kephas.Application;
-using Kephas.Injection;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
-using Kephas.Logging;
-using Kephas.Reflection;
-using NSubstitute;
-using NUnit.Framework;
-
 namespace Kephas.Core.Tests.Injection
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+
+    using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Conventions;
+    using Kephas.Injection.Hosting;
+    using Kephas.Logging;
+    using Kephas.Reflection;
+    using NSubstitute;
+    using NUnit.Framework;
+
     /// <summary>
     /// Test class for <see cref="InjectorBuilderBase{TBuilder}"/>.
     /// </summary>
@@ -140,11 +141,6 @@ namespace Kephas.Core.Tests.Injection
             private IPartConventionsBuilder CreateBuilder(Type type)
             {
                 return new TestPartConventionsBuilder(type);
-            }
-
-            private IPartConventionsBuilder CreateBuilder(Predicate<Type> typePredicate)
-            {
-                return new TestPartConventionsBuilder(typePredicate);
             }
         }
 
