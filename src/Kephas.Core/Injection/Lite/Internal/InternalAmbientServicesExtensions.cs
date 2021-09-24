@@ -39,7 +39,7 @@ namespace Kephas.Injection.Lite.Internal
             IRuntimeTypeRegistry typeRegistry,
             IServiceInfo serviceInfo)
         {
-            IDictionary<string, object> metadata;
+            IDictionary<string, object?> metadata;
             if (serviceInfo.InstanceType != null)
             {
                 const string AppServiceMetadataKey = "__AppServiceMetadata";
@@ -73,7 +73,7 @@ namespace Kephas.Injection.Lite.Internal
             }
             else
             {
-                metadata = serviceInfo.Metadata ?? new Dictionary<string, object>();
+                metadata = serviceInfo.Metadata ?? new Dictionary<string, object?>();
             }
 
             return (TMetadata)typeRegistry
