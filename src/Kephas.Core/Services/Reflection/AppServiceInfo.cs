@@ -12,7 +12,7 @@ namespace Kephas.Services.Reflection
 {
     using System;
     using System.Collections.Generic;
-
+    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Injection;
@@ -97,13 +97,14 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <param name="appServiceInfo">The <see cref="IAppServiceInfo"/> from which the information should be copied.</param>
         /// <param name="contractType">The contract type, in case the service information does not have it already.</param>
-        internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType)
+        /// <param name="instancingStrategy">Optional. The instancing strategy.</param>
+        internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType, object? instancingStrategy = null)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
             this.SetContractType(contractType ?? appServiceInfo.ContractType);
-            this.InstancingStrategy = appServiceInfo.InstancingStrategy;
+            this.InstancingStrategy = instancingStrategy ?? appServiceInfo.InstancingStrategy;
 
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
             this.SetLifetime(appServiceInfo.Lifetime);
@@ -175,6 +176,22 @@ namespace Kephas.Services.Reflection
         }
 
         /// <summary>
+        /// Adds the metadata with the provided name and value.
+        /// </summary>
+        /// <param name="metadata">The metadata to add.</param>
+        /// <returns>This <see cref="AppServiceInfo"/>.</returns>
+        public AppServiceInfo AddMetadata(IDictionary<string, object?> metadata)
+        {
+            if (metadata == null)
+            {
+                return this;
+            }
+
+            ((this.Metadata ??= new Dictionary<string, object?>())!).Merge(metadata);
+            return this;
+        }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -192,10 +209,10 @@ namespace Kephas.Services.Reflection
             return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceTypeString}{instanceString}{factoryString}";
         }
 
-        private void SetContractType(Type contractType)
+        private void SetContractType(Type? contractType)
         {
             this.ContractType = contractType;
-            if (contractType.IsGenericTypeDefinition)
+            if (contractType?.IsGenericTypeDefinition ?? false)
             {
                 this.AsOpenGeneric = true;
             }

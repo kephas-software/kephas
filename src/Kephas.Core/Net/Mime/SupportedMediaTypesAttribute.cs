@@ -37,14 +37,6 @@ namespace Kephas.Net.Mime
         /// <value>
         /// The metadata value.
         /// </value>
-        object IMetadataValue.Value => this.Value;
-
-        /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        /// <value>
-        /// The metadata value.
-        /// </value>
         public string[] Value { get; }
     }
 }

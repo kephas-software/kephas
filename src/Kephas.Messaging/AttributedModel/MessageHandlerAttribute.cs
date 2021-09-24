@@ -11,15 +11,16 @@
 namespace Kephas.Messaging.AttributedModel
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Adds message matching criteria for <see cref="IMessageHandler"/> services.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MessageHandlerAttribute : Attribute
+    public class MessageHandlerAttribute : Attribute, IMetadataProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerAttribute"/> class.
@@ -71,8 +72,7 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The message ID.
         /// </value>
-        [MetadataValue(nameof(MessageHandlerMetadata.MessageId))]
-        public object MessageId { get; set; }
+        public object? MessageId { get; set; }
 
         /// <summary>
         /// Gets or sets the message type matching.
@@ -80,7 +80,6 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The message type matching.
         /// </value>
-        [MetadataValue(nameof(MessageHandlerMetadata.MessageTypeMatching))]
         public MessageTypeMatching MessageTypeMatching { get; set; }
 
         /// <summary>
@@ -89,7 +88,6 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The message ID matching.
         /// </value>
-        [MetadataValue(nameof(MessageHandlerMetadata.MessageIdMatching))]
         public MessageIdMatching MessageIdMatching { get; set; }
 
         /// <summary>
@@ -98,8 +96,7 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The envelope type.
         /// </value>
-        [MetadataValue(nameof(MessageHandlerMetadata.EnvelopeType))]
-        public Type EnvelopeType { get; set; }
+        public Type? EnvelopeType { get; set; }
 
         /// <summary>
         /// Gets or sets the envelope type matching.
@@ -107,7 +104,19 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The envelope type matching.
         /// </value>
-        [MetadataValue(nameof(MessageHandlerMetadata.EnvelopeTypeMatching))]
         public MessageTypeMatching EnvelopeTypeMatching { get; set; }
+
+        /// <summary>
+        /// Gets the metadata as an enumeration of (name, value) pairs.
+        /// </summary>
+        /// <returns>An enumeration of (name, value) pairs.</returns>
+        public IEnumerable<(string name, object? value)> GetMetadata()
+        {
+            yield return (nameof(MessageHandlerMetadata.MessageId), this.MessageId);
+            yield return (nameof(MessageHandlerMetadata.MessageTypeMatching), this.MessageTypeMatching);
+            yield return (nameof(MessageHandlerMetadata.MessageIdMatching), this.MessageIdMatching);
+            yield return (nameof(MessageHandlerMetadata.EnvelopeType), this.EnvelopeType);
+            yield return (nameof(MessageHandlerMetadata.EnvelopeTypeMatching), this.EnvelopeTypeMatching);
+        }
     }
 }

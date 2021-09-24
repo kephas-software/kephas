@@ -35,7 +35,7 @@ namespace Kephas.Injection
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(valueExtractor, nameof(valueExtractor));
 
-            var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
+            var attr = type.GetCustomAttribute<TAttribute>();
             return attr == null ? defaultValue : valueExtractor(attr);
         }
 
@@ -52,7 +52,7 @@ namespace Kephas.Injection
         {
             Requires.NotNull(type, nameof(type));
 
-            var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
+            var attr = type.GetCustomAttribute<TAttribute>();
             return attr == null ? defaultValue : attr.Value;
         }
     }

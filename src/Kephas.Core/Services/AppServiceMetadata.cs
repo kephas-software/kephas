@@ -22,7 +22,7 @@ namespace Kephas.Services
     /// <summary>
     /// Metadata for application services.
     /// </summary>
-    public class AppServiceMetadata : InjectionMetadataBase, IHasProcessingPriority
+    public class AppServiceMetadata : InjectionMetadataBase, IHasProcessingPriority, IHasOverridePriority
     {
         private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver(RuntimeTypeRegistry.Instance);
 
@@ -133,14 +133,9 @@ namespace Kephas.Services
         protected TValue? GetMetadataValue<TAttribute, TValue>(IDictionary<string, object?> metadata, TValue? defaultValue = default)
             where TAttribute : IMetadataValue<TValue>
         {
-            var metadataName = MetadataResolver.GetMetadataNameFromAttributeType(typeof(TAttribute));
+            var metadataName = IMetadataValue.GetMetadataNameFromAttributeType(typeof(TAttribute));
             var value = metadata.TryGetValue(metadataName, defaultValue);
-            if (value == null && !typeof(TValue).IsByRef)
-            {
-                return defaultValue;
-            }
-
-            return (TValue?)value;
+            return value == null ? defaultValue : (TValue?)value;
         }
     }
 }

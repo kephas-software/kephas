@@ -87,8 +87,6 @@ namespace Kephas.Core.Tests.Services
 
         private class BoolAttribute : Attribute, IMetadataValue<bool>
         {
-            object IMetadataValue.Value => this.Value;
-
             public bool Value { get; set; }
         }
 

@@ -11,7 +11,6 @@
 namespace Kephas.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
@@ -24,11 +23,6 @@ namespace Kephas.Services
     /// </summary>
     internal class AppServiceMetadataResolver : IAppServiceMetadataResolver
     {
-        /// <summary>
-        /// The attribute suffix.
-        /// </summary>
-        private const string AttributeSuffix = "Attribute";
-
         /// <summary>
         /// The 'T' prefix in generic type arguments.
         /// </summary>
@@ -61,50 +55,6 @@ namespace Kephas.Services
             => this.metadataValueTypeInfo ??= this.typeRegistry.GetTypeInfo(typeof(IMetadataValue));
 
         /// <summary>
-        /// Gets the metadata value properties which should be retrieved from the attribute.
-        /// </summary>
-        /// <param name="attributeType">The type of the attribute providing metadata.</param>
-        /// <returns>
-        /// The metadata properties.
-        /// </returns>
-        public IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType)
-        {
-            var attributeTypeInfo = this.typeRegistry.GetTypeInfo(attributeType);
-
-            const string MetadataValuePropertiesName = "__MetadataValueProperties";
-            if (attributeTypeInfo[MetadataValuePropertiesName] is IDictionary<string, IPropertyInfo> metadataValueProperties)
-            {
-                return metadataValueProperties;
-            }
-
-            metadataValueProperties = new Dictionary<string, IPropertyInfo>();
-            var baseMetadataName = this.GetMetadataNameFromAttributeType(attributeType);
-
-            foreach (var attrPropInfo in attributeTypeInfo.Properties.Values)
-            {
-                var metadataValueAttribute = attrPropInfo.GetAttribute<MetadataValueAttribute>();
-                var explicitName = metadataValueAttribute?.ValueName;
-                var metadataValueName = !string.IsNullOrEmpty(explicitName)
-                                            ? explicitName
-                                            : attrPropInfo.Name == nameof(IMetadataValue.Value)
-                                                ? baseMetadataName
-                                                : baseMetadataName + attrPropInfo.Name;
-                if (metadataValueAttribute != null)
-                {
-                    metadataValueProperties.Add(metadataValueName, attrPropInfo);
-                }
-                else if (attrPropInfo.Name == nameof(IMetadataValue.Value) && this.IsMetadataValueAttribute(attributeType))
-                {
-                    metadataValueProperties.Add(metadataValueName, attrPropInfo);
-                }
-            }
-
-            attributeTypeInfo[MetadataValuePropertiesName] = metadataValueProperties;
-
-            return metadataValueProperties;
-        }
-
-        /// <summary>
         /// Gets the metadata value from attribute.
         /// </summary>
         /// <param name="implementationType">The service implementation type.</param>
@@ -122,17 +72,6 @@ namespace Kephas.Services
 
             var value = attr == null ? null : property.GetValue(attr);
             return value;
-        }
-
-        /// <summary>
-        /// Gets the metadata name from the attribute type.
-        /// </summary>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <returns>The metadata name from the attribute type.</returns>
-        public string GetMetadataNameFromAttributeType(Type attributeType)
-        {
-            var name = attributeType.Name;
-            return name.EndsWith(AttributeSuffix) ? name[..^AttributeSuffix.Length] : name;
         }
 
         /// <summary>
@@ -185,18 +124,6 @@ namespace Kephas.Services
             }
 
             return genericArg;
-        }
-
-        /// <summary>
-        /// Query if 'attributeType' is metadata value attribute.
-        /// </summary>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <returns>
-        /// True if metadata value attribute, false if not.
-        /// </returns>
-        private bool IsMetadataValueAttribute(Type attributeType)
-        {
-            return this.MetadataValueTypeInfo.Type.IsAssignableFrom(attributeType);
         }
     }
 }

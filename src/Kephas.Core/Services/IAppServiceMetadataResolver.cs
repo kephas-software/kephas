@@ -11,7 +11,6 @@
 namespace Kephas.Services
 {
     using System;
-    using System.Collections.Generic;
 
     using Kephas.Reflection;
 
@@ -20,15 +19,6 @@ namespace Kephas.Services
     /// </summary>
     public interface IAppServiceMetadataResolver
     {
-        /// <summary>
-        /// Gets the metadata value properties which should be retrieved from the attribute.
-        /// </summary>
-        /// <param name="attributeType">The type of the attribute providing metadata.</param>
-        /// <returns>
-        /// The metadata properties.
-        /// </returns>
-        IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType);
-
         /// <summary>
         /// Gets the metadata value from attribute.
         /// </summary>
@@ -39,13 +29,6 @@ namespace Kephas.Services
         /// The metadata value from attribute.
         /// </returns>
         object? GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property);
-
-        /// <summary>
-        /// Gets the metadata name from the attribute type.
-        /// </summary>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <returns>The metadata name from the attribute type.</returns>
-        string GetMetadataNameFromAttributeType(Type attributeType);
 
         /// <summary>
         /// Gets the metadata value from generic parameter.

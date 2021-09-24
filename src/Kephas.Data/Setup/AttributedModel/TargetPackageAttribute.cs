@@ -11,6 +11,7 @@
 namespace Kephas.Data.Setup.AttributedModel
 {
     using System;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -26,14 +27,6 @@ namespace Kephas.Data.Setup.AttributedModel
         {
             this.Value = target;
         }
-
-        /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        /// <value>
-        /// The metadata value.
-        /// </value>
-        object IMetadataValue.Value => this.Value;
 
         /// <summary>
         /// Gets the metadata value.

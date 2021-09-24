@@ -29,11 +29,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the metadata value for Kephas.
-        /// </summary>
-        object IMetadataValue.Value => this.Value;
-
-        /// <summary>
         /// Gets the name of the required feature.
         /// </summary>
         public string Value { get; }

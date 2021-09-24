@@ -12,6 +12,7 @@ namespace Kephas.Injection.Lite.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Collections;
@@ -60,7 +61,7 @@ namespace Kephas.Injection.Lite.Internal
                     metadata.Add(nameof(AppServiceMetadata.ServiceInstanceType), serviceInfo.InstanceType);
 
                     AddMetadataFromGenericServiceType(metadata, metadataResolver, serviceInfo.ServiceType, serviceInfo.InstanceType);
-                    AddMetadataFromAttributes(metadata, typeRegistry, metadataResolver, serviceInfo.InstanceType);
+                    AddMetadataFromAttributes(metadata, serviceInfo.InstanceType);
 
                     if (serviceInfo.Metadata != null)
                     {
@@ -103,25 +104,15 @@ namespace Kephas.Injection.Lite.Internal
         }
 
         private static void AddMetadataFromAttributes(
-            IDictionary<string, object> metadata,
-            IRuntimeTypeRegistry typeRegistry,
-            IAppServiceMetadataResolver metadataResolver,
+            IDictionary<string, object?> metadata,
             Type serviceImplementationType)
         {
             // leave the conversion to RuntimeTypeInfo here
             // as it may be possible to use runtime added attributes
-            var metaAttrs = typeRegistry.GetTypeInfo(serviceImplementationType).GetAttributes<Attribute>();
-            foreach (var metaAttr in metaAttrs)
-            {
-                var attrType = metaAttr.GetType();
-                var valueProperties = metadataResolver.GetMetadataValueProperties(attrType);
-                foreach (var valuePropertyEntry in valueProperties)
-                {
-                    metadata.Add(
-                        valuePropertyEntry.Key,
-                        valuePropertyEntry.Value.GetValue(metaAttr));
-                }
-            }
+            serviceImplementationType
+                .GetCustomAttributes()
+                .OfType<IMetadataProvider>()
+                .ForEach(provider => provider.GetMetadata().ForEach(m => metadata[m.name] = m.value));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Kephas.Data.Store
     /// <summary>
     /// Metadata attribute for supported data store kinds.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple =  false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class SupportedDataStoreKindsAttribute : Attribute, IMetadataValue<IEnumerable<string>>
     {
         /// <summary>
@@ -43,11 +43,6 @@ namespace Kephas.Data.Store
 
             this.Value = dataStoreKinds;
         }
-
-        /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        object IMetadataValue.Value => this.Value;
 
         /// <summary>
         /// Gets the metadata value.

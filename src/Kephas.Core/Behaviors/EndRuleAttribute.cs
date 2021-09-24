@@ -11,6 +11,7 @@
 namespace Kephas.Behaviors
 {
     using System;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -34,13 +35,5 @@ namespace Kephas.Behaviors
         /// Boolean value indicating whether the rule is an end rule.
         /// </value>
         public bool Value { get; }
-
-        /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        /// <value>
-        /// The metadata value.
-        /// </value>
-        object IMetadataValue.Value => this.Value;
     }
 }

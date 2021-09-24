@@ -13,13 +13,14 @@ namespace Kephas.Security.Permissions.AttributedModel
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
     /// Attribute indicating that the decorated element supports the enumerated permissions.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
-    public class SupportsPermissionAttribute : Attribute, ISupportsPermissionAnnotation
+    public class SupportsPermissionAttribute : Attribute, ISupportsPermissionAnnotation, IMetadataValue<Type[]>
     {
         /// <summary>
         /// The permission types metadata key.
@@ -43,7 +44,19 @@ namespace Kephas.Security.Permissions.AttributedModel
         /// <value>
         /// The types of the supported permissions.
         /// </value>
-        [MetadataValue(PermissionTypesMetadataKey)]
         public Type[] PermissionTypes { get; }
+
+        /// <summary>
+        /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
+        /// </summary>
+        string? IMetadataValue.Name => PermissionTypesMetadataKey;
+
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
+        /// <value>
+        /// The metadata value.
+        /// </value>
+        Type[] IMetadataValue<Type[]>.Value => this.PermissionTypes;
     }
 }

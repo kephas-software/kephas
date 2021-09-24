@@ -12,7 +12,7 @@
 namespace Kephas.Services
 {
     using System;
-
+    using System.Runtime.CompilerServices;
     using Kephas.Injection;
 
     /// <summary>
@@ -20,7 +20,7 @@ namespace Kephas.Services
     /// The service with the highest priority defined will be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class OverridePriorityAttribute : Attribute, IMetadataValue<Priority>
+    public class OverridePriorityAttribute : Attribute, IMetadataValue<Priority>, IHasOverridePriority
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OverridePriorityAttribute" /> class.
@@ -49,11 +49,11 @@ namespace Kephas.Services
         public Priority Value { get; }
 
         /// <summary>
-        /// Gets the metadata value.
+        /// Gets the override priority.
         /// </summary>
         /// <value>
-        /// The metadata value.
+        /// The override priority.
         /// </value>
-        object IMetadataValue.Value => this.Value;
+        Priority IHasOverridePriority.OverridePriority => this.Value;
     }
 }

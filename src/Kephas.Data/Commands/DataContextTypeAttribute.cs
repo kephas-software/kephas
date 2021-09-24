@@ -11,6 +11,7 @@
 namespace Kephas.Data.Commands
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
 
@@ -35,10 +36,5 @@ namespace Kephas.Data.Commands
         /// Gets the associated data context type.
         /// </summary>
         public Type Value { get; }
-
-        /// <summary>
-        /// Gets the associated data context type.
-        /// </summary>
-        object IMetadataValue.Value => this.Value;
     }
 }

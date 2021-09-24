@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingBehaviorAttribute.cs" company="Kephas Software SRL">
+// <copyright file="MessagingBehaviorAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,16 +11,17 @@
 namespace Kephas.Messaging.Behaviors.AttributedModel
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Services;
 
     /// <summary>
     /// Adds message matching criteria for <see cref="IMessagingBehavior"/> services.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MessagingBehaviorAttribute : Attribute
+    public class MessagingBehaviorAttribute : Attribute, IMetadataProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingBehaviorAttribute"/> class.
@@ -60,7 +61,6 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         /// <value>
         /// The message ID.
         /// </value>
-        [MetadataValue(nameof(MessageId))]
         public object MessageId { get; set; }
 
         /// <summary>
@@ -69,7 +69,6 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         /// <value>
         /// The message type matching.
         /// </value>
-        [MetadataValue(nameof(MessageTypeMatching))]
         public MessageTypeMatching MessageTypeMatching { get; set; } = MessageTypeMatching.Type;
 
         /// <summary>
@@ -78,7 +77,17 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         /// <value>
         /// The message ID matching.
         /// </value>
-        [MetadataValue(nameof(MessageIdMatching))]
         public MessageIdMatching MessageIdMatching { get; set; } = MessageIdMatching.All;
+
+        /// <summary>
+        /// Gets the metadata as an enumeration of (name, value) pairs.
+        /// </summary>
+        /// <returns>An enumeration of (name, value) pairs.</returns>
+        public IEnumerable<(string name, object? value)> GetMetadata()
+        {
+            yield return (nameof(this.MessageId), this.MessageId);
+            yield return (nameof(this.MessageTypeMatching), this.MessageTypeMatching);
+            yield return (nameof(this.MessageIdMatching), this.MessageIdMatching);
+        }
     }
 }

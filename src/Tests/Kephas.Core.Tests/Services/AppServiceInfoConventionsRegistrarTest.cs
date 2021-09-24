@@ -575,14 +575,14 @@ namespace Kephas.Core.Tests.Services
                 this.Value = value;
             }
 
-            object IMetadataValue.Value => this.Value;
-
             public string Value { get; }
         }
     }
 
     namespace CustomNamedValueAppServiceMetadata
     {
+        using System.Collections.Generic;
+
         [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomNamedValueMetadataAttribute) })]
         public interface ICustomNamedValueMetadataAppService { }
 
@@ -591,7 +591,7 @@ namespace Kephas.Core.Tests.Services
 
         public class CustomNamedValueNullMetadataAppService : ICustomNamedValueMetadataAppService { }
 
-        public class CustomNamedValueMetadataAttribute : Attribute
+        public class CustomNamedValueMetadataAttribute : Attribute, IMetadataProvider
         {
             public CustomNamedValueMetadataAttribute(string value, string description)
             {
@@ -599,13 +599,17 @@ namespace Kephas.Core.Tests.Services
                 this.Description = description;
             }
 
-            [MetadataValue]
             public string Name { get; }
 
-            [MetadataValue("Icon")]
             public string IconName { get; set; }
 
             public string Description { get; }
+
+            public IEnumerable<(string name, object? value)> GetMetadata()
+            {
+                yield return (nameof(this.Name), this.Name);
+                yield return (nameof(this.IconName), this.IconName);
+            }
         }
     }
 

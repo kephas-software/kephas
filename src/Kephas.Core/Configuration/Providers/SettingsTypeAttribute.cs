@@ -11,7 +11,7 @@
 namespace Kephas.Configuration.Providers
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -26,18 +26,8 @@ namespace Kephas.Configuration.Providers
         /// <param name="value">The metadata value.</param>
         public SettingsTypeAttribute(Type value)
         {
-            Requires.NotNull(value, nameof(value));
-
-            this.Value = value;
+            this.Value = value ?? throw new ArgumentNullException(nameof(value));
         }
-
-        /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        /// <value>
-        /// The metadata value.
-        /// </value>
-        object IMetadataValue.Value => this.Value;
 
         /// <summary>
         /// Gets the metadata value.

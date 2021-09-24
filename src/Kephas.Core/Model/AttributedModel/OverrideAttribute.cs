@@ -11,24 +11,17 @@
 namespace Kephas.Model.AttributedModel
 {
     using System;
+
     using Kephas.Injection;
 
     /// <summary>
     /// Attribute for indicating that classifiers or members override their base. This class cannot be inherited.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-    public sealed class OverrideAttribute : Attribute, IMetadataValue<bool>
+    public sealed class OverrideAttribute : Attribute, IMetadataValue<bool>, IIsOverride
     {
         /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        /// <value>
-        /// The metadata value.
-        /// </value>
-        object IMetadataValue.Value => true;
-
-        /// <summary>
-        /// Gets the metadata value.
+        /// Gets a value indicating whether the decorated element is an override.
         /// </summary>
         /// <value>
         /// The metadata value.

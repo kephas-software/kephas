@@ -47,14 +47,6 @@ namespace Kephas.Services
         public Priority Value { get; }
 
         /// <summary>
-        /// Gets the metadata value.
-        /// </summary>
-        /// <value>
-        /// The metadata value.
-        /// </value>
-        object IMetadataValue.Value => this.Value;
-
-        /// <summary>
         /// Gets the processing priority.
         /// </summary>
         /// <value>
