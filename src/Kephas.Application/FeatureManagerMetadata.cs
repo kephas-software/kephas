@@ -10,8 +10,11 @@
 
 namespace Kephas.Application
 {
+    using System;
     using System.Collections.Generic;
+
     using Kephas.Application.Reflection;
+    using Kephas.Collections;
     using Kephas.Services;
 
     /// <summary>
@@ -31,7 +34,7 @@ namespace Kephas.Application
                 return;
             }
 
-            this.FeatureInfo = this.GetMetadataValue<FeatureInfoAttribute, FeatureInfo>(metadata);
+            this.FeatureInfo = (FeatureInfo?)metadata.TryGetValue(nameof(this.FeatureInfo));
         }
 
         /// <summary>
@@ -62,7 +65,7 @@ namespace Kephas.Application
         /// </returns>
         public override string ToString()
         {
-            var deps = string.Join(",", this.FeatureInfo?.Dependencies ?? new string[0]);
+            var deps = string.Join(",", this.FeatureInfo?.Dependencies ?? Array.Empty<string>());
             var feature = $"{this.FeatureInfo?.Name}({deps})";
             return $"{base.ToString()}, {feature}";
         }

@@ -16,16 +16,12 @@ namespace Kephas.Services
 
     using Kephas.Collections;
     using Kephas.Injection;
-    using Kephas.Model.AttributedModel;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Metadata for application services.
     /// </summary>
     public class AppServiceMetadata : InjectionMetadataBase, IHasProcessingPriority, IHasOverridePriority
     {
-        private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver(RuntimeTypeRegistry.Instance);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
         /// </summary>
@@ -38,10 +34,10 @@ namespace Kephas.Services
                 return;
             }
 
-            this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, Priority>(metadata);
-            this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, Priority>(metadata);
-            this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
-            this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata, (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!);
+            this.ProcessingPriority = (Priority)metadata.TryGetValue(nameof(this.ProcessingPriority), Priority.Normal)!;
+            this.OverridePriority = (Priority)metadata.TryGetValue(nameof(this.OverridePriority), Priority.Normal)!;
+            this.ServiceName = (string?)metadata.TryGetValue(nameof(this.ServiceName));
+            this.IsOverride = (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!;
             this.ServiceInstanceType = (Type?)metadata.TryGetValue(nameof(this.ServiceInstanceType));
         }
 
@@ -55,7 +51,7 @@ namespace Kephas.Services
         public AppServiceMetadata(Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
             : base(new Dictionary<string, object?>())
         {
-            this.ProcessingPriority = (Priority)processingPriority;
+            this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
             this.ServiceName = serviceName;
             this.IsOverride = isOverride;
@@ -120,22 +116,6 @@ namespace Kephas.Services
         {
             var serviceName = string.IsNullOrEmpty(this.ServiceName) ? string.Empty : $"Name: {this.ServiceName}, ";
             return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}Impl: {this.ServiceInstanceType}";
-        }
-
-        /// <summary>
-        /// Gets the metadata value for the specific attribute.
-        /// </summary>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <typeparam name="TAttribute">The attribute type.</typeparam>
-        /// <typeparam name="TValue">The value type.</typeparam>
-        /// <returns>The metadata value if found, otherwise the default value.</returns>
-        protected TValue? GetMetadataValue<TAttribute, TValue>(IDictionary<string, object?> metadata, TValue? defaultValue = default)
-            where TAttribute : IMetadataValue<TValue>
-        {
-            var metadataName = IMetadataValue.GetMetadataNameFromAttributeType(typeof(TAttribute));
-            var value = metadata.TryGetValue(metadataName, defaultValue);
-            return value == null ? defaultValue : (TValue?)value;
         }
     }
 }

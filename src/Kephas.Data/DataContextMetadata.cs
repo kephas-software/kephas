@@ -10,10 +10,10 @@
 
 namespace Kephas.Data
 {
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
-    using Kephas.Data.Store;
+    using Kephas.Collections;
     using Kephas.Services;
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace Kephas.Data
                 return;
             }
 
-            this.SupportedDataStoreKinds = this.GetMetadataValue<SupportedDataStoreKindsAttribute, IEnumerable<string>>(metadata, new string[0]);
+            this.SupportedDataStoreKinds = (IEnumerable<string>)metadata.TryGetValue(nameof(this.SupportedDataStoreKinds), Enumerable.Empty<string>())!;
         }
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace Kephas.Data
         /// <param name="supportedDataStoreKinds">The supported data store kinds.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public DataContextMetadata(IEnumerable<string> supportedDataStoreKinds, Priority processingPriority = 0, Priority overridePriority = 0)
+        public DataContextMetadata(IEnumerable<string>? supportedDataStoreKinds, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            this.SupportedDataStoreKinds = supportedDataStoreKinds ?? Array.Empty<string>();
+            this.SupportedDataStoreKinds = supportedDataStoreKinds ?? Enumerable.Empty<string>();
         }
 
         /// <summary>

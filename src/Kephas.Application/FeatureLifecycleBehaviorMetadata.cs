@@ -11,6 +11,8 @@
 namespace Kephas.Application
 {
     using System.Collections.Generic;
+
+    using Kephas.Collections;
     using Kephas.Services;
 
     /// <summary>
@@ -30,7 +32,7 @@ namespace Kephas.Application
                 return;
             }
 
-            this.Target = this.GetMetadataValue<TargetFeatureAttribute, FeatureRef>(metadata);
+            this.Target = (FeatureRef?)metadata.TryGetValue(nameof(this.Target));
         }
 
         /// <summary>
@@ -55,6 +57,6 @@ namespace Kephas.Application
         /// <value>
         /// The feature reference for which the behavior applies.
         /// </value>
-        public FeatureRef Target { get; set; }
+        public FeatureRef? Target { get; set; }
     }
 }

@@ -35,5 +35,10 @@ namespace Kephas.Data.Setup.AttributedModel
         /// The metadata value.
         /// </value>
         public string Value { get; }
+
+        /// <summary>
+        /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
+        /// </summary>
+        string? IMetadataValue.Name => nameof(DataInstallerMetadata.Target);
     }
 }

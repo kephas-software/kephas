@@ -11,7 +11,8 @@
 namespace Kephas.Data.Setup
 {
     using System.Collections.Generic;
-    using Kephas.Data.Setup.AttributedModel;
+
+    using Kephas.Collections;
     using Kephas.Services;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Kephas.Data.Setup
                 return;
             }
 
-            this.Target = this.GetMetadataValue<TargetPackageAttribute, string>(metadata);
+            this.Target = (string?)metadata.TryGetValue(nameof(this.Target));
         }
 
         /// <summary>
@@ -53,6 +54,6 @@ namespace Kephas.Data.Setup
         /// <value>
         /// The data target.
         /// </value>
-        public string Target { get; }
+        public string? Target { get; }
     }
 }

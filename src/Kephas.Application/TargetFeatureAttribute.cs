@@ -11,6 +11,7 @@
 namespace Kephas.Application
 {
     using System;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -36,5 +37,10 @@ namespace Kephas.Application
         /// The metadata value.
         /// </value>
         public FeatureRef Value { get; }
+
+        /// <summary>
+        /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
+        /// </summary>
+        string? IMetadataValue.Name => nameof(FeatureLifecycleBehaviorMetadata.Target);
     }
 }
