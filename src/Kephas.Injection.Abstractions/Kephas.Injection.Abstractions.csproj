@@ -98,4 +98,8 @@
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Model" />
+    </ItemGroup>
+
 </Project>
