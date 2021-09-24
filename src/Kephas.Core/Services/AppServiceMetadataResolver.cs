@@ -14,10 +14,6 @@ namespace Kephas.Services
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Injection;
-    using Kephas.Reflection;
-    using Kephas.Runtime;
-
     /// <summary>
     /// Default implementation of <see cref="IAppServiceMetadataResolver"/>.
     /// </summary>
@@ -32,47 +28,6 @@ namespace Kephas.Services
         /// The 'Type' suffix in generic type arguments.
         /// </summary>
         private const string TypeSuffix = "Type";
-
-        private readonly IRuntimeTypeRegistry typeRegistry;
-        private IRuntimeTypeInfo? metadataValueTypeInfo;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceMetadataResolver"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        internal AppServiceMetadataResolver(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
-        /// <summary>
-        /// Gets information describing the metadata value type.
-        /// </summary>
-        /// <value>
-        /// Information describing the metadata value type.
-        /// </value>
-        private IRuntimeTypeInfo MetadataValueTypeInfo
-            => this.metadataValueTypeInfo ??= this.typeRegistry.GetTypeInfo(typeof(IMetadataValue));
-
-        /// <summary>
-        /// Gets the metadata value from attribute.
-        /// </summary>
-        /// <param name="implementationType">The service implementation type.</param>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <param name="property">The metadata property.</param>
-        /// <returns>
-        /// The metadata value from attribute.
-        /// </returns>
-        public object? GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property)
-        {
-            var attr =
-                implementationType.GetTypeInfo()
-                    .GetCustomAttributes(attributeType, inherit: true)
-                    .FirstOrDefault();
-
-            var value = attr == null ? null : property.GetValue(attr);
-            return value;
-        }
 
         /// <summary>
         /// Gets the metadata name from generic type parameter.

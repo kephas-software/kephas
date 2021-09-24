@@ -12,24 +12,11 @@ namespace Kephas.Services
 {
     using System;
 
-    using Kephas.Reflection;
-
     /// <summary>
     /// Interface for application service metadata resolver.
     /// </summary>
     public interface IAppServiceMetadataResolver
     {
-        /// <summary>
-        /// Gets the metadata value from attribute.
-        /// </summary>
-        /// <param name="implementationType">The service implementation type.</param>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <param name="property">The metadata property.</param>
-        /// <returns>
-        /// The metadata value from attribute.
-        /// </returns>
-        object? GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property);
-
         /// <summary>
         /// Gets the metadata value from generic parameter.
         /// </summary>
