@@ -114,57 +114,37 @@ namespace Kephas.Services
 
             foreach (var (contractDeclarationType, appServiceInfos) in appServiceInfoMap)
             {
-                // first: split the contract info and the rest of the registrations. 
-                var appContractInfo = appServiceInfos[0];
-                if (appContractInfo.IsContractDefinition())
+                // first: split the contract info and the rest of the registrations.
+                var appContractDefinition = appServiceInfos[0];
+                if (appContractDefinition.IsContractDefinition())
                 {
                     appServiceInfos.RemoveAt(0);
                 }
 
-                if (appContractInfo.AllowMultiple)
+                if (appServiceInfos.Count == 0)
                 {
-                    
+                    logger.Warn("No service types registered for {contractDeclarationType}.", contractDeclarationType);
+                    continue;
                 }
 
-                foreach (var appServiceInfo in appServiceInfos)
+                var contractType = appContractDefinition.ContractType ?? contractDeclarationType;
+                if (appServiceInfos.Count == 1)
                 {
-                    if (appServiceInfo.IsContractDefinition())
-                    {
-                        continue;
-                    }
-
-                    // TODO
-                    
-                    hasServiceTypes = true;
-                }
-                
-                if (!hasServiceTypes)
-                {
-                    logger.Warn("No service types registered for {contractDeclarationType}}.", contractDeclarationType);
+                    // register one service, no matter if multiple or single.
+                    this.RegisterService(conventions, contractType, appServiceInfos[0], logger);
+                    continue;
                 }
 
-                
-                var contractType = appServiceInfo.ContractType ?? contractDeclarationType;
-                if (appServiceInfo.IsContractDefinition())
-                {
-                    if (serviceTypes.Count == 0)
-                    {
-                        logger.Warn("No service types registered for {contractDeclarationType}/{contractType}.", contractDeclarationType, contractType);
-                        continue;
-                    }
+                // order the services by override and processing priority, resolve overrides
+                // and with the rest of the services:
+                // 1. if multiple are registered, register them in the computed order.
+                // 2. for single mode, pick the first one in the order and register it.
 
-                    // select from service types the ordered ones.
-                }
-                else
-                {
-                    if (serviceTypes.Count > 0 && !appServiceInfo.AllowMultiple)
-                    {
-                        logger.Warn("Explicit registration {appServiceInfo} overrides collected service types: {serviceTypes}.", appServiceInfo, serviceTypes);
-                        continue;
-                    }
-                }
+                var sortedServices = this.SortServiceInfos(appServiceInfos);
+
+                // TODO
             }
-            
+
             var contractDeclarationTypes = appServiceInfoList.Select(e => e.contractDeclarationType).ToList();
 
             foreach (var (appServiceContract, appServiceInfo) in appServiceInfoMap)
@@ -194,6 +174,70 @@ namespace Kephas.Services
                     }
                 }
             }
+        }
+
+        private void RegisterService(
+            IConventionsBuilder conventions,
+            Type contractType,
+            IAppServiceInfo appServiceInfo,
+            ILogger logger)
+        {
+            switch (appServiceInfo.InstancingStrategy)
+            {
+                case Type type:
+                    conventions
+                        .ForType(type)
+                        .As(contractType)
+                        .AllowMultiple(appServiceInfo.AllowMultiple);
+                    break;
+                case Func<IInjector, object> factory:
+                    var partBuilder = conventions
+                        .ForInstanceFactory(contractType, factory)
+                        .AllowMultiple(appServiceInfo.AllowMultiple);
+                    if (appServiceInfo.IsSingleton())
+                    {
+                        partBuilder.Singleton();
+                    }
+                    else if (appServiceInfo.IsScoped())
+                    {
+                        partBuilder.Scoped();
+                    }
+
+                    break;
+                case null:
+                    break;
+                case var instance:
+                    conventions
+                        .ForInstance(contractType, instance)
+                        .AllowMultiple(appServiceInfo.AllowMultiple);
+                    break;
+            }
+        }
+
+        private IEnumerable<(IAppServiceInfo appServiceInfo, Priority overridePriority)> SortServiceInfos(IEnumerable<IAppServiceInfo> appServiceInfos)
+        {
+            // leave the implementation with the runtime type info
+            // so that it may be possible to use runtime added attributes
+            var overrideChain = appServiceInfos
+                .Select(si => (appServiceInfo: si, overridePriority: (Priority)(si.Metadata?.TryGetValue(nameof(AppServiceMetadata.OverridePriority)) ?? Priority.Normal)))
+                .OrderBy(item => item.overridePriority)
+                .ToList();
+
+            // get the overridden services which should be eliminated
+            var overriddenTypes = overrideChain
+                .Where(kv => (kv.appServiceInfo.Metadata?.TryGetValue(nameof(AppServiceMetadata.IsOverride)) ?? false) != null && kv.appServiceInfo.InstanceType?.BaseType != null)
+                .Select(kv => kv.appServiceInfo.InstanceType?.BaseType)
+                .ToList();
+
+            if (overriddenTypes.Count > 0)
+            {
+                // eliminate the overridden services
+                overrideChain = overrideChain
+                    .Where(kv => !overriddenTypes.Contains(kv.appServiceInfo.InstanceType))
+                    .ToList();
+            }
+
+            return overrideChain;
         }
 
         /// <summary>
@@ -411,25 +455,6 @@ namespace Kephas.Services
             return sb.ToString();
         }
 
-        private IReadOnlyCollection<Type> GetMetadataAttributes(IAppServiceInfo appServiceInfo)
-        {
-            if (appServiceInfo.MetadataAttributes == null || appServiceInfo.MetadataAttributes.Length == 0)
-            {
-                return DefaultMetadataAttributeTypes;
-            }
-
-            var attrs = appServiceInfo.MetadataAttributes.ToList();
-            foreach (var attr in DefaultMetadataAttributeTypes)
-            {
-                if (!attrs.Contains(attr))
-                {
-                    attrs.Add(attr);
-                }
-            }
-
-            return attrs;
-        }
-
         private void ConfigureExport(
             Type serviceContract,
             IExportConventionsBuilder exportBuilder,
@@ -570,7 +595,7 @@ namespace Kephas.Services
 
                 return conventions
                     .ForType(appServiceInfo.InstanceType)
-                    .AsServiceType(serviceContract)
+                    .As(serviceContract)
                     .AllowMultiple(appServiceInfo.AllowMultiple);
             }
 
@@ -603,7 +628,7 @@ namespace Kephas.Services
                     {
                         return conventions
                             .ForType(selectedInstanceType)
-                            .AsServiceType(serviceContract)
+                            .As(serviceContract)
                             .AllowMultiple(appServiceInfo.AllowMultiple);
                     }
                 }
@@ -653,7 +678,7 @@ namespace Kephas.Services
 
                 return conventions
                     .ForType(selectedPart)
-                    .AsServiceType(serviceContract)
+                    .As(serviceContract)
                     .AllowMultiple(appServiceInfo.AllowMultiple);
             }
 
@@ -776,39 +801,6 @@ namespace Kephas.Services
                    && !typeInfo.IsAbstract
                    && !typeInfo.IsNestedPrivate
                    && typeInfo.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null;
-        }
-
-        /// <summary>
-        /// Checks whether the part type matches the type of the open generic contract.
-        /// </summary>
-        /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
-        private bool MatchDerivedFromContractType(Type partTypeInfo, Type serviceContract)
-        {
-            if (!this.IsEligiblePart(partTypeInfo) || partTypeInfo.IsGenericTypeDefinition)
-            {
-                return false;
-            }
-
-            return serviceContract.IsAssignableFrom(partTypeInfo);
-        }
-
-        /// <summary>
-        /// Checks whether the part type matches the type of the open generic contract.
-        /// </summary>
-        /// <param name="partType">Type of the part.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
-        private bool MatchOpenGenericContractType(Type partType, Type serviceContractType)
-        {
-            var partTypeInfo = partType.GetTypeInfo();
-            if (!this.IsEligiblePart(partTypeInfo))
-            {
-                return false;
-            }
-
-            var implementedInterfaces = partTypeInfo.ImplementedInterfaces;
-            return implementedInterfaces.Any(i =>
-                i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType);
         }
     }
 }

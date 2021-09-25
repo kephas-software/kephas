@@ -172,7 +172,7 @@ namespace Kephas.Core.Tests.Injection
 
             public bool AllowMultiple { get; set; }
 
-            public IPartConventionsBuilder AsServiceType(Type serviceType)
+            public IPartConventionsBuilder As(Type serviceType)
             {
                 this.ServiceType = serviceType;
                 return this;

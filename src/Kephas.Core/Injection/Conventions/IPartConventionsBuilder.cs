@@ -28,7 +28,7 @@ namespace Kephas.Injection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartConventionsBuilder AsServiceType(Type serviceType);
+        IPartConventionsBuilder As(Type serviceType);
 
         /// <summary>
         /// Mark the part as being shared within the entire composition.

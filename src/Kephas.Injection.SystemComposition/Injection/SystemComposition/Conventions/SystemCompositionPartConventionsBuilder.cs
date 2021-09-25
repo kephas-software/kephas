@@ -55,7 +55,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder AsServiceType(Type serviceType)
+        public IPartConventionsBuilder As(Type serviceType)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
 
