@@ -64,7 +64,7 @@ namespace Kephas
                 var serviceName = t.GetAttribute<ServiceNameAttribute>()?.Value;
                 return new AppServiceMetadata(processingPriority, overridePriority, serviceName, isOverride)
                 {
-                    ServiceInstanceType = t.Type,
+                    ServiceType = t.Type,
                 };
             }
 

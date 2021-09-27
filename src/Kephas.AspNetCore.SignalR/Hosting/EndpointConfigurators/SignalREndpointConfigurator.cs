@@ -54,7 +54,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
             var hubsMetadata = this.lazyHubs.Order().Select(l => l.Metadata).ToList();
             foreach (var hubMetadata in hubsMetadata)
             {
-                var mapHub = MapHubMethod.MakeGenericMethod(hubMetadata.ServiceInstanceType!);
+                var mapHub = MapHubMethod.MakeGenericMethod(hubMetadata.ServiceType!);
                 var builder = mapHub.Call(this, endpoints, appContext, hubMetadata);
             }
         }

@@ -29,7 +29,6 @@ namespace Kephas.Core.Tests.Injection.Lite
 
             var svcInfo = builder.Build();
             Assert.AreSame(typeof(string), svcInfo.ContractType);
-            Assert.AreSame(typeof(string), svcInfo.ServiceType);
             Assert.AreSame(typeof(string), svcInfo.InstanceType);
             Assert.IsTrue(svcInfo.IsSingleton());
         }
@@ -43,7 +42,6 @@ namespace Kephas.Core.Tests.Injection.Lite
 
             var svcInfo = builder.Build();
             Assert.AreSame(typeof(IGenericSvc<>), svcInfo.ContractType);
-            Assert.AreSame(typeof(IGenericSvc<>), svcInfo.ServiceType);
             Assert.AreSame(typeof(UnknownGenericSvc<>), svcInfo.InstanceType);
         }
 
@@ -69,7 +67,6 @@ namespace Kephas.Core.Tests.Injection.Lite
             var svcInfo = builder.Build();
 
             Assert.AreSame(typeof(ISvc), svcInfo.ContractType);
-            Assert.AreSame(typeof(IGenericSvc<>), svcInfo.ServiceType);
             Assert.AreSame(typeof(UnknownIntSvc), svcInfo.InstanceType);
         }
 

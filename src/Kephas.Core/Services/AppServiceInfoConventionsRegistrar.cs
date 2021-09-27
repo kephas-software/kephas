@@ -317,7 +317,7 @@ namespace Kephas.Services
                 .SelectMany(p => p.GetMetadata())
                 .ForEach(m => metadata[m.name] = m.value);
 
-            metadata.Add(nameof(AppServiceMetadata.ServiceInstanceType), serviceType);
+            metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceType);
 
             // add metadata from generic parameters
             if (contractDeclarationType.IsConstructedGenericType)

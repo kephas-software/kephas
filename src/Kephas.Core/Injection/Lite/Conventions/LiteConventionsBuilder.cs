@@ -14,6 +14,7 @@ namespace Kephas.Injection.Lite.Conventions
     using System.Collections.Generic;
 
     using Kephas.Injection.Conventions;
+    using Kephas.Logging;
 
     /// <summary>
     /// A lightweight conventions builder.
@@ -52,7 +53,7 @@ namespace Kephas.Injection.Lite.Conventions
                 InstancingStrategy = instance,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new LitePartBuilder(descriptorBuilder);
+            return new LitePartBuilder(descriptorBuilder, this.ambientServices.LogManager);
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace Kephas.Injection.Lite.Conventions
                 InstancingStrategy = factory,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new LitePartBuilder(descriptorBuilder);
+            return new LitePartBuilder(descriptorBuilder, this.ambientServices.LogManager);
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace Kephas.Injection.Lite.Conventions
                 InstancingStrategy = type,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new LitePartConventionsBuilder(this.ambientServices.LogManager, descriptorBuilder);
+            return new LitePartBuilder(descriptorBuilder, this.ambientServices.LogManager);
         }
 
         /// <summary>

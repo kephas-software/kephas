@@ -87,8 +87,6 @@ namespace Kephas.Injection.Lite.Internal
 
         public object? InstancingStrategy { get; }
 
-        public Type ServiceType { get; internal set; }
-
         public bool ExternallyOwned { get; internal set; }
 
         public IDictionary<string, object?>? Metadata { get; internal set; }
@@ -116,12 +114,10 @@ namespace Kephas.Injection.Lite.Internal
             }
 
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
-            var closedServiceType = this.ServiceType?.MakeGenericType(genericArgs);
             var closedInstanceType = self.InstanceType.MakeGenericType(genericArgs);
 
             var closedServiceInfo = new ServiceInfo(ambientServices, closedContractType, closedInstanceType, this.IsSingleton())
             {
-                ServiceType = closedServiceType,
                 AllowMultiple = this.AllowMultiple,
                 ExternallyOwned = this.ExternallyOwned,
             };

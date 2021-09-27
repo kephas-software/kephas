@@ -369,7 +369,7 @@ namespace Kephas.Core.Tests
             var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
-            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceInstanceType);
+            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace Kephas.Core.Tests
             var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
-            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceInstanceType);
+            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
         }
 
         [Test]

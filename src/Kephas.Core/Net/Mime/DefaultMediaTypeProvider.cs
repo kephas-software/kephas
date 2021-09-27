@@ -43,7 +43,7 @@ namespace Kephas.Net.Mime
                 var metadata = factory.Metadata;
                 foreach (var mediaType in metadata.SupportedMediaTypes)
                 {
-                    this.mediaTypeDictionary[mediaType] = metadata.ServiceInstanceType;
+                    this.mediaTypeDictionary[mediaType] = metadata.ServiceType;
                 }
             }
         }

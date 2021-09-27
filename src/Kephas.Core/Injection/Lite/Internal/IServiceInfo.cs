@@ -20,14 +20,6 @@ namespace Kephas.Injection.Lite.Internal
     internal interface IServiceInfo : IAppServiceInfo
     {
         /// <summary>
-        /// Gets the type of the service.
-        /// </summary>
-        /// <value>
-        /// The type of the service.
-        /// </value>
-        Type ServiceType { get; }
-
-        /// <summary>
         /// Makes a generic service information with closed generic types.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>

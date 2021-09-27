@@ -434,8 +434,6 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
                 if (metadata == null) { return; }
                 this.ServiceType = (Type)metadata.TryGetValue(nameof(this.ServiceType));
             }
-
-            public Type ServiceType { get; }
         }
 
         [AppServiceContract(AllowMultiple = true)]

@@ -196,9 +196,9 @@ namespace Kephas.Core.Tests.Services
             Assert.IsTrue(metadata.ContainsKey("OverridePriority"));
             Assert.IsTrue(metadata.ContainsKey("Override"));
             Assert.IsTrue(metadata.ContainsKey("ServiceName"));
-            Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceInstanceType)));
+            Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceType)));
 
-            var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.ServiceInstanceType)];
+            var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.ServiceType)];
             Assert.AreEqual(typeof(IDefaultMetadataAppService), valueGetter(typeof(IDefaultMetadataAppService)));
             Assert.AreEqual(null, valueGetter(null));
 
@@ -225,7 +225,7 @@ namespace Kephas.Core.Tests.Services
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
-            Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ServiceType);
+            Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ContractType);
         }
 
         [Test]

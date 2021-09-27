@@ -49,7 +49,7 @@ namespace Kephas.Core.Endpoints.Tests
                 default);
 
             Assert.AreEqual(1, result.Services.Length);
-            Assert.AreEqual(typeof(DefaultIdGenerator), result.Services[0].ServiceInstanceType);
+            Assert.AreEqual(typeof(DefaultIdGenerator), result.Services[0].ServiceType);
         }
 
         [Test]
@@ -66,8 +66,8 @@ namespace Kephas.Core.Endpoints.Tests
                 default);
 
             Assert.Greater(result.Services.Length, 1);
-            Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(PingMessageHandler)));
-            Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(TestGetServicesHandler)));
+            Assert.IsTrue(result.Services.Any(s => s.ServiceType == typeof(PingMessageHandler)));
+            Assert.IsTrue(result.Services.Any(s => s.ServiceType == typeof(TestGetServicesHandler)));
         }
 
 
@@ -85,9 +85,9 @@ namespace Kephas.Core.Endpoints.Tests
                 default);
 
             Assert.Greater(result.Services.Length, 1);
-            Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(PingMessageHandler)));
-            Assert.IsFalse(result.Services.Any(s => s.ServiceInstanceType == typeof(GetServicesHandler)));
-            Assert.IsTrue(result.Services.Any(s => s.ServiceInstanceType == typeof(TestGetServicesHandler)));
+            Assert.IsTrue(result.Services.Any(s => s.ServiceType == typeof(PingMessageHandler)));
+            Assert.IsFalse(result.Services.Any(s => s.ServiceType == typeof(GetServicesHandler)));
+            Assert.IsTrue(result.Services.Any(s => s.ServiceType == typeof(TestGetServicesHandler)));
         }
 
         [Override]

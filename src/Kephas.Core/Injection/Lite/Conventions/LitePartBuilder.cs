@@ -12,12 +12,13 @@ namespace Kephas.Injection.Lite.Conventions
     using System.Reflection;
 
     using Kephas.Injection.Conventions;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
     /// A lightweight part builder.
     /// </summary>
-    internal class LitePartBuilder : IPartBuilder
+    internal class LitePartBuilder : Loggable, IPartBuilder
     {
         private readonly LiteRegistrationBuilder descriptorBuilder;
 
@@ -25,7 +26,9 @@ namespace Kephas.Injection.Lite.Conventions
         /// Initializes a new instance of the <see cref="LitePartBuilder"/> class.
         /// </summary>
         /// <param name="descriptorBuilder">The descriptor builder.</param>
-        internal LitePartBuilder(LiteRegistrationBuilder descriptorBuilder)
+        /// <param name="logManager">Manager for log.</param>
+        internal LitePartBuilder(LiteRegistrationBuilder descriptorBuilder, ILogManager logManager)
+            : base(logManager)
         {
             this.descriptorBuilder = descriptorBuilder;
         }
@@ -39,7 +42,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// </returns>
         public IPartBuilder As(Type contractType)
         {
-            this.descriptorBuilder.ContractType = contractType;
+            this.descriptorBuilder.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             return this;
         }
 
@@ -89,7 +92,12 @@ namespace Kephas.Injection.Lite.Conventions
         /// </returns>
         public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
-            // selecting a constructor is not supported.
+            // TODO not supported.
+            if (this.Logger.IsTraceEnabled())
+            {
+                this.Logger.Warn("Selecting a specific constructor is not supported ({registrationBuilder}).", this.descriptorBuilder);
+            }
+
             return this;
         }
 

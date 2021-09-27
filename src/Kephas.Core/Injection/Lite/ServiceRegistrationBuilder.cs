@@ -28,7 +28,7 @@ namespace Kephas.Injection.Lite
 
         private Type contractType;
 
-        private Type serviceType;
+        private readonly Type contractDeclarationType;
 
         private AppServiceLifetime lifetime = AppServiceLifetime.Singleton;
 
@@ -44,11 +44,10 @@ namespace Kephas.Injection.Lite
         /// Initializes a new instance of the <see cref="ServiceRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="serviceType">Type of the service.</param>
-        public ServiceRegistrationBuilder(IAmbientServices ambientServices, Type serviceType)
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        public ServiceRegistrationBuilder(IAmbientServices ambientServices, Type contractDeclarationType)
         {
-            this.serviceType = serviceType;
-            this.contractType = serviceType;
+            this.contractType = this.contractDeclarationType = contractDeclarationType;
             this.ambientServices = ambientServices;
         }
 
@@ -67,7 +66,6 @@ namespace Kephas.Injection.Lite
                     return new ServiceInfo(this.ambientServices, this.contractType, implementationType, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
-                        ServiceType = this.serviceType,
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
@@ -75,7 +73,6 @@ namespace Kephas.Injection.Lite
                     return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
-                        ServiceType = this.serviceType,
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
@@ -84,16 +81,15 @@ namespace Kephas.Injection.Lite
                     {
                         if (!this.allowMultiple)
                         {
-                            throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception.FormatWith(this.serviceType, nameof(AppServiceContractAttribute.AllowMultiple), true));
+                            throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception.FormatWith(this.contractType, nameof(AppServiceContractAttribute.AllowMultiple), true));
                         }
 
-                        return new MultiServiceInfo(this.contractType, this.serviceType);
+                        return new MultiServiceInfo(this.contractType);
                     }
 
                     return new ServiceInfo(this.contractType, this.instancingStrategy)
                     {
                         AllowMultiple = this.allowMultiple,
-                        ServiceType = this.serviceType,
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
@@ -112,12 +108,12 @@ namespace Kephas.Injection.Lite
         {
             Requires.NotNull(contractType, nameof(contractType));
 
-            if (!this.contractType.IsAssignableFrom(this.serviceType))
+            if (!contractType.IsAssignableFrom(this.contractDeclarationType))
             {
                 throw new InvalidOperationException(
                     string.Format(
                         Strings.AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception,
-                        this.serviceType,
+                        this.contractType,
                         contractType));
             }
 
@@ -191,13 +187,13 @@ namespace Kephas.Injection.Lite
             switch (instancingStrategy)
             {
                 case Type implementationType:
-                    if (!this.serviceType.IsAssignableFrom(implementationType)
-                        && !(this.serviceType.IsGenericTypeDefinition
+                    if (!this.contractType.IsAssignableFrom(implementationType)
+                        && !(this.contractType.IsGenericTypeDefinition
                              && !implementationType.IsGenericTypeDefinition
-                             && implementationType.GetInterfaces().Any(i => i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.serviceType)))
-                        && !(this.serviceType.IsGenericTypeDefinition
+                             && implementationType.GetInterfaces().Any(i => i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType)))
+                        && !(this.contractType.IsGenericTypeDefinition
                              && implementationType.IsGenericTypeDefinition
-                             && implementationType.GetInterfaces().Any(i => i.Name == this.serviceType.Name)))
+                             && implementationType.GetInterfaces().Any(i => i.Name == this.contractType.Name)))
                     {
                         throw new ArgumentException(
                             string.Format(

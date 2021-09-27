@@ -23,7 +23,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new AppServiceMetadata(processingPriority: (Priority)12, overridePriority: (Priority)24, serviceName: "gigi", isOverride: true)
             {
-                ServiceInstanceType = typeof(int),
+                ServiceType = typeof(int),
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
@@ -44,7 +44,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.AreEqual("gigi", expando.ServiceName);
             Assert.AreEqual(12, expando.ProcessingPriority);
             Assert.AreEqual(24, expando.OverridePriority);
-            Assert.AreEqual(typeof(int), expando.ServiceInstanceType);
+            Assert.AreEqual(typeof(int), expando.ServiceType);
             Assert.IsTrue(expando.IsOverride);
         }
 
@@ -55,7 +55,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new SerializerMetadata(typeof(XmlMediaType), processingPriority: (Priority)12, overridePriority: (Priority)24, serviceName: "gigi", isOverride: true)
             {
-                ServiceInstanceType = typeof(int),
+                ServiceType = typeof(int),
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
@@ -76,7 +76,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.AreEqual("gigi", expando.ServiceName);
             Assert.AreEqual(12, expando.ProcessingPriority);
             Assert.AreEqual(24, expando.OverridePriority);
-            Assert.AreEqual(typeof(int), expando.ServiceInstanceType);
+            Assert.AreEqual(typeof(int), expando.ServiceType);
             Assert.IsTrue(expando.IsOverride);
         }
     }

@@ -153,7 +153,7 @@ namespace Kephas.Core.Tests.Injection
 
             public Type Type { get; set; }
 
-            public Type ServiceType { get; set; }
+            public Type ContractType { get; set; }
 
             public bool IsSingleton { get; set; }
 
@@ -163,7 +163,7 @@ namespace Kephas.Core.Tests.Injection
 
             public IPartBuilder As(Type contractType)
             {
-                this.ServiceType = contractType;
+                this.ContractType = contractType;
                 return this;
             }
 

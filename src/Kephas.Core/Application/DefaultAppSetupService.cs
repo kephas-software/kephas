@@ -54,7 +54,7 @@ namespace Kephas.Application
                 var wrappedResult = await Profiler.WithInfoStopwatchAsync(
                         () => this.SetupAsync(lazyHandler.Value, appContext, cancellationToken),
                         this.Logger,
-                        lazyHandler.Metadata.ServiceName ?? lazyHandler.Metadata.ServiceInstanceType?.Name)
+                        lazyHandler.Metadata.ServiceName ?? lazyHandler.Metadata.ServiceType?.Name)
                     .PreserveThreadContext();
                 result.Elapsed += wrappedResult.Elapsed;
                 result.MergeMessages(wrappedResult.Value);

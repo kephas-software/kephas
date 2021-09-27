@@ -30,7 +30,6 @@ namespace Kephas.Injection.Lite.Internal
         public MultiServiceInfo(ServiceInfo serviceInfo)
         {
             this.ContractType = serviceInfo.ContractType;
-            this.ServiceType = serviceInfo.ServiceType;
             this.serviceInfos.Add(serviceInfo);
         }
 
@@ -40,8 +39,8 @@ namespace Kephas.Injection.Lite.Internal
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceType">Type of the service.</param>
-        internal MultiServiceInfo(Type contractType, Type serviceType)
-            : this(contractType, serviceType, Array.Empty<ServiceInfo>())
+        internal MultiServiceInfo(Type contractType)
+            : this(contractType, Array.Empty<ServiceInfo>())
         {
         }
 
@@ -49,12 +48,10 @@ namespace Kephas.Injection.Lite.Internal
         /// Initializes a new instance of the <see cref="MultiServiceInfo"/> class.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceInfos">The service infos.</param>
-        private MultiServiceInfo(Type contractType, Type serviceType, IEnumerable<ServiceInfo> serviceInfos)
+        private MultiServiceInfo(Type contractType, IEnumerable<ServiceInfo> serviceInfos)
         {
             this.ContractType = contractType;
-            this.ServiceType = serviceType;
             this.serviceInfos.AddRange(serviceInfos);
         }
 
@@ -67,8 +64,6 @@ namespace Kephas.Injection.Lite.Internal
         public Type? ContractType { get; }
 
         public object? InstancingStrategy => null;
-
-        public Type ServiceType { get; }
 
         public void Add(ServiceInfo serviceInfo)
         {
@@ -94,11 +89,10 @@ namespace Kephas.Injection.Lite.Internal
             }
 
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
-            var closedServiceType = this.ServiceType?.MakeGenericType(genericArgs);
 
             var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(ambientServices, genericArgs));
 
-            return new MultiServiceInfo(closedContractType, closedServiceType, closedServiceInfos);
+            return new MultiServiceInfo(closedContractType, closedServiceInfos);
         }
 
         public void Dispose()
