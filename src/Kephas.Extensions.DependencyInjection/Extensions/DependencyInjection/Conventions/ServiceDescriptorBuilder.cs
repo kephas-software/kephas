@@ -109,19 +109,6 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         }
 
         /// <summary>
-        /// Specify the contract type for the export.
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <returns>
-        /// An export builder allowing further configuration.
-        /// </returns>
-        public ServiceDescriptorBuilder As(Type contractType)
-        {
-            this.ContractType = contractType;
-            return this;
-        }
-
-        /// <summary>
         /// Add export metadata to the export.
         /// </summary>
         /// <param name="name">The name of the metadata item.</param>

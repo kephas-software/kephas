@@ -15,7 +15,7 @@ namespace Kephas.Services.Behaviors
 
     /// <summary>
     /// Base class for behavior rules controlling the enabled state of services.
-    /// It applyes for services implementing the contract <typeparamref name="TServiceContract"/>.
+    /// It applies for services implementing the contract <typeparamref name="TServiceContract"/>.
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public abstract class EnabledServiceBehaviorRuleBase<TServiceContract> : BehaviorRuleBase<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule<TServiceContract>

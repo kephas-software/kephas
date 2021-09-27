@@ -152,7 +152,7 @@ namespace Kephas.Services.Behaviors
         private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules<TService>()
         {
             return this.behaviorFactories
-                .Where(f => f.Metadata.ServiceContractType == typeof(TService))
+                .Where(f => f.Metadata.ContractType == typeof(TService))
                 .Select(f => f.CreateExportedValue())
                 .ToList();
         }

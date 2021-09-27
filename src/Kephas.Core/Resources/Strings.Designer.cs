@@ -250,7 +250,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application service contracts exported as open generics do not support metadata attributes and they will be ignored (&apos;{serviceContractType}&apos;). Instead, try to pass metadata through generic parameter types..
+        ///   Looks up a localized string similar to Application service contracts exported as open generics do not support metadata attributes and they will be ignored (&apos;{contractType}&apos;). Instead, try to pass metadata through generic parameter types..
         /// </summary>
         public static string AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning {
             get {

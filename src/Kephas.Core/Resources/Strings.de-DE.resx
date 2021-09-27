@@ -181,7 +181,7 @@
     <value>Der angegebene Contract-Typ '{0}' kann nicht aus dem Service-Contract '{1}' zugewiesen werden.</value>
   </data>
   <data name="AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning" xml:space="preserve">
-    <value>Anwendungsservice-Contracts, die als offene Generics exportiert werden, unterstützen keine Metadatenattribute und werden ignoriert ('{serviceContractType}'). Versuchen Sie stattdessen, Metadaten über generische Parametertypen zu übergeben.</value>
+    <value>Anwendungsservice-Contracts, die als offene Generics exportiert werden, unterstützen keine Metadatenattribute und werden ignoriert ('{contractType}'). Versuchen Sie stattdessen, Metadaten über generische Parametertypen zu übergeben.</value>
   </data>
   <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Mehrere mit {0} gekennzeichnete Konstruktoren werden für die Service-Implementierung '{1}' mit dem Contract '{2}' deklariert.</value>

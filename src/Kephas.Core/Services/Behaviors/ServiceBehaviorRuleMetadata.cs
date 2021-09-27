@@ -33,21 +33,21 @@ namespace Kephas.Services.Behaviors
                 return;
             }
 
-            this.ServiceContractType = (Type)metadata.TryGetValue(nameof(this.ServiceContractType));
+            this.ContractType = (Type)metadata.TryGetValue(nameof(this.ContractType));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceBehaviorRuleMetadata"/> class.
         /// </summary>
-        /// <param name="serviceContractType">Type of the service contract.</param>
+        /// <param name="contractType">Type of the service contract.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public ServiceBehaviorRuleMetadata(Type serviceContractType, Priority processingPriority = 0, Priority overridePriority = 0)
+        public ServiceBehaviorRuleMetadata(Type contractType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            Requires.NotNull(serviceContractType, nameof(serviceContractType));
+            Requires.NotNull(contractType, nameof(contractType));
 
-            this.ServiceContractType = serviceContractType;
+            this.ContractType = contractType;
         }
 
         /// <summary>
@@ -56,6 +56,6 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The type of the service contract.
         /// </value>
-        public Type ServiceContractType { get; }
+        public Type? ContractType { get; }
     }
 }
