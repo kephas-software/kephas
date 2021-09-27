@@ -22,7 +22,7 @@ namespace Kephas.Application
     /// An application feature is a functional area of the application.
     /// It supports initialization and finalization.
     /// </remarks>
-    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(FeatureInfoAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IFeatureManager : IAsyncInitializable, IAsyncFinalizable
     {
         /// <summary>

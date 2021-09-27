@@ -448,7 +448,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 
-        [SingletonAppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
+        [SingletonAppServiceContract]
         public interface ITestAppService { }
 
         [SingletonAppServiceContract(AllowMultiple = true)]
@@ -491,8 +491,7 @@ namespace Kephas.Tests.Injection.SystemComposition
 
         public interface IConverter { }
 
-        [SingletonAppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) }, 
-            ContractType = typeof(IConverter))]
+        [SingletonAppServiceContract(ContractType = typeof(IConverter))]
         public interface IConverter<TSource, TTarget> : IConverter { }
 
         [ProcessingPriority(100)]

@@ -559,7 +559,7 @@ namespace Kephas.Core.Tests.Services
 
     namespace CustomValueAppServiceMetadata
     {
-        [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomValueMetadataAttribute) })]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface ICustomValueMetadataAppService { }
 
         [CustomValueMetadata("hi there")]
@@ -582,7 +582,7 @@ namespace Kephas.Core.Tests.Services
     {
         using System.Collections.Generic;
 
-        [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomNamedValueMetadataAttribute) })]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface ICustomNamedValueMetadataAppService { }
 
         [CustomNamedValueMetadata("hi there", "bob", IconName = "ICXP")]
@@ -624,7 +624,7 @@ namespace Kephas.Core.Tests.Services
 
     namespace DefaultExplicitAppServiceMetadata
     {
-        [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface IExplicitMetadataAppService { }
 
         [ProcessingPriority(100)]

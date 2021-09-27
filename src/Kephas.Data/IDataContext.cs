@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq.Expressions;
-
 namespace Kephas.Data
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
@@ -23,7 +22,7 @@ namespace Kephas.Data
     /// <summary>
     /// Contract interface for data contexts.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedDataStoreKindsAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IDataContext : IContext, IIdentifiable, IInitializable
     {
         /// <summary>

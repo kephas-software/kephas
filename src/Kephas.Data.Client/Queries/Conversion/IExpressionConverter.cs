@@ -19,7 +19,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     /// <summary>
     /// Singleton application service contract for expression converters.
     /// </summary>
-    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(OperatorAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IExpressionConverter
     {
         /// <summary>

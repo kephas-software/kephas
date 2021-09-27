@@ -10,19 +10,15 @@
 
 namespace Kephas.Data.IO.DataStreams
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Net.Mime;
     using Kephas.Services;
 
     /// <summary>
     /// Reader for <see cref="DataStream"/>s.
     /// </summary>
-    [SingletonAppServiceContract(
-        AllowMultiple = true,
-        MetadataAttributes = new[] { typeof(SupportedMediaTypesAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IDataStreamReader
     {
         /// <summary>

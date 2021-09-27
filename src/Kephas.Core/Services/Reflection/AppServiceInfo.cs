@@ -109,7 +109,6 @@ namespace Kephas.Services.Reflection
 
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
             this.SetLifetime(appServiceInfo.Lifetime);
-            this.DummyMetadataAttributes = appServiceInfo.DummyMetadataAttributes;
             this.Metadata = appServiceInfo.Metadata;
         }
 
@@ -136,15 +135,6 @@ namespace Kephas.Services.Reflection
         ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
         /// </value>
         public bool AsOpenGeneric { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the supported metadata attributes.
-        /// </summary>
-        /// <value>
-        /// The metadata attributes.
-        /// </value>
-        /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[]? DummyMetadataAttributes { get; set; } = Array.Empty<Type>();
 
         /// <summary>
         /// Gets the metadata attached to the service information.

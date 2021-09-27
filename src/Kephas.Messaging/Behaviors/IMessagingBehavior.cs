@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMessageProcessingBehavior.cs" company="Kephas Software SRL">
+// <copyright file="IMessagingBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -46,10 +46,7 @@ namespace Kephas.Messaging.Behaviors
     /// Application service for message processing interception.
     /// </summary>
     /// <typeparam name="TMessage">The type of the message.</typeparam>
-    [SingletonAppServiceContract(
-        AllowMultiple = true,
-        ContractType = typeof(IMessagingBehavior),
-        MetadataAttributes = new[] { typeof(MessagingBehaviorAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, ContractType = typeof(IMessagingBehavior))]
     public interface IMessagingBehavior<TMessage> : IMessagingBehavior
         where TMessage : IMessage
     {

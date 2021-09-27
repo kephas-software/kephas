@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for data commands executing commands on the data store side.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IExecuteCommand : IDataCommand<IExecuteContext, IExecuteResult>
     {
     }

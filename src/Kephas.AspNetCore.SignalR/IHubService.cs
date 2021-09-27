@@ -8,12 +8,13 @@
 namespace Kephas.AspNetCore.SignalR
 {
     using System;
+
     using Kephas.Services;
 
     /// <summary>
     /// Marker interface for hubs.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(PatternAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IHubService : IDisposable
     {
     }

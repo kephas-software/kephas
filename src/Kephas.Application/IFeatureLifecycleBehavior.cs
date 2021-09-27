@@ -12,6 +12,7 @@ namespace Kephas.Application
 {
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Operations;
     using Kephas.Services;
 
@@ -23,7 +24,7 @@ namespace Kephas.Application
     /// and reacts to them. Such features could log the performance of initialization,
     /// check prerequisites like proper licensing or whatever the application needs.
     /// </remarks>
-    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(TargetFeatureAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IFeatureLifecycleBehavior
     {
         /// <summary>

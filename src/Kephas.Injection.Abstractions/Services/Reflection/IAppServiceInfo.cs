@@ -46,15 +46,6 @@ namespace Kephas.Services.Reflection
         bool AsOpenGeneric { get; }
 
         /// <summary>
-        /// Gets the supported metadata attributes.
-        /// </summary>
-        /// <value>
-        /// The metadata attributes.
-        /// </value>
-        /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        Type[]? DummyMetadataAttributes => null;
-
-        /// <summary>
         /// Gets the supported metadata.
         /// </summary>
         /// <value>

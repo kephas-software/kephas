@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Application service contract for commands creating an entity.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface ICreateEntityCommand : IDataCommand<ICreateEntityContext, ICreateEntityResult>
     {
     }

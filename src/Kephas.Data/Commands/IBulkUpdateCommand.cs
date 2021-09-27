@@ -18,7 +18,7 @@ namespace Kephas.Data.Commands
     /// <remarks>
     /// The operation skips all data behaviors and sends the commands directly to the database.
     /// </remarks>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IBulkUpdateCommand : IDataCommand<IBulkUpdateContext, IBulkDataOperationResult>
     {
     }

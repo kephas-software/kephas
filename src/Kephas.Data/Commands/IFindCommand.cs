@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for find commands.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IFindCommand : IDataCommand<IFindContext, IFindResult>
     {
     }

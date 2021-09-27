@@ -67,15 +67,6 @@ namespace Kephas.Services
         public bool AsOpenGeneric { get; set; }
 
         /// <summary>
-        /// Gets or sets the supported metadata attributes.
-        /// </summary>
-        /// <value>
-        /// The metadata attributes.
-        /// </value>
-        /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[]? MetadataAttributes { get; set; }
-
-        /// <summary>
         /// Gets or sets the contract type of the export.
         /// </summary>
         /// <value>

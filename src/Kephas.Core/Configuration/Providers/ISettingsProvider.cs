@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigurationProvider.cs" company="Kephas Software SRL">
+// <copyright file="ISettingsProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,7 +20,7 @@ namespace Kephas.Configuration.Providers
     /// <summary>
     /// Interface for configuration provider.
     /// </summary>
-    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SettingsTypeAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface ISettingsProvider
     {
         /// <summary>

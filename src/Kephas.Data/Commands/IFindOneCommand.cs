@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for find commands retrieving one entity based on a predicate.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IFindOneCommand : IDataCommand<IFindOneContext, IFindResult>
     {
     }

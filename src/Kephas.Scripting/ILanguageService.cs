@@ -23,7 +23,7 @@ namespace Kephas.Scripting
     /// A shared application service contract responsible for interpreting/executing scripts
     /// for a specified language.
     /// </summary>
-    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(LanguageAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface ILanguageService
     {
         /// <summary>

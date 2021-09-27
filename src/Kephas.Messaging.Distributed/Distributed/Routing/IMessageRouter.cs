@@ -19,7 +19,7 @@ namespace Kephas.Messaging.Distributed.Routing
     /// <summary>
     /// Interface for message router.
     /// </summary>
-    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(MessageRouterAttribute) })]
+    [AppServiceContract(AllowMultiple = true)]
     public interface IMessageRouter
     {
         /// <summary>
