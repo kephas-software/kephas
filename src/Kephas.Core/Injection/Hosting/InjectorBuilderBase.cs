@@ -144,6 +144,19 @@ namespace Kephas.Injection.Hosting
         /// <remarks>
         /// Can be used multiple times, the provided assemblies are added to the existing ones.
         /// </remarks>
+        public virtual TBuilder WithAssemblies(params Assembly[] assemblies)
+            => this.WithAssemblies((IEnumerable<Assembly>)assemblies);
+
+        /// <summary>
+        /// Adds the assemblies containing the composition parts.
+        /// </summary>
+        /// <param name="assemblies">The composition assemblies.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        /// <remarks>
+        /// Can be used multiple times, the provided assemblies are added to the existing ones.
+        /// </remarks>
         public virtual TBuilder WithAssemblies(IEnumerable<Assembly> assemblies)
         {
             Requires.NotNull(assemblies, nameof(assemblies));

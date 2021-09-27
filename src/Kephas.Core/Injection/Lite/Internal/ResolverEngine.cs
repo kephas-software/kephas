@@ -32,7 +32,7 @@ namespace Kephas.Injection.Lite.Internal
             this.registry = registry;
         }
 
-        public object? GetService(Type serviceType)
+        public object? GetService(Type contractType)
         {
             if (!this.ambientServicesRef.TryGetTarget(out var ambientServices))
             {
@@ -40,19 +40,19 @@ namespace Kephas.Injection.Lite.Internal
             }
 
             // simple registration
-            if (this.registry.TryGet(serviceType, out var serviceRegistration))
+            if (this.registry.TryGet(contractType, out var serviceRegistration))
             {
                 return serviceRegistration.GetService(ambientServices);
             }
 
             // open generic registration
-            if (serviceType.IsConstructedGenericType)
+            if (contractType.IsConstructedGenericType)
             {
-                var openServiceType = serviceType.GetGenericTypeDefinition();
+                var openServiceType = contractType.GetGenericTypeDefinition();
 
                 if (this.registry.TryGet(openServiceType, out serviceRegistration))
                 {
-                    serviceRegistration = this.registry.GetOrRegister(serviceType, _ => serviceRegistration.MakeGenericServiceInfo(ambientServices, serviceType.GetGenericArguments()));
+                    serviceRegistration = this.registry.GetOrRegister(contractType, _ => serviceRegistration.MakeGenericServiceInfo(ambientServices, contractType.GetGenericArguments()));
                     return serviceRegistration.GetService(ambientServices);
                 }
             }
@@ -60,9 +60,9 @@ namespace Kephas.Injection.Lite.Internal
             // source registration
             foreach (var source in this.registry.Sources)
             {
-                if (source.IsMatch(serviceType))
+                if (source.IsMatch(contractType))
                 {
-                    return source.GetService(ambientServices, serviceType);
+                    return source.GetService(ambientServices, contractType);
                 }
             }
 

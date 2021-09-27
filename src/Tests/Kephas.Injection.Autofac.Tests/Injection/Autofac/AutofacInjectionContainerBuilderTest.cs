@@ -74,7 +74,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithAssembly(typeof(AutofacConventionsBuilder).GetTypeInfo().Assembly)
                 .Build();
 
@@ -87,7 +87,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .Build();
 
@@ -102,7 +102,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .Build();
 
@@ -116,7 +116,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .Build();
 
@@ -130,7 +130,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .Build();
 
@@ -146,7 +146,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .Build();
 
@@ -160,7 +160,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
                 .Build();
 
@@ -175,7 +175,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .Build();
 
@@ -188,7 +188,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
                 .Build();
 
@@ -201,7 +201,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithRegistration(
                     new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
                     new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
@@ -218,7 +218,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .Build();
 
@@ -230,7 +230,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .Build();
 
@@ -255,7 +255,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_AppService_no_constructor()
         {
             var builder = this.CreateInjectorBuilderWithStringLogger()
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoInjectConstructorAppService) });
             Assert.Throws<NoConstructorsFoundException>(() => builder.Build());
         }
@@ -265,7 +265,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(AmbiguousInjectConstructorAppService) })
                 .Build();
             Assert.Throws<DependencyResolutionException>(() => container.Resolve<IConstructorAppService>());
@@ -276,7 +276,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(LargestInjectConstructorAppService) })
                 .Build();
 
@@ -289,7 +289,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             Assert.Throws<InjectionException>(() => builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleInjectConstructorAppService) })
                 .Build());
         }
@@ -299,7 +299,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
                 .Build();
 
@@ -313,7 +313,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
                 .Build();
 

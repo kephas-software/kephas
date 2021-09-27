@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+
     internal interface IResolverEngine : IServiceProvider
     {
     }

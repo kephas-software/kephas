@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services
 {
     using System;
@@ -19,6 +17,7 @@ namespace Kephas.Services
     using System.Reflection;
 
     using Kephas;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -36,11 +35,9 @@ namespace Kephas.Services
 
         private readonly IInjector injector;
         private readonly IAmbientServices ambientServices;
-        private readonly ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>> typeCache
-            = new ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>>();
+        private readonly ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>> typeCache = new ();
 
-        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>> signatureCache
-            = new ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>>();
+        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>> signatureCache = new ();
 
         private readonly IList<(Type contractType, IAppServiceInfo appServiceInfo)> appServiceInfos;
 

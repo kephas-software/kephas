@@ -21,6 +21,7 @@ namespace Kephas.Core.Tests
     using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// Base class for tests using composition.
@@ -67,7 +68,7 @@ namespace Kephas.Core.Tests
         public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
         {
             var builder = WithInjectorBuilder()
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly);
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
@@ -75,7 +76,7 @@ namespace Kephas.Core.Tests
         public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             return this.WithInjectorBuilder(ambientServices)
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
                 .WithParts(types)
                 .Build();
         }
@@ -84,7 +85,8 @@ namespace Kephas.Core.Tests
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Core*/
+                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Injection.Abstractions */
+                           typeof(IContextFactory).GetTypeInfo().Assembly,     /* Kephas.Core */
                        };
         }
 

@@ -20,6 +20,7 @@ namespace Kephas.Testing.Injection
     using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Runtime;
+    using Kephas.Services;
     using Kephas.Testing;
 
     /// <summary>
@@ -107,7 +108,8 @@ namespace Kephas.Testing.Injection
         public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
         {
             var builder = this.WithInjectorBuilder()
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly);
+                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IContextFactory).GetTypeInfo().Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
@@ -116,6 +118,7 @@ namespace Kephas.Testing.Injection
         {
             return this.WithInjectorBuilder(ambientServices)
                 .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(IContextFactory).GetTypeInfo().Assembly)
                 .WithParts(types)
                 .Build();
         }
@@ -131,7 +134,8 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Core*/
+                           typeof(IInjector).Assembly,     /* Kephas.Injection.Abstractions*/
+                           typeof(IContextFactory).Assembly,     /* Kephas.Core*/
                        };
         }
 

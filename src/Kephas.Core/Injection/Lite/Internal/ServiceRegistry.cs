@@ -8,16 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Collections;
-using Kephas.Resources;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Collections;
+    using Kephas.Resources;
+
     /// <summary>
     /// A service serviceRegistry.
     /// </summary>
@@ -26,7 +27,7 @@ namespace Kephas.Injection.Lite.Internal
         private readonly ConcurrentDictionary<Type, IServiceInfo> services =
             new ConcurrentDictionary<Type, IServiceInfo>();
 
-        private readonly List<IServiceSource> serviceSources = new List<IServiceSource>();
+        private readonly List<IServiceSource> serviceSources = new ();
 
         public IEnumerable<IServiceSource> Sources => this.serviceSources;
 
