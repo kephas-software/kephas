@@ -10,11 +10,24 @@
 
 namespace Kephas.Injection.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// <summary>
     /// Interface for part builder.
     /// </summary>
     public interface IPartBuilder
     {
+        /// <summary>
+        /// Indicates the type registered as the exported service key.
+        /// </summary>
+        /// <param name="contractType">Type of the service.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartBuilder As(Type contractType);
+
         /// <summary>
         /// Mark the part as being shared within the entire composition.
         /// </summary>
@@ -37,5 +50,41 @@ namespace Kephas.Injection.Conventions
         /// A part builder allowing further configuration of the part.
         /// </returns>
         IPartBuilder AllowMultiple(bool value);
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null);
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        IPartBuilder AddMetadata(string name, object? value);
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="metadata">The metadata dictionary.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        IPartBuilder AddMetadata(IDictionary<string, object?> metadata)
+        {
+            foreach (var (key, value) in metadata)
+            {
+                this.AddMetadata(key, value);
+            }
+
+            return this;
+        }
     }
 }

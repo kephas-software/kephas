@@ -17,6 +17,7 @@ namespace Kephas.Injection.Autofac.Conventions
 
     using global::Autofac;
     using global::Autofac.Builder;
+    using Kephas.Collections;
     using Kephas.Injection.Conventions;
     using Kephas.Services;
 
@@ -26,6 +27,7 @@ namespace Kephas.Injection.Autofac.Conventions
     internal class ServiceDescriptorBuilder
     {
         private readonly ContainerBuilder containerBuilder;
+        private IDictionary<string, object?>? metadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceDescriptorBuilder"/> class.
@@ -83,6 +85,25 @@ namespace Kephas.Injection.Autofac.Conventions
         /// The export configuration.
         /// </value>
         public Action<Type, IExportConventionsBuilder>? ExportConfiguration { get; set; }
+
+        /// <summary>
+        /// Adds metadata.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        public void AddMetadata(string name, object? value)
+        {
+            (this.metadata ??= new Dictionary<string, object?>())[name] = value;
+        }
+
+        /// <summary>
+        /// Adds metadata.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        public void AddMetadata(IDictionary<string, object?> metadata)
+        {
+            (this.metadata ??= new Dictionary<string, object?>()).Merge(metadata);
+        }
 
         /// <summary>
         /// Builds the information into a service descriptor.
@@ -144,6 +165,11 @@ namespace Kephas.Injection.Autofac.Conventions
             }
 
             this.SelectConstructor(registration, implementationType);
+
+            if (this.metadata != null)
+            {
+                registration.WithMetadata(this.metadata);
+            }
         }
 
         private void SetLifetime<TActivatorData, TRegistrationStyle>(
@@ -206,7 +232,7 @@ namespace Kephas.Injection.Autofac.Conventions
 
             public Type? ContractType { get; set; }
 
-            public IExportConventionsBuilder AsContractType(Type contractType)
+            public IExportConventionsBuilder As(Type contractType)
             {
                 this.ContractType = this.descriptorBuilder.ContractType = contractType;
 
@@ -239,13 +265,13 @@ namespace Kephas.Injection.Autofac.Conventions
                 return this;
             }
 
-            public IExportConventionsBuilder AddMetadata(string name, object value)
+            public IExportConventionsBuilder AddMetadata(string name, object? value)
             {
                 this.registration.WithMetadata(name, value);
                 return this;
             }
 
-            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
             {
                 this.registration.WithMetadata(name, getValueFromPartType(this.partType));
                 return this;

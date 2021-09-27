@@ -8,10 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Conventions;
-
 namespace Kephas.Extensions.DependencyInjection.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Kephas.Injection.Conventions;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -28,6 +31,19 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         internal DependencyInjectionPartBuilder(ServiceDescriptorBuilder descriptorBuilder)
         {
             this.descriptorBuilder = descriptorBuilder;
+        }
+
+        /// <summary>
+        /// Indicates the type registered as the exported service key.
+        /// </summary>
+        /// <param name="contractType">Type of the service.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder As(Type contractType)
+        {
+            this.descriptorBuilder.ServiceType = contractType;
+            return this;
         }
 
         /// <summary>
@@ -64,6 +80,32 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         IPartBuilder IPartBuilder.AllowMultiple(bool value)
         {
             // By default, all registrations are multiple.
+            return this;
+        }
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            this.descriptorBuilder.AddMetadata(name, value);
             return this;
         }
     }

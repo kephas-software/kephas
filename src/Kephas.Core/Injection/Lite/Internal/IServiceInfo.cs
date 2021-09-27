@@ -11,7 +11,6 @@
 namespace Kephas.Injection.Lite.Internal
 {
     using System;
-    using System.Collections.Generic;
 
     using Kephas.Services.Reflection;
 

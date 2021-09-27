@@ -11,6 +11,9 @@
 namespace Kephas.Injection.Autofac.Conventions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection.Conventions;
@@ -34,6 +37,19 @@ namespace Kephas.Injection.Autofac.Conventions
         {
             this.containerBuilder = containerBuilder;
             this.registrationBuilder = registrationBuilder;
+        }
+
+        /// <summary>
+        /// Indicates the type registered as the exported service key.
+        /// </summary>
+        /// <param name="contractType">Type of the service.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder As(Type contractType)
+        {
+            this.registrationBuilder.As(contractType);
+            return this;
         }
 
         /// <summary>
@@ -74,9 +90,47 @@ namespace Kephas.Injection.Autofac.Conventions
         }
 
         /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            this.registrationBuilder.WithMetadata(name, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="metadata">The metadata dictionary.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(IDictionary<string, object?> metadata)
+        {
+            this.registrationBuilder.WithMetadata(metadata);
+            return this;
+        }
+
+        /// <summary>
         /// Builds the information into a service descriptor.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         public void Build()
         {
             var registration = this.registrationBuilder.CreateRegistration();

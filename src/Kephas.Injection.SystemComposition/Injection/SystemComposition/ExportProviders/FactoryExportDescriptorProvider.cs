@@ -13,6 +13,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
     using System;
     using System.Collections.Generic;
     using System.Composition.Hosting.Core;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.SystemComposition.Hosting;
@@ -22,19 +23,8 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
     /// </summary>
     public class FactoryExportDescriptorProvider : ExportDescriptorProvider, IExportProvider
     {
-        /// <summary>
-        /// The factory.
-        /// </summary>
         private readonly Func<object> factory;
-
-        /// <summary>
-        /// The context factory.
-        /// </summary>
         private readonly Func<IInjector, object> contextFactory;
-
-        /// <summary>
-        /// The is shared.
-        /// </summary>
         private readonly bool isSingleton;
 
         /// <summary>
@@ -78,6 +68,11 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
             this.contextFactory = contextFactory;
             this.isSingleton = isSingleton;
         }
+
+        /// <summary>
+        /// Gets or sets the factory metadata.
+        /// </summary>
+        public IDictionary<string, object?>? Metadata { get; set; }
 
         /// <summary>
         /// Gets the type of the contract.
@@ -128,7 +123,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
 
                                     return instance;
                                 },
-                        ExportDescriptorProvider.NoMetadata))
+                            this.Metadata ?? ExportDescriptorProvider.NoMetadata))
                };
         }
     }

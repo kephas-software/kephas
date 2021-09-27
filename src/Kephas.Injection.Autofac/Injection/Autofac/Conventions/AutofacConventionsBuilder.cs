@@ -12,6 +12,8 @@ namespace Kephas.Injection.Autofac.Conventions
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection;
@@ -87,7 +89,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <returns>
         /// A <see cref="IPartBuilder" /> to further configure the rule.
         /// </returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
+        public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
             var registrationBuilder = RegistrationBuilder.ForDelegate(
                     type,
@@ -124,7 +126,15 @@ namespace Kephas.Injection.Autofac.Conventions
 
             public IPartBuilder AllowMultiple(bool value) => this;
 
+            public IPartBuilder SelectConstructor(
+                Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+                Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null) => this;
+
+            public IPartBuilder AddMetadata(string name, object? value) => this;
+
             public IPartBuilder Scoped() => this;
+
+            public IPartBuilder As(Type contractType) => this;
 
             public IPartBuilder Singleton() => this;
         }

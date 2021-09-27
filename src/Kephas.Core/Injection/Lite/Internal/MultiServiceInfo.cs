@@ -64,8 +64,6 @@ namespace Kephas.Injection.Lite.Internal
 
         bool IAppServiceInfo.AsOpenGeneric => false;
 
-        Type[]? IAppServiceInfo.MetadataAttributes => null;
-
         public Type? ContractType { get; }
 
         public object? InstancingStrategy => null;

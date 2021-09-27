@@ -21,7 +21,7 @@ namespace Kephas.Injection.AttributedModel
     ///                 should be used.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
-    public sealed class InjectConstructorAttribute : Attribute
+    public sealed class InjectConstructorAttribute : Attribute, IInjectConstructorAnnotation
     {
     }
 }

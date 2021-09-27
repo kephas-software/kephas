@@ -23,7 +23,6 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
-    using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
@@ -482,7 +481,7 @@ namespace Kephas.Core.Tests.Services
 
         private static AppServiceInfoConventionsRegistrar CreateAppServiceInfoConventionsRegistrar()
         {
-            var registrar = new AppServiceInfoConventionsRegistrar(new AppServiceMetadataResolver(new RuntimeTypeRegistry()));
+            var registrar = new AppServiceInfoConventionsRegistrar();
             return registrar;
         }
 

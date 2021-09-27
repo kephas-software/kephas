@@ -12,7 +12,6 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
@@ -70,7 +69,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <value>
         /// The export configuration.
         /// </value>
-        public Action<Type, IExportConventionsBuilder> ExportConfiguration { get; set; }
+        public Action<Type, IExportConventionsBuilder>? ExportConfiguration { get; set; }
 
         /// <summary>
         /// Builds the information into a service descriptor.
@@ -121,7 +120,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AsContractType(Type contractType)
+        public IExportConventionsBuilder As(Type contractType)
         {
             this.ServiceType = contractType;
             return this;
@@ -135,7 +134,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, object value)
+        public IExportConventionsBuilder AddMetadata(string name, object? value)
         {
             this.Logger.Warn("Metadata not supported. Service type: {serviceType}.", this.ServiceType);
             return this;
@@ -146,11 +145,11 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// </summary>
         /// <param name="name">The name of the metadata item.</param>
         /// <param name="getValueFromPartType">A function that calculates the metadata value based on
-        ///                                    the type.</param>
+        ///     the type.</param>
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
         {
             this.Logger.Warn("Metadata not supported. Service type: {serviceType}.", this.ServiceType);
             return this;

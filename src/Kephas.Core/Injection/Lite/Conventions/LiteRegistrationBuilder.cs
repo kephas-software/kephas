@@ -8,16 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Injection.Conventions;
-using Kephas.Logging;
-using Kephas.Resources;
-using Kephas.Services;
-
 namespace Kephas.Injection.Lite.Conventions
 {
+    using System;
+
+    using Kephas.Injection.Conventions;
+    using Kephas.Logging;
+    using Kephas.Resources;
+    using Kephas.Services;
+
     /// <summary>
     /// A lightweight registration builder.
     /// </summary>
@@ -107,14 +106,15 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, object value)
+        public IExportConventionsBuilder AddMetadata(string name, object? value)
         {
             if (this.Logger.IsTraceEnabled())
             {
                 this.Logger.Trace("Metadata {metadataName} is automatically added for {registrationBuilder}.", name, this);
             }
 
-            return this;
+            // TODO
+            // return this;
         }
 
         /// <summary>
@@ -122,18 +122,19 @@ namespace Kephas.Injection.Lite.Conventions
         /// </summary>
         /// <param name="name">The name of the metadata item.</param>
         /// <param name="getValueFromPartType">A function that calculates the metadata value based on
-        ///                                    the type.</param>
+        ///     the type.</param>
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
         {
             if (this.Logger.IsTraceEnabled())
             {
                 this.Logger.Trace("Metadata {metadataName} is automatically added for {registrationBuilder}.", name, this);
             }
 
-            return this;
+            // TODO
+            // return this;
         }
 
         /// <summary>
@@ -143,7 +144,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AsContractType(Type contractType)
+        public IExportConventionsBuilder As(Type contractType)
         {
             this.ContractType = contractType;
             return this;

@@ -13,6 +13,7 @@ namespace Kephas.Injection.Autofac.Conventions
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Conventions;
     using Kephas.Services;
@@ -42,7 +43,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder As(Type serviceType)
+        public IPartBuilder As(Type serviceType)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
 
@@ -56,7 +57,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Singleton()
+        public IPartBuilder Singleton()
         {
             this.descriptorBuilder.Lifetime = AppServiceLifetime.Singleton;
             return this;
@@ -68,7 +69,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Scoped()
+        public IPartBuilder Scoped()
         {
             this.descriptorBuilder.Lifetime = AppServiceLifetime.Scoped;
             return this;
@@ -116,10 +117,37 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
             this.descriptorBuilder.ConstructorSelector = constructorSelector;
 
+            return this;
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            this.descriptorBuilder.AddMetadata(name, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="metadata">The metadata dictionary.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(IDictionary<string, object?> metadata)
+        {
+            this.descriptorBuilder.AddMetadata(metadata);
             return this;
         }
 
@@ -130,10 +158,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        /// <example>
-        /// .
-        /// </example>
-        IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+        IPartBuilder IPartBuilder.AllowMultiple(bool value)
         {
             // By default Autofac allows multiple registrations
             return this;

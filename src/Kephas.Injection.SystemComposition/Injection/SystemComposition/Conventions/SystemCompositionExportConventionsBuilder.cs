@@ -41,7 +41,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AsContractType(Type contractType)
+        public IExportConventionsBuilder As(Type contractType)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
@@ -58,7 +58,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, object value)
+        public IExportConventionsBuilder AddMetadata(string name, object? value)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -75,7 +75,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
             Requires.NotNull(getValueFromPartType, nameof(getValueFromPartType));

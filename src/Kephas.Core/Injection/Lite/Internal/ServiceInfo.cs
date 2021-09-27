@@ -83,8 +83,6 @@ namespace Kephas.Injection.Lite.Internal
 
         bool IAppServiceInfo.AsOpenGeneric => this.ContractType.IsGenericType && this.ContractType.IsGenericTypeDefinition;
 
-        Type[]? IAppServiceInfo.MetadataAttributes { get; } = Array.Empty<Type>();
-
         public Type? ContractType { get; }
 
         public object? InstancingStrategy { get; }

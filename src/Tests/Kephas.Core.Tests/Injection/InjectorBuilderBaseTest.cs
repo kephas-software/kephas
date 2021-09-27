@@ -132,7 +132,7 @@ namespace Kephas.Core.Tests.Injection
             /// <param name="type">The registered service type.</param>
             /// <param name="factory">The service factory.</param>
             /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-            public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
+            public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
             {
                 // throw new NotImplementedException();
                 return Substitute.For<IPartBuilder>();
@@ -152,19 +152,11 @@ namespace Kephas.Core.Tests.Injection
                 this.ExportBuilder = new TestExportConventionsBuilder();
             }
 
-            public TestPartConventionsBuilder(Predicate<Type> typePredicate)
-            {
-                this.TypePredicate = typePredicate;
-                this.ExportBuilder = new TestExportConventionsBuilder();
-            }
-
             public TestExportConventionsBuilder ExportBuilder { get; set; }
 
             public Type Type { get; set; }
 
             public Type ServiceType { get; set; }
-
-            public Predicate<Type> TypePredicate { get; set; }
 
             public bool IsSingleton { get; set; }
 
@@ -172,13 +164,15 @@ namespace Kephas.Core.Tests.Injection
 
             public bool AllowMultiple { get; set; }
 
-            public IPartConventionsBuilder As(Type serviceType)
+            public IPartBuilder As(Type serviceType)
             {
                 this.ServiceType = serviceType;
                 return this;
             }
 
-            public IPartConventionsBuilder Singleton()
+            public IDictionary<string, object?>? Metadata { get; set; }
+
+            public IPartBuilder Singleton()
             {
                 this.IsSingleton = true;
                 return this;
@@ -188,7 +182,7 @@ namespace Kephas.Core.Tests.Injection
             /// Mark the part as being shared within the scope.
             /// </summary>
             /// <returns>A part builder allowing further configuration of the part.</returns>
-            public IPartConventionsBuilder Scoped()
+            public IPartBuilder Scoped()
             {
                 this.IsScoped = true;
                 return this;
@@ -210,13 +204,19 @@ namespace Kephas.Core.Tests.Injection
                 return this;
             }
 
-            public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+            public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
             {
                 this.ConstructorSelector = constructorSelector;
                 return this;
             }
 
-            IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+            public IPartBuilder AddMetadata(string name, object? value)
+            {
+                (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
+                return this;
+            }
+
+            IPartBuilder IPartBuilder.AllowMultiple(bool value)
             {
                 this.AllowMultiple = value;
                 return this;
@@ -234,19 +234,19 @@ namespace Kephas.Core.Tests.Injection
 
             public IDictionary<string, object> Metadata { get; set; }
 
-            public IExportConventionsBuilder AsContractType(Type contractType)
+            public IExportConventionsBuilder As(Type contractType)
             {
                 this.ContractType = contractType;
                 return this;
             }
 
-            public IExportConventionsBuilder AddMetadata(string name, object value)
+            public IExportConventionsBuilder AddMetadata(string name, object? value)
             {
                 this.Metadata.Add(name, value);
                 return this;
             }
 
-            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
             {
                 this.Metadata.Add(name, getValueFromPartType);
                 return this;

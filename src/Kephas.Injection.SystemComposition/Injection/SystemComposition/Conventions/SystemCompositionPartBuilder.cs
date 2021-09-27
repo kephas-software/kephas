@@ -11,6 +11,8 @@
 namespace Kephas.Injection.SystemComposition.Conventions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
@@ -56,7 +58,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <value>
         /// The type of the contract.
         /// </value>
-        public Type ContractType { get; }
+        public Type ContractType { get; private set; }
 
         /// <summary>
         /// Gets the instance factory.
@@ -89,6 +91,19 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// True if this object is scoped, false if not.
         /// </value>
         public bool IsScoped { get; private set; }
+
+        /// <summary>
+        /// Indicates the type registered as the exported service key.
+        /// </summary>
+        /// <param name="contractType">Type of the service.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder As(Type contractType)
+        {
+            this.ContractType = contractType;
+            return this;
+        }
 
         /// <summary>
         /// Mark the part as being shared within the entire composition.
@@ -125,6 +140,31 @@ namespace Kephas.Injection.SystemComposition.Conventions
         {
             // this is not used
             return this;
+        }
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            // TODO
         }
     }
 }

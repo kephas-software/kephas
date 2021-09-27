@@ -67,15 +67,6 @@ namespace Kephas.Model.Elements
         public bool AsOpenGeneric => this.appServiceInfo.AsOpenGeneric;
 
         /// <summary>
-        /// Gets the supported metadata attributes.
-        /// </summary>
-        /// <value>
-        /// The metadata attributes.
-        /// </value>
-        /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[]? MetadataAttributes => this.appServiceInfo.MetadataAttributes;
-
-        /// <summary>
         /// Gets the type of the contract.
         /// </summary>
         /// <value>

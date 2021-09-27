@@ -32,8 +32,8 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </summary>
         private readonly PartConventionBuilder innerConventionBuilder;
 
-        private Type contractType;
-        private Type serviceType;
+        private Type? contractType;
+        private Type? serviceType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionPartConventionsBuilder"/> class.
@@ -55,7 +55,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder As(Type serviceType)
+        public IPartBuilder As(Type serviceType)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
 
@@ -67,7 +67,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// Mark the part as being shared within the entire composition.
         /// </summary>
         /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder Singleton()
+        public IPartBuilder Singleton()
         {
             this.innerConventionBuilder.Shared();
             return this;
@@ -79,7 +79,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Scoped()
+        public IPartBuilder Scoped()
         {
             this.innerConventionBuilder.Shared(InjectionScopeNames.Default);
             return this;
@@ -145,7 +145,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
             Requires.NotNull(constructorSelector, nameof(constructorSelector));
 
@@ -194,13 +194,28 @@ namespace Kephas.Injection.SystemComposition.Conventions
         }
 
         /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            this.innerConventionBuilder.AddPartMetadata(name, value);
+
+            return this;
+        }
+
+        /// <summary>
         /// Indicates that this service allows multiple registrations.
         /// </summary>
         /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+        IPartBuilder IPartBuilder.AllowMultiple(bool value)
         {
             // not used, by default all services allow multiple instances.
             return this;

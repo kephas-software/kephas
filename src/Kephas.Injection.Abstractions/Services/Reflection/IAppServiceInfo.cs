@@ -12,6 +12,7 @@ namespace Kephas.Services.Reflection
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     using Kephas.Injection;
 
@@ -51,7 +52,7 @@ namespace Kephas.Services.Reflection
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        Type[]? MetadataAttributes => null;
+        Type[]? DummyMetadataAttributes => null;
 
         /// <summary>
         /// Gets the supported metadata.
@@ -106,5 +107,53 @@ namespace Kephas.Services.Reflection
         /// <c>true</c> if the service information is only a contract definition;
         /// otherwise <c>false</c>.</returns>
         bool IsContractDefinition() => this.InstancingStrategy == null;
+
+        /// <summary>
+        /// Gets the JSON string out of this <see cref="IAppServiceInfo"/>.
+        /// </summary>
+        /// <returns>The JSON string.</returns>
+        public string ToJsonString()
+        {
+            var appServiceInfo = this;
+            var sb = new StringBuilder();
+            sb.Append($"{{ multi: {appServiceInfo.AllowMultiple}, lifetime: '{appServiceInfo.Lifetime}'");
+
+            if (appServiceInfo.AsOpenGeneric)
+            {
+                sb.Append(", asOpenGeneric: true");
+            }
+
+            if (appServiceInfo.InstanceType != null)
+            {
+                sb.Append($", instanceType: '{appServiceInfo.InstanceType}'");
+            }
+
+            if (appServiceInfo.Instance != null)
+            {
+                sb.Append($", instance: '{appServiceInfo.Instance}'");
+            }
+
+            if (appServiceInfo.InstanceFactory != null)
+            {
+                sb.Append(", instanceFactory: '(function)'");
+            }
+
+            if (appServiceInfo.Metadata is { Count: > 0 })
+            {
+                sb.Append(", metadata: { ");
+
+                foreach (var (key, value) in appServiceInfo.Metadata)
+                {
+                    sb.Append($"'{key}': '{value}', ");
+                }
+
+                sb.Length -= 2;
+                sb.Append(" }");
+            }
+
+            sb.Append(" }");
+
+            return sb.ToString();
+        }
     }
 }

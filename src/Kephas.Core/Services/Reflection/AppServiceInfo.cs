@@ -12,6 +12,7 @@ namespace Kephas.Services.Reflection
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -108,7 +109,7 @@ namespace Kephas.Services.Reflection
 
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
             this.SetLifetime(appServiceInfo.Lifetime);
-            this.MetadataAttributes = appServiceInfo.MetadataAttributes;
+            this.DummyMetadataAttributes = appServiceInfo.DummyMetadataAttributes;
             this.Metadata = appServiceInfo.Metadata;
         }
 
@@ -143,7 +144,7 @@ namespace Kephas.Services.Reflection
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[]? MetadataAttributes { get; set; } = Array.Empty<Type>();
+        public Type[]? DummyMetadataAttributes { get; set; } = Array.Empty<Type>();
 
         /// <summary>
         /// Gets the metadata attached to the service information.

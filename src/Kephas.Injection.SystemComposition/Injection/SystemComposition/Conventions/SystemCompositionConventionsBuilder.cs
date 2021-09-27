@@ -13,6 +13,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
     using System;
     using System.Collections.Generic;
     using System.Composition.Convention;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
@@ -88,7 +89,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
+        public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(factory, nameof(factory));

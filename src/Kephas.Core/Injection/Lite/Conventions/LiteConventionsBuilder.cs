@@ -63,7 +63,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// A <see cref="IPartBuilder"/> to further configure the rule.
         /// </returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
+        public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
             var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
             {

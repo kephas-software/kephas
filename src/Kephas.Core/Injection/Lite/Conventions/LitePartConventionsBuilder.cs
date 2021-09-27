@@ -8,16 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Injection.Conventions;
-using Kephas.Logging;
-using Kephas.Services;
-
 namespace Kephas.Injection.Lite.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Conventions;
+    using Kephas.Logging;
+    using Kephas.Services;
+
     /// <summary>
     /// A lightweight part conventions builder.
     /// </summary>
@@ -45,7 +46,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder As(Type serviceType)
+        public IPartBuilder As(Type serviceType)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
 
@@ -59,7 +60,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Singleton()
+        public IPartBuilder Singleton()
         {
             this.descriptorBuilder.Lifetime = AppServiceLifetime.Singleton;
             return this;
@@ -71,7 +72,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Scoped()
+        public IPartBuilder Scoped()
         {
             this.descriptorBuilder.Lifetime = AppServiceLifetime.Scoped;
             return this;
@@ -119,7 +120,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
             // TODO not supported.
             if (this.Logger.IsTraceEnabled())
@@ -131,13 +132,28 @@ namespace Kephas.Injection.Lite.Conventions
         }
 
         /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            this.descriptorBuilder.AddMetadata(name, value);
+
+            return this;
+        }
+
+        /// <summary>
         /// Indicates that this service allows multiple registrations.
         /// </summary>
         /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder AllowMultiple(bool value)
+        public IPartBuilder AllowMultiple(bool value)
         {
             this.descriptorBuilder.AllowMultiple = value;
 

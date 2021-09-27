@@ -15,7 +15,6 @@ namespace Kephas.Services
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
@@ -26,7 +25,6 @@ namespace Kephas.Services
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Resources;
-    using Kephas.Runtime;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -34,8 +32,6 @@ namespace Kephas.Services
     /// </summary>
     internal class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
-        private readonly IAppServiceMetadataResolver metadataResolver;
-
         /// <summary>
         /// The default metadata attribute types.
         /// </summary>
@@ -59,15 +55,6 @@ namespace Kephas.Services
         static AppServiceInfoConventionsRegistrar()
         {
             DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceInfoConventionsRegistrar"/> class.
-        /// </summary>
-        /// <param name="metadataResolver">The metadata resolver.</param>
-        public AppServiceInfoConventionsRegistrar(IAppServiceMetadataResolver metadataResolver)
-        {
-            this.metadataResolver = metadataResolver;
         }
 
         /// <summary>
@@ -131,7 +118,7 @@ namespace Kephas.Services
                 if (appServiceInfos.Count == 1)
                 {
                     // register one service, no matter if multiple or single.
-                    this.RegisterService(conventions, contractType, appServiceInfos[0], logger);
+                    this.RegisterService(conventions, contractDeclarationType, contractType, appServiceInfos[0], logger);
                     continue;
                 }
 
@@ -139,38 +126,28 @@ namespace Kephas.Services
                 // and with the rest of the services:
                 // 1. if multiple are registered, register them in the computed order.
                 // 2. for single mode, pick the first one in the order and register it.
-
                 var sortedServices = this.SortServiceInfos(appServiceInfos);
-
-                // TODO
-            }
-
-            var contractDeclarationTypes = appServiceInfoList.Select(e => e.contractDeclarationType).ToList();
-
-            foreach (var (appServiceContract, appServiceInfo) in appServiceInfoMap)
-            {
-                var isPartBuilder = this.TryConfigurePartBuilder(
-                    appServiceInfo,
-                    appServiceContract,
-                    conventions);
-
-                if (!isPartBuilder)
+                if (!appContractDefinition.AllowMultiple)
                 {
-                    var partConventionsBuilder = this.TryGetPartConventionsBuilder(
-                        appServiceInfo,
-                        appServiceContract,
-                        conventions,
-                        typeInfos,
-                        logger);
-                    if (partConventionsBuilder != null)
+                    if (sortedServices.Count > 1 && sortedServices[0].overridePriority == sortedServices[1].overridePriority)
                     {
-                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo,
-                            contractDeclarationTypes, logger);
+                        throw new AmbiguousServiceResolutionException(
+                            string.Format(
+                                Strings.AmbiguousOverrideForAppServiceContract,
+                                contractDeclarationType,
+                                string.Join(
+                                    ", ",
+                                    sortedServices
+                                        .Select(item => $"{item.appServiceInfo}:{item.overridePriority}"))));
                     }
-                    else
+
+                    this.RegisterService(conventions, contractDeclarationType, contractType, sortedServices[0].appServiceInfo, logger);
+                }
+                else
+                {
+                    foreach (var (appServiceInfo, _) in sortedServices)
                     {
-                        logger.Warn("No part conventions builders nor part builders found for {serviceContractType}.",
-                            appServiceContract);
+                        this.RegisterService(conventions, contractDeclarationType, contractType, appServiceInfo, logger);
                     }
                 }
             }
@@ -178,43 +155,66 @@ namespace Kephas.Services
 
         private void RegisterService(
             IConventionsBuilder conventions,
+            Type contractDeclarationType,
             Type contractType,
             IAppServiceInfo appServiceInfo,
             ILogger logger)
         {
-            switch (appServiceInfo.InstancingStrategy)
-            {
-                case Type type:
-                    conventions
-                        .ForType(type)
-                        .As(contractType)
-                        .AllowMultiple(appServiceInfo.AllowMultiple);
-                    break;
-                case Func<IInjector, object> factory:
-                    var partBuilder = conventions
-                        .ForInstanceFactory(contractType, factory)
-                        .AllowMultiple(appServiceInfo.AllowMultiple);
-                    if (appServiceInfo.IsSingleton())
-                    {
-                        partBuilder.Singleton();
-                    }
-                    else if (appServiceInfo.IsScoped())
-                    {
-                        partBuilder.Scoped();
-                    }
+            this.CheckContractType(contractDeclarationType, contractType, logger);
 
-                    break;
-                case null:
-                    break;
-                case var instance:
-                    conventions
-                        .ForInstance(contractType, instance)
-                        .AllowMultiple(appServiceInfo.AllowMultiple);
-                    break;
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug(this.ToJsonString(contractDeclarationType, appServiceInfo));
+            }
+
+            var partBuilder = appServiceInfo.InstancingStrategy switch
+            {
+                Type type => conventions
+                    .ForType(type)
+                    .SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(contractType, ctorInfos)),
+                Func<IInjector, object> factory => conventions
+                    .ForFactory(contractType, factory),
+                null => null,
+                var instance => conventions
+                    .ForInstance(contractType, instance),
+            };
+
+            if (partBuilder == null)
+            {
+                return;
+            }
+
+            partBuilder
+                .As(contractType)
+                .AllowMultiple(appServiceInfo.AllowMultiple);
+            if (appServiceInfo.IsSingleton())
+            {
+                partBuilder.Singleton();
+            }
+            else if (appServiceInfo.IsScoped())
+            {
+                partBuilder.Scoped();
+            }
+
+            if (appServiceInfo.Metadata != null)
+            {
+                partBuilder.AddMetadata(appServiceInfo.Metadata);
             }
         }
 
-        private IEnumerable<(IAppServiceInfo appServiceInfo, Priority overridePriority)> SortServiceInfos(IEnumerable<IAppServiceInfo> appServiceInfos)
+        /// <summary>
+        /// Gets the application service information providers.
+        /// </summary>
+        /// <param name="buildContext">Context for the registration.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// </returns>
+        private IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
+        {
+            return buildContext.AppServiceInfosProviders ?? Array.Empty<IAppServiceInfosProvider>();
+        }
+
+        private IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> SortServiceInfos(IEnumerable<IAppServiceInfo> appServiceInfos)
         {
             // leave the implementation with the runtime type info
             // so that it may be possible to use runtime added attributes
@@ -238,93 +238,6 @@ namespace Kephas.Services
             }
 
             return overrideChain;
-        }
-
-        /// <summary>
-        /// Gets the application service information providers.
-        /// </summary>
-        /// <param name="buildContext">Context for the registration.</param>
-        /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
-        /// </returns>
-        protected virtual IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(
-            IInjectionBuildContext buildContext)
-        {
-            return buildContext.AppServiceInfosProviders ?? Array.Empty<IAppServiceInfosProvider>();
-        }
-
-        /// <summary>
-        /// Configures the part builder.
-        /// </summary>
-        /// <param name="partBuilder">The part builder.</param>
-        /// <param name="serviceContract">The service contract.</param>
-        /// <param name="appServiceInfo">The application service metadata.</param>
-        /// <param name="appServiceContracts">The application service contracts.</param>
-        /// <param name="logger">The logger.</param>
-        protected void ConfigurePartBuilder(
-            IPartConventionsBuilder partBuilder,
-            Type serviceContract,
-            IAppServiceInfo appServiceInfo,
-            IList<Type> appServiceContracts,
-            ILogger logger)
-        {
-            var serviceContractType = serviceContract;
-            var exportedContractType = appServiceInfo.ContractType ?? serviceContractType;
-            var exportedContract = exportedContractType.GetTypeInfo();
-            if (!this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType, logger))
-            {
-                return;
-            }
-
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug(this.SerializeServiceContractMetadata(serviceContract, appServiceInfo));
-            }
-
-            var metadataAttributes = this.GetMetadataAttributes(appServiceInfo);
-            if (exportedContract.IsGenericTypeDefinition)
-            {
-                if (appServiceInfo.AsOpenGeneric)
-                {
-                    partBuilder.ExportInterface(
-                        exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
-
-                    if (metadataAttributes.Count > 0)
-                    {
-                        var hasCustomMetadataAttributes = metadataAttributes.Any(
-                            a => !typeof(IAppServiceInfo).IsAssignableFrom(a));
-
-                        // warn about metadata on open generic exports only if custom attributes are provided.
-                        if (hasCustomMetadataAttributes)
-                        {
-                            logger.Warn(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract);
-                        }
-                    }
-                }
-                else
-                {
-                    partBuilder.ExportInterface(
-                        exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
-                }
-            }
-            else
-            {
-                partBuilder.Export(
-                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
-            }
-
-            partBuilder.SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(serviceContract, ctorInfos));
-
-            if (appServiceInfo.IsSingleton())
-            {
-                partBuilder.Singleton();
-            }
-            else if (appServiceInfo.IsScoped())
-            {
-                partBuilder.Scoped();
-            }
         }
 
         private IDictionary<Type, IList<IAppServiceInfo>> BuildAppServiceInfoMap(
@@ -417,108 +330,38 @@ namespace Kephas.Services
             return metadata;
         }
 
-        private string SerializeServiceContractMetadata(Type serviceContract, IAppServiceInfo contractMetadata)
+        private string ToJsonString(Type contractDeclarationType, IAppServiceInfo appServiceInfo)
         {
-            var sb = new StringBuilder();
-            sb.Append("{'")
-                .Append(serviceContract.Name)
-                .Append("': { multi: ")
-                .Append(contractMetadata.AllowMultiple)
-                .Append(", lifetime: '").Append(contractMetadata.Lifetime).Append("'");
-
-            if (serviceContract.IsGenericTypeDefinition)
-            {
-                sb.Append(", asOpenGeneric: ").Append(contractMetadata.AsOpenGeneric);
-            }
-
-            if (contractMetadata.InstanceType != null)
-            {
-                sb.Append(", instanceType: '")
-                    .Append(contractMetadata.InstanceType)
-                    .Append("'");
-            }
-
-            if (contractMetadata.Instance != null)
-            {
-                sb.Append(", instance: '")
-                    .Append(contractMetadata.Instance)
-                    .Append("'");
-            }
-
-            if (contractMetadata.InstanceFactory != null)
-            {
-                sb.Append(", instanceFactory: '(function)'");
-            }
-
-            sb.Append("} }");
-
-            return sb.ToString();
+            return $"{{ '{contractDeclarationType.Name}': {appServiceInfo.ToJsonString()} }}";
         }
 
-        private void ConfigureExport(
-            Type serviceContract,
-            IExportConventionsBuilder exportBuilder,
-            Type exportedContractType,
-            Type? serviceImplementationType,
-            IEnumerable<Type> metadataAttributes)
+        private void CheckContractType(Type contractDeclarationType, Type contractType, ILogger logger)
         {
-            exportBuilder.AsContractType(exportedContractType);
-            this.AddInjectionMetadata(exportBuilder, serviceImplementationType, metadataAttributes);
-            this.AddInjectionMetadataForGenerics(exportBuilder, serviceContract);
-        }
-
-        /// <summary>
-        /// Checks the type of the exported contract.
-        /// </summary>
-        /// <exception cref="InjectionException">Thrown when an injection error condition occurs.</exception>
-        /// <param name="exportedContractType">Type of the exported contract.</param>
-        /// <param name="serviceContract">The service contract.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if the service contract is valid, false otherwise.
-        /// </returns>
-        private bool CheckExportedContractType(
-            Type exportedContractType,
-            Type serviceContract,
-            Type serviceContractType,
-            ILogger logger)
-        {
-            var exportedContract = exportedContractType.GetTypeInfo();
-            if (exportedContract.IsGenericTypeDefinition)
+            if (contractType.IsGenericTypeDefinition)
             {
                 // TODO check to see if any of the interfaces have as generic definition the exported contract.
             }
-            else if (!exportedContract.IsAssignableFrom(serviceContract))
+            else if (!contractType.IsAssignableFrom(contractDeclarationType))
             {
                 var contractValidationMessage = string.Format(
                     Strings.AppServiceContractTypeDoesNotMatchServiceContract,
-                    exportedContractType,
-                    serviceContractType);
+                    contractType,
+                    contractDeclarationType);
                 logger.Error(contractValidationMessage);
                 throw new InjectionException(contractValidationMessage);
             }
-
-            return true;
         }
 
-        /// <summary>
-        /// Selects the application service constructor.
-        /// </summary>
-        /// <param name="serviceContract">The service contract.</param>
-        /// <param name="constructors">The constructors.</param>
-        /// <returns>
-        /// The application service constructor.
-        /// </returns>
         private ConstructorInfo? TrySelectAppServiceConstructor(
-            Type serviceContract,
+            Type contractDeclarationType,
             IEnumerable<ConstructorInfo> constructors)
         {
             var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
 
             // get the one constructor marked as InjectConstructor.
             var explicitlyMarkedConstructors = constructorsList
-                .Where(c => c.GetCustomAttribute<InjectConstructorAttribute>() != null).ToList();
+                .Where(c => c.GetCustomAttributes().OfType<IInjectConstructorAnnotation>().Any())
+                .ToList();
             if (explicitlyMarkedConstructors.Count == 0)
             {
                 // none marked explicitly, leave the decision up to the IoC implementation.
@@ -527,280 +370,15 @@ namespace Kephas.Services
 
             if (explicitlyMarkedConstructors.Count > 1)
             {
-                throw new InjectionException(string.Format(Strings.AppServiceMultipleInjectConstructors,
-                    typeof(InjectConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
+                throw new InjectionException(
+                    string.Format(
+                        Strings.AppServiceMultipleInjectConstructors,
+                        typeof(InjectConstructorAttribute),
+                        constructorsList[0].DeclaringType,
+                        contractDeclarationType));
             }
 
             return explicitlyMarkedConstructors[0];
-        }
-
-        private void AddInjectionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract)
-        {
-            if (!serviceContract.IsGenericTypeDefinition)
-            {
-                return;
-            }
-
-            var serviceContractType = serviceContract;
-            var genericTypeParameters = serviceContract.GetTypeInfo().GenericTypeParameters;
-            for (var i = 0; i < genericTypeParameters.Length; i++)
-            {
-                var genericTypeParameter = genericTypeParameters[i];
-                var position = i;
-                builder.AddMetadata(
-                    this.metadataResolver.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
-                    t => this.metadataResolver.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
-            }
-        }
-
-        private void AddInjectionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes)
-        {
-            // add the service type.
-            builder.AddMetadata(nameof(AppServiceMetadata.ServiceInstanceType), t => serviceImplementationType ?? t);
-
-            // add the rest of the metadata indicated by the attributes.
-            if (attributeTypes == null)
-            {
-                return;
-            }
-
-            foreach (var attributeType in attributeTypes)
-            {
-                var valueProperties = this.metadataResolver.GetMetadataValueProperties(attributeType);
-                foreach (var valuePropertyEntry in valueProperties)
-                {
-                    builder.AddMetadata(
-                        valuePropertyEntry.Key,
-                        t => this.metadataResolver.GetMetadataValueFromAttribute(t, attributeType, valuePropertyEntry.Value));
-                }
-            }
-        }
-
-        private IPartConventionsBuilder? TryGetPartConventionsBuilder(
-            IAppServiceInfo appServiceInfo,
-            Type serviceContract,
-            IConventionsBuilder conventions,
-            IEnumerable<Type> typeInfos,
-            ILogger logger)
-        {
-            var serviceContractType = serviceContract;
-
-            if (appServiceInfo.InstanceType != null)
-            {
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType,
-                        appServiceInfo.InstanceType);
-                }
-
-                return conventions
-                    .ForType(appServiceInfo.InstanceType)
-                    .As(serviceContract)
-                    .AllowMultiple(appServiceInfo.AllowMultiple);
-            }
-
-            if (serviceContract.IsGenericTypeDefinition)
-            {
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Service {serviceContractType} matches open generic contract types.",
-                        serviceContractType);
-                }
-
-                // for open generics select a single implementation type
-                if (appServiceInfo.AsOpenGeneric)
-                {
-                    var (isOverride, selectedInstanceType) = this.TrySelectSingleServiceImplementationType(
-                        serviceContract,
-                        typeInfos,
-                        t => this.MatchOpenGenericContractType(t, serviceContractType));
-                    if (logger.IsDebugEnabled())
-                    {
-                        logger.Debug(
-                            "Service {serviceContractType} matches open generic implementation type {serviceInstanceType}.",
-                            serviceContractType, selectedInstanceType?.ToString() ?? "<not found>");
-                    }
-
-                    // TODO HACK: remove the *isOverride* check when the BUG https://github.com/dotnet/corefx/issues/40094 is fixed
-                    // the meaning is that for non-overrides (no multiple implementations) it is safe to let the matching
-                    // to be done through the lambda criteria
-                    if (isOverride && selectedInstanceType != null)
-                    {
-                        return conventions
-                            .ForType(selectedInstanceType)
-                            .As(serviceContract)
-                            .AllowMultiple(appServiceInfo.AllowMultiple);
-                    }
-                }
-
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Service {serviceContractType} matches open generic contract types.",
-                        serviceContractType);
-                }
-
-                // if there is non-generic service contract with the same full name
-                // then add just the conventions for the derived types.
-                return conventions
-                    .ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType))
-                    .AsServiceType(serviceContract)
-                    .AllowMultiple(appServiceInfo.AllowMultiple);
-            }
-
-            if (appServiceInfo.AllowMultiple)
-            {
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Service {serviceContractType} matches multiple derived from it.",
-                        serviceContractType);
-                }
-
-                // if the service contract metadata allows multiple service registrations
-                // then add just the conventions for the derived types.
-                return conventions
-                    .ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract))
-                    .AsServiceType(serviceContract)
-                    .AllowMultiple(appServiceInfo.AllowMultiple);
-            }
-
-            var (_, selectedPart) = this.TrySelectSingleServiceImplementationType(
-                serviceContract,
-                typeInfos,
-                part => this.MatchDerivedFromContractType(part, serviceContract));
-
-            if (selectedPart != null)
-            {
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType,
-                        selectedPart);
-                }
-
-                return conventions
-                    .ForType(selectedPart)
-                    .As(serviceContract)
-                    .AllowMultiple(appServiceInfo.AllowMultiple);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Select a single service implementation type based on the provided implementation criteria
-        /// and the override priority of the possible implementations.
-        /// </summary>
-        /// <param name="serviceContract">The service contract.</param>
-        /// <param name="typeInfos">The type infos.</param>
-        /// <param name="criteria">The criteria.</param>
-        /// <returns>
-        /// An implementation type and a flag indicating if the selected implementation type is an override.
-        /// </returns>
-        private (bool isOverride, Type? implementationType) TrySelectSingleServiceImplementationType(
-            Type serviceContract,
-            IEnumerable<Type> typeInfos,
-            Func<Type, bool> criteria)
-        {
-            var parts = typeInfos.Where(criteria).ToList();
-            if (parts.Count == 1)
-            {
-                var selectedPart = parts[0];
-                return (false, selectedPart);
-            }
-
-            if (parts.Count > 1)
-            {
-                // leave the implementation with the runtime type info
-                // so that it may be possible to use runtime added attributes
-                var overrideChain = parts
-                    .ToDictionary(
-                        ti => ti,
-                        ti => ti.GetCustomAttribute<OverridePriorityAttribute>()
-                              ?? new OverridePriorityAttribute(Priority.Normal))
-                    .OrderBy(item => item.Value.Value)
-                    .ToList();
-
-                // get the overridden services which should be eliminated
-                var overriddenTypes = overrideChain
-                    .Where(kv => kv.Key.GetCustomAttribute<OverrideAttribute>() != null && kv.Key.BaseType != null)
-                    .Select(kv => kv.Key.BaseType)
-                    .ToList();
-
-                if (overriddenTypes.Count > 0)
-                {
-                    // eliminate the overridden services
-                    overrideChain = overrideChain
-                        .Where(kv => !overriddenTypes.Contains(kv.Key))
-                        .ToList();
-                }
-
-                var selectedPart = overrideChain[0].Key;
-                if (overrideChain.Count > 1 && overrideChain[0].Value.Value == overrideChain[1].Value.Value)
-                {
-                    throw new AmbiguousServiceResolutionException(
-                        string.Format(
-                            Strings.AmbiguousOverrideForAppServiceContract,
-                            serviceContract,
-                            string.Join(
-                                ", ",
-                                overrideChain.Select(item => $"{item.Key}:{item.Value.Value}"))));
-                }
-
-                return (true, selectedPart);
-            }
-
-            return (false, null);
-        }
-
-        /// <summary>
-        /// Tries to configure the conventions part builder.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
-        /// <param name="appServiceInfo">The service contract metadata.</param>
-        /// <param name="contractDeclarationType">The contract declaration type.</param>
-        /// <param name="conventions">The conventions.</param>
-        /// <returns>
-        /// True if a part builder could be configured, false otherwise.
-        /// </returns>
-        private IPartBuilder? TryConfigurePartBuilder(
-            IAppServiceInfo appServiceInfo,
-            Type contractDeclarationType,
-            IConventionsBuilder conventions)
-        {
-            if (appServiceInfo.Instance != null)
-            {
-                return conventions
-                    .ForInstance(contractDeclarationType, appServiceInfo.Instance)
-                    .AllowMultiple(appServiceInfo.AllowMultiple);
-            }
-
-            if (appServiceInfo.InstanceFactory != null)
-            {
-                var partBuilder = conventions
-                    .ForInstanceFactory(contractDeclarationType, appServiceInfo.InstanceFactory)
-                    .AllowMultiple(appServiceInfo.AllowMultiple);
-                if (appServiceInfo.IsSingleton())
-                {
-                    partBuilder.Singleton();
-                }
-                else if (appServiceInfo.IsScoped())
-                {
-                    partBuilder.Scoped();
-                }
-
-                return partBuilder;
-            }
-
-            return null;
-        }
-
-        private bool IsEligiblePart(Type typeInfo)
-        {
-            // leave here the AsRuntimeTypeInfo conversion so that
-            // runtime added attributes may be used
-            return typeInfo.IsClass
-                   && !typeInfo.IsAbstract
-                   && !typeInfo.IsNestedPrivate
-                   && typeInfo.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Kephas.Injection.Lite.Internal
         public ExportFactoryWithMetadataServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
             : base(serviceRegistry, typeRegistry)
         {
-            this.metadataResolver = new AppServiceMetadataResolver(typeRegistry);
+            this.metadataResolver = new AppServiceMetadataResolver();
         }
 
         public override bool IsMatch(Type contractType)

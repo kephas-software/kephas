@@ -3,21 +3,17 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the medi part conventions builder class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection.Conventions;
 
 namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Logging;
 
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Conventions;
+    using Kephas.Logging;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -45,7 +41,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder As(Type serviceType)
+        public IPartBuilder As(Type serviceType)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
 
@@ -59,7 +55,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Singleton()
+        public IPartBuilder Singleton()
         {
             this.descriptorBuilder.Lifetime = ServiceLifetime.Singleton;
             return this;
@@ -71,7 +67,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Scoped()
+        public IPartBuilder Scoped()
         {
             this.descriptorBuilder.Lifetime = ServiceLifetime.Scoped;
             return this;
@@ -84,7 +80,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
         {
             if (conventionsBuilder != null)
             {
@@ -102,7 +98,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder ExportInterface(Type exportInterface, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+        public IPartConventionsBuilder ExportInterface(Type exportInterface, Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
         {
             this.descriptorBuilder.ServiceType = exportInterface;
             this.descriptorBuilder.ExportConfiguration = exportConfiguration;
@@ -119,10 +115,25 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+        public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
             // TODO not supported.
             this.Logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");
+            return this;
+        }
+
+        /// <summary>
+        /// Adds metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// A part builder allowing further configuration.
+        /// </returns>
+        public IPartBuilder AddMetadata(string name, object? value)
+        {
+            this.descriptorBuilder.AddMetadata(name, value);
+
             return this;
         }
 
@@ -133,7 +144,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+        IPartBuilder IPartBuilder.AllowMultiple(bool value)
         {
             // not used, by default all services allow multiple instances.
             return this;

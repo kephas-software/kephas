@@ -24,7 +24,7 @@ namespace Kephas.Injection.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        IExportConventionsBuilder AsContractType(Type contractType);
+        IExportConventionsBuilder As(Type contractType);
 
         /// <summary>
         /// Add export metadata to the export.
@@ -34,7 +34,7 @@ namespace Kephas.Injection.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        IExportConventionsBuilder AddMetadata(string name, object value);
+        IExportConventionsBuilder AddMetadata(string name, object? value);
 
         /// <summary>
         /// Add export metadata to the export.
@@ -44,6 +44,6 @@ namespace Kephas.Injection.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType);
+        IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType);
     }
 }

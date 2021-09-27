@@ -12,7 +12,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Reflection;
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
@@ -93,7 +93,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <returns>
         /// A <see cref="IPartBuilder" /> to further configure the rule.
         /// </returns>
-        public IPartBuilder ForInstanceFactory(Type type, Func<IInjector, object> factory)
+        public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                         {
@@ -134,7 +134,15 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
 
             public IPartBuilder AllowMultiple(bool value) => this;
 
+            public IPartBuilder SelectConstructor(
+                Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+                Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null) => this;
+
+            public IPartBuilder AddMetadata(string name, object? value) => this;
+
             public IPartBuilder Scoped() => this;
+
+            public IPartBuilder As(Type contractType) => this;
 
             public IPartBuilder Singleton() => this;
         }
