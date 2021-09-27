@@ -19,19 +19,15 @@ namespace Kephas.Injection.Lite.Internal
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
-    using Kephas.Services;
 
     internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null, null, null));
-
-        private readonly IAppServiceMetadataResolver metadataResolver;
+            ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null));
 
         public ExportFactoryWithMetadataServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
             : base(serviceRegistry, typeRegistry)
         {
-            this.metadataResolver = new AppServiceMetadataResolver();
         }
 
         public override bool IsMatch(Type contractType)
@@ -60,13 +56,13 @@ namespace Kephas.Injection.Lite.Internal
             var innerType = genericArgs[0];
             var metadataType = genericArgs[1];
             var getService = GetServiceMethod.MakeGenericMethod(innerType, metadataType);
-            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, this.typeRegistry, this.metadataResolver, tuple.serviceInfo, tuple.fn));
+            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, tuple.serviceInfo, tuple.fn));
         }
 
-        private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IRuntimeTypeRegistry typeRegistry, IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
+        private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IServiceInfo serviceInfo, Func<object> factory)
             where T : class
         {
-            return new ExportFactory<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(typeRegistry, serviceInfo));
+            return new ExportFactory<T, TMetadata>(() => (T)factory(), serviceInfo.CreateTypedMetadata<TMetadata>());
         }
     }
 }
