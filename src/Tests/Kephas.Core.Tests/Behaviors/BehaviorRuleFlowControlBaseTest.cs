@@ -22,14 +22,14 @@ namespace Kephas.Core.Tests.Behaviors
         public void PriorityOrder_default()
         {
             var behavior = new DefaultBehaviorRuleFlowControl();
-            Assert.AreEqual(0, behavior.ProcessingPriority);
+            Assert.AreEqual((Priority)0, behavior.ProcessingPriority);
         }
 
         [Test]
         public void PriorityOrder_attribute()
         {
             var behavior = new PriorityBehaviorRuleFlowControl();
-            Assert.AreEqual(12, behavior.ProcessingPriority);
+            Assert.AreEqual((Priority)12, behavior.ProcessingPriority);
         }
 
         [Test]

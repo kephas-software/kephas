@@ -10,8 +10,10 @@
 
 namespace Kephas.Behaviors
 {
+    using System.Collections.Generic;
     using System.Linq;
-
+    using Kephas.Collections;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -29,8 +31,9 @@ namespace Kephas.Behaviors
             : base(logManager)
         {
             // ReSharper disable VirtualMemberCallInConstructor
-            this.ProcessingPriority = this.ComputeProcessingPriority();
-            this.IsEndRule = this.ComputeIsEndRule();
+            var metadata = this.ComputeMetadata();
+            this.ProcessingPriority = (Priority)metadata.TryGetValue(nameof(IHasProcessingPriority.ProcessingPriority), Priority.Normal)!;
+            this.IsEndRule = (bool)metadata.TryGetValue(nameof(IBehaviorRuleFlowControl.IsEndRule), false)!;
         }
 
         /// <summary>
@@ -55,22 +58,14 @@ namespace Kephas.Behaviors
         /// <returns>
         /// The calculated value of the <see cref="IsEndRule"/> property.
         /// </returns>
-        protected virtual bool ComputeIsEndRule()
+        protected virtual IDictionary<string, object?> ComputeMetadata()
         {
-            var endRuleAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<EndRuleAttribute>().FirstOrDefault();
-            return endRuleAttribute?.Value ?? false;
-        }
-
-        /// <summary>
-        /// Calculates the value of the <see cref="ProcessingPriority"/> property.
-        /// </summary>
-        /// <returns>
-        /// The calculated value of the <see cref="ProcessingPriority"/> property.
-        /// </returns>
-        protected virtual Priority ComputeProcessingPriority()
-        {
-            var priorityOrderAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<ProcessingPriorityAttribute>().FirstOrDefault();
-            return priorityOrderAttribute?.Value ?? 0;
+            var metadata = new Dictionary<string, object?>();
+            this.GetType().GetCustomAttributes(inherit: true)
+                .OfType<IMetadataProvider>()
+                .SelectMany(p => p.GetMetadata())
+                .ForEach(kv => metadata[kv.name] = kv.value);
+            return metadata;
         }
     }
 }

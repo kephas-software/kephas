@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAppRuntimeTest.cs" company="Kephas Software SRL">
+// <copyright file="DynamicAppRuntimeTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.IO;
-
 namespace Kephas.Core.Tests.Application
 {
+    using System.IO;
     using System.Linq;
 
     using Kephas.Application;
@@ -30,7 +29,7 @@ namespace Kephas.Core.Tests.Application
             var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains") && !n.FullName.StartsWith("ReSharper"));
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
             Assert.AreEqual(0, assemblyList.Count(a => a.FullName.StartsWith("JetBrains")));
         }
 
@@ -44,7 +43,7 @@ namespace Kephas.Core.Tests.Application
                 var assemblies = appEnv.GetAppAssemblies();
                 var assemblyList = assemblies.ToList();
 
-                Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+                Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
             }
             catch (FileLoadException fex)
                 when (fex.Message.StartsWith("Could not load file or assembly 'ReSharperTestRunner"))

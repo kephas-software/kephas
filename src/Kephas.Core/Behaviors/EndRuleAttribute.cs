@@ -35,5 +35,10 @@ namespace Kephas.Behaviors
         /// Boolean value indicating whether the rule is an end rule.
         /// </value>
         public bool Value { get; }
+
+        /// <summary>
+        /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
+        /// </summary>
+        string? IMetadataValue.Name => nameof(IBehaviorRuleFlowControl.IsEndRule);
     }
 }
