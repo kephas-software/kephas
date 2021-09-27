@@ -48,8 +48,8 @@ namespace Kephas.Injection.Lite.Conventions
         {
             var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
             {
-                ServiceType = type,
-                Instance = instance,
+                ContractType = type,
+                InstancingStrategy = instance,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new LitePartBuilder(descriptorBuilder);
@@ -67,8 +67,8 @@ namespace Kephas.Injection.Lite.Conventions
         {
             var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
             {
-                ServiceType = type,
-                Factory = factory,
+                ContractType = type,
+                InstancingStrategy = factory,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new LitePartBuilder(descriptorBuilder);
@@ -79,13 +79,13 @@ namespace Kephas.Injection.Lite.Conventions
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
         /// <returns>
-        /// A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.
+        /// A <see cref="IPartBuilder"/> that must be used to specify the rule.
         /// </returns>
-        public IPartConventionsBuilder ForType(Type type)
+        public IPartBuilder ForType(Type type)
         {
             var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
             {
-                ImplementationType = type,
+                InstancingStrategy = type,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new LitePartConventionsBuilder(this.ambientServices.LogManager, descriptorBuilder);

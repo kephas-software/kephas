@@ -18,7 +18,6 @@ namespace Kephas.Injection.Autofac.Conventions
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Collections;
-    using Kephas.Injection.Conventions;
     using Kephas.Services;
 
     /// <summary>
@@ -37,14 +36,6 @@ namespace Kephas.Injection.Autofac.Conventions
         {
             this.containerBuilder = containerBuilder;
         }
-
-        /// <summary>
-        /// Gets or sets the exported service type.
-        /// </summary>
-        /// <value>
-        /// The exported service type.
-        /// </value>
-        public Type? ServiceType { get; set; }
 
         /// <summary>
         /// Gets or sets the contract type (service key).
@@ -77,14 +68,6 @@ namespace Kephas.Injection.Autofac.Conventions
         /// A function delegate that yields a ConstructorInfo.
         /// </value>
         public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?>? ConstructorSelector { get; set; }
-
-        /// <summary>
-        /// Gets or sets the export configuration.
-        /// </summary>
-        /// <value>
-        /// The export configuration.
-        /// </value>
-        public Action<Type, IExportConventionsBuilder>? ExportConfiguration { get; set; }
 
         /// <summary>
         /// Adds metadata.
@@ -129,8 +112,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </returns>
         public override string ToString()
         {
-            var implementationString = this.ImplementationType?.ToString();
-            return $"{this.ServiceType}/{this.Lifetime}/{implementationString}";
+            return $"{this.ContractType}/{this.Lifetime}/{this.ImplementationType}";
         }
 
         private void RegisterService(Type implementationType)
@@ -153,15 +135,9 @@ namespace Kephas.Injection.Autofac.Conventions
             where TActivatorData : ReflectionActivatorData
         {
             this.SetLifetime(registration);
-            var typeBuilder =
-                new ExportConventionsBuilder<TActivatorData, TRegistrationStyle>(
-                    this,
-                    implementationType,
-                    registration);
-            this.ExportConfiguration?.Invoke(implementationType, typeBuilder);
-            if (typeBuilder.ContractType != null)
+            if (this.ContractType != null)
             {
-                registration.As(typeBuilder.ContractType);
+                registration.As(this.ContractType);
             }
 
             this.SelectConstructor(registration, implementationType);
@@ -207,75 +183,6 @@ namespace Kephas.Injection.Autofac.Conventions
             }
 
             registration.UsingConstructor(constructor.GetParameters().Select(p => p.ParameterType).ToArray());
-        }
-
-        private class ExportConventionsBuilder<TActivatorData, TRegistrationStyle> : IExportConventionsBuilder
-        {
-            private readonly ServiceDescriptorBuilder descriptorBuilder;
-
-            private readonly Type partType;
-
-            private readonly IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration;
-
-            public ExportConventionsBuilder(
-                ServiceDescriptorBuilder descriptorBuilder,
-                Type partType,
-                IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
-            {
-                this.descriptorBuilder = descriptorBuilder;
-                this.partType = partType;
-                this.registration = registration;
-                this.ServiceType = descriptorBuilder.ServiceType;
-            }
-
-            public Type? ServiceType { get; set; }
-
-            public Type? ContractType { get; set; }
-
-            public IExportConventionsBuilder As(Type contractType)
-            {
-                this.ContractType = this.descriptorBuilder.ContractType = contractType;
-
-                if (this.ServiceType == null || this.ServiceType == contractType)
-                {
-                    this.ServiceType = this.ContractType = this.descriptorBuilder.ContractType = contractType;
-                }
-                else if (this.ServiceType.IsGenericTypeDefinition && !contractType.IsGenericTypeDefinition)
-                {
-                    if (contractType == this.partType)
-                    {
-                        // case 1: the service uses a generic contract interface and it is exported with a closed generic interface
-                        var closedContractType = contractType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
-                        this.ContractType = closedContractType;
-                    }
-                    else
-                    {
-                        // case 2: the service uses a generic contract interface but is exported with a non-generic one
-                        // the generic interface is used also to collect metadata.
-                        var closedServiceType = this.partType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
-                        this.ServiceType = closedServiceType;
-                        this.ContractType = contractType;
-                    }
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Provided contract type {contractType} differs from the original contract type {this.ServiceType}.");
-                }
-
-                return this;
-            }
-
-            public IExportConventionsBuilder AddMetadata(string name, object? value)
-            {
-                this.registration.WithMetadata(name, value);
-                return this;
-            }
-
-            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
-            {
-                this.registration.WithMetadata(name, getValueFromPartType(this.partType));
-                return this;
-            }
         }
     }
 }

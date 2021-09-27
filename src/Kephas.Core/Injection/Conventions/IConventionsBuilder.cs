@@ -27,8 +27,8 @@ namespace Kephas.Injection.Conventions
         /// Define a rule that will apply to the specified type.
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
-        /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
-        IPartConventionsBuilder ForType(Type type);
+        /// <returns>A <see cref="IPartBuilder"/> that must be used to specify the rule.</returns>
+        IPartBuilder ForType(Type type);
 
         /// <summary>
         /// Defines a registration for the specified type and its singleton instance.

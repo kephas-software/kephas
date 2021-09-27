@@ -56,8 +56,8 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// Define a rule that will apply to the specified type.
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
-        /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
-        public IPartConventionsBuilder ForType(Type type)
+        /// <returns>A <see cref="IPartBuilder"/> that must be used to specify the rule.</returns>
+        public IPartBuilder ForType(Type type)
         {
             Requires.NotNull(type, nameof(type));
 

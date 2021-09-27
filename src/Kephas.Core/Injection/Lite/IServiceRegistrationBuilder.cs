@@ -63,13 +63,23 @@ namespace Kephas.Injection.Lite
         IServiceRegistrationBuilder AllowMultiple();
 
         /// <summary>
+        /// Registers the service with the provided instancing strategy.
+        /// </summary>
+        /// <param name="instancingStrategy">The service instancing strategy.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        IServiceRegistrationBuilder WithInstancingStrategy(object instancingStrategy);
+
+        /// <summary>
         /// Registers the service with the provided instance.
         /// </summary>
         /// <param name="instance">The service instance.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithInstance(object instance);
+        IServiceRegistrationBuilder WithInstance(object instance)
+            => this.WithInstancingStrategy(instance);
 
         /// <summary>
         /// Registers the service with the provided factory.
@@ -78,7 +88,8 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithFactory(Func<IInjector, object> factory);
+        IServiceRegistrationBuilder WithFactory(Func<IInjector, object> factory)
+            => this.WithInstancingStrategy(factory);
 
         /// <summary>
         /// Registers the service with the provided implementation type.
@@ -87,7 +98,8 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithType(Type implementationType);
+        IServiceRegistrationBuilder WithType(Type implementationType)
+            => this.WithInstancingStrategy(implementationType);
 
         /// <summary>
         /// Adds metadata in form of (key, value) pairs.
@@ -97,7 +109,7 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder AddMetadata(string key, object value);
+        IServiceRegistrationBuilder AddMetadata(string key, object? value);
 
         /// <summary>
         /// Indicates whether the created instances are disposed by an external owner.

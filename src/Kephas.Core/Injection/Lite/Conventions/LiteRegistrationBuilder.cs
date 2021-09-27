@@ -11,8 +11,9 @@
 namespace Kephas.Injection.Lite.Conventions
 {
     using System;
+    using System.Collections.Generic;
 
-    using Kephas.Injection.Conventions;
+    using Kephas.Collections;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
@@ -20,7 +21,7 @@ namespace Kephas.Injection.Lite.Conventions
     /// <summary>
     /// A lightweight registration builder.
     /// </summary>
-    internal class LiteRegistrationBuilder : Loggable, IExportConventionsBuilder
+    internal class LiteRegistrationBuilder : Loggable
     {
         private readonly IAmbientServices ambientServices;
 
@@ -35,14 +36,6 @@ namespace Kephas.Injection.Lite.Conventions
         }
 
         /// <summary>
-        /// Gets or sets the type of the service.
-        /// </summary>
-        /// <value>
-        /// The type of the service.
-        /// </value>
-        public Type ServiceType { get; set; }
-
-        /// <summary>
         /// Gets or sets the type of the contract.
         /// </summary>
         /// <value>
@@ -51,28 +44,33 @@ namespace Kephas.Injection.Lite.Conventions
         public Type ContractType { get; set; }
 
         /// <summary>
-        /// Gets or sets the service instance.
+        /// Gets or sets the instancing strategy.
+        /// </summary>
+        public object? InstancingStrategy { get; set; }
+
+        /// <summary>
+        /// Gets the service instance.
         /// </summary>
         /// <value>
         /// The service instance.
         /// </value>
-        public object? Instance { get; set; }
+        public object? Instance => this.Factory == null && this.ImplementationType == null ? this.InstancingStrategy : null;
 
         /// <summary>
-        /// Gets or sets the factory.
+        /// Gets the factory.
         /// </summary>
         /// <value>
         /// A function delegate that yields an object.
         /// </value>
-        public Func<IInjector, object>? Factory { get; set; }
+        public Func<IInjector, object>? Factory => this.InstancingStrategy as Func<IInjector, object>;
 
         /// <summary>
-        /// Gets or sets the type of the implementation.
+        /// Gets the type of the implementation.
         /// </summary>
         /// <value>
         /// The type of the implementation.
         /// </value>
-        public Type? ImplementationType { get; set; }
+        public Type? ImplementationType => this.InstancingStrategy as Type;
 
         /// <summary>
         /// Gets or sets the lifetime.
@@ -83,20 +81,17 @@ namespace Kephas.Injection.Lite.Conventions
         public AppServiceLifetime Lifetime { get; set; } = AppServiceLifetime.Transient;
 
         /// <summary>
-        /// Gets or sets the export configuration.
-        /// </summary>
-        /// <value>
-        /// The export configuration.
-        /// </value>
-        public Action<Type, IExportConventionsBuilder>? ExportConfiguration { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether we allow multiple.
         /// </summary>
         /// <value>
         /// True if allow multiple, false if not.
         /// </value>
         public bool AllowMultiple { get; internal set; }
+
+        /// <summary>
+        /// Gets the metadata.
+        /// </summary>
+        public IDictionary<string, object?>? Metadata { get; private set; }
 
         /// <summary>
         /// Add export metadata to the export.
@@ -106,35 +101,10 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, object? value)
+        public LiteRegistrationBuilder AddMetadata(string name, object? value)
         {
-            if (this.Logger.IsTraceEnabled())
-            {
-                this.Logger.Trace("Metadata {metadataName} is automatically added for {registrationBuilder}.", name, this);
-            }
-
-            // TODO
-            // return this;
-        }
-
-        /// <summary>
-        /// Add export metadata to the export.
-        /// </summary>
-        /// <param name="name">The name of the metadata item.</param>
-        /// <param name="getValueFromPartType">A function that calculates the metadata value based on
-        ///     the type.</param>
-        /// <returns>
-        /// An export builder allowing further configuration.
-        /// </returns>
-        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
-        {
-            if (this.Logger.IsTraceEnabled())
-            {
-                this.Logger.Trace("Metadata {metadataName} is automatically added for {registrationBuilder}.", name, this);
-            }
-
-            // TODO
-            // return this;
+            (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
+            return this;
         }
 
         /// <summary>
@@ -144,7 +114,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// <returns>
         /// An export builder allowing further configuration.
         /// </returns>
-        public IExportConventionsBuilder As(Type contractType)
+        public LiteRegistrationBuilder As(Type contractType)
         {
             this.ContractType = contractType;
             return this;
@@ -162,10 +132,7 @@ namespace Kephas.Injection.Lite.Conventions
                                        ?? (this.Factory != null
                                                 ? "factory"
                                                 : this.Instance != null ? "instance" : "unknown");
-            var serviceTypeString = this.ContractType == null || this.ContractType == this.ServiceType
-                                        ? this.ServiceType?.ToString()
-                                        : $"{this.ServiceType}({this.ContractType})";
-            return $"{serviceTypeString}/{this.Lifetime}/{implementationString}";
+            return $"{this.ContractType}/{this.Lifetime}/{implementationString}";
         }
 
 
@@ -173,18 +140,7 @@ namespace Kephas.Injection.Lite.Conventions
         {
             void ConfigureService(IServiceRegistrationBuilder b)
             {
-                if (this.ImplementationType != null)
-                {
-                    b.WithType(this.ImplementationType);
-                }
-                else if (this.Factory != null)
-                {
-                    b.WithFactory(this.Factory);
-                }
-                else if (this.Instance != null)
-                {
-                    b.WithInstance(this.Instance);
-                }
+                b.WithInstancingStrategy(this.InstancingStrategy);
 
                 if (this.Lifetime == AppServiceLifetime.Singleton)
                 {
@@ -196,7 +152,8 @@ namespace Kephas.Injection.Lite.Conventions
                 }
                 else if (this.Lifetime == AppServiceLifetime.Scoped)
                 {
-                    throw new NotSupportedException("Scoped services not supported");
+                    this.Logger.Warn("Scoped services not supported, will be registered as singleton: '{contractType}'.", this.ContractType);
+                    b.Singleton();
                 }
 
                 if (this.AllowMultiple)
@@ -204,23 +161,27 @@ namespace Kephas.Injection.Lite.Conventions
                     b.AllowMultiple();
                 }
 
-                if (this.ContractType != null && this.ContractType != this.ServiceType)
+                if (this.ContractType != null)
                 {
                     b.As(this.ContractType);
+                }
+
+                if (this.Metadata != null)
+                {
+                    this.Metadata.ForEach(kv => b.AddMetadata(kv.Key, kv.Value));
                 }
             }
 
             if (this.Instance != null)
             {
-                this.ambientServices.Register(this.ServiceType, ConfigureService);
+                this.ambientServices.Register(this.ContractType, ConfigureService);
 
                 return;
             }
 
             if (this.ImplementationType != null || this.Factory != null)
             {
-                this.ExportConfiguration?.Invoke(this.ImplementationType, this);
-                this.ambientServices.Register(this.ServiceType, ConfigureService);
+                this.ambientServices.Register(this.ContractType, ConfigureService);
 
                 return;
             }

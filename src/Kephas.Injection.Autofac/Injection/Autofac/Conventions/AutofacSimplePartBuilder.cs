@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacPartBuilder.cs" company="Kephas Software SRL">
+// <copyright file="AutofacSimplePartBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,7 +21,7 @@ namespace Kephas.Injection.Autofac.Conventions
     /// <summary>
     /// An Autofac part builder.
     /// </summary>
-    public class AutofacPartBuilder : IPartBuilder
+    public class AutofacSimplePartBuilder : IPartBuilder
     {
         private readonly ContainerBuilder containerBuilder;
 
@@ -29,11 +29,11 @@ namespace Kephas.Injection.Autofac.Conventions
         private bool allowMultiple;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacPartBuilder"/> class.
+        /// Initializes a new instance of the <see cref="AutofacSimplePartBuilder"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         /// <param name="registrationBuilder">The registration builder.</param>
-        public AutofacPartBuilder(ContainerBuilder containerBuilder, IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder)
+        public AutofacSimplePartBuilder(ContainerBuilder containerBuilder, IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder)
         {
             this.containerBuilder = containerBuilder;
             this.registrationBuilder = registrationBuilder;
@@ -98,7 +98,8 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </returns>
         public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
-            // TODO
+            // selecting a constructor is not supported for instance and factory
+            return this;
         }
 
         /// <summary>

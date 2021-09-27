@@ -14,7 +14,6 @@ namespace Kephas.Injection.SystemComposition.Conventions
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
 
@@ -28,13 +27,10 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instance">The instance.</param>
-        public SystemCompositionPartBuilder(Type contractType, object? instance)
+        public SystemCompositionPartBuilder(Type contractType, object instance)
         {
-            Requires.NotNull(contractType, nameof(contractType));
-            Requires.NotNull(instance, nameof(instance));
-
-            this.ContractType = contractType;
-            this.Instance = instance;
+            this.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            this.Instance = instance ?? throw new ArgumentNullException(nameof(instance));
             this.IsSingleton = true;
         }
 
@@ -45,11 +41,8 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <param name="instanceFactory">The instance factory.</param>
         public SystemCompositionPartBuilder(Type contractType, Func<IInjector, object> instanceFactory)
         {
-            Requires.NotNull(contractType, nameof(contractType));
-            Requires.NotNull(instanceFactory, nameof(instanceFactory));
-
-            this.ContractType = contractType;
-            this.InstanceFactory = instanceFactory;
+            this.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            this.InstanceFactory = instanceFactory ?? throw new ArgumentNullException(nameof(instanceFactory));
         }
 
         /// <summary>
@@ -66,7 +59,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <value>
         /// The instance factory.
         /// </value>
-        public Func<IInjector, object> InstanceFactory { get; }
+        public Func<IInjector, object>? InstanceFactory { get; }
 
         /// <summary>
         /// Gets the instance.
@@ -91,6 +84,11 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// True if this object is scoped, false if not.
         /// </value>
         public bool IsScoped { get; private set; }
+
+        /// <summary>
+        /// Gets the part metadata.
+        /// </summary>
+        public IDictionary<string, object?>? Metadata { get; private set; }
 
         /// <summary>
         /// Indicates the type registered as the exported service key.
@@ -151,7 +149,8 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </returns>
         public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
-            // TODO
+            // simple part builders do not need a constructor.
+            return this;
         }
 
         /// <summary>
@@ -164,7 +163,9 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </returns>
         public IPartBuilder AddMetadata(string name, object? value)
         {
-            // TODO
+            (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
+
+            return this;
         }
     }
 }

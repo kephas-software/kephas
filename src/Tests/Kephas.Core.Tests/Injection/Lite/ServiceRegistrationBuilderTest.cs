@@ -25,7 +25,7 @@ namespace Kephas.Core.Tests.Injection.Lite
         {
             var ambientServices = Substitute.For<IAmbientServices>();
             var builder = new ServiceRegistrationBuilder(ambientServices, typeof(string));
-            builder.WithType(typeof(string)).Scoped();
+            builder.WithType<string>().Scoped();
 
             var svcInfo = builder.Build();
             Assert.AreSame(typeof(string), svcInfo.ContractType);
@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Injection.Lite
         {
             var ambientServices = Substitute.For<IAmbientServices>();
             var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>));
-            builder.WithType(typeof(UnknownGenericSvc<>));
+            ((IServiceRegistrationBuilder)builder).WithType(typeof(UnknownGenericSvc<>));
 
             var svcInfo = builder.Build();
             Assert.AreSame(typeof(IGenericSvc<>), svcInfo.ContractType);
@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Injection.Lite
         {
             var ambientServices = Substitute.For<IAmbientServices>();
             var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>));
-            builder.WithType(typeof(UnknownIntSvc));
+            ((IServiceRegistrationBuilder)builder).WithType(typeof(UnknownIntSvc));
 
             Assert.Throws<ArgumentException>(() => builder.Build());
         }
@@ -62,7 +62,7 @@ namespace Kephas.Core.Tests.Injection.Lite
         {
             var ambientServices = Substitute.For<IAmbientServices>();
             var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>));
-            builder
+            ((IServiceRegistrationBuilder)builder)
                 .WithType(typeof(UnknownIntSvc))
                 .As(typeof(ISvc));
 
@@ -79,7 +79,7 @@ namespace Kephas.Core.Tests.Injection.Lite
             var ambientServices = Substitute.For<IAmbientServices>();
             var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>));
 
-            Assert.Throws<ArgumentException>(() => builder.WithType(typeof(string)));
+            Assert.Throws<ArgumentException>(() => builder.WithType<string>());
         }
 
         private interface IUnknown { }

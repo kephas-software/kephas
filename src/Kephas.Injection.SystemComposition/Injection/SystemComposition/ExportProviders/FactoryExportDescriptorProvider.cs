@@ -32,8 +32,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="factory">The value factory.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory)
-            : this(contractType, factory, false)
+        /// <param name="metadata">The metadata.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, IDictionary<string, object?>? metadata)
+            : this(contractType, factory, false, metadata)
         {
         }
 
@@ -43,7 +44,8 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="factory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isSingleton)
+        /// <param name="metadata">The metadata.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isSingleton, IDictionary<string, object?>? metadata)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(factory, nameof(factory));
@@ -51,6 +53,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
             this.ContractType = contractType;
             this.factory = factory;
             this.isSingleton = isSingleton;
+            this.Metadata = metadata;
         }
 
         /// <summary>
@@ -59,7 +62,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="contextFactory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<IInjector, object> contextFactory, bool isSingleton)
+        public FactoryExportDescriptorProvider(Type contractType, Func<IInjector, object> contextFactory, bool isSingleton, IDictionary<string, object?>? metadata)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(contextFactory, nameof(contextFactory));
@@ -67,12 +70,13 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
             this.ContractType = contractType;
             this.contextFactory = contextFactory;
             this.isSingleton = isSingleton;
+            this.Metadata = metadata;
         }
 
         /// <summary>
-        /// Gets or sets the factory metadata.
+        /// Gets the factory metadata.
         /// </summary>
-        public IDictionary<string, object?>? Metadata { get; set; }
+        public IDictionary<string, object?>? Metadata { get; }
 
         /// <summary>
         /// Gets the type of the contract.
@@ -138,8 +142,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider{TContract}" /> class.
         /// </summary>
         /// <param name="factory">The value factory.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory)
-            : base(typeof(TContract), () => factory(), false)
+        /// <param name="metadata">The metadata.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory, IDictionary<string, object?>? metadata)
+            : base(typeof(TContract), () => factory(), false, metadata)
         {
         }
 
@@ -148,8 +153,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// </summary>
         /// <param name="factory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isSingleton)
-            : base(typeof(TContract), () => factory(), isSingleton)
+        /// <param name="metadata">The metadata.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isSingleton, IDictionary<string, object?>? metadata)
+            : base(typeof(TContract), () => factory(), isSingleton, metadata)
         {
         }
     }

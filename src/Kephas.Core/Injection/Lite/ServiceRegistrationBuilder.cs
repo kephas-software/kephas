@@ -36,9 +36,9 @@ namespace Kephas.Injection.Lite
 
         private bool externallyOwned = true;
 
-        private object instancing;
+        private object instancingStrategy;
 
-        private IDictionary<string, object>? metadata;
+        private IDictionary<string, object?>? metadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRegistrationBuilder"/> class.
@@ -60,7 +60,7 @@ namespace Kephas.Injection.Lite
         /// </returns>
         public IServiceInfo Build()
         {
-            switch (this.instancing)
+            switch (this.instancingStrategy)
             {
                 case Type implementationType:
                     this.EnsureContractTypeMatchesImplementationType(this.contractType, implementationType);
@@ -80,7 +80,7 @@ namespace Kephas.Injection.Lite
                         Metadata = this.metadata,
                     };
                 default:
-                    if (this.instancing == null)
+                    if (this.instancingStrategy == null)
                     {
                         if (!this.allowMultiple)
                         {
@@ -90,7 +90,7 @@ namespace Kephas.Injection.Lite
                         return new MultiServiceInfo(this.contractType, this.serviceType);
                     }
 
-                    return new ServiceInfo(this.contractType, this.instancing)
+                    return new ServiceInfo(this.contractType, this.instancingStrategy)
                     {
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
@@ -175,73 +175,56 @@ namespace Kephas.Injection.Lite
         }
 
         /// <summary>
-        /// Registers the service with the provided instance.
+        /// Registers the service with the provided instance strategy.
         /// </summary>
-        /// <param name="instance">The service instance.</param>
+        /// <param name="instancingStrategy">The service instance strategy.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder WithInstance(object instance)
+        public IServiceRegistrationBuilder WithInstancingStrategy(object instancingStrategy)
         {
-            Requires.NotNull(instance, nameof(instance));
-
-            if (!this.contractType.IsInstanceOfType(instance))
+            if (instancingStrategy == null)
             {
-                throw new InvalidOperationException(
-                    string.Format(
-                        Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception,
-                        instance.GetType(),
-                        this.contractType));
+                throw new ArgumentNullException(nameof(instancingStrategy));
             }
 
-            this.instancing = instance;
-            return this;
-        }
-
-        /// <summary>
-        /// Registers the service with the provided factory.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public IServiceRegistrationBuilder WithFactory(Func<IInjector, object> factory)
-        {
-            Requires.NotNull(factory, nameof(factory));
-
-            this.instancing = factory;
-            return this;
-        }
-
-        /// <summary>
-        /// Registers the service with the provided implementation type.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="implementationType">The implementation type.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public IServiceRegistrationBuilder WithType(Type implementationType)
-        {
-            Requires.NotNull(implementationType, nameof(implementationType));
-
-            if (!this.serviceType.IsAssignableFrom(implementationType)
-                && !(this.serviceType.IsGenericTypeDefinition
-                     && !implementationType.IsGenericTypeDefinition
-                     && implementationType.GetInterfaces().Any(i => i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.serviceType)))
-                && !(this.serviceType.IsGenericTypeDefinition
-                     && implementationType.IsGenericTypeDefinition
-                     && implementationType.GetInterfaces().Any(i => i.Name == this.serviceType.Name)))
+            switch (instancingStrategy)
             {
-                throw new ArgumentException(
-                    string.Format(
-                        Strings.AmbientServices_ServiceTypeAndImplementationMismatch_Exception,
-                        implementationType,
-                        this.contractType),
-                    nameof(implementationType));
+                case Type implementationType:
+                    if (!this.serviceType.IsAssignableFrom(implementationType)
+                        && !(this.serviceType.IsGenericTypeDefinition
+                             && !implementationType.IsGenericTypeDefinition
+                             && implementationType.GetInterfaces().Any(i => i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.serviceType)))
+                        && !(this.serviceType.IsGenericTypeDefinition
+                             && implementationType.IsGenericTypeDefinition
+                             && implementationType.GetInterfaces().Any(i => i.Name == this.serviceType.Name)))
+                    {
+                        throw new ArgumentException(
+                            string.Format(
+                                Strings.AmbientServices_ServiceTypeAndImplementationMismatch_Exception,
+                                implementationType,
+                                this.contractType),
+                            nameof(implementationType));
+                    }
+
+                    break;
+                case Func<IInjector, object> factory:
+                    break;
+                case var instance:
+                    if (!this.contractType.IsInstanceOfType(instance))
+                    {
+                        throw new InvalidOperationException(
+                            string.Format(
+                                Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception,
+                                instance.GetType(),
+                                this.contractType));
+                    }
+
+                    break;
             }
 
-            this.instancing = implementationType;
+            this.instancingStrategy = instancingStrategy;
+
             return this;
         }
 
@@ -253,16 +236,9 @@ namespace Kephas.Injection.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder AddMetadata(string key, object value)
+        public IServiceRegistrationBuilder AddMetadata(string key, object? value)
         {
-            if (this.metadata == null)
-            {
-                this.metadata = new Dictionary<string, object> { { key, value } };
-            }
-            else
-            {
-                this.metadata[key] = value;
-            }
+            (this.metadata ??= new Dictionary<string, object?>())[key] = value;
 
             return this;
         }
@@ -285,14 +261,14 @@ namespace Kephas.Injection.Lite
             if (contractType.IsGenericTypeDefinition && !implementationType.IsGenericTypeDefinition)
             {
                 throw new ArgumentException(
-                    string.Format("The implementation type {0} must be also a generic type definition for contract {1}.", implementationType, contractType),
+                    $"The implementation type {implementationType} must be also a generic type definition for contract {contractType}.",
                     nameof(implementationType));
             }
 
             if (!this.contractType.IsGenericTypeDefinition && implementationType.IsGenericTypeDefinition)
             {
                 throw new ArgumentException(
-                    string.Format("The implementation type {0} must not be a generic type definition for contract {1}.", implementationType, contractType),
+                    $"The implementation type {implementationType} must not be a generic type definition for contract {contractType}.",
                     nameof(implementationType));
             }
         }

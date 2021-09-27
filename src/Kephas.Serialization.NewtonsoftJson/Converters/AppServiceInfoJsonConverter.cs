@@ -74,12 +74,6 @@ namespace Kephas.Serialization.Json.Converters
             writer.WritePropertyName(nameof(IAppServiceInfo.AsOpenGeneric));
             serializer.Serialize(writer, appServiceInfo.AsOpenGeneric);
 
-            if (appServiceInfo.MetadataAttributes != null && appServiceInfo.MetadataAttributes.Length > 0)
-            {
-                writer.WritePropertyName(nameof(IAppServiceInfo.MetadataAttributes));
-                serializer.Serialize(writer, appServiceInfo.MetadataAttributes);
-            }
-
             writer.WriteEndObject();
         }
 
@@ -134,7 +128,6 @@ namespace Kephas.Serialization.Json.Converters
             var lifetime = (AppServiceLifetime?)expando[nameof(IAppServiceInfo.Lifetime)];
             var allowMultiple = (bool?)expando[nameof(IAppServiceInfo.AllowMultiple)];
             var asOpenGeneric = (bool?)expando[nameof(IAppServiceInfo.AsOpenGeneric)];
-            var metadataAttributes = (Type[]?)expando[nameof(IAppServiceInfo.MetadataAttributes)];
 
             if (createInstance)
             {
@@ -146,10 +139,6 @@ namespace Kephas.Serialization.Json.Converters
                 var appServiceInfo = instanceType == null
                     ? new AppServiceInfo(contractType, lifetime ?? AppServiceLifetime.Singleton, asOpenGeneric ?? false)
                     : new AppServiceInfo(contractType, instanceType, lifetime ?? AppServiceLifetime.Singleton, asOpenGeneric ?? false);
-                if (metadataAttributes != null)
-                {
-                    appServiceInfo.MetadataAttributes = metadataAttributes;
-                }
 
                 if (allowMultiple != null)
                 {

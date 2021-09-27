@@ -203,11 +203,13 @@ namespace Kephas.Injection.SystemComposition.Hosting
                 containerConfiguration.WithProvider(partBuilder.Instance != null
                     ? new FactoryExportDescriptorProvider(
                         partBuilder.ContractType,
-                        () => partBuilder.Instance)
+                        () => partBuilder.Instance,
+                        partBuilder.Metadata)
                     : new FactoryExportDescriptorProvider(
                         partBuilder.ContractType,
                         ctx => partBuilder.InstanceFactory(ctx),
-                        partBuilder.IsSingleton || partBuilder.IsScoped));
+                        partBuilder.IsSingleton || partBuilder.IsScoped,
+                        partBuilder.Metadata));
             }
 
             return this.CreateCompositionContext(containerConfiguration);

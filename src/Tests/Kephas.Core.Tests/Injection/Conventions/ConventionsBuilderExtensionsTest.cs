@@ -38,8 +38,8 @@ namespace Kephas.Core.Tests.Injection.Conventions
             var partBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
             Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
-            var exportBuilder = partBuilder.ExportBuilder;
-            Assert.AreEqual(typeof(ICalculator), exportBuilder.ContractType);
+            var exportBuilder = partBuilder;
+            Assert.AreEqual(typeof(ICalculator), exportBuilder.ServiceType);
             Assert.AreEqual(1, exportBuilder.Metadata.Count);
             Assert.AreEqual("type", exportBuilder.Metadata.Keys.First());
             var metadataExtractor = (Func<Type, object>)exportBuilder.Metadata.Values.First();

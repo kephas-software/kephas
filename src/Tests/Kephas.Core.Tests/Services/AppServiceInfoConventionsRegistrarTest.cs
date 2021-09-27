@@ -189,7 +189,7 @@ namespace Kephas.Core.Tests.Services
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(DefaultMetadataAppService)];
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(5, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
@@ -225,7 +225,7 @@ namespace Kephas.Core.Tests.Services
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
-            Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ExportBuilder.ContractType);
+            Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ServiceType);
         }
 
         [Test]
@@ -243,7 +243,7 @@ namespace Kephas.Core.Tests.Services
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("TType"));
@@ -267,7 +267,7 @@ namespace Kephas.Core.Tests.Services
                 new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(7, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("FromType"));
@@ -297,7 +297,7 @@ namespace Kephas.Core.Tests.Services
                 new TestBuildContext(this.GetTestAmbientServices(m => log.AppendLine(m))).WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.Single();
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             // should not warn that metadata attributes are not supported
             Assert.IsFalse(log.ToString().Contains(LogLevel.Warning.ToString()));
@@ -326,7 +326,7 @@ namespace Kephas.Core.Tests.Services
             Assert.IsTrue(builderEntry.Key(typeof(NullExplicitMetadataAppService)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(5, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
@@ -357,7 +357,7 @@ namespace Kephas.Core.Tests.Services
             Assert.IsTrue(builderEntry.Key(typeof(CustomValueNullMetadataAppService)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
@@ -388,7 +388,7 @@ namespace Kephas.Core.Tests.Services
             Assert.IsTrue(builderEntry.Key(typeof(CustomValueNullMetadataAppService)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
@@ -419,7 +419,7 @@ namespace Kephas.Core.Tests.Services
             Assert.IsTrue(builderEntry.Key(typeof(CustomNamedValueNullMetadataAppService)));
 
             var testBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
-            var metadata = testBuilder.ExportBuilder.Metadata;
+            var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(7, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("CustomNamedValueMetadataName"));

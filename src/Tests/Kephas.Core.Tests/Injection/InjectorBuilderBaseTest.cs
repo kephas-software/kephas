@@ -98,18 +98,18 @@ namespace Kephas.Core.Tests.Injection
         {
             public TestConventionsBuilder()
             {
-                this.DerivedConventionsBuilders = new Dictionary<Type, IPartConventionsBuilder>();
-                this.TypeConventionsBuilders = new Dictionary<Type, IPartConventionsBuilder>();
-                this.MatchingConventionsBuilders = new Dictionary<Predicate<Type>, IPartConventionsBuilder>();
+                this.DerivedConventionsBuilders = new Dictionary<Type, IPartBuilder>();
+                this.TypeConventionsBuilders = new Dictionary<Type, IPartBuilder>();
+                this.MatchingConventionsBuilders = new Dictionary<Predicate<Type>, IPartBuilder>();
             }
 
-            public IDictionary<Type, IPartConventionsBuilder> DerivedConventionsBuilders { get; private set; }
+            public IDictionary<Type, IPartBuilder> DerivedConventionsBuilders { get; private set; }
 
-            public IDictionary<Type, IPartConventionsBuilder> TypeConventionsBuilders { get; private set; }
+            public IDictionary<Type, IPartBuilder> TypeConventionsBuilders { get; private set; }
 
-            public IDictionary<Predicate<Type>, IPartConventionsBuilder> MatchingConventionsBuilders { get; private set; }
+            public IDictionary<Predicate<Type>, IPartBuilder> MatchingConventionsBuilders { get; private set; }
 
-            public IPartConventionsBuilder ForType(Type type)
+            public IPartBuilder ForType(Type type)
             {
                 var partBuilder = this.CreateBuilder(type);
                 this.TypeConventionsBuilders.Add(type, partBuilder);
@@ -138,21 +138,18 @@ namespace Kephas.Core.Tests.Injection
                 return Substitute.For<IPartBuilder>();
             }
 
-            private IPartConventionsBuilder CreateBuilder(Type type)
+            private IPartBuilder CreateBuilder(Type type)
             {
                 return new TestPartConventionsBuilder(type);
             }
         }
 
-        public class TestPartConventionsBuilder : IPartConventionsBuilder
+        public class TestPartConventionsBuilder : IPartBuilder
         {
             public TestPartConventionsBuilder(Type type)
             {
                 this.Type = type;
-                this.ExportBuilder = new TestExportConventionsBuilder();
             }
-
-            public TestExportConventionsBuilder ExportBuilder { get; set; }
 
             public Type Type { get; set; }
 
@@ -164,9 +161,9 @@ namespace Kephas.Core.Tests.Injection
 
             public bool AllowMultiple { get; set; }
 
-            public IPartBuilder As(Type serviceType)
+            public IPartBuilder As(Type contractType)
             {
-                this.ServiceType = serviceType;
+                this.ServiceType = contractType;
                 return this;
             }
 
@@ -190,20 +187,6 @@ namespace Kephas.Core.Tests.Injection
 
             public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> ConstructorSelector { get; private set; }
 
-            public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
-            {
-                conventionsBuilder?.Invoke(this.ExportBuilder);
-
-                return this;
-            }
-
-            public IPartConventionsBuilder ExportInterface(
-                Type exportInterface,
-                Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
-            {
-                return this;
-            }
-
             public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
             {
                 this.ConstructorSelector = constructorSelector;
@@ -219,36 +202,6 @@ namespace Kephas.Core.Tests.Injection
             IPartBuilder IPartBuilder.AllowMultiple(bool value)
             {
                 this.AllowMultiple = value;
-                return this;
-            }
-        }
-
-        public class TestExportConventionsBuilder : IExportConventionsBuilder
-        {
-            public TestExportConventionsBuilder()
-            {
-                this.Metadata = new Dictionary<string, object>();
-            }
-
-            public Type ContractType { get; set; }
-
-            public IDictionary<string, object> Metadata { get; set; }
-
-            public IExportConventionsBuilder As(Type contractType)
-            {
-                this.ContractType = contractType;
-                return this;
-            }
-
-            public IExportConventionsBuilder AddMetadata(string name, object? value)
-            {
-                this.Metadata.Add(name, value);
-                return this;
-            }
-
-            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object?> getValueFromPartType)
-            {
-                this.Metadata.Add(name, getValueFromPartType);
                 return this;
             }
         }

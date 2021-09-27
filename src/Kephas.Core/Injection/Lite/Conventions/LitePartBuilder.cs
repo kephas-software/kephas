@@ -39,7 +39,7 @@ namespace Kephas.Injection.Lite.Conventions
         /// </returns>
         public IPartBuilder As(Type contractType)
         {
-            this.descriptorBuilder.ServiceType = contractType;
+            this.descriptorBuilder.ContractType = contractType;
             return this;
         }
 
@@ -89,7 +89,8 @@ namespace Kephas.Injection.Lite.Conventions
         /// </returns>
         public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
-            // TODO
+            // selecting a constructor is not supported.
+            return this;
         }
 
         /// <summary>

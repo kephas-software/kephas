@@ -25,7 +25,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
     /// <summary>
     /// Conventions builder for a specific part.
     /// </summary>
-    public class SystemCompositionPartConventionsBuilder : IPartConventionsBuilder
+    public class SystemCompositionPartConventionsBuilder : IPartBuilder
     {
         /// <summary>
         /// The inner convention builder.
@@ -44,6 +44,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
             Requires.NotNull(innerConventionBuilder, nameof(innerConventionBuilder));
 
             this.innerConventionBuilder = innerConventionBuilder;
+            this.innerConventionBuilder.Export(builder => builder.AsContractType(this.serviceType));
         }
 
         /// <summary>
@@ -51,15 +52,15 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// this may get overwritten, for example when declaring generic type services for collecting
         /// metadata.
         /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="contractType">Type of the service.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartBuilder As(Type serviceType)
+        public IPartBuilder As(Type contractType)
         {
-            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(contractType, nameof(contractType));
 
-            this.serviceType = serviceType;
+            this.serviceType = contractType;
             return this;
         }
 
@@ -82,59 +83,6 @@ namespace Kephas.Injection.SystemComposition.Conventions
         public IPartBuilder Scoped()
         {
             this.innerConventionBuilder.Shared(InjectionScopeNames.Default);
-            return this;
-        }
-
-        /// <summary>
-        /// Exports the part using the specified conventions builder.
-        /// </summary>
-        /// <param name="conventionsBuilder">The conventions builder.</param>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
-        {
-            if (conventionsBuilder == null)
-            {
-                this.innerConventionBuilder.Export();
-            }
-            else
-            {
-                this.innerConventionBuilder.Export(b => conventionsBuilder(new SystemCompositionExportConventionsBuilder(b)));
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Select the interface on the part type that will be exported.
-        /// </summary>
-        /// <param name="exportInterface">The interface to export.</param>
-        /// <param name="exportConfiguration">The export configuration.</param>
-        /// <returns>
-        /// A part builder allowing further configuration of the part.
-        /// </returns>
-        public IPartConventionsBuilder ExportInterface(
-            Type exportInterface,
-            Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
-        {
-            Requires.NotNull(exportInterface, nameof(exportInterface));
-
-            this.contractType = exportInterface;
-
-            var interfaceFilter = exportInterface.IsGenericTypeDefinition
-                                      ? (Predicate<Type>)(t => this.IsClosedGenericOf(exportInterface, t))
-                                      : t => ReferenceEquals(exportInterface, t);
-
-            if (exportConfiguration == null)
-            {
-                this.innerConventionBuilder.ExportInterfaces(interfaceFilter);
-            }
-            else
-            {
-                this.innerConventionBuilder.ExportInterfaces(
-                    interfaceFilter,
-                    (t, builder) => exportConfiguration(t, new SystemCompositionExportConventionsBuilder(builder)));
-            }
-
             return this;
         }
 
@@ -219,17 +167,6 @@ namespace Kephas.Injection.SystemComposition.Conventions
         {
             // not used, by default all services allow multiple instances.
             return this;
-        }
-
-        /// <summary>
-        /// Determines whether the provided interface is a closed generic of the specified open generic contract.
-        /// </summary>
-        /// <param name="openGenericContract">The open generic contract.</param>
-        /// <param name="exportInterface">The export interface.</param>
-        /// <returns><c>true</c> if the provided interface is a closed generic of the specified open generic contract, otherwise <c>false</c>.</returns>
-        private bool IsClosedGenericOf(Type openGenericContract, Type exportInterface)
-        {
-            return exportInterface.IsGenericType && exportInterface.GetGenericTypeDefinition() == openGenericContract;
         }
     }
 }

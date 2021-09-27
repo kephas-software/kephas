@@ -12,7 +12,6 @@ namespace Kephas.Injection.Autofac.Conventions
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using global::Autofac;
     using global::Autofac.Builder;
@@ -50,18 +49,20 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
         /// <returns>
-        /// A <see cref="IPartConventionsBuilder" /> that must be used
+        /// A <see cref="IPartBuilder" /> that must be used
         /// to specify the rule.
         /// </returns>
-        public IPartConventionsBuilder ForType(Type type)
+        public IPartBuilder ForType(Type type)
         {
-            var descriptorBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
+            var registrationBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
             {
                 ImplementationType = type,
             };
-            this.builders.Add(() => descriptorBuilder.Build());
 
-            return new AutofacPartConventionsBuilder(descriptorBuilder);
+            var partBuilder = new AutofacTypePartBuilder(registrationBuilder);
+            this.builders.Add(() => partBuilder.Build());
+
+            return partBuilder;
         }
 
         /// <summary>
@@ -74,11 +75,13 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </returns>
         public IPartBuilder ForInstance(Type type, object instance)
         {
-            this.builders.Add(() => this.containerBuilder
+            var registrationBuilder = this.containerBuilder
                 .RegisterInstance(instance)
-                .As(type));
+                .As(type);
+            var partBuilder = new AutofacSimplePartBuilder(this.containerBuilder, registrationBuilder);
+            this.builders.Add(() => partBuilder.Build());
 
-            return NullPartBuilder.Instance;
+            return partBuilder;
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace Kephas.Injection.Autofac.Conventions
                         var serviceProvider = context.Resolve<IInjector>();
                         return factory(serviceProvider);
                     });
-            var partBuilder = new AutofacPartBuilder(this.containerBuilder, registrationBuilder);
+            var partBuilder = new AutofacSimplePartBuilder(this.containerBuilder, registrationBuilder);
             this.builders.Add(() => partBuilder.Build());
 
             return partBuilder;
@@ -118,25 +121,6 @@ namespace Kephas.Injection.Autofac.Conventions
             }
 
             return this.containerBuilder;
-        }
-
-        private class NullPartBuilder : IPartBuilder
-        {
-            public static readonly NullPartBuilder Instance = new NullPartBuilder();
-
-            public IPartBuilder AllowMultiple(bool value) => this;
-
-            public IPartBuilder SelectConstructor(
-                Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
-                Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null) => this;
-
-            public IPartBuilder AddMetadata(string name, object? value) => this;
-
-            public IPartBuilder Scoped() => this;
-
-            public IPartBuilder As(Type contractType) => this;
-
-            public IPartBuilder Singleton() => this;
         }
     }
 }

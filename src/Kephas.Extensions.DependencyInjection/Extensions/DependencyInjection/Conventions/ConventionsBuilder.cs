@@ -12,7 +12,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
+
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
@@ -53,14 +53,14 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
         /// <returns>
-        /// A <see cref="IPartConventionsBuilder" /> that must be used
+        /// A <see cref="IPartBuilder" /> that must be used
         /// to specify the rule.
         /// </returns>
-        public IPartConventionsBuilder ForType(Type type)
+        public IPartBuilder ForType(Type type)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                         {
-                                            ImplementationType = type,
+                                            InstancingStrategy = type,
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new DependencyInjectionPartConventionsBuilder(descriptorBuilder);
@@ -78,11 +78,11 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                      {
-                                         ServiceType = type,
-                                         Instance = instance,
+                                         ContractType = type,
+                                         InstancingStrategy = instance,
                                      };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return NullPartBuilder.Instance;
+            return new DependencyInjectionPartConventionsBuilder(descriptorBuilder);
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                         {
-                                            ServiceType = type,
-                                            Factory = serviceProvider => factory(serviceProvider.GetService<IInjector>()),
+                                            ContractType = type,
+                                            InstancingStrategy = (Func<IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetService<IInjector>())),
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new DependencyInjectionPartBuilder(descriptorBuilder);
@@ -126,25 +126,6 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
             }
 
             return this.serviceCollection.BuildServiceProvider();
-        }
-
-        private class NullPartBuilder : IPartBuilder
-        {
-            public static readonly NullPartBuilder Instance = new NullPartBuilder();
-
-            public IPartBuilder AllowMultiple(bool value) => this;
-
-            public IPartBuilder SelectConstructor(
-                Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
-                Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null) => this;
-
-            public IPartBuilder AddMetadata(string name, object? value) => this;
-
-            public IPartBuilder Scoped() => this;
-
-            public IPartBuilder As(Type contractType) => this;
-
-            public IPartBuilder Singleton() => this;
         }
     }
 }
