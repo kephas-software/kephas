@@ -11,7 +11,7 @@
     {
     }
 
-    public class GenericService<TName, TValue> : IGenericContractDeclaration<TName, TValue>
+    public class NonGenericService : IGenericContractDeclaration<string, int>
     {
     }
 

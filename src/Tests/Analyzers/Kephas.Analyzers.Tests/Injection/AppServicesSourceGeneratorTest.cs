@@ -45,7 +45,7 @@ namespace Kephas.Analyzers.Tests.Injection
             {
                 (typeof(StringService), typeof(IGenericContract<string>)),
                 (typeof(IntService), typeof(IGenericContract<int>)),
-                (typeof(GenericService<,>), typeof(IGenericContractDeclaration<,>)),
+                (typeof(NonGenericService), typeof(IGenericContractDeclaration<,>)),
                 (typeof(OpenGenericService<>), typeof(IOpenGenericContract<>)),
                 (typeof(ServiceAndContract), typeof(ServiceAndContract)),
                 (typeof(DerivedService), typeof(ServiceBase)),
