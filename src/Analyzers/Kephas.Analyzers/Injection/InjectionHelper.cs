@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Analyzers.Injection
 {
     using System;
@@ -59,7 +61,7 @@ namespace Kephas.Analyzers.Injection
 
             if (IsAppServiceContract(type))
             {
-                return classSymbol;
+                return GetOriginalAppServiceContract(classSymbol);
             }
 
             if (type.BaseList == null)
@@ -71,7 +73,7 @@ namespace Kephas.Analyzers.Injection
             {
                 if (IsAppServiceContract(baseInterface))
                 {
-                    return baseInterface;
+                    return GetOriginalAppServiceContract(baseInterface);
                 }
             }
 
@@ -80,13 +82,38 @@ namespace Kephas.Analyzers.Injection
             {
                 if (IsAppServiceContract(baseType))
                 {
-                    return baseType;
+                    return GetOriginalAppServiceContract(baseType);
                 }
 
                 baseType = baseType.BaseType;
             }
 
             return null;
+        }
+
+        private static INamedTypeSymbol GetOriginalAppServiceContract(INamedTypeSymbol namedTypeSymbol)
+        {
+            if (namedTypeSymbol.IsGenericType)
+            {
+                var contractAttr = namedTypeSymbol.GetAttributes()
+                    .FirstOrDefault(a => ContainsAttribute(a, AppServiceContractAttrs));
+                if (contractAttr == null)
+                {
+                    return namedTypeSymbol;
+                }
+
+                // for generic types, if a contract type is provided
+                if (contractAttr.NamedArguments.Any(a => a.Key == "ContractType"))
+                {
+                    var contractType = (INamedTypeSymbol?)contractAttr.NamedArguments.First(a => a.Key == "ContractType").Value.Value;
+                    if (contractType?.IsGenericType ?? false)
+                    {
+                        return namedTypeSymbol.ConstructedFrom ?? namedTypeSymbol;
+                    }
+                }
+            }
+
+            return namedTypeSymbol;
         }
 
         public static bool CanBeAppService(ClassDeclarationSyntax type)
