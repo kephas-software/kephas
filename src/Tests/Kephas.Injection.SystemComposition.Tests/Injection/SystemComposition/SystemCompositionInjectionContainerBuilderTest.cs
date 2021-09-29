@@ -423,17 +423,18 @@ namespace Kephas.Tests.Injection.SystemComposition
             Assert.AreEqual("123", instance);
         }
 
-        private SystemCompositionInjectorBuilder CreateCompositionContainerBuilder(Action<IInjectionBuildContext> config = null)
+        private (SystemCompositionInjectorBuilder builder, IAmbientServices ambientServices) CreateCompositionContainerBuilder(Action<IInjectionBuildContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new InjectionBuildContext(new AmbientServices()
-                                        .Register(mockLoggerManager)
-                                        .Register(mockPlatformManager));
+            var ambientServices = new AmbientServices()
+                .Register(mockLoggerManager)
+                .Register(mockPlatformManager);
+            var context = new InjectionBuildContext(ambientServices);
             config?.Invoke(context);
             var factory = new SystemCompositionInjectorBuilder(context);
-            return factory;
+            return (factory, ambientServices);
         }
 
         private SystemCompositionInjectorBuilder CreateInjectorBuilderWithStringLogger()

@@ -8,27 +8,28 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kephas.Application;
-using Kephas.Collections;
-using Kephas.Cryptography;
-using Kephas.Injection;
-using Kephas.Injection.AttributedModel;
-using Kephas.Injection.Hosting;
-using Kephas.Injection.Internal;
-using Kephas.Injection.Lite.Hosting;
-using Kephas.Logging;
-using Kephas.Reflection;
-using Kephas.Services;
-using Kephas.Services.Reflection;
-using NSubstitute;
-using NUnit.Framework;
-
 namespace Kephas.Core.Tests.Injection.Lite.Hosting
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Kephas.Application;
+    using Kephas.Collections;
+    using Kephas.Cryptography;
+    using Kephas.Injection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Internal;
+    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Logging;
+    using Kephas.Reflection;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
+    using NSubstitute;
+    using NUnit.Framework;
+
     [TestFixture]
     public class LiteInjectorBuilderTest
     {
@@ -310,12 +311,12 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             Assert.IsNull(exported.Dependency);
         }
 
-        private LiteInjectorBuilder CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
+        private LiteInjectorBuilder CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null, IAmbientServices? ambientServices = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new InjectionBuildContext(new AmbientServices()
+            var context = new InjectionBuildContext((ambientServices ?? new AmbientServices())
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);
@@ -325,9 +326,10 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
         private LiteInjectorBuilder CreateInjectorBuilderWithStringLogger()
         {
-            var builder = this.CreateInjectorBuilder();
+            IAmbientServices ambientServices = new AmbientServices();
+            var builder = this.CreateInjectorBuilder(ambientServices: ambientServices);
 
-            var mockLoggerManager = builder.LogManager;
+            var mockLoggerManager = ambientServices.LogManager;
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
 
             return builder;
@@ -340,7 +342,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
         private bool IsAppAssembly(AssemblyName assemblyName)
         {
-            return !this.IsTestAssembly(assemblyName) && !ReflectionHelper.IsSystemAssembly(assemblyName);
+            return !this.IsTestAssembly(assemblyName) && !assemblyName.IsSystemAssembly();
         }
 
         [SingletonAppServiceContract]

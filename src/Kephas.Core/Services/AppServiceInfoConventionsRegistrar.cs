@@ -79,15 +79,13 @@ namespace Kephas.Services
         /// <param name="buildContext">Context for the registration.</param>
         public void RegisterConventions(IConventionsBuilder builder, IInjectionBuildContext buildContext)
         {
-            Requires.NotNull(builder, nameof(builder));
-            Requires.NotNull(buildContext, nameof(buildContext));
+            buildContext = buildContext ?? throw new ArgumentNullException(nameof(buildContext));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             var logger = this.GetLogger(buildContext);
 
-            var conventions = builder;
-
             // get all type infos from the injection assemblies
-            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext).ToList();
+            var appServiceInfoProviders = buildContext.AppServiceInfosProviders;
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .ToList();
@@ -118,7 +116,7 @@ namespace Kephas.Services
                 if (appServiceInfos.Count == 1)
                 {
                     // register one service, no matter if multiple or single.
-                    this.RegisterService(conventions, contractDeclarationType, contractType, appServiceInfos[0], logger);
+                    this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfos[0], logger);
                     continue;
                 }
 
@@ -141,13 +139,13 @@ namespace Kephas.Services
                                         .Select(item => $"{item.appServiceInfo}:{item.overridePriority}"))));
                     }
 
-                    this.RegisterService(conventions, contractDeclarationType, contractType, sortedServices[0].appServiceInfo, logger);
+                    this.RegisterService(builder, contractDeclarationType, contractType, sortedServices[0].appServiceInfo, logger);
                 }
                 else
                 {
                     foreach (var (appServiceInfo, _) in sortedServices)
                     {
-                        this.RegisterService(conventions, contractDeclarationType, contractType, appServiceInfo, logger);
+                        this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
                     }
                 }
             }

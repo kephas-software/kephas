@@ -12,16 +12,12 @@ namespace Kephas.Injection.Hosting
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-    using System.Text.RegularExpressions;
 
-    using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.Configuration;
     using Kephas.Injection.Conventions;
     using Kephas.Logging;
-    using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -30,18 +26,16 @@ namespace Kephas.Injection.Hosting
     /// Base class for injector builders.
     /// </summary>
     /// <typeparam name="TBuilder">The type of the builder.</typeparam>
-    public abstract class InjectorBuilderBase<TBuilder> : IInjectorBuilder
+    public abstract class InjectorBuilderBase<TBuilder> : Loggable, IInjectorBuilder
         where TBuilder : InjectorBuilderBase<TBuilder>
     {
-        private readonly InjectionSettings settings = new ();
-        private HashSet<Assembly>? injectionAssemblies;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectorBuilderBase{TBuilder}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the injector.")]
         protected InjectorBuilderBase(IInjectionBuildContext context)
+            : base(context.AmbientServices.LogManager)
         {
             Requires.NotNull(context, nameof(context));
             var ambientServices = context.AmbientServices;
@@ -49,55 +43,10 @@ namespace Kephas.Injection.Hosting
 
             this.BuildContext = context;
 
-            this.LogManager = ambientServices.LogManager;
-            this.AssertRequiredService(this.LogManager);
+            this.Registry = new AppServiceInfoRegistry(() => this.BuildContext.Assemblies);
 
-            this.AppRuntime = ambientServices.AppRuntime;
-            this.AssertRequiredService(this.AppRuntime);
-
-            this.TypeLoader = ambientServices.TypeLoader;
-            this.AssertRequiredService(this.TypeLoader);
-
-            this.Logger = this.LogManager.GetLogger(this.GetType());
-
-            this.Registry = new AppServiceInfoRegistry(this.GetAssemblies);
-
-            context.AppServiceInfosProviders = context.AppServiceInfosProviders == null
-                ? new List<IAppServiceInfosProvider> { this.Registry }
-                : new List<IAppServiceInfosProvider>(context.AppServiceInfosProviders) { this.Registry };
+            context.AppServiceInfosProviders.Add(this.Registry);
         }
-
-        /// <summary>
-        /// Gets the log manager.
-        /// </summary>
-        /// <value>
-        /// The log manager.
-        /// </value>
-        protected internal ILogManager LogManager { get; }
-
-        /// <summary>
-        /// Gets the type loader.
-        /// </summary>
-        /// <value>
-        /// The type loader.
-        /// </value>
-        protected internal ITypeLoader TypeLoader { get; }
-
-        /// <summary>
-        /// Gets the application runtime.
-        /// </summary>
-        /// <value>
-        /// The application runtime.
-        /// </value>
-        protected internal IAppRuntime AppRuntime { get; }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        protected ILogger Logger { get; }
 
         /// <summary>
         /// Gets the conventions builder.
@@ -159,16 +108,9 @@ namespace Kephas.Injection.Hosting
         /// </remarks>
         public virtual TBuilder WithAssemblies(IEnumerable<Assembly> assemblies)
         {
-            Requires.NotNull(assemblies, nameof(assemblies));
+            assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
 
-            if (this.injectionAssemblies == null)
-            {
-                this.injectionAssemblies = new HashSet<Assembly>(assemblies);
-            }
-            else
-            {
-                this.injectionAssemblies.AddRange(assemblies);
-            }
+            this.BuildContext.Assemblies.AddRange(assemblies);
 
             return (TBuilder)this;
         }
@@ -185,9 +127,9 @@ namespace Kephas.Injection.Hosting
         /// </remarks>
         public virtual TBuilder WithAssembly(Assembly assembly)
         {
-            Requires.NotNull(assembly, nameof(assembly));
+            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
-            return this.WithAssemblies(new[] { assembly });
+            return this.WithAssemblies(assembly);
         }
 
         /// <summary>
@@ -227,7 +169,10 @@ namespace Kephas.Injection.Hosting
         /// </returns>
         public virtual TBuilder WithRegistration(params IAppServiceInfo[] registrations)
         {
-            Requires.NotNull(registrations, nameof(registrations));
+            if (registrations == null)
+            {
+                throw new ArgumentNullException(nameof(registrations));
+            }
 
             registrations.ForEach(this.Registry.Add);
 
@@ -246,11 +191,9 @@ namespace Kephas.Injection.Hosting
         /// </returns>
         public virtual TBuilder WithAppServiceInfosProvider(IAppServiceInfosProvider appServiceInfosProvider)
         {
-            Requires.NotNull(appServiceInfosProvider, nameof(appServiceInfosProvider));
+            appServiceInfosProvider = appServiceInfosProvider ?? throw new ArgumentNullException(nameof(appServiceInfosProvider));
 
-            var registrars = this.BuildContext.AppServiceInfosProviders?.ToList() ?? new List<IAppServiceInfosProvider>();
-            registrars.Add(appServiceInfosProvider);
-            this.BuildContext.AppServiceInfosProviders = registrars;
+            this.BuildContext.AppServiceInfosProviders.Add(appServiceInfosProvider);
 
             return (TBuilder)this;
         }
@@ -284,7 +227,7 @@ namespace Kephas.Injection.Hosting
         /// </remarks>
         internal virtual TBuilder WithParts(IEnumerable<Type> parts)
         {
-            Requires.NotNull(parts, nameof(parts));
+            parts = parts ?? throw new ArgumentNullException(nameof(parts));
 
             return this.WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts));
         }
@@ -336,60 +279,6 @@ namespace Kephas.Injection.Hosting
             {
                 throw new InvalidOperationException(string.Format(Strings.InjectorBuilderBase_RequiredServiceMissing_Exception, typeof(TService).FullName));
             }
-        }
-
-        /// <summary>
-        /// Gets the composition settings.
-        /// </summary>
-        /// <returns>
-        /// The composition settings.
-        /// </returns>
-        protected virtual InjectionSettings GetSettings() => this.settings;
-
-        /// <summary>
-        /// Gets the assemblies.
-        /// </summary>
-        /// <returns>The assemblies.</returns>
-        private IList<Assembly> GetAssemblies()
-        {
-            var searchPattern = this.GetSettings()?.AssemblyFileNamePattern;
-
-            this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetAssemblies), searchPattern);
-
-            IList<Assembly>? assemblies = null;
-
-            Profiler.WithDebugStopwatch(
-                () =>
-                {
-                    var appAssemblies = this.injectionAssemblies
-                                        ?? this.WhereNotSystemAssemblies(this.AppRuntime.GetAppAssemblies());
-
-                    if (string.IsNullOrWhiteSpace(searchPattern))
-                    {
-                        assemblies = appAssemblies.ToList();
-                    }
-                    else
-                    {
-                        var regex = new Regex(searchPattern);
-                        assemblies = appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
-                    }
-                },
-                this.Logger);
-
-            return assemblies!;
-        }
-
-        /// <summary>
-        /// Filters out the system assemblies from the provided assemblies.
-        /// </summary>
-        /// <param name="assemblies">The convention assemblies.</param>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process where not system assemblies in this
-        /// collection.
-        /// </returns>
-        private IEnumerable<Assembly> WhereNotSystemAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            return assemblies.Where(a => !a.IsSystemAssembly());
         }
 
         /// <summary>

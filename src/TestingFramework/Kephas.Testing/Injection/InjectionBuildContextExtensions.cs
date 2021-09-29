@@ -7,8 +7,6 @@
 
 namespace Kephas.Testing.Injection
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Kephas.Injection.Hosting;
     using Kephas.Services;
 
@@ -27,9 +25,7 @@ namespace Kephas.Testing.Injection
         public static TContext WithAppServiceInfosProvider<TContext>(this TContext context, IAppServiceInfosProvider provider)
             where TContext : IInjectionBuildContext
         {
-            var providers = context.AppServiceInfosProviders?.ToList() ?? new List<IAppServiceInfosProvider>();
-            providers.Add(provider);
-            context.AppServiceInfosProviders = providers;
+            context.AppServiceInfosProviders.Add(provider);
             return context;
         }
     }

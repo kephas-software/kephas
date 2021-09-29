@@ -32,17 +32,6 @@ namespace Kephas.Core.Tests.Injection
     public class InjectorBuilderBaseTest
     {
         [Test]
-        public void Constructor_success()
-        {
-            var logManager = Substitute.For<ILogManager>();
-            var appRuntime = Substitute.For<IAppRuntime>();
-            var builder = new TestInjectorBuilder(logManager, appRuntime);
-
-            Assert.AreEqual(logManager, builder.LogManager);
-            Assert.AreEqual(appRuntime, builder.AppRuntime);
-        }
-
-        [Test]
         public void WithConventionsBuilder()
         {
             var conventions = Substitute.For<IConventionsBuilder>();

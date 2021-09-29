@@ -39,8 +39,8 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public async Task CreateInjector_simple_ambient_services_exported()
         {
-            var builder = this.CreateInjectorBuilder();
-            var mockAppRuntime = builder.AppRuntime;
+            var (builder, ambientServices) = this.CreateInjectorBuilder();
+            var mockAppRuntime = ambientServices.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
@@ -48,7 +48,7 @@ namespace Kephas.Tests.Injection.Autofac
             var container = builder.Build();
 
             var loggerManager = container.Resolve<ILogManager>();
-            Assert.AreEqual(builder.LogManager, loggerManager);
+            Assert.AreEqual(ambientServices.LogManager, loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
             Assert.AreEqual(mockAppRuntime, platformManager);
@@ -57,16 +57,16 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateInjector_simple_ambient_services_exported_no_assemblies()
         {
-            var builder = this.CreateInjectorBuilder();
+            var (builder, ambientServices) = this.CreateInjectorBuilder();
             var container = builder
                 .WithAssemblies(Array.Empty<Assembly>())
                 .Build();
 
             var loggerManager = container.Resolve<ILogManager>();
-            Assert.AreEqual(builder.LogManager, loggerManager);
+            Assert.AreEqual(ambientServices.LogManager, loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
-            Assert.AreEqual(builder.AppRuntime, platformManager);
+            Assert.AreEqual(ambientServices.AppRuntime, platformManager);
         }
 
         [Test]
@@ -329,8 +329,8 @@ namespace Kephas.Tests.Injection.Autofac
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
                 .Returns((typeof(string), new AppServiceInfo(typeof(string), "123")));
 
-            var factory = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders = new[] { registrar });
-            var mockAppRuntime = factory.AppRuntime;
+            var (factory, ambientServices) = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
+            var mockAppRuntime = ambientServices.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
@@ -348,8 +348,8 @@ namespace Kephas.Tests.Injection.Autofac
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
                 .Returns((typeof(string), new AppServiceInfo(typeof(string), injector => "123")));
 
-            var factory = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders = new[] { registrar });
-            var mockPlatformManager = factory.AppRuntime;
+            var (factory, ambientServices) = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
+            var mockPlatformManager = ambientServices.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
@@ -360,24 +360,25 @@ namespace Kephas.Tests.Injection.Autofac
             Assert.AreEqual("123", instance);
         }
 
-        private AutofacInjectorBuilder CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
+        private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new InjectionBuildContext(new AmbientServices()
-                                        .Register(mockLoggerManager)
-                                        .Register(mockPlatformManager));
+            var ambientServices = new AmbientServices()
+                .Register(mockLoggerManager)
+                .Register(mockPlatformManager);
+            var context = new InjectionBuildContext(ambientServices);
             config?.Invoke(context);
             var factory = new AutofacInjectorBuilder(context);
-            return factory;
+            return (factory, ambientServices);
         }
 
         private AutofacInjectorBuilder CreateInjectorBuilderWithStringLogger()
         {
-            var builder = this.CreateInjectorBuilder();
+            var (builder, ambientServices) = this.CreateInjectorBuilder();
 
-            var mockLoggerManager = builder.LogManager;
+            var mockLoggerManager = ambientServices.LogManager;
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
 
             return builder;

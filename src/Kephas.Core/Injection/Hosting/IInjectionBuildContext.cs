@@ -11,8 +11,9 @@
 namespace Kephas.Injection.Hosting
 {
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Reflection;
 
+    using Kephas.Injection.Configuration;
     using Kephas.Services;
 
     /// <summary>
@@ -21,11 +22,21 @@ namespace Kephas.Injection.Hosting
     public interface IInjectionBuildContext : IContext
     {
         /// <summary>
-        /// Gets or sets the application service information providers.
+        /// Gets the application service information providers.
         /// </summary>
         /// <value>
         /// The application service information providers.
         /// </value>
-        IEnumerable<IAppServiceInfosProvider>? AppServiceInfosProviders { get; set; }
+        IList<IAppServiceInfosProvider> AppServiceInfosProviders { get; }
+
+        /// <summary>
+        /// Gets the list of assemblies used in injection.
+        /// </summary>
+        IList<Assembly> Assemblies { get; }
+
+        /// <summary>
+        /// Gets the injection settings.
+        /// </summary>
+        InjectionSettings Settings { get; }
     }
 }
