@@ -15,14 +15,14 @@ namespace Kephas.Services.Behaviors
 
     /// <summary>
     /// Base class for behavior rules controlling the enabled state of services.
-    /// It applies for services implementing the contract <typeparamref name="TServiceContract"/>.
+    /// It applies for services implementing the contract <typeparamref name="TContract"/>.
     /// </summary>
-    /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
-    public abstract class EnabledServiceBehaviorRuleBase<TServiceContract> : BehaviorRuleBase<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule<TServiceContract>
-        where TServiceContract : class
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    public abstract class EnabledServiceBehaviorRuleBase<TContract> : BehaviorRuleBase<IServiceBehaviorContext<TContract>, bool>, IEnabledServiceBehaviorRule<TContract>
+        where TContract : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract}"/> class.
+        /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TContract}"/> class.
         /// </summary>
         /// <param name="logManager">Optional. The log manager.</param>
         protected EnabledServiceBehaviorRuleBase(ILogManager? logManager = null)
@@ -39,7 +39,7 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         bool IBehaviorRule<IContext>.CanApply(IContext context)
         {
-            return this.CanApply((IServiceBehaviorContext<TServiceContract>)context);
+            return this.CanApply((IServiceBehaviorContext<TContract>)context);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         IBehaviorValue<bool> IBehaviorRule<IContext, bool>.GetValue(IContext context)
         {
-            return this.GetValue((IServiceBehaviorContext<TServiceContract>)context);
+            return this.GetValue((IServiceBehaviorContext<TContract>)context);
         }
 
         /// <summary>
@@ -63,22 +63,22 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         IBehaviorValue IBehaviorRule<IContext>.GetValue(IContext context)
         {
-            return this.GetValue((IServiceBehaviorContext<TServiceContract>)context);
+            return this.GetValue((IServiceBehaviorContext<TContract>)context);
         }
     }
 
     /// <summary>
-    /// Base class for behavior rules controlling the enabled state of the service <typeparamref name="TServiceImplementation"/>.
-    /// The service must implement the contract <typeparamref name="TServiceContract"/>.
+    /// Base class for behavior rules controlling the enabled state of the service <typeparamref name="TService"/>.
+    /// The service must implement the contract <typeparamref name="TContract"/>.
     /// </summary>
-    /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
-    /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
-    public abstract class EnabledServiceBehaviorRuleBase<TServiceContract, TServiceImplementation> : EnabledServiceBehaviorRuleBase<TServiceContract>
-        where TServiceImplementation : TServiceContract
-        where TServiceContract : class
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    /// <typeparam name="TService">Type of the service implementation.</typeparam>
+    public abstract class EnabledServiceBehaviorRuleBase<TContract, TService> : EnabledServiceBehaviorRuleBase<TContract>
+        where TService : TContract
+        where TContract : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract, TServiceImplementation}"/> class.
+        /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TContract, TService}"/> class.
         /// </summary>
         /// <param name="logManager">Optional. The log manager.</param>
         protected EnabledServiceBehaviorRuleBase(ILogManager? logManager = null)
@@ -88,16 +88,16 @@ namespace Kephas.Services.Behaviors
 
         /// <summary>
         /// Base class for behavior rules controlling the enabled state of services
-        /// implementing the contract <typeparamref name="TServiceContract"/>.
+        /// implementing the contract <typeparamref name="TContract"/>.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>
         /// A value indicating whether the rule may be applied or not.
         /// </returns>
-        public override bool CanApply(IServiceBehaviorContext<TServiceContract> context)
+        public override bool CanApply(IServiceBehaviorContext<TContract> context)
         {
             // TODO clarify whether this check will apply to the class hierarchy or to the type itself
-            return context.Service?.GetType() == typeof(TServiceImplementation);
+            return context.Service?.GetType() == typeof(TService);
         }
     }
 }

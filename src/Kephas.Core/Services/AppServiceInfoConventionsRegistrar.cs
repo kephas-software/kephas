@@ -320,11 +320,19 @@ namespace Kephas.Services
             metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceType);
 
             // add metadata from generic parameters
-            if (contractDeclarationType.IsConstructedGenericType)
+            if (contractDeclarationType.IsGenericType)
             {
-                IMetadataProvider.GetGenericTypeMetadataProvider(contractDeclarationType)
-                    .GetMetadata()
-                    .ForEach(m => metadata[m.name] = m.value);
+                var metadataSourceGenericType = contractDeclarationType.IsConstructedGenericType
+                    ? contractDeclarationType
+                    : serviceType.IsGenericType
+                        ? null
+                        : serviceType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == contractDeclarationType);
+                if (metadataSourceGenericType != null)
+                {
+                    IMetadataProvider.GetGenericTypeMetadataProvider(metadataSourceGenericType)
+                        .GetMetadata()
+                        .ForEach(m => metadata[m.name] = m.value);
+                }
             }
 
             return metadata;

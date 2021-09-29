@@ -22,10 +22,10 @@ namespace Kephas.Services.Behaviors
     /// <summary>
     /// Behavior rule contract for controlling the enabled state of services.
     /// </summary>
-    /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
     [SingletonAppServiceContract(ContractType = typeof(IEnabledServiceBehaviorRule), AllowMultiple = true)]
-    public interface IEnabledServiceBehaviorRule<in TServiceContract> : IBehaviorRule<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule
-        where TServiceContract : class
+    public interface IEnabledServiceBehaviorRule<in TContract> : IBehaviorRule<IServiceBehaviorContext<TContract>, bool>, IEnabledServiceBehaviorRule
+        where TContract : class
     {
     }
 }

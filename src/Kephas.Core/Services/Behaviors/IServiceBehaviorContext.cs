@@ -8,16 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services.Behaviors
 {
+    using Kephas.Injection;
+
     /// <summary>
     /// Interface for service behavior context.
     /// </summary>
-    /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
-    public interface IServiceBehaviorContext<out TServiceContract> : IContext
-        where TServiceContract : class
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    public interface IServiceBehaviorContext<out TContract> : IContext
+        where TContract : class
     {
         /// <summary>
         /// Gets the behavior context.
@@ -33,7 +33,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service.
         /// </value>
-        TServiceContract? Service { get; }
+        TContract? Service { get; }
 
         /// <summary>
         /// Gets the service factory.
@@ -41,7 +41,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service factory.
         /// </value>
-        IExportFactory<TServiceContract>? ServiceFactory { get; }
+        IExportFactory<TContract>? ServiceFactory { get; }
 
         /// <summary>
         /// Gets the service metadata.

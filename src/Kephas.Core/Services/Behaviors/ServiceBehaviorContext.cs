@@ -8,48 +8,47 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services.Behaviors
 {
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
 
     /// <summary>
     /// The default implementation of a service behavior context.
     /// </summary>
-    /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
-    public class ServiceBehaviorContext<TServiceContract> : Context, IServiceBehaviorContext<TServiceContract>
-        where TServiceContract : class
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    public class ServiceBehaviorContext<TContract> : Context, IServiceBehaviorContext<TContract>
+        where TContract : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
+        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract}" />
         /// class.
         /// </summary>
         /// <param name="injector">The injector.</param>
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata (optional).</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(IInjector injector, TServiceContract service, object? metadata = null, IContext? context = null)
+        public ServiceBehaviorContext(IInjector injector, TContract service, object? metadata = null, IContext? context = null)
             : this(injector, null, service, metadata, context)
         {
             Requires.NotNull(service, nameof(service));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
+        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract}" />
         /// class.
         /// </summary>
         /// <param name="injector">The injector.</param>
         /// <param name="serviceFactory">The service export factory.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(IInjector injector, IExportFactory<TServiceContract> serviceFactory, IContext? context = null)
+        public ServiceBehaviorContext(IInjector injector, IExportFactory<TContract> serviceFactory, IContext? context = null)
             : this(injector, serviceFactory, null, GetExportMetadata(serviceFactory), context)
         {
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
+        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract}" />
         /// class.
         /// </summary>
         /// <param name="injector">The injector.</param>
@@ -57,7 +56,7 @@ namespace Kephas.Services.Behaviors
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        private ServiceBehaviorContext(IInjector injector, IExportFactory<TServiceContract>? serviceFactory, TServiceContract? service, object? metadata = null, IContext? context = null)
+        private ServiceBehaviorContext(IInjector injector, IExportFactory<TContract>? serviceFactory, TContract? service, object? metadata = null, IContext? context = null)
             : base(injector)
         {
             this.ServiceFactory = serviceFactory;
@@ -80,7 +79,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service.
         /// </value>
-        public TServiceContract? Service { get; }
+        public TContract? Service { get; }
 
         /// <summary>
         /// Gets the service factory.
@@ -88,7 +87,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service factory.
         /// </value>
-        public IExportFactory<TServiceContract>? ServiceFactory { get; }
+        public IExportFactory<TContract>? ServiceFactory { get; }
 
         /// <summary>
         /// Gets the service metadata.
@@ -105,9 +104,9 @@ namespace Kephas.Services.Behaviors
         /// <returns>
         /// The export metadata.
         /// </returns>
-        private static object? GetExportMetadata(IExportFactory<TServiceContract> serviceExport)
+        private static object? GetExportMetadata(IExportFactory<TContract> serviceExport)
         {
-            var metadata = serviceExport.ToDynamic()[nameof(IExportFactory<TServiceContract, AppServiceMetadata>.Metadata)];
+            var metadata = serviceExport.ToDynamic()[nameof(IExportFactory<TContract, AppServiceMetadata>.Metadata)];
             return metadata;
         }
     }

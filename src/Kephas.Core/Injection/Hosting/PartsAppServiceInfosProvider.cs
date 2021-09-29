@@ -51,7 +51,7 @@ namespace Kephas.Injection.Hosting
         {
             return
                 from part in this.parts
-                where part.IsClass && !part.IsAbstract && part.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null
+                where part.IsClass && !part.IsAbstract && !part.IsNestedPrivate && part.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null
                 let contractType = this.TryGetAppServiceContract(part)
                 where contractType != null
                 select (part, contractType!);
