@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
