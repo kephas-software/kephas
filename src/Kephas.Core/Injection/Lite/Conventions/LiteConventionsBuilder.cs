@@ -40,16 +40,14 @@ namespace Kephas.Injection.Lite.Conventions
         /// <summary>
         /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
-        /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
         /// <returns>
         /// A <see cref="IPartBuilder"/> to further configure the rule.
         /// </returns>
-        public IPartBuilder ForInstance(Type type, object instance)
+        public IPartBuilder ForInstance(object instance)
         {
             var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
             {
-                ContractType = type,
                 InstancingStrategy = instance,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
@@ -68,7 +66,6 @@ namespace Kephas.Injection.Lite.Conventions
         {
             var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
             {
-                ContractType = type,
                 InstancingStrategy = factory,
             };
             this.descriptorBuilders.Add(descriptorBuilder);

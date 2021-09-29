@@ -13,6 +13,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
     using System;
     using System.Collections.Generic;
     using System.Composition.Convention;
+    using System.Composition.Hosting;
     using System.Linq;
     using System.Reflection;
 
@@ -25,15 +26,10 @@ namespace Kephas.Injection.SystemComposition.Conventions
     /// <summary>
     /// Conventions builder for a specific part.
     /// </summary>
-    public class SystemCompositionPartConventionsBuilder : IPartBuilder
+    public class SystemCompositionPartConventionsBuilder : ISystemCompositionPartBuilder
     {
-        /// <summary>
-        /// The inner convention builder.
-        /// </summary>
         private readonly PartConventionBuilder innerConventionBuilder;
-
         private Type? contractType;
-        private Type? serviceType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionPartConventionsBuilder"/> class.
@@ -41,10 +37,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <param name="innerConventionBuilder">The inner convention builder.</param>
         internal SystemCompositionPartConventionsBuilder(PartConventionBuilder innerConventionBuilder)
         {
-            Requires.NotNull(innerConventionBuilder, nameof(innerConventionBuilder));
-
-            this.innerConventionBuilder = innerConventionBuilder;
-            this.innerConventionBuilder.Export(builder => builder.AsContractType(this.serviceType));
+            this.innerConventionBuilder = innerConventionBuilder ?? throw new ArgumentNullException(nameof(innerConventionBuilder));
         }
 
         /// <summary>
@@ -58,9 +51,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </returns>
         public IPartBuilder As(Type contractType)
         {
-            Requires.NotNull(contractType, nameof(contractType));
-
-            this.serviceType = contractType;
+            this.contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             return this;
         }
 
@@ -154,6 +145,27 @@ namespace Kephas.Injection.SystemComposition.Conventions
             this.innerConventionBuilder.AddPartMetadata(name, value);
 
             return this;
+        }
+
+        /// <summary>
+        /// Sets the container up using the configuration.
+        /// </summary>
+        /// <param name="configuration">The container configuration.</param>
+        public void Build(ContainerConfiguration configuration)
+        {
+            if (this.contractType == null)
+            {
+                throw new InvalidOperationException("The contract type is not set");
+            }
+
+            if (this.contractType.IsInterface)
+            {
+                this.innerConventionBuilder.ExportInterfaces(type => type == this.contractType);
+            }
+            else
+            {
+                this.innerConventionBuilder.Export(builder => builder.AsContractType(this.contractType));
+            }
         }
 
         /// <summary>

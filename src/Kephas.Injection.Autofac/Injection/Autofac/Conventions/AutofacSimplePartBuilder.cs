@@ -26,7 +26,6 @@ namespace Kephas.Injection.Autofac.Conventions
         private readonly ContainerBuilder containerBuilder;
 
         private readonly IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder;
-        private bool allowMultiple;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacSimplePartBuilder"/> class.
@@ -85,7 +84,7 @@ namespace Kephas.Injection.Autofac.Conventions
         /// </returns>
         public IPartBuilder AllowMultiple(bool value)
         {
-            this.allowMultiple = value;
+            // by default aAutofac allows multiple services.
             return this;
         }
 

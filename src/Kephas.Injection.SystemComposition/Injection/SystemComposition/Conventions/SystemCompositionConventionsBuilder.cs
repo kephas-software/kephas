@@ -31,7 +31,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <summary>
         /// The part builders.
         /// </summary>
-        private readonly IDictionary<Type, SystemCompositionPartBuilder> partBuilders = new Dictionary<Type, SystemCompositionPartBuilder>();
+        private readonly IList<ISystemCompositionPartBuilder> partBuilders = new List<ISystemCompositionPartBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionConventionsBuilder"/> class.
@@ -61,25 +61,25 @@ namespace Kephas.Injection.SystemComposition.Conventions
         {
             Requires.NotNull(type, nameof(type));
 
-            return new SystemCompositionPartConventionsBuilder(this.innerConventionBuilder.ForType(type));
+            var partBuilder = new SystemCompositionPartConventionsBuilder(this.innerConventionBuilder.ForType(type));
+            this.partBuilders.Add(partBuilder);
+            return partBuilder;
         }
 
         /// <summary>
         /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
-        /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
         /// <returns>
         /// An IPartBuilder.
         /// </returns>
-        public IPartBuilder ForInstance(Type type, object instance)
+        public IPartBuilder ForInstance(object instance)
         {
-            Requires.NotNull(type, nameof(type));
             Requires.NotNull(instance, nameof(instance));
 
-            var partBuilder = new SystemCompositionPartBuilder(type, instance);
+            var partBuilder = new SystemCompositionPartBuilder(instance);
             partBuilder.Singleton();
-            this.partBuilders[type] = partBuilder;
+            this.partBuilders.Add(partBuilder);
             return partBuilder;
         }
 
@@ -91,11 +91,10 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
         public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
-            Requires.NotNull(type, nameof(type));
             Requires.NotNull(factory, nameof(factory));
 
-            var partBuilder = new SystemCompositionPartBuilder(type, factory);
-            this.partBuilders[type] = partBuilder;
+            var partBuilder = new SystemCompositionPartBuilder(factory);
+            this.partBuilders.Add(partBuilder);
 
             return partBuilder;
         }
@@ -106,9 +105,9 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// <returns>
         /// An enumerator that allows foreach to be used to process the part builders in this collection.
         /// </returns>
-        protected internal IEnumerable<SystemCompositionPartBuilder> GetPartBuilders()
+        protected internal IEnumerable<ISystemCompositionPartBuilder> GetPartBuilders()
         {
-            return this.partBuilders.Values;
+            return this.partBuilders;
         }
     }
 }

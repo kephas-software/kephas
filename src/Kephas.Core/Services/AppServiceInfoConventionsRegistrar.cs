@@ -176,7 +176,7 @@ namespace Kephas.Services
                     .ForFactory(contractType, factory),
                 null => null,
                 var instance => conventions
-                    .ForInstance(contractType, instance),
+                    .ForInstance(instance),
             };
 
             if (partBuilder == null)

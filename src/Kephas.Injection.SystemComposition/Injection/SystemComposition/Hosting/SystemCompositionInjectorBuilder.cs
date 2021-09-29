@@ -200,16 +200,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
 
             foreach (var partBuilder in this.GetPartBuilders(conventions))
             {
-                containerConfiguration.WithProvider(partBuilder.Instance != null
-                    ? new FactoryExportDescriptorProvider(
-                        partBuilder.ContractType,
-                        () => partBuilder.Instance,
-                        partBuilder.Metadata)
-                    : new FactoryExportDescriptorProvider(
-                        partBuilder.ContractType,
-                        ctx => partBuilder.InstanceFactory(ctx),
-                        partBuilder.IsSingleton || partBuilder.IsScoped,
-                        partBuilder.Metadata));
+                partBuilder.Build(containerConfiguration);
             }
 
             return this.CreateCompositionContext(containerConfiguration);
@@ -247,7 +238,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// <returns>
         /// An enumerator that allows foreach to be used to process the part builders in this collection.
         /// </returns>
-        protected virtual IEnumerable<SystemCompositionPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
+        protected virtual IEnumerable<ISystemCompositionPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
         {
             return ((SystemCompositionConventionsBuilder)conventions).GetPartBuilders();
         }

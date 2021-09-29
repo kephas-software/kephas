@@ -69,16 +69,14 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <summary>
         /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
-        /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
         /// <returns>
         /// An IPartBuilder.
         /// </returns>
-        public IPartBuilder ForInstance(Type type, object instance)
+        public IPartBuilder ForInstance(object instance)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                      {
-                                         ContractType = type,
                                          InstancingStrategy = instance,
                                      };
             this.descriptorBuilders.Add(descriptorBuilder);
@@ -97,7 +95,6 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                         {
-                                            ContractType = type,
                                             InstancingStrategy = (Func<IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetService<IInjector>())),
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);

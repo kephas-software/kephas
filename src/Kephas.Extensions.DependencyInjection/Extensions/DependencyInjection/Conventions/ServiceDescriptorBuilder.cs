@@ -28,7 +28,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// <value>
         /// The type of the service.
         /// </value>
-        public Type ContractType { get; set; }
+        public Type? ContractType { get; set; }
 
         /// <summary>
         /// Gets or sets the instancing strategy.

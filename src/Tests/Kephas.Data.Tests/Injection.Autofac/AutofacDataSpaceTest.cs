@@ -18,7 +18,7 @@ namespace Kephas.Data.Tests.Injection.Autofac
         [Test]
         public void Injection_success()
         {
-            var container = CreateInjector();
+            var container = this.CreateInjector();
             var dataSpace = container.Resolve<IDataSpace>();
 
             Assert.IsInstanceOf<DataSpace>(dataSpace);

@@ -33,10 +33,9 @@ namespace Kephas.Injection.Conventions
         /// <summary>
         /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
-        /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
         /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        IPartBuilder ForInstance(Type type, object instance);
+        IPartBuilder ForInstance(object instance);
 
         /// <summary>
         /// Defines a registration for the specified type and its instance factory.

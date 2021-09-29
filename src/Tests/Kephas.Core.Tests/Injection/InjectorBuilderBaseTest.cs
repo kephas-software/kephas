@@ -119,9 +119,8 @@ namespace Kephas.Core.Tests.Injection
             /// <summary>
             /// Defines a registration for the specified type and its singleton instance.
             /// </summary>
-            /// <param name="type">The registered service type.</param>
             /// <param name="instance">The instance.</param>
-            public IPartBuilder ForInstance(Type type, object instance)
+            public IPartBuilder ForInstance(object instance)
             {
                 return Substitute.For<IPartBuilder>();
             }

@@ -12,83 +12,46 @@ namespace Kephas.Injection.SystemComposition.Conventions
 {
     using System;
     using System.Collections.Generic;
+    using System.Composition.Hosting;
     using System.Reflection;
 
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
+    using Kephas.Injection.SystemComposition.ExportProviders;
 
     /// <summary>
     /// A MEF part builder.
     /// </summary>
-    public class SystemCompositionPartBuilder : IPartBuilder
+    public class SystemCompositionPartBuilder : ISystemCompositionPartBuilder
     {
+        private readonly Func<IInjector, object>? instanceFactory;
+        private readonly object? instance;
+        private Type? contractType;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionPartBuilder"/> class.
         /// </summary>
-        /// <param name="contractType">Type of the contract.</param>
         /// <param name="instance">The instance.</param>
-        public SystemCompositionPartBuilder(Type contractType, object instance)
+        public SystemCompositionPartBuilder(object instance)
         {
-            this.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            this.Instance = instance ?? throw new ArgumentNullException(nameof(instance));
+            this.instance = instance ?? throw new ArgumentNullException(nameof(instance));
             this.IsSingleton = true;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionPartBuilder"/> class.
         /// </summary>
-        /// <param name="contractType">Type of the contract.</param>
         /// <param name="instanceFactory">The instance factory.</param>
-        public SystemCompositionPartBuilder(Type contractType, Func<IInjector, object> instanceFactory)
+        public SystemCompositionPartBuilder(Func<IInjector, object> instanceFactory)
         {
-            this.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            this.InstanceFactory = instanceFactory ?? throw new ArgumentNullException(nameof(instanceFactory));
+            this.instanceFactory = instanceFactory ?? throw new ArgumentNullException(nameof(instanceFactory));
         }
 
-        /// <summary>
-        /// Gets the type of the contract.
-        /// </summary>
-        /// <value>
-        /// The type of the contract.
-        /// </value>
-        public Type ContractType { get; private set; }
+        private bool IsSingleton { get; set; }
 
-        /// <summary>
-        /// Gets the instance factory.
-        /// </summary>
-        /// <value>
-        /// The instance factory.
-        /// </value>
-        public Func<IInjector, object>? InstanceFactory { get; }
+        private bool IsScoped { get; set; }
 
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public object? Instance { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this object is shared.
-        /// </summary>
-        /// <value>
-        /// True if this object is shared, false if not.
-        /// </value>
-        public bool IsSingleton { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this object is scoped.
-        /// </summary>
-        /// <value>
-        /// True if this object is scoped, false if not.
-        /// </value>
-        public bool IsScoped { get; private set; }
-
-        /// <summary>
-        /// Gets the part metadata.
-        /// </summary>
-        public IDictionary<string, object?>? Metadata { get; private set; }
+        private IDictionary<string, object?>? Metadata { get; set; }
 
         /// <summary>
         /// Indicates the type registered as the exported service key.
@@ -99,7 +62,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
         /// </returns>
         public IPartBuilder As(Type contractType)
         {
-            this.ContractType = contractType;
+            this.contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             return this;
         }
 
@@ -166,6 +129,29 @@ namespace Kephas.Injection.SystemComposition.Conventions
             (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
 
             return this;
+        }
+
+        /// <summary>
+        /// Sets the container up using the configuration.
+        /// </summary>
+        /// <param name="configuration">The container configuration.</param>
+        public void Build(ContainerConfiguration configuration)
+        {
+            if (this.contractType == null)
+            {
+                throw new InjectionException($"Contract type not set.");
+            }
+
+            configuration.WithProvider(this.instance != null
+                ? new FactoryExportDescriptorProvider(
+                    this.contractType,
+                    () => this.instance,
+                    this.Metadata)
+                : new FactoryExportDescriptorProvider(
+                    this.contractType,
+                    ctx => this.instanceFactory!(ctx),
+                    this.IsSingleton || this.IsScoped,
+                    this.Metadata));
         }
     }
 }

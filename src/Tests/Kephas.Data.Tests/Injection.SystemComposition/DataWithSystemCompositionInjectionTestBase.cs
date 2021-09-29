@@ -12,6 +12,7 @@ namespace Kephas.Data.Tests.Injection.SystemComposition
 {
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Testing.Injection;
 
     public class DataWithSystemCompositionInjectionTestBase : SystemCompositionInjectionTestBase
