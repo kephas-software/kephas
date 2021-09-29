@@ -71,6 +71,7 @@ $paths = @(
     "Kephas.Workflow.Model",
     "Analyzers\Kephas.Analyzers",
     "TestingFramework\Kephas.Testing",
+    "TestingFramework\Kephas.Testing.Application",
     "TestingFramework\Kephas.Testing.Injection.Autofac",
     "TestingFramework\Kephas.Testing.Injection.SystemComposition",
     "TestingFramework\Kephas.Testing.Model"

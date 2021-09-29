@@ -158,14 +158,7 @@ namespace Kephas.Injection.SystemComposition.Conventions
                 throw new InvalidOperationException("The contract type is not set");
             }
 
-            if (this.contractType.IsInterface)
-            {
-                this.innerConventionBuilder.ExportInterfaces(type => type == this.contractType);
-            }
-            else
-            {
-                this.innerConventionBuilder.Export(builder => builder.AsContractType(this.contractType));
-            }
+            this.innerConventionBuilder.Export(builder => builder.AsContractType(this.contractType));
         }
 
         /// <summary>

@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Lite.Hosting;
-
 namespace Kephas.Messaging.Tests
 {
     using System;
@@ -18,6 +15,8 @@ namespace Kephas.Messaging.Tests
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Testing.Application;
     using NSubstitute;
@@ -32,11 +31,11 @@ namespace Kephas.Messaging.Tests
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
-            
+
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 

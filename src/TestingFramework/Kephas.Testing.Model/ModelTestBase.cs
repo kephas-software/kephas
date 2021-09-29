@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Testing.Model
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Testing.Model
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+    using Kephas.Injection;
     using Kephas.Model;
     using Kephas.Model.Runtime;
     using Kephas.Testing.Injection;

@@ -21,7 +21,7 @@ namespace Kephas.Injection.Autofac.Conventions
     /// <summary>
     /// An Autofac part conventions builder.
     /// </summary>
-    public class AutofacTypePartBuilder : IPartBuilder
+    public class AutofacTypePartBuilder : IAutofacPartBuilder
     {
         private readonly ServiceDescriptorBuilder descriptorBuilder;
 

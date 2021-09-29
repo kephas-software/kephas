@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullHashingServiceTest.cs" company="Kephas Software SRL">
+// <copyright file="Sha256HashingServiceTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,16 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Core.Tests.Cryptography
 {
     using System;
     using System.Text;
-    using Kephas.Cryptography;
-    using Kephas.Services;
-    using NSubstitute;
 
+    using Kephas.Cryptography;
+    using Kephas.Injection;
+    using Kephas.Services;
+    using Kephas.Testing;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("other", "salt", "pBbAk+s59J5HOdOZfsuULq8hEgjkBKChn/vhh++mCwE=")]
         public void Hash_with_salt(string value, string salt, string hash)
         {
-            var contextFactory = this.CreateContextFactory(() => new HashingContext(Substitute.For<IInjector>()));
+            var contextFactory = this.CreateContextFactoryMock(() => new HashingContext(Substitute.For<IInjector>()));
             var hashingService = new Sha256HashingService(contextFactory);
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var saltBytes = Encoding.UTF8.GetBytes(salt);

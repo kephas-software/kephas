@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Core.Tests.Cryptography
 {
     using System;
@@ -18,10 +16,12 @@ namespace Kephas.Core.Tests.Cryptography
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Cryptography;
-    using Kephas.Services;
-    using NSubstitute;
 
+    using Kephas.Cryptography;
+    using Kephas.Injection;
+    using Kephas.Services;
+    using Kephas.Testing;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]

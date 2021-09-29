@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Lite.Hosting;
-
 namespace Kephas.Commands.Tests
 {
     using System;
@@ -19,6 +16,8 @@ namespace Kephas.Commands.Tests
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Testing.Injection;
 

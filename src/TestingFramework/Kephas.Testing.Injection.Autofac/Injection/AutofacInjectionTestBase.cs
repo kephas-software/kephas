@@ -41,7 +41,7 @@ namespace Kephas.Testing.Injection
         public virtual ContainerBuilder WithExportProviders(ContainerBuilder configuration)
         {
             configuration.RegisterSource(new ExportFactoryRegistrationSource());
-            configuration.RegisterSource(new ExportFactoryWithMetadataRegistrationSource(RuntimeTypeRegistry.Instance));
+            configuration.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
             return configuration;
         }
 

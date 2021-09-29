@@ -28,26 +28,4 @@ namespace Kephas.Injection.Hosting
         /// </value>
         IEnumerable<IAppServiceInfosProvider>? AppServiceInfosProviders { get; set; }
     }
-
-    /// <summary>
-    /// Extension methods for <see cref="IInjectionBuildContext"/>.
-    /// </summary>
-    public static class InjectionBuildContextExtensions
-    {
-        /// <summary>
-        /// Adds a new <see cref="IAppServiceInfosProvider"/> to the <see cref="IInjectionBuildContext.AppServiceInfosProviders"/>.
-        /// </summary>
-        /// <typeparam name="TContext">The context type.</typeparam>
-        /// <param name="context">The context.</param>
-        /// <param name="provider">The provider.</param>
-        /// <returns>This <see cref="IInjectionBuildContext"/> instance.</returns>
-        public static TContext WithAppServiceInfosProvider<TContext>(this TContext context, IAppServiceInfosProvider provider)
-            where TContext : IInjectionBuildContext
-        {
-            var providers = context.AppServiceInfosProviders?.ToList() ?? new List<IAppServiceInfosProvider>();
-            providers.Add(provider);
-            context.AppServiceInfosProviders = providers;
-            return context;
-        }
-    }
 }

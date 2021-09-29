@@ -18,6 +18,7 @@ namespace Kephas.Core.Tests.Injection.Conventions
     using Kephas.Injection.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
+    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     /// <summary>

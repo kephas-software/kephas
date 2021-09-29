@@ -8,11 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
-using Kephas.Injection.ExportFactoryImporters;
-using Kephas.Injection.Lite.Hosting;
-
 namespace Kephas.Messaging.Tests
 {
     using System;
@@ -21,6 +16,10 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Injection;
+    using Kephas.Injection.ExportFactories;
+    using Kephas.Injection.ExportFactoryImporters;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
@@ -38,12 +37,12 @@ namespace Kephas.Messaging.Tests
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(IMessageBroker).GetTypeInfo().Assembly, /* Kephas.Messaging.Distributed */
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
             };
-            
+
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 

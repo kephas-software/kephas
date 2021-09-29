@@ -6,6 +6,7 @@
 
     using Kephas.Net.Mime;
     using Kephas.Serialization;
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;

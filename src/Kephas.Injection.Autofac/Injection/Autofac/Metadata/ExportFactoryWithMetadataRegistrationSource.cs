@@ -14,6 +14,7 @@ namespace Kephas.Injection.Autofac.Metadata
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
@@ -21,7 +22,6 @@ namespace Kephas.Injection.Autofac.Metadata
     using Kephas.Injection;
     using Kephas.Injection.ExportFactories;
     using Kephas.Reflection;
-    using Kephas.Runtime;
 
     /// <summary>
     /// An export factory with metadata registration source.
@@ -30,17 +30,6 @@ namespace Kephas.Injection.Autofac.Metadata
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
             _ => ((ExportFactoryWithMetadataRegistrationSource)null!).CreateMetaRegistration<string, string>(null!, null!, default));
-
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactoryWithMetadataRegistrationSource"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public ExportFactoryWithMetadataRegistrationSource(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
 
         /// <summary>
         /// Gets a value indicating whether the registrations provided by this source are 1:1 adapters on
@@ -100,9 +89,7 @@ namespace Kephas.Injection.Autofac.Metadata
                 .ForDelegate((c, p) =>
                     {
                         var lifetimeScope = c.GetLifetimeScope();
-                        var metadata = (TMetadata)this.typeRegistry
-                            .GetTypeInfo(typeof(TMetadata))
-                            .CreateInstance(new object[] { valueRegistration.Metadata });
+                        var metadata = (TMetadata)Activator.CreateInstance(typeof(TMetadata), valueRegistration.Metadata);
                         return new ExportFactory<T, TMetadata>(
                             () =>
                                 {

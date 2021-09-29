@@ -21,7 +21,7 @@ namespace Kephas.Injection.Autofac.Conventions
     /// <summary>
     /// An Autofac part builder.
     /// </summary>
-    public class AutofacSimplePartBuilder : IPartBuilder
+    public class AutofacSimplePartBuilder : IAutofacPartBuilder
     {
         private readonly ContainerBuilder containerBuilder;
 

@@ -117,8 +117,11 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock()
         {
-            var serializationService = Substitute.For<ISerializationService>(/*Behavior.Strict*/);
-            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<IInjector>(), serializationService));
+            var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
+            var contextFactoryMock = Substitute.For<IContextFactory>();
+            ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
+            contextFactoryMock.CreateContext<SerializationContext>(Arg.Any<object[]>())
+                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
             return serializationService;
         }
 
@@ -249,5 +252,7 @@ namespace Kephas.Testing
             var outputArray = inputArray.Reverse().ToArray();
             outputStream.Write(outputArray, 0, outputArray.Length);
         }
+
+        public interface IContextFactoryAware { IContextFactory ContextFactory { get; } }
     }
 }

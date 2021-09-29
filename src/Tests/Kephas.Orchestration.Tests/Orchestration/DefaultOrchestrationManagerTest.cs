@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Tests.Orchestration
 {
     using System;
@@ -21,6 +19,7 @@ namespace Kephas.Tests.Orchestration
 
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;

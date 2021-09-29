@@ -24,6 +24,7 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 

@@ -25,7 +25,7 @@ namespace Kephas.Injection.Autofac.Conventions
     {
         private readonly ContainerBuilder containerBuilder;
 
-        private readonly IList<Action> builders = new List<Action>();
+        private readonly IList<IAutofacPartBuilder> builders = new List<IAutofacPartBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacConventionsBuilder"/> class.
@@ -60,7 +60,7 @@ namespace Kephas.Injection.Autofac.Conventions
             };
 
             var partBuilder = new AutofacTypePartBuilder(registrationBuilder);
-            this.builders.Add(() => partBuilder.Build());
+            this.builders.Add(partBuilder);
 
             return partBuilder;
         }
@@ -77,7 +77,7 @@ namespace Kephas.Injection.Autofac.Conventions
             var registrationBuilder = this.containerBuilder
                 .RegisterInstance(instance);
             var partBuilder = new AutofacSimplePartBuilder(this.containerBuilder, registrationBuilder);
-            this.builders.Add(() => partBuilder.Build());
+            this.builders.Add(partBuilder);
 
             return partBuilder;
         }
@@ -100,7 +100,7 @@ namespace Kephas.Injection.Autofac.Conventions
                         return factory(serviceProvider);
                     });
             var partBuilder = new AutofacSimplePartBuilder(this.containerBuilder, registrationBuilder);
-            this.builders.Add(() => partBuilder.Build());
+            this.builders.Add(partBuilder);
 
             return partBuilder;
         }
@@ -115,7 +115,7 @@ namespace Kephas.Injection.Autofac.Conventions
         {
             foreach (var builder in this.builders)
             {
-                builder();
+                builder.Build();
             }
 
             return this.containerBuilder;

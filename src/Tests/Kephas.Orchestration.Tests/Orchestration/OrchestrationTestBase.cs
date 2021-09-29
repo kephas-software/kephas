@@ -8,23 +8,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Application;
-using Kephas.Injection;
-using Kephas.Injection.Lite.Hosting;
-using Kephas.Logging;
-using NSubstitute;
-
 namespace Kephas.Tests.Orchestration
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Commands;
+    using Kephas.Injection;
+    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration;
     using Kephas.Testing.Application;
+    using NSubstitute;
 
     public abstract class OrchestrationTestBase : ApplicationTestBase
     {
