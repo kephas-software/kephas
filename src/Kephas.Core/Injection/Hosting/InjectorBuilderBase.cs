@@ -41,8 +41,7 @@ namespace Kephas.Injection.Hosting
 
             this.BuildContext = context;
 
-            this.Registry = new AppServiceInfoRegistry(
-                () => context.Assemblies.Count == 0 ? this.GetDefaultAssemblies() : context.Assemblies);
+            this.Registry = new AppServiceInfoRegistry();
         }
 
         /// <summary>
@@ -175,10 +174,16 @@ namespace Kephas.Injection.Hosting
         /// </returns>
         protected internal IList<IAppServiceInfosProvider> GetAppServiceInfosProviders()
         {
-            return new List<IAppServiceInfosProvider>(this.BuildContext.AppServiceInfosProviders)
-            {
-                this.Registry,
-            };
+            var context = this.BuildContext;
+            var assemblies = context.Assemblies.Count == 0 ? this.GetDefaultAssemblies() : context.Assemblies;
+            var providers = assemblies
+                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfosProvider>())
+                .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal)
+                .Union(this.BuildContext.AppServiceInfosProviders)
+                .Union(new[] { this.Registry })
+                .ToList();
+
+            return providers;
         }
 
         /// <summary>
@@ -228,6 +233,14 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
+        /// Creates a new injector based on the provided conventions and assembly parts.
+        /// </summary>
+        /// <returns>
+        /// A new injector.
+        /// </returns>
+        protected abstract IInjector CreateInjectorCore();
+
+        /// <summary>
         /// Filters out the system assemblies from the provided assemblies.
         /// </summary>
         /// <param name="assemblies">The convention assemblies.</param>
@@ -241,29 +254,11 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Creates a new injector based on the provided conventions and assembly parts.
-        /// </summary>
-        /// <returns>
-        /// A new injector.
-        /// </returns>
-        protected abstract IInjector CreateInjectorCore();
-
-        /// <summary>
         /// An application service information serviceRegistry.
         /// </summary>
         protected internal class AppServiceInfoRegistry : IAppServiceInfosProvider
         {
-            private readonly Func<IEnumerable<Assembly>> getAssemblies;
             private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="AppServiceInfoRegistry"/> class.
-            /// </summary>
-            /// <param name="getAssemblies">A function for retrieving the assemblies to scan for <see cref="IAppServiceInfosProvider"/> attributes.</param>
-            public AppServiceInfoRegistry(Func<IEnumerable<Assembly>> getAssemblies)
-            {
-                this.getAssemblies = getAssemblies;
-            }
 
             /// <summary>
             /// Adds an <see cref="IAppServiceInfo"/>.
@@ -283,8 +278,7 @@ namespace Kephas.Injection.Hosting
             /// </returns>
             public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
             {
-                return this.GetAppServices<IAppServiceInfosProvider>().SelectMany(p => p.GetAppServiceInfos())
-                    .Union(this.appServiceInfos.Select(i => (i.ContractType!, i)));
+                return this.appServiceInfos.Select(i => (i.ContractType!, i));
             }
 
             /// <summary>
@@ -296,15 +290,7 @@ namespace Kephas.Injection.Hosting
             /// </returns>
             public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
             {
-                return this.GetAppServices<IAppServiceInfosProvider>().SelectMany(p => p.GetAppServiceTypes());
-            }
-
-            private IEnumerable<T> GetAppServices<T>()
-            {
-                var assemblies = this.getAssemblies();
-                return assemblies
-                    .SelectMany(a => a.GetCustomAttributes().OfType<T>())
-                    .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
+                yield break;
             }
         }
     }
