@@ -14,6 +14,7 @@ namespace Kephas.Injection.Autofac.Hosting
     using System.Collections.Generic;
 
     using global::Autofac;
+    using global::Autofac.Builder;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Conventions;
@@ -26,17 +27,19 @@ namespace Kephas.Injection.Autofac.Hosting
     /// </summary>
     public class AutofacInjectorBuilder : InjectorBuilderBase<AutofacInjectorBuilder>
     {
+        private readonly ContainerBuilder containerBuilder;
         private readonly IList<Action<ContainerBuilder>> builderConfigs = new List<Action<ContainerBuilder>>();
-
-        private ContainerBuilder? containerBuilder;
+        private readonly IList<IAutofacPartBuilder> partBuilders = new List<IAutofacPartBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public AutofacInjectorBuilder(IInjectionBuildContext context)
+        /// <param name="containerBuilder">Optional. The container builder.</param>
+        public AutofacInjectorBuilder(IInjectionBuildContext context, ContainerBuilder? containerBuilder = null)
             : base(context)
         {
+            this.containerBuilder = containerBuilder ?? new ContainerBuilder();
         }
 
         /// <summary>
@@ -56,55 +59,81 @@ namespace Kephas.Injection.Autofac.Hosting
         }
 
         /// <summary>
-        /// Sets the container builder to be used for the composition.
+        /// Define a rule that will apply to the specified type.
         /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public AutofacInjectorBuilder WithContainerBuilder(ContainerBuilder builder)
+        /// <param name="type">The type from which matching types derive.</param>
+        /// <returns>A <see cref="IPartBuilder"/> that must be used to specify the rule.</returns>
+        public override IPartBuilder ForType(Type type)
         {
-            Requires.NotNull(builder, nameof(builder));
+            var registrationBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
+            {
+                ImplementationType = type,
+            };
 
-            this.containerBuilder = builder;
+            var partBuilder = new AutofacTypePartBuilder(registrationBuilder);
+            this.partBuilders.Add(partBuilder);
 
-            return this;
+            return partBuilder;
         }
 
         /// <summary>
-        /// Factory method for creating the conventions builder.
+        /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
-        /// <returns>A newly created conventions builder.</returns>
-        protected override IConventionsBuilder CreateConventionsBuilder()
+        /// <param name="instance">The instance.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public override IPartBuilder ForInstance(object instance)
         {
-            return new AutofacConventionsBuilder(this.containerBuilder ?? new ContainerBuilder());
+            var registrationBuilder = this.containerBuilder
+                .RegisterInstance(instance);
+            var partBuilder = new AutofacSimplePartBuilder(this.containerBuilder, registrationBuilder);
+            this.partBuilders.Add(partBuilder);
+
+            return partBuilder;
+        }
+
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="factory">The service factory.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
+        {
+            var registrationBuilder = RegistrationBuilder.ForDelegate(
+                type,
+                (context, parameters) =>
+                {
+                    var serviceProvider = context.Resolve<IInjector>();
+                    return factory(serviceProvider);
+                });
+            var partBuilder = new AutofacSimplePartBuilder(this.containerBuilder, registrationBuilder);
+            this.partBuilders.Add(partBuilder);
+
+            return partBuilder;
         }
 
         /// <summary>
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
+        protected override IInjector CreateInjectorCore()
         {
-            var autofacBuilder = ((IAutofacContainerBuilderFactory)conventions).CreateContainerBuilder();
+            foreach (var partBuilder in this.partBuilders)
+            {
+                partBuilder.Build();
+            }
 
-            autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
-            autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
+            this.containerBuilder.RegisterSource(new ExportFactoryRegistrationSource());
+            this.containerBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
 
             foreach (var builderConfig in this.builderConfigs)
             {
-                builderConfig(autofacBuilder);
+                builderConfig(this.containerBuilder);
             }
 
-            var builder = conventions is IAutofacContainerBuilderFactory autofacContainerBuilderFactory
-                                          ? autofacContainerBuilderFactory.CreateContainerBuilder()
-                                          : throw new InvalidOperationException(
-                                                $"The conventions instance must implement {nameof(IAutofacContainerBuilderFactory)}.");
-
-            return new AutofacInjector(builder);
+            return new AutofacInjector(this.containerBuilder);
         }
     }
 }

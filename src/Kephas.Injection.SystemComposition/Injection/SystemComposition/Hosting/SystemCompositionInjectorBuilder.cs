@@ -15,14 +15,13 @@ namespace Kephas.Injection.SystemComposition.Hosting
     using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
-    using System.Linq;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Conventions;
     using Kephas.Injection.Hosting;
     using Kephas.Injection.SystemComposition.Conventions;
     using Kephas.Injection.SystemComposition.ExportProviders;
-    using Kephas.Injection.SystemComposition.Resources;
     using Kephas.Injection.SystemComposition.ScopeFactory;
 
     /// <summary>
@@ -33,24 +32,21 @@ namespace Kephas.Injection.SystemComposition.Hosting
     /// </remarks>
     public class SystemCompositionInjectorBuilder : InjectorBuilderBase<SystemCompositionInjectorBuilder>
     {
-        /// <summary>
-        /// The scope factories.
-        /// </summary>
         private readonly ICollection<Type> scopeFactories = new HashSet<Type>();
-
-        /// <summary>
-        /// The container configuration.
-        /// </summary>
-        private ContainerConfiguration configuration;
+        private readonly ContainerConfiguration containerConfiguration;
+        private readonly ConventionBuilder innerConventionBuilder;
+        private readonly IList<ISystemCompositionPartBuilder> partBuilders = new List<ISystemCompositionPartBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionInjectorBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public SystemCompositionInjectorBuilder(IInjectionBuildContext context)
-            : base(context)
+        /// <param name="containerConfiguration">Optional. The container configuration.</param>
+        public SystemCompositionInjectorBuilder(IInjectionBuildContext context, ContainerConfiguration? containerConfiguration = null)
+            : base(context ?? throw new ArgumentNullException(nameof(context)))
         {
-            Requires.NotNull(context, nameof(context));
+            this.containerConfiguration = containerConfiguration ?? new ContainerConfiguration();
+            this.innerConventionBuilder = new ConventionBuilder();
         }
 
         /// <summary>
@@ -62,33 +58,48 @@ namespace Kephas.Injection.SystemComposition.Hosting
         protected IList<IExportProvider> ExportProviders { get; } = new List<IExportProvider>();
 
         /// <summary>
-        /// Sets the composition conventions.
+        /// Define a rule that will apply to the specified type.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
-        /// <returns>This builder.</returns>
-        public override SystemCompositionInjectorBuilder WithConventions(IConventionsBuilder conventions)
+        /// <param name="type">The type from which matching types derive.</param>
+        /// <returns>A <see cref="IPartBuilder"/> that must be used to specify the rule.</returns>
+        public override IPartBuilder ForType(Type type)
         {
-            // ReSharper disable once SuspiciousTypeConversion.Global
-            if (conventions is not ISystemCompositionConventionBuilderProvider)
-            {
-                throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(ISystemCompositionConventionBuilderProvider).FullName));
-            }
+            Requires.NotNull(type, nameof(type));
 
-            return base.WithConventions(conventions);
+            var partBuilder = new SystemCompositionPartConventionsBuilder(this.innerConventionBuilder.ForType(type));
+            this.partBuilders.Add(partBuilder);
+            return partBuilder;
         }
 
         /// <summary>
-        /// Sets the container configuration.
+        /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
-        /// <param name="containerConfiguration">The container configuration.</param>
-        /// <returns>This builder.</returns>
-        public SystemCompositionInjectorBuilder WithConfiguration(ContainerConfiguration containerConfiguration)
+        /// <param name="instance">The instance.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public override IPartBuilder ForInstance(object instance)
         {
-            Requires.NotNull(containerConfiguration, nameof(containerConfiguration));
+            Requires.NotNull(instance, nameof(instance));
 
-            this.configuration = containerConfiguration;
+            var partBuilder = new SystemCompositionPartBuilder(instance);
+            partBuilder.Singleton();
+            this.partBuilders.Add(partBuilder);
+            return partBuilder;
+        }
 
-            return this;
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="factory">The service factory.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
+        {
+            Requires.NotNull(factory, nameof(factory));
+
+            var partBuilder = new SystemCompositionPartBuilder(factory);
+            this.partBuilders.Add(partBuilder);
+
+            return partBuilder;
         }
 
         /// <summary>
@@ -129,30 +140,26 @@ namespace Kephas.Injection.SystemComposition.Hosting
         /// Registers the scope factory.
         /// </summary>
         /// <typeparam name="TFactory">Type of the factory.</typeparam>
-        /// <param name="conventions">The conventions.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        protected SystemCompositionInjectorBuilder RegisterScopeFactory<TFactory>(IConventionsBuilder conventions)
+        protected SystemCompositionInjectorBuilder RegisterScopeFactory<TFactory>()
             where TFactory : IScopeFactory
         {
-            return this.RegisterScopeFactory(conventions, typeof(TFactory));
+            return this.RegisterScopeFactory(typeof(TFactory));
         }
 
         /// <summary>
         /// Registers the scope factory.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        protected SystemCompositionInjectorBuilder RegisterScopeFactory(IConventionsBuilder conventions, Type factoryType)
+        protected SystemCompositionInjectorBuilder RegisterScopeFactory(Type factoryType)
         {
-            var mefConventions = ((ISystemCompositionConventionBuilderProvider)conventions).GetConventionBuilder();
-
             var scopeName = factoryType.ExtractMetadataValue<InjectionScopeAttribute, string>(a => a.Value);
-            mefConventions
+            this.innerConventionBuilder
                 .ForType(factoryType)
                 .Export(b => b.AsContractType<IScopeFactory>()
                               .AsContractName(scopeName))
@@ -162,51 +169,38 @@ namespace Kephas.Injection.SystemComposition.Hosting
         }
 
         /// <summary>
-        /// Factory method for creating the MEF conventions builder.
-        /// </summary>
-        /// <returns>A newly created MEF conventions builder.</returns>
-        protected override IConventionsBuilder CreateConventionsBuilder()
-        {
-            return new SystemCompositionConventionsBuilder();
-        }
-
-        /// <summary>
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
+        protected override IInjector CreateInjectorCore()
         {
-            this.RegisterScopeFactoryConventions(conventions);
+            this.RegisterScopeFactoryConventions();
 
-            var containerConfiguration = this.configuration ?? new ContainerConfiguration();
-            var conventionBuilder = this.GetConventionBuilder(conventions);
-
-            containerConfiguration
-                .WithDefaultConventions(conventionBuilder);
+            this.containerConfiguration
+                .WithDefaultConventions(this.innerConventionBuilder);
 
             foreach (var provider in this.ExportProviders)
             {
-                containerConfiguration.WithProvider((ExportDescriptorProvider)provider);
+                this.containerConfiguration.WithProvider((ExportDescriptorProvider)provider);
             }
 
             // add the default export descriptor providers.
-            containerConfiguration
+            this.containerConfiguration
                 .WithProvider(new ExportFactoryExportDescriptorProvider())
                 .WithProvider(new ExportFactoryWithMetadataExportDescriptorProvider());
 
-            foreach (var partBuilder in this.GetPartBuilders(conventions))
+            foreach (var partBuilder in this.GetPartBuilders())
             {
-                partBuilder.Build(containerConfiguration);
+                partBuilder.Build(this.containerConfiguration);
             }
 
-            return this.CreateCompositionContext(containerConfiguration);
+            return this.CreateCompositionContext(this.containerConfiguration);
         }
 
         /// <summary>
-        /// Creates the injector based on the provided container configuration.
+        /// Creates the injector based on the provided container containerConfiguration.
         /// </summary>
         /// <param name="containerConfiguration">The container configuration.</param>
         /// <returns>
@@ -218,40 +212,25 @@ namespace Kephas.Injection.SystemComposition.Hosting
         }
 
         /// <summary>
-        /// Gets the convention builder out of the provided abstract conventions.
-        /// </summary>
-        /// <param name="conventions">The conventions.</param>
-        /// <returns>
-        /// The convention builder.
-        /// </returns>
-        protected virtual ConventionBuilder GetConventionBuilder(IConventionsBuilder conventions)
-        {
-            var mefConventions = ((ISystemCompositionConventionBuilderProvider)conventions).GetConventionBuilder();
-            return mefConventions;
-        }
-
-        /// <summary>
         /// Gets the part builders.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process the part builders in this collection.
         /// </returns>
-        protected virtual IEnumerable<ISystemCompositionPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
+        protected virtual IEnumerable<ISystemCompositionPartBuilder> GetPartBuilders()
         {
-            return ((SystemCompositionConventionsBuilder)conventions).GetPartBuilders();
+            return this.partBuilders;
         }
 
         /// <summary>
         /// Registers the scope factories into the conventions.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
-        private void RegisterScopeFactoryConventions(IConventionsBuilder conventions)
+        private void RegisterScopeFactoryConventions()
         {
             this.scopeFactories.Add(typeof(DefaultScopeFactory));
             foreach (var scopeFactory in this.scopeFactories)
             {
-                this.RegisterScopeFactory(conventions, scopeFactory);
+                this.RegisterScopeFactory(scopeFactory);
             }
         }
     }
