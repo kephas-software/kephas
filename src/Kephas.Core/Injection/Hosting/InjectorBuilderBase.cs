@@ -42,17 +42,7 @@ namespace Kephas.Injection.Hosting
             this.BuildContext = context;
 
             this.Registry = new AppServiceInfoRegistry(() => this.BuildContext.Assemblies);
-
-            context.AppServiceInfosProviders.Add(this.Registry);
         }
-
-        /// <summary>
-        /// Gets the conventions builder.
-        /// </summary>
-        /// <value>
-        /// The conventions builder.
-        /// </value>
-        protected internal IConventionsBuilder? ConventionsBuilder { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
@@ -68,18 +58,26 @@ namespace Kephas.Injection.Hosting
         protected internal IInjectionBuildContext BuildContext { get; }
 
         /// <summary>
-        /// Sets the composition conventions.
+        /// Define a rule that will apply to the specified type.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
-        /// <returns>This builder.</returns>
-        public virtual TBuilder WithConventions(IConventionsBuilder conventions)
-        {
-            Requires.NotNull(conventions, nameof(conventions));
+        /// <param name="type">The type from which matching types derive.</param>
+        /// <returns>A <see cref="IPartBuilder"/> that must be used to specify the rule.</returns>
+        public abstract IPartBuilder ForType(Type type);
 
-            this.ConventionsBuilder = conventions;
+        /// <summary>
+        /// Defines a registration for the specified type and its singleton instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public abstract IPartBuilder ForInstance(object instance);
 
-            return (TBuilder)this;
-        }
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="factory">The service factory.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public abstract IPartBuilder ForFactory(Type type, Func<IInjector, object> factory);
 
         /// <summary>
         /// Adds the assemblies containing the composition parts.
@@ -114,23 +112,6 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Adds the assembly containing the composition parts.
-        /// </summary>
-        /// <param name="assembly">The composition assembly.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        /// <remarks>
-        /// Can be used multiple times, the provided assembly is added to the existing ones.
-        /// </remarks>
-        public virtual TBuilder WithAssembly(Assembly assembly)
-        {
-            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
-
-            return this.WithAssemblies(assembly);
-        }
-
-        /// <summary>
         /// Adds the factory export.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
@@ -148,12 +129,12 @@ namespace Kephas.Injection.Hosting
             Requires.NotNull(factory, nameof(factory));
 
             this.Registry.Add(new AppServiceInfo(
-                                    typeof(TContract),
-                                    ctx => factory(),
-                                    isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient)
-                                {
-                                    AllowMultiple = allowMultiple,
-                                });
+                typeof(TContract),
+                ctx => factory(),
+                isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient)
+            {
+                AllowMultiple = allowMultiple,
+            });
 
             return (TBuilder)this;
         }
@@ -167,10 +148,7 @@ namespace Kephas.Injection.Hosting
         /// </returns>
         public virtual TBuilder WithRegistration(params IAppServiceInfo[] registrations)
         {
-            if (registrations == null)
-            {
-                throw new ArgumentNullException(nameof(registrations));
-            }
+            registrations = registrations ?? throw new ArgumentNullException(nameof(registrations));
 
             registrations.ForEach(this.Registry.Add);
 
@@ -183,51 +161,52 @@ namespace Kephas.Injection.Hosting
         /// <returns>The newly created injector.</returns>
         public virtual IInjector Build()
         {
-            IInjector? container = null;
-            Profiler.WithInfoStopwatch(
-                () =>
-                {
-                    container = this.CreateInjectorCore(this.GetConventions());
-                },
-                this.Logger);
-
-            return container!;
+            return Profiler.WithInfoStopwatch(
+                () => this.RegisterConventions().CreateInjectorCore(),
+                this.Logger).Value;
         }
 
         /// <summary>
-        /// Factory method for creating the conventions builder.
+        /// Gets the application service information providers.
         /// </summary>
-        /// <returns>A newly created conventions builder.</returns>
-        protected abstract IConventionsBuilder CreateConventionsBuilder();
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// </returns>
+        protected internal IList<IAppServiceInfosProvider> GetAppServiceInfosProviders()
+        {
+            return new List<IAppServiceInfosProvider>(this.BuildContext.AppServiceInfosProviders)
+            {
+                this.Registry,
+            };
+        }
+
+        /// <summary>
+        /// Adds the conventions from the provided types implementing
+        /// <see cref="AppServiceInfoConventionsRegistrar" />.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        protected internal TBuilder RegisterConventions()
+        {
+            new AppServiceInfoConventionsRegistrar()
+                .RegisterConventions(this, this.BuildContext, this.GetAppServiceInfosProviders());
+
+            if (this.Logger.IsDebugEnabled())
+            {
+                this.Logger.Debug("Registering conventions from '{conventionsRegistrar}...", typeof(AppServiceInfoConventionsRegistrar));
+            }
+
+            return (TBuilder)this;
+        }
 
         /// <summary>
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
-        /// <param name="conventions">The conventions.</param>
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected abstract IInjector CreateInjectorCore(IConventionsBuilder conventions);
-
-        /// <summary>
-        /// Gets the convention builder.
-        /// </summary>
-        /// <returns>
-        /// The convention builder.
-        /// </returns>
-        protected virtual IConventionsBuilder GetConventions()
-        {
-            var conventions = this.ConventionsBuilder ?? this.CreateConventionsBuilder();
-
-            Profiler.WithInfoStopwatch(
-                () =>
-                {
-                    conventions.RegisterConventions(this.BuildContext);
-                },
-                this.Logger);
-
-            return conventions;
-        }
+        protected abstract IInjector CreateInjectorCore();
 
         /// <summary>
         /// An application service information serviceRegistry.

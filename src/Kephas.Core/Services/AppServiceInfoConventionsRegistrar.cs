@@ -20,7 +20,6 @@ namespace Kephas.Services
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Conventions;
     using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
@@ -28,56 +27,20 @@ namespace Kephas.Services
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Base for conventions registrars of application services.
+    /// Base for injectorBuilder registrars of application services.
     /// </summary>
-    internal class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
+    internal class AppServiceInfoConventionsRegistrar
     {
         /// <summary>
-        /// The default metadata attribute types.
-        /// </summary>
-        internal static readonly IReadOnlyCollection<Type> DefaultMetadataAttributeTypes;
-
-        /// <summary>
-        /// The default metadata attribute types.
-        /// </summary>
-        internal static readonly IList<Type> WritableDefaultMetadataAttributeTypes
-            = new List<Type>
-            {
-                typeof(ProcessingPriorityAttribute),
-                typeof(OverridePriorityAttribute),
-                typeof(ServiceNameAttribute),
-                typeof(OverrideAttribute),
-            };
-
-        /// <summary>
-        /// Initializes static members of the <see cref="AppServiceInfoConventionsRegistrar"/> class.
-        /// </summary>
-        static AppServiceInfoConventionsRegistrar()
-        {
-            DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
-        }
-
-        /// <summary>
-        /// Registers the provided metadata attribute types as default attributes.
-        /// </summary>
-        /// <param name="attributeTypes">A variable-length parameters list containing attribute types.</param>
-        public static void RegisterDefaultMetadataAttributeTypes(params Type[] attributeTypes)
-        {
-            foreach (var attributeType in attributeTypes)
-            {
-                if (!WritableDefaultMetadataAttributeTypes.Contains(attributeType))
-                {
-                    WritableDefaultMetadataAttributeTypes.Add(attributeType);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Registers the conventions.
+        /// Registers the injectorBuilder.
         /// </summary>
         /// <param name="builder">The registration builder.</param>
         /// <param name="buildContext">Context for the registration.</param>
-        public void RegisterConventions(IConventionsBuilder builder, IInjectionBuildContext buildContext)
+        /// <param name="appServiceInfoProviders">The list of <see cref="IAppServiceInfosProvider"/>.</param>
+        public void RegisterConventions(
+            IInjectorBuilder builder,
+            IInjectionBuildContext buildContext,
+            IList<IAppServiceInfosProvider> appServiceInfoProviders)
         {
             buildContext = buildContext ?? throw new ArgumentNullException(nameof(buildContext));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
@@ -85,7 +48,6 @@ namespace Kephas.Services
             var logger = this.GetLogger(buildContext);
 
             // get all type infos from the injection assemblies
-            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext);
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .ToList();
@@ -151,20 +113,8 @@ namespace Kephas.Services
             }
         }
 
-        /// <summary>
-        /// Gets the application service information providers.
-        /// </summary>
-        /// <param name="buildContext">Context for the registration.</param>
-        /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
-        /// </returns>
-        protected IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
-        {
-            return new List<IAppServiceInfosProvider>(buildContext.AppServiceInfosProviders);
-        }
-
         private void RegisterService(
-            IConventionsBuilder conventions,
+            IInjectorBuilder injectorBuilder,
             Type contractDeclarationType,
             Type contractType,
             IAppServiceInfo appServiceInfo,
@@ -179,13 +129,13 @@ namespace Kephas.Services
 
             var partBuilder = appServiceInfo.InstancingStrategy switch
             {
-                Type type => conventions
+                Type type => injectorBuilder
                     .ForType(type)
                     .SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(contractType, ctorInfos)),
-                Func<IInjector, object> factory => conventions
+                Func<IInjector, object> factory => injectorBuilder
                     .ForFactory(contractType, factory),
                 null => null,
-                var instance => conventions
+                var instance => injectorBuilder
                     .ForInstance(instance),
             };
 
