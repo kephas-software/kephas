@@ -162,7 +162,7 @@ namespace Kephas.Injection.Hosting
         public virtual IInjector Build()
         {
             return Profiler.WithInfoStopwatch(
-                () => this.RegisterConventions().CreateInjectorCore(),
+                () => this.RegisterServices().CreateInjectorCore(),
                 this.Logger).Value;
         }
 
@@ -187,20 +187,19 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Adds the conventions from the provided types implementing
-        /// <see cref="AppServiceInfoConventionsRegistrar" />.
+        /// Registers the services from <see cref="IAppServiceInfo"/> collected from all providers.
         /// </summary>
         /// <returns>
         /// This builder.
         /// </returns>
-        protected internal TBuilder RegisterConventions()
+        protected internal TBuilder RegisterServices()
         {
-            new AppServiceInfoConventionsRegistrar()
-                .RegisterConventions(this, this.BuildContext, this.GetAppServiceInfosProviders());
+            new AppServiceInfoInjectionRegistrar()
+                .RegisterServices(this, this.BuildContext, this.GetAppServiceInfosProviders());
 
             if (this.Logger.IsDebugEnabled())
             {
-                this.Logger.Debug("Registering conventions from '{conventionsRegistrar}...", typeof(AppServiceInfoConventionsRegistrar));
+                this.Logger.Debug("Registering conventions from '{registrar}...", typeof(AppServiceInfoInjectionRegistrar));
             }
 
             return (TBuilder)this;

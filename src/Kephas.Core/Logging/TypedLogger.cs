@@ -33,7 +33,7 @@ namespace Kephas.Logging
         /// <param name="logManager">The log manager.</param>
         public TypedLogger(ILogManager logManager)
         {
-            Requires.NotNull(logManager, nameof(logManager));
+            logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
 
             this.innerLogger = logManager.GetLogger(typeof(TService)) ?? NullLogManager.GetNullLogger(typeof(TService));
         }

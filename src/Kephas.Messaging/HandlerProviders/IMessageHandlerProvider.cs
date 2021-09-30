@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Messaging.HandlerProviders
 {
     using System;
     using System.Collections.Generic;
+
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>

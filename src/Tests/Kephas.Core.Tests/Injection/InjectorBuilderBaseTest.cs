@@ -75,16 +75,10 @@ namespace Kephas.Core.Tests.Injection
             public TestRegistrationInjectorBuilder(IInjectionBuildContext? buildContext = null)
                 : base(buildContext ?? new InjectionBuildContext(new AmbientServices(typeRegistry: new RuntimeTypeRegistry())))
             {
-                this.DerivedConventionsBuilders = new Dictionary<Type, IPartBuilder>();
                 this.TypeConventionsBuilders = new Dictionary<Type, IPartBuilder>();
-                this.MatchingConventionsBuilders = new Dictionary<Predicate<Type>, IPartBuilder>();
             }
 
-            public IDictionary<Type, IPartBuilder> DerivedConventionsBuilders { get; private set; }
-
             public IDictionary<Type, IPartBuilder> TypeConventionsBuilders { get; private set; }
-
-            public IDictionary<Predicate<Type>, IPartBuilder> MatchingConventionsBuilders { get; private set; }
 
             public override IPartBuilder ForType(Type type)
             {
@@ -97,10 +91,7 @@ namespace Kephas.Core.Tests.Injection
             /// Defines a registration for the specified type and its singleton instance.
             /// </summary>
             /// <param name="instance">The instance.</param>
-            public override IPartBuilder ForInstance(object instance)
-            {
-                return Substitute.For<IPartBuilder>();
-            }
+            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
 
             /// <summary>
             /// Defines a registration for the specified type and its instance factory.
@@ -108,18 +99,11 @@ namespace Kephas.Core.Tests.Injection
             /// <param name="type">The registered service type.</param>
             /// <param name="factory">The service factory.</param>
             /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
-            {
-                // throw new NotImplementedException();
-                return Substitute.For<IPartBuilder>();
-            }
+            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
 
             protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
-            private IPartBuilder CreateBuilder(Type type)
-            {
-                return new TestPartConventionsBuilder(type);
-            }
+            private IPartBuilder CreateBuilder(Type type) => new TestPartConventionsBuilder(type);
         }
 
         public class TestPartConventionsBuilder : IPartBuilder

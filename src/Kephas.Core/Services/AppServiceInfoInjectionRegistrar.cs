@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceInfoConventionsRegistrar.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceInfoInjectionRegistrar.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,24 +12,22 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Hosting;
     using Kephas.Logging;
-    using Kephas.Model.AttributedModel;
     using Kephas.Resources;
     using Kephas.Services.Reflection;
 
     /// <summary>
     /// Base for injectorBuilder registrars of application services.
     /// </summary>
-    internal class AppServiceInfoConventionsRegistrar
+    internal class AppServiceInfoInjectionRegistrar
     {
         /// <summary>
         /// Registers the injectorBuilder.
@@ -37,7 +35,7 @@ namespace Kephas.Services
         /// <param name="builder">The registration builder.</param>
         /// <param name="buildContext">Context for the registration.</param>
         /// <param name="appServiceInfoProviders">The list of <see cref="IAppServiceInfosProvider"/>.</param>
-        public void RegisterConventions(
+        public void RegisterServices(
             IInjectorBuilder builder,
             IInjectionBuildContext buildContext,
             IList<IAppServiceInfosProvider> appServiceInfoProviders)
@@ -225,7 +223,7 @@ namespace Kephas.Services
                 if (contractDeclarationType.IsConstructedGenericType)
                 {
                     var contractGenericDefinitionType = contractDeclarationType.GetGenericTypeDefinition();
-                    if (appServiceInfoMap.TryGetValue(contractGenericDefinitionType, out appServiceInfos))
+                    if (appServiceInfoMap.TryGetValue(contractDeclarationType, out appServiceInfos))
                     {
                         // if the contract declaration based on the generic type definition is found,
                         // build a new contract declaration based on the constructed generic type

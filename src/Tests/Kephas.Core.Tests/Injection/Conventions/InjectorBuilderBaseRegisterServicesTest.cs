@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConventionsBuilderExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="InjectorBuilderBaseRegisterServicesTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,19 +25,19 @@ namespace Kephas.Core.Tests.Injection.Conventions
     /// The conventions builder extensions test.
     /// </summary>
     [TestFixture]
-    public class ConventionsBuilderExtensionsTest
+    public class InjectorBuilderBaseRegisterServicesTest
     {
         [Test]
-        public void RegisterConventions_singleton_derived_conventions_with_metadata()
+        public void RegisterServices_singleton_derived_conventions_with_metadata()
         {
             var builder = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
             var newBuilder = builder
                 .WithAppServiceInfosProvider(new CalculatorAppServiceInfosProvider())
-                .RegisterConventions();
+                .RegisterServices();
 
             Assert.AreSame(builder, newBuilder);
-            Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
-            var partBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
+            Assert.AreEqual(1, builder.TypeConventionsBuilders.Count);
+            var partBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builder.TypeConventionsBuilders.First().Value;
             Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
             var exportBuilder = partBuilder;
