@@ -27,6 +27,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 

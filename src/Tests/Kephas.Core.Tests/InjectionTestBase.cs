@@ -23,6 +23,7 @@ namespace Kephas.Core.Tests
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Testing;
+    using Kephas.Testing.Injection;
 
     /// <summary>
     /// Base class for tests using composition.

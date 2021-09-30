@@ -85,7 +85,7 @@ namespace Kephas.Services
             var logger = this.GetLogger(buildContext);
 
             // get all type infos from the injection assemblies
-            var appServiceInfoProviders = buildContext.AppServiceInfosProviders;
+            var appServiceInfoProviders = this.GetAppServiceInfosProviders(buildContext);
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .ToList();
@@ -151,6 +151,18 @@ namespace Kephas.Services
             }
         }
 
+        /// <summary>
+        /// Gets the application service information providers.
+        /// </summary>
+        /// <param name="buildContext">Context for the registration.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// </returns>
+        protected IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
+        {
+            return new List<IAppServiceInfosProvider>(buildContext.AppServiceInfosProviders);
+        }
+
         private void RegisterService(
             IConventionsBuilder conventions,
             Type contractDeclarationType,
@@ -198,18 +210,6 @@ namespace Kephas.Services
             {
                 partBuilder.AddMetadata(appServiceInfo.Metadata);
             }
-        }
-
-        /// <summary>
-        /// Gets the application service information providers.
-        /// </summary>
-        /// <param name="buildContext">Context for the registration.</param>
-        /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
-        /// </returns>
-        private IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
-        {
-            return buildContext.AppServiceInfosProviders ?? Array.Empty<IAppServiceInfosProvider>();
         }
 
         private IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> SortServiceInfos(IEnumerable<IAppServiceInfo> appServiceInfos)

@@ -18,7 +18,6 @@ namespace Kephas.Injection.Hosting
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Conventions;
     using Kephas.Logging;
-    using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
@@ -35,9 +34,8 @@ namespace Kephas.Injection.Hosting
         /// <param name="context">The context.</param>
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the injector.")]
         protected InjectorBuilderBase(IInjectionBuildContext context)
-            : base(context.AmbientServices.LogManager)
+            : base((context ?? throw new ArgumentNullException(nameof(context))).AmbientServices.LogManager)
         {
-            Requires.NotNull(context, nameof(context));
             var ambientServices = context.AmbientServices;
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
@@ -54,7 +52,7 @@ namespace Kephas.Injection.Hosting
         /// <value>
         /// The conventions builder.
         /// </value>
-        protected IConventionsBuilder? ConventionsBuilder { get; private set; }
+        protected internal IConventionsBuilder? ConventionsBuilder { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
@@ -62,12 +60,12 @@ namespace Kephas.Injection.Hosting
         /// <value>
         /// The serviceRegistry.
         /// </value>
-        protected AppServiceInfoRegistry Registry { get; }
+        protected internal AppServiceInfoRegistry Registry { get; }
 
         /// <summary>
         /// Gets the registration context.
         /// </summary>
-        protected IInjectionBuildContext BuildContext { get; }
+        protected internal IInjectionBuildContext BuildContext { get; }
 
         /// <summary>
         /// Sets the composition conventions.
@@ -180,25 +178,6 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Adds the <see cref="IAppServiceInfosProvider"/>.
-        /// </summary>
-        /// <remarks>
-        /// Can be used multiple times, the factories are added to the existing ones.
-        /// </remarks>
-        /// <param name="appServiceInfosProvider">The <see cref="IAppServiceInfosProvider"/>.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public virtual TBuilder WithAppServiceInfosProvider(IAppServiceInfosProvider appServiceInfosProvider)
-        {
-            appServiceInfosProvider = appServiceInfosProvider ?? throw new ArgumentNullException(nameof(appServiceInfosProvider));
-
-            this.BuildContext.AppServiceInfosProviders.Add(appServiceInfosProvider);
-
-            return (TBuilder)this;
-        }
-
-        /// <summary>
         /// Creates the injector.
         /// </summary>
         /// <returns>The newly created injector.</returns>
@@ -213,23 +192,6 @@ namespace Kephas.Injection.Hosting
                 this.Logger);
 
             return container!;
-        }
-
-        /// <summary>
-        /// Adds the composition parts.
-        /// </summary>
-        /// <param name="parts">The parts.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        /// <remarks>
-        /// Can be used multiple times, the provided parts are added to the existing ones.
-        /// </remarks>
-        internal virtual TBuilder WithParts(IEnumerable<Type> parts)
-        {
-            parts = parts ?? throw new ArgumentNullException(nameof(parts));
-
-            return this.WithAppServiceInfosProvider(new PartsAppServiceInfosProvider(parts));
         }
 
         /// <summary>
@@ -268,23 +230,9 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
-        /// Asserts the required service is not missing.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="service">The service.</param>
-        protected void AssertRequiredService<TService>(TService service)
-        {
-            if (service == null)
-            {
-                throw new InvalidOperationException(string.Format(Strings.InjectorBuilderBase_RequiredServiceMissing_Exception, typeof(TService).FullName));
-            }
-        }
-
-        /// <summary>
         /// An application service information serviceRegistry.
         /// </summary>
-        protected class AppServiceInfoRegistry : IAppServiceInfosProvider
+        protected internal class AppServiceInfoRegistry : IAppServiceInfosProvider
         {
             private readonly Func<IEnumerable<Assembly>> getAssemblies;
             private readonly IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();

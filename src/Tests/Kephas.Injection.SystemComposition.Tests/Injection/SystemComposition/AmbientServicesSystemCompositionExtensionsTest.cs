@@ -16,6 +16,7 @@ namespace Kephas.Tests.Injection.SystemComposition
     using Kephas.Application;
     using Kephas.Injection.SystemComposition.Hosting;
     using Kephas.Services;
+    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]

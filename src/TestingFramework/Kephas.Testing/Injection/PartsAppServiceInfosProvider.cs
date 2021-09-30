@@ -5,20 +5,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.Hosting
+namespace Kephas.Testing.Injection
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
     using Kephas.Injection.AttributedModel;
     using Kephas.Services;
 
     /// <summary>
     /// Implementation of <see cref="IAppServiceInfosProvider"/> for an enumeration of types.
     /// </summary>
-    internal class PartsAppServiceInfosProvider : IAppServiceInfosProvider
+    public class PartsAppServiceInfosProvider : IAppServiceInfosProvider
     {
         private readonly IList<Type> parts;
 

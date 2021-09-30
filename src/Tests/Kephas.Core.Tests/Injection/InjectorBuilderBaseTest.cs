@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Injection
             var builder = new TestInjectorBuilder()
                 .WithConventions(conventions);
 
-            Assert.AreSame(conventions, builder.InternalConventionsBuilder);
+            Assert.AreSame(conventions, builder.ConventionsBuilder);
         }
 
         [Test]
@@ -65,11 +65,6 @@ namespace Kephas.Core.Tests.Injection
             public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
                 : base(new InjectionBuildContext(new AmbientServices().Register(logManager).Register(appRuntime)))
             {
-            }
-
-            public IConventionsBuilder InternalConventionsBuilder
-            {
-                get { return this.ConventionsBuilder; }
             }
 
             protected override IConventionsBuilder CreateConventionsBuilder()

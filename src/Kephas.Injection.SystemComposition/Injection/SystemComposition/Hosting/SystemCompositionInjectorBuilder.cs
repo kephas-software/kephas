@@ -69,8 +69,7 @@ namespace Kephas.Injection.SystemComposition.Hosting
         public override SystemCompositionInjectorBuilder WithConventions(IConventionsBuilder conventions)
         {
             // ReSharper disable once SuspiciousTypeConversion.Global
-            var mefConventions = conventions as ISystemCompositionConventionBuilderProvider;
-            if (mefConventions == null)
+            if (conventions is not ISystemCompositionConventionBuilderProvider)
             {
                 throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(ISystemCompositionConventionBuilderProvider).FullName));
             }

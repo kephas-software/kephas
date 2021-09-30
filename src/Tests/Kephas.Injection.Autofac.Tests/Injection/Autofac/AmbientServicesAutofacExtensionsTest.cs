@@ -14,6 +14,7 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Application;
     using Kephas.Injection.Autofac.Hosting;
     using Kephas.Services;
+    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]
