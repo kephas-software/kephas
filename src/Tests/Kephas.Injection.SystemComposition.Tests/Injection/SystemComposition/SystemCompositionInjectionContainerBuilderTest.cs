@@ -41,8 +41,8 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public async Task CreateInjector_simple_ambient_services_exported()
         {
-            var builder = this.CreateCompositionContainerBuilder();
-            var mockAppRuntime = builder.AppRuntime;
+            var (builder, ambientServices) = this.CreateCompositionContainerBuilder();
+            var mockAppRuntime = ambientServices.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
@@ -50,7 +50,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             var container = builder.Build();
 
             var loggerManager = container.Resolve<ILogManager>();
-            Assert.AreEqual(builder.LogManager, loggerManager);
+            Assert.AreEqual(ambientServices.LogManager, loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
             Assert.AreEqual(mockAppRuntime, platformManager);
@@ -59,16 +59,15 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void CreateInjector_simple_ambient_services_exported_no_assemblies()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var (builder, ambientServices) = this.CreateCompositionContainerBuilder(assemblies: Array.Empty<Assembly>());
             var container = builder
-                .WithAssemblies(Array.Empty<Assembly>())
                 .Build();
 
             var loggerManager = container.Resolve<ILogManager>();
-            Assert.AreEqual(builder.LogManager, loggerManager);
+            Assert.AreEqual(ambientServices.LogManager, loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
-            Assert.AreEqual(builder.AppRuntime, platformManager);
+            Assert.AreEqual(ambientServices.AppRuntime, platformManager);
         }
 
         [Test]
@@ -392,8 +391,8 @@ namespace Kephas.Tests.Injection.SystemComposition
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
                 .Returns((typeof(string), new AppServiceInfo(typeof(string), "123")));
 
-            var factory = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders = new[] { registrar });
-            var mockPlatformManager = factory.AppRuntime;
+            var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
+            var mockPlatformManager = ambientServices.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
@@ -411,8 +410,8 @@ namespace Kephas.Tests.Injection.SystemComposition
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
                 .Returns((typeof(string), new AppServiceInfo(typeof(string), injector => "123")));
 
-            var factory = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders = new[] { registrar });
-            var mockPlatformManager = factory.AppRuntime;
+            var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
+            var mockPlatformManager = ambientServices.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
@@ -423,7 +422,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             Assert.AreEqual("123", instance);
         }
 
-        private (SystemCompositionInjectorBuilder builder, IAmbientServices ambientServices) CreateCompositionContainerBuilder(Action<IInjectionBuildContext>? config = null)
+        private (SystemCompositionInjectorBuilder builder, IAmbientServices ambientServices) CreateCompositionContainerBuilder(Action<IInjectionBuildContext>? config = null, IEnumerable<Assembly>? assemblies = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -431,7 +430,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             var ambientServices = new AmbientServices()
                 .Register(mockLoggerManager)
                 .Register(mockPlatformManager);
-            var context = new InjectionBuildContext(ambientServices);
+            var context = new InjectionBuildContext(ambientServices, assemblies?.ToList());
             config?.Invoke(context);
             var factory = new SystemCompositionInjectorBuilder(context);
             return (factory, ambientServices);
@@ -439,9 +438,9 @@ namespace Kephas.Tests.Injection.SystemComposition
 
         private SystemCompositionInjectorBuilder CreateInjectorBuilderWithStringLogger()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var (builder, ambientServices) = this.CreateCompositionContainerBuilder();
 
-            var mockLoggerManager = builder.LogManager;
+            var mockLoggerManager = ambientServices.LogManager;
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
 
             return builder;
