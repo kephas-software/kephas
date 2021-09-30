@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataModelWithSystemCompositionInjectionTestBase.cs" company="Kephas Software SRL">
+// <copyright file="DataModelWithAutofacInjectionTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,7 +12,6 @@ namespace Kephas.Data.Model.Tests
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Injection;
     using Kephas.Model;
     using Kephas.Model.Runtime;
@@ -22,7 +21,7 @@ namespace Kephas.Data.Model.Tests
     /// <summary>
     /// A model test base.
     /// </summary>
-    public abstract class DataModelWithSystemCompositionInjectionTestBase : SystemCompositionInjectionTestBase
+    public abstract class DataModelWithAutofacInjectionTestBase : AutofacInjectionTestBase
     {
         public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
         {

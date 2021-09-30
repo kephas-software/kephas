@@ -16,9 +16,9 @@ namespace Kephas.Application.Tests
 
     public class ApplicationTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(AppLifecycleBehaviorBase).Assembly,          // Kephas.Application
             };

@@ -16,9 +16,9 @@ namespace Kephas.Serialization.Bson.Tests
 
     public class SerializationTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
+            var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
                                     typeof(BsonSerializer).Assembly,      // Kephas.Serialization.MongoDBBson
                                 };

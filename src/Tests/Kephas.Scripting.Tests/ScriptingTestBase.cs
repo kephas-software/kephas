@@ -16,9 +16,9 @@ namespace Kephas.Scripting.Tests
 
     public class ScriptingTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(DefaultScriptProcessor).Assembly, /* Kephas.Scripting */
             };

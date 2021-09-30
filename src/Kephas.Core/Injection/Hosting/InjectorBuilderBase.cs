@@ -9,15 +9,16 @@ namespace Kephas.Injection.Hosting
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
 
     using Kephas.Collections;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Conventions;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
@@ -32,7 +33,6 @@ namespace Kephas.Injection.Hosting
         /// Initializes a new instance of the <see cref="InjectorBuilderBase{TBuilder}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the injector.")]
         protected InjectorBuilderBase(IInjectionBuildContext context)
             : base((context ?? throw new ArgumentNullException(nameof(context))).AmbientServices.LogManager)
         {
@@ -41,7 +41,8 @@ namespace Kephas.Injection.Hosting
 
             this.BuildContext = context;
 
-            this.Registry = new AppServiceInfoRegistry(() => this.BuildContext.Assemblies);
+            this.Registry = new AppServiceInfoRegistry(
+                () => context.Assemblies.Count == 0 ? this.GetDefaultAssemblies() : context.Assemblies);
         }
 
         /// <summary>
@@ -201,6 +202,45 @@ namespace Kephas.Injection.Hosting
         }
 
         /// <summary>
+        /// Gets the default assemblies if none provided in the context.
+        /// </summary>
+        /// <returns>A list of assemblies.</returns>
+        protected virtual IList<Assembly> GetDefaultAssemblies()
+        {
+            var searchPattern = this.BuildContext.Settings.AssemblyFileNamePattern;
+
+            this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetDefaultAssemblies), searchPattern);
+
+            return Profiler.WithDebugStopwatch(
+                () =>
+                {
+                    var appAssemblies = this.WhereNotSystemAssemblies(this.BuildContext.AmbientServices.AppRuntime.GetAppAssemblies());
+
+                    if (string.IsNullOrWhiteSpace(searchPattern))
+                    {
+                        return appAssemblies.ToList();
+                    }
+
+                    var regex = new Regex(searchPattern);
+                    return appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
+                },
+                this.Logger).Value;
+        }
+
+        /// <summary>
+        /// Filters out the system assemblies from the provided assemblies.
+        /// </summary>
+        /// <param name="assemblies">The convention assemblies.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process where not system assemblies in this
+        /// collection.
+        /// </returns>
+        private IEnumerable<Assembly> WhereNotSystemAssemblies(IEnumerable<Assembly> assemblies)
+        {
+            return assemblies.Where(a => !a.IsSystemAssembly());
+        }
+
+        /// <summary>
         /// Creates a new injector based on the provided conventions and assembly parts.
         /// </summary>
         /// <returns>
@@ -261,7 +301,8 @@ namespace Kephas.Injection.Hosting
 
             private IEnumerable<T> GetAppServices<T>()
             {
-                return this.getAssemblies()
+                var assemblies = this.getAssemblies();
+                return assemblies
                     .SelectMany(a => a.GetCustomAttributes().OfType<T>())
                     .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
             }

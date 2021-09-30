@@ -101,7 +101,7 @@ namespace Kephas.Testing.Injection
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             var containerBuilder = this.WithInjectorBuilder(ambientServices, logManager, appRuntime)
-                    .WithAssemblies(this.GetDefaultConventionAssemblies())
+                    .WithAssemblies(this.GetAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
                     .WithParts(parts ?? Type.EmptyTypes);
 
@@ -130,7 +130,7 @@ namespace Kephas.Testing.Injection
                 .Build();
         }
 
-        public virtual IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public virtual IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>
                        {

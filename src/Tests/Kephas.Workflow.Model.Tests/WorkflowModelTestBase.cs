@@ -15,9 +15,9 @@ namespace Kephas.Workflow.Model.Tests
 
     public abstract class WorkflowModelTestBase : ModelTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IActivity).Assembly,         // Kephas.Workflow
                 typeof(IActivityType).Assembly,     // Kephas.Workflow.Model

@@ -16,9 +16,9 @@ namespace Kephas.Data.Tests
 
     public abstract class DataTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
+            var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
                                     typeof(IDataContext).Assembly,      // Kephas.Data
                                 };

@@ -42,9 +42,9 @@ namespace Kephas.Commands.Messaging.Tests
             return base.CreateInjector(ambientServices, assemblies, parts, config);
         }
 
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = base.GetDefaultConventionAssemblies().ToList();
+            var assemblies = base.GetAssemblies().ToList();
             assemblies.AddRange(new[]
                         {
                             typeof(IAppManager).Assembly,               // Kephas.Application

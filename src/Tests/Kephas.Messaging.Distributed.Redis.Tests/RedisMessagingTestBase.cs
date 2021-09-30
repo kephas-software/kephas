@@ -27,9 +27,9 @@ namespace Kephas.Messaging.Redis.Tests
 
     public abstract class RedisMessagingTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IAppManager).Assembly,                   // Kephas.Application
                 typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed

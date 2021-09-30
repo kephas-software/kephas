@@ -46,9 +46,9 @@ namespace Kephas.Data.MongoDB.Tests
             };
         }
 
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IDataContext).GetTypeInfo().Assembly, /* Kephas.Data */
                 typeof(MongoDataContext).GetTypeInfo().Assembly, /* Kephas.Data.MongoDB */

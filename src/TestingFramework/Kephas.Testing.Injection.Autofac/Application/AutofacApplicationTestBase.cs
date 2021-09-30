@@ -18,9 +18,9 @@ namespace Kephas.Testing.Application
 
     public class AutofacApplicationTestBase : AutofacInjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
                        {
                            typeof(IAppManager).GetTypeInfo().Assembly,     /* Kephas.Application*/
                        };

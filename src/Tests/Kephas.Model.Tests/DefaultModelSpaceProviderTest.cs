@@ -58,9 +58,9 @@ namespace Kephas.Model.Tests
             Assert.IsTrue((modelSpace as IConstructibleElement)?.ConstructionState.IsCompleted);
         }
 
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var baseAssemblies = base.GetDefaultConventionAssemblies().ToList();
+            var baseAssemblies = base.GetAssemblies().ToList();
             baseAssemblies.Add(typeof(IModelSpace).GetTypeInfo().Assembly);
             return baseAssemblies;
         }

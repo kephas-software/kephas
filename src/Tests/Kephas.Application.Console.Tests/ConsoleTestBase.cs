@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.Lite.Hosting;
-
 namespace Kephas.Application.Console.Tests
 {
     using System;
@@ -19,6 +16,8 @@ namespace Kephas.Application.Console.Tests
     using System.Reflection;
 
     using Kephas.Commands;
+    using Kephas.Injection;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Testing.Injection;
 
@@ -42,9 +41,9 @@ namespace Kephas.Application.Console.Tests
             return base.CreateInjector(ambientServices, assemblies, parts, config);
         }
 
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = base.GetDefaultConventionAssemblies().ToList();
+            var assemblies = base.GetAssemblies().ToList();
             assemblies.AddRange(new[]
                         {
                             typeof(IAppManager).Assembly,           // Kephas.Application

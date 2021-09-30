@@ -27,9 +27,9 @@ namespace Kephas.Tests.Orchestration
 
     public abstract class OrchestrationTestBase : ApplicationTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
+            var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
                                     typeof(IMessageBroker).Assembly,
                                     typeof(IMessageProcessor).Assembly,

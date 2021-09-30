@@ -19,9 +19,9 @@ namespace Kephas.Model.Tests
     [TestFixture]
     public class ModelAppServiceInfosProviderTest : ModelTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IModelSpace).Assembly,
             };

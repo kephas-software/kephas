@@ -20,7 +20,6 @@ namespace Kephas.Core.Tests
     using Kephas.Injection.Hosting;
     using Kephas.Injection.Lite.Hosting;
     using Kephas.Logging;
-    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Testing;
     using Kephas.Testing.Injection;
@@ -56,7 +55,7 @@ namespace Kephas.Core.Tests
         {
             ambientServices ??= new AmbientServices();
             var containerBuilder = this.WithInjectorBuilder(ambientServices)
-                    .WithAssemblies(this.GetDefaultConventionAssemblies())
+                    .WithAssemblies(this.GetAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
                     .WithParts(parts ?? Type.EmptyTypes);
 
@@ -83,7 +82,7 @@ namespace Kephas.Core.Tests
                 .Build();
         }
 
-        public virtual IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public virtual IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>
                        {

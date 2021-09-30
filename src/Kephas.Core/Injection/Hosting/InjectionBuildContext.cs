@@ -28,8 +28,6 @@ namespace Kephas.Injection.Hosting
     /// </summary>
     public class InjectionBuildContext : Context, IInjectionBuildContext
     {
-        private IList<Assembly>? assemblies;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionBuildContext"/> class.
         /// </summary>
@@ -41,7 +39,7 @@ namespace Kephas.Injection.Hosting
         public InjectionBuildContext(IAmbientServices ambientServices, IList<Assembly>? assemblies = null)
             : base(ambientServices ?? throw new ArgumentNullException(nameof(ambientServices)))
         {
-            this.assemblies = assemblies;
+            this.Assemblies = assemblies ?? new List<Assembly>();
         }
 
         /// <summary>
@@ -55,50 +53,11 @@ namespace Kephas.Injection.Hosting
         /// <summary>
         /// Gets the list of assemblies used in injection.
         /// </summary>
-        public IList<Assembly> Assemblies => this.assemblies ??= this.GetAssemblies();
+        public IList<Assembly> Assemblies { get; }
 
         /// <summary>
         /// Gets the injection settings.
         /// </summary>
-        public InjectionSettings Settings { get; } = new InjectionSettings();
-
-        /// <summary>
-        /// Filters out the system assemblies from the provided assemblies.
-        /// </summary>
-        /// <param name="assemblies">The convention assemblies.</param>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process where not system assemblies in this
-        /// collection.
-        /// </returns>
-        private IEnumerable<Assembly> WhereNotSystemAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            return assemblies.Where(a => !a.IsSystemAssembly());
-        }
-
-        /// <summary>
-        /// Gets the assemblies.
-        /// </summary>
-        /// <returns>The assemblies.</returns>
-        private IList<Assembly> GetAssemblies()
-        {
-            var searchPattern = this.Settings.AssemblyFileNamePattern;
-
-            this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetAssemblies), searchPattern);
-
-            return Profiler.WithDebugStopwatch(
-                () =>
-                {
-                    var appAssemblies = this.WhereNotSystemAssemblies(this.AmbientServices.AppRuntime.GetAppAssemblies());
-
-                    if (string.IsNullOrWhiteSpace(searchPattern))
-                    {
-                        return appAssemblies.ToList();
-                    }
-
-                    var regex = new Regex(searchPattern);
-                    return appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
-                },
-                this.Logger).Value;
-        }
+        public InjectionSettings Settings { get; } = new ();
     }
 }

@@ -94,7 +94,7 @@ namespace Kephas.Testing.Injection
             var allParts = this.GetDefaultParts().ToList();
             allParts.AddRange(parts ?? Type.EmptyTypes);
             var containerBuilder = this.WithInjectorBuilder(ambientServices, logManager, appRuntime)
-                    .WithAssemblies(this.GetDefaultConventionAssemblies())
+                    .WithAssemblies(this.GetAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
                     .WithParts(allParts);
 
@@ -130,7 +130,7 @@ namespace Kephas.Testing.Injection
         /// An enumerator that allows foreach to be used to process the default convention assemblies in
         /// this collection.
         /// </returns>
-        public virtual IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public virtual IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>
                        {

@@ -29,9 +29,9 @@ namespace Kephas.Messaging.Pipes.Tests
 
     public abstract class PipesMessagingTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IAppManager).Assembly,                   // Kephas.Application
                 typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed

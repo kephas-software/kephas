@@ -16,9 +16,9 @@ namespace Kephas.TextProcessing.Tests
 
     public abstract class TextProcessingTestBase : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            return new List<Assembly>(base.GetDefaultConventionAssemblies()) {
+            return new List<Assembly>(base.GetAssemblies()) {
                 typeof(ITokenizer).Assembly,            // Kephas.TextProcessing
             };
         }

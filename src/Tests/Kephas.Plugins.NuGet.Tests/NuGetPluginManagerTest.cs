@@ -27,9 +27,9 @@ namespace Kephas.Plugins.NuGet.Tests
     [TestFixture]
     public class NuGetPluginManagerTest : InjectionTestBase
     {
-        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
+            var assemblies = new List<Assembly>(base.GetAssemblies())
             {
                 typeof(PluginManagerBase).Assembly,     // Kephas.Plugins
                 typeof(NuGetPluginManager).Assembly,    // Kephas.Plugins.NuGet
