@@ -58,7 +58,7 @@ namespace Kephas.Core.Tests
                 .Register(Substitute.For<IAppRuntime>());
             var injector = Substitute.For<IInjector>();
             ambientServices.WithInjector<TestInjectorBuilder>(
-                b => b.WithAssembly(this.GetType().Assembly)
+                b => b.WithAssemblies(this.GetType().Assembly)
                     .WithInjector(injector));
 
             Assert.AreSame(injector, ambientServices.Injector);
@@ -86,12 +86,13 @@ namespace Kephas.Core.Tests
                 return this;
             }
 
-            protected override IConventionsBuilder CreateConventionsBuilder()
-            {
-                return Substitute.For<IConventionsBuilder>();
-            }
+            public override IPartBuilder ForType(Type type) => Substitute.For<IPartBuilder>();
 
-            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
+            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+
+            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+
+            protected override IInjector CreateInjectorCore()
             {
                 return this.injector ?? Substitute.For<IInjector>();
             }
@@ -100,19 +101,20 @@ namespace Kephas.Core.Tests
         /// <summary>
         /// Missing required constructor with parameter of type ICompositionContainerBuilderContext.
         /// </summary>
-        public class BadTestInjectorBuilder : InjectorBuilderBase<AmbientServicesExtensionsTest.BadTestInjectorBuilder>
+        public class BadTestInjectorBuilder : InjectorBuilderBase<BadTestInjectorBuilder>
         {
             public BadTestInjectorBuilder()
                 : base(Substitute.For<IInjectionBuildContext>())
             {
             }
 
-            protected override IConventionsBuilder CreateConventionsBuilder()
-            {
-                return Substitute.For<IConventionsBuilder>();
-            }
+            public override IPartBuilder ForType(Type type) => Substitute.For<IPartBuilder>();
 
-            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
+            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+
+            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+
+            protected override IInjector CreateInjectorCore()
             {
                 return Substitute.For<IInjector>();
             }

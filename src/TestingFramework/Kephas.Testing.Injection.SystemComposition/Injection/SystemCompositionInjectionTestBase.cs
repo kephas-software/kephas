@@ -52,13 +52,15 @@ namespace Kephas.Testing.Injection
         ///                               will be created as linked to the newly created container.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <param name="containerConfiguration">Optional. The container configuration.</param>
         /// <returns>
         /// A SystemCompositionInjectorBuilder.
         /// </returns>
         public virtual SystemCompositionInjectorBuilder WithInjectorBuilder(
             IAmbientServices? ambientServices = null,
             ILogManager? logManager = null,
-            IAppRuntime? appRuntime = null)
+            IAppRuntime? appRuntime = null,
+            ContainerConfiguration? containerConfiguration = null)
         {
             var log = new StringBuilder();
             logManager ??= new DebugLogManager(log);
@@ -69,7 +71,7 @@ namespace Kephas.Testing.Injection
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new SystemCompositionInjectorBuilder(new InjectionBuildContext(ambientServices));
+            return new SystemCompositionInjectorBuilder(new InjectionBuildContext(ambientServices), containerConfiguration);
         }
 
         public IInjector CreateInjector(params Assembly[] assemblies)
@@ -113,20 +115,18 @@ namespace Kephas.Testing.Injection
         public IInjector CreateInjectorWithBuilder(params Type[] types)
         {
             var configuration = WithEmptyConfiguration().WithParts(types);
-            return WithInjectorBuilder()
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssembly(typeof(IContextFactory).GetTypeInfo().Assembly)
-                .WithConfiguration(configuration)
+            return WithInjectorBuilder(containerConfiguration: configuration)
+                .WithAssemblies(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IContextFactory).GetTypeInfo().Assembly)
                 .Build();
         }
 
         public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             var configuration = WithEmptyConfiguration().WithParts(types);
-            return WithInjectorBuilder(ambientServices)
-                .WithAssembly(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssembly(typeof(IContextFactory).GetTypeInfo().Assembly)
-                .WithConfiguration(configuration)
+            return WithInjectorBuilder(ambientServices, containerConfiguration: configuration)
+                .WithAssemblies(typeof(IInjector).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IContextFactory).GetTypeInfo().Assembly)
                 .Build();
         }
 

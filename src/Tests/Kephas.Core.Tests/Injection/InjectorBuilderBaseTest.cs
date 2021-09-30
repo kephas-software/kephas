@@ -21,6 +21,7 @@ namespace Kephas.Core.Tests.Injection
     using Kephas.Injection.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -31,16 +32,6 @@ namespace Kephas.Core.Tests.Injection
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class InjectorBuilderBaseTest
     {
-        [Test]
-        public void WithConventionsBuilder()
-        {
-            var conventions = Substitute.For<IConventionsBuilder>();
-            var builder = new TestInjectorBuilder()
-                .WithConventions(conventions);
-
-            Assert.AreSame(conventions, builder.ConventionsBuilder);
-        }
-
         [Test]
         public void Build_success()
         {
@@ -67,20 +58,22 @@ namespace Kephas.Core.Tests.Injection
             {
             }
 
-            protected override IConventionsBuilder CreateConventionsBuilder()
-            {
-                return Substitute.For<IConventionsBuilder>();
-            }
+            public override IPartBuilder ForType(Type type) => Substitute.For<IPartBuilder>();
 
-            protected override IInjector CreateInjectorCore(IConventionsBuilder conventions)
+            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+
+            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+
+            protected override IInjector CreateInjectorCore()
             {
                 return Substitute.For<IInjector>();
             }
         }
 
-        public class TestConventionsBuilder : IConventionsBuilder
+        public class TestRegistrationInjectorBuilder : InjectorBuilderBase<TestRegistrationInjectorBuilder>
         {
-            public TestConventionsBuilder()
+            public TestRegistrationInjectorBuilder(IInjectionBuildContext? buildContext = null)
+                : base(buildContext ?? new InjectionBuildContext(new AmbientServices(typeRegistry: new RuntimeTypeRegistry())))
             {
                 this.DerivedConventionsBuilders = new Dictionary<Type, IPartBuilder>();
                 this.TypeConventionsBuilders = new Dictionary<Type, IPartBuilder>();
@@ -93,7 +86,7 @@ namespace Kephas.Core.Tests.Injection
 
             public IDictionary<Predicate<Type>, IPartBuilder> MatchingConventionsBuilders { get; private set; }
 
-            public IPartBuilder ForType(Type type)
+            public override IPartBuilder ForType(Type type)
             {
                 var partBuilder = this.CreateBuilder(type);
                 this.TypeConventionsBuilders.Add(type, partBuilder);
@@ -104,7 +97,7 @@ namespace Kephas.Core.Tests.Injection
             /// Defines a registration for the specified type and its singleton instance.
             /// </summary>
             /// <param name="instance">The instance.</param>
-            public IPartBuilder ForInstance(object instance)
+            public override IPartBuilder ForInstance(object instance)
             {
                 return Substitute.For<IPartBuilder>();
             }
@@ -115,11 +108,13 @@ namespace Kephas.Core.Tests.Injection
             /// <param name="type">The registered service type.</param>
             /// <param name="factory">The service factory.</param>
             /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-            public IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
+            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
             {
                 // throw new NotImplementedException();
                 return Substitute.For<IPartBuilder>();
             }
+
+            protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
             private IPartBuilder CreateBuilder(Type type)
             {

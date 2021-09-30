@@ -75,7 +75,7 @@ namespace Kephas.Tests.Injection.Autofac
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
-                .WithAssembly(typeof(AutofacConventionsBuilder).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(AutofacInjectorBuilder).GetTypeInfo().Assembly)
                 .Build();
 
             var logger = container.Resolve<ILogger<AutofacInjectorTest.ExportedClass>>();

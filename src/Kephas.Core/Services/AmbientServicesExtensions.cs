@@ -15,6 +15,7 @@ namespace Kephas.Services
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Lite.Conventions;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -53,7 +54,7 @@ namespace Kephas.Services
             // Lite injector exclude its own services, so add them now.
             // CAUTION: this assumes that the app service infos from the other registration sources
             // did not add them already, so after that do not call SetAppServiceInfos!
-            if ((bool?)ambientServices[LiteConventionsBuilder.LiteInjectionKey] ?? false)
+            if ((bool?)ambientServices[LiteInjectorBuilder.LiteInjectionKey] ?? false)
             {
                 var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceInfos(null);
                 var allServiceInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();

@@ -30,9 +30,10 @@ namespace Kephas.Core.Tests.Injection.Conventions
         [Test]
         public void RegisterConventions_singleton_derived_conventions_with_metadata()
         {
-            var builder = new InjectorBuilderBaseTest.TestConventionsBuilder();
-            var newBuilder = ((IConventionsBuilder)builder).RegisterConventions(
-                new TestBuildContext(new AmbientServices()).WithAppServiceInfosProvider(new CalculatorAppServiceInfosProvider()));
+            var builder = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
+            var newBuilder = builder
+                .WithAppServiceInfosProvider(new CalculatorAppServiceInfosProvider())
+                .RegisterConventions();
 
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);

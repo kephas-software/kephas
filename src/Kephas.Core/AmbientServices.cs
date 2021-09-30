@@ -24,6 +24,7 @@ namespace Kephas
     using Kephas.Injection.Hosting;
     using Kephas.Injection.Lite;
     using Kephas.Injection.Lite.Conventions;
+    using Kephas.Injection.Lite.Hosting;
     using Kephas.Injection.Lite.Internal;
     using Kephas.Licensing;
     using Kephas.Logging;
@@ -70,9 +71,7 @@ namespace Kephas
                     .Register<IConfigurationStore, DefaultConfigurationStore>()
                     .Register<ILogManager, NullLogManager>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
-                    .Register<ILicensingManager, NullLicensingManager>()
-
-                    .RegisterMultiple<IConventionsRegistrar, AppServiceInfoConventionsRegistrar>();
+                    .Register<ILicensingManager, NullLicensingManager>();
             }
 
             this.registry
@@ -144,7 +143,7 @@ namespace Kephas
             // Lite injector does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,
             // this is a message that ALL registration infos should be returned.
-            if (context != null && ((bool?)this[LiteConventionsBuilder.LiteInjectionKey] ?? false))
+            if (context != null && ((bool?)this[LiteInjectorBuilder.LiteInjectionKey] ?? false))
             {
                 return Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
             }
