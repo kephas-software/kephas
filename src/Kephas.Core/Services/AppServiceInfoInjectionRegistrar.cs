@@ -48,11 +48,17 @@ namespace Kephas.Services
             // get all type infos from the injection assemblies
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
+                .Select(t => (
+                    contractDeclarationType: SanitizeType(t.contractDeclarationType),
+                    appServiceInfo: t.appServiceInfo))
                 .ToList();
 
             var appServiceInfoMap = this.BuildAppServiceInfoMap(
                 appServiceInfoList,
-                appServiceInfoProviders.SelectMany(p => p.GetAppServiceTypes(buildContext)),
+                appServiceInfoProviders
+                    .SelectMany(p => p.GetAppServiceTypes(buildContext))
+                    .Select(t => (serviceType: SanitizeType(t.serviceType), contractDeclarationType: SanitizeType(t.contractDeclarationType)))
+                    .ToList(),
                 logger);
 
             buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
@@ -110,6 +116,17 @@ namespace Kephas.Services
                 }
             }
         }
+
+        /// <summary>
+        /// Sometimes the raw type provided is a constructed generic type
+        /// but not with proper type arguments. In this case return the generic type definition
+        /// because this is actually meant.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Type SanitizeType(Type rawType) =>
+            rawType.IsConstructedGenericType && !rawType.IsTypeDefinition
+                ? rawType.GetGenericTypeDefinition()
+                : rawType;
 
         private void RegisterService(
             IInjectorBuilder injectorBuilder,
@@ -222,14 +239,14 @@ namespace Kephas.Services
                 // registration contains the generic type definition.
                 if (contractDeclarationType.IsConstructedGenericType)
                 {
-                    var contractGenericDefinitionType = contractDeclarationType.GetGenericTypeDefinition();
-                    if (appServiceInfoMap.TryGetValue(contractDeclarationType, out appServiceInfos))
+                    var contractDeclarationTypeGenericDefinition = contractDeclarationType.GetGenericTypeDefinition();
+                    if (appServiceInfoMap.TryGetValue(contractDeclarationTypeGenericDefinition, out appServiceInfos))
                     {
                         // if the contract declaration based on the generic type definition is found,
                         // build a new contract declaration based on the constructed generic type
                         // and add a new entry in the map.
-                        var appServiceInfoOpenGeneric = appServiceInfos.First();
-                        var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoOpenGeneric, contractDeclarationType);
+                        var appServiceInfoGenericDefinition = appServiceInfos.First();
+                        var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoGenericDefinition, contractDeclarationType);
                         var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType)
                             .AddMetadata(this.GetServiceMetadata(serviceType, contractDeclarationType));
 

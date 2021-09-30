@@ -36,8 +36,8 @@ namespace Kephas.Core.Tests.Injection.Conventions
                 .RegisterServices();
 
             Assert.AreSame(builder, newBuilder);
-            Assert.AreEqual(1, builder.TypeConventionsBuilders.Count);
-            var partBuilder = (InjectorBuilderBaseTest.TestPartConventionsBuilder)builder.TypeConventionsBuilders.First().Value;
+            Assert.AreEqual(1, builder.TypeBuilders.Count);
+            var partBuilder = (InjectorBuilderBaseTest.TestTypeBuilder)builder.TypeBuilders.First().Value;
             Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
             var exportBuilder = partBuilder;

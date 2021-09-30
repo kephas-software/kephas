@@ -75,15 +75,15 @@ namespace Kephas.Core.Tests.Injection
             public TestRegistrationInjectorBuilder(IInjectionBuildContext? buildContext = null)
                 : base(buildContext ?? new InjectionBuildContext(new AmbientServices(typeRegistry: new RuntimeTypeRegistry())))
             {
-                this.TypeConventionsBuilders = new Dictionary<Type, IPartBuilder>();
             }
 
-            public IDictionary<Type, IPartBuilder> TypeConventionsBuilders { get; private set; }
+            public IDictionary<Type, TestTypeBuilder> TypeBuilders { get; } =
+                new Dictionary<Type, TestTypeBuilder>();
 
             public override IPartBuilder ForType(Type type)
             {
                 var partBuilder = this.CreateBuilder(type);
-                this.TypeConventionsBuilders.Add(type, partBuilder);
+                this.TypeBuilders.Add(type, partBuilder);
                 return partBuilder;
             }
 
@@ -103,12 +103,12 @@ namespace Kephas.Core.Tests.Injection
 
             protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
-            private IPartBuilder CreateBuilder(Type type) => new TestPartConventionsBuilder(type);
+            private TestTypeBuilder CreateBuilder(Type type) => new TestTypeBuilder(type);
         }
 
-        public class TestPartConventionsBuilder : IPartBuilder
+        public class TestTypeBuilder : IPartBuilder
         {
-            public TestPartConventionsBuilder(Type type)
+            public TestTypeBuilder(Type type)
             {
                 this.Type = type;
             }
