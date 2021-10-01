@@ -10,9 +10,9 @@
 
 namespace Kephas.Extensions.Configuration
 {
-    using Kephas.Configuration;
-    using Kephas.Diagnostics.Contracts;
+    using System;
 
+    using Kephas.Configuration;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>

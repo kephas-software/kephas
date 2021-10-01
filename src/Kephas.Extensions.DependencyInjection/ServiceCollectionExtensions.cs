@@ -7,6 +7,7 @@
 
 namespace Kephas
 {
+    using System;
     using System.Linq;
 
     using Kephas.Diagnostics.Contracts;

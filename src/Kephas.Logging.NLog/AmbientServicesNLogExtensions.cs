@@ -10,8 +10,9 @@
 
 namespace Kephas
 {
+    using System;
     using global::NLog.Config;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Logging;
     using Kephas.Logging.NLog;
 

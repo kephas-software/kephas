@@ -10,7 +10,9 @@
 
 namespace Kephas
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
+    using Kephas.Logging;
     using Kephas.Logging.Log4Net;
 
     /// <summary>

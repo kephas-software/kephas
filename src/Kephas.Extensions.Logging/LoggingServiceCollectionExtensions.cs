@@ -10,9 +10,9 @@
 
 namespace Kephas.Extensions.Logging
 {
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Logging;
+    using System;
 
+    using Kephas.Logging;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;

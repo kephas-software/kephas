@@ -10,8 +10,9 @@
 
 namespace Kephas
 {
+    using System;
     using global::Serilog;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Logging;
     using Kephas.Logging.Serilog;
     using Serilog.Events;
