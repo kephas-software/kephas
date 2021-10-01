@@ -59,7 +59,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static ITypeInfoLocalization GetLocalization(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return GetLocalization(type.AsRuntimeTypeInfo());
         }
@@ -73,7 +73,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static ITypeInfoLocalization GetLocalization(this TypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             return GetLocalization(typeInfo.AsType().AsRuntimeTypeInfo());
         }
@@ -87,7 +87,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static ITypeInfoLocalization GetLocalization(this ITypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             var localization = typeInfo[LocalizationPropertyName] as ITypeInfoLocalization;
             if (localization == null)

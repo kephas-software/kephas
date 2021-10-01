@@ -37,7 +37,7 @@ namespace Kephas.Model
         /// </returns>
         public static ITypeInfo GetAbstractTypeInfo(this ITypeInfo type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             if (!(type[AbstractTypeInfoName] is ITypeInfo abstractTypeInfo))
             {
@@ -60,7 +60,7 @@ namespace Kephas.Model
         /// </returns>
         public static Type GetAbstractType(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             var implementationFor = type.GetCustomAttribute<ImplementationForAttribute>();
             return (implementationFor != null ? implementationFor.AbstractType : type) ?? type;
@@ -75,7 +75,7 @@ namespace Kephas.Model
         /// </returns>
         public static Type GetAbstractType(this ITypeInfo type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type)).Type;
         }

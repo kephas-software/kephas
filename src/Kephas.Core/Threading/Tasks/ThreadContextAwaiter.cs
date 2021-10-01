@@ -41,7 +41,7 @@ namespace Kephas.Threading.Tasks
         /// <param name="task">The task.</param>
         public ThreadContextAwaiter(Task<TResult> task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
@@ -117,7 +117,7 @@ namespace Kephas.Threading.Tasks
         /// <param name="task">The task.</param>
         public ThreadContextAwaiter(Task task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();

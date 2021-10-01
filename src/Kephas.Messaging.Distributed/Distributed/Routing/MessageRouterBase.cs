@@ -157,7 +157,7 @@ namespace Kephas.Messaging.Distributed.Routing
         public virtual async Task<(RoutingInstruction action, IMessage? reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             brokeredMessage.TraceOutputRoute(this, this.AppRuntime.GetAppInstanceId());
             if (this.Logger.IsTraceEnabled())

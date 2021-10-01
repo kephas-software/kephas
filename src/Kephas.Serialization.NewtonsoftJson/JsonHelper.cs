@@ -41,7 +41,7 @@ namespace Kephas.Serialization.Json
             this ISerializationContext context,
             Action<JsonSerializerSettings> options)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[JsonOptionsKey] = options;
 

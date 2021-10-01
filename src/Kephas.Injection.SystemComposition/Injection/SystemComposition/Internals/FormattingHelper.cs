@@ -12,7 +12,6 @@ namespace Kephas.Injection.SystemComposition.Internals
 {
     using System;
     using System.Linq;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Helper class for formatting.
@@ -26,7 +25,7 @@ namespace Kephas.Injection.SystemComposition.Internals
         /// <returns>A string containing the formatted type.</returns>
         public static string Format(Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             if (type.IsConstructedGenericType)
             {
@@ -43,7 +42,8 @@ namespace Kephas.Injection.SystemComposition.Internals
         /// <returns>A string containing the formatted type.</returns>
         public static string FormatClosedGeneric(Type closedGenericType)
         {
-            Requires.NotNull(closedGenericType, nameof(closedGenericType));
+            closedGenericType = closedGenericType ?? throw new ArgumentNullException(nameof(closedGenericType));
+
             if (!closedGenericType.IsConstructedGenericType)
             {
                 // TODO localization

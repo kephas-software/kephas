@@ -10,6 +10,7 @@
 
 namespace Kephas.Messaging.Behaviors
 {
+    using System;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Kephas.Messaging.Behaviors
         /// <returns>A task.</returns>
         Task IMessagingBehavior.BeforeProcessAsync(IMessagingContext context, CancellationToken token)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             this.EnsureInitialized(context);
             var message = (TMessage)context.Message;
@@ -55,7 +56,7 @@ namespace Kephas.Messaging.Behaviors
         /// </remarks>
         Task IMessagingBehavior.AfterProcessAsync(IMessagingContext context, CancellationToken token)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             this.EnsureInitialized(context);
             var message = (TMessage)context.Message;

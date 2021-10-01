@@ -10,6 +10,7 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
     using System.Runtime.CompilerServices;
 
     using Kephas.Diagnostics.Contracts;
@@ -47,7 +48,7 @@ namespace Kephas.Security.Authorization
         public static TContext ThrowOnFailure<TContext>(this TContext context, IContext callingContext)
             where TContext : class, IAuthorizationScopeContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(callingContext, nameof(callingContext));
 
             context.CallingContext = callingContext;

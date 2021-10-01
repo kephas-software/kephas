@@ -249,7 +249,7 @@ namespace Kephas.Serialization
         /// </returns>
         protected virtual ISerializer GetSerializer(ISerializationContext context)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             var mediaType = context.MediaType ?? typeof(JsonMediaType);
 

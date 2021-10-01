@@ -38,7 +38,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return RuntimeTypeRegistry.Instance.GetTypeInfo(type);
         }
@@ -51,7 +51,7 @@ namespace Kephas.Reflection
         /// <returns>A <see cref="Type"/> instance.</returns>
         public static Type GetNonNullableType(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return IntrospectionExtensions.GetTypeInfo(type).GetNonNullableType().AsType();
         }
@@ -65,7 +65,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsNullableType(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return IntrospectionExtensions.GetTypeInfo(type).IsNullableType();
         }
@@ -271,7 +271,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsConstructedGenericOf(this Type type, Type openGenericType)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType;
         }
@@ -293,7 +293,7 @@ namespace Kephas.Reflection
         /// </example>
         public static Type? GetBaseConstructedGenericOf(this Type type, Type openGenericType)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
             Requires.NotNull(openGenericType, nameof(openGenericType));
 
             if (openGenericType.IsClass)
@@ -329,7 +329,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetQualifiedFullName(this Type type, bool stripVersionInfo = true)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             var qualifiedFullName = type.AssemblyQualifiedName;
             if (string.IsNullOrEmpty(qualifiedFullName))

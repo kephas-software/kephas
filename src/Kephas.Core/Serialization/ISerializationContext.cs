@@ -99,7 +99,7 @@ namespace Kephas.Serialization
         public static TContext Indent<TContext>(this TContext context, bool value)
             where TContext : class, ISerializationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Indent = value;
             return context;
@@ -118,7 +118,7 @@ namespace Kephas.Serialization
         public static TContext IncludeTypeInfo<TContext>(this TContext context, bool value)
             where TContext : class, ISerializationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.IncludeTypeInfo = value;
             return context;
@@ -137,7 +137,7 @@ namespace Kephas.Serialization
         public static TContext IncludeNullValues<TContext>(this TContext context, bool value)
             where TContext : class, ISerializationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.IncludeNullValues = value;
             return context;
@@ -156,7 +156,7 @@ namespace Kephas.Serialization
         public static TContext RootObjectType<TContext>(this TContext context, Type value)
             where TContext : class, ISerializationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.RootObjectType = value;
             return context;
@@ -175,7 +175,7 @@ namespace Kephas.Serialization
         public static TContext RootObjectFactory<TContext>(this TContext context, Func<object> value)
             where TContext : class, ISerializationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.RootObjectFactory = value;
             return context;
@@ -194,7 +194,7 @@ namespace Kephas.Serialization
         public static TContext MediaType<TContext>(this TContext context, Type value)
             where TContext : class, ISerializationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.MediaType = value;
             return context;

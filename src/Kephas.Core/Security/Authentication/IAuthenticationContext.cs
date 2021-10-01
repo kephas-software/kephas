@@ -10,6 +10,7 @@
 
 namespace Kephas.Security.Authentication
 {
+    using System;
     using System.Runtime.CompilerServices;
 
     using Kephas.Diagnostics.Contracts;
@@ -55,7 +56,7 @@ namespace Kephas.Security.Authentication
         public static TContext ThrowOnFailure<TContext>(this TContext context, bool value)
             where TContext : class, IAuthenticationContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ThrowOnFailure = value;
             return context;

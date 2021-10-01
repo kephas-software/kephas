@@ -79,7 +79,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext InputRouter<TContext>(this TContext context, IMessageRouter inputRouter)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(inputRouter, nameof(inputRouter));
 
             context.InputRouter = inputRouter;
@@ -100,7 +100,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext From<TContext>(this TContext context, IEndpoint sender)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(sender, nameof(sender));
 
             context.BrokeredMessage.Sender = sender;
@@ -121,7 +121,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext From<TContext>(this TContext context, Endpoint sender)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(sender, nameof(sender));
 
             context.BrokeredMessage.Sender = sender;
@@ -142,7 +142,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext From<TContext>(this TContext context, Uri sender)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(sender, nameof(sender));
 
             context.BrokeredMessage.Sender = new Endpoint(sender);
@@ -164,7 +164,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext From<TContext>(this TContext context, string endpointId, string? scheme = null)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNullOrEmpty(endpointId, nameof(endpointId));
 
             context.BrokeredMessage.Sender = context.CreateAppInstanceEndpoint(endpointId, scheme);
@@ -185,7 +185,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, params IEndpoint[] recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients;
 
@@ -205,7 +205,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, params Endpoint[] recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients;
 
@@ -225,7 +225,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, IEnumerable<IEndpoint> recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients;
 
@@ -245,7 +245,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, params Uri[] recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients.Select(r => new Endpoint(r)).ToList();
 
@@ -265,7 +265,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, IEnumerable<Uri> recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients.Select(r => new Endpoint(r)).ToList();
 
@@ -285,7 +285,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, params string[] recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients.Select(r => new Endpoint(new Uri(r))).ToList();
 
@@ -305,7 +305,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext To<TContext>(this TContext context, IEnumerable<string> recipients)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Recipients = recipients.Select(r => new Endpoint(new Uri(r))).ToList();
 
@@ -324,7 +324,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext OneWay<TContext>(this TContext context)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.IsOneWay = true;
 
@@ -345,7 +345,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext Property<TContext>(this TContext context, string name, object value)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(name, nameof(name));
 
             context.BrokeredMessage[name] = value;
@@ -366,7 +366,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext Timeout<TContext>(this TContext context, TimeSpan timeout)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             if (timeout < TimeSpan.Zero)
             {
                 throw new ArgumentException(Strings.DispatchingContext_NonNegativeTimeout_Exception.FormatWith(timeout), nameof(timeout));
@@ -390,7 +390,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext Priority<TContext>(this TContext context, Priority priority)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Priority = priority;
 
@@ -410,7 +410,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext ReplyTo<TContext>(this TContext context, IBrokeredMessage message)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(message, nameof(message));
 
             context.ReplyTo(message.Id, message.Sender, message.Trace);
@@ -435,7 +435,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint? sender = null, string? trace = null)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNullOrEmpty(messageId, nameof(messageId));
 
             context.BrokeredMessage.ReplyToMessageId = messageId;
@@ -463,7 +463,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext Content<TContext>(this TContext context, IMessage message)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.BrokeredMessage.Content = message;
             if (message is IEvent)
@@ -487,7 +487,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext ContentMessage<TContext>(this TContext context, object message)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             return context.Content(message.ToMessage());
         }
@@ -505,7 +505,7 @@ namespace Kephas.Messaging.Distributed
         public static TContext ContentEvent<TContext>(this TContext context, object @event)
             where TContext : class, IDispatchingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             return context.Content(@event.ToEvent());
         }

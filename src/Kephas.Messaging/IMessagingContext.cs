@@ -80,7 +80,7 @@ namespace Kephas.Messaging
             IMessageHandler handler)
             where TContext : class, IMessagingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Handler = handler;
 
@@ -101,7 +101,7 @@ namespace Kephas.Messaging
             IMessage message)
             where TContext : class, IMessagingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Message = message;
 
@@ -122,7 +122,7 @@ namespace Kephas.Messaging
             IMessage response)
             where TContext : class, IMessagingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Response = response;
 
@@ -143,7 +143,7 @@ namespace Kephas.Messaging
             Exception exception)
             where TContext : class, IMessagingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Exception = exception;
 

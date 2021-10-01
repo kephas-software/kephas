@@ -36,7 +36,7 @@ namespace Kephas.Reflection
         /// <returns>A <see cref="Type"/> instance.</returns>
         public static TypeInfo GetNonNullableType(this TypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             return IsNullableType(typeInfo) ? IntrospectionExtensions.GetTypeInfo(typeInfo.GenericTypeArguments[0]) : typeInfo;
         }
@@ -50,7 +50,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsNullableType(this TypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             return typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
@@ -64,7 +64,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsNullableType(this ITypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             if (typeInfo is IRuntimeTypeInfo runtimeTypeInfo)
             {
@@ -91,7 +91,7 @@ namespace Kephas.Reflection
         /// </example>
         public static TypeInfo? GetBaseConstructedGenericOf(this TypeInfo typeInfo, TypeInfo openGenericTypeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
             Requires.NotNull(openGenericTypeInfo, nameof(openGenericTypeInfo));
 
             var openGenericType = openGenericTypeInfo.AsType();
@@ -130,7 +130,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetQualifiedFullName(this TypeInfo typeInfo, bool stripVersionInfo = true)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             return TypeExtensions.GetQualifiedFullName(typeInfo.AsType(), stripVersionInfo);
         }

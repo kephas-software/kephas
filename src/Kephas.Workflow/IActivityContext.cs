@@ -85,7 +85,7 @@ namespace Kephas.Workflow
         public static TContext Activity<TContext>(this TContext context, IActivity activity)
             where TContext : class, IActivityContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(activity, nameof(activity));
 
             context.Activity = activity;
@@ -105,7 +105,7 @@ namespace Kephas.Workflow
         public static TContext Result<TContext>(this TContext context, object? result)
             where TContext : class, IActivityContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Result = result;
 
@@ -124,7 +124,7 @@ namespace Kephas.Workflow
         public static TContext Result<TContext>(this TContext context, Exception exception)
             where TContext : class, IActivityContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Exception = exception;
 
@@ -143,7 +143,7 @@ namespace Kephas.Workflow
         public static TContext Timeout<TContext>(this TContext context, TimeSpan? timeout)
             where TContext : class, IActivityContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Timeout = timeout;
 

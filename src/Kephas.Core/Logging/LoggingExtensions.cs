@@ -31,7 +31,7 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger GetLogger(this Type type, IContext? context = null)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             var logManager = context?.AmbientServices?.LogManager ?? LoggingHelper.DefaultLogManager;
             return logManager.GetLogger(type);

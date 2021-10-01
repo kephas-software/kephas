@@ -82,7 +82,7 @@ namespace Kephas.Data.Client.Queries
             Type entityType)
             where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.EntityType = entityType;
 
@@ -103,7 +103,7 @@ namespace Kephas.Data.Client.Queries
             Type clientEntityType)
             where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ClientEntityType = clientEntityType;
 
@@ -124,7 +124,7 @@ namespace Kephas.Data.Client.Queries
             object options)
             where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Options = options;
 
@@ -145,7 +145,7 @@ namespace Kephas.Data.Client.Queries
             Action<IClientQueryConversionContext> optionsConfig)
             where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.QueryConversionConfig = optionsConfig;
 
@@ -166,7 +166,7 @@ namespace Kephas.Data.Client.Queries
             Action<object, IDataConversionContext> optionsConfig)
             where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.DataConversionConfig = optionsConfig;
 

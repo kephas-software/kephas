@@ -186,7 +186,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetAssemblyQualifiedShortName(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return string.Concat(type.FullName, ", ", IntrospectionExtensions.GetTypeInfo(type).Assembly.GetName().Name);
         }
@@ -198,7 +198,7 @@ namespace Kephas.Reflection
         /// <returns>The full name of the non generic type.</returns>
         public static string GetNonGenericFullName(this TypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             var fullName = typeInfo.FullName;
             if (!typeInfo.IsGenericType)
@@ -219,7 +219,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetNonGenericFullName(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return GetNonGenericFullName(IntrospectionExtensions.GetTypeInfo(type));
         }

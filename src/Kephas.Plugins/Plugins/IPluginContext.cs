@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins
 {
+    using System;
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Plugins.Transactions;
@@ -132,7 +133,7 @@ namespace Kephas.Plugins
         public static TContext Operation<TContext>(this TContext context, PluginOperation operation, bool overwrite = true)
             where TContext : class, IPluginContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             if (context.Operation.HasValue && !overwrite)
             {
@@ -156,7 +157,7 @@ namespace Kephas.Plugins
         public static TContext PluginIdentity<TContext>(this TContext context, AppIdentity pluginIdentity, bool overwrite = true)
             where TContext : class, IPluginContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             if (context.PluginIdentity != null && !overwrite)
             {
@@ -181,7 +182,7 @@ namespace Kephas.Plugins
         public static TContext PluginData<TContext>(this TContext context, PluginData pluginData, bool overwrite = true)
             where TContext : class, IPluginContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             if (context.PluginData != null && !overwrite)
             {
@@ -206,7 +207,7 @@ namespace Kephas.Plugins
         public static TContext Plugin<TContext>(this TContext context, IPlugin plugin, bool overwrite = true)
             where TContext : class, IPluginContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             if (context.Plugin != null && !overwrite)
             {
@@ -229,7 +230,7 @@ namespace Kephas.Plugins
         public static TContext Transaction<TContext>(this TContext context, ITransaction transaction)
             where TContext : class, IPluginContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(transaction, nameof(transaction));
 
             context.Transaction = transaction;

@@ -96,7 +96,7 @@ namespace Kephas.Injection
         public static ILogger GetLogger(this IInjector injector, Type type)
         {
             Requires.NotNull(injector, nameof(injector));
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return injector.Resolve<ILogManager>().GetLogger(type);
         }

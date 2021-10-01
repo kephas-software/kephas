@@ -10,6 +10,7 @@
 
 namespace Kephas.Injection
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -99,7 +100,7 @@ namespace Kephas.Injection
             where T : class
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             var export = exportFactory.CreateExport().Value;
             ServiceHelper.Initialize(export, context);
@@ -123,7 +124,7 @@ namespace Kephas.Injection
             where T : class
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             var export = exportFactory.CreateExport().Value;
             await ServiceHelper.InitializeAsync(export, context, cancellationToken).PreserveThreadContext();

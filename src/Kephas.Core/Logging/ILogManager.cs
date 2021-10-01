@@ -48,7 +48,7 @@ namespace Kephas.Logging
         public static ILogger GetLogger(this ILogManager logManager, Type type)
         {
             Requires.NotNull(logManager, nameof(logManager));
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return logManager.GetLogger(type.FullName);
         }

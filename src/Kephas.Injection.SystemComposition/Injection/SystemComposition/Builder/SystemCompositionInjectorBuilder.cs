@@ -61,7 +61,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> that must be used to specify the rule.</returns>
         public override IRegistrationBuilder ForType(Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             var partBuilder = new SystemCompositionTypeRegistrationBuilder(this.innerConventionBuilder.ForType(type));
             this.partBuilders.Add(partBuilder);

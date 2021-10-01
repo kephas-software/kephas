@@ -35,7 +35,7 @@ namespace Kephas.Operations
         /// <param name="task">The task.</param>
         public OperationResultAwaiter(Task task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             this.task = task;
         }
@@ -94,7 +94,7 @@ namespace Kephas.Operations
         /// </returns>
         internal static OperationResultAwaiter Create(Task task, Action<Task> updateState)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             var taskResultType = task.GetResultType();
             if (taskResultType == null)
@@ -126,7 +126,7 @@ namespace Kephas.Operations
         /// </returns>
         internal static OperationResultAwaiter<TResult> Create<TResult>(Task<TResult> task, Action<Task> updateState)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             updateState(task);
             return new OperationResultAwaiter<TResult>(

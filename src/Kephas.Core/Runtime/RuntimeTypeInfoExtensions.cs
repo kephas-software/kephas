@@ -10,9 +10,8 @@
 
 namespace Kephas.Runtime
 {
+    using System;
     using System.Collections.Generic;
-
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IRuntimeTypeInfo"/>.
@@ -29,7 +28,7 @@ namespace Kephas.Runtime
         /// </returns>
         public static object CreateInstance(this IRuntimeTypeInfo typeInfo, params object[] args)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             return typeInfo.CreateInstance((IEnumerable<object>)args);
         }

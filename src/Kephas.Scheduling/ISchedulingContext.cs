@@ -64,7 +64,7 @@ namespace Kephas.Scheduling
         public static TContext ScheduledJobId<TContext>(this TContext context, object scheduledJobId)
             where TContext : class, ISchedulingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ScheduledJobId = scheduledJobId;
 
@@ -81,7 +81,7 @@ namespace Kephas.Scheduling
         public static TContext ScheduledJob<TContext>(this TContext context, IJobInfo scheduledJob)
             where TContext : class, ISchedulingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ScheduledJob = scheduledJob;
 
@@ -98,7 +98,7 @@ namespace Kephas.Scheduling
         public static TContext ActivityTarget<TContext>(this TContext context, object? target)
             where TContext : class, ISchedulingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ActivityTarget = target;
 
@@ -115,7 +115,7 @@ namespace Kephas.Scheduling
         public static TContext ActivityArguments<TContext>(this TContext context, IDynamic? arguments)
             where TContext : class, ISchedulingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ActivityArguments = arguments;
 
@@ -134,7 +134,7 @@ namespace Kephas.Scheduling
         public static TContext Activity<TContext>(this TContext context, object? target, IDynamic? arguments = null, Action<IActivityContext>? options = null)
             where TContext : class, ISchedulingContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ActivityTarget = target;
             context.ActivityArguments = arguments;

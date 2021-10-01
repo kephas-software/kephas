@@ -204,7 +204,7 @@ namespace Kephas.Injection.SystemComposition
         /// <param name="context">The inner container.</param>
         protected void Initialize(CompositionContext context)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             this.innerCompositionContext = context;
             Map.TryAdd(context, this);

@@ -57,7 +57,7 @@ namespace Kephas.Data.IO.DataStreams
             IDataIOContext context,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.RootObjectType(typeof(TRootObject));
             var result = (TRootObject)await dataStreamReadService.ReadAsync(dataStream, context, cancellationToken).PreserveThreadContext();

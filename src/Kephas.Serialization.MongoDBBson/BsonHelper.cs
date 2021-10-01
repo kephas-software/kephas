@@ -33,7 +33,7 @@ namespace Kephas.Serialization.Bson
             this ISerializationContext context,
             Action<BsonDeserializationContext.Builder> options)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[BsonDeserializeOptionsKey] = options;
 
@@ -48,7 +48,7 @@ namespace Kephas.Serialization.Bson
         public static Action<BsonDeserializationContext.Builder>? DeserializeConfigurator(
             this ISerializationContext context)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             return context[BsonDeserializeOptionsKey] as Action<BsonDeserializationContext.Builder>;
         }
@@ -63,7 +63,7 @@ namespace Kephas.Serialization.Bson
             this ISerializationContext context,
             Action<BsonSerializationContext.Builder> options)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[BsonSerializeOptionsKey] = options;
 
@@ -78,7 +78,7 @@ namespace Kephas.Serialization.Bson
         public static Action<BsonSerializationContext.Builder>? SerializeConfigurator(
             this ISerializationContext context)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             return context[BsonSerializeOptionsKey] as Action<BsonSerializationContext.Builder>;
         }

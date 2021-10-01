@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Setup
 {
+    using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
 
@@ -48,7 +49,7 @@ namespace Kephas.Data.Setup
         public static TContext Targets<TContext>(this TContext context, IEnumerable<string> targets)
             where TContext : class, IDataSetupContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(targets, nameof(targets));
 
             context.Targets = targets;

@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using System;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -52,7 +53,7 @@ namespace Kephas.Cryptography
         public static TContext Key<TContext>(this TContext context, byte[]? key)
             where TContext : class, IEncryptionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Key = key;
 
@@ -71,7 +72,7 @@ namespace Kephas.Cryptography
         public static TContext KeySize<TContext>(this TContext context, int? keySize)
             where TContext : class, IEncryptionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.KeySize = keySize;
 

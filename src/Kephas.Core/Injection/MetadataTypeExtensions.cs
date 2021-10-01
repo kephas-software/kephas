@@ -32,7 +32,7 @@ namespace Kephas.Injection
         public static TValue? ExtractMetadataValue<TAttribute, TValue>(this Type type, Func<TAttribute, TValue> valueExtractor, TValue? defaultValue = default)
           where TAttribute : Attribute
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
             Requires.NotNull(valueExtractor, nameof(valueExtractor));
 
             var attr = type.GetCustomAttribute<TAttribute>();
@@ -50,7 +50,7 @@ namespace Kephas.Injection
         public static TValue? ExtractMetadataValue<TAttribute, TValue>(this Type type, TValue? defaultValue = default)
           where TAttribute : Attribute, IMetadataValue<TValue>
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             var attr = type.GetCustomAttribute<TAttribute>();
             return attr == null ? defaultValue : attr.Value;

@@ -112,7 +112,7 @@ namespace Kephas.Data.Conversion
         public static TContext ThrowOnError<TContext>(this TContext context, bool value)
             where TContext : class, IDataConversionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.ThrowOnError = value;
             return context;
@@ -131,7 +131,7 @@ namespace Kephas.Data.Conversion
         public static TContext RootSourceType<TContext>(this TContext context, Type rootSourceType)
             where TContext : class, IDataConversionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.RootSourceType = rootSourceType;
             return context;
@@ -150,7 +150,7 @@ namespace Kephas.Data.Conversion
         public static TContext RootTargetType<TContext>(this TContext context, Type rootTargetType)
             where TContext : class, IDataConversionContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.RootTargetType = rootTargetType;
             return context;

@@ -33,7 +33,7 @@ namespace Kephas.Runtime
         /// <returns>A runtime type.</returns>
         IRuntimeTypeInfo GetTypeInfo(TypeInfo typeInfo)
         {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
+            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
             return this.GetTypeInfo(typeInfo.AsType());
         }

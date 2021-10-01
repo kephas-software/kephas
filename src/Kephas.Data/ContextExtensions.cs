@@ -52,7 +52,7 @@ namespace Kephas.Data
         public static TContext InitialData<TContext>(this TContext context, IEnumerable<(object entity, ChangeState changeState)> initialData)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[InitialDataConfigurationName] =
                 initialData
@@ -73,7 +73,7 @@ namespace Kephas.Data
         public static TContext InitialData<TContext>(this TContext context, IEnumerable<object> initialData)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[InitialDataConfigurationName] =
                     initialData
@@ -94,7 +94,7 @@ namespace Kephas.Data
         public static TContext InitialData<TContext>(this TContext context, IEnumerable<IChangeStateTrackableEntityEntry> initialData)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[InitialDataConfigurationName] = initialData?.Where(e => e != null);
             return context;

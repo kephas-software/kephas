@@ -62,7 +62,7 @@ namespace Kephas.Threading.Tasks
         /// </remarks>
         public static bool WaitNonLocking(this Task task, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             timeout ??= DefaultTimeout;
             var timeoutOccurred = false;
@@ -131,7 +131,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static T? GetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             return task.WaitNonLocking(timeout, waitMilliseconds, throwOnTimeout) ? task.Result : default;
         }
@@ -199,7 +199,7 @@ namespace Kephas.Threading.Tasks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this Task<TResult> task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             return new ThreadContextAwaiter<TResult>(task);
         }
@@ -220,7 +220,7 @@ namespace Kephas.Threading.Tasks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ThreadContextAwaiter PreserveThreadContext(this Task task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             return new ThreadContextAwaiter(task);
         }
@@ -524,7 +524,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static Type? GetResultType(this Task task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             var taskType = task.GetType();
             return taskType.IsConstructedGenericType
@@ -542,7 +542,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static object? GetResult(this Task task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             var taskType = task.GetType();
             object? result = null;
@@ -565,7 +565,7 @@ namespace Kephas.Threading.Tasks
         /// <param name="task">The task.</param>
         public static void EnsureCompletedSuccessfully(this Task task)
         {
-            Requires.NotNull(task, nameof(task));
+            task = task ?? throw new ArgumentNullException(nameof(task));
 
             if (!task.IsCompleted)
             {

@@ -107,7 +107,7 @@ namespace Kephas.Workflow
         /// </returns>
         public async Task<object?> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             var transitionInfo = this.GetTransitionInfo(context);
 

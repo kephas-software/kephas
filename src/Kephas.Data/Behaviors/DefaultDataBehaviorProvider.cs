@@ -60,7 +60,7 @@ namespace Kephas.Data.Behaviors
         /// </returns>
         public IEnumerable<TBehavior> GetDataBehaviors<TBehavior>(Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             var typeBehaviors = this.behaviorsCache.GetOrAdd(type, _ => new ConcurrentDictionary<Type, IEnumerable>());
             var behaviors = typeBehaviors.GetOrAdd(typeof(TBehavior), _ => this.ComputeDataBehaviors<TBehavior>(type) as IEnumerable);

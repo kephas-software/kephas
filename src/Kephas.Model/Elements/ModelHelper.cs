@@ -39,7 +39,7 @@ namespace Kephas.Model.Elements
         /// <returns>The member name discriminator.</returns>
         public static string GetMemberNameDiscriminator(this Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return NameDiscriminators.GetOrAdd(
                 type,

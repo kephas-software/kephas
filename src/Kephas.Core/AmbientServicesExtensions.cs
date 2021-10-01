@@ -58,7 +58,7 @@ namespace Kephas
         public static ILogger GetLogger(this IAmbientServices ambientServices, Type type)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return ambientServices.LogManager.GetLogger(type);
         }

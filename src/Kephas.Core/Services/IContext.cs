@@ -75,7 +75,7 @@ namespace Kephas.Services
         public static TContext Set<TContext>(this TContext context, string key, object? value)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context[key] = value;
 
@@ -115,7 +115,7 @@ namespace Kephas.Services
         public static TContext Impersonate<TContext>(this TContext context, IIdentity? identity)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.Identity = identity;
             return context;
@@ -133,7 +133,7 @@ namespace Kephas.Services
         public static TContext Logger<TContext>(this TContext context, ILogger contextLogger)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             if (context is Context loggableContext)
             {
@@ -159,7 +159,7 @@ namespace Kephas.Services
         public static TContext AddResource<TContext>(this TContext context, params IDisposable[] resources)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
             Requires.NotNull(resources, nameof(resources));
 
             if (!(context[DisposableResourcesKey] is IList<IDisposable> resourcesList))
@@ -186,7 +186,7 @@ namespace Kephas.Services
         internal static TContext DisposeResources<TContext>(this TContext context)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
+            context = context ?? throw new ArgumentNullException(nameof(context));
 
             if (context[DisposableResourcesKey] is IList<IDisposable> resources)
             {

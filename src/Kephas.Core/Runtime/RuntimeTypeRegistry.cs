@@ -134,7 +134,7 @@ namespace Kephas.Runtime
         /// <returns>A runtime type.</returns>
         public IRuntimeTypeInfo GetTypeInfo(Type type)
         {
-            Requires.NotNull(type, nameof(type));
+            type = type ?? throw new ArgumentNullException(nameof(type));
 
             return this.runtimeTypeInfosCache.GetOrAdd(
                 type,
