@@ -11,97 +11,55 @@
 
 namespace Kephas.Injection.SystemComposition
 {
-    using Kephas.Injection;
+    using System;
+    using System.Composition;
 
     /// <summary>
     /// A handle allowing the graph of parts associated with an exported instance
     /// to be released.
     /// </summary>
     /// <typeparam name="T">The export type.</typeparam>
-    public class ExportAdapter<T> : IExport<T>
+    internal class ExportAdapter<T>
     {
-        /// <summary>
-        /// The inner export.
-        /// </summary>
-        private readonly System.Composition.Export<T> innerExport;
+        private Export<T> export;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportAdapter{T}" /> class.
         /// </summary>
-        /// <param name="innerExport">The inner export.</param>
-        protected internal ExportAdapter(System.Composition.Export<T> innerExport)
+        /// <param name="factory">The inner export.</param>
+        internal ExportAdapter(Func<Export<T>> factory)
         {
-            this.innerExport = innerExport;
+            this.Lazy = new DisposableLazy<T>(() => (this.export = factory()).Value, () => this.export?.Dispose());
         }
 
         /// <summary>
-        /// Gets the exported value.
+        /// Gets the lazy output.
         /// </summary>
-        public T Value => this.innerExport.Value;
-
-        /// <summary>
-        /// Gets the exported value.
-        /// </summary>
-        /// <value>
-        /// The exported value.
-        /// </value>
-        object IExport.Value => this.innerExport.Value;
-
-        /// <summary>
-        /// Release the parts associated with the exported value.
-        /// </summary>
-        public void Dispose()
-        {
-            this.innerExport.Dispose();
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            return $"Export of {typeof(T).Name}.";
-        }
+        public DisposableLazy<T> Lazy { get; }
     }
 
     /// <summary>
-    /// A handle allowing the graph of parts associated with an exported instance to be released.
+    /// A handle allowing the graph of parts associated with an exported instance
+    /// to be released.
     /// </summary>
     /// <typeparam name="T">The export type.</typeparam>
-    /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-    public class ExportAdapter<T, TMetadata> : ExportAdapter<T>, IExport<T, TMetadata>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    internal class ExportAdapter<T, TMetadata>
     {
+        private Export<T>? export;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportAdapter{T,TMetadata}" /> class.
         /// </summary>
-        /// <param name="innerExport">The inner export.</param>
+        /// <param name="factory">The inner export.</param>
         /// <param name="metadata">The metadata.</param>
-        protected internal ExportAdapter(System.Composition.Export<T> innerExport, TMetadata metadata)
-            : base(innerExport)
+        internal ExportAdapter(Func<Export<T>> factory, TMetadata metadata)
         {
-            this.Metadata = metadata;
+            this.Lazy = new DisposableLazy<T, TMetadata>(() => (this.export = factory()).Value, metadata, () => this.export?.Dispose());
         }
 
         /// <summary>
-        /// Gets the metadata.
+        /// Gets the lazy output.
         /// </summary>
-        /// <value>
-        /// The metadata.
-        /// </value>
-        public TMetadata Metadata { get; }
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            return $"Export of {typeof(T).Name} with {this.Metadata}.";
-        }
-    }
-}
+        public DisposableLazy<T, TMetadata> Lazy { get; }
+    }}

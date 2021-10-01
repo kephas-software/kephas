@@ -99,7 +99,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Model" />
+      <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

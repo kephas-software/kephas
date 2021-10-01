@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Logging
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -67,7 +67,7 @@ namespace Kephas.Logging
         {
             this.lazyLogger = new Lazy<ILogger>(
                 () => logManager?.GetLogger(logTarget ?? this.GetType())
-                        ?? (logTarget ?? this.GetType()).GetLogger());
+                        ?? LoggingHelper.DefaultLogManager.GetLogger(logTarget ?? this.GetType()));
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Kephas.Logging
         {
             this.lazyLogger = new Lazy<ILogger>(
                 () => logManagerGetter?.Invoke()?.GetLogger(logTarget ?? this.GetType())
-                        ?? (logTarget ?? this.GetType()).GetLogger());
+                        ?? LoggingHelper.DefaultLogManager.GetLogger(logTarget ?? this.GetType()));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Kephas.Logging
             get => this.lazyLogger.Value;
             protected internal set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
                 this.lazyLogger = new Lazy<ILogger>(() => value);
             }
         }

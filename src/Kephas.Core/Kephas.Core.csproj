@@ -25,9 +25,7 @@
             - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior, AppIdentity.
             - Serialization: ISerializationService.
             - Operations: IOperation, OperationResult.
-            - Services: SingletonAppServiceContractAttribute, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
             - Threading.Tasks: PreserveThreadContext extension method.
-            - Logging: ILogManager, ILogger.
             - Cryptography: IEncryptionService, IHashingService.
             - Data: IIdentifiable, IIdGenerator.
             - Diagnostics: Profiler, IProcessStarter.
@@ -131,7 +129,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
       <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
+      <ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
     </ItemGroup>
 
 </Project>

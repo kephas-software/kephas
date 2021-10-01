@@ -5,10 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Reflection.Dynamic
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 

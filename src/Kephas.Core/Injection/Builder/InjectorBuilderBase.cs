@@ -12,6 +12,7 @@ namespace Kephas.Injection.Builder
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+
     using Kephas.Collections;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;

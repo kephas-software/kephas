@@ -199,7 +199,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, dynamic? constructionContext = null)
         {
             return this;
         }

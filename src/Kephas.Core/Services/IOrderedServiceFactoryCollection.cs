@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
+
+    using Kephas.Injection;
 
     /// <summary>
     /// Interface for ordered service factory collection.
@@ -21,7 +21,7 @@ namespace Kephas.Services
     /// <typeparam name="TService">Type of the service.</typeparam>
     /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IOrderedServiceFactoryCollection<out TService, out TServiceMetadata> : IEnumerable<IExportFactory<TService, TServiceMetadata>>
+    public interface IOrderedServiceFactoryCollection<TService, TServiceMetadata> : IEnumerable<IExportFactory<TService, TServiceMetadata>>
         where TServiceMetadata : AppServiceMetadata
     {
         /// <summary>

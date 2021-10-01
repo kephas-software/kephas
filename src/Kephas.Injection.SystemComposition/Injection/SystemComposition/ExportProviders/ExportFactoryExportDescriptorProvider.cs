@@ -66,13 +66,13 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         {
             var productContract = exportFactoryContract.ChangeType(typeof(TProduct));
             // ReSharper disable once NotAccessedVariable
-            var boundaries = new string[0];
+            var boundaries = Array.Empty<string>();
 
             if (exportFactoryContract.TryUnwrapMetadataConstraint(Constants.SharingBoundaryImportMetadataConstraintName, out IEnumerable<string> specifiedBoundaries, out var unwrapped))
             {
                 productContract = unwrapped.ChangeType(typeof(TProduct));
                 // ReSharper disable once RedundantAssignment
-                boundaries = (specifiedBoundaries ?? new string[0]).ToArray();
+                boundaries = (specifiedBoundaries ?? Array.Empty<string>()).ToArray();
             }
 
             return definitionAccessor.ResolveDependencies("product", productContract, false)
