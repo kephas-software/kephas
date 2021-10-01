@@ -10,6 +10,7 @@
 
 namespace Kephas.Reflection.Dynamic
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -102,7 +103,7 @@ namespace Kephas.Reflection.Dynamic
         /// <param name="value">The value.</param>
         public void SetValue(object? obj, object? value)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             if (obj is IDynamic expando)
             {
@@ -121,7 +122,7 @@ namespace Kephas.Reflection.Dynamic
         /// </returns>
         public object? GetValue(object? obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             if (obj is IDynamic expando)
             {

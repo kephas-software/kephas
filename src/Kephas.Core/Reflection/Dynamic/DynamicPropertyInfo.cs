@@ -87,7 +87,7 @@ namespace Kephas.Reflection.Dynamic
         /// <param name="value">The value.</param>
         public virtual void SetValue(object? obj, object? value)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             if (!this.CanWrite)
             {
@@ -111,7 +111,7 @@ namespace Kephas.Reflection.Dynamic
         /// </returns>
         public virtual object? GetValue(object? obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             if (!this.CanRead)
             {

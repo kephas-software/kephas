@@ -38,7 +38,6 @@ namespace Kephas.Injection.Lite.Internal
         /// This registration is for the case of multiple services without any implementation.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceType">Type of the service.</param>
         internal MultiServiceInfo(Type contractType)
             : this(contractType, Array.Empty<ServiceInfo>())
         {
@@ -70,7 +69,7 @@ namespace Kephas.Injection.Lite.Internal
             this.serviceInfos.Add(serviceInfo);
         }
 
-        public object GetService(IAmbientServices ambientServices)
+        public object GetService(IServiceProvider serviceProvider)
         {
             throw new NotSupportedException("Only single service infos may provide services.");
         }
@@ -81,7 +80,7 @@ namespace Kephas.Injection.Lite.Internal
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IServiceInfo MakeGenericServiceInfo(IAmbientServices ambientServices, Type[] genericArgs)
+        public IServiceInfo MakeGenericServiceInfo(IServiceProvider serviceProvider, Type[] genericArgs)
         {
             if (!this.ContractType.IsGenericTypeDefinition)
             {
@@ -90,7 +89,7 @@ namespace Kephas.Injection.Lite.Internal
 
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
 
-            var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(ambientServices, genericArgs));
+            var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(serviceProvider, genericArgs));
 
             return new MultiServiceInfo(closedContractType, closedServiceInfos);
         }

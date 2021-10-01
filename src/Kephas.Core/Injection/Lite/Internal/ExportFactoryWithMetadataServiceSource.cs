@@ -33,7 +33,7 @@ namespace Kephas.Injection.Lite.Internal
             return contractType.IsConstructedGenericOf(typeof(IExportFactory<,>));
         }
 
-        public override object GetService(IAmbientServices parent, Type serviceType)
+        public override object GetService(IServiceProvider parent, Type serviceType)
         {
             var descriptors = this.GetServiceDescriptors(parent, serviceType);
             var (_, factory) = descriptors.SingleOrDefault();
@@ -47,7 +47,7 @@ namespace Kephas.Injection.Lite.Internal
         }
 
         public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
-            IAmbientServices parent,
+            IServiceProvider parent,
             Type serviceType)
         {
             var genericArgs = serviceType.GetGenericArguments();

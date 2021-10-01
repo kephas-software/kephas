@@ -15,9 +15,6 @@ namespace Kephas.Reflection
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Runtime;
-
     /// <summary>
     /// Helper class for reflection.
     /// </summary>
@@ -79,8 +76,7 @@ namespace Kephas.Reflection
             MemberExpression? memberExpression;
 
             // if the return value had to be cast to object, the body will be an UnaryExpression
-            var unary = expression.Body as UnaryExpression;
-            if (unary != null)
+            if (expression.Body is UnaryExpression unary)
             {
                 // the operand is the "real" property access
                 memberExpression = unary.Operand as MemberExpression;
@@ -92,7 +88,7 @@ namespace Kephas.Reflection
             }
 
             // as before:
-            if (!(memberExpression?.Member is PropertyInfo))
+            if (memberExpression?.Member is not PropertyInfo)
             {
                 throw new ArgumentException("Expected property expression.");
             }
@@ -110,8 +106,7 @@ namespace Kephas.Reflection
             MemberExpression? memberExpression;
 
             // if the return value had to be cast to object, the body will be an UnaryExpression
-            var unary = expression.Body as UnaryExpression;
-            if (unary != null)
+            if (expression.Body is UnaryExpression unary)
             {
                 // the operand is the "real" property access
                 memberExpression = unary.Operand as MemberExpression;
@@ -200,7 +195,7 @@ namespace Kephas.Reflection
         {
             typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
 
-            var fullName = typeInfo.FullName;
+            var fullName = typeInfo.FullName!;
             if (!typeInfo.IsGenericType)
             {
                 return fullName;
@@ -232,7 +227,7 @@ namespace Kephas.Reflection
         /// <returns>A static delegate for the provided static method.</returns>
         public static T CreateStaticDelegate<T>(this MethodInfo methodInfo)
         {
-            Requires.NotNull(methodInfo, nameof(methodInfo));
+            methodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
 
             return (T)(object)methodInfo.CreateDelegate(typeof(T));
         }
@@ -270,24 +265,10 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetLocationDirectory(this Assembly assembly)
         {
-            Requires.NotNull(assembly, nameof(assembly));
+            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
-            var location = Path.GetDirectoryName(assembly.Location);
+            var location = Path.GetDirectoryName(assembly.Location)!;
             return location;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IRuntimeAssemblyInfo"/> for the provided <see cref="Assembly"/> instance.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// The provided <see cref="Assembly"/>'s associated <see cref="IRuntimeAssemblyInfo"/>.
-        /// </returns>
-        public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly)
-        {
-            Requires.NotNull(assembly, nameof(assembly));
-
-            return RuntimeTypeRegistry.Instance.GetAssemblyInfo(assembly);
         }
 
         /// <summary>
@@ -300,7 +281,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The invocation result.
         /// </returns>
-        public static object Call(this MethodInfo methodInfo, object? instance, params object?[] arguments)
+        public static object? Call(this MethodInfo methodInfo, object? instance, params object?[] arguments)
         {
             try
             {
@@ -309,24 +290,8 @@ namespace Kephas.Reflection
             }
             catch (TargetInvocationException tie)
             {
-                throw tie.InnerException;
+                throw tie.InnerException!;
             }
-        }
-
-        /// <summary>
-        /// Gets the most specific type information out of the provided instance.
-        /// If the object implements <see cref="IInstance"/>, then it returns
-        /// the <see cref="ITypeInfo"/> provided by it, otherwise it returns the <see cref="IRuntimeTypeInfo"/>
-        /// of its runtime type.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>A type information for the provided object.</returns>
-        public static ITypeInfo GetTypeInfo(this object obj)
-        {
-            Requires.NotNull(obj, nameof(obj));
-
-            var typeInfo = (obj as IInstance)?.GetTypeInfo();
-            return typeInfo ?? obj.GetType().AsRuntimeTypeInfo();
         }
     }
 }

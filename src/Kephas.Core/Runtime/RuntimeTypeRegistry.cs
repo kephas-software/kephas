@@ -149,7 +149,7 @@ namespace Kephas.Runtime
         /// <returns>A runtime assembly.</returns>
         public IRuntimeAssemblyInfo GetAssemblyInfo(Assembly assembly)
         {
-            Requires.NotNull(assembly, nameof(assembly));
+            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
             return this.runtimeAssemblyInfosCache.GetOrAdd(
                 assembly,

@@ -37,7 +37,7 @@ namespace Kephas.Runtime
         internal RuntimeAssemblyInfo(IRuntimeTypeRegistry typeRegistry, Assembly assembly, ITypeLoader? typeLoader)
             : base(typeRegistry)
         {
-            Requires.NotNull(assembly, nameof(assembly));
+            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
             this.assembly = assembly;
             this.typeLoader = typeLoader ?? DefaultTypeLoader.Instance;

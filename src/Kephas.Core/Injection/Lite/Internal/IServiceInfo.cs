@@ -22,20 +22,20 @@ namespace Kephas.Injection.Lite.Internal
         /// <summary>
         /// Makes a generic service information with closed generic types.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="genericArgs">The generic arguments.</param>
         /// <returns>
         /// An IServiceInfo.
         /// </returns>
-        IServiceInfo MakeGenericServiceInfo(IAmbientServices ambientServices, Type[] genericArgs);
+        IServiceInfo MakeGenericServiceInfo(IServiceProvider serviceProvider, Type[] genericArgs);
 
         /// <summary>
         /// Gets a service.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <returns>
         /// The service.
         /// </returns>
-        object GetService(IAmbientServices ambientServices);
+        object GetService(IServiceProvider serviceProvider);
     }
 }

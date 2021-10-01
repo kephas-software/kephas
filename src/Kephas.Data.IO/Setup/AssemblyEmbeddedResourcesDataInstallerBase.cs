@@ -63,7 +63,7 @@ namespace Kephas.Data.IO.Setup
             Assembly assembly)
             : base(contextFactory, dataImportService, dataSpaceFactory)
         {
-            Requires.NotNull(assembly, nameof(assembly));
+            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
             this.ResourcesAssembly = assembly;
         }

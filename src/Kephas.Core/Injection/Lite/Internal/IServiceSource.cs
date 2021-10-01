@@ -35,7 +35,7 @@ namespace Kephas.Injection.Lite.Internal
         /// <returns>
         /// The service.
         /// </returns>
-        object GetService(IAmbientServices parent, Type serviceType);
+        object GetService(IServiceProvider parent, Type serviceType);
 
         /// <summary>
         /// Gets the service descriptors.
@@ -46,8 +46,6 @@ namespace Kephas.Injection.Lite.Internal
         /// An enumerator that allows foreach to be used to process the service descriptors in this
         /// collection.
         /// </returns>
-        IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
-            IAmbientServices parent,
-            Type serviceType);
+        IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(IServiceProvider parent, Type serviceType);
     }
 }

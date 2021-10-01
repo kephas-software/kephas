@@ -15,7 +15,6 @@ namespace Kephas.Injection.Lite.Builder
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Internal;
     using Kephas.Resources;

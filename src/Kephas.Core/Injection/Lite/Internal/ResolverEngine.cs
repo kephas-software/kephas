@@ -8,16 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+
     /// <summary>
     /// A resolver engine.
     /// </summary>
     internal class ResolverEngine : IResolverEngine
     {
-        private readonly WeakReference<IAmbientServices> ambientServicesRef;
+        private readonly WeakReference<IServiceProvider> ambientServicesRef;
 
         private readonly IServiceRegistry registry;
 
@@ -26,9 +26,9 @@ namespace Kephas.Injection.Lite.Internal
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="registry">The serviceRegistry.</param>
-        public ResolverEngine(IAmbientServices ambientServices, IServiceRegistry registry)
+        public ResolverEngine(IServiceProvider ambientServices, IServiceRegistry registry)
         {
-            this.ambientServicesRef = new WeakReference<IAmbientServices>(ambientServices);
+            this.ambientServicesRef = new WeakReference<IServiceProvider>(ambientServices);
             this.registry = registry;
         }
 

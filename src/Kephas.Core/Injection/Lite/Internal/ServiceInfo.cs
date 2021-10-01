@@ -45,33 +45,33 @@ namespace Kephas.Injection.Lite.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instanceType">Type of the instance.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
-        public ServiceInfo(IAmbientServices ambientServices, Type contractType, Type instanceType, bool isSingleton)
+        public ServiceInfo(IServiceProvider serviceProvider, Type contractType, Type instanceType, bool isSingleton)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = instanceType;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType)
-                                   : new LazyFactory(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType);
+                                   ? new LazyValue(() => this.GetInstanceResolver(serviceProvider, instanceType)(), contractType)
+                                   : new LazyFactory(() => this.GetInstanceResolver(serviceProvider, instanceType)(), contractType);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
-        public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
+        public ServiceInfo(IServiceProvider serviceProvider, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            var injector = ambientServices.AsInjector();
+            var injector = serviceProvider.AsInjector();
             this.lazyFactory = isSingleton
                                    ? new LazyValue(() => serviceFactory(injector), contractType)
                                    : new LazyFactory(() => serviceFactory(injector), contractType);
@@ -95,12 +95,12 @@ namespace Kephas.Injection.Lite.Internal
         /// Makes a generic service information with closed generic types.
         /// </summary>
         /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider"></param>
         /// <param name="genericArgs">The generic arguments.</param>
         /// <returns>
         /// An IServiceInfo.
         /// </returns>
-        public IServiceInfo MakeGenericServiceInfo(IAmbientServices ambientServices, Type[] genericArgs)
+        public IServiceInfo MakeGenericServiceInfo(IServiceProvider serviceProvider, Type[] genericArgs)
         {
             if (!this.ContractType.IsGenericTypeDefinition)
             {
@@ -116,7 +116,7 @@ namespace Kephas.Injection.Lite.Internal
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
             var closedInstanceType = self.InstanceType.MakeGenericType(genericArgs);
 
-            var closedServiceInfo = new ServiceInfo(ambientServices, closedContractType, closedInstanceType, this.IsSingleton())
+            var closedServiceInfo = new ServiceInfo(serviceProvider, closedContractType, closedInstanceType, this.IsSingleton())
             {
                 AllowMultiple = this.AllowMultiple,
                 ExternallyOwned = this.ExternallyOwned,
@@ -133,7 +133,7 @@ namespace Kephas.Injection.Lite.Internal
             };
         }
 
-        public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
+        public object GetService(IServiceProvider serviceProvider) => this.lazyFactory.GetValue();
 
         public void Dispose()
         {
@@ -143,25 +143,25 @@ namespace Kephas.Injection.Lite.Internal
             }
         }
 
-        private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
+        private Func<object> GetInstanceResolver(IServiceProvider serviceProvider, Type instanceType)
         {
             if (this.instanceResolver != null)
             {
                 return this.instanceResolver;
             }
 
-            var (ctor, ctorParams) = GetConstructorInfo(ambientServices, instanceType);
+            var (ctor, ctorParams) = GetConstructorInfo(serviceProvider, instanceType);
 
             return this.instanceResolver = () => ctor.Invoke(
                        ctorParams.Select(
                            p => p.HasDefaultValue
-                                    ? ambientServices.GetService(p.ParameterType) ?? p.DefaultValue
-                                    : ambientServices.GetRequiredService(p.ParameterType))
+                                    ? serviceProvider.GetService(p.ParameterType) ?? p.DefaultValue
+                                    : serviceProvider.GetRequiredService(p.ParameterType))
                            .ToArray());
         }
 
         private static (ConstructorInfo maxCtor, ParameterInfo[] maxCtorParams) GetConstructorInfo(
-            IAmbientServices ambientServices,
+            IServiceProvider serviceProvider,
             Type instanceType)
         {
             var unresolvedParams = new List<ParameterInfo>();
@@ -179,7 +179,7 @@ namespace Kephas.Injection.Lite.Internal
                     break;
                 }
 
-                var unresolvedCtorParams = ctorParams.Where(p => !p.HasDefaultValue && !ambientServices.IsRegistered(p.ParameterType)).ToList();
+                var unresolvedCtorParams = ctorParams.Where(p => !p.HasDefaultValue && !serviceProvider.IsRegistered(p.ParameterType)).ToList();
 
                 if (unresolvedCtorParams.Count == 0)
                 {

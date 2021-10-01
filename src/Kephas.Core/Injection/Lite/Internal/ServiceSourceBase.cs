@@ -28,17 +28,17 @@ namespace Kephas.Injection.Lite.Internal
 
         public abstract bool IsMatch(Type contractType);
 
-        public abstract object GetService(IAmbientServices parent, Type serviceType);
+        public abstract object GetService(IServiceProvider parent, Type serviceType);
 
         public virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
-            IAmbientServices parent,
+            IServiceProvider parent,
             Type serviceType)
         {
             return this.GetServiceDescriptors(parent, serviceType, null);
         }
 
         protected virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
-            IAmbientServices parent,
+            IServiceProvider serviceProvider,
             Type serviceType,
             Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>>? selector)
         {
@@ -51,16 +51,16 @@ namespace Kephas.Injection.Lite.Internal
                         yield return
                             (si,
                                 selector == null
-                                    ? () => si.GetService(parent)
-                                    : selector((si, () => si.GetService(parent))));
+                                    ? () => si.GetService(serviceProvider)
+                                    : selector((si, () => si.GetService(serviceProvider))));
                     }
                 }
                 else
                 {
                     yield return (serviceInfo,
                                      selector == null
-                                         ? () => serviceInfo.GetService(parent)
-                                         : selector((serviceInfo, () => serviceInfo.GetService(parent))));
+                                         ? () => serviceInfo.GetService(serviceProvider)
+                                         : selector((serviceInfo, () => serviceInfo.GetService(serviceProvider))));
                 }
             }
             else
@@ -68,7 +68,7 @@ namespace Kephas.Injection.Lite.Internal
                 var source = this.serviceRegistry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
                 if (source != null)
                 {
-                    foreach (var descriptor in source.GetServiceDescriptors(parent, serviceType))
+                    foreach (var descriptor in source.GetServiceDescriptors(serviceProvider, serviceType))
                     {
                         yield return (descriptor.serviceInfo,
                                          selector == null ? descriptor.factory : selector((descriptor.serviceInfo, descriptor.factory)));

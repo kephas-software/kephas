@@ -52,7 +52,7 @@ namespace Kephas.Reflection
         /// </returns>
         public IEnumerable<Type> GetExportedTypes(Assembly assembly)
         {
-            Requires.NotNull(assembly, nameof(assembly));
+            assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
             return this.assemblyCache.GetOrAdd(
                 assembly,

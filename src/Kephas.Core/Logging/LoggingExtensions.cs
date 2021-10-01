@@ -50,7 +50,7 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger GetLogger(this object obj, IContext? context = null)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             var objType = obj as Type ?? obj.GetType();
             if (obj is IAmbientServices ambientServices)

@@ -89,7 +89,7 @@ namespace Kephas.Model
         /// </returns>
         public static Type GetAbstractType(this object obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             return obj switch
             {

@@ -10,6 +10,7 @@
 
 namespace Kephas
 {
+    using System;
     using System.Collections.Generic;
     using System.Dynamic;
 
@@ -31,7 +32,7 @@ namespace Kephas
         /// <param name="value">The value.</param>
         public static void SetPropertyValue(this object obj, string propertyName, object? value)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             runtimeTypeInfo.SetValue(obj, propertyName, value);
@@ -64,7 +65,7 @@ namespace Kephas
         /// <returns>The property value.</returns>
         public static object? GetPropertyValue(this object obj, string propertyName)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             return runtimeTypeInfo.GetValue(obj, propertyName);
@@ -81,7 +82,7 @@ namespace Kephas
         /// </returns>
         public static bool TryGetPropertyValue(this object obj, string propertyName, out object? value)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             return runtimeTypeInfo.TryGetValue(obj, propertyName, out value);
@@ -94,7 +95,7 @@ namespace Kephas
         /// <returns>A dynamic type information for the provided object.</returns>
         public static IRuntimeTypeInfo GetRuntimeTypeInfo(this object obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
             return obj.GetType().AsRuntimeTypeInfo();
         }
 
@@ -105,7 +106,7 @@ namespace Kephas
         /// <returns>The provided instance, if it is a dynamic object, or a dynamic wrapper over it.</returns>
         public static dynamic ToDynamicObject(this object obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             return obj switch
             {
@@ -121,7 +122,7 @@ namespace Kephas
         /// <returns>The provided instance, if it is an <see cref="IExpandoBase"/>, or a dynamic wrapper over it.</returns>
         public static IExpandoBase ToExpando(this object obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             return obj switch
             {
@@ -137,7 +138,7 @@ namespace Kephas
         /// <returns>The provided instance, if it is a dictionary, or a dictionary containing its content.</returns>
         public static IDictionary<string, object?> ToDictionary(this object obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             return obj switch
             {
@@ -154,7 +155,7 @@ namespace Kephas
         /// <returns>The provided instance, if it is an <see cref="IDynamic"/>, or a dynamic wrapper over it.</returns>
         public static IDynamic ToDynamic(this object obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             return obj switch
             {
