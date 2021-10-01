@@ -36,7 +36,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of a long that represents the number of elements in a sequence.</returns>
         public static Task<long> LongCountAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
@@ -59,7 +59,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of a long that represents the number of elements in a sequence.</returns>
         public static Task<long> LongCountAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return LongCountAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -73,10 +73,9 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the number of elements in a sequence.</returns>
         public static Task<int> CountAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var countExpression = Expression.Call(
                     null,
@@ -97,7 +96,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the number of elements in a sequence.</returns>
         public static Task<int> CountAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return CountAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -112,11 +111,10 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the single element of a sequence.</returns>
         public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var singleExpression = (Expression)Expression.Call(
                     null,
@@ -138,10 +136,9 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the single element of a sequence.</returns>
         public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var singleExpression = Expression.Call(
                     null,
@@ -162,7 +159,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the single element of a sequence.</returns>
         public static Task<object> SingleOrDefaultAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return SingleOrDefaultAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -177,11 +174,10 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the single element of a sequence.</returns>
         public static Task<T> SingleAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var singleExpression = (Expression)Expression.Call(
                     null,
@@ -203,10 +199,9 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the single element of a sequence.</returns>
         public static Task<T> SingleAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var singleExpression = Expression.Call(
                     null,
@@ -227,7 +222,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the single element of a sequence.</returns>
         public static Task<object> SingleAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return SingleAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -242,11 +237,10 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the first element of a sequence.</returns>
         public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var firstExpression = (Expression)Expression.Call(
                     null,
@@ -268,10 +262,9 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the first element of a sequence.</returns>
         public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var firstExpression = Expression.Call(
                     null,
@@ -292,7 +285,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the first element of a sequence.</returns>
         public static Task<object> FirstOrDefaultAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return FirstOrDefaultAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -307,11 +300,10 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the first element of a sequence.</returns>
         public static Task<T> FirstAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var firstExpression = (Expression)Expression.Call(
                     null,
@@ -333,10 +325,9 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the first element of a sequence.</returns>
         public static Task<T> FirstAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var firstExpression = Expression.Call(
                     null,
@@ -357,7 +348,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of the first element of a sequence.</returns>
         public static Task<object> FirstAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return FirstAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -371,10 +362,9 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of a boolean value indicating whether a sequence contains any elements.</returns>
         public static Task<bool> AnyAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var anyExpression = Expression.Call(
                     null,
@@ -397,7 +387,7 @@ namespace Kephas.Data.Linq
             this IQueryable query,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             return AnyAsync<object>((IQueryable<object>)query, cancellationToken);
         }
@@ -411,7 +401,7 @@ namespace Kephas.Data.Linq
         /// <returns>A list of items.</returns>
         public static async Task<IList<T>> ToListAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(query, nameof(query));
+            query = query ?? throw new ArgumentNullException(nameof(query));
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
