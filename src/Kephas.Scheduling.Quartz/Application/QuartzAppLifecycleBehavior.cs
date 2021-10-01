@@ -10,17 +10,16 @@
 
 namespace Kephas.Scheduling.Quartz.Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using global::Quartz.Logging;
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Quartz.Logging;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Application lifecycle behavior initializing the Quartz infrastructure.
@@ -35,7 +34,7 @@ namespace Kephas.Scheduling.Quartz.Application
         /// <param name="logManager">The log manager.</param>
         public QuartzAppLifecycleBehavior(ILogManager logManager)
         {
-            Requires.NotNull(logManager, nameof(logManager));
+            logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
 
             this.logManager = logManager;
         }

@@ -12,8 +12,6 @@ namespace Kephas.Logging
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Manager service for loggers.
     /// </summary>
@@ -47,10 +45,10 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger GetLogger(this ILogManager logManager, Type type)
         {
-            Requires.NotNull(logManager, nameof(logManager));
+            logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            return logManager.GetLogger(type.FullName);
+            return logManager.GetLogger(type.FullName ?? "Logger");
         }
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger GetLogger<TTarget>(this ILogManager logManager)
         {
-            Requires.NotNull(logManager, nameof(logManager));
+            logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
 
             return logManager.GetLogger(typeof(TTarget));
         }

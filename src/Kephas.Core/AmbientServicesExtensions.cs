@@ -715,7 +715,7 @@ namespace Kephas
         public static IAmbientServices WithLogManager(this IAmbientServices ambientServices, ILogManager logManager, bool replaceDefault = true)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(logManager, nameof(logManager));
+            logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
 
             if (replaceDefault)
             {
