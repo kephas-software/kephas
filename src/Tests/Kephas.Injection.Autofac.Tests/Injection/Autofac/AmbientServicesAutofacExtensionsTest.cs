@@ -12,7 +12,7 @@ namespace Kephas.Tests.Injection.Autofac
 {
     using global::Autofac;
     using Kephas.Application;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac;
     using Kephas.Services;
     using Kephas.Testing.Injection;
     using NUnit.Framework;

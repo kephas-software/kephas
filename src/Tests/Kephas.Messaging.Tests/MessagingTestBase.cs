@@ -16,7 +16,7 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Injection;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Testing.Application;
     using NSubstitute;

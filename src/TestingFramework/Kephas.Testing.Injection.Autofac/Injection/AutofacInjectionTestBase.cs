@@ -19,9 +19,10 @@ namespace Kephas.Testing.Injection
     using Kephas.Application;
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac;
+    using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Autofac.Metadata;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Services;

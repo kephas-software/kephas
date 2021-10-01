@@ -19,7 +19,7 @@ namespace Kephas.Services
     using Kephas.Collections;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services.Reflection;

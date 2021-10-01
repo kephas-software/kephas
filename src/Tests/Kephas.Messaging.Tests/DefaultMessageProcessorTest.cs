@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.ExportFactories;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Injection.SystemComposition;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;

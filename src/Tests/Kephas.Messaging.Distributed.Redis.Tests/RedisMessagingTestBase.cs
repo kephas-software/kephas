@@ -9,7 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Injection;
-using Kephas.Injection.Lite.Hosting;
 
 namespace Kephas.Messaging.Redis.Tests
 {
@@ -18,6 +17,7 @@ namespace Kephas.Messaging.Redis.Tests
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Redis.Routing;

@@ -18,11 +18,9 @@ namespace Kephas.Tests.Injection.SystemComposition
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition;
-    using Kephas.Injection.SystemComposition.Conventions;
-    using Kephas.Injection.SystemComposition.Hosting;
+    using Kephas.Injection.SystemComposition.Builder;
     using Kephas.Injection.SystemComposition.ScopeFactory;
     using Kephas.Logging;
     using Kephas.Services;

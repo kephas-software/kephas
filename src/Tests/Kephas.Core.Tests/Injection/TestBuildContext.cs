@@ -10,7 +10,7 @@
 
 namespace Kephas.Core.Tests.Injection
 {
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using NSubstitute;
 
     /// <summary>

@@ -14,7 +14,6 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
     using System.Composition.Hosting.Core;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Injection.SystemComposition.Hosting;
 
     /// <summary>
     /// An export descriptor provider for <see cref="IInjector"/>.

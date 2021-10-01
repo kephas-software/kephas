@@ -17,6 +17,7 @@ namespace Kephas
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.Lite;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;

@@ -19,7 +19,6 @@ namespace Kephas.Tests.Injection.SystemComposition
 
     using Kephas.Injection;
     using Kephas.Injection.SystemComposition;
-    using Kephas.Injection.SystemComposition.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;

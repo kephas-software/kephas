@@ -15,7 +15,7 @@ namespace Kephas.Tests.Injection.Autofac
     using global::Autofac;
     using global::Autofac.Core.Registration;
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;

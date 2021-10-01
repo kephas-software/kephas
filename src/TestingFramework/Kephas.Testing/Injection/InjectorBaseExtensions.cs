@@ -9,7 +9,7 @@ namespace Kephas.Testing.Injection
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Services;
 
     /// <summary>

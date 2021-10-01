@@ -20,11 +20,8 @@ namespace Kephas
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
     using Kephas.Injection.Lite;
-    using Kephas.Injection.Lite.Conventions;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Injection.Lite.Internal;
     using Kephas.Licensing;
     using Kephas.Logging;

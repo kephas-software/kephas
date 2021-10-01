@@ -10,7 +10,7 @@ namespace Kephas.Tests.Injection.Autofac
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Kephas.Testing.Injection;

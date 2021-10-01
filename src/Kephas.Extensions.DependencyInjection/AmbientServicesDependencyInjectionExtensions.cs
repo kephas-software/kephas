@@ -19,8 +19,8 @@ namespace Kephas
     using Kephas.Extensions.DependencyInjection.Hosting;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.ExportFactories;
-    using Kephas.Injection.Hosting;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Runtime;

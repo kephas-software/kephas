@@ -17,9 +17,9 @@ namespace Kephas
     using Kephas.Cryptography;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;

@@ -16,7 +16,7 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.ExportFactories;
     using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Logging;
@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Tests.Autofac
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(IMessageBroker).GetTypeInfo().Assembly, /* Kephas.Messaging.Distributed */
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */

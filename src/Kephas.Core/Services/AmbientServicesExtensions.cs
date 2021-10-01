@@ -14,8 +14,7 @@ namespace Kephas.Services
     using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.Lite.Conventions;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Services.Reflection;
 
     /// <summary>

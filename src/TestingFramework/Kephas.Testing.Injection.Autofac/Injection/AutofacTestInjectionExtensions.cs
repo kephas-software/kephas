@@ -13,7 +13,7 @@ namespace Kephas.Testing.Injection
     using System.Diagnostics.CodeAnalysis;
     using Autofac;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class AutofacTestInjectionExtensions

@@ -17,8 +17,7 @@ namespace Kephas.Core.Tests.Injection
 
     using Kephas.Application;
     using Kephas.Injection;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -58,11 +57,11 @@ namespace Kephas.Core.Tests.Injection
             {
             }
 
-            public override IPartBuilder ForType(Type type) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForType(Type type) => Substitute.For<IRegistrationBuilder>();
 
-            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
-            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
 
             protected override IInjector CreateInjectorCore()
             {
@@ -80,7 +79,7 @@ namespace Kephas.Core.Tests.Injection
             public IDictionary<Type, TestTypeBuilder> TypeBuilders { get; } =
                 new Dictionary<Type, TestTypeBuilder>();
 
-            public override IPartBuilder ForType(Type type)
+            public override IRegistrationBuilder ForType(Type type)
             {
                 var partBuilder = this.CreateBuilder(type);
                 this.TypeBuilders.Add(type, partBuilder);
@@ -91,22 +90,22 @@ namespace Kephas.Core.Tests.Injection
             /// Defines a registration for the specified type and its singleton instance.
             /// </summary>
             /// <param name="instance">The instance.</param>
-            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
             /// <summary>
             /// Defines a registration for the specified type and its instance factory.
             /// </summary>
             /// <param name="type">The registered service type.</param>
             /// <param name="factory">The service factory.</param>
-            /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+            /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
+            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
 
             protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
             private TestTypeBuilder CreateBuilder(Type type) => new TestTypeBuilder(type);
         }
 
-        public class TestTypeBuilder : IPartBuilder
+        public class TestTypeBuilder : IRegistrationBuilder
         {
             public TestTypeBuilder(Type type)
             {
@@ -123,7 +122,7 @@ namespace Kephas.Core.Tests.Injection
 
             public bool AllowMultiple { get; set; }
 
-            public IPartBuilder As(Type contractType)
+            public IRegistrationBuilder As(Type contractType)
             {
                 this.ContractType = contractType;
                 return this;
@@ -131,7 +130,7 @@ namespace Kephas.Core.Tests.Injection
 
             public IDictionary<string, object?>? Metadata { get; set; }
 
-            public IPartBuilder Singleton()
+            public IRegistrationBuilder Singleton()
             {
                 this.IsSingleton = true;
                 return this;
@@ -141,7 +140,7 @@ namespace Kephas.Core.Tests.Injection
             /// Mark the part as being shared within the scope.
             /// </summary>
             /// <returns>A part builder allowing further configuration of the part.</returns>
-            public IPartBuilder Scoped()
+            public IRegistrationBuilder Scoped()
             {
                 this.IsScoped = true;
                 return this;
@@ -149,19 +148,19 @@ namespace Kephas.Core.Tests.Injection
 
             public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> ConstructorSelector { get; private set; }
 
-            public IPartBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+            public IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
             {
                 this.ConstructorSelector = constructorSelector;
                 return this;
             }
 
-            public IPartBuilder AddMetadata(string name, object? value)
+            public IRegistrationBuilder AddMetadata(string name, object? value)
             {
                 (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
                 return this;
             }
 
-            IPartBuilder IPartBuilder.AllowMultiple(bool value)
+            IRegistrationBuilder IRegistrationBuilder.AllowMultiple(bool value)
             {
                 this.AllowMultiple = value;
                 return this;

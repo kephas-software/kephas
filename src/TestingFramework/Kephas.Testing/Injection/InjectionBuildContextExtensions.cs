@@ -7,7 +7,7 @@
 
 namespace Kephas.Testing.Injection
 {
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Services;
 
     /// <summary>

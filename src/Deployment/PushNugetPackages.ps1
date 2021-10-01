@@ -20,6 +20,7 @@ $paths = @(
     "Kephas.Commands.Messaging",
     "Kephas.Injection.Abstractions",
     "Kephas.Injection.Autofac",
+    "Kephas.Injection.Lite",
     "Kephas.Injection.SystemComposition",
     "Kephas.Core",
     "Kephas.Core.Endpoints",

@@ -16,8 +16,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     using Kephas.Collections;
     using Kephas.Extensions.DependencyInjection.Conventions;
     using Kephas.Injection;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -44,30 +43,30 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// Define a rule that will apply to the specified type.
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>
-        /// <returns>A <see cref="IPartBuilder"/> that must be used to specify the rule.</returns>
-        public override IPartBuilder ForType(Type type)
+        /// <returns>A <see cref="IRegistrationBuilder"/> that must be used to specify the rule.</returns>
+        public override IRegistrationBuilder ForType(Type type)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
             {
                 InstancingStrategy = type,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new DependencyInjectionPartConventionsBuilder(descriptorBuilder);
+            return new DependencyInjectionTypeRegistrationBuilder(descriptorBuilder);
         }
 
         /// <summary>
         /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        public override IPartBuilder ForInstance(object instance)
+        /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
+        public override IRegistrationBuilder ForInstance(object instance)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
             {
                 InstancingStrategy = instance,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new DependencyInjectionPartConventionsBuilder(descriptorBuilder);
+            return new DependencyInjectionTypeRegistrationBuilder(descriptorBuilder);
         }
 
         /// <summary>
@@ -75,15 +74,15 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
-        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory)
+        /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
+        public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
             {
                 InstancingStrategy = (Func<IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetService<IInjector>())),
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new DependencyInjectionPartBuilder(descriptorBuilder);
+            return new DependencyInjectionRegistrationBuilder(descriptorBuilder);
         }
 
         /// <summary>

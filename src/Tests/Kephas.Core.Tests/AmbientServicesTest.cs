@@ -9,9 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Injection;
-using Kephas.Injection.Hosting;
 using Kephas.Injection.Lite;
-using Kephas.Injection.Lite.Conventions;
 
 namespace Kephas.Core.Tests
 {
@@ -25,7 +23,7 @@ namespace Kephas.Core.Tests
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;

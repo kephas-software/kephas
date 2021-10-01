@@ -13,8 +13,8 @@ namespace Kephas
     using System;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.Autofac.Hosting;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Autofac.Builder;
+    using Kephas.Injection.Builder;
 
     /// <summary>
     /// Autofac related ambient services builder extensions.

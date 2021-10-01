@@ -16,7 +16,7 @@ namespace Kephas.Messaging.Tests.Autofac
 
     using Kephas.Application;
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Hosting;
+    using Kephas.Injection.Autofac.Builder;
     using Kephas.Logging;
     using Kephas.Testing.Application;
     using NSubstitute;

@@ -12,7 +12,7 @@ namespace Kephas.Tests.Injection.SystemComposition
 {
     using System.Diagnostics.CodeAnalysis;
     using Kephas.Injection;
-    using Kephas.Injection.SystemComposition.Hosting;
+    using Kephas.Injection.SystemComposition;
     using Kephas.Testing.Injection;
     using NUnit.Framework;
 

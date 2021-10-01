@@ -13,7 +13,7 @@ namespace Kephas.Testing.Injection
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Injection.SystemComposition.Hosting;
+    using Kephas.Injection.SystemComposition;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class SystemCompositionTestInjectionExtensions

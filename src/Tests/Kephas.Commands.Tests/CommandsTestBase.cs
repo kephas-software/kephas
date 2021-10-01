@@ -17,7 +17,7 @@ namespace Kephas.Commands.Tests
 
     using Kephas.Application;
     using Kephas.Injection;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Testing.Injection;
 

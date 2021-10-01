@@ -22,7 +22,7 @@ namespace Kephas.Extensions.DependencyInjection
     using System.Linq;
 
     using Kephas.Injection;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Builder;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Microsoft.Extensions.DependencyInjection;

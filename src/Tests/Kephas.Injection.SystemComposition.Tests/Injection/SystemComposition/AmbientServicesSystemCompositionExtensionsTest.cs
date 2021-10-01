@@ -14,7 +14,7 @@ namespace Kephas.Tests.Injection.SystemComposition
     using System.Composition.Hosting;
     using System.Linq;
     using Kephas.Application;
-    using Kephas.Injection.SystemComposition.Hosting;
+    using Kephas.Injection.SystemComposition;
     using Kephas.Services;
     using Kephas.Testing.Injection;
     using NUnit.Framework;

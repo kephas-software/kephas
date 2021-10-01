@@ -15,6 +15,7 @@ using NUnit.Framework;
 
 namespace Kephas.Core.Tests.Injection.Lite
 {
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Services.Reflection;
 
     [TestFixture]

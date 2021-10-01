@@ -9,8 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Injection;
-using Kephas.Injection.Conventions;
-using Kephas.Injection.Hosting;
 
 namespace Kephas.Core.Tests
 {
@@ -19,6 +17,7 @@ namespace Kephas.Core.Tests
     using System.Threading.Tasks;
     using Kephas.Application;
     using Kephas.Diagnostics.Logging;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
     using NSubstitute;
@@ -86,11 +85,11 @@ namespace Kephas.Core.Tests
                 return this;
             }
 
-            public override IPartBuilder ForType(Type type) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForType(Type type) => Substitute.For<IRegistrationBuilder>();
 
-            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
-            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
 
             protected override IInjector CreateInjectorCore()
             {
@@ -108,11 +107,11 @@ namespace Kephas.Core.Tests
             {
             }
 
-            public override IPartBuilder ForType(Type type) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForType(Type type) => Substitute.For<IRegistrationBuilder>();
 
-            public override IPartBuilder ForInstance(object instance) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
-            public override IPartBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IPartBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
 
             protected override IInjector CreateInjectorCore()
             {

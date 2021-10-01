@@ -18,7 +18,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using Kephas.Injection;
     using Kephas.Injection.ExportFactories;
     using Kephas.Injection.ExportFactoryImporters;
-    using Kephas.Injection.SystemComposition.Hosting;
+    using Kephas.Injection.SystemComposition.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(IMessageBroker).GetTypeInfo().Assembly, /* Kephas.Messaging.Distributed */
                 typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */

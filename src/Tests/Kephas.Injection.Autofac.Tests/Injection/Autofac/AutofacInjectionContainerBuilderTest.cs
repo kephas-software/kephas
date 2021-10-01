@@ -13,15 +13,15 @@ namespace Kephas.Tests.Injection.Autofac
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+
     using global::Autofac.Core;
     using global::Autofac.Core.Activators.Reflection;
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Autofac.Conventions;
-    using Kephas.Injection.Autofac.Hosting;
-    using Kephas.Injection.Conventions;
-    using Kephas.Injection.Hosting;
+    using Kephas.Injection.Autofac;
+    using Kephas.Injection.Autofac.Builder;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Reflection;

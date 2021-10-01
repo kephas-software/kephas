@@ -19,7 +19,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Injection;
     using Kephas.Injection.ExportFactories;
     using Kephas.Injection.ExportFactoryImporters;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;

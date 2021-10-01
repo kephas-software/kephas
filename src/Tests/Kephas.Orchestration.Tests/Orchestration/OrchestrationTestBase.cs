@@ -17,7 +17,7 @@ namespace Kephas.Tests.Orchestration
     using Kephas.Application;
     using Kephas.Commands;
     using Kephas.Injection;
-    using Kephas.Injection.Lite.Hosting;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;

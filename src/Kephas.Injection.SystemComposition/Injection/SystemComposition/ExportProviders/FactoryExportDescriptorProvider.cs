@@ -16,7 +16,6 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Injection.SystemComposition.Hosting;
 
     /// <summary>
     /// Factory export descriptor provider.
