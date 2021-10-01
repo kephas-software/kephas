@@ -21,7 +21,7 @@ namespace Kephas.ExceptionHandling
         /// <value>
         /// The message.
         /// </value>
-        string Message { get; }
+        string? Message { get; }
 
         /// <summary>
         /// Gets the severity.

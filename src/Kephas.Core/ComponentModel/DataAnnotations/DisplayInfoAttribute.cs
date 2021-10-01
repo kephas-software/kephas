@@ -142,7 +142,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <returns>
         /// The localized name.
         /// </returns>
-        public string GetName()
+        public string? GetName()
         {
             return this.name.GetLocalizableValue();
         }
@@ -153,7 +153,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <returns>
         /// The localized description.
         /// </returns>
-        public string GetDescription()
+        public string? GetDescription()
         {
             return this.description.GetLocalizableValue();
         }
@@ -164,7 +164,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <returns>
         /// The localized prompt.
         /// </returns>
-        public string GetPrompt()
+        public string? GetPrompt()
         {
             return this.prompt.GetLocalizableValue();
         }
@@ -175,7 +175,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <returns>
         /// The localized short name.
         /// </returns>
-        public string GetShortName()
+        public string? GetShortName()
         {
             return this.shortName.GetLocalizableValue();
         }

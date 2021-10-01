@@ -10,7 +10,6 @@ namespace Kephas.Reflection
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection.Localization;
 
     /// <summary>
     /// The display attribute adapter.
@@ -44,7 +43,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized name.
         /// </returns>
-        public string GetName() => this.displayAttr.GetName();
+        public string? GetName() => this.displayAttr.GetName();
 
         /// <summary>
         /// Gets the localized description.
@@ -52,7 +51,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized description.
         /// </returns>
-        public string GetDescription() => this.displayAttr.GetDescription();
+        public string? GetDescription() => this.displayAttr.GetDescription();
 
         /// <summary>
         /// Gets the localized prompt.
@@ -60,7 +59,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized prompt.
         /// </returns>
-        public string GetPrompt() => this.displayAttr.GetPrompt();
+        public string? GetPrompt() => this.displayAttr.GetPrompt();
 
         /// <summary>
         /// Gets the localized short name.
@@ -68,6 +67,6 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized short name.
         /// </returns>
-        public string GetShortName() => this.displayAttr.GetShortName();
+        public string? GetShortName() => this.displayAttr.GetShortName();
     }
 }

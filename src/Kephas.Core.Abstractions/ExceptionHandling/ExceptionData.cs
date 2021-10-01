@@ -12,8 +12,6 @@ namespace Kephas.ExceptionHandling
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// An exception data.
     /// </summary>
@@ -35,7 +33,7 @@ namespace Kephas.ExceptionHandling
         public ExceptionData(Exception exception, SeverityLevel? severity = null)
             : this()
         {
-            Requires.NotNull(exception, nameof(exception));
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
             if (severity == null)
             {
@@ -60,7 +58,7 @@ namespace Kephas.ExceptionHandling
         /// <value>
         /// The type of the exception.
         /// </value>
-        public string ExceptionType { get; set; }
+        public string? ExceptionType { get; set; }
 
         /// <summary>
         /// Gets or sets the message.
@@ -68,7 +66,7 @@ namespace Kephas.ExceptionHandling
         /// <value>
         /// The message.
         /// </value>
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// Gets or sets the severity level.

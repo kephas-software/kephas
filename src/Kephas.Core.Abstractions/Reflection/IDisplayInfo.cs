@@ -21,7 +21,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized name.
         /// </returns>
-        string GetName();
+        string? GetName();
 
         /// <summary>
         /// Gets the localized description.
@@ -29,7 +29,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized description.
         /// </returns>
-        string GetDescription();
+        string? GetDescription();
 
         /// <summary>
         /// Gets the localized prompt.
@@ -37,7 +37,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized prompt.
         /// </returns>
-        string GetPrompt();
+        string? GetPrompt();
 
         /// <summary>
         /// Gets the localized short name.
@@ -45,6 +45,6 @@ namespace Kephas.Reflection
         /// <returns>
         /// The localized short name.
         /// </returns>
-        string GetShortName();
+        string? GetShortName();
     }
 }
