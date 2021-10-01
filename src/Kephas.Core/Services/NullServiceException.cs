@@ -27,7 +27,7 @@ namespace Kephas.Services
         public NullServiceException(Type serviceType)
             : base(string.Format(Strings.NullServiceExceptionMessage, serviceType.FullName))
         {
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Kephas.Services
         public NullServiceException(Type serviceType, Exception inner)
             : base(string.Format(Strings.NullServiceExceptionMessage, serviceType.FullName), inner)
         {
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         }
 
         /// <summary>

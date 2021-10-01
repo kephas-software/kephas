@@ -45,7 +45,7 @@ namespace Kephas.Services.Transitions
         public FinalizationMonitor(Type serviceImplementationType)
             : base("finalization", serviceImplementationType)
         {
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
         }
     }
 }

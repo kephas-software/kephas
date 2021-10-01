@@ -93,7 +93,7 @@ namespace Kephas
         /// </returns>
         public virtual IAmbientServices Register(Type serviceType, Action<IServiceRegistrationBuilder> builder)
         {
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             var serviceBuilder = new ServiceRegistrationBuilder(this, serviceType);

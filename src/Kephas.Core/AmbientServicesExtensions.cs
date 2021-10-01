@@ -365,7 +365,7 @@ namespace Kephas
             Func<object> serviceFactory)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -389,7 +389,7 @@ namespace Kephas
             Func<object> serviceFactory)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -414,7 +414,7 @@ namespace Kephas
             Func<object> serviceFactory)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -438,7 +438,7 @@ namespace Kephas
             Func<object> serviceFactory)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -464,7 +464,7 @@ namespace Kephas
             object service)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
             return ambientServices.Register(serviceType, b => b.WithInstance(service));
@@ -486,7 +486,7 @@ namespace Kephas
             object service)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
             return ambientServices.Register(serviceType, b => b.WithInstance(service).AllowMultiple());
@@ -507,8 +507,8 @@ namespace Kephas
             Type serviceImplementationType)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
 
             ambientServices.Register(
                 serviceType,
@@ -531,8 +531,8 @@ namespace Kephas
             Type serviceImplementationType)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
 
             ambientServices.Register(
                 serviceType,
@@ -555,8 +555,8 @@ namespace Kephas
             Type serviceImplementationType)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
 
             ambientServices.Register(
                 serviceType,
@@ -579,8 +579,8 @@ namespace Kephas
             Type serviceImplementationType)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
 
             ambientServices.Register(
                 serviceType,
@@ -616,7 +616,7 @@ namespace Kephas
         public static object GetRequiredService(this IServiceProvider ambientServices, Type serviceType)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
             var service = ambientServices.GetService(serviceType);
             if (service == null)

@@ -284,7 +284,7 @@ namespace Kephas.Services.Transitions
         public TransitionMonitor(string transitionName, Type serviceImplementationType)
             : base(transitionName, ComputeServiceName(serviceImplementationType))
         {
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
         }
 
         /// <summary>
