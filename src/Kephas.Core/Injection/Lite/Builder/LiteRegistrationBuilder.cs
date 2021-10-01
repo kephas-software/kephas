@@ -230,14 +230,7 @@ namespace Kephas.Injection.Lite.Builder
                 }
             }
 
-            if (this.Instance != null)
-            {
-                this.ambientServices.Register(this.ContractType, ConfigureService);
-
-                return;
-            }
-
-            if (this.ImplementationType != null || this.Factory != null)
+            if (this.InstancingStrategy != null)
             {
                 this.ambientServices.Register(this.ContractType, ConfigureService);
 

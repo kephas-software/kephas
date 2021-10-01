@@ -110,6 +110,7 @@ namespace Kephas.Services.Reflection
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
             this.SetLifetime(appServiceInfo.Lifetime);
             this.Metadata = appServiceInfo.Metadata;
+            this.AllowMultiple = appServiceInfo.AllowMultiple;
         }
 
         /// <summary>

@@ -98,7 +98,7 @@ namespace Kephas.Messaging
             });
 
             var handlers = messageHandlersFactory();
-            return handlers ?? new IMessageHandler[0];
+            return handlers ?? Array.Empty<IMessageHandler>();
         }
 
         private void ResetFactoryCache(IMessageMatch messageMatch)
