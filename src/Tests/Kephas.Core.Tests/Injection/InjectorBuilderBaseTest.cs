@@ -148,7 +148,9 @@ namespace Kephas.Core.Tests.Injection
 
             public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> ConstructorSelector { get; private set; }
 
-            public IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+            public IRegistrationBuilder SelectConstructor(
+                Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+                Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
             {
                 this.ConstructorSelector = constructorSelector;
                 return this;

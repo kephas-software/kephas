@@ -24,7 +24,7 @@ namespace Kephas.Injection
         IEnumerable<(string name, object? value)> GetMetadata();
 
         /// <summary>
-        /// Gets the <see cref="IMetadataProvider"/> for the <see cref="genericType"/>.
+        /// Gets the <see cref="IMetadataProvider"/> for the <see paramref="genericType"/>.
         /// </summary>
         /// <param name="genericType">The generic type.</param>
         /// <returns>A metadata provider.</returns>

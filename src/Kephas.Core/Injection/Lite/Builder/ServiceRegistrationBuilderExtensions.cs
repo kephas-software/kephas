@@ -11,7 +11,9 @@
 namespace Kephas.Injection.Lite.Builder
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Builder;
     using Kephas.Services;
 
     /// <summary>
@@ -29,7 +31,7 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         public static IServiceRegistrationBuilder WithFactory(this IServiceRegistrationBuilder builder, Func<object> factory)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
             Requires.NotNull(factory, nameof(factory));
 
             return builder.WithFactory(ctx => factory());
@@ -45,28 +47,9 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         public static IServiceRegistrationBuilder WithType<TImplementation>(this IServiceRegistrationBuilder builder)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             return builder.WithType(typeof(TImplementation));
-        }
-
-        /// <summary>
-        /// Sets the registration key to a super type of the service type.
-        /// </summary>
-        /// <remarks>
-        /// The registration type is the key to find the service. The registered service type is a
-        /// subtype providing additional information, typically metadata.
-        /// </remarks>
-        /// <typeparam name="TContract">The type of registration.</typeparam>
-        /// <param name="builder">The builder to act on.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public static IServiceRegistrationBuilder Keyed<TContract>(this IServiceRegistrationBuilder builder)
-        {
-            Requires.NotNull(builder, nameof(builder));
-
-            return builder.As(typeof(TContract));
         }
 
         /// <summary>
@@ -77,11 +60,11 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public static IServiceRegistrationBuilder ProcessingPriority(this IServiceRegistrationBuilder builder, Priority priority)
+        public static IRegistrationBuilder ProcessingPriority(this IRegistrationBuilder builder, Priority priority)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-            return builder.AddMetadata(nameof(AppServiceMetadata.ProcessingPriority), (int)priority);
+            return builder.AddMetadata(nameof(IHasProcessingPriority.ProcessingPriority), priority);
         }
 
         /// <summary>
@@ -92,23 +75,23 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public static IServiceRegistrationBuilder OverridePriority(this IServiceRegistrationBuilder builder, Priority priority)
+        public static IRegistrationBuilder OverridePriority(this IRegistrationBuilder builder, Priority priority)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-            return builder.AddMetadata(nameof(AppServiceMetadata.OverridePriority), (int)priority);
+            return builder.AddMetadata(nameof(IHasOverridePriority.OverridePriority), priority);
         }
 
         /// <summary>
-        /// Sets a flag indicating that the service provided should override its base service.
+        /// Sets the <see cref="AppServiceMetadata.IsOverride"/> metadata the registered service.
         /// </summary>
         /// <param name="builder">The builder to act on.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public static IServiceRegistrationBuilder IsOverride(this IServiceRegistrationBuilder builder)
+        public static IRegistrationBuilder IsOverride(this IRegistrationBuilder builder)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             return builder.AddMetadata(nameof(AppServiceMetadata.IsOverride), true);
         }

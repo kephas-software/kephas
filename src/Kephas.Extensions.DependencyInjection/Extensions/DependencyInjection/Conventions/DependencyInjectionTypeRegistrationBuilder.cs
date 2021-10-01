@@ -77,12 +77,13 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// Select which of the available constructors will be used to instantiate the part.
         /// </summary>
         /// <param name="constructorSelector">Filter that selects a single constructor.</param>
-        /// <param name="importConfiguration">Optional. Action configuring the parameters of the selected
-        ///                                   constructor.</param>
+        /// <param name="parameterBuilder">The parameter builder.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        public IRegistrationBuilder SelectConstructor(
+            Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+            Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
         {
             // TODO not supported.
             this.Logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");

@@ -176,11 +176,14 @@ namespace Kephas.Injection.Lite.Builder
         /// <summary>
         /// Select which of the available constructors will be used to instantiate the part.
         /// </summary>
-        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
+        /// <param name="parameterBuilder">The parameter builder.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IRegistrationBuilder IRegistrationBuilder.SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        IRegistrationBuilder IRegistrationBuilder.SelectConstructor(
+            Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+            Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
         {
             // TODO not supported.
             if (this.Logger.IsTraceEnabled())

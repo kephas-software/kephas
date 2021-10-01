@@ -20,45 +20,65 @@ namespace Kephas.Injection.Builder
     public interface IRegistrationBuilder
     {
         /// <summary>
-        /// Indicates the type registered as the exported service key.
+        /// Sets the registration contract.
         /// </summary>
-        /// <param name="contractType">Type of the service.</param>
+        /// <remarks>
+        /// The registration contract is the key to find the service.
+        /// The registered service type is a subtype providing additional information, typically metadata.
+        /// </remarks>
+        /// <param name="contractType">Type of the contract.</param>
         /// <returns>
-        /// A part builder allowing further configuration of the part.
+        /// A registration builder allowing further configuration.
         /// </returns>
         IRegistrationBuilder As(Type contractType);
 
         /// <summary>
-        /// Mark the part as being shared within the entire composition.
+        /// Sets the registration contract.
         /// </summary>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
+        /// <remarks>
+        /// The registration contract is the key to find the service.
+        /// The registered service type is a subtype providing additional information, typically metadata.
+        /// </remarks>
+        /// <typeparam name="TContract">The contract type.</typeparam>
+        /// <returns>
+        /// A registration builder allowing further configuration.
+        /// </returns>
+        IRegistrationBuilder As<TContract>() => this.As(typeof(TContract));
+
+        /// <summary>
+        /// Registers the service as a singleton.
+        /// </summary>
+        /// <returns>
+        /// A registration builder allowing further configuration.
+        /// </returns>
         IRegistrationBuilder Singleton();
 
         /// <summary>
-        /// Mark the part as being shared within the scope.
+        /// Registers the service as scoped.
         /// </summary>
         /// <returns>
-        /// A part builder allowing further configuration of the part.
+        /// A registration builder allowing further configuration.
         /// </returns>
         IRegistrationBuilder Scoped();
 
         /// <summary>
-        /// Indicates that this service allows multiple registrations.
+        /// Registers the service with multiple instances.
         /// </summary>
-        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <param name="value">Optional. True if multiple service registrations are allowed (default), false otherwise.</param>
         /// <returns>
-        /// A part builder allowing further configuration of the part.
+        /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder AllowMultiple(bool value);
+        IRegistrationBuilder AllowMultiple(bool value = true);
 
         /// <summary>
         /// Select which of the available constructors will be used to instantiate the part.
         /// </summary>
-        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
+        /// <param name="parameterBuilder">The parameter builder.</param>
         /// <returns>
-        /// A part builder allowing further configuration of the part.
+        /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null);
+        IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null);
 
         /// <summary>
         /// Adds metadata to the export.
@@ -66,7 +86,7 @@ namespace Kephas.Injection.Builder
         /// <param name="name">The name of the metadata item.</param>
         /// <param name="value">The metadata value.</param>
         /// <returns>
-        /// A part builder allowing further configuration.
+        /// A registration builder allowing further configuration.
         /// </returns>
         IRegistrationBuilder AddMetadata(string name, object? value);
 
@@ -75,7 +95,7 @@ namespace Kephas.Injection.Builder
         /// </summary>
         /// <param name="metadata">The metadata dictionary.</param>
         /// <returns>
-        /// A part builder allowing further configuration.
+        /// A registration builder allowing further configuration.
         /// </returns>
         IRegistrationBuilder AddMetadata(IDictionary<string, object?> metadata)
         {

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemCompositionImportConventionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionParameterBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,7 +16,7 @@ namespace Kephas.Injection.SystemComposition.Builder
     /// <summary>
     /// The MEF implementation of the conventions builder.
     /// </summary>
-    public class SystemCompositionImportConventionsBuilder : IImportConventionsBuilder
+    public class SystemCompositionParameterBuilder : IParameterBuilder
     {
         /// <summary>
         /// The inner builder.
@@ -24,12 +24,12 @@ namespace Kephas.Injection.SystemComposition.Builder
         private readonly ImportConventionBuilder innerBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemCompositionImportConventionsBuilder"/> class.
+        /// Initializes a new instance of the <see cref="SystemCompositionParameterBuilder"/> class.
         /// </summary>
         /// <param name="innerBuilder">
         /// The inner builder.
         /// </param>
-        internal SystemCompositionImportConventionsBuilder(ImportConventionBuilder innerBuilder)
+        internal SystemCompositionParameterBuilder(ImportConventionBuilder innerBuilder)
         {
             this.innerBuilder = innerBuilder;
         }

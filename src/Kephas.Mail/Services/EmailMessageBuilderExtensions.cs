@@ -10,6 +10,7 @@
 
 namespace Kephas.Mail.Services
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
@@ -31,7 +32,7 @@ namespace Kephas.Mail.Services
             this IEmailMessageBuilder builder,
             IEnumerable<string> addresses)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             foreach (var address in addresses)
             {
@@ -53,7 +54,7 @@ namespace Kephas.Mail.Services
             this IEmailMessageBuilder builder,
             IEnumerable<string> addresses)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             foreach (var address in addresses)
             {
@@ -75,7 +76,7 @@ namespace Kephas.Mail.Services
             this IEmailMessageBuilder builder,
             IEnumerable<string> addresses)
         {
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             foreach (var address in addresses)
             {

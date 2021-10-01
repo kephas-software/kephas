@@ -79,11 +79,14 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// <summary>
         /// Select which of the available constructors will be used to instantiate the part.
         /// </summary>
-        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
+        /// <param name="parameterBuilder">The parameter builder.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
+        public IRegistrationBuilder SelectConstructor(
+            Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+            Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
         {
             Requires.NotNull(constructorSelector, nameof(constructorSelector));
 
@@ -117,7 +120,7 @@ namespace Kephas.Injection.SystemComposition.Builder
                 return ctor;
             }
 
-            if (importConfiguration == null)
+            if (parameterBuilder == null)
             {
                 this.innerConventionBuilder.SelectConstructor(NewConstructorSelector);
             }
@@ -125,7 +128,7 @@ namespace Kephas.Injection.SystemComposition.Builder
             {
                 this.innerConventionBuilder.SelectConstructor(
                     NewConstructorSelector,
-                    (pi, config) => importConfiguration(pi, new SystemCompositionImportConventionsBuilder(config)));
+                    (pi, config) => parameterBuilder(pi, new SystemCompositionParameterBuilder(config)));
             }
 
             return this;

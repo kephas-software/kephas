@@ -12,40 +12,13 @@ namespace Kephas.Injection.Lite.Builder
 {
     using System;
 
+    using Kephas.Injection.Builder;
+
     /// <summary>
     /// Interface for service registration builder.
     /// </summary>
-    public interface IServiceRegistrationBuilder
+    public interface IServiceRegistrationBuilder : IRegistrationBuilder
     {
-        /// <summary>
-        /// Sets the registration contract to a super type of the service type.
-        /// </summary>
-        /// <remarks>
-        /// The registration contract is the key to find the service.
-        /// The registered service type is a subtype providing additional information, typically metadata.
-        /// </remarks>
-        /// <param name="contractType">Type of the contract.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder As(Type contractType);
-
-        /// <summary>
-        /// Registers the service as a singleton.
-        /// </summary>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder Singleton();
-
-        /// <summary>
-        /// Registers the service as scoped.
-        /// </summary>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder Scoped();
-
         /// <summary>
         /// Registers the service as transient.
         /// </summary>
@@ -53,14 +26,6 @@ namespace Kephas.Injection.Lite.Builder
         /// This builder.
         /// </returns>
         IServiceRegistrationBuilder Transient();
-
-        /// <summary>
-        /// Registers the service with multiple instances.
-        /// </summary>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder AllowMultiple();
 
         /// <summary>
         /// Registers the service with the provided instancing strategy.
@@ -100,16 +65,6 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         IServiceRegistrationBuilder WithType(Type implementationType)
             => this.WithInstancingStrategy(implementationType);
-
-        /// <summary>
-        /// Adds metadata in form of (key, value) pairs.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder AddMetadata(string key, object? value);
 
         /// <summary>
         /// Indicates whether the created instances are disposed by an external owner.

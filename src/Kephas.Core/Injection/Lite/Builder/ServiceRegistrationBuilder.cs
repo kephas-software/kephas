@@ -13,7 +13,10 @@ namespace Kephas.Injection.Lite.Builder
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Internal;
     using Kephas.Resources;
     using Kephas.Services;
@@ -25,9 +28,9 @@ namespace Kephas.Injection.Lite.Builder
     {
         private readonly IAmbientServices ambientServices;
 
-        private Type contractType;
-
         private readonly Type contractDeclarationType;
+
+        private Type contractType;
 
         private AppServiceLifetime lifetime = AppServiceLifetime.Singleton;
 
@@ -103,7 +106,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder As(Type contractType)
+        public IRegistrationBuilder As(Type contractType)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
@@ -127,7 +130,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder Singleton()
+        public IRegistrationBuilder Singleton()
         {
             this.lifetime = AppServiceLifetime.Singleton;
             return this;
@@ -139,7 +142,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder Scoped()
+        public IRegistrationBuilder Scoped()
         {
             this.lifetime = AppServiceLifetime.Scoped;
             return this;
@@ -160,12 +163,29 @@ namespace Kephas.Injection.Lite.Builder
         /// <summary>
         /// Registers the service with multiple instances.
         /// </summary>
+        /// <param name="value">Optional. True if multiple service registrations are allowed (default), false otherwise.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder AllowMultiple()
+        public IRegistrationBuilder AllowMultiple(bool value = true)
         {
             this.allowMultiple = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
+        /// <param name="parameterBuilder">The parameter builder.</param>
+        /// <returns>
+        /// A registration builder allowing further configuration.
+        /// </returns>
+        public IRegistrationBuilder SelectConstructor(
+            Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+            Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
+        {
+            // TODO: not supported currently
             return this;
         }
 
@@ -231,7 +251,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder AddMetadata(string key, object? value)
+        public IRegistrationBuilder AddMetadata(string key, object? value)
         {
             (this.metadata ??= new Dictionary<string, object?>())[key] = value;
 

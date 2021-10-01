@@ -177,7 +177,7 @@ namespace Kephas.Threading.Tasks
         /// The task result.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
+        public static T? GetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
             return GetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds, throwOnTimeout);
         }

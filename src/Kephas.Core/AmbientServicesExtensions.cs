@@ -109,7 +109,7 @@ namespace Kephas
             where TService : class
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             return ambientServices.Register(typeof(TService), builder);
         }
@@ -127,7 +127,7 @@ namespace Kephas
             where TService : class
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(builder, nameof(builder));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             return ambientServices.Register(
                 typeof(TService),
