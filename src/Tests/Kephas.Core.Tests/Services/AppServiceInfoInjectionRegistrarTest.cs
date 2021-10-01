@@ -52,11 +52,10 @@ namespace Kephas.Core.Tests.Services
                 new TestBuildContext(new AmbientServices()),
                 new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            var builderEntry = conventions.TypeBuilders.Single();
+            Assert.AreEqual(2, conventions.TypeBuilders.Count);
 
-            Assert.AreEqual(builderEntry.Key, typeof(MultipleTestService));
-            Assert.AreEqual(builderEntry.Key, typeof(NewMultipleTestService));
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(MultipleTestService)));
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(NewMultipleTestService)));
         }
 
         [Test]
@@ -72,7 +71,8 @@ namespace Kephas.Core.Tests.Services
             var registrar = CreateAppServiceInfoInjectionRegistrar();
             registrar.RegisterServices(
                 conventions,
-                new TestBuildContext(new AmbientServices()), new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+                new TestBuildContext(new AmbientServices()),
+                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
@@ -93,7 +93,8 @@ namespace Kephas.Core.Tests.Services
             var registrar = CreateAppServiceInfoInjectionRegistrar();
             registrar.RegisterServices(
                 conventions,
-                new TestBuildContext(new AmbientServices()), new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+                new TestBuildContext(new AmbientServices()),
+                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(ChainSingleOverrideTestService)));
@@ -113,7 +114,8 @@ namespace Kephas.Core.Tests.Services
             var registrar = CreateAppServiceInfoInjectionRegistrar();
             registrar.RegisterServices(
                 conventions,
-                new TestBuildContext(new AmbientServices()), new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+                new TestBuildContext(new AmbientServices()),
+                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(DerivedOverrideSingleTestService)));
@@ -381,21 +383,19 @@ namespace Kephas.Core.Tests.Services
             var registrar = CreateAppServiceInfoInjectionRegistrar();
             registrar.RegisterServices(
                 conventions,
-                new TestBuildContext(new AmbientServices()), new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+                new TestBuildContext(new AmbientServices()),
+                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            var builderEntry = conventions.TypeBuilders.First();
-            Assert.AreEqual(builderEntry.Key, typeof(CustomValueNullMetadataAppService));
+            Assert.AreEqual(2, conventions.TypeBuilders.Count);
 
-            var testBuilder = (InjectorBuilderBaseTest.TestTypeBuilder)builderEntry.Value;
-            var metadata = testBuilder.Metadata;
+            var customBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueMetadataAppService));
+            var customMetadata = customBuilderEntry.Value.Metadata!;
+            Assert.AreEqual(2, customMetadata.Count);
+            Assert.AreEqual("hi there", customMetadata["CustomValueMetadata"]);
 
-            Assert.AreEqual(6, metadata.Count);
-            Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
-
-            var valueGetter = (Func<Type, object>)metadata["CustomValueMetadata"];
-            Assert.AreEqual("hi there", valueGetter(typeof(CustomValueMetadataAppService)));
-            Assert.IsNull(valueGetter(typeof(CustomValueNullMetadataAppService)));
+            var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueNullMetadataAppService));
+            var nullMetadata = nullBuilderEntry.Value.Metadata!;
+            Assert.IsFalse(nullMetadata.ContainsKey("CustomValueMetadata"));
         }
 
         [Test]
@@ -412,26 +412,26 @@ namespace Kephas.Core.Tests.Services
             var registrar = CreateAppServiceInfoInjectionRegistrar();
             registrar.RegisterServices(
                 conventions,
-                new TestBuildContext(new AmbientServices()), new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+                new TestBuildContext(new AmbientServices()),
+                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            var builderEntry = conventions.TypeBuilders.First();
-            Assert.AreEqual(builderEntry.Key, typeof(CustomNamedValueNullMetadataAppService));
+            Assert.AreEqual(2, conventions.TypeBuilders.Count);
+            var customBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueMetadataAppService));
+            Assert.AreEqual(customBuilderEntry.Value.Type, typeof(CustomNamedValueMetadataAppService));
 
-            var testBuilder = (InjectorBuilderBaseTest.TestTypeBuilder)builderEntry.Value;
-            var metadata = testBuilder.Metadata;
+            var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueNullMetadataAppService));
+            Assert.AreEqual(nullBuilderEntry.Value.Type, typeof(CustomNamedValueNullMetadataAppService));
 
-            Assert.AreEqual(7, metadata.Count);
-            Assert.IsTrue(metadata.ContainsKey("CustomNamedValueMetadataName"));
-            Assert.IsTrue(metadata.ContainsKey("Icon"));
-            Assert.IsFalse(metadata.ContainsKey("CustomNamedValueMetadataDescription"));
+            var customMetadata = customBuilderEntry.Value.Metadata!;
+            var nullMetadata = nullBuilderEntry.Value.Metadata!;
 
-            var valueGetter = (Func<Type, object>)metadata["CustomNamedValueMetadataName"];
-            var iconValueGetter = (Func<Type, object>)metadata["Icon"];
-            Assert.AreEqual("hi there", valueGetter(typeof(CustomNamedValueMetadataAppService)));
-            Assert.AreEqual("ICXP", iconValueGetter(typeof(CustomNamedValueMetadataAppService)));
-            Assert.IsNull(valueGetter(typeof(CustomNamedValueNullMetadataAppService)));
-            Assert.IsNull(iconValueGetter(typeof(CustomNamedValueNullMetadataAppService)));
+            Assert.AreEqual(3, customMetadata.Count);
+            Assert.AreEqual("hi there", customMetadata["Name"]);
+            Assert.AreEqual("ICXP", customMetadata["IconName"]);
+            Assert.IsFalse(customMetadata.ContainsKey("Description"));
+
+            Assert.IsFalse(nullMetadata.ContainsKey("Name"));
+            Assert.IsFalse(nullMetadata.ContainsKey("IconName"));
         }
 
         [Test]
@@ -561,17 +561,17 @@ namespace Kephas.Core.Tests.Services
 
         public class CustomNamedValueMetadataAttribute : Attribute, IMetadataProvider
         {
-            public CustomNamedValueMetadataAttribute(string value, string description)
+            public CustomNamedValueMetadataAttribute(string name, string? description)
             {
-                this.Name = value;
+                this.Name = name;
                 this.Description = description;
             }
 
             public string Name { get; }
 
-            public string IconName { get; set; }
+            public string? IconName { get; set; }
 
-            public string Description { get; }
+            public string? Description { get; }
 
             public IEnumerable<(string name, object? value)> GetMetadata()
             {

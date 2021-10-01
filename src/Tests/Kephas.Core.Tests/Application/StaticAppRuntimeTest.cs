@@ -43,7 +43,7 @@ namespace Kephas.Core.Tests.Application
             var assemblies = appRuntime.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(4, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
             Assert.AreEqual(0, assemblyList.Count(a => a.FullName.StartsWith("JetBrains")));
         }
 
@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Application
             var assemblies = appRuntime.GetAppAssemblies();
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(4, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
         }
 
         [Test]

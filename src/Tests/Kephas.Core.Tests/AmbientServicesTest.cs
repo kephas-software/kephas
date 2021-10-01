@@ -367,7 +367,7 @@ namespace Kephas.Core.Tests
             IAmbientServices ambientServices = new AmbientServices();
             ambientServices.Register<IService, DependentService>();
 
-            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
+            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
             Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
@@ -379,7 +379,7 @@ namespace Kephas.Core.Tests
             IAmbientServices ambientServices = new AmbientServices();
             ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().Keyed<IService>());
 
-            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
+            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
             Assert.IsNotNull(service.Metadata);
             Assert.AreSame(typeof(string), service.Metadata["ValueType"]);
             Assert.AreSame(typeof(int), service.Metadata["Type"]);
