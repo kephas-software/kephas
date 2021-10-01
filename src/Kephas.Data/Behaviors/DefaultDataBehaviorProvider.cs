@@ -80,10 +80,10 @@ namespace Kephas.Data.Behaviors
             var behaviorType = typeof(TBehavior);
             var behaviors = (from f in this.dataBehaviorFactories
                                  let entityType = f.Metadata.EntityType
-                                 let serviceInstanceType = f.Metadata.ServiceType
+                                 let serviceType = f.Metadata.ServiceType
                                  where
                                      entityType.IsAssignableFrom(type)
-                                     && behaviorType.IsAssignableFrom(serviceInstanceType)
+                                     && behaviorType.IsAssignableFrom(serviceType)
                                  orderby f.Metadata.ProcessingPriority
                                  select f.CreateExport().Value)
                              .Cast<TBehavior>()

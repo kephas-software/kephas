@@ -76,19 +76,19 @@ namespace Kephas.Services.Reflection
         /// Initializes a new instance of the <see cref="AppServiceInfo"/> class.
         /// </summary>
         /// <param name="contractType">The contract type of the export.</param>
-        /// <param name="serviceInstanceType">Type of the service instance.</param>
+        /// <param name="serviceType">Type of the service instance.</param>
         /// <param name="lifetime">Optional. The application service lifetime.</param>
         /// <param name="asOpenGeneric">Optional.
         ///                             <c>true</c> if the contract should be exported as an open generic;
         ///                             otherwise, <c>false</c>.
         /// </param>
-        public AppServiceInfo(Type contractType, Type serviceInstanceType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
+        public AppServiceInfo(Type contractType, Type serviceType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
+            Requires.NotNull(serviceType, nameof(serviceType));
 
             this.SetContractType(contractType);
-            this.InstancingStrategy = serviceInstanceType;
+            this.InstancingStrategy = serviceType;
             this.AsOpenGeneric = asOpenGeneric;
             this.SetLifetime(lifetime);
         }

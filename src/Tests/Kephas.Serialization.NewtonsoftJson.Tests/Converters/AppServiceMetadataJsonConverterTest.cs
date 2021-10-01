@@ -27,7 +27,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceInstanceType"":""System.Int32"",""dependencies"":[]}", serializedObj);
+            Assert.AreEqual(@"{""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceType"":""System.Int32"",""dependencies"":[]}", serializedObj);
         }
 
         [Test]
@@ -36,14 +36,14 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             var obj = await serializer.DeserializeAsync(
-                @"{""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceInstanceType"":""System.Int32"",""dependencies"":[]}",
+                @"{""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceType"":""System.Int32"",""dependencies"":[]}",
                 GetSerializationContext(typeof(AppServiceMetadata)));
 
             Assert.IsInstanceOf<AppServiceMetadata>(obj);
             var expando = (AppServiceMetadata)obj;
             Assert.AreEqual("gigi", expando.ServiceName);
-            Assert.AreEqual(12, expando.ProcessingPriority);
-            Assert.AreEqual(24, expando.OverridePriority);
+            Assert.AreEqual((Priority)12, expando.ProcessingPriority);
+            Assert.AreEqual((Priority)24, expando.OverridePriority);
             Assert.AreEqual(typeof(int), expando.ServiceType);
             Assert.IsTrue(expando.IsOverride);
         }
@@ -59,7 +59,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Composition.SerializerMetadata"",""mediaType"":""Kephas.Net.Mime.XmlMediaType"",""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceInstanceType"":""System.Int32"",""dependencies"":[]}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.SerializerMetadata"",""mediaType"":""Kephas.Net.Mime.XmlMediaType"",""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceType"":""System.Int32"",""dependencies"":[]}", serializedObj);
         }
 
         [Test]
@@ -68,14 +68,14 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             var obj = await serializer.DeserializeAsync(
-                @"{""$type"":""Kephas.Serialization.Composition.SerializerMetadata"",""mediaType"":""Kephas.Net.Mime.XmlMediaType"",""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceInstanceType"":""System.Int32"",""dependencies"":[]}",
+                @"{""$type"":""Kephas.Serialization.SerializerMetadata"",""mediaType"":""Kephas.Net.Mime.XmlMediaType"",""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceType"":""System.Int32"",""dependencies"":[]}",
                 GetSerializationContext(typeof(SerializerMetadata)));
 
             Assert.IsInstanceOf<SerializerMetadata>(obj);
             var expando = (SerializerMetadata)obj;
             Assert.AreEqual("gigi", expando.ServiceName);
-            Assert.AreEqual(12, expando.ProcessingPriority);
-            Assert.AreEqual(24, expando.OverridePriority);
+            Assert.AreEqual((Priority)12, expando.ProcessingPriority);
+            Assert.AreEqual((Priority)24, expando.OverridePriority);
             Assert.AreEqual(typeof(int), expando.ServiceType);
             Assert.IsTrue(expando.IsOverride);
         }
