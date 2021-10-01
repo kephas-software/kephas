@@ -52,7 +52,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The localized name.
         /// </returns>
-        public string? GetName() => this.Name ?? string.Empty;
+        public string GetName() => this.Name ?? string.Empty;
 
         /// <summary>
         /// Gets the localized description.
@@ -60,7 +60,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The localized description.
         /// </returns>
-        public string? GetDescription() => this.Description ?? string.Empty;
+        public string GetDescription() => this.Description ?? string.Empty;
 
         /// <summary>
         /// Gets the localized prompt.
@@ -68,7 +68,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The localized prompt.
         /// </returns>
-        public string? GetPrompt() => this.Prompt ?? string.Empty;
+        public string GetPrompt() => this.Prompt ?? string.Empty;
 
         /// <summary>
         /// Gets the localized short name.
@@ -76,6 +76,6 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The localized short name.
         /// </returns>
-        public string? GetShortName() => this.ShortName ?? string.Empty;
+        public string GetShortName() => this.ShortName ?? string.Empty;
     }
 }

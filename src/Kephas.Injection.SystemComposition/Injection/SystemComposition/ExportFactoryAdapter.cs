@@ -13,7 +13,6 @@ namespace Kephas.Injection.SystemComposition
     using System;
     using System.Composition;
     using System.Diagnostics.CodeAnalysis;
-
     using Kephas.Injection;
 
     /// <summary>
@@ -22,6 +21,9 @@ namespace Kephas.Injection.SystemComposition
     /// <typeparam name="T">The contract type of the created parts.</typeparam>
     public class ExportFactoryAdapter<T> : IExportFactory<T>
     {
+        /// <summary>
+        /// The inner export factory.
+        /// </summary>
         private readonly ExportFactory<T> innerExportFactory;
 
         /// <summary>
@@ -37,7 +39,32 @@ namespace Kephas.Injection.SystemComposition
         /// Create an instance of the exported part.
         /// </summary>
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        public virtual Lazy<T> CreateExport() => new ExportAdapter<T>(() => this.innerExportFactory.CreateExport()).Lazy;
+        public virtual IExport<T> CreateExport() => new ExportAdapter<T>(this.CreateInnerExport());
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport IExportFactory.CreateExport() => this.CreateExport();
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Export<{typeof(T)}>";
+        }
+
+        /// <summary>
+        /// Creates the inner export.
+        /// </summary>
+        /// <returns>
+        /// The new inner export.
+        /// </returns>
+        protected Export<T> CreateInnerExport() => this.innerExportFactory.CreateExport();
     }
 
     /// <summary>
@@ -46,19 +73,16 @@ namespace Kephas.Injection.SystemComposition
     /// <typeparam name="T">The contract type being created.</typeparam>
     /// <typeparam name="TMetadata">The metadata required from the export.</typeparam>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class ExportFactoryAdapter<T, TMetadata> : IExportFactory<T, TMetadata>
+    public class ExportFactoryAdapter<T, TMetadata> : ExportFactoryAdapter<T>, IExportFactory<T, TMetadata>
     {
-        private readonly ExportFactory<T> innerExportFactory;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportFactoryAdapter{T,TMetadata}"/> class.
         /// </summary>
         /// <param name="exportCreator">The export creator.</param>
         /// <param name="metadata">The metadata.</param>
         public ExportFactoryAdapter(Func<Tuple<T, Action>> exportCreator, TMetadata metadata)
+            : base(exportCreator)
         {
-            this.innerExportFactory = new ExportFactory<T, TMetadata>(exportCreator, metadata);
-
             this.Metadata = metadata;
         }
 
@@ -71,7 +95,25 @@ namespace Kephas.Injection.SystemComposition
         /// Create an instance of the exported part.
         /// </summary>
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        public Lazy<T, TMetadata> CreateExport()
-            => new ExportAdapter<T, TMetadata>(() => this.innerExportFactory.CreateExport(), this.Metadata).Lazy;
+        public override IExport<T> CreateExport()
+            => new ExportAdapter<T, TMetadata>(this.CreateInnerExport(), this.Metadata);
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport<T, TMetadata> IExportFactory<T, TMetadata>.CreateExport()
+            => new ExportAdapter<T, TMetadata>(this.CreateInnerExport(), this.Metadata);
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{base.ToString()} ({this.Metadata})";
+        }
     }
 }

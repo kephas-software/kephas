@@ -28,6 +28,7 @@ namespace Kephas
     /// </summary>
     public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
     {
+
         /// <summary>
         /// Gets the configuration store.
         /// </summary>

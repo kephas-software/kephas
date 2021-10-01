@@ -104,6 +104,14 @@ namespace Kephas.Behaviors
         }
 
         /// <summary>
+        /// Gets the behavior value.
+        /// </summary>
+        /// <value>
+        /// The behavior value.
+        /// </value>
+        object? IBehaviorValue.Value => this.Value;
+
+        /// <summary>
         /// Gets or sets the behavior value.
         /// </summary>
         /// <value>

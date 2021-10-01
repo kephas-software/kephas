@@ -16,7 +16,7 @@ namespace Kephas.Services.Behaviors
     /// Interface for service behavior context.
     /// </summary>
     /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    public interface IServiceBehaviorContext<TContract> : IContext
+    public interface IServiceBehaviorContext<out TContract> : IContext
         where TContract : class
     {
         /// <summary>

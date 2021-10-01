@@ -11,10 +11,8 @@
 namespace Kephas.Logging
 {
     using System;
-    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.ExceptionHandling;
     using Kephas.Injection;
     using Kephas.Services;
 
@@ -23,31 +21,6 @@ namespace Kephas.Logging
     /// </summary>
     public static class LoggingExtensions
     {
-        /// <summary>
-        /// Merges the loggers into one aggregate.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="loggers">A variable-length parameters list containing loggers.</param>
-        /// <returns>
-        /// An aggregated logger.
-        /// </returns>
-        public static ILogger? Merge(this ILogger? logger, params ILogger?[]? loggers)
-        {
-            var validLoggers = loggers?.Where(l => l != null).ToList();
-            if (validLoggers == null || validLoggers.Count == 0)
-            {
-                return logger;
-            }
-
-            if (logger == null)
-            {
-                return validLoggers.Count == 1 ? validLoggers[0] : new AggregateLogger(validLoggers!);
-            }
-
-            validLoggers.Add(logger);
-            return new AggregateLogger(validLoggers!);
-        }
-
         /// <summary>
         /// A Type extension method that gets a logger.
         /// </summary>

@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System;
 
     using Kephas.Data;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Versioning;
 
     /// <summary>
@@ -94,7 +95,7 @@ namespace Kephas.Application
         /// </returns>
         public static AppIdentity Parse(string value)
         {
-            value = value ?? throw new ArgumentNullException(nameof(value));
+            Requires.NotNullOrEmpty(value, nameof(value));
 
             var indexOfSeparator = value.IndexOf(ItemSeparatorChar);
             if (indexOfSeparator >= 0)

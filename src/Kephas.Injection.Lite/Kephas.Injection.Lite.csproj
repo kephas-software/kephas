@@ -35,7 +35,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas injection lite</PackageTags>
+        <PackageTags>kephas injection autofac</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -87,17 +87,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
         <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Injection" />
     </ItemGroup>
 
 </Project>
