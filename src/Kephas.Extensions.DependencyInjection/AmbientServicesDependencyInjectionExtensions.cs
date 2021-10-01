@@ -20,7 +20,6 @@ namespace Kephas
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -39,7 +38,7 @@ namespace Kephas
         /// <returns>The provided ambient services builder.</returns>
         public static IAmbientServices BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? injectorBuilderConfig = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var injectorBuilder = new DependencyInjectionInjectorBuilder(new InjectionBuildContext(ambientServices));
 

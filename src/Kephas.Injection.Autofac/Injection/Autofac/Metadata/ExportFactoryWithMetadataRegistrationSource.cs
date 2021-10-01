@@ -20,7 +20,6 @@ namespace Kephas.Injection.Autofac.Metadata
     using global::Autofac.Core;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Reflection;
 
     /// <summary>

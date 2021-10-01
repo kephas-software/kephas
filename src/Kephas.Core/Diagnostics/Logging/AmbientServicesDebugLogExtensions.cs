@@ -32,7 +32,7 @@ namespace Kephas.Diagnostics.Logging
         /// </returns>
         public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, object?[], Exception?>? logCallback = null, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.WithLogManager(new DebugLogManager(logCallback), replaceDefault);
         }
@@ -48,7 +48,7 @@ namespace Kephas.Diagnostics.Logging
         /// </returns>
         public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, StringBuilder stringBuilder, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.WithLogManager(new DebugLogManager(stringBuilder), replaceDefault);
         }

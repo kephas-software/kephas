@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.ExportFactories
+namespace Kephas.Injection
 {
     using System;
 
@@ -36,14 +36,6 @@ namespace Kephas.Injection.ExportFactories
         /// Gets the value.
         /// </summary>
         public TService Value => this.lazyValue.Value;
-
-        /// <summary>
-        /// Gets the exported value.
-        /// </summary>
-        /// <value>
-        /// The exported value.
-        /// </value>
-        object IExport.Value => this.Value;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged

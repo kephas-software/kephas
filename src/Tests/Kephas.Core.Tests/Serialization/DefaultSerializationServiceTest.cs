@@ -18,7 +18,6 @@ namespace Kephas.Core.Tests.Serialization
     using System.Threading.Tasks;
 
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Services;

@@ -35,7 +35,7 @@ namespace Kephas.Injection.Builder
             : base((context ?? throw new ArgumentNullException(nameof(context))).AmbientServices.LogManager)
         {
             var ambientServices = context.AmbientServices;
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             this.BuildContext = context;
 

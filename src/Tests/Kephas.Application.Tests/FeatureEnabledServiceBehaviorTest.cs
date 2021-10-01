@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
 
 namespace Kephas.Application.Tests
 {

@@ -9,7 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
 
 namespace Kephas.Core.Tests.Services
 {

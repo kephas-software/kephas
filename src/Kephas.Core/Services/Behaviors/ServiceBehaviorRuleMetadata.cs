@@ -33,7 +33,7 @@ namespace Kephas.Services.Behaviors
                 return;
             }
 
-            this.ContractType = (Type)metadata.TryGetValue(nameof(this.ContractType));
+            this.ContractType = (Type?)metadata.TryGetValue(nameof(this.ContractType));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Kephas.Services.Behaviors
         public ServiceBehaviorRuleMetadata(Type contractType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             this.ContractType = contractType;
         }

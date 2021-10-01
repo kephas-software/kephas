@@ -15,7 +15,6 @@ namespace Kephas.Core.Tests.Services
 
     using Kephas.Data;
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Services;
     using NUnit.Framework;
 

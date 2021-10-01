@@ -188,7 +188,7 @@ namespace Kephas.Services
         /// <param name="ambientServices">The ambient services.</param>
         protected virtual void SetAmbientServices(IAmbientServices ambientServices)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             this.AmbientServices = ambientServices;
             this.Injector = ambientServices.Injector;

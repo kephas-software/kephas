@@ -41,7 +41,7 @@ namespace Kephas
         /// </returns>
         public static ILogger GetLogger(this IAmbientServices ambientServices, string loggerName)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNullOrEmpty(loggerName, nameof(loggerName));
 
             return ambientServices.LogManager.GetLogger(loggerName);
@@ -57,7 +57,7 @@ namespace Kephas
         /// </returns>
         public static ILogger GetLogger(this IAmbientServices ambientServices, Type type)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             type = type ?? throw new ArgumentNullException(nameof(type));
 
             return ambientServices.LogManager.GetLogger(type);
@@ -73,7 +73,7 @@ namespace Kephas
         /// </returns>
         public static ILogger GetLogger<T>(this IAmbientServices ambientServices)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.LogManager.GetLogger(typeof(T));
         }
@@ -90,7 +90,7 @@ namespace Kephas
         public static IAmbientServices Configure<TSettings>(this IAmbientServices ambientServices, Action<TSettings> optionsConfig)
             where TSettings : class, new()
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             ambientServices.ConfigurationStore.Configure(optionsConfig);
             return ambientServices;
@@ -108,7 +108,7 @@ namespace Kephas
         public static IAmbientServices Register<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             return ambientServices.Register(typeof(TService), builder);
@@ -126,7 +126,7 @@ namespace Kephas
         public static IAmbientServices RegisterMultiple<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
             return ambientServices.Register(
@@ -150,7 +150,7 @@ namespace Kephas
         public static IAmbientServices Register<TService>(this IAmbientServices ambientServices, TService service)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(service, nameof(service));
 
             return ambientServices.Register(typeof(TService), b => b.WithInstance(service));
@@ -168,7 +168,7 @@ namespace Kephas
         public static IAmbientServices RegisterMultiple<TService>(this IAmbientServices ambientServices, TService service)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(service, nameof(service));
 
             return ambientServices.Register(typeof(TService), b => b.WithInstance(service).AllowMultiple());
@@ -186,7 +186,7 @@ namespace Kephas
         public static IAmbientServices Register<TService, TServiceImplementation>(this IAmbientServices ambientServices)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.Register(
                 typeof(TService),
@@ -206,7 +206,7 @@ namespace Kephas
         public static IAmbientServices RegisterMultiple<TService, TServiceImplementation>(this IAmbientServices ambientServices)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.Register(
                 typeof(TService),
@@ -227,7 +227,7 @@ namespace Kephas
         public static IAmbientServices RegisterTransient<TService, TServiceImplementation>(this IAmbientServices ambientServices)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.Register(
                 typeof(TService),
@@ -247,7 +247,7 @@ namespace Kephas
         public static IAmbientServices RegisterTransientMultiple<TService, TServiceImplementation>(this IAmbientServices ambientServices)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.Register(
                 typeof(TService),
@@ -270,7 +270,7 @@ namespace Kephas
             Func<TService> serviceFactory)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -293,7 +293,7 @@ namespace Kephas
             Func<TService> serviceFactory)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -317,7 +317,7 @@ namespace Kephas
             Func<TService> serviceFactory)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -340,7 +340,7 @@ namespace Kephas
             Func<TService> serviceFactory)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.Register(
@@ -364,7 +364,7 @@ namespace Kephas
             Type serviceType,
             Func<object> serviceFactory)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
@@ -388,7 +388,7 @@ namespace Kephas
             Type serviceType,
             Func<object> serviceFactory)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
@@ -413,7 +413,7 @@ namespace Kephas
             Type serviceType,
             Func<object> serviceFactory)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
@@ -437,7 +437,7 @@ namespace Kephas
             Type serviceType,
             Func<object> serviceFactory)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
@@ -463,7 +463,7 @@ namespace Kephas
             Type serviceType,
             object service)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
@@ -485,7 +485,7 @@ namespace Kephas
             Type serviceType,
             object service)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
@@ -506,7 +506,7 @@ namespace Kephas
             Type serviceType,
             Type serviceImplementationType)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
 
@@ -530,7 +530,7 @@ namespace Kephas
             Type serviceType,
             Type serviceImplementationType)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
 
@@ -554,7 +554,7 @@ namespace Kephas
             Type serviceType,
             Type serviceImplementationType)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
 
@@ -578,7 +578,7 @@ namespace Kephas
             Type serviceType,
             Type serviceImplementationType)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
 
@@ -600,7 +600,7 @@ namespace Kephas
         public static TService? GetService<TService>(this IServiceProvider ambientServices)
             where TService : class
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return (TService?)ambientServices.GetService(typeof(TService));
         }
@@ -615,7 +615,7 @@ namespace Kephas
         /// </returns>
         public static object GetRequiredService(this IServiceProvider ambientServices, Type serviceType)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(serviceType, nameof(serviceType));
 
             var service = ambientServices.GetService(serviceType);
@@ -655,7 +655,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithConfigurationStore(this IAmbientServices ambientServices, IConfigurationStore configurationStore)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(configurationStore, nameof(configurationStore));
 
             ambientServices.Register(configurationStore);
@@ -673,7 +673,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithLicensingManager(this IAmbientServices ambientServices, ILicensingManager licensingManager)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(licensingManager, nameof(licensingManager));
 
             ambientServices.Register(licensingManager);
@@ -691,7 +691,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithDefaultLicensingManager(this IAmbientServices ambientServices, IEncryptionService encryptionService)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
             const string LicenseRepositoryKey = "__LicenseRepository";
@@ -714,7 +714,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithLogManager(this IAmbientServices ambientServices, ILogManager logManager, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(logManager, nameof(logManager));
 
             if (replaceDefault)
@@ -737,7 +737,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithAppRuntime(this IAmbientServices ambientServices, IAppRuntime appRuntime)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
             var existingAppRuntime = ambientServices.AppRuntime;
@@ -765,7 +765,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithInjector(this IAmbientServices ambientServices, IInjector injector)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             Requires.NotNull(injector, nameof(injector));
 
             ambientServices.Register(injector);
@@ -786,7 +786,7 @@ namespace Kephas
         public static IAmbientServices WithInjector<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? injectorBuilderConfig = null)
             where TInjectorBuilder : IInjectorBuilder
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TInjectorBuilder));
             var context = new InjectionBuildContext(ambientServices);
@@ -808,7 +808,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? injectorBuilderConfig = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var injectorBuilder = new LiteInjectorBuilder(new InjectionBuildContext(ambientServices));
 

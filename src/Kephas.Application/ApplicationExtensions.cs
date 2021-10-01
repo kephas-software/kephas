@@ -70,7 +70,7 @@ namespace Kephas.Application
         /// <returns>The provided ambient services.</returns>
         public static IAmbientServices RegisterAppArgs(this IAmbientServices ambientServices, IAppArgs? args = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             // register the app args if not already registered or the raw args are provided
             if (args != null)

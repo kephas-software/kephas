@@ -34,7 +34,7 @@ namespace Kephas.Services
         /// </returns>
         internal static IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(this IAmbientServices ambientServices)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices[AppServiceInfosKey] as IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>
                 ?? Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
@@ -48,7 +48,7 @@ namespace Kephas.Services
         /// value is the <see cref="IAppServiceInfo"/>.</param>
         internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfos)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             // Lite injector exclude its own services, so add them now.
             // CAUTION: this assumes that the app service infos from the other registration sources

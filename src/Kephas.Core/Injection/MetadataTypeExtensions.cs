@@ -38,22 +38,5 @@ namespace Kephas.Injection
             var attr = type.GetCustomAttribute<TAttribute>();
             return attr == null ? defaultValue : valueExtractor(attr);
         }
-
-        /// <summary>
-        /// Extracts the metadata value from the attribute with the provided type.
-        /// </summary>
-        /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="type">The type.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns>The metadata value.</returns>
-        public static TValue? ExtractMetadataValue<TAttribute, TValue>(this Type type, TValue? defaultValue = default)
-          where TAttribute : Attribute, IMetadataValue<TValue>
-        {
-            type = type ?? throw new ArgumentNullException(nameof(type));
-
-            var attr = type.GetCustomAttribute<TAttribute>();
-            return attr == null ? defaultValue : attr.Value;
-        }
     }
 }

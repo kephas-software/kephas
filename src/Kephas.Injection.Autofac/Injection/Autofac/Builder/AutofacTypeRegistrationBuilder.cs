@@ -44,7 +44,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder As(Type contractType)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             this.descriptorBuilder.ContractType = contractType;
             return this;

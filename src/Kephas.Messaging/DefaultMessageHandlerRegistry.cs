@@ -17,7 +17,6 @@ namespace Kephas.Messaging
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Services;
 

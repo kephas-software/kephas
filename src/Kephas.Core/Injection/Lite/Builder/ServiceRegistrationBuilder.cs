@@ -108,7 +108,7 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         public IRegistrationBuilder As(Type contractType)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             if (!contractType.IsAssignableFrom(this.contractDeclarationType))
             {

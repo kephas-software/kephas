@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Configuration;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Builder;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;

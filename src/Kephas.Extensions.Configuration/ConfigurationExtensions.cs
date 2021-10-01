@@ -30,7 +30,7 @@ namespace Kephas.Extensions.Configuration
         /// </returns>
         public static IAmbientServices UseConfiguration(this IAmbientServices ambientServices, IConfiguration configuration)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             ambientServices.Register<IConfigurationStore>(new ConfigurationStore(configuration, ambientServices.TypeRegistry));
 

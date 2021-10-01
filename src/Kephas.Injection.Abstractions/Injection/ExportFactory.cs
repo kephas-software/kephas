@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.ExportFactories
+namespace Kephas.Injection
 {
     using System;
 
@@ -47,27 +47,10 @@ namespace Kephas.Injection.ExportFactories
         /// <returns>
         /// A handle allowing the created part to be accessed then released.
         /// </returns>
-        IExport<TService> IExportFactory<TService>.CreateExport()
-        {
-            return this.CreateExport();
-        }
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>
-        /// A handle allowing the created part to be accessed then released.
-        /// </returns>
         public IExport<TService> CreateExport()
         {
             return new Export<TService>(this.factory);
         }
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport IExportFactory.CreateExport() => this.CreateExport();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -113,17 +96,6 @@ namespace Kephas.Injection.ExportFactories
         public TMetadata Metadata { get; set; }
 
         /// <summary>
-        /// Creates the export.
-        /// </summary>
-        /// <returns>
-        /// The new export.
-        /// </returns>
-        IExport<TService> IExportFactory<TService>.CreateExport()
-        {
-            return this.CreateExport();
-        }
-
-        /// <summary>
         /// Create an instance of the exported part.
         /// </summary>
         /// <returns>
@@ -133,12 +105,6 @@ namespace Kephas.Injection.ExportFactories
         {
             return new Export<TService, TMetadata>(this.factory, this.Metadata);
         }
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport IExportFactory.CreateExport() => this.CreateExport();
 
         /// <summary>
         /// Returns a string that represents the current object.

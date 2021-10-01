@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Kephas.Injection;
-using Kephas.Injection.ExportFactories;
 using Kephas.Injection.ExportFactoryImporters;
 using Kephas.Injection.Internal;
 using NSubstitute;

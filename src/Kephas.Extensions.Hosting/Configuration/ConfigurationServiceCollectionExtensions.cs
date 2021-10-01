@@ -29,7 +29,7 @@ namespace Kephas.Extensions.Hosting.Configuration
         /// </returns>
         public static IAmbientServices ConfigureExtensionsOptions(this IAmbientServices ambientServices)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var serviceCollection = AmbientServicesExtensions.GetService<IServiceCollection>(ambientServices);
 

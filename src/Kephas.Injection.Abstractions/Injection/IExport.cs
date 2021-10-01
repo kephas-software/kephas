@@ -14,26 +14,11 @@ namespace Kephas.Injection
     using System;
 
     /// <summary>
-    /// Non-generic contract for a handle allowing the graph of parts associated with an exported instance
-    /// to be released.
-    /// </summary>
-    public interface IExport : IDisposable
-    {
-        /// <summary>
-        /// Gets the exported value.
-        /// </summary>
-        /// <value>
-        /// The exported value.
-        /// </value>
-        object Value { get; }
-    }
-
-    /// <summary>
     /// Contract for a handle allowing the graph of parts associated with an exported instance
     /// to be released.
     /// </summary>
     /// <typeparam name="T">The contract type of the created parts.</typeparam>
-    public interface IExport<out T> : IExport
+    public interface IExport<out T> : IDisposable
     {
         /// <summary>
         /// Gets the exported value.
@@ -41,7 +26,7 @@ namespace Kephas.Injection
         /// <value>
         /// The exported value.
         /// </value>
-        new T Value { get; }
+        T Value { get; }
     }
 
     /// <summary>

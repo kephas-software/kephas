@@ -28,7 +28,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithLog4NetManager(this IAmbientServices ambientServices, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.WithLogManager(new Log4NetLogManager(), replaceDefault);
         }

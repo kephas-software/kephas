@@ -45,7 +45,7 @@ namespace Kephas.Extensions.Logging
         /// </returns>
         public static IAmbientServices ConfigureExtensionsLogging(this IAmbientServices ambientServices)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
 
@@ -77,7 +77,7 @@ namespace Kephas.Extensions.Logging
         /// </returns>
         public static IAmbientServices WithExtensionsLogManager(this IAmbientServices ambientServices, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
             var logFactory = new LoggerFactory();

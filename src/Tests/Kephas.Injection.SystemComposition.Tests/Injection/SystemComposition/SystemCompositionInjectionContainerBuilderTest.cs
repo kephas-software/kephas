@@ -533,7 +533,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [InjectionScope]
         public class MyScopeFactory : ScopeFactoryBase
         {
-            public MyScopeFactory([SharingBoundary(InjectionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
+            public MyScopeFactory([SharingBoundary(InjectionScopeNames.Default)] System.Composition.ExportFactory<CompositionContext> scopedContextFactory)
                 : base(scopedContextFactory)
             {
             }

@@ -22,7 +22,6 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Builder;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Injection.SystemComposition;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;

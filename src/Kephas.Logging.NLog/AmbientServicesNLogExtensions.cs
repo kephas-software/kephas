@@ -31,7 +31,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithNLogManager(this IAmbientServices ambientServices, LoggingConfiguration? configuration = null, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.WithLogManager(new NLogManager(configuration), replaceDefault);
         }

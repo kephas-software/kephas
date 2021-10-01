@@ -14,8 +14,6 @@ namespace Kephas.Injection.Lite.Internal
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Injection.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;

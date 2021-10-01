@@ -11,8 +11,8 @@
 namespace Kephas.Injection.SystemComposition
 {
     using System;
-    using System.Composition;
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace Kephas.Injection.SystemComposition
         /// <summary>
         /// The inner export factory.
         /// </summary>
-        private readonly ExportFactory<T> innerExportFactory;
+        private readonly System.Composition.ExportFactory<T> innerExportFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportFactoryAdapter{T}"/> class.
@@ -32,7 +32,7 @@ namespace Kephas.Injection.SystemComposition
         /// <param name="exportCreator">The export creator.</param>
         public ExportFactoryAdapter(Func<Tuple<T, Action>> exportCreator)
         {
-            this.innerExportFactory = new ExportFactory<T>(exportCreator);
+            this.innerExportFactory = new System.Composition.ExportFactory<T>(exportCreator);
         }
 
         /// <summary>
@@ -40,12 +40,6 @@ namespace Kephas.Injection.SystemComposition
         /// </summary>
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
         public virtual IExport<T> CreateExport() => new ExportAdapter<T>(this.CreateInnerExport());
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport IExportFactory.CreateExport() => this.CreateExport();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -64,7 +58,7 @@ namespace Kephas.Injection.SystemComposition
         /// <returns>
         /// The new inner export.
         /// </returns>
-        protected Export<T> CreateInnerExport() => this.innerExportFactory.CreateExport();
+        protected System.Composition.Export<T> CreateInnerExport() => this.innerExportFactory.CreateExport();
     }
 
     /// <summary>

@@ -54,7 +54,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
             IRuntimeTypeRegistry typeRegistry,
             Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             this.AmbientServices = ambientServices;
             this.typeRegistry = typeRegistry;

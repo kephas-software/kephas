@@ -64,7 +64,7 @@ namespace Kephas.Extensions.Hosting
         public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IEnumerable<string>? args, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
             Requires.NotNull(hostBuilder, nameof(hostBuilder));
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             hostBuilder
                 .UseServiceProviderFactory(new InjectionServiceProviderFactory(ambientServices))

@@ -29,7 +29,7 @@ namespace Kephas
             IAmbientServices ambientServices)
         {
             Requires.NotNull(serviceCollection, nameof(serviceCollection));
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             serviceCollection.Add(new AmbientServicesServiceDescriptor(ambientServices));
             return serviceCollection;

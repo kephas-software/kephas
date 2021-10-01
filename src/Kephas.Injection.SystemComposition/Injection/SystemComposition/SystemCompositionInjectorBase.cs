@@ -176,7 +176,7 @@ namespace Kephas.Injection.SystemComposition
             }
 
             return createNewIfMissing
-                ? new ScopedSystemCompositionInjector(new Export<CompositionContext>(context, () => { }))
+                ? new ScopedSystemCompositionInjector(new System.Composition.Export<CompositionContext>(context, () => { }))
                 : null;
         }
 
@@ -234,7 +234,7 @@ namespace Kephas.Injection.SystemComposition
         /// <returns>
         /// The injector.
         /// </returns>
-        private static IInjector GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
+        private static IInjector GetOrAddCompositionContext(System.Composition.Export<CompositionContext> scopedContextExport)
         {
             return Map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionInjector(scopedContextExport));
         }

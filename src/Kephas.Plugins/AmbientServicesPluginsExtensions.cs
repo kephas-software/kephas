@@ -59,7 +59,7 @@ namespace Kephas
             string? pluginsFolder = null,
             Action<PluginsAppRuntime>? config = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new PluginsAppRuntime(
                     name => ambientServices.LogManager.GetLogger(name),

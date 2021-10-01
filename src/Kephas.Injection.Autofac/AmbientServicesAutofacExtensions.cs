@@ -29,7 +29,7 @@ namespace Kephas
         /// <returns>The provided ambient services.</returns>
         public static IAmbientServices BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacInjectorBuilder>? injectorBuilderConfig = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var injectorBuilder = new AutofacInjectorBuilder(new InjectionBuildContext(ambientServices));
 

@@ -38,7 +38,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, LoggerConfiguration? configuration = null, LogEventLevel? minimumLevel = null, bool? dynamicMinimumLevel = null, bool replaceDefault = true)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.WithLogManager(new SerilogManager(configuration, minimumLevel, dynamicMinimumLevel), replaceDefault);
         }

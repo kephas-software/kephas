@@ -263,7 +263,7 @@ namespace Kephas.Injection
         public static object GetExportFactory(this IInjector injector, Type contractType)
         {
             Requires.NotNull(injector, nameof(injector));
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             var getExport = GetExportFactory1Method.MakeGenericMethod(contractType);
             return getExport.Call(null, injector);
@@ -281,7 +281,7 @@ namespace Kephas.Injection
         public static object GetExportFactory(this IInjector injector, Type contractType, Type metadataType)
         {
             Requires.NotNull(injector, nameof(injector));
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(metadataType, nameof(metadataType));
 
             var getExport = GetExportFactory2Method.MakeGenericMethod(contractType, metadataType);
@@ -299,7 +299,7 @@ namespace Kephas.Injection
         public static IEnumerable GetExportFactories(this IInjector injector, Type contractType)
         {
             Requires.NotNull(injector, nameof(injector));
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             var getExport = GetExportFactories1Method.MakeGenericMethod(contractType);
             return (IEnumerable)getExport.Call(null, injector);
@@ -317,7 +317,7 @@ namespace Kephas.Injection
         public static IEnumerable GetExportFactories(this IInjector injector, Type contractType, Type metadataType)
         {
             Requires.NotNull(injector, nameof(injector));
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(metadataType, nameof(metadataType));
 
             var getExport = GetExportFactories2Method.MakeGenericMethod(contractType, metadataType);

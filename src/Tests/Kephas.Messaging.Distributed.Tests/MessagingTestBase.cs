@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Tests
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;

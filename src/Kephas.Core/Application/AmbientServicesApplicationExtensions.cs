@@ -57,7 +57,7 @@ namespace Kephas.Application
             string? appVersion = null,
             Action<DynamicAppRuntime>? config = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new DynamicAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
@@ -108,7 +108,7 @@ namespace Kephas.Application
             string? appVersion = null,
             Action<StaticAppRuntime>? config = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new StaticAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),

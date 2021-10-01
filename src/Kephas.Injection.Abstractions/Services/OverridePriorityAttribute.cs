@@ -12,7 +12,7 @@
 namespace Kephas.Services
 {
     using System;
-    using System.Runtime.CompilerServices;
+
     using Kephas.Injection;
 
     /// <summary>

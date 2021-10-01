@@ -16,7 +16,6 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactories;
     using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Injection.SystemComposition.Builder;
     using Kephas.Logging;

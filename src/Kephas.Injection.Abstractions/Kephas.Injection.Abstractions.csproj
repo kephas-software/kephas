@@ -19,7 +19,8 @@
         <Description>
             Provides abstractions for the dependency injection infrastructure.
             Typically used areas and classes/interfaces/services:
-            - IInjector.
+            - Injection: IInjector, IInjectorBuilder.
+            - Services: IAppServiceInfo, IAppServiceInfosProvider.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -36,7 +37,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas composition autofac</PackageTags>
+        <PackageTags>kephas injection abstractions</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -96,10 +97,6 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Model" />
     </ItemGroup>
 
 </Project>

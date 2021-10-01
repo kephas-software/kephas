@@ -46,7 +46,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="metadata">The metadata.</param>
         public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isSingleton, IDictionary<string, object?>? metadata)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(factory, nameof(factory));
 
             this.ContractType = contractType;
@@ -63,7 +63,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
         public FactoryExportDescriptorProvider(Type contractType, Func<IInjector, object> contextFactory, bool isSingleton, IDictionary<string, object?>? metadata)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(contextFactory, nameof(contextFactory));
 
             this.ContractType = contractType;

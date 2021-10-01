@@ -40,14 +40,6 @@ namespace Kephas.Injection.SystemComposition
         public T Value => this.innerExport.Value;
 
         /// <summary>
-        /// Gets the exported value.
-        /// </summary>
-        /// <value>
-        /// The exported value.
-        /// </value>
-        object IExport.Value => this.innerExport.Value;
-
-        /// <summary>
         /// Release the parts associated with the exported value.
         /// </summary>
         public void Dispose()

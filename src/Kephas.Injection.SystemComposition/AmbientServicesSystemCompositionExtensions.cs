@@ -29,7 +29,7 @@ namespace Kephas
         /// <returns>The provided ambient services.</returns>
         public static IAmbientServices BuildWithSystemComposition(this IAmbientServices ambientServices, Action<SystemCompositionInjectorBuilder>? injectorBuilderConfig = null)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var injectorBuilder = new SystemCompositionInjectorBuilder(new InjectionBuildContext(ambientServices));
 

@@ -34,7 +34,7 @@ namespace Kephas.Services.Reflection
         /// </param>
         public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             this.SetContractType(contractType);
             this.AsOpenGeneric = asOpenGeneric;
@@ -48,7 +48,7 @@ namespace Kephas.Services.Reflection
         /// <param name="serviceInstance">The service instance.</param>
         public AppServiceInfo(Type contractType, object serviceInstance)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(serviceInstance, nameof(serviceInstance));
 
             this.SetContractType(contractType);
@@ -64,7 +64,7 @@ namespace Kephas.Services.Reflection
         /// <param name="lifetime">Optional. The application service lifetime.</param>
         public AppServiceInfo(Type contractType, Func<IInjector, object> serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(serviceInstanceFactory, nameof(serviceInstanceFactory));
 
             this.SetContractType(contractType);
@@ -84,7 +84,7 @@ namespace Kephas.Services.Reflection
         /// </param>
         public AppServiceInfo(Type contractType, Type serviceInstanceType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
 
             this.SetContractType(contractType);
@@ -101,7 +101,7 @@ namespace Kephas.Services.Reflection
         /// <param name="instancingStrategy">Optional. The instancing strategy.</param>
         internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType, object? instancingStrategy = null)
         {
-            Requires.NotNull(contractType, nameof(contractType));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
             this.SetContractType(contractType ?? appServiceInfo.ContractType);
