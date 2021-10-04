@@ -325,9 +325,11 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public async Task CreateInjector_instance_registration()
         {
-            var registrar = Substitute.For<IAppServiceInfosProvider>();
-            registrar.GetAppServiceInfos(Arg.Any<dynamic>())
-                .Returns((typeof(string), new AppServiceInfo(typeof(string), "123")));
+            var registrar = new TestAppServiceInfosProvider(
+                new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+                {
+                    (typeof(string), new AppServiceInfo(typeof(string), "123")),
+                });
 
             var (factory, ambientServices) = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
             var mockAppRuntime = ambientServices.AppRuntime;
@@ -344,9 +346,11 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public async Task CreateInjector_instance_factory_registration()
         {
-            var registrar = Substitute.For<IAppServiceInfosProvider>();
-            registrar.GetAppServiceInfos(Arg.Any<dynamic>())
-                .Returns((typeof(string), new AppServiceInfo(typeof(string), injector => "123")));
+            var registrar = new TestAppServiceInfosProvider(
+                new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+                {
+                    (typeof(string), new AppServiceInfo(typeof(string), injector => "123")),
+                });
 
             var (factory, ambientServices) = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
             var mockPlatformManager = ambientServices.AppRuntime;
@@ -358,6 +362,18 @@ namespace Kephas.Tests.Injection.Autofac
 
             var instance = container.Resolve<string>();
             Assert.AreEqual("123", instance);
+        }
+
+        private class TestAppServiceInfosProvider : IAppServiceInfosProvider
+        {
+            private readonly IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> serviceInfos;
+
+            public TestAppServiceInfosProvider(IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> serviceInfos)
+            {
+                this.serviceInfos = serviceInfos;
+            }
+
+            public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null) => this.serviceInfos;
         }
 
         private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
