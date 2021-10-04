@@ -27,6 +27,12 @@ namespace Kephas.Tests.Services
         }
 
         [Test]
+        public void Constructor_bad_provider()
+        {
+            Assert.Throws<ArgumentException>(() => new AppServicesAttribute(typeof(BadAppServicesProvider)));
+        }
+
+        [Test]
         public void Constructor_infos_provider()
         {
             var attr = new AppServicesAttribute(typeof(AppServicesProvider));
@@ -36,7 +42,11 @@ namespace Kephas.Tests.Services
             CollectionAssert.IsEmpty(attr.GetAppServiceTypes());
         }
 
-        private class NullAppServicesProvider
+        private class NullAppServicesProvider : IAppServiceInfosProvider
+        {
+        }
+
+        private class BadAppServicesProvider
         {
         }
 
