@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Castle.Core.Internal;
+
 namespace Kephas.Testing.Injection
 {
     using System;
@@ -60,13 +62,13 @@ namespace Kephas.Testing.Injection
         {
             if (this.IsAppServiceContract(part))
             {
-                return part;
+                return this.GetOriginalAppServiceContract(part);
             }
 
             var contract = part.GetInterfaces().FirstOrDefault(this.IsAppServiceContract);
             if (contract != null)
             {
-                return contract;
+                return this.GetOriginalAppServiceContract(contract);
             }
 
             var baseType = part.BaseType;
@@ -74,13 +76,31 @@ namespace Kephas.Testing.Injection
             {
                 if (this.IsAppServiceContract(baseType))
                 {
-                    return baseType;
+                    return this.GetOriginalAppServiceContract(baseType);
                 }
 
                 baseType = baseType.BaseType;
             }
 
             return null;
+        }
+
+        private Type GetOriginalAppServiceContract(Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return type;
+            }
+
+            var appServiceContractAttr = type.GetAttribute<AppServiceContractAttribute>();
+            if (appServiceContractAttr == null)
+            {
+                return type;
+            }
+
+            return appServiceContractAttr.ContractType is { IsGenericType: false }
+                ? type.GetGenericTypeDefinition()
+                : type;
         }
 
         private bool IsAppServiceContract(Type type) =>

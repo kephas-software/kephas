@@ -56,12 +56,12 @@ namespace Kephas.Core.Endpoints.Tests
         public async Task ProcessAsync_multiple()
         {
             var container = this.CreateInjector(
-                assemblies: new Assembly[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesMessage).Assembly },
-                parts: new Type[] { typeof(TestGetServicesHandler) });
+                assemblies: new[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesHandler).Assembly, typeof(PingMessageHandler).Assembly },
+                parts: new[] { typeof(TestGetServicesHandler) });
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
-                new GetServicesMessage { ContractType = typeof(IMessageHandler).Name },
+                new GetServicesMessage { ContractType = nameof(IMessageHandler) },
                 Substitute.For<IMessagingContext>(),
                 default);
 
@@ -80,7 +80,7 @@ namespace Kephas.Core.Endpoints.Tests
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
-                new GetServicesMessage { ContractType = typeof(IMessageHandler).Name, Ordered = true },
+                new GetServicesMessage { ContractType = nameof(IMessageHandler), Ordered = true },
                 Substitute.For<IMessagingContext>(),
                 default);
 

@@ -93,23 +93,25 @@ namespace Kephas.Analyzers.Injection
 
         private static INamedTypeSymbol GetOriginalAppServiceContract(INamedTypeSymbol namedTypeSymbol)
         {
-            if (namedTypeSymbol.IsGenericType)
+            if (!namedTypeSymbol.IsGenericType)
             {
-                var contractAttr = namedTypeSymbol.GetAttributes()
-                    .FirstOrDefault(a => ContainsAttribute(a, AppServiceContractAttrs));
-                if (contractAttr == null)
-                {
-                    return namedTypeSymbol;
-                }
+                return namedTypeSymbol;
+            }
 
-                // for generic types, if a contract type is provided
-                if (contractAttr.NamedArguments.Any(a => a.Key == "ContractType"))
+            var contractAttr = namedTypeSymbol.GetAttributes()
+                .FirstOrDefault(a => ContainsAttribute(a, AppServiceContractAttrs));
+            if (contractAttr == null)
+            {
+                return namedTypeSymbol;
+            }
+
+            // for generic types, if a contract type is provided
+            if (contractAttr.NamedArguments.Any(a => a.Key == "ContractType"))
+            {
+                var contractType = contractAttr.NamedArguments.First(a => a.Key == "ContractType").Value.Value as INamedTypeSymbol;
+                if (!(contractType?.IsGenericType ?? false))
                 {
-                    var contractType = contractAttr.NamedArguments.First(a => a.Key == "ContractType").Value.Value as INamedTypeSymbol;
-                    if (!(contractType?.IsGenericType ?? false))
-                    {
-                        return namedTypeSymbol.ConstructedFrom ?? namedTypeSymbol;
-                    }
+                    return namedTypeSymbol.ConstructedFrom ?? namedTypeSymbol;
                 }
             }
 

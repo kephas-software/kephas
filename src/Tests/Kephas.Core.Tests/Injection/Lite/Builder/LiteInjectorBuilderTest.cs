@@ -51,8 +51,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void BuildWithLite_closed_generic()
         {
-            var ambientServices = new AmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly);
+            var ambientServices = new AmbientServices();
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric) }));
 

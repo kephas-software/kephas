@@ -124,7 +124,7 @@ namespace Kephas.Services
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Type SanitizeType(Type rawType) =>
-            rawType.IsConstructedGenericType && !rawType.IsTypeDefinition
+            rawType.IsConstructedGenericType && rawType.ContainsGenericParameters
                 ? rawType.GetGenericTypeDefinition()
                 : rawType;
 
