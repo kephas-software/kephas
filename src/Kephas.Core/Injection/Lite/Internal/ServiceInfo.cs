@@ -214,7 +214,7 @@ namespace Kephas.Injection.Lite.Internal
 
         private class LazyValue : LazyFactory
         {
-            private object value;
+            private object? value;
 
             public LazyValue(Func<object> factory, Type serviceType)
                 : base(factory, serviceType)
