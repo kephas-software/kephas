@@ -95,7 +95,7 @@ namespace Kephas.Injection.Lite.Internal
         /// Makes a generic service information with closed generic types.
         /// </summary>
         /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
-        /// <param name="serviceProvider"></param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="genericArgs">The generic arguments.</param>
         /// <returns>
         /// An IServiceInfo.

@@ -24,8 +24,7 @@ namespace Kephas.Injection.Lite.Internal
     /// </summary>
     internal class ServiceRegistry : IServiceRegistry
     {
-        private readonly ConcurrentDictionary<Type, IServiceInfo> services =
-            new ConcurrentDictionary<Type, IServiceInfo>();
+        private readonly ConcurrentDictionary<Type, IServiceInfo> services = new ();
 
         private readonly List<IServiceSource> serviceSources = new ();
 
