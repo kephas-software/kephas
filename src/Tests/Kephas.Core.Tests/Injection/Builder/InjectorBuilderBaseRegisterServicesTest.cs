@@ -34,17 +34,18 @@ namespace Kephas.Core.Tests.Injection.Builder
                 .RegisterServices();
 
             Assert.AreSame(builder, newBuilder);
-            Assert.AreEqual(1, builder.TypeBuilders.Count);
-            var partBuilder = (InjectorBuilderBaseTest.TestTypeBuilder)builder.TypeBuilders.First().Value;
-            Assert.IsTrue(partBuilder.IsSingleton);
-            Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
-            var exportBuilder = partBuilder;
-            Assert.AreEqual(typeof(ICalculator), exportBuilder.ContractType);
-            Assert.AreEqual(1, exportBuilder.Metadata.Count);
-            Assert.AreEqual("type", exportBuilder.Metadata.Keys.First());
-            var metadataExtractor = (Func<Type, object>)exportBuilder.Metadata.Values.First();
-            Assert.AreEqual("Scientific", metadataExtractor(typeof(ScientificCalculator)));
-            Assert.AreEqual("Classical", metadataExtractor(typeof(StandardCalculator)));
+            Assert.AreEqual(2, builder.TypeBuilders.Count);
+            var standardBuilder = builder.TypeBuilders[typeof(StandardCalculator)];
+            Assert.IsTrue(standardBuilder.IsSingleton);
+            Assert.AreEqual(typeof(StandardCalculator), standardBuilder.ServiceType);
+            Assert.AreEqual(typeof(ICalculator), standardBuilder.ContractType);
+            Assert.AreEqual("Standard", standardBuilder.Metadata!["type"]);
+
+            var scientificBuilder = builder.TypeBuilders[typeof(ScientificCalculator)];
+            Assert.IsTrue(scientificBuilder.IsSingleton);
+            Assert.AreEqual(typeof(ScientificCalculator), scientificBuilder.ServiceType);
+            Assert.AreEqual(typeof(ICalculator), scientificBuilder.ContractType);
+            Assert.AreEqual("Scientific", scientificBuilder.Metadata!["type"]);
         }
     }
 
@@ -59,11 +60,13 @@ namespace Kephas.Core.Tests.Injection.Builder
             yield return (
                 typeof(ICalculator),
                 new AppServiceInfo(typeof(ICalculator), typeof(ScientificCalculator))
+                        { AllowMultiple = true }
                     .AddMetadata("type", "Scientific"));
 
             yield return (
                 typeof(ICalculator),
                 new AppServiceInfo(typeof(ICalculator), typeof(StandardCalculator))
+                        { AllowMultiple = true }
                     .AddMetadata("type", "Standard"));
         }
     }

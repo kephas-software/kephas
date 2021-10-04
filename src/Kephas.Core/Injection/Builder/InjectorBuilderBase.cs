@@ -12,6 +12,7 @@ namespace Kephas.Injection.Builder
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+
     using Kephas.Collections;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
@@ -216,7 +217,9 @@ namespace Kephas.Injection.Builder
             return Profiler.WithDebugStopwatch(
                 () =>
                 {
-                    var appAssemblies = this.WhereNotSystemAssemblies(this.BuildContext.AmbientServices.AppRuntime.GetAppAssemblies());
+                    var rawAssemblies = this.BuildContext.AmbientServices.AppRuntime?.GetAppAssemblies()
+                                        ?? new List<Assembly>();
+                    var appAssemblies = this.WhereNotSystemAssemblies(rawAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))
                     {

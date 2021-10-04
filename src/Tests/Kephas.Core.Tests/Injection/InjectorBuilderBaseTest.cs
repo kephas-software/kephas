@@ -102,21 +102,21 @@ namespace Kephas.Core.Tests.Injection
 
             protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
-            private TestTypeBuilder CreateBuilder(Type type) => new TestTypeBuilder(type);
+            private TestTypeBuilder CreateBuilder(Type serviceType) => new TestTypeBuilder(serviceType);
         }
 
         public class TestTypeBuilder : IRegistrationBuilder
         {
-            public TestTypeBuilder(Type type)
+            public TestTypeBuilder(Type serviceType)
             {
-                this.Type = type;
+                this.ServiceType = serviceType;
             }
 
-            public Type Type { get; set; }
+            public Type ServiceType { get; }
 
-            public Type ContractType { get; set; }
+            public Type ContractType { get; private set; }
 
-            public bool IsSingleton { get; set; }
+            public bool IsSingleton { get; private set; }
 
             public bool IsScoped { get; set; }
 

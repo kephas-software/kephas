@@ -324,7 +324,7 @@ namespace Kephas.Core.Tests.Services
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
             var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(NullExplicitMetadataAppService));
             var explicitBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(ExplicitMetadataAppService));
-            Assert.AreEqual(nullBuilderEntry.Value.Type, typeof(NullExplicitMetadataAppService));
+            Assert.AreEqual(nullBuilderEntry.Value.ServiceType, typeof(NullExplicitMetadataAppService));
 
             var nullMetadata = nullBuilderEntry.Value.Metadata!;
             var explicitMetadata = explicitBuilderEntry.Value.Metadata!;
@@ -357,7 +357,7 @@ namespace Kephas.Core.Tests.Services
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
             var customEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueMetadataAppService));
             var nullEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueNullMetadataAppService));
-            Assert.AreEqual(customEntry.Value.Type, typeof(CustomValueMetadataAppService));
+            Assert.AreEqual(customEntry.Value.ServiceType, typeof(CustomValueMetadataAppService));
 
             var customBuilder = customEntry.Value;
             var customMetadata = customBuilder.Metadata!;
@@ -416,10 +416,10 @@ namespace Kephas.Core.Tests.Services
 
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
             var customBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueMetadataAppService));
-            Assert.AreEqual(customBuilderEntry.Value.Type, typeof(CustomNamedValueMetadataAppService));
+            Assert.AreEqual(customBuilderEntry.Value.ServiceType, typeof(CustomNamedValueMetadataAppService));
 
             var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueNullMetadataAppService));
-            Assert.AreEqual(nullBuilderEntry.Value.Type, typeof(CustomNamedValueNullMetadataAppService));
+            Assert.AreEqual(nullBuilderEntry.Value.ServiceType, typeof(CustomNamedValueNullMetadataAppService));
 
             var customMetadata = customBuilderEntry.Value.Metadata!;
             var nullMetadata = nullBuilderEntry.Value.Metadata!;
