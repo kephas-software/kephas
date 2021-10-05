@@ -13,6 +13,7 @@ namespace Kephas.Injection.Lite.Builder
     using System;
 
     using Kephas.Injection.Builder;
+    using Kephas.Services;
 
     /// <summary>
     /// Interface for service registration builder.
@@ -59,12 +60,12 @@ namespace Kephas.Injection.Lite.Builder
         /// <summary>
         /// Registers the service with the provided implementation type.
         /// </summary>
-        /// <param name="implementationType">The implementation type.</param>
+        /// <param name="serviceType">The implementation type.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithType(Type implementationType)
-            => this.WithInstancingStrategy(implementationType);
+        IServiceRegistrationBuilder WithType(Type serviceType)
+            => this.WithInstancingStrategy(serviceType);
 
         /// <summary>
         /// Indicates whether the created instances are disposed by an external owner.

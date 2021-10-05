@@ -118,6 +118,41 @@ namespace Kephas.Services
         }
 
         /// <summary>
+        /// Collects the metadata from the service type attributes and generic type arguments.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <returns>The metadata.</returns>
+        internal static IDictionary<string, object?> GetServiceMetadata(Type serviceType, Type contractDeclarationType)
+        {
+            var metadata = new Dictionary<string, object?>();
+            serviceType.GetCustomAttributes()
+                .OfType<IMetadataProvider>()
+                .SelectMany(p => p.GetMetadata())
+                .ForEach(m => metadata[m.name] = m.value);
+
+            metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceType);
+
+            // add metadata from generic parameters
+            if (contractDeclarationType.IsGenericType)
+            {
+                var metadataSourceGenericType = contractDeclarationType.IsConstructedGenericType
+                    ? contractDeclarationType
+                    : serviceType.IsGenericType
+                        ? null
+                        : serviceType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == contractDeclarationType);
+                if (metadataSourceGenericType != null)
+                {
+                    IMetadataProvider.GetGenericTypeMetadataProvider(metadataSourceGenericType)
+                        .GetMetadata()
+                        .ForEach(m => metadata[m.name] = m.value);
+                }
+            }
+
+            return metadata;
+        }
+
+        /// <summary>
         /// Sometimes the raw type provided is a constructed generic type
         /// but not with proper type arguments. In this case return the generic type definition
         /// because this is actually meant.
@@ -248,7 +283,7 @@ namespace Kephas.Services
                         var appServiceInfoGenericDefinition = appServiceInfos.First();
                         var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoGenericDefinition, contractDeclarationType);
                         var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType)
-                            .AddMetadata(this.GetServiceMetadata(serviceType, contractDeclarationType));
+                            .AddMetadata(GetServiceMetadata(serviceType, contractDeclarationType));
 
                         // add to the list of service infos on the first place the declaration.
                         appServiceInfoMap[contractDeclarationType] = new List<IAppServiceInfo> { appServiceInfoDeclaration, appServiceInfo };
@@ -261,7 +296,7 @@ namespace Kephas.Services
                 // The first app service info in the list must be the contract declaration.
                 var appServiceInfoDeclaration = appServiceInfos.First();
                 var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType)
-                    .AddMetadata(this.GetServiceMetadata(serviceType, contractDeclarationType));
+                    .AddMetadata(GetServiceMetadata(serviceType, contractDeclarationType));
                 appServiceInfos.Add(appServiceInfo);
                 return;
             }
@@ -270,35 +305,6 @@ namespace Kephas.Services
                 "Service type {contractType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
                 serviceType,
                 contractDeclarationType);
-        }
-
-        private IDictionary<string, object?> GetServiceMetadata(Type serviceType, Type contractDeclarationType)
-        {
-            var metadata = new Dictionary<string, object?>();
-            serviceType.GetCustomAttributes()
-                .OfType<IMetadataProvider>()
-                .SelectMany(p => p.GetMetadata())
-                .ForEach(m => metadata[m.name] = m.value);
-
-            metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceType);
-
-            // add metadata from generic parameters
-            if (contractDeclarationType.IsGenericType)
-            {
-                var metadataSourceGenericType = contractDeclarationType.IsConstructedGenericType
-                    ? contractDeclarationType
-                    : serviceType.IsGenericType
-                        ? null
-                        : serviceType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == contractDeclarationType);
-                if (metadataSourceGenericType != null)
-                {
-                    IMetadataProvider.GetGenericTypeMetadataProvider(metadataSourceGenericType)
-                        .GetMetadata()
-                        .ForEach(m => metadata[m.name] = m.value);
-                }
-            }
-
-            return metadata;
         }
 
         private string ToJsonString(Type contractDeclarationType, IAppServiceInfo appServiceInfo)
