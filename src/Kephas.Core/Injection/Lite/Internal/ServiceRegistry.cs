@@ -11,42 +11,75 @@
 namespace Kephas.Injection.Lite.Internal
 {
     using System;
-    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Resources;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// A service serviceRegistry.
     /// </summary>
-    internal class ServiceRegistry : IServiceRegistry
+    internal class ServiceRegistry : IAppServiceRegistry
     {
-        private readonly ConcurrentDictionary<Type, IServiceInfo> services = new ();
+        private readonly ConcurrentDictionary<Type, IAppServiceInfo> services = new ();
 
-        private readonly List<IServiceSource> serviceSources = new ();
+        private readonly List<IAppServiceSource> serviceSources = new ();
 
-        public IEnumerable<IServiceSource> Sources => this.serviceSources;
+        /// <summary>
+        /// Attempts to get the <see cref="IAppServiceSource"/> for the given service contract.
+        /// </summary>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="appServiceSource">The <see cref="IAppServiceSource"/> instance.</param>
+        /// <returns>
+        /// True if a <see cref="IAppServiceSource"/> is found, otherwise false.
+        /// </returns>
+        public bool TryGetSource(Type contractType, out IAppServiceSource? appServiceSource)
+        {
+            // simple registration
+            if (this.services.TryGetValue(contractType, out var serviceRegistration) && serviceRegistration is IAppServiceSource serviceSource)
+            {
+                appServiceSource = serviceSource;
+                return true;
+            }
 
-        public IServiceInfo this[Type contractType] => this.services[contractType];
+            // open generic registration
+            if (contractType.IsConstructedGenericType)
+            {
+                var openServiceType = contractType.GetGenericTypeDefinition();
 
-        public bool TryGet(Type serviceType, out IServiceInfo serviceInfo) =>
-            this.services.TryGetValue(serviceType, out serviceInfo);
+                if (this.services.TryGetValue(openServiceType, out serviceRegistration) && serviceRegistration is IServiceInfo genericServiceInfo)
+                {
+                    serviceRegistration = this.services.GetOrAdd(contractType, _ => genericServiceInfo.MakeGenericServiceInfo(contractType.GetGenericArguments()));
+                    if (serviceRegistration is IAppServiceSource genericServiceSource)
+                    {
+                        appServiceSource = genericServiceSource;
+                        return true;
+                    }
+                }
+            }
+
+            // source registration
+            appServiceSource = this.serviceSources.FirstOrDefault(source => source.IsMatch(contractType));
+            return true;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.
         /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="contractType">Type of the service contract.</param>
         /// <returns>
         /// <c>true</c> if the service is registered, <c>false</c> if not.
         /// </returns>
-        public bool IsRegistered(Type serviceType)
+        public bool IsRegistered(Type contractType)
         {
-            return serviceType != null && (this.services.ContainsKey(serviceType)
-                                           || (serviceType.IsConstructedGenericType && this.services.ContainsKey(serviceType.GetGenericTypeDefinition()))
-                                           || this.serviceSources.Any(s => s.IsMatch(serviceType)));
+            return contractType != null
+                   && (this.services.ContainsKey(contractType)
+                       || (contractType.IsConstructedGenericType && this.services.ContainsKey(contractType.GetGenericTypeDefinition()))
+                       || this.serviceSources.Any(s => s.IsMatch(contractType)));
         }
 
         /// <summary>
@@ -56,11 +89,12 @@ namespace Kephas.Injection.Lite.Internal
         /// <returns>
         /// This service registry.
         /// </returns>
-        public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
+        public IAppServiceRegistry Register(IAppServiceInfo serviceInfo)
         {
+            var contractType = serviceInfo.ContractType ?? throw new ArgumentException($"The service information does not have the '{nameof(IServiceInfo.ContractType)}' value set.", nameof(serviceInfo));
             if (serviceInfo.AllowMultiple)
             {
-                if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo))
+                if (this.services.TryGetValue(contractType, out var existingServiceInfo))
                 {
                     if (existingServiceInfo is MultiServiceInfo multiServiceInfo)
                     {
@@ -71,21 +105,21 @@ namespace Kephas.Injection.Lite.Internal
                     throw new InvalidOperationException(
                         string.Format(
                             Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
-                            serviceInfo.ContractType));
+                            contractType));
                 }
 
                 serviceInfo = serviceInfo as MultiServiceInfo ?? new MultiServiceInfo((ServiceInfo)serviceInfo);
             }
-            else if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo)
+            else if (this.services.TryGetValue(contractType, out var existingServiceInfo)
                      && existingServiceInfo.AllowMultiple)
             {
                 throw new InvalidOperationException(
                     string.Format(
                         Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
-                        serviceInfo.ContractType));
+                        contractType));
             }
 
-            this.services[serviceInfo.ContractType] = serviceInfo;
+            this.services[contractType] = serviceInfo;
             return this;
         }
 
@@ -96,40 +130,24 @@ namespace Kephas.Injection.Lite.Internal
         /// <returns>
         /// This service registry.
         /// </returns>
-        public ServiceRegistry RegisterSource(IServiceSource serviceSource)
+        public IAppServiceRegistry RegisterSource(IAppServiceSource serviceSource)
         {
             this.serviceSources.Add(serviceSource);
             return this;
         }
 
         /// <summary>
-        /// Gets the enumerator.
+        /// Gets an enumeration of application service information objects and their contract declaration type.
+        /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
+        /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
-        /// The enumerator.
+        /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerator<IServiceInfo> GetEnumerator() => this.services.Values.GetEnumerator();
-
-        /// <summary>
-        /// Gets the enumerator.
-        /// </summary>
-        /// <returns>
-        /// The enumerator.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-
-        /// <summary>
-        /// Gets or registers a service.
-        /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="serviceInfoGetter">The service info getter.</param>
-        /// <returns>
-        /// The existing or the registered service info.
-        /// </returns>
-        public IServiceInfo GetOrRegister(Type serviceType, Func<Type, IServiceInfo> serviceInfoGetter)
-        {
-            return this.services.GetOrAdd(serviceType, serviceInfoGetter);
-        }
+        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null) =>
+            this.services.Values
+                .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType!, si)));
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
@@ -140,6 +158,26 @@ namespace Kephas.Injection.Lite.Internal
             this.services.ForEach(kv => (kv.Value as IDisposable)?.Dispose());
             this.services.Clear();
             this.serviceSources.Clear();
+        }
+
+        private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IAppServiceInfo appServiceInfo)
+        {
+            switch (appServiceInfo)
+            {
+                case IEnumerable<IServiceInfo> multiServiceInfos:
+                    foreach (ServiceInfo si in multiServiceInfos)
+                    {
+                        yield return si.ToAppServiceInfo();
+                    }
+
+                    break;
+                case ServiceInfo serviceInfo:
+                    yield return serviceInfo.ToAppServiceInfo();
+                    break;
+                default:
+                    yield return appServiceInfo;
+                    break;
+            }
         }
     }
 }

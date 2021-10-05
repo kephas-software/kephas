@@ -267,7 +267,7 @@ namespace Kephas.Services
             }
 
             logger.Warn(
-                "Service type {serviceType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
+                "Service type {contractType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
                 serviceType,
                 contractDeclarationType);
         }

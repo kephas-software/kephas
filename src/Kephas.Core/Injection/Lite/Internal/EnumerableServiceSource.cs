@@ -8,14 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Kephas.Reflection;
-using Kephas.Runtime;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Kephas.Reflection;
+    using Kephas.Runtime;
+    using Kephas.Services;
+
     /// <summary>
     /// An enumerable service source.
     /// </summary>
@@ -24,7 +26,7 @@ namespace Kephas.Injection.Lite.Internal
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public EnumerableServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+        public EnumerableServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
             : base(serviceRegistry, typeRegistry)
         {
         }

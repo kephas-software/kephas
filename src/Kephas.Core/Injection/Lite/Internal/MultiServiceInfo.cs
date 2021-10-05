@@ -69,7 +69,7 @@ namespace Kephas.Injection.Lite.Internal
             this.serviceInfos.Add(serviceInfo);
         }
 
-        public object GetService(IServiceProvider serviceProvider)
+        public object GetService(IServiceProvider serviceProvider, Type contractType)
         {
             throw new NotSupportedException("Only single service infos may provide services.");
         }
@@ -80,7 +80,7 @@ namespace Kephas.Injection.Lite.Internal
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IServiceInfo MakeGenericServiceInfo(IServiceProvider serviceProvider, Type[] genericArgs)
+        public IServiceInfo MakeGenericServiceInfo(Type[] genericArgs)
         {
             if (!this.ContractType.IsGenericTypeDefinition)
             {
@@ -89,7 +89,7 @@ namespace Kephas.Injection.Lite.Internal
 
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
 
-            var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(serviceProvider, genericArgs));
+            var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(genericArgs));
 
             return new MultiServiceInfo(closedContractType, closedServiceInfos);
         }
@@ -99,5 +99,7 @@ namespace Kephas.Injection.Lite.Internal
             this.serviceInfos.ForEach(svc => (svc as IDisposable)?.Dispose());
             this.serviceInfos.Clear();
         }
+
+        public bool IsMatch(Type contractType) => contractType == this.ContractType;
     }
 }

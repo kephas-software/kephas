@@ -16,18 +16,22 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Injection;
-    using Kephas.Injection.Lite;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Services;
 
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
     public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
     {
+        /// <summary>
+        /// Gets the service registry.
+        /// </summary>
+        protected internal IAppServiceRegistry ServiceRegistry { get; }
 
         /// <summary>
         /// Gets the configuration store.
@@ -82,23 +86,50 @@ namespace Kephas
         /// </value>
         public ILicensingManager LicensingManager => this.GetService<ILicensingManager>();
 
+
         /// <summary>
         /// Registers the provided service using a registration builder.
         /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <param name="builder">The builder.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        IAmbientServices Register(Type serviceType, Action<IServiceRegistrationBuilder> builder);
+        public IAmbientServices Register(Type contractDeclarationType, Action<IServiceRegistrationBuilder> builder)
+        {
+            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            builder = builder ?? throw new ArgumentNullException(nameof(builder));
+
+            var serviceBuilder = new ServiceRegistrationBuilder(this, contractDeclarationType);
+            builder?.Invoke(serviceBuilder);
+            this.ServiceRegistry.Register(serviceBuilder.Build());
+
+            return this;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.
         /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="contractType">Type of the service contract.</param>
         /// <returns>
         /// <c>true</c> if the service is registered, <c>false</c> if not.
         /// </returns>
-        bool IsRegistered(Type serviceType);
+        public bool IsRegistered(Type contractType)
+        {
+            return contractType != null && this.ServiceRegistry.IsRegistered(contractType);
+        }
+
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <returns>
+        /// A service object of type <paramref name="contractType"/>.-or- null if there is no service object of type <paramref name="contractType"/>.
+        /// </returns>
+        /// <param name="contractType">The contract type of service to get. </param>
+        object? IServiceProvider.GetService(Type contractType)
+        {
+            this.ServiceRegistry.TryGetSource(contractType, out var serviceSource);
+            return serviceSource?.GetService(this, contractType);
+        }
     }
 }

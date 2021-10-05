@@ -18,13 +18,14 @@ namespace Kephas.Injection.Lite.Internal
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
+    using Kephas.Services;
 
     internal class LazyWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => LazyWithMetadataServiceSource.GetService<string, string>(null, null));
 
-        public LazyWithMetadataServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+        public LazyWithMetadataServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
             : base(serviceRegistry, typeRegistry)
         {
         }

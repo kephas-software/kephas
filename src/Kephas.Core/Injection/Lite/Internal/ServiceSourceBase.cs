@@ -8,19 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Runtime;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Runtime;
+    using Kephas.Services;
+
     internal abstract class ServiceSourceBase : IServiceSource
     {
-        protected readonly IServiceRegistry serviceRegistry;
+        protected readonly IAppServiceRegistry serviceRegistry;
         protected readonly IRuntimeTypeRegistry typeRegistry;
 
-        protected ServiceSourceBase(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+        protected ServiceSourceBase(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
         {
             this.serviceRegistry = serviceRegistry;
             this.typeRegistry = typeRegistry;
@@ -42,36 +43,32 @@ namespace Kephas.Injection.Lite.Internal
             Type serviceType,
             Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>>? selector)
         {
-            if (this.serviceRegistry.TryGet(serviceType, out var serviceInfo))
+            if (this.serviceRegistry.TryGetSource(serviceType, out var serviceSource))
             {
-                if (serviceInfo is IEnumerable<IServiceInfo> multiServiceInfo)
+                if (serviceSource is IEnumerable<IServiceInfo> multiServiceInfo)
                 {
                     foreach (var si in multiServiceInfo)
                     {
                         yield return
                             (si,
                                 selector == null
-                                    ? () => si.GetService(serviceProvider)
-                                    : selector((si, () => si.GetService(serviceProvider))));
+                                    ? () => si.GetService(serviceProvider, si.ContractType!)
+                                    : selector((si, () => si.GetService(serviceProvider, si.ContractType!))));
                     }
                 }
-                else
+                else if (serviceSource is IServiceInfo serviceInfo)
                 {
                     yield return (serviceInfo,
                                      selector == null
-                                         ? () => serviceInfo.GetService(serviceProvider)
-                                         : selector((serviceInfo, () => serviceInfo.GetService(serviceProvider))));
+                                         ? () => serviceInfo.GetService(serviceProvider, serviceInfo.ContractType!)
+                                         : selector((serviceInfo, () => serviceInfo.GetService(serviceProvider, serviceInfo.ContractType!))));
                 }
-            }
-            else
-            {
-                var source = this.serviceRegistry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
-                if (source != null)
+                else if (serviceSource is IServiceSource source)
                 {
                     foreach (var descriptor in source.GetServiceDescriptors(serviceProvider, serviceType))
                     {
                         yield return (descriptor.serviceInfo,
-                                         selector == null ? descriptor.factory : selector((descriptor.serviceInfo, descriptor.factory)));
+                            selector == null ? descriptor.factory : selector((descriptor.serviceInfo, descriptor.factory)));
                     }
                 }
             }

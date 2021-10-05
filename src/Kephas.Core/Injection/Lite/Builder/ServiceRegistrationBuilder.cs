@@ -88,7 +88,7 @@ namespace Kephas.Injection.Lite.Builder
                         return new MultiServiceInfo(this.contractType);
                     }
 
-                    return new ServiceInfo(this.contractType, this.instancingStrategy)
+                    return new ServiceInfo(this.ambientServices, this.contractType, this.instancingStrategy)
                     {
                         AllowMultiple = this.allowMultiple,
                         ExternallyOwned = this.externallyOwned,

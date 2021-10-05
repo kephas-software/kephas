@@ -8,22 +8,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kephas.Reflection;
-using Kephas.Resources;
-using Kephas.Runtime;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Kephas.Reflection;
+    using Kephas.Resources;
+    using Kephas.Runtime;
+    using Kephas.Services;
+
     internal class LazyServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public LazyServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+        public LazyServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
             : base(serviceRegistry, typeRegistry)
         {
         }

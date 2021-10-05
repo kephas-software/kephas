@@ -14,16 +14,18 @@ namespace Kephas.Injection.Lite.Internal
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
+    using Kephas.Services;
 
     internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null));
 
-        public ExportFactoryWithMetadataServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+        public ExportFactoryWithMetadataServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
             : base(serviceRegistry, typeRegistry)
         {
         }

@@ -177,19 +177,19 @@ namespace Kephas
         /// <summary>
         /// Registers the provided service with implementation type as singleton.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service.</typeparam>
         /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<TService, TServiceImplementation>(this IAmbientServices ambientServices)
-            where TService : class
+        public static IAmbientServices Register<TContract, TServiceImplementation>(this IAmbientServices ambientServices)
+            where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             return ambientServices.Register(
-                typeof(TService),
+                typeof(TContract),
                 b => b.WithType(typeof(TServiceImplementation))
                             .Singleton());
         }

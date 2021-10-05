@@ -28,13 +28,16 @@ namespace Kephas.Injection.Lite.Internal
         private readonly LazyFactory lazyFactory;
 
         private Func<object>? instanceResolver;
+        private readonly WeakReference<IServiceProvider> weakServiceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
         /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instance">The instance.</param>
-        public ServiceInfo(Type contractType, object instance)
+        public ServiceInfo(IAmbientServices serviceProvider, Type contractType, object instance)
+            : this(serviceProvider)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = instance;
@@ -50,6 +53,7 @@ namespace Kephas.Injection.Lite.Internal
         /// <param name="instanceType">Type of the instance.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
         public ServiceInfo(IServiceProvider serviceProvider, Type contractType, Type instanceType, bool isSingleton)
+            : this(serviceProvider)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = instanceType;
@@ -67,6 +71,7 @@ namespace Kephas.Injection.Lite.Internal
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
         public ServiceInfo(IServiceProvider serviceProvider, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
+            : this(serviceProvider)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = serviceFactory;
@@ -75,6 +80,11 @@ namespace Kephas.Injection.Lite.Internal
             this.lazyFactory = isSingleton
                                    ? new LazyValue(() => serviceFactory(injector), contractType)
                                    : new LazyFactory(() => serviceFactory(injector), contractType);
+        }
+
+        private ServiceInfo(IServiceProvider serviceProvider)
+        {
+            this.weakServiceProvider = new WeakReference<IServiceProvider>(serviceProvider);
         }
 
         public AppServiceLifetime Lifetime { get; }
@@ -95,12 +105,11 @@ namespace Kephas.Injection.Lite.Internal
         /// Makes a generic service information with closed generic types.
         /// </summary>
         /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
-        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="genericArgs">The generic arguments.</param>
         /// <returns>
         /// An IServiceInfo.
         /// </returns>
-        public IServiceInfo MakeGenericServiceInfo(IServiceProvider serviceProvider, Type[] genericArgs)
+        public IServiceInfo MakeGenericServiceInfo(Type[] genericArgs)
         {
             if (!this.ContractType.IsGenericTypeDefinition)
             {
@@ -116,6 +125,11 @@ namespace Kephas.Injection.Lite.Internal
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
             var closedInstanceType = self.InstanceType.MakeGenericType(genericArgs);
 
+            if (!this.weakServiceProvider.TryGetTarget(out var serviceProvider))
+            {
+                throw new ObjectDisposedException("The service provider is disposed.");
+            }
+
             var closedServiceInfo = new ServiceInfo(serviceProvider, closedContractType, closedInstanceType, this.IsSingleton())
             {
                 AllowMultiple = this.AllowMultiple,
@@ -125,15 +139,19 @@ namespace Kephas.Injection.Lite.Internal
             return closedServiceInfo;
         }
 
-        public AppServiceInfo ToAppServiceInfo(IAmbientServices ambientServices)
+        public AppServiceInfo ToAppServiceInfo()
         {
-            return new AppServiceInfo(this.ContractType, ctx => this.GetService(ambientServices), this.Lifetime)
+            return new AppServiceInfo(this.ContractType!, ctx => this.GetServiceCore(), this.Lifetime)
             {
                 AllowMultiple = this.AllowMultiple,
             };
         }
 
-        public object GetService(IServiceProvider serviceProvider) => this.lazyFactory.GetValue();
+        public bool IsMatch(Type contractType) => contractType == this.ContractType;
+
+        public object GetService(IServiceProvider serviceProvider, Type contractType) => this.GetServiceCore();
+
+        protected virtual object GetServiceCore() => this.lazyFactory.GetValue();
 
         public void Dispose()
         {

@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric) }));
 
-            var service = ambientServices.GetService(typeof(IGeneric<int>));
+            var service = ((IServiceProvider)ambientServices).GetService(typeof(IGeneric<int>));
             Assert.IsInstanceOf<IntGeneric>(service);
         }
 

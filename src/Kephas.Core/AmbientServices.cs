@@ -12,15 +12,11 @@ namespace Kephas
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
-    using Kephas.Application;
     using Kephas.Configuration;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Lite;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Injection.Lite.Internal;
     using Kephas.Licensing;
@@ -44,9 +40,7 @@ namespace Kephas
     [ExcludeFromInjection]
     public class AmbientServices : Expando, IAmbientServices, IAppServiceInfosProvider
     {
-        private readonly IServiceRegistry registry = new ServiceRegistry();
-
-        private readonly IResolverEngine resolver;
+        private readonly IAppServiceRegistry registry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
@@ -55,11 +49,12 @@ namespace Kephas
         /// <param name="typeRegistry">Optional. The type registry.</param>
         public AmbientServices(bool registerDefaultServices = true, IRuntimeTypeRegistry? typeRegistry = null)
         {
-            this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
-                .Register<IInjector>(b => b.WithInstance(this.AsInjector()).ExternallyOwned(true));
+            this.registry = new ServiceRegistry();
 
             typeRegistry ??= RuntimeTypeRegistry.Instance;
-            this
+
+            this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
+                .Register<IInjector>(b => b.WithInstance(this.AsInjector()).ExternallyOwned(true))
                 .Register<IRuntimeTypeRegistry>(typeRegistry);
 
             if (registerDefaultServices)
@@ -79,53 +74,12 @@ namespace Kephas
                 .RegisterSource(new ListServiceSource(this.registry, typeRegistry))
                 .RegisterSource(new CollectionServiceSource(this.registry, typeRegistry))
                 .RegisterSource(new EnumerableServiceSource(this.registry, typeRegistry));
-
-            this.resolver = new ResolverEngine(this, this.registry);
         }
 
         /// <summary>
-        /// Registers the provided service using a registration builder.
+        /// Gets the service registry.
         /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="builder">The builder.</param>
-        /// <returns>
-        /// The IAmbientServices.
-        /// </returns>
-        public virtual IAmbientServices Register(Type serviceType, Action<IServiceRegistrationBuilder> builder)
-        {
-            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
-            builder = builder ?? throw new ArgumentNullException(nameof(builder));
-
-            var serviceBuilder = new ServiceRegistrationBuilder(this, serviceType);
-            builder?.Invoke(serviceBuilder);
-            this.registry.RegisterService(serviceBuilder.Build());
-
-            return this;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the service with the provided contract is registered.
-        /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <returns>
-        /// <c>true</c> if the service is registered, <c>false</c> if not.
-        /// </returns>
-        public bool IsRegistered(Type serviceType)
-        {
-            return serviceType != null && this.registry.IsRegistered(serviceType);
-        }
-
-        /// <summary>
-        /// Gets the service object of the specified type.
-        /// </summary>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
-        /// </returns>
-        /// <param name="serviceType">An object that specifies the type of service object to get. </param>
-        public object? GetService(Type serviceType)
-        {
-            return this.resolver.GetService(serviceType);
-        }
+        IAppServiceRegistry IAmbientServices.ServiceRegistry => this.registry;
 
         /// <summary>
         /// Gets the application service infos in this collection.
@@ -142,15 +96,20 @@ namespace Kephas
             // this is a message that ALL registration infos should be returned.
             if (context != null && ((bool?)this[LiteInjectorBuilder.LiteInjectionKey] ?? false))
             {
-                return Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
+                yield break;
             }
 
             // exclude the injector from the list as it is the responsibility
             // of each injector implementation to register itself in the DI container.
-            return this.registry
-                .Where(s => !ReferenceEquals(s.ContractType, typeof(IInjector)))
-                .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType!, si)))
-                .ToList();
+            foreach (var s in this.registry.GetAppServiceInfos(context))
+            {
+                if (ReferenceEquals(s.contractDeclarationType, typeof(IInjector)))
+                {
+                    continue;
+                }
+
+                yield return s;
+            }
         }
 
         /// <summary>
@@ -171,26 +130,6 @@ namespace Kephas
         protected virtual void Dispose(bool disposing)
         {
             this.registry?.Dispose();
-        }
-
-        private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IServiceInfo appServiceInfo)
-        {
-            switch (appServiceInfo)
-            {
-                case IEnumerable<IServiceInfo> multiServiceInfos:
-                    foreach (ServiceInfo si in multiServiceInfos)
-                    {
-                        yield return si.ToAppServiceInfo(this);
-                    }
-
-                    break;
-                case ServiceInfo serviceInfo:
-                    yield return serviceInfo.ToAppServiceInfo(this);
-                    break;
-                default:
-                    yield return appServiceInfo;
-                    break;
-            }
         }
     }
 }

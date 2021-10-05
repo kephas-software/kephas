@@ -8,35 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
 namespace Kephas.Injection.Lite.Internal
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Services;
+
     /// <summary>
     /// Interface for service source.
     /// </summary>
-    internal interface IServiceSource
+    internal interface IServiceSource : IAppServiceSource
     {
-        /// <summary>
-        /// Query if the contract type matches the source.
-        /// </summary>
-        /// <param name="contractType">Type of the contract.</param>
-        /// <returns>
-        /// True if match, false if not.
-        /// </returns>
-        bool IsMatch(Type contractType);
-
-        /// <summary>
-        /// Gets a service.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <returns>
-        /// The service.
-        /// </returns>
-        object GetService(IServiceProvider parent, Type serviceType);
-
         /// <summary>
         /// Gets the service descriptors.
         /// </summary>

@@ -12,30 +12,21 @@ namespace Kephas.Injection.Lite.Internal
 {
     using System;
 
+    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>
     /// Interface for service information.
     /// </summary>
-    internal interface IServiceInfo : IAppServiceInfo
+    internal interface IServiceInfo : IAppServiceInfo, IAppServiceSource
     {
         /// <summary>
         /// Makes a generic service information with closed generic types.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="genericArgs">The generic arguments.</param>
         /// <returns>
         /// An IServiceInfo.
         /// </returns>
-        IServiceInfo MakeGenericServiceInfo(IServiceProvider serviceProvider, Type[] genericArgs);
-
-        /// <summary>
-        /// Gets a service.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <returns>
-        /// The service.
-        /// </returns>
-        object GetService(IServiceProvider serviceProvider);
+        IServiceInfo MakeGenericServiceInfo(Type[] genericArgs);
     }
 }
