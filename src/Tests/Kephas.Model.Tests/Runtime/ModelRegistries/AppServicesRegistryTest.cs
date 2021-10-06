@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -19,6 +17,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Model.Runtime;
@@ -37,7 +37,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
