@@ -121,6 +121,7 @@ namespace Kephas
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -131,27 +132,10 @@ namespace Kephas
         ///                         release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            this.registry?.Dispose();
-        }
-
-        public virtual IInjector Build()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual IRegistrationBuilder ForType(Type type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual IRegistrationBuilder ForInstance(object instance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
-        {
-            throw new NotImplementedException();
+            if (disposing)
+            {
+                this.registry?.Dispose();
+            }
         }
     }
 }

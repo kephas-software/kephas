@@ -14,7 +14,7 @@ namespace Kephas.Services
     /// <summary>
     /// Registry for <see cref="IAppServiceInfo"/> instances.
     /// </summary>
-    public interface IAppServiceRegistry : IAppServiceInfosProvider, IDisposable
+    public interface IAppServiceRegistry : IAppServiceInfosProvider, IServiceProvider, IDisposable
     {
         /// <summary>
         /// Attempts to get the <see cref="IAppServiceSource"/> for the given service contract.
@@ -33,7 +33,7 @@ namespace Kephas.Services
         /// <returns>
         /// <c>true</c> if the service is registered, <c>false</c> if not.
         /// </returns>
-        bool IsRegistered(Type contractType);
+        bool IsRegistered(Type contractType) => this.TryGetSource(contractType, out _);
 
         /// <summary>
         /// Registers the source described by <paramref name="appServiceSource"/>.
@@ -43,5 +43,18 @@ namespace Kephas.Services
         /// This service registry.
         /// </returns>
         IAppServiceRegistry RegisterSource(IAppServiceSource appServiceSource);
+
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <returns>
+        /// A service object of type <paramref name="contractType"/>.-or- null if there is no service object of type <paramref name="contractType"/>.
+        /// </returns>
+        /// <param name="contractType">The contract type of service to get. </param>
+        object? IServiceProvider.GetService(Type contractType)
+        {
+            this.TryGetSource(contractType, out var serviceSource);
+            return serviceSource?.GetService(this, contractType);
+        }
     }
 }

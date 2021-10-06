@@ -40,10 +40,14 @@ namespace Kephas.Injection.Lite.Internal
             Type serviceType,
             Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>>? selector)
         {
-            if (this.serviceRegistry.TryGetSource(serviceType, out var serviceSource))
+            if (!this.serviceRegistry.TryGetSource(serviceType, out var serviceSource))
             {
-                if (serviceSource is IEnumerable<IServiceInfo> multiServiceInfo)
-                {
+                yield break;
+            }
+
+            switch (serviceSource)
+            {
+                case IEnumerable<IServiceInfo> multiServiceInfo:
                     foreach (var si in multiServiceInfo)
                     {
                         yield return
@@ -52,22 +56,21 @@ namespace Kephas.Injection.Lite.Internal
                                     ? () => si.GetService(serviceProvider, si.ContractType!)
                                     : selector((si, () => si.GetService(serviceProvider, si.ContractType!))));
                     }
-                }
-                else if (serviceSource is IServiceInfo serviceInfo)
-                {
+
+                    break;
+                case IServiceInfo serviceInfo:
                     yield return (serviceInfo,
-                                     selector == null
-                                         ? () => serviceInfo.GetService(serviceProvider, serviceInfo.ContractType!)
-                                         : selector((serviceInfo, () => serviceInfo.GetService(serviceProvider, serviceInfo.ContractType!))));
-                }
-                else if (serviceSource is IServiceSource source)
-                {
-                    foreach (var descriptor in source.GetServiceDescriptors(serviceProvider, serviceType))
+                        selector == null
+                            ? () => serviceInfo.GetService(serviceProvider, serviceInfo.ContractType!)
+                            : selector((serviceInfo, () => serviceInfo.GetService(serviceProvider, serviceInfo.ContractType!))));
+                    break;
+                case IServiceSource source:
+                    foreach (var (serviceInfo, factory) in source.GetServiceDescriptors(serviceProvider, serviceType))
                     {
-                        yield return (descriptor.serviceInfo,
-                            selector == null ? descriptor.factory : selector((descriptor.serviceInfo, descriptor.factory)));
+                        yield return (serviceInfo, selector == null ? factory : selector((serviceInfo, factory)));
                     }
-                }
+
+                    break;
             }
         }
     }

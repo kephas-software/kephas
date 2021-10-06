@@ -25,7 +25,7 @@ namespace Kephas.Injection.Lite.Builder
     /// </summary>
     internal class ServiceRegistrationBuilder : IServiceRegistrationBuilder
     {
-        private readonly IAmbientServices ambientServices;
+        private readonly IAppServiceRegistry serviceRegistry;
 
         private readonly Type contractDeclarationType;
 
@@ -44,12 +44,12 @@ namespace Kephas.Injection.Lite.Builder
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRegistrationBuilder"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceRegistry">The ambient services.</param>
         /// <param name="contractDeclarationType">The contract declaration type.</param>
-        public ServiceRegistrationBuilder(IAmbientServices ambientServices, Type contractDeclarationType)
+        public ServiceRegistrationBuilder(IAppServiceRegistry serviceRegistry, Type contractDeclarationType)
         {
             this.contractType = this.contractDeclarationType = contractDeclarationType;
-            this.ambientServices = ambientServices;
+            this.serviceRegistry = serviceRegistry;
         }
 
         /// <summary>
@@ -66,14 +66,14 @@ namespace Kephas.Injection.Lite.Builder
                     this.EnsureContractTypeMatchesImplementationType(this.contractType, serviceType);
                     ((IRegistrationBuilder)this).AddMetadata(AppServiceInfoInjectionRegistrar.GetServiceMetadata(serviceType, this.contractDeclarationType));
 
-                    return new ServiceInfo(this.ambientServices, this.contractType, serviceType, this.lifetime != AppServiceLifetime.Transient)
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, serviceType, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
                 case Func<IInjector, object> factory:
-                    return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
                         ExternallyOwned = this.externallyOwned,
@@ -90,7 +90,7 @@ namespace Kephas.Injection.Lite.Builder
                         return new MultiServiceInfo(this.contractType);
                     }
 
-                    return new ServiceInfo(this.ambientServices, this.contractType, this.instancingStrategy)
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, this.instancingStrategy)
                     {
                         AllowMultiple = this.allowMultiple,
                         ExternallyOwned = this.externallyOwned,

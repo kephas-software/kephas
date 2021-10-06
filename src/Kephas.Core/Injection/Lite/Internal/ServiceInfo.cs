@@ -28,16 +28,16 @@ namespace Kephas.Injection.Lite.Internal
         private readonly LazyFactory lazyFactory;
 
         private Func<object>? instanceResolver;
-        private readonly WeakReference<IServiceProvider> weakServiceProvider;
+        private readonly WeakReference<IAppServiceRegistry> weakServiceRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="serviceRegistry">The service registry.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instance">The instance.</param>
-        public ServiceInfo(IAmbientServices serviceProvider, Type contractType, object instance)
-            : this(serviceProvider)
+        public ServiceInfo(IAppServiceRegistry serviceRegistry, Type contractType, object instance)
+            : this(serviceRegistry)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = instance;
@@ -48,43 +48,42 @@ namespace Kephas.Injection.Lite.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="serviceRegistry">The service registry.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="instanceType">Type of the instance.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
-        public ServiceInfo(IServiceProvider serviceProvider, Type contractType, Type instanceType, bool isSingleton)
-            : this(serviceProvider)
+        public ServiceInfo(IAppServiceRegistry serviceRegistry, Type contractType, Type instanceType, bool isSingleton)
+            : this(serviceRegistry)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = instanceType;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => this.GetInstanceResolver(serviceProvider, instanceType)(), contractType)
-                                   : new LazyFactory(() => this.GetInstanceResolver(serviceProvider, instanceType)(), contractType);
+                                   ? new LazyValue(() => this.GetInstanceResolver(serviceRegistry, instanceType)(), contractType)
+                                   : new LazyFactory(() => this.GetInstanceResolver(serviceRegistry, instanceType)(), contractType);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="serviceRegistry">The service registry.</param>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
-        public ServiceInfo(IServiceProvider serviceProvider, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
-            : this(serviceProvider)
+        public ServiceInfo(IAppServiceRegistry serviceRegistry, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
+            : this(serviceRegistry)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            var injector = serviceProvider.AsInjector();
             this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => serviceFactory(injector), contractType)
-                                   : new LazyFactory(() => serviceFactory(injector), contractType);
+                                   ? new LazyValue(() => serviceFactory(serviceRegistry.GetRequiredService<IInjector>()), contractType)
+                                   : new LazyFactory(() => serviceFactory(serviceRegistry.GetRequiredService<IInjector>()), contractType);
         }
 
-        private ServiceInfo(IServiceProvider serviceProvider)
+        private ServiceInfo(IAppServiceRegistry serviceRegistry)
         {
-            this.weakServiceProvider = new WeakReference<IServiceProvider>(serviceProvider);
+            this.weakServiceRegistry = new WeakReference<IAppServiceRegistry>(serviceRegistry);
         }
 
         public AppServiceLifetime Lifetime { get; }
@@ -125,7 +124,7 @@ namespace Kephas.Injection.Lite.Internal
             var closedContractType = this.ContractType.MakeGenericType(genericArgs);
             var closedInstanceType = self.InstanceType.MakeGenericType(genericArgs);
 
-            if (!this.weakServiceProvider.TryGetTarget(out var serviceProvider))
+            if (!this.weakServiceRegistry.TryGetTarget(out var serviceProvider))
             {
                 throw new ObjectDisposedException("The service provider is disposed.");
             }
@@ -161,25 +160,25 @@ namespace Kephas.Injection.Lite.Internal
             }
         }
 
-        private Func<object> GetInstanceResolver(IServiceProvider serviceProvider, Type instanceType)
+        private Func<object?> GetInstanceResolver(IAppServiceRegistry serviceRegistry, Type instanceType)
         {
             if (this.instanceResolver != null)
             {
                 return this.instanceResolver;
             }
 
-            var (ctor, ctorParams) = GetConstructorInfo(serviceProvider, instanceType);
+            var (ctor, ctorParams) = GetConstructorInfo(serviceRegistry, instanceType);
 
             return this.instanceResolver = () => ctor.Invoke(
                        ctorParams.Select(
                            p => p.HasDefaultValue
-                                    ? serviceProvider.GetService(p.ParameterType) ?? p.DefaultValue
-                                    : serviceProvider.GetRequiredService(p.ParameterType))
+                                    ? serviceRegistry.GetService(p.ParameterType) ?? p.DefaultValue
+                                    : serviceRegistry.GetRequiredService(p.ParameterType))
                            .ToArray());
         }
 
         private static (ConstructorInfo maxCtor, ParameterInfo[] maxCtorParams) GetConstructorInfo(
-            IServiceProvider serviceProvider,
+            IAppServiceRegistry serviceRegistry,
             Type instanceType)
         {
             var unresolvedParams = new List<ParameterInfo>();
@@ -197,7 +196,7 @@ namespace Kephas.Injection.Lite.Internal
                     break;
                 }
 
-                var unresolvedCtorParams = ctorParams.Where(p => !p.HasDefaultValue && !serviceProvider.IsRegistered(p.ParameterType)).ToList();
+                var unresolvedCtorParams = ctorParams.Where(p => !p.HasDefaultValue && !serviceRegistry.IsRegistered(p.ParameterType)).ToList();
 
                 if (unresolvedCtorParams.Count == 0)
                 {

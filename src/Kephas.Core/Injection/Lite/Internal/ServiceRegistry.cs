@@ -68,21 +68,6 @@ namespace Kephas.Injection.Lite.Internal
         }
 
         /// <summary>
-        /// Gets a value indicating whether the service with the provided contract is registered.
-        /// </summary>
-        /// <param name="contractType">Type of the service contract.</param>
-        /// <returns>
-        /// <c>true</c> if the service is registered, <c>false</c> if not.
-        /// </returns>
-        public bool IsRegistered(Type contractType)
-        {
-            return contractType != null
-                   && (this.services.ContainsKey(contractType)
-                       || (contractType.IsConstructedGenericType && this.services.ContainsKey(contractType.GetGenericTypeDefinition()))
-                       || this.serviceSources.Any(s => s.IsMatch(contractType)));
-        }
-
-        /// <summary>
         /// Registers the source described by <paramref name="serviceSource"/>.
         /// </summary>
         /// <param name="serviceSource">The service source.</param>

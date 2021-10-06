@@ -21,7 +21,7 @@ namespace Kephas.Injection.Lite.Internal
 
     internal class MultiServiceInfo : IServiceInfo, IEnumerable<IServiceInfo>, IDisposable
     {
-        private IList<ServiceInfo> serviceInfos = new List<ServiceInfo>();
+        private readonly IList<ServiceInfo> serviceInfos = new List<ServiceInfo>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiServiceInfo"/> class.

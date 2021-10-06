@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Builder;
-
 namespace Kephas
 {
     using System;
@@ -27,7 +25,7 @@ namespace Kephas
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
-    public interface IAmbientServices : IExpando, IServiceProvider, IInjectorBuilder, IDisposable
+    public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
     {
         /// <summary>
         /// Gets the service registry.
@@ -40,7 +38,7 @@ namespace Kephas
         /// <value>
         /// The configuration store.
         /// </value>
-        public IConfigurationStore ConfigurationStore => this.GetService<IConfigurationStore>();
+        public IConfigurationStore ConfigurationStore => this.GetRequiredService<IConfigurationStore>();
 
         /// <summary>
         /// Gets the injector.
@@ -48,12 +46,12 @@ namespace Kephas
         /// <value>
         /// The injector.
         /// </value>
-        public IInjector Injector => this.GetService<IInjector>();
+        public IInjector Injector => this.GetRequiredService<IInjector>();
 
         /// <summary>
         /// Gets the type serviceRegistry.
         /// </summary>
-        public IRuntimeTypeRegistry TypeRegistry => this.GetService<IRuntimeTypeRegistry>();
+        public IRuntimeTypeRegistry TypeRegistry => this.GetRequiredService<IRuntimeTypeRegistry>();
 
         /// <summary>
         /// Gets the application runtime.
@@ -61,7 +59,7 @@ namespace Kephas
         /// <value>
         /// The application runtime.
         /// </value>
-        public IAppRuntime AppRuntime => this.GetService<IAppRuntime>();
+        public IAppRuntime AppRuntime => this.GetRequiredService<IAppRuntime>();
 
         /// <summary>
         /// Gets the log manager.
@@ -69,7 +67,7 @@ namespace Kephas
         /// <value>
         /// The log manager.
         /// </value>
-        public ILogManager LogManager => this.GetService<ILogManager>();
+        public ILogManager LogManager => this.GetRequiredService<ILogManager>();
 
         /// <summary>
         /// Gets the manager for licensing.
@@ -77,7 +75,7 @@ namespace Kephas
         /// <value>
         /// The licensing manager.
         /// </value>
-        public ILicensingManager LicensingManager => this.GetService<ILicensingManager>();
+        public ILicensingManager LicensingManager => this.GetRequiredService<ILicensingManager>();
 
         /// <summary>
         /// Registers the provided service using a registration builder.
@@ -92,7 +90,7 @@ namespace Kephas
             contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-            var serviceBuilder = new ServiceRegistrationBuilder(this, contractDeclarationType);
+            var serviceBuilder = new ServiceRegistrationBuilder(this.ServiceRegistry, contractDeclarationType);
             builder?.Invoke(serviceBuilder);
             this.ServiceRegistry.RegisterSource(serviceBuilder.Build());
 
@@ -106,10 +104,8 @@ namespace Kephas
         /// <returns>
         /// <c>true</c> if the service is registered, <c>false</c> if not.
         /// </returns>
-        public bool IsRegistered(Type contractType)
-        {
-            return contractType != null && this.ServiceRegistry.IsRegistered(contractType);
-        }
+        public bool IsRegistered(Type contractType) =>
+            this.ServiceRegistry.IsRegistered(contractType);
 
         /// <summary>
         /// Gets the service object of the specified type.
@@ -118,10 +114,7 @@ namespace Kephas
         /// A service object of type <paramref name="contractType"/>.-or- null if there is no service object of type <paramref name="contractType"/>.
         /// </returns>
         /// <param name="contractType">The contract type of service to get. </param>
-        object? IServiceProvider.GetService(Type contractType)
-        {
-            this.ServiceRegistry.TryGetSource(contractType, out var serviceSource);
-            return serviceSource?.GetService(this, contractType);
-        }
+        object? IServiceProvider.GetService(Type contractType) =>
+            this.ServiceRegistry.GetService(contractType);
     }
 }

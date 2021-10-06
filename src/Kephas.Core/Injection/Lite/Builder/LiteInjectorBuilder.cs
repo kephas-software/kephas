@@ -12,6 +12,7 @@ namespace Kephas.Injection.Lite.Builder
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Injection.Builder;
 
     /// <summary>
