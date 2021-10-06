@@ -20,19 +20,14 @@ namespace Kephas.Injection.Lite.Internal
     using Kephas.Runtime;
     using Kephas.Services;
 
-    internal class LazyServiceSource : ServiceSourceBase
+    internal class LazyServiceSource : GenericServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
         public LazyServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
-            : base(serviceRegistry, typeRegistry)
+            : base(serviceRegistry, typeof(Lazy<>))
         {
-        }
-
-        public override bool IsMatch(Type contractType)
-        {
-            return contractType.IsConstructedGenericOf(typeof(Lazy<>));
         }
 
         public override object GetService(IServiceProvider parent, Type serviceType)

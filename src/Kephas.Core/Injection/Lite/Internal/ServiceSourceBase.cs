@@ -13,18 +13,15 @@ namespace Kephas.Injection.Lite.Internal
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Runtime;
     using Kephas.Services;
 
     internal abstract class ServiceSourceBase : IServiceSource
     {
         protected readonly IAppServiceRegistry serviceRegistry;
-        protected readonly IRuntimeTypeRegistry typeRegistry;
 
-        protected ServiceSourceBase(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+        protected ServiceSourceBase(IAppServiceRegistry serviceRegistry)
         {
             this.serviceRegistry = serviceRegistry;
-            this.typeRegistry = typeRegistry;
         }
 
         public abstract bool IsMatch(Type contractType);

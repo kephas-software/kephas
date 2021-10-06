@@ -20,19 +20,14 @@ namespace Kephas.Injection.Lite.Internal
     using Kephas.Runtime;
     using Kephas.Services;
 
-    internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
+    internal class ExportFactoryWithMetadataServiceSource : GenericServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null));
 
         public ExportFactoryWithMetadataServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
-            : base(serviceRegistry, typeRegistry)
+            : base(serviceRegistry, typeof(IExportFactory<,>))
         {
-        }
-
-        public override bool IsMatch(Type contractType)
-        {
-            return contractType.IsConstructedGenericOf(typeof(IExportFactory<,>));
         }
 
         public override object GetService(IServiceProvider parent, Type serviceType)

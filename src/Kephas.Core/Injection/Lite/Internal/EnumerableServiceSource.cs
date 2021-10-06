@@ -21,19 +21,14 @@ namespace Kephas.Injection.Lite.Internal
     /// <summary>
     /// An enumerable service source.
     /// </summary>
-    internal class EnumerableServiceSource : ServiceSourceBase
+    internal class EnumerableServiceSource : GenericServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
         public EnumerableServiceSource(IAppServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
-            : base(serviceRegistry, typeRegistry)
+            : base(serviceRegistry, typeof(IEnumerable<>))
         {
-        }
-
-        public override bool IsMatch(Type contractType)
-        {
-            return contractType.IsConstructedGenericOf(typeof(IEnumerable<>));
         }
 
         public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(

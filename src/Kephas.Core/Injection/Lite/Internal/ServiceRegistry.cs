@@ -83,47 +83,6 @@ namespace Kephas.Injection.Lite.Internal
         }
 
         /// <summary>
-        /// Registers the service described by <paramref name="serviceInfo"/>.
-        /// </summary>
-        /// <param name="serviceInfo">Information describing the service.</param>
-        /// <returns>
-        /// This service registry.
-        /// </returns>
-        public IAppServiceRegistry Register(IAppServiceInfo serviceInfo)
-        {
-            var contractType = serviceInfo.ContractType ?? throw new ArgumentException($"The service information does not have the '{nameof(IServiceInfo.ContractType)}' value set.", nameof(serviceInfo));
-            if (serviceInfo.AllowMultiple)
-            {
-                if (this.services.TryGetValue(contractType, out var existingServiceInfo))
-                {
-                    if (existingServiceInfo is MultiServiceInfo multiServiceInfo)
-                    {
-                        multiServiceInfo.Add((ServiceInfo)serviceInfo);
-                        return this;
-                    }
-
-                    throw new InvalidOperationException(
-                        string.Format(
-                            Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
-                            contractType));
-                }
-
-                serviceInfo = serviceInfo as MultiServiceInfo ?? new MultiServiceInfo((ServiceInfo)serviceInfo);
-            }
-            else if (this.services.TryGetValue(contractType, out var existingServiceInfo)
-                     && existingServiceInfo.AllowMultiple)
-            {
-                throw new InvalidOperationException(
-                    string.Format(
-                        Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
-                        contractType));
-            }
-
-            this.services[contractType] = serviceInfo;
-            return this;
-        }
-
-        /// <summary>
         /// Registers the source described by <paramref name="serviceSource"/>.
         /// </summary>
         /// <param name="serviceSource">The service source.</param>
@@ -132,6 +91,11 @@ namespace Kephas.Injection.Lite.Internal
         /// </returns>
         public IAppServiceRegistry RegisterSource(IAppServiceSource serviceSource)
         {
+            if (serviceSource is IAppServiceInfo serviceInfo)
+            {
+                return this.Register(serviceInfo);
+            }
+
             this.serviceSources.Add(serviceSource);
             return this;
         }
@@ -158,6 +122,47 @@ namespace Kephas.Injection.Lite.Internal
             this.services.ForEach(kv => (kv.Value as IDisposable)?.Dispose());
             this.services.Clear();
             this.serviceSources.Clear();
+        }
+
+        /// <summary>
+        /// Registers the service described by <paramref name="serviceInfo"/>.
+        /// </summary>
+        /// <param name="serviceInfo">Information describing the service.</param>
+        /// <returns>
+        /// This service registry.
+        /// </returns>
+        private IAppServiceRegistry Register(IAppServiceInfo serviceInfo)
+        {
+            var contractType = serviceInfo.ContractType ?? throw new ArgumentException($"The service information does not have the '{nameof(IServiceInfo.ContractType)}' value set.", nameof(serviceInfo));
+            if (serviceInfo.AllowMultiple)
+            {
+                if (this.services.TryGetValue(contractType, out var existingServiceInfo))
+                {
+                    if (existingServiceInfo is not MultiServiceInfo multiServiceInfo)
+                    {
+                        throw new InvalidOperationException(
+                            string.Format(
+                                Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
+                                contractType));
+                    }
+
+                    multiServiceInfo.Add((ServiceInfo)serviceInfo);
+                    return this;
+                }
+
+                serviceInfo = serviceInfo as MultiServiceInfo ?? new MultiServiceInfo((ServiceInfo)serviceInfo);
+            }
+            else if (this.services.TryGetValue(contractType, out var existingServiceInfo)
+                     && existingServiceInfo.AllowMultiple)
+            {
+                throw new InvalidOperationException(
+                    string.Format(
+                        Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
+                        contractType));
+            }
+
+            this.services[contractType] = serviceInfo;
+            return this;
         }
 
         private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IAppServiceInfo appServiceInfo)
