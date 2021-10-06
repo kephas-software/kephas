@@ -101,7 +101,7 @@ namespace Kephas.Testing.Injection
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<AutofacInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

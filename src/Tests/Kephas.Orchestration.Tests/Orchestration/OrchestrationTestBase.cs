@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Builder;
+
 namespace Kephas.Tests.Orchestration
 {
     using System;
@@ -43,7 +45,7 @@ namespace Kephas.Tests.Orchestration
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
@@ -51,7 +53,7 @@ namespace Kephas.Tests.Orchestration
             config = b =>
             {
                 var appContext = Substitute.For<IAppContext>();
-                b.WithFactory(() => appContext);
+                b.ForFactory(_ => appContext);
                 oldConfig?.Invoke(b);
             };
             return base.CreateInjector(ambientServices, assemblies, parts, config, logManager, appRuntime);

@@ -59,10 +59,10 @@ namespace Kephas.Plugins.NuGet.Tests
             try
             {
                 var container = this.CreateInjector(
-                    config: b => b.WithFactory<ISettingsProvider>(
-                        () => new PluginsSettingsProvider("tags:kephas"),
-                        isSingleton: true,
-                        allowMultiple: true),
+                    config: b => b.ForFactory<ISettingsProvider>(
+                        _ => new PluginsSettingsProvider("tags:kephas"))
+                        .Singleton()
+                        .AllowMultiple(),
                     appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
                 var manager = container.Resolve<IPluginManager>();
 
@@ -94,10 +94,10 @@ namespace Kephas.Plugins.NuGet.Tests
             try
             {
                 var container = this.CreateInjector(
-                    config: b => b.WithFactory<ISettingsProvider>(
-                        () => new PluginsSettingsProvider("tags:kismsspplugin"),
-                        isSingleton: true,
-                        allowMultiple: true),
+                    config: b => b.ForFactory<ISettingsProvider>(
+                        _ => new PluginsSettingsProvider("tags:kismsspplugin"))
+                        .Singleton()
+                        .AllowMultiple(),
                     appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
                 var manager = container.Resolve<IPluginManager>();
 

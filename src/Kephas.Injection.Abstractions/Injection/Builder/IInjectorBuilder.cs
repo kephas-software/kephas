@@ -44,5 +44,14 @@ namespace Kephas.Injection.Builder
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory);
+
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="factory">The service factory.</param>
+        /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
+        IRegistrationBuilder ForFactory<T>(Func<IInjector, T> factory)
+            => this.ForFactory(typeof(T), injector => factory(injector)!);
     }
 }

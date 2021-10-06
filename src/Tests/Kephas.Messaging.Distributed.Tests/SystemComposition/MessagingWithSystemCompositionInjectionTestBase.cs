@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Builder;
+
 namespace Kephas.Messaging.Tests.SystemComposition
 {
     using System;
@@ -31,7 +33,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<SystemCompositionInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
@@ -45,7 +47,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
             config = b =>
             {
                 var appContext = Substitute.For<IAppContext>();
-                b.WithFactory(() => appContext);
+                b.ForFactory(_ => appContext);
                 oldConfig?.Invoke(b);
             };
 

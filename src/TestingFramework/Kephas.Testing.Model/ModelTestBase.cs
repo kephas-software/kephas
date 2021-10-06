@@ -44,7 +44,7 @@ namespace Kephas.Testing.Model
             var container = this.CreateInjector(
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
-                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
+                config: b => b.ForFactory(_ => this.GetModelRegistry(elements)).Singleton().AllowMultiple());
 
             return container;
         }
@@ -60,7 +60,7 @@ namespace Kephas.Testing.Model
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 parts: parts,
-                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
+                config: b => b.ForFactory(_ => this.GetModelRegistry(elements)).Singleton().AllowMultiple());
 
             return container;
         }

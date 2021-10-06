@@ -86,7 +86,7 @@ namespace Kephas.Testing.Injection
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
