@@ -15,7 +15,6 @@ namespace Kephas.Injection.Builder
 
     using Kephas.Collections;
     using Kephas.Diagnostics;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -25,7 +24,7 @@ namespace Kephas.Injection.Builder
     /// Base class for injector builders.
     /// </summary>
     /// <typeparam name="TBuilder">The type of the builder.</typeparam>
-    public abstract class InjectorBuilderBase<TBuilder> : Loggable, IInjectorBuilder
+    public abstract class InjectorBuilderBase<TBuilder> : Loggable, IInjectorBuilder, IHasInjectionBuildContext
         where TBuilder : InjectorBuilderBase<TBuilder>
     {
         /// <summary>
@@ -44,17 +43,17 @@ namespace Kephas.Injection.Builder
         }
 
         /// <summary>
+        /// Gets the <see cref="IInjectionBuildContext"/>.
+        /// </summary>
+        public IInjectionBuildContext BuildContext { get; }
+
+        /// <summary>
         /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
         /// </summary>
         /// <value>
         /// The serviceRegistry.
         /// </value>
         protected internal AppServiceInfoRegistry Registry { get; }
-
-        /// <summary>
-        /// Gets the registration context.
-        /// </summary>
-        protected internal IInjectionBuildContext BuildContext { get; }
 
         /// <summary>
         /// Define a rule that will apply to the specified type.

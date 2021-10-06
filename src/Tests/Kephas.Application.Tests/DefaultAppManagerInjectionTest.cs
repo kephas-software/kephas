@@ -17,7 +17,7 @@ namespace Kephas.Application.Tests
     using Kephas.Behaviors;
     using Kephas.Configuration;
     using Kephas.Injection;
-    using Kephas.Injection.Lite.Builder;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Services.Behaviors;
     using NUnit.Framework;
@@ -29,7 +29,7 @@ namespace Kephas.Application.Tests
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

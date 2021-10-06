@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectorBaseExtensions.cs" company="Kephas Software SRL">
+// <copyright file="InjectorBuilderExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Kephas.Testing.Injection
     /// <summary>
     /// Extension methods for <see cref="InjectorBuilderBase{TBuilder}"/>.
     /// </summary>
-    public static class InjectorBaseExtensions
+    public static class InjectorBuilderExtensions
     {
         /// <summary>
         /// Adds the composition parts.
@@ -30,7 +30,7 @@ namespace Kephas.Testing.Injection
         /// Can be used multiple times, the provided parts are added to the existing ones.
         /// </remarks>
         public static TBuilder WithParts<TBuilder>(this TBuilder builder, IEnumerable<Type> parts)
-            where TBuilder : InjectorBuilderBase<TBuilder>
+            where TBuilder : IInjectorBuilder
         {
             parts = parts ?? throw new ArgumentNullException(nameof(parts));
 
@@ -50,12 +50,16 @@ namespace Kephas.Testing.Injection
         /// This builder.
         /// </returns>
         public static TBuilder WithAppServiceInfosProvider<TBuilder>(this TBuilder builder, IAppServiceInfosProvider appServiceInfosProvider)
-            where TBuilder : InjectorBuilderBase<TBuilder>
+            where TBuilder : IInjectorBuilder
         {
             appServiceInfosProvider = appServiceInfosProvider ?? throw new ArgumentNullException(nameof(appServiceInfosProvider));
 
-            builder.BuildContext.AppServiceInfosProviders.Add(appServiceInfosProvider);
+            if (builder is not IHasInjectionBuildContext hasContext)
+            {
+                throw new InvalidOperationException($"The injector builder does not implement the '{nameof(IHasInjectionBuildContext)}' interface.");
+            }
 
+            hasContext.BuildContext.AppServiceInfosProviders.Add(appServiceInfosProvider);
             return builder;
         }
     }

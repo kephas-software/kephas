@@ -17,6 +17,7 @@ namespace Kephas.Commands.Tests
 
     using Kephas.Application;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Testing.Injection;
@@ -27,7 +28,7 @@ namespace Kephas.Commands.Tests
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
