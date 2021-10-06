@@ -37,7 +37,7 @@ namespace Kephas.Injection.Lite.Builder
 
         private bool externallyOwned = true;
 
-        private object instancingStrategy;
+        private object? instancingStrategy;
 
         private IDictionary<string, object?>? metadata;
 
@@ -62,9 +62,11 @@ namespace Kephas.Injection.Lite.Builder
         {
             switch (this.instancingStrategy)
             {
-                case Type implementationType:
-                    this.EnsureContractTypeMatchesImplementationType(this.contractType, implementationType);
-                    return new ServiceInfo(this.ambientServices, this.contractType, implementationType, this.lifetime != AppServiceLifetime.Transient)
+                case Type serviceType:
+                    this.EnsureContractTypeMatchesImplementationType(this.contractType, serviceType);
+                    ((IRegistrationBuilder)this).AddMetadata(AppServiceInfoInjectionRegistrar.GetServiceMetadata(serviceType, this.contractDeclarationType));
+
+                    return new ServiceInfo(this.ambientServices, this.contractType, serviceType, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
                         ExternallyOwned = this.externallyOwned,

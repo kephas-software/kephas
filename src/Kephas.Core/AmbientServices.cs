@@ -103,7 +103,7 @@ namespace Kephas
 
             // exclude the injector from the list as it is the responsibility
             // of each injector implementation to register itself in the DI container.
-            foreach (var s in this.registry.GetAppServiceInfos(context))
+            foreach ((Type contractDeclarationType, IAppServiceInfo appServiceInfo) s in this.registry.GetAppServiceInfos(context))
             {
                 if (ReferenceEquals(s.contractDeclarationType, typeof(IInjector)))
                 {
