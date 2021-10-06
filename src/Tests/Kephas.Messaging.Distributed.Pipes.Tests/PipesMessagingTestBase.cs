@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Messaging.Pipes.Tests
 {
     using System;
@@ -19,6 +17,8 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas;
     using Kephas.Application;
     using Kephas.Commands;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
@@ -43,7 +43,13 @@ namespace Kephas.Messaging.Pipes.Tests
             };
         }
 
-        public override IInjector CreateInjector(IAmbientServices? ambientServices = null, IEnumerable<Assembly>? assemblies = null, IEnumerable<Type>? parts = null, Action<LiteInjectorBuilder>? config = null, ILogManager? logManager = null, IAppRuntime? appRuntime = null)
+        public override IInjector CreateInjector(
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<IInjectorBuilder>? config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))

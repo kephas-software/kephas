@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Injection.SystemComposition;
     using Kephas.Logging;
@@ -47,11 +48,11 @@ namespace Kephas.Messaging.Tests
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>());
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
             return base.CreateInjector(ambientServices, assemblyList, parts, config);
         }

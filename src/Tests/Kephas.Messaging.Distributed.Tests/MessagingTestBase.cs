@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
@@ -32,7 +33,7 @@ namespace Kephas.Messaging.Tests
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<LiteInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

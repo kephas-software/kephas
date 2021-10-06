@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
 
     using Kephas.Application;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition.Builder;
     using Kephas.Logging;
     using Kephas.Testing.Application;
@@ -27,7 +28,7 @@ namespace Kephas.Messaging.Tests.SystemComposition
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<SystemCompositionInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

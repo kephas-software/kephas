@@ -13,10 +13,12 @@ namespace Kephas.Messaging.Tests.Autofac
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Builder;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.ExportFactoryImporters;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
@@ -31,7 +33,7 @@ namespace Kephas.Messaging.Tests.Autofac
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<AutofacInjectorBuilder>? config = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
