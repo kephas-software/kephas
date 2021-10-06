@@ -36,15 +36,6 @@ namespace Kephas.Services
         bool IsRegistered(Type contractType);
 
         /// <summary>
-        /// Registers the service described by <paramref name="appServiceInfo"/>.
-        /// </summary>
-        /// <param name="appServiceInfo">Information describing the service.</param>
-        /// <returns>
-        /// This service registry.
-        /// </returns>
-        IAppServiceRegistry Register(IAppServiceInfo appServiceInfo);
-
-        /// <summary>
         /// Registers the source described by <paramref name="appServiceSource"/>.
         /// </summary>
         /// <param name="appServiceSource">The service source.</param>
