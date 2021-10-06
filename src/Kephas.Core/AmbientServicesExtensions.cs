@@ -722,7 +722,7 @@ namespace Kephas
                 LoggingHelper.DefaultLogManager = logManager;
             }
 
-            ambientServices.Register<ILogManager>(b => b.WithInstance(logManager).ExternallyOwned(false));
+            ambientServices.Register<ILogManager>(b => b.WithInstance(logManager));
 
             return ambientServices;
         }

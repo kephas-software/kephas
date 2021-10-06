@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+
 namespace Kephas.Injection.SystemComposition.Builder
 {
     using System;
@@ -16,6 +18,7 @@ namespace Kephas.Injection.SystemComposition.Builder
     using System.Composition.Hosting;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
@@ -25,7 +28,7 @@ namespace Kephas.Injection.SystemComposition.Builder
     /// <summary>
     /// Conventions builder for a specific part.
     /// </summary>
-    public class SystemCompositionTypeRegistrationBuilder : ISystemCompositionRegistrationBuilder
+    public class SystemCompositionTypeRegistrationBuilder : Loggable, ISystemCompositionRegistrationBuilder
     {
         private readonly PartConventionBuilder innerConventionBuilder;
         private Type? contractType;
@@ -34,7 +37,11 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// Initializes a new instance of the <see cref="SystemCompositionTypeRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="innerConventionBuilder">The inner convention builder.</param>
-        internal SystemCompositionTypeRegistrationBuilder(PartConventionBuilder innerConventionBuilder)
+        /// <param name="logManager">Optional. The log manager.</param>
+        internal SystemCompositionTypeRegistrationBuilder(
+            PartConventionBuilder innerConventionBuilder,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
             this.innerConventionBuilder = innerConventionBuilder ?? throw new ArgumentNullException(nameof(innerConventionBuilder));
         }
@@ -146,6 +153,18 @@ namespace Kephas.Injection.SystemComposition.Builder
         {
             this.innerConventionBuilder.AddPartMetadata(name, value);
 
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.Logger.Warn($"{nameof(SystemCompositionTypeRegistrationBuilder)} does not support externally owned instances, as it creates them.");
             return this;
         }
 

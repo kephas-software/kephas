@@ -148,6 +148,8 @@ namespace Kephas.Core.Tests.Injection
 
             public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> ConstructorSelector { get; private set; }
 
+            public bool IsExternallyOwned { get; set; }
+
             public IRegistrationBuilder SelectConstructor(
                 Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
                 Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
@@ -159,6 +161,12 @@ namespace Kephas.Core.Tests.Injection
             public IRegistrationBuilder AddMetadata(string name, object? value)
             {
                 (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
+                return this;
+            }
+
+            public IRegistrationBuilder ExternallyOwned()
+            {
+                this.IsExternallyOwned = true;
                 return this;
             }
 

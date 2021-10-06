@@ -106,6 +106,18 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         }
 
         /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.Logger.Warn($"{nameof(DependencyInjectionTypeRegistrationBuilder)} does not support externally owned instances, as it creates them.");
+            return this;
+        }
+
+        /// <summary>
         /// Indicates that this service allows multiple registrations.
         /// </summary>
         /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>

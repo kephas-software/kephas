@@ -14,6 +14,7 @@ namespace Kephas.Injection.SystemComposition.Builder
     using System.Collections.Generic;
     using System.Composition.Hosting;
     using System.Reflection;
+
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition.ExportProviders;
@@ -26,6 +27,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         private readonly Func<IInjector, object>? instanceFactory;
         private readonly object? instance;
         private Type? contractType;
+        private bool externallyOwned;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionRegistrationBuilder"/> class.
@@ -134,6 +136,18 @@ namespace Kephas.Injection.SystemComposition.Builder
         }
 
         /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.externallyOwned = true;
+            return this;
+        }
+
+        /// <summary>
         /// Sets the container up using the configuration.
         /// </summary>
         /// <param name="configuration">The container configuration.</param>
@@ -148,12 +162,14 @@ namespace Kephas.Injection.SystemComposition.Builder
                 ? new FactoryExportDescriptorProvider(
                     this.contractType,
                     () => this.instance,
-                    this.Metadata)
+                    this.Metadata,
+                    this.externallyOwned)
                 : new FactoryExportDescriptorProvider(
                     this.contractType,
                     ctx => this.instanceFactory!(ctx),
                     this.IsSingleton || this.IsScoped,
-                    this.Metadata));
+                    this.Metadata,
+                    this.externallyOwned));
         }
     }
 }

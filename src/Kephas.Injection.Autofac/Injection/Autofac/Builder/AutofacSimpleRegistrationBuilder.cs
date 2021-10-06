@@ -131,6 +131,18 @@ namespace Kephas.Injection.Autofac.Builder
         }
 
         /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.registrationBuilder.ExternallyOwned();
+            return this;
+        }
+
+        /// <summary>
         /// Builds the information into a service descriptor.
         /// </summary>
         public void Build()

@@ -13,13 +13,15 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Injection.Builder;
+    using Kephas.Logging;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A Microsoft.Extensions.DependencyInjection part builder.
     /// </summary>
-    public class DependencyInjectionRegistrationBuilder : IRegistrationBuilder
+    public class DependencyInjectionRegistrationBuilder : Loggable, IRegistrationBuilder
     {
         private readonly ServiceDescriptorBuilder descriptorBuilder;
 
@@ -27,7 +29,11 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// Initializes a new instance of the <see cref="DependencyInjectionRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="descriptorBuilder">The descriptor builder.</param>
-        internal DependencyInjectionRegistrationBuilder(ServiceDescriptorBuilder descriptorBuilder)
+        /// <param name="logManager">Optional. The log manager.</param>
+        internal DependencyInjectionRegistrationBuilder(
+            ServiceDescriptorBuilder descriptorBuilder,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
             this.descriptorBuilder = descriptorBuilder;
         }
@@ -109,6 +115,18 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         public IRegistrationBuilder AddMetadata(string name, object? value)
         {
             this.descriptorBuilder.AddMetadata(name, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.Logger.Warn($"{nameof(DependencyInjectionRegistrationBuilder)} does not support externally owned instances.");
             return this;
         }
     }

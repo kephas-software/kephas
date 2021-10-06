@@ -153,7 +153,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder Transient()
+        public IRegistrationBuilder Transient()
         {
             this.lifetime = AppServiceLifetime.Transient;
             return this;
@@ -260,13 +260,12 @@ namespace Kephas.Injection.Lite.Builder
         /// <summary>
         /// Indicates whether the created instances are disposed by an external owner.
         /// </summary>
-        /// <param name="value">True if externally owned, false otherwise.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder ExternallyOwned(bool value)
+        public IRegistrationBuilder ExternallyOwned()
         {
-            this.externallyOwned = value;
+            this.externallyOwned = true;
             return this;
         }
 

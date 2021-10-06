@@ -14,6 +14,7 @@ namespace Kephas.Injection.Autofac.Builder
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Collections;
@@ -128,7 +129,7 @@ namespace Kephas.Injection.Autofac.Builder
             }
         }
 
-        private void RegisterService<TActivatorData, TRegistrationStyle>(
+        private IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> RegisterService<TActivatorData, TRegistrationStyle>(
             Type implementationType,
             IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
             where TActivatorData : ReflectionActivatorData
@@ -145,6 +146,8 @@ namespace Kephas.Injection.Autofac.Builder
             {
                 registration.WithMetadata(this.metadata);
             }
+
+            return registration;
         }
 
         private IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> SetLifetime<TActivatorData, TRegistrationStyle>(

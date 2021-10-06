@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Builder;
+
 namespace Kephas
 {
     using System;
@@ -19,14 +21,13 @@ namespace Kephas
     using Kephas.Injection.Lite.Builder;
     using Kephas.Licensing;
     using Kephas.Logging;
-    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
-    public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
+    public interface IAmbientServices : IExpando, IServiceProvider, IInjectorBuilder, IDisposable
     {
         /// <summary>
         /// Gets the service registry.
@@ -55,14 +56,6 @@ namespace Kephas
         public IRuntimeTypeRegistry TypeRegistry => this.GetService<IRuntimeTypeRegistry>();
 
         /// <summary>
-        /// Gets the type loader.
-        /// </summary>
-        /// <value>
-        /// The type loader.
-        /// </value>
-        public ITypeLoader TypeLoader => this.GetService<ITypeLoader>();
-
-        /// <summary>
         /// Gets the application runtime.
         /// </summary>
         /// <value>
@@ -86,7 +79,6 @@ namespace Kephas
         /// </value>
         public ILicensingManager LicensingManager => this.GetService<ILicensingManager>();
 
-
         /// <summary>
         /// Registers the provided service using a registration builder.
         /// </summary>
@@ -102,7 +94,7 @@ namespace Kephas
 
             var serviceBuilder = new ServiceRegistrationBuilder(this, contractDeclarationType);
             builder?.Invoke(serviceBuilder);
-            this.ServiceRegistry.Register(serviceBuilder.Build());
+            this.ServiceRegistry.RegisterSource(serviceBuilder.Build());
 
             return this;
         }

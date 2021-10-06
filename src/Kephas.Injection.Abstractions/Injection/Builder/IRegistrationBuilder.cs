@@ -62,6 +62,19 @@ namespace Kephas.Injection.Builder
         IRegistrationBuilder Scoped();
 
         /// <summary>
+        /// Registers the service as transient.
+        /// </summary>
+        /// <remarks>
+        /// By default, typical dependency injection frameworks use
+        /// transient registration, so this default implementation does nothing.
+        /// Override it for specific needs.
+        /// </remarks>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        IRegistrationBuilder Transient() => this;
+
+        /// <summary>
         /// Registers the service with multiple instances.
         /// </summary>
         /// <param name="value">Optional. True if multiple service registrations are allowed (default), false otherwise.</param>
@@ -106,5 +119,13 @@ namespace Kephas.Injection.Builder
 
             return this;
         }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        IRegistrationBuilder ExternallyOwned();
     }
 }

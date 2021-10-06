@@ -13,14 +13,15 @@ namespace Kephas.Injection.Autofac.Builder
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Injection.Builder;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
     /// An Autofac part conventions builder.
     /// </summary>
-    public class AutofacTypeRegistrationBuilder : IAutofacRegistrationBuilder
+    public class AutofacTypeRegistrationBuilder : Loggable, IAutofacRegistrationBuilder
     {
         private readonly ServiceDescriptorBuilder descriptorBuilder;
 
@@ -28,7 +29,11 @@ namespace Kephas.Injection.Autofac.Builder
         /// Initializes a new instance of the <see cref="AutofacTypeRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="descriptorBuilder">The descriptor builder.</param>
-        internal AutofacTypeRegistrationBuilder(ServiceDescriptorBuilder descriptorBuilder)
+        /// <param name="logManager">The log manager.</param>
+        internal AutofacTypeRegistrationBuilder(
+            ServiceDescriptorBuilder descriptorBuilder,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
             this.descriptorBuilder = descriptorBuilder;
         }
@@ -115,6 +120,18 @@ namespace Kephas.Injection.Autofac.Builder
         public IRegistrationBuilder AddMetadata(IDictionary<string, object?> metadata)
         {
             this.descriptorBuilder.AddMetadata(metadata);
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.Logger.Warn($"{nameof(AutofacTypeRegistrationBuilder)} does not support externally owned instances, as it creates them.");
             return this;
         }
 

@@ -13,6 +13,7 @@ namespace Kephas.Injection.Lite.Builder
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Collections;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
@@ -90,6 +91,14 @@ namespace Kephas.Injection.Lite.Builder
         public bool AllowMultiple { get; internal set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the service instance is disposed from outside.
+        /// </summary>
+        /// <value>
+        /// True if externally owned, false if not.
+        /// </value>
+        public bool IsExternallyOwned { get; internal set; }
+
+        /// <summary>
         /// Gets the metadata.
         /// </summary>
         public IDictionary<string, object?>? Metadata { get; private set; }
@@ -105,6 +114,18 @@ namespace Kephas.Injection.Lite.Builder
         public IRegistrationBuilder AddMetadata(string name, object? value)
         {
             (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.IsExternallyOwned = true;
             return this;
         }
 
@@ -227,6 +248,11 @@ namespace Kephas.Injection.Lite.Builder
                 if (this.Metadata != null)
                 {
                     this.Metadata.ForEach(kv => b.AddMetadata(kv.Key, kv.Value));
+                }
+
+                if (this.IsExternallyOwned)
+                {
+                    b.ExternallyOwned();
                 }
             }
 

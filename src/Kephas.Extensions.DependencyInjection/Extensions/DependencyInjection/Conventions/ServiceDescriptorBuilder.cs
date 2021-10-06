@@ -84,14 +84,12 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
                                              ? new ServiceDescriptor(this.ContractType ?? this.Instance.GetType(), this.Instance)
                                              : null;
 
-            if (descriptor != null)
+            if (descriptor == null)
             {
-                yield return descriptor;
-                yield break;
+                throw new InjectionException($"One of {nameof(this.Instance)}, {nameof(this.ImplementationType)}, or {nameof(this.Factory)} must be set.");
             }
 
-            throw new InjectionException(
-                $"One of {nameof(this.Instance)}, {nameof(this.ImplementationType)}, or {nameof(this.Factory)} must be set.");
+            yield return descriptor;
         }
 
         /// <summary>

@@ -23,8 +23,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
     public class FactoryExportDescriptorProvider : ExportDescriptorProvider, IExportProvider
     {
         private readonly Func<object> factory;
-        private readonly Func<IInjector, object> contextFactory;
+        private readonly Func<IInjector, object>? contextFactory;
         private readonly bool isSingleton;
+        private readonly bool externallyOwned;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider" /> class.
@@ -32,8 +33,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="factory">The value factory.</param>
         /// <param name="metadata">The metadata.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, IDictionary<string, object?>? metadata)
-            : this(contractType, factory, false, metadata)
+        /// <param name="externallyOwned">Indicates whether the instances are externally owned and disposed.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, IDictionary<string, object?>? metadata, bool externallyOwned)
+            : this(contractType, factory, false, metadata, externallyOwned)
         {
         }
 
@@ -44,14 +46,16 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="factory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
         /// <param name="metadata">The metadata.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isSingleton, IDictionary<string, object?>? metadata)
+        /// <param name="externallyOwned">Indicates whether the instances are externally owned and disposed.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isSingleton, IDictionary<string, object?>? metadata, bool externallyOwned)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(factory, nameof(factory));
+            factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
             this.ContractType = contractType;
             this.factory = factory;
             this.isSingleton = isSingleton;
+            this.externallyOwned = externallyOwned;
             this.Metadata = metadata;
         }
 
@@ -61,14 +65,17 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="contextFactory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<IInjector, object> contextFactory, bool isSingleton, IDictionary<string, object?>? metadata)
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="externallyOwned">Indicates whether the instances are externally owned and disposed.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<IInjector, object> contextFactory, bool isSingleton, IDictionary<string, object?>? metadata, bool externallyOwned)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
 
             this.ContractType = contractType;
             this.contextFactory = contextFactory;
             this.isSingleton = isSingleton;
+            this.externallyOwned = externallyOwned;
             this.Metadata = metadata;
         }
 
@@ -119,7 +126,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
                                     var instance = this.factory == null
                                                        ? this.contextFactory(SystemCompositionInjectorBase.TryGetInjector(c, createNewIfMissing: false))
                                                        : this.factory();
-                                    if (instance is IDisposable disposable)
+                                    if (instance is IDisposable disposable && !this.externallyOwned)
                                     {
                                         c.AddBoundInstance(disposable);
                                     }
@@ -142,8 +149,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// </summary>
         /// <param name="factory">The value factory.</param>
         /// <param name="metadata">The metadata.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory, IDictionary<string, object?>? metadata)
-            : base(typeof(TContract), () => factory(), false, metadata)
+        /// <param name="externallyOwned">Indicates whether the instances are externally owned and disposed.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory, IDictionary<string, object?>? metadata, bool externallyOwned)
+            : base(typeof(TContract), () => factory(), false, metadata, externallyOwned)
         {
         }
 
@@ -153,8 +161,9 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="factory">The value factory.</param>
         /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
         /// <param name="metadata">The metadata.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isSingleton, IDictionary<string, object?>? metadata)
-            : base(typeof(TContract), () => factory(), isSingleton, metadata)
+        /// <param name="externallyOwned">Indicates whether the instances are externally owned and disposed.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isSingleton, IDictionary<string, object?>? metadata, bool externallyOwned)
+            : base(typeof(TContract), () => factory(), isSingleton, metadata, externallyOwned)
         {
         }
     }

@@ -20,14 +20,6 @@ namespace Kephas.Injection.Lite.Builder
     public interface IServiceRegistrationBuilder : IRegistrationBuilder
     {
         /// <summary>
-        /// Registers the service as transient.
-        /// </summary>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder Transient();
-
-        /// <summary>
         /// Registers the service with the provided instancing strategy.
         /// </summary>
         /// <param name="instancingStrategy">The service instancing strategy.</param>
@@ -65,14 +57,5 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         IServiceRegistrationBuilder WithType(Type implementationType)
             => this.WithInstancingStrategy(implementationType);
-
-        /// <summary>
-        /// Indicates whether the created instances are disposed by an external owner.
-        /// </summary>
-        /// <param name="value">True if externally owned, false otherwise.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        IServiceRegistrationBuilder ExternallyOwned(bool value);
     }
 }

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection.Builder;
+
 namespace Kephas
 {
     using System;
@@ -53,8 +55,8 @@ namespace Kephas
 
             typeRegistry ??= RuntimeTypeRegistry.Instance;
 
-            this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
-                .Register<IInjector>(b => b.WithInstance(this.AsInjector()).ExternallyOwned(true))
+            this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned())
+                .Register<IInjector>(b => b.WithInstance(this.AsInjector()).ExternallyOwned())
                 .Register<IRuntimeTypeRegistry>(typeRegistry);
 
             if (registerDefaultServices)
@@ -130,6 +132,26 @@ namespace Kephas
         protected virtual void Dispose(bool disposing)
         {
             this.registry?.Dispose();
+        }
+
+        public virtual IInjector Build()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IRegistrationBuilder ForType(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IRegistrationBuilder ForInstance(object instance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
+        {
+            throw new NotImplementedException();
         }
     }
 }
