@@ -436,7 +436,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = new AmbientServices();
             var injector = Substitute.For<IInjector>();
-            injector.TryResolve<IInjector>(null).Returns((IInjector)null);
+            injector.TryResolve<IInjector>().Returns((IInjector)null);
             ambientServices.Register(injector);
             var noService = ambientServices.Injector.TryResolve<IInjector>();
             Assert.IsNull(noService);

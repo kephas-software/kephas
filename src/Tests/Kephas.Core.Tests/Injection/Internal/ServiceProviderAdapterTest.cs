@@ -25,7 +25,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_success()
         {
             var context = Substitute.For<IInjector>();
-            context.TryResolve(typeof(string), Arg.Any<string>()).Returns("hello");
+            context.TryResolve(typeof(string)).Returns("hello");
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (string?)adapter.GetService(typeof(string));
@@ -36,7 +36,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_not_found()
         {
             var context = Substitute.For<IInjector>();
-            context.TryResolve(typeof(string), Arg.Any<string>()).Returns(null);
+            context.TryResolve(typeof(string)).Returns(null);
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (string?)adapter.GetService(typeof(string));
@@ -47,7 +47,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactory_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
+            context.Resolve(typeof(IExportFactoryImporter<string>)).Returns(this.CreateExportFactoryImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string>?)adapter.GetService(typeof(IExportFactory<string>))!;
@@ -58,7 +58,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactory_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            context.Resolve(typeof(IExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string, string>?)adapter.GetService(typeof(IExportFactory<string, string>))!;
@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_enumerable_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string>)).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string>>?)adapter.GetService(typeof(IEnumerable<IExportFactory<string>>))!;
@@ -82,7 +82,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_enumerable_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string, string>>?)adapter.GetService(typeof(IEnumerable<IExportFactory<string, string>>))!;
@@ -95,7 +95,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_collection_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string>)).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string>>?)adapter.GetService(typeof(ICollection<IExportFactory<string>>))!;
@@ -107,7 +107,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_collection_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string, string>>?)adapter.GetService(typeof(ICollection<IExportFactory<string, string>>))!;
@@ -120,7 +120,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_list_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string>)).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string>>?)adapter.GetService(typeof(IList<IExportFactory<string>>))!;
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_list_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string, string>>?)adapter.GetService(typeof(IList<IExportFactory<string, string>>))!;

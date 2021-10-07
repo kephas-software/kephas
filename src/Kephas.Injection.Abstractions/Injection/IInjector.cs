@@ -19,9 +19,8 @@ namespace Kephas.Injection
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        object Resolve(Type contractType, string? serviceName = null);
+        object Resolve(Type contractType);
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.
@@ -34,12 +33,12 @@ namespace Kephas.Injection
         /// Resolves the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        T Resolve<T>(string? serviceName = null)
-            where T : class;
+        T Resolve<T>()
+            where T : class
+            => (T)this.Resolve(typeof(T));
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.
@@ -55,20 +54,19 @@ namespace Kephas.Injection
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the provided contract was not found.</returns>
-        object? TryResolve(Type contractType, string? serviceName = null);
+        object? TryResolve(Type contractType);
 
         /// <summary>
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        T? TryResolve<T>(string? serviceName = null)
-            where T : class;
+        T? TryResolve<T>()
+            where T : class
+            => (T?)this.TryResolve(typeof(T));
 
         /// <summary>
         /// Creates a new scoped injector.

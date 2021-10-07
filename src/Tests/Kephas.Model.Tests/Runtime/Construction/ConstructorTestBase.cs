@@ -40,7 +40,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry()).WithStaticAppRuntime();
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            injector.Resolve<IAmbientServices>().Returns(ambientServices);
             return new ModelConstructionContext(injector)
             {
                 ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),

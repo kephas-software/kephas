@@ -40,16 +40,12 @@ namespace Kephas.Injection.SystemComposition
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        public virtual object Resolve(Type contractType, string? serviceName = null)
+        public virtual object Resolve(Type contractType)
         {
             this.AssertNotDisposed();
 
-            var component = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext!.GetExport(contractType)
-                              : this.innerCompositionContext!.GetExport(contractType, serviceName);
-            return component;
+            return this.innerCompositionContext!.GetExport(contractType);
         }
 
         /// <summary>
@@ -69,19 +65,15 @@ namespace Kephas.Injection.SystemComposition
         /// Resolves the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual T Resolve<T>(string? serviceName = null)
+        public virtual T Resolve<T>()
             where T : class
         {
             this.AssertNotDisposed();
 
-            var component = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext!.GetExport<T>()
-                              : this.innerCompositionContext!.GetExport<T>(serviceName);
-            return component;
+            return this.innerCompositionContext!.GetExport<T>();
         }
 
         /// <summary>
@@ -104,38 +96,29 @@ namespace Kephas.Injection.SystemComposition
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual object? TryResolve(Type contractType, string? serviceName = null)
+        public virtual object? TryResolve(Type contractType)
         {
             this.AssertNotDisposed();
 
-            object component;
-            var successful = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext!.TryGetExport(contractType, out component)
-                              : this.innerCompositionContext!.TryGetExport(contractType, serviceName, out component);
-            return successful ? component : null;
+            return this.innerCompositionContext!.TryGetExport(contractType, out var component) ? component : null;
         }
 
         /// <summary>
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual T? TryResolve<T>(string? serviceName = null)
+        public virtual T? TryResolve<T>()
             where T : class
         {
             this.AssertNotDisposed();
 
-            var successful = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext!.TryGetExport(out T component)
-                              : this.innerCompositionContext!.TryGetExport(serviceName, out component);
-            return component;
+            return this.innerCompositionContext!.TryGetExport(out T component) ? component : null;
         }
 
         /// <summary>
@@ -146,7 +129,7 @@ namespace Kephas.Injection.SystemComposition
         /// </returns>
         public virtual IInjector CreateScopedInjector()
         {
-            var scopeProvider = this.Resolve<IScopeFactory>(InjectionScopeNames.Default);
+            var scopeProvider = this.Resolve<IScopeFactory>();
 
             var scopedContextExport = scopeProvider.CreateScopedContextExport();
             return GetOrAddCompositionContext(scopedContextExport);

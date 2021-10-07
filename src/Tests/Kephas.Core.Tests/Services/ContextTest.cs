@@ -48,7 +48,7 @@ namespace Kephas.Core.Tests.Services
         {
             var injector = Substitute.For<IInjector>();
             var ambientServices = Substitute.For<IAmbientServices>();
-            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new Context(injector);
             Assert.AreSame(ambientServices, context.AmbientServices);
         }

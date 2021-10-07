@@ -67,16 +67,16 @@ namespace Kephas.Messaging.Tests.SystemComposition
                                         Substitute.For<IAuthenticationService>(),
                                         args.Length > 0 ? args[0] : null);
 
-            container.Resolve(typeof(IExportFactoryImporter<IContextFactory>), Arg.Any<string>())
+            container.Resolve(typeof(IExportFactoryImporter<IContextFactory>))
                 .Returns(ci =>
                     new ExportFactoryImporter<IContextFactory>(
                         new ExportFactory<IContextFactory>(
                             () => this.CreateContextFactoryMock(ctxCreator))));
 
-            container.Resolve(typeof(IContextFactory), Arg.Any<string>())
+            container.Resolve(typeof(IContextFactory))
                 .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
 
-            container.Resolve<IContextFactory>(Arg.Any<string>())
+            container.Resolve<IContextFactory>()
                 .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
 
             return container;

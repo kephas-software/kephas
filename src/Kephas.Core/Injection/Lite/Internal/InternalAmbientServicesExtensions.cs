@@ -11,6 +11,7 @@
 namespace Kephas.Injection.Lite.Internal
 {
     using System;
+
     using Kephas.Dynamic;
 
     internal static class InternalAmbientServicesExtensions

@@ -161,7 +161,7 @@ namespace Kephas.Model.Tests.Elements
         {
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new ModelConstructionContext(injector);
             return context;
         }

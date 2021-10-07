@@ -58,7 +58,7 @@ namespace Kephas.Application.Tests
             var appManager = Substitute.For<IAppManager>();
 
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAppManager>(Arg.Any<string>()).Returns(appManager);
+            injector.Resolve<IAppManager>().Returns(appManager);
 
             IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
@@ -76,9 +76,9 @@ namespace Kephas.Application.Tests
                 .Returns<(IOperationResult result, AppShutdownInstruction instruction)>(ci => throw new InvalidOperationException("bad thing happened"));
 
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAppManager>(Arg.Any<string>())
+            injector.Resolve<IAppManager>()
                 .Returns(appManager);
-            injector.Resolve<IAppMainLoop>(Arg.Any<string>())
+            injector.Resolve<IAppMainLoop>()
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithInjector(injector));
@@ -98,9 +98,9 @@ namespace Kephas.Application.Tests
                 .Returns((new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAppManager>(Arg.Any<string>())
+            injector.Resolve<IAppManager>()
                 .Returns(appManager);
-            injector.Resolve<IAppMainLoop>(Arg.Any<string>())
+            injector.Resolve<IAppMainLoop>()
                 .Returns(mainLoop);
 
             var app = new TestApp(async b => b.WithInjector(injector));
@@ -120,9 +120,9 @@ namespace Kephas.Application.Tests
                 .Returns((new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAppManager>(Arg.Any<string>())
+            injector.Resolve<IAppManager>()
                 .Returns(appManager);
-            injector.Resolve<IAppMainLoop>(Arg.Any<string>())
+            injector.Resolve<IAppMainLoop>()
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithInjector(injector));
@@ -151,7 +151,7 @@ namespace Kephas.Application.Tests
             var appManager = Substitute.For<IAppManager>();
 
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAppManager>(Arg.Any<string>()).Returns(appManager);
+            injector.Resolve<IAppManager>().Returns(appManager);
 
             var ambientServices = new AmbientServices()
                 .WithInjector(injector);

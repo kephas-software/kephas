@@ -273,7 +273,7 @@ namespace Kephas.Data.Tests.InMemory
         private IInjector CreateInjector(IRuntimeTypeRegistry typeRegistry)
         {
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
+            injector.Resolve<IRuntimeTypeRegistry>().Returns(typeRegistry);
             return injector;
         }
     }

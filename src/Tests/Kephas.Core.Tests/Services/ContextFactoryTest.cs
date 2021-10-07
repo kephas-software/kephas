@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Services
             var serializationService = Substitute.For<ISerializationService>();
 
             var (ambientServices, injector) = this.GetServices(new AppServiceInfo(typeof(ISerializationService), serializationService));
-            injector.Resolve(typeof(ISerializationService), Arg.Any<string>()).Returns(serializationService);
+            injector.Resolve(typeof(ISerializationService)).Returns(serializationService);
             var factory = new ContextFactory(injector, ambientServices, Substitute.For<ILogManager>());
             var context = factory.CreateContext<SerializationContext>(typeof(string));
 
@@ -73,10 +73,10 @@ namespace Kephas.Core.Tests.Services
             ambientServices.GetService(typeof(IInjector)).Returns(injector);
             ambientServices["__AppServiceInfosKey"].Returns(infos);
 
-            injector.Resolve(typeof(IAmbientServices), Arg.Any<string>()).Returns(ambientServices);
-            injector.Resolve<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            injector.Resolve(typeof(IInjector), Arg.Any<string>()).Returns(injector);
-            injector.Resolve<IInjector>(Arg.Any<string>()).Returns(injector);
+            injector.Resolve(typeof(IAmbientServices)).Returns(ambientServices);
+            injector.Resolve<IAmbientServices>().Returns(ambientServices);
+            injector.Resolve(typeof(IInjector)).Returns(injector);
+            injector.Resolve<IInjector>().Returns(injector);
 
             return (ambientServices, injector);
         }

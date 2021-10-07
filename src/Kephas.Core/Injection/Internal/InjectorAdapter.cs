@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
 namespace Kephas.Injection.Internal
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// An adapter of <see cref="IServiceProvider"/> for <see cref="IInjector"/>.
     /// </summary>
@@ -33,11 +33,10 @@ namespace Kephas.Injection.Internal
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType"/>.
         /// </returns>
-        public object Resolve(Type contractType, string? serviceName = null)
+        public object Resolve(Type contractType)
         {
             return this.serviceProvider.GetService(contractType);
         }
@@ -59,11 +58,10 @@ namespace Kephas.Injection.Internal
         /// Resolves the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T Resolve<T>(string? serviceName = null)
+        public T Resolve<T>()
             where T : class
         {
             return (T)this.serviceProvider.GetService(typeof(T));
@@ -87,12 +85,11 @@ namespace Kephas.Injection.Internal
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object TryResolve(Type contractType, string? serviceName = null)
+        public object TryResolve(Type contractType)
         {
             return this.serviceProvider.GetService(contractType);
         }
@@ -101,12 +98,11 @@ namespace Kephas.Injection.Internal
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T? TryResolve<T>(string? serviceName = null)
+        public T? TryResolve<T>()
             where T : class
         {
             return (T?)this.serviceProvider.GetService(typeof(T));

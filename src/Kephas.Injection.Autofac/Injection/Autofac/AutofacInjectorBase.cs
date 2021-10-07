@@ -49,11 +49,10 @@ namespace Kephas.Injection.Autofac
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType" />.
         /// </returns>
-        public object Resolve(Type contractType, string? serviceName = null)
+        public object Resolve(Type contractType)
         {
             this.AssertNotDisposed();
 
@@ -106,11 +105,10 @@ namespace Kephas.Injection.Autofac
         /// Resolves the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T Resolve<T>(string? serviceName = null)
+        public T Resolve<T>()
             where T : class
         {
             this.AssertNotDisposed();
@@ -163,12 +161,11 @@ namespace Kephas.Injection.Autofac
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object? TryResolve(Type contractType, string? serviceName = null)
+        public object? TryResolve(Type contractType)
         {
             this.AssertNotDisposed();
 
@@ -179,12 +176,11 @@ namespace Kephas.Injection.Autofac
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T? TryResolve<T>(string? serviceName = null)
+        public T? TryResolve<T>()
             where T : class
         {
             this.AssertNotDisposed();

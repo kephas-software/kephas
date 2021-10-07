@@ -119,7 +119,7 @@ namespace Kephas.Data.Tests
         private static IInjector CreateInjector(IRuntimeTypeRegistry typeRegistry)
         {
             var injector = Substitute.For<IInjector>();
-            injector.Resolve<IRuntimeTypeRegistry>(Arg.Any<string>()).Returns(typeRegistry);
+            injector.Resolve<IRuntimeTypeRegistry>().Returns(typeRegistry);
             return injector;
         }
 

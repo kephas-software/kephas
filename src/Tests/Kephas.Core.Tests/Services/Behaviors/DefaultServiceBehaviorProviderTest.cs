@@ -84,7 +84,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
             exporter.ExportFactories.Returns(ruleFactories);
 
             var injector = Substitute.For<IInjector>();
-            injector.Resolve(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
+            injector.Resolve(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>))
                 .Returns(exporter);
 
             return injector;
