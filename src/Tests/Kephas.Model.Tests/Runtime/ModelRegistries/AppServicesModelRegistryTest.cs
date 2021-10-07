@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServicesRegistryTest.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesModelRegistryTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,7 +19,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
@@ -31,7 +30,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesRegistryTest : InjectionTestBase
+    public class AppServicesModelRegistryTest : InjectionTestBase
     {
         public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
@@ -41,8 +40,10 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(AppServicesRegistry).GetTypeInfo().Assembly); /* Kephas.Model */
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
+            {
+                typeof(AppServicesModelRegistry).Assembly, /* Kephas.Model */
+            };
             return base.CreateInjector(ambientServices, assemblyList, parts, config);
         }
 
@@ -50,7 +51,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public void AppServicesRegistry_Injection_success()
         {
             var container = this.CreateInjector();
-            var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesRegistry>().SingleOrDefault();
+            var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesModelRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }
 
@@ -67,13 +68,13 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
 
-            var registry = new AppServicesRegistry(ambientServices, ambientServices.TypeRegistry, (sc, amb) => true);
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.TypeRegistry, (sc, amb) => true);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
             Assert.AreEqual(3, types.Count);
             Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractDeclarationType == t.Type)));
-            Assert.IsTrue(types.All(t => t[AppServicesRegistry.AppServiceKey] is IAppServiceInfo));
+            Assert.IsTrue(types.All(t => t[AppServicesModelRegistry.AppServiceKey] is IAppServiceInfo));
         }
 
         [Test]
@@ -89,7 +90,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
 
-            var registry = new AppServicesRegistry(ambientServices, ambientServices.TypeRegistry, (sc, amb) => sc.contractType == typeof(int));
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.TypeRegistry, (sc, amb) => sc.contractType == typeof(int));
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
@@ -112,7 +113,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
 
-            var registry = new AppServicesRegistry(ambientServices, ambientServices.TypeRegistry);
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.TypeRegistry);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 

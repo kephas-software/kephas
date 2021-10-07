@@ -33,7 +33,7 @@ namespace Kephas.Model.Runtime.Construction
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             return runtimeElement.Annotations.OfType<IAppServiceInfo>().Any()
-                   || runtimeElement.HasDynamicMember(AppServicesRegistry.AppServiceKey);
+                   || runtimeElement.HasDynamicMember(AppServicesModelRegistry.AppServiceKey);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Kephas.Model.Runtime.Construction
         protected override AppServiceType? TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var appServiceAttr = runtimeElement.Annotations.OfType<IAppServiceInfo>().SingleOrDefault()
-                ?? runtimeElement[AppServicesRegistry.AppServiceKey] as IAppServiceInfo;
+                ?? runtimeElement[AppServicesModelRegistry.AppServiceKey] as IAppServiceInfo;
             if (appServiceAttr == null)
             {
                 return null;

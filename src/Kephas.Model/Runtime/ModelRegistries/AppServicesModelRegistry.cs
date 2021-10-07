@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServicesRegistry.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesModelRegistry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -23,7 +23,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// <summary>
     /// An application service contracts model registry.
     /// </summary>
-    public class AppServicesRegistry : IRuntimeModelRegistry
+    public class AppServicesModelRegistry : IRuntimeModelRegistry
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter;
@@ -34,22 +34,22 @@ namespace Kephas.Model.Runtime.ModelRegistries
         internal static readonly string AppServiceKey = "Kephas:AppService";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServicesRegistry"/> class.
+        /// Initializes a new instance of the <see cref="AppServicesModelRegistry"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
-        public AppServicesRegistry(IAmbientServices ambientServices, IRuntimeTypeRegistry typeRegistry)
+        public AppServicesModelRegistry(IAmbientServices ambientServices, IRuntimeTypeRegistry typeRegistry)
             : this(ambientServices, typeRegistry, IsNotThirdParty)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServicesRegistry"/> class.
+        /// Initializes a new instance of the <see cref="AppServicesModelRegistry"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="filter">Optional. Sets the filter for eligible service contracts.</param>
-        protected internal AppServicesRegistry(
+        protected internal AppServicesModelRegistry(
             IAmbientServices ambientServices,
             IRuntimeTypeRegistry typeRegistry,
             Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter)
