@@ -32,6 +32,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         private readonly PartConventionBuilder innerConventionBuilder;
         private readonly Type serviceType;
         private Type? contractType;
+        private IDictionary<string, object?>? metadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionTypeRegistrationBuilder"/> class.
@@ -154,7 +155,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// </returns>
         public IRegistrationBuilder AddMetadata(string name, object? value)
         {
-            this.innerConventionBuilder.AddPartMetadata(name, value);
+            (this.metadata ??= new Dictionary<string, object?>())[name] = value;
 
             return this;
         }
@@ -183,7 +184,17 @@ namespace Kephas.Injection.SystemComposition.Builder
             }
 
             configuration.WithPart(this.serviceType);
-            this.innerConventionBuilder.Export(builder => builder.AsContractType(this.contractType));
+            this.innerConventionBuilder.Export(builder =>
+            {
+                builder.AsContractType(this.contractType);
+                if (this.metadata != null)
+                {
+                    foreach (var (name, value) in this.metadata)
+                    {
+                        builder.AddMetadata(name, value);
+                    }
+                }
+            });
         }
 
         /// <summary>
