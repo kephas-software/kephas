@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="INamedServiceProvider.cs" company="Kephas Software SRL">
+// <copyright file="INamedServiceResolver.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the INamedServiceProvider interface.
+//   Declares the INamedServiceResolver interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace Kephas.Services
     /// Contract for a shared application service providing named services.
     /// </summary>
     [SingletonAppServiceContract]
-    public interface INamedServiceProvider
+    public interface INamedServiceResolver
     {
         /// <summary>
         /// Gets the service with the provided name.

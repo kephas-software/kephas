@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultNamedServiceProvider.cs" company="Kephas Software SRL">
+// <copyright file="DefaultNamedServiceResolver.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,15 +20,15 @@ namespace Kephas.Services
     /// A default named service provider.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultNamedServiceProvider : INamedServiceProvider
+    public class DefaultNamedServiceResolver : INamedServiceResolver
     {
         private readonly IInjector injector;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultNamedServiceProvider"/> class.
+        /// Initializes a new instance of the <see cref="DefaultNamedServiceResolver"/> class.
         /// </summary>
         /// <param name="injector">The injector.</param>
-        public DefaultNamedServiceProvider(IInjector injector)
+        public DefaultNamedServiceResolver(IInjector injector)
         {
             this.injector = injector;
         }
