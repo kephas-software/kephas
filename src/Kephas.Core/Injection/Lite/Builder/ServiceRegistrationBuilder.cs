@@ -35,7 +35,7 @@ namespace Kephas.Injection.Lite.Builder
 
         private bool allowMultiple = false;
 
-        private bool externallyOwned = true;
+        private bool externallyOwned = false;
 
         private object? instancingStrategy;
 
