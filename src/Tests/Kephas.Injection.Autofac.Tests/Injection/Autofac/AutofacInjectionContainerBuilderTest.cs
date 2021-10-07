@@ -23,6 +23,7 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Kephas.Testing.Injection;
@@ -43,7 +44,12 @@ namespace Kephas.Tests.Injection.Autofac
             var mockAppRuntime = ambientServices.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
+                .Returns(new[]
+                {
+                    typeof(IInjector).Assembly,
+                    typeof(ILogger).Assembly,
+                    typeof(AutofacInjector).Assembly,
+                });
 
             var container = builder.Build();
 
@@ -379,11 +385,11 @@ namespace Kephas.Tests.Injection.Autofac
         private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
-            var mockPlatformManager = Substitute.For<IAppRuntime>();
+            var mockAppRuntime = Substitute.For<IAppRuntime>();
 
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .Register(mockLoggerManager)
-                .Register(mockPlatformManager);
+                .Register(mockAppRuntime);
             var context = new InjectionBuildContext(ambientServices);
             config?.Invoke(context);
             var factory = new AutofacInjectorBuilder(context);

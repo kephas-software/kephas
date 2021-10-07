@@ -425,7 +425,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .Register(mockLoggerManager)
                 .Register(mockPlatformManager);
             var context = new InjectionBuildContext(ambientServices, assemblies?.ToList());

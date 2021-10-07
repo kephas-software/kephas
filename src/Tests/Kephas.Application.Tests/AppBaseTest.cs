@@ -18,6 +18,7 @@ namespace Kephas.Application.Tests
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Operations;
+    using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
@@ -153,7 +154,7 @@ namespace Kephas.Application.Tests
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAppManager>().Returns(appManager);
 
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithInjector(injector);
             var app = new TestApp(ambientServices: ambientServices);
             await app.ShutdownAsync();
@@ -206,7 +207,7 @@ namespace Kephas.Application.Tests
         private readonly Func<IAmbientServices, Task>? asyncConfig;
 
         public TestApp(Func<IAmbientServices, Task>? asyncConfig = null, IAmbientServices? ambientServices = null)
-            : base(ambientServices ?? new AmbientServices())
+            : base(ambientServices ?? CreateAmbientServices())
         {
             this.asyncConfig = asyncConfig;
         }
@@ -222,5 +223,8 @@ namespace Kephas.Application.Tests
                 await this.asyncConfig(ambientServices);
             }
         }
+
+        private static IAmbientServices CreateAmbientServices() =>
+            new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
     }
 }

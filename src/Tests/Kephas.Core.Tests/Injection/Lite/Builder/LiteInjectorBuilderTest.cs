@@ -27,17 +27,18 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
+    using Kephas.Testing;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class LiteInjectorBuilderTest
+    public class LiteInjectorBuilderTest : TestBase
     {
         [Test]
         public void BuildWithLite_app_manager()
         {
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(an => !this.IsTestAssembly(an));
 
             ambientServices.BuildWithLite();
@@ -51,7 +52,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void BuildWithLite_closed_generic()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric) }));
 
@@ -62,7 +63,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void BuildWithLite_closed_generic_dependency()
         {
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric), typeof(IntGenericDepedent) }));
@@ -74,7 +75,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void BuildWithLite_closed_generic_with_non_generic_contract_metadata()
         {
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(IntGenericSvc) }));
@@ -86,7 +87,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void BuildWithLite_disposable_closed_generic_with_non_generic_contract_metadata()
         {
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(DisposableIntGenericSvc) }));
@@ -98,7 +99,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         [Test]
         public void BuildWithLite_multi_service_with_no_implementations()
         {
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IMultiService) }));
@@ -111,7 +112,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_internally_owned_disposed()
         {
             var disposable = Substitute.For<IDisposable>();
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
                 .Register<IDisposable>(b => b.ForInstance(disposable));
 
@@ -125,7 +126,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_externally_owned_disposed()
         {
             var disposable = Substitute.For<IDisposable>();
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
                 .Register<IDisposable>(b => b.ForInstance(disposable).ExternallyOwned());
 
@@ -316,7 +317,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new InjectionBuildContext((ambientServices ?? new AmbientServices())
+            var context = new InjectionBuildContext((ambientServices ?? this.CreateAmbientServices())
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);
@@ -326,7 +327,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
         private LiteInjectorBuilder CreateInjectorBuilderWithStringLogger()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = this.CreateInjectorBuilder(ambientServices: ambientServices);
 
             var mockLoggerManager = ambientServices.LogManager;

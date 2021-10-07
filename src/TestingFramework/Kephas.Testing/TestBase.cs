@@ -24,6 +24,7 @@ namespace Kephas.Testing
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Serialization;
     using Kephas.Services;
     using NSubstitute;
@@ -40,6 +41,17 @@ namespace Kephas.Testing
     /// </content>
     public class TestBase
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="AmbientServices"/>
+        /// with the provider <see cref="IRuntimeTypeRegistry"/> or a newly created one.
+        /// </summary>
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        /// <returns>The newly created <see cref="AmbientServices"/> instance.</returns>
+        protected virtual IAmbientServices CreateAmbientServices(IRuntimeTypeRegistry? typeRegistry = null)
+        {
+            return new AmbientServices(typeRegistry: typeRegistry);
+        }
+
         /// <summary>
         /// Creates default application runtime.
         /// </summary>

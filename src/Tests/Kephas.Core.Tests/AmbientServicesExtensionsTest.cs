@@ -20,6 +20,7 @@ namespace Kephas.Core.Tests
     using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -29,12 +30,12 @@ namespace Kephas.Core.Tests
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AmbientServicesExtensionsTest
+    public class AmbientServicesExtensionsTest : TestBase
     {
         [Test]
         public void Constructor_register_ambient_services()
         {
-            IServiceProvider ambientServices = new AmbientServices();
+            IServiceProvider ambientServices = this.CreateAmbientServices();
 
             Assert.AreSame(ambientServices, ambientServices.GetService(typeof(IAmbientServices)));
         }
@@ -42,7 +43,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void WithLogManager_success()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             ambientServices.WithLogManager(new DebugLogManager());
 
             Assert.IsTrue(ambientServices.LogManager is DebugLogManager);
@@ -66,7 +67,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void WithInjector_builder_missing_required_constructor()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             Assert.Throws<InvalidOperationException>(() => ambientServices.WithInjector<BadTestInjectorBuilder>());
         }
 

@@ -41,7 +41,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_from_ambient_services_self()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var container = this.CreateInjectorWithBuilder(ambientServices);
             var containerExport = container.Resolve(typeof(IAmbientServices));
             var ambientExport = container.Resolve(typeof(IAmbientServices));
@@ -54,7 +54,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_from_ambient_services_instance()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var container = this.CreateInjectorWithBuilder(ambientServices);
             var containerExport = container.Resolve(typeof(ILogManager));
             var ambientExport = container.Resolve(typeof(ILogManager));
@@ -66,7 +66,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_from_ambient_services_instance_type()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var container = this.CreateInjectorWithBuilder(ambientServices);
             var containerExport = container.Resolve(typeof(ITypeLoader));
             var ambientExport = container.Resolve(typeof(ITypeLoader));
@@ -233,7 +233,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_ambient_services()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var service = Substitute.For<IAsyncInitializable>();
             ambientServices.Register(typeof(IAsyncInitializable), service);
 
@@ -246,7 +246,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_ambient_services_factory()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             ambientServices.RegisterTransient(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             var container = this.CreateInjectorWithBuilder(ambientServices);
@@ -259,7 +259,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_ambient_services_not_available_after_first_failed_request()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var container = this.CreateInjectorWithBuilder(ambientServices);
 
             var service = container.TryResolve<IAsyncInitializable>();

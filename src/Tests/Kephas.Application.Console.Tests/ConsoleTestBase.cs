@@ -32,7 +32,7 @@ namespace Kephas.Application.Console.Tests
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= new AmbientServices();
+            ambientServices ??= this.CreateAmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));

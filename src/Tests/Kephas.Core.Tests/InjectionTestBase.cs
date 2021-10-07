@@ -35,7 +35,7 @@ namespace Kephas.Core.Tests
             logManager ??= new NullLogManager();
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices ??= new AmbientServices();
+            ambientServices ??= this.CreateAmbientServices();
             ambientServices
                 .Register(logManager)
                 .WithAppRuntime(appRuntime);
@@ -53,7 +53,7 @@ namespace Kephas.Core.Tests
             IEnumerable<Type>? parts = null,
             Action<LiteInjectorBuilder>? config = null)
         {
-            ambientServices ??= new AmbientServices();
+            ambientServices ??= this.CreateAmbientServices();
             var containerBuilder = this.WithInjectorBuilder(ambientServices)
                     .WithAssemblies(this.GetAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())

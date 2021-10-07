@@ -48,12 +48,12 @@ namespace Kephas.Core.Tests.Injection
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
             public TestInjectorBuilder(IAmbientServices? ambientServices = null)
-                : base(new InjectionBuildContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
+                : base(new InjectionBuildContext(ambientServices ?? CreateAmbientServices().WithStaticAppRuntime()))
             {
             }
 
             public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
-                : base(new InjectionBuildContext(new AmbientServices().Register(logManager).Register(appRuntime)))
+                : base(new InjectionBuildContext(CreateAmbientServices().Register(logManager).Register(appRuntime)))
             {
             }
 
@@ -67,12 +67,15 @@ namespace Kephas.Core.Tests.Injection
             {
                 return Substitute.For<IInjector>();
             }
+
+            private static IAmbientServices CreateAmbientServices() =>
+                new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
         }
 
         public class TestRegistrationInjectorBuilder : InjectorBuilderBase<TestRegistrationInjectorBuilder>
         {
             public TestRegistrationInjectorBuilder(IInjectionBuildContext? buildContext = null)
-                : base(buildContext ?? new InjectionBuildContext(new AmbientServices(typeRegistry: new RuntimeTypeRegistry())))
+                : base(buildContext ?? new InjectionBuildContext(CreateAmbientServices()))
             {
             }
 
@@ -103,6 +106,9 @@ namespace Kephas.Core.Tests.Injection
             protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
             private TestTypeBuilder CreateBuilder(Type serviceType) => new TestTypeBuilder(serviceType);
+
+            private static IAmbientServices CreateAmbientServices() =>
+                new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
         }
 
         public class TestTypeBuilder : IRegistrationBuilder

@@ -24,18 +24,18 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Annotations;
     using Kephas.Reflection;
-
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class KeyAnnotationTest
+    public class KeyAnnotationTest : TestBase
     {
         [Test]
         public void Configure()
         {
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            var ambientServices = this.CreateAmbientServices();
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new ModelConstructionContext(injector);

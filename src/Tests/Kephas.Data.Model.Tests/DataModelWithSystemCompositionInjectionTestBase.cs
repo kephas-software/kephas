@@ -35,7 +35,7 @@ namespace Kephas.Data.Model.Tests
         public IInjector CreateInjectorForModel(params Type[] elements)
         {
             var container = this.CreateInjector(
-                assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },
+                assemblies: new[] { typeof(IModelSpace).Assembly, typeof(IEntityType).Assembly },
                 config: b => b.ForFactory(_ => this.GetModelRegistry(elements)).Singleton());
 
             return container;

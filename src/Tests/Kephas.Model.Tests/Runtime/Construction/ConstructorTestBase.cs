@@ -8,23 +8,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Application;
+    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Runtime;
+    using Kephas.Testing;
     using NSubstitute;
 
-    public class ConstructorTestBase
+    public class ConstructorTestBase : TestBase
     {
         /// <summary>
         /// Gets the construction context.
@@ -38,7 +38,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace? modelSpace = null,
             IRuntimeModelElementFactory? factory = null)
         {
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry()).WithStaticAppRuntime();
+            var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime();
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             return new ModelConstructionContext(injector)

@@ -65,7 +65,7 @@ namespace Kephas.Testing.Injection
             logManager ??= new DebugLogManager(log);
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            ambientServices ??= this.CreateAmbientServices();
             ambientServices
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
@@ -105,7 +105,7 @@ namespace Kephas.Testing.Injection
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            ambientServices ??= this.CreateAmbientServices();
             var containerBuilder = this.WithInjectorBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(this.GetAssemblies())
                     .WithAssemblies(assemblies ?? Array.Empty<Assembly>())

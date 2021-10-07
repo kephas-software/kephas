@@ -13,10 +13,11 @@ namespace Kephas.Tests.Plugins.Transactions
     using Kephas.Plugins;
     using Kephas.Plugins.Transactions;
     using Kephas.Runtime;
+    using Kephas.Testing;
     using NUnit.Framework;
 
     [TestFixture]
-    public class UndoCommandBaseTest
+    public class UndoCommandBaseTest : TestBase
     {
         [Test]
         public void Parse_move_file()
@@ -58,7 +59,7 @@ namespace Kephas.Tests.Plugins.Transactions
 
         private IPluginContext CreatePluginContext()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var context = new PluginContext(ambientServices.Injector);
             return context;
         }

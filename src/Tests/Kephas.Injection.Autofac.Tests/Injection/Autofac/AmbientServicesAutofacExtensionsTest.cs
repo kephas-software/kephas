@@ -14,16 +14,17 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Application;
     using Kephas.Injection.Autofac;
     using Kephas.Services;
+    using Kephas.Testing;
     using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AmbientServicesAutofacExtensionsTest
+    public class AmbientServicesAutofacExtensionsTest : TestBase
     {
         [Test]
         public void BuildWithAutofac_defaults()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
@@ -36,7 +37,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void BuildWithAutofac_with_open_generic_override()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
@@ -50,7 +51,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void BuildWithAutofac_with_open_generic_override_and_dependency()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))

@@ -8,24 +8,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Tests.Elements
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Annotations;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultModelSpaceTest
+    public class DefaultModelSpaceTest : TestBase
     {
         [Test]
         public void ComputeDimensions_2_dims()
@@ -159,7 +160,7 @@ namespace Kephas.Model.Tests.Elements
 
         private ModelConstructionContext CreateModelConstructionContext()
         {
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            var ambientServices = this.CreateAmbientServices();
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new ModelConstructionContext(injector);

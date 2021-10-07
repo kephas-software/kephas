@@ -53,7 +53,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
-                new AmbientServices(),
+                this.CreateAmbientServices(),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
-                new AmbientServices()
+                this.CreateAmbientServices()
                     .RegisterAppArgs(slaveArgs),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
@@ -101,7 +101,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
-                new AmbientServices()
+                this.CreateAmbientServices()
                     .WithDebugLogManager(sbMaster),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
@@ -116,7 +116,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
-                new AmbientServices()
+                this.CreateAmbientServices()
                     .WithDebugLogManager(sbSlave)
                     .RegisterAppArgs(slaveArgs),
                 parts: new[] { typeof(PipesSettingsProvider) },
@@ -157,7 +157,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
-                new AmbientServices(),
+                this.CreateAmbientServices(),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -169,7 +169,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
-                new AmbientServices()
+                this.CreateAmbientServices()
                     .RegisterAppArgs(slaveArgs),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
@@ -204,7 +204,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
-                new AmbientServices(),
+                this.CreateAmbientServices(),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -216,7 +216,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
-                new AmbientServices()
+                this.CreateAmbientServices()
                     .RegisterAppArgs(slaveArgs),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(

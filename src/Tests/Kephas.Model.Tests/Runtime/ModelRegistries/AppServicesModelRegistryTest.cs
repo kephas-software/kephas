@@ -58,13 +58,13 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
-                                           (typeof(int), Substitute.For<IAppServiceInfo>()),
-                                           (typeof(string), Substitute.For<IAppServiceInfo>()),
-                                           (typeof(bool), Substitute.For<IAppServiceInfo>()),
-                                       };
+                   (typeof(int), Substitute.For<IAppServiceInfo>()),
+                   (typeof(string), Substitute.For<IAppServiceInfo>()),
+                   (typeof(bool), Substitute.For<IAppServiceInfo>()),
+            };
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
 
@@ -80,7 +80,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_with_filter()
         {
-            IAmbientServices ambientServices = new AmbientServices();
+            IAmbientServices ambientServices = this.CreateAmbientServices();
             var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
                 (typeof(int), Substitute.For<IAppServiceInfo>()),
@@ -101,7 +101,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_with_default_filter()
         {
-            var ambientServices = new AmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
+            var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
             var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
             {
                 (typeof(int), Substitute.For<IAppServiceInfo>()),

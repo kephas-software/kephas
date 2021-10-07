@@ -440,7 +440,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task JsonSerializer_injection()
         {
-            var ambientServices = new AmbientServices()
+            var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime()
                 .BuildWithSystemComposition(
                     b =>
