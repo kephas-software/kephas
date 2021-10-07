@@ -19,9 +19,9 @@ namespace Kephas.Logging
     /// <summary>
     /// Defines a service contract for a logger associated to a specific service.
     /// </summary>
-    /// <typeparam name="TService">The type of the service.</typeparam>
+    /// <typeparam name="TContract">The type of the service contract.</typeparam>
     [SingletonAppServiceContract(AsOpenGeneric = true)]
-    public interface ILogger<TService> : ILogger
+    public interface ILogger<TContract> : ILogger
     {
     }
 

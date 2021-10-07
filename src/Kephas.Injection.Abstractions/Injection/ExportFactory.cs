@@ -15,19 +15,19 @@ namespace Kephas.Injection
     /// <summary>
     /// An export factory.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    public class ExportFactory<TService> : IExportFactory<TService>
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    public class ExportFactory<TContract> : IExportFactory<TContract>
     {
         /// <summary>
         /// The factory.
         /// </summary>
-        private readonly Func<Tuple<TService, Action>> factory;
+        private readonly Func<Tuple<TContract, Action>> factory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactory{TService}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactory{TContract}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public ExportFactory(Func<TService> factory)
+        public ExportFactory(Func<TContract> factory)
         {
             this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
         }
@@ -36,7 +36,7 @@ namespace Kephas.Injection
         /// Initializes a new instance of the <see cref="ExportFactory{TService}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public ExportFactory(Func<Tuple<TService, Action>> factory)
+        public ExportFactory(Func<Tuple<TContract, Action>> factory)
         {
             this.factory = factory;
         }
@@ -47,9 +47,9 @@ namespace Kephas.Injection
         /// <returns>
         /// A handle allowing the created part to be accessed then released.
         /// </returns>
-        public IExport<TService> CreateExport()
+        public IExport<TContract> CreateExport()
         {
-            return new Export<TService>(this.factory);
+            return new Export<TContract>(this.factory);
         }
 
         /// <summary>
@@ -60,28 +60,28 @@ namespace Kephas.Injection
         /// </returns>
         public override string ToString()
         {
-            return $"Export factory of {typeof(TService).Name}.";
+            return $"Export factory of {typeof(TContract).Name}.";
         }
     }
 
     /// <summary>
     /// An export factory with metadata.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-    public class ExportFactory<TService, TMetadata> : IExportFactory<TService, TMetadata>
+    public class ExportFactory<TContract, TMetadata> : IExportFactory<TContract, TMetadata>
     {
         /// <summary>
         /// The factory.
         /// </summary>
-        private readonly Func<Tuple<TService, Action>> factory;
+        private readonly Func<Tuple<TContract, Action>> factory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactory{TService, TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactory{TContract, TMetadata}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="metadata">The metadata.</param>
-        public ExportFactory(Func<TService> factory, TMetadata metadata)
+        public ExportFactory(Func<TContract> factory, TMetadata metadata)
         {
             this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
             this.Metadata = metadata;
@@ -101,9 +101,9 @@ namespace Kephas.Injection
         /// <returns>
         /// A handle allowing the created part to be accessed then released.
         /// </returns>
-        public IExport<TService, TMetadata> CreateExport()
+        public IExport<TContract, TMetadata> CreateExport()
         {
-            return new Export<TService, TMetadata>(this.factory, this.Metadata);
+            return new Export<TContract, TMetadata>(this.factory, this.Metadata);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Kephas.Injection
         /// </returns>
         public override string ToString()
         {
-            return $"Export factory of {typeof(TService).Name} with {this.Metadata}.";
+            return $"Export factory of {typeof(TContract).Name} with {this.Metadata}.";
         }
     }
 }

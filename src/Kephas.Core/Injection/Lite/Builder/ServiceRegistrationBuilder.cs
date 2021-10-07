@@ -197,7 +197,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder WithInstancingStrategy(object instancingStrategy)
+        public IServiceRegistrationBuilder ForInstancingStrategy(object instancingStrategy)
         {
             if (instancingStrategy == null)
             {

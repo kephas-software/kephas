@@ -13,15 +13,15 @@ namespace Kephas.Injection.ExportFactoryImporters
     /// <summary>
     /// Service importing an export factory with metadata.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-    public class ExportFactoryImporter<TService, TMetadata> : IExportFactoryImporter<TService, TMetadata>
+    public class ExportFactoryImporter<TTargetContract, TMetadata> : IExportFactoryImporter<TTargetContract, TMetadata>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactoryImporter{TService,TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactoryImporter{TTargetContract,TMetadata}"/> class.
         /// </summary>
         /// <param name="exportFactory">The export factory.</param>
-        public ExportFactoryImporter(IExportFactory<TService, TMetadata> exportFactory)
+        public ExportFactoryImporter(IExportFactory<TTargetContract, TMetadata> exportFactory)
         {
             this.ExportFactory = exportFactory;
         }
@@ -32,25 +32,20 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factory.
         /// </value>
-        public IExportFactory<TService, TMetadata> ExportFactory { get; }
-
-        /// <summary>
-        /// Gets the export factory.
-        /// </summary>
-        object IExportFactoryImporter.ExportFactory => this.ExportFactory;
+        public IExportFactory<TTargetContract, TMetadata> ExportFactory { get; }
     }
 
     /// <summary>
     /// Service importing an export factory.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    public class ExportFactoryImporter<TService> : IExportFactoryImporter<TService>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
+    public class ExportFactoryImporter<TTargetContract> : IExportFactoryImporter<TTargetContract>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactoryImporter{TService}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactoryImporter{TTargetContract}"/> class.
         /// </summary>
         /// <param name="exportFactory">The export factory.</param>
-        public ExportFactoryImporter(IExportFactory<TService> exportFactory)
+        public ExportFactoryImporter(IExportFactory<TTargetContract> exportFactory)
         {
             this.ExportFactory = exportFactory;
         }
@@ -61,11 +56,6 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factory.
         /// </value>
-        public IExportFactory<TService> ExportFactory { get; }
-
-        /// <summary>
-        /// Gets the export factory.
-        /// </summary>
-        object IExportFactoryImporter.ExportFactory => this.ExportFactory;
+        public IExportFactory<TTargetContract> ExportFactory { get; }
     }
 }

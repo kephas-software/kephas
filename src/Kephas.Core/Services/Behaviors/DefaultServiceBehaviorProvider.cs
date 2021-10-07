@@ -47,69 +47,69 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Filters the enabled services from the provided services collection.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="services">The services.</param>
-        /// <param name="context">Context for the enabled check (optional).</param>
+        /// <param name="context">Optional. Context for the enabled check.</param>
         /// <returns>
         /// An enumeration of enabled services.
         /// </returns>
-        public IEnumerable<TService> WhereEnabled<TService>(IEnumerable<TService> services, IContext? context = null)
-            where TService : class
+        public IEnumerable<TContract> WhereEnabled<TContract>(IEnumerable<TContract> services, IContext? context = null)
+            where TContract : class
         {
-            Requires.NotNull(services, nameof(services));
+            services = services ?? throw new ArgumentNullException(nameof(services));
 
-            var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return services.Where(service => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.injector, service, context), rules));
+            var rules = this.GetEnabledServiceBehaviorRules<TContract>();
+            return services.Where(service => this.IsServiceEnabled(new ServiceBehaviorContext<TContract>(this.injector, service, context), rules));
         }
 
         /// <summary>
         /// Filters the enabled services from the provided services collection.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="serviceFactories">The service export factories.</param>
-        /// <param name="context">Context for the enabled check (optional).</param>
+        /// <param name="context">Optional. Context for the enabled check.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public IEnumerable<IExportFactory<TService>> WhereEnabled<TService>(IEnumerable<IExportFactory<TService>> serviceFactories, IContext? context = null)
-            where TService : class
+        public IEnumerable<IExportFactory<TContract>> WhereEnabled<TContract>(IEnumerable<IExportFactory<TContract>> serviceFactories, IContext? context = null)
+            where TContract : class
         {
-            Requires.NotNull(serviceFactories, nameof(serviceFactories));
+            serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
 
-            var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.injector, export, context), rules));
+            var rules = this.GetEnabledServiceBehaviorRules<TContract>();
+            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TContract>(this.injector, export, context), rules));
         }
 
         /// <summary>
         /// Filters the enabled services from the provided services collection.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <param name="serviceFactories">The service export factories.</param>
-        /// <param name="context">Context for the enabled check (optional).</param>
+        /// <param name="context">Optional. Context for the enabled check.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public IEnumerable<IExportFactory<TService, TMetadata>> WhereEnabled<TService, TMetadata>(IEnumerable<IExportFactory<TService, TMetadata>> serviceFactories, IContext? context = null)
-            where TService : class
+        public IEnumerable<IExportFactory<TContract, TMetadata>> WhereEnabled<TContract, TMetadata>(IEnumerable<IExportFactory<TContract, TMetadata>> serviceFactories, IContext? context = null)
+            where TContract : class
         {
-            Requires.NotNull(serviceFactories, nameof(serviceFactories));
+            serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
 
-            var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.injector, export, context), rules));
+            var rules = this.GetEnabledServiceBehaviorRules<TContract>();
+            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TContract>(this.injector, export, context), rules));
         }
 
         /// <summary>
         /// Queries if a service is enabled.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="serviceContext">Context for the service.</param>
         /// <param name="rules">The enabled rules.</param>
         /// <returns>
         /// <c>true</c> if the service is enabled, <c>false</c> if not.
         /// </returns>
-        private bool IsServiceEnabled<TService>(IServiceBehaviorContext<TService> serviceContext, IList<IEnabledServiceBehaviorRule> rules)
-            where TService : class
+        private bool IsServiceEnabled<TContract>(IServiceBehaviorContext<TContract> serviceContext, IList<IEnabledServiceBehaviorRule> rules)
+            where TContract : class
         {
             var isEnabled = true;
             foreach (var rule in rules.Where(r => r.CanApply(serviceContext)))
@@ -132,27 +132,27 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Gets the enabled service behavior rules.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <returns>
         /// The enabled service behavior rules.
         /// </returns>
-        private IList<IEnabledServiceBehaviorRule> GetEnabledServiceBehaviorRules<TService>()
+        private IList<IEnabledServiceBehaviorRule> GetEnabledServiceBehaviorRules<TContract>()
         {
-            var rules = this.enabledRules.GetOrAdd(typeof(TService), _ => this.ComputeEnabledServiceBehaviorRules<TService>());
+            var rules = this.enabledRules.GetOrAdd(typeof(TContract), _ => this.ComputeEnabledServiceBehaviorRules<TContract>());
             return rules;
         }
 
         /// <summary>
         /// Calculates the enabled service behavior rules.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <returns>
         /// The calculated enabled service behavior rules.
         /// </returns>
-        private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules<TService>()
+        private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules<TContract>()
         {
             return this.behaviorFactories
-                .Where(f => f.Metadata.ContractType == typeof(TService))
+                .Where(f => f.Metadata.ContractType == typeof(TContract))
                 .Select(f => f.CreateExportedValue())
                 .ToList();
         }

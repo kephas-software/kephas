@@ -243,12 +243,12 @@ namespace Kephas.Services.Transitions
     }
 
     /// <summary>
-    /// Class monitoring the state of a transition for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TServiceImplementation"/>.
+    /// Class monitoring the state of a transition for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TService"/>.
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
-    /// <typeparam name="TServiceImplementation">The service implementation type.</typeparam>
+    /// <typeparam name="TService">The service implementation type.</typeparam>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class TransitionMonitor<TContract, TServiceImplementation> : TransitionMonitor
+    public class TransitionMonitor<TContract, TService> : TransitionMonitor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TransitionMonitor{TContract, TServiceImplementation}" /> class.
@@ -265,7 +265,7 @@ namespace Kephas.Services.Transitions
         /// <returns>The name of the service.</returns>
         private static string ComputeServiceName()
         {
-            return $"{typeof(TContract).Name} [{typeof(TServiceImplementation).Name}]";
+            return $"{typeof(TContract).Name} [{typeof(TService).Name}]";
         }
     }
 

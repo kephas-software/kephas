@@ -55,8 +55,8 @@ namespace Kephas
 
             typeRegistry ??= RuntimeTypeRegistry.Instance;
 
-            this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned())
-                .Register<IInjector>(b => b.WithInstance(this.AsInjector()).ExternallyOwned())
+            this.Register<IAmbientServices>(b => b.ForInstance(this).ExternallyOwned())
+                .Register<IInjector>(b => b.ForInstance(this.AsInjector()).ExternallyOwned())
                 .Register<IRuntimeTypeRegistry>(typeRegistry);
 
             if (registerDefaultServices)

@@ -34,7 +34,7 @@ namespace Kephas.Injection.Lite.Builder
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
             Requires.NotNull(factory, nameof(factory));
 
-            return builder.WithFactory(ctx => factory());
+            return builder.ForFactory(ctx => factory());
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Kephas.Injection.Lite.Builder
         {
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-            return builder.WithType(typeof(TImplementation));
+            return builder.ForType(typeof(TImplementation));
         }
 
         /// <summary>

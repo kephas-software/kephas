@@ -3,23 +3,19 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Class monitoring the initialization state for the service <typeparamref name="TContract" /> with the implementation <typeparamref name="TServiceImplementation" />.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Services.Transitions
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Class monitoring the initialization state for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TServiceImplementation"/>.
+    /// Class monitoring the initialization state for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TService"/>.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
-    /// <typeparam name="TServiceImplementation">The service implementation type.</typeparam>
-    public class InitializationMonitor<TContract, TServiceImplementation> : TransitionMonitor<TContract, TServiceImplementation>
+    /// <typeparam name="TContract">The service contract type.</typeparam>
+    /// <typeparam name="TService">The service implementation type.</typeparam>
+    public class InitializationMonitor<TContract, TService> : TransitionMonitor<TContract, TService>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InitializationMonitor{TContract, TServiceImplementation}"/> class.

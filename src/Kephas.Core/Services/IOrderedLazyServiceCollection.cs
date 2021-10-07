@@ -16,11 +16,11 @@ namespace Kephas.Services
     /// <summary>
     /// Interface for ordered lazy service collection.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
+    /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IOrderedLazyServiceCollection<TService, TServiceMetadata> : IEnumerable<Lazy<TService, TServiceMetadata>>
-        where TServiceMetadata : AppServiceMetadata
+    public interface IOrderedLazyServiceCollection<TTargetContract, TMetadata> : IEnumerable<Lazy<TTargetContract, TMetadata>>
+        where TMetadata : AppServiceMetadata
     {
         /// <summary>
         /// Gets the service factories in the appropriate order.
@@ -29,8 +29,8 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered service factories.
         /// </returns>
-        IEnumerable<Lazy<TService, TServiceMetadata>> GetServiceFactories(
-            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null);
+        IEnumerable<Lazy<TTargetContract, TMetadata>> GetServiceFactories(
+            Func<Lazy<TTargetContract, TMetadata>, bool>? filter = null);
 
         /// <summary>
         /// Gets the services in the appropriate order.
@@ -39,7 +39,7 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered services.
         /// </returns>
-        IEnumerable<TService> GetServices(
-            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null);
+        IEnumerable<TTargetContract> GetServices(
+            Func<Lazy<TTargetContract, TMetadata>, bool>? filter = null);
     }
 }

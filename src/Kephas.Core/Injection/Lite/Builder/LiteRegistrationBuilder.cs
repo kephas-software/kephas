@@ -219,7 +219,7 @@ namespace Kephas.Injection.Lite.Builder
         {
             void ConfigureService(IServiceRegistrationBuilder b)
             {
-                b.WithInstancingStrategy(this.InstancingStrategy);
+                b.ForInstancingStrategy(this.InstancingStrategy);
 
                 if (this.Lifetime == AppServiceLifetime.Singleton)
                 {

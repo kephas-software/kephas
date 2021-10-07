@@ -17,15 +17,15 @@ namespace Kephas.Injection.ExportFactoryImporters
     /// <summary>
     /// Service importing a collection of export factories with metadata.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-    public class CollectionExportFactoryImporter<TService, TMetadata> : ICollectionExportFactoryImporter<TService, TMetadata>
+    public class CollectionExportFactoryImporter<TTargetContract, TMetadata> : ICollectionExportFactoryImporter<TTargetContract, TMetadata>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionExportFactoryImporter{TService,TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="CollectionExportFactoryImporter{TTargetContract,TMetadata}"/> class.
         /// </summary>
         /// <param name="exportFactories">The export factories.</param>
-        public CollectionExportFactoryImporter(IEnumerable<IExportFactory<TService, TMetadata>> exportFactories)
+        public CollectionExportFactoryImporter(IEnumerable<IExportFactory<TTargetContract, TMetadata>> exportFactories)
         {
             this.ExportFactories = exportFactories;
         }
@@ -44,20 +44,20 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factories.
         /// </value>
-        public IEnumerable<IExportFactory<TService, TMetadata>> ExportFactories { get; }
+        public IEnumerable<IExportFactory<TTargetContract, TMetadata>> ExportFactories { get; }
     }
 
     /// <summary>
     /// Service importing a collection of export factories.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    public class CollectionExportFactoryImporter<TService> : ICollectionExportFactoryImporter<TService>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
+    public class CollectionExportFactoryImporter<TTargetContract> : ICollectionExportFactoryImporter<TTargetContract>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionExportFactoryImporter{TService}"/> class.
+        /// Initializes a new instance of the <see cref="CollectionExportFactoryImporter{TTargetContract}"/> class.
         /// </summary>
         /// <param name="exportFactories">The export factories.</param>
-        public CollectionExportFactoryImporter(IEnumerable<IExportFactory<TService>> exportFactories)
+        public CollectionExportFactoryImporter(IEnumerable<IExportFactory<TTargetContract>> exportFactories)
         {
             this.ExportFactories = exportFactories;
         }
@@ -76,6 +76,6 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factories.
         /// </value>
-        public IEnumerable<IExportFactory<TService>> ExportFactories { get; }
+        public IEnumerable<IExportFactory<TTargetContract>> ExportFactories { get; }
     }
 }

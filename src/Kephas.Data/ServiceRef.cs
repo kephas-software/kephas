@@ -17,9 +17,9 @@ namespace Kephas.Data
     /// <summary>
     /// A service reference.
     /// </summary>
-    /// <typeparam name="TService">Type of the referenced service.</typeparam>
-    public class ServiceRef<TService> : RefBase, IServiceRef<TService>
-        where TService : class
+    /// <typeparam name="TContract">Type of the referenced service contract.</typeparam>
+    public class ServiceRef<TContract> : RefBase, IServiceRef<TContract>
+        where TContract : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRef{TService}"/> class.
@@ -29,7 +29,7 @@ namespace Kephas.Data
         public ServiceRef(object containerEntity, string refFieldName)
             : base(containerEntity, refFieldName)
         {
-            this.ServiceType = typeof(TService);
+            this.ServiceType = typeof(TContract);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Kephas.Data
         /// <returns>
         /// The referenced service or <c>null</c>.
         /// </returns>
-        public virtual TService? GetService()
+        public virtual TContract? GetService()
         {
             var serviceName = this.ServiceName;
             if (string.IsNullOrEmpty(serviceName))
@@ -67,7 +67,7 @@ namespace Kephas.Data
             }
 
             var namedServiceProvider = this.GetNamedServiceProvider();
-            return namedServiceProvider.GetNamedService<TService>(serviceName!);
+            return namedServiceProvider.GetNamedService<TContract>(serviceName!);
         }
 
         /// <summary>

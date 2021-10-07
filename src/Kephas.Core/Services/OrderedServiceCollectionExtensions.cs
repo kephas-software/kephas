@@ -8,17 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Kephas.Data;
-using Kephas.Diagnostics.Contracts;
-using Kephas.Injection;
-using Kephas.Resources;
-
 namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+
+    using Kephas.Data;
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
+    using Kephas.Resources;
 
     /// <summary>
     /// An ordered service collection extensions.
@@ -56,6 +56,7 @@ namespace Kephas.Services
         {
             return new OrderedLazyServiceCollection<T, TMetadata>(factories);
         }
+
         /// <summary>
         /// Converts this collection of service factories to a dictionary.
         /// </summary>
@@ -65,8 +66,8 @@ namespace Kephas.Services
         /// equal, then a <see cref="DuplicateKeyException"/> occurs.
         /// </remarks>
         /// <exception cref="DuplicateKeyException">Thrown when a Duplicate Key error condition occurs.</exception>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+        /// <typeparam name="T">Type of the service contract.</typeparam>
+        /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <typeparam name="TKey">Type of the dictionary key.</typeparam>
         /// <typeparam name="TValue">Type of the dictionary value.</typeparam>
         /// <param name="serviceFactories">The service factories.</param>
@@ -76,20 +77,20 @@ namespace Kephas.Services
         /// <returns>
         /// The given data converted to a IDictionary&lt;TKey,TValue&gt;.
         /// </returns>
-        public static IDictionary<TKey, TValue> OrderAsDictionary<TService, TServiceMetadata, TKey, TValue>(
-            this IEnumerable<IExportFactory<TService, TServiceMetadata>> serviceFactories,
-            Func<IExportFactory<TService, TServiceMetadata>, TKey> keyFunc,
-            Func<IExportFactory<TService, TServiceMetadata>, TValue> valueFunc,
+        public static IDictionary<TKey, TValue> OrderAsDictionary<T, TMetadata, TKey, TValue>(
+            this IEnumerable<IExportFactory<T, TMetadata>> serviceFactories,
+            Func<IExportFactory<T, TMetadata>, TKey> keyFunc,
+            Func<IExportFactory<T, TMetadata>, TValue> valueFunc,
             IEqualityComparer<TKey>? keyComparer = null)
-            where TServiceMetadata : AppServiceMetadata
+            where TMetadata : AppServiceMetadata
         {
-            Requires.NotNull(serviceFactories, nameof(serviceFactories));
+            serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
             Requires.NotNull(keyFunc, nameof(keyFunc));
             Requires.NotNull(valueFunc, nameof(valueFunc));
 
             return serviceFactories
                 .Order()
-                .OrderAsDictionary<TService, TServiceMetadata, TKey, TValue, IExportFactory<TService, TServiceMetadata>>(
+                .OrderAsDictionary<T, TMetadata, TKey, TValue, IExportFactory<T, TMetadata>>(
                     f => f.Metadata,
                     keyFunc,
                     valueFunc,
@@ -105,8 +106,8 @@ namespace Kephas.Services
         /// equal, then a <see cref="DuplicateKeyException"/> occurs.
         /// </remarks>
         /// <exception cref="DuplicateKeyException">Thrown when a Duplicate Key error condition occurs.</exception>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+        /// <typeparam name="T">Type of the service contract.</typeparam>
+        /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <typeparam name="TKey">Type of the dictionary key.</typeparam>
         /// <typeparam name="TValue">Type of the dictionary value.</typeparam>
         /// <param name="serviceFactories">The service factories.</param>
@@ -116,20 +117,20 @@ namespace Kephas.Services
         /// <returns>
         /// The given data converted to a IDictionary&lt;TKey,TValue&gt;.
         /// </returns>
-        public static IDictionary<TKey, TValue> OrderAsDictionary<TService, TServiceMetadata, TKey, TValue>(
-            this IEnumerable<Lazy<TService, TServiceMetadata>> serviceFactories,
-            Func<Lazy<TService, TServiceMetadata>, TKey> keyFunc,
-            Func<Lazy<TService, TServiceMetadata>, TValue> valueFunc,
+        public static IDictionary<TKey, TValue> OrderAsDictionary<T, TMetadata, TKey, TValue>(
+            this IEnumerable<Lazy<T, TMetadata>> serviceFactories,
+            Func<Lazy<T, TMetadata>, TKey> keyFunc,
+            Func<Lazy<T, TMetadata>, TValue> valueFunc,
             IEqualityComparer<TKey>? keyComparer = null)
-            where TServiceMetadata : AppServiceMetadata
+            where TMetadata : AppServiceMetadata
         {
-            Requires.NotNull(serviceFactories, nameof(serviceFactories));
+            serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
             Requires.NotNull(keyFunc, nameof(keyFunc));
             Requires.NotNull(valueFunc, nameof(valueFunc));
 
             return serviceFactories
                 .Order()
-                .OrderAsDictionary<TService, TServiceMetadata, TKey, TValue, Lazy<TService, TServiceMetadata>>(
+                .OrderAsDictionary<T, TMetadata, TKey, TValue, Lazy<T, TMetadata>>(
                     f => f.Metadata,
                     keyFunc,
                     valueFunc,
@@ -144,8 +145,8 @@ namespace Kephas.Services
         /// processing priority is considered, in this order. Further, if both of these priorities are
         /// equal, then a <see cref="DuplicateKeyException"/> occurs.
         /// </remarks>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+        /// <typeparam name="T">Type of the service contract.</typeparam>
+        /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <param name="serviceFactories">The service factories.</param>
         /// <param name="keyFunc">The key function.</param>
@@ -154,15 +155,15 @@ namespace Kephas.Services
         /// The given data converted to an IDictionary&lt;TKey,TValue&gt;.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IDictionary<TKey, IExportFactory<TService, TServiceMetadata>> OrderAsDictionary<TService, TServiceMetadata, TKey>(
-            this IEnumerable<IExportFactory<TService, TServiceMetadata>> serviceFactories,
-            Func<IExportFactory<TService, TServiceMetadata>, TKey> keyFunc,
+        public static IDictionary<TKey, IExportFactory<T, TMetadata>> OrderAsDictionary<T, TMetadata, TKey>(
+            this IEnumerable<IExportFactory<T, TMetadata>> serviceFactories,
+            Func<IExportFactory<T, TMetadata>, TKey> keyFunc,
             IEqualityComparer<TKey>? keyComparer = null)
-            where TServiceMetadata : AppServiceMetadata
+            where TMetadata : AppServiceMetadata
         {
             return serviceFactories
                 .Order()
-                .OrderAsDictionary<TService, TServiceMetadata, TKey, IExportFactory<TService, TServiceMetadata>, IExportFactory<TService, TServiceMetadata>>(
+                .OrderAsDictionary<T, TMetadata, TKey, IExportFactory<T, TMetadata>, IExportFactory<T, TMetadata>>(
                     f => f.Metadata,
                     keyFunc,
                     f => f,
@@ -177,8 +178,8 @@ namespace Kephas.Services
         /// processing priority is considered, in this order. Further, if both of these priorities are
         /// equal, then a <see cref="DuplicateKeyException"/> occurs.
         /// </remarks>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+        /// <typeparam name="T">Type of the service contract.</typeparam>
+        /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <param name="serviceFactories">The service factories.</param>
         /// <param name="keyFunc">The key function.</param>
@@ -187,30 +188,30 @@ namespace Kephas.Services
         /// The given data converted to an IDictionary&lt;TKey,TValue&gt;.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IDictionary<TKey, Lazy<TService, TServiceMetadata>> OrderAsDictionary<TService, TServiceMetadata, TKey>(
-            this IEnumerable<Lazy<TService, TServiceMetadata>> serviceFactories,
-            Func<Lazy<TService, TServiceMetadata>, TKey> keyFunc,
+        public static IDictionary<TKey, Lazy<T, TMetadata>> OrderAsDictionary<T, TMetadata, TKey>(
+            this IEnumerable<Lazy<T, TMetadata>> serviceFactories,
+            Func<Lazy<T, TMetadata>, TKey> keyFunc,
             IEqualityComparer<TKey>? keyComparer = null)
-            where TServiceMetadata : AppServiceMetadata
+            where TMetadata : AppServiceMetadata
         {
             return serviceFactories
                 .Order()
-                .OrderAsDictionary<TService, TServiceMetadata, TKey, Lazy<TService, TServiceMetadata>, Lazy<TService, TServiceMetadata>>(
+                .OrderAsDictionary<T, TMetadata, TKey, Lazy<T, TMetadata>, Lazy<T, TMetadata>>(
                     f => f.Metadata,
                     keyFunc,
                     f => f,
                     keyComparer);
         }
 
-        private static IDictionary<TKey, TValue> OrderAsDictionary<TService, TServiceMetadata, TKey, TValue, T>(
-            this IEnumerable<T> serviceFactories,
-            Func<T, TServiceMetadata> metadataFunc,
-            Func<T, TKey> keyFunc,
-            Func<T, TValue> valueFunc,
+        private static IDictionary<TKey, TValue> OrderAsDictionary<T, TMetadata, TKey, TValue, TFactory>(
+            this IEnumerable<TFactory> serviceFactories,
+            Func<TFactory, TMetadata> metadataFunc,
+            Func<TFactory, TKey> keyFunc,
+            Func<TFactory, TValue> valueFunc,
             IEqualityComparer<TKey>? keyComparer = null)
-            where TServiceMetadata : AppServiceMetadata
+            where TMetadata : AppServiceMetadata
         {
-            Requires.NotNull(serviceFactories, nameof(serviceFactories));
+            serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
             Requires.NotNull(keyFunc, nameof(keyFunc));
             Requires.NotNull(valueFunc, nameof(valueFunc));
 
@@ -238,7 +239,7 @@ namespace Kephas.Services
                     if (g0meta.OverridePriority == g1meta.OverridePriority
                         && g0meta.ProcessingPriority == g1meta.ProcessingPriority)
                     {
-                        throw new DuplicateKeyException("Key", string.Format(Strings.CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception, typeof(TService), g0meta, g1meta));
+                        throw new DuplicateKeyException("Key", string.Format(Strings.CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception, typeof(T), g0meta, g1meta));
                     }
 
                     dictionary.Add(key, valueFunc(group[0].factory));

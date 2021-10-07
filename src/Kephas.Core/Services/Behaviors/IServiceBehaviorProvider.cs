@@ -23,44 +23,44 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Filters the enabled services from the provided services collection.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="services">The services.</param>
         /// <param name="context">Context for the enabled check (optional).</param>
         /// <returns>
         /// An enumeration of enabled services.
         /// </returns>
-        IEnumerable<TService> WhereEnabled<TService>(
-            IEnumerable<TService> services,
+        IEnumerable<TContract> WhereEnabled<TContract>(
+            IEnumerable<TContract> services,
             IContext? context = null)
-            where TService : class;
+            where TContract : class;
 
         /// <summary>
         /// Filters the enabled services from the provided services collection.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="serviceFactories">The service export factories.</param>
         /// <param name="context">Context for the enabled check (optional).</param>
         /// <returns>
         /// An enumeration of enabled services.
         /// </returns>
-        IEnumerable<IExportFactory<TService>> WhereEnabled<TService>(
-            IEnumerable<IExportFactory<TService>> serviceFactories,
+        IEnumerable<IExportFactory<TContract>> WhereEnabled<TContract>(
+            IEnumerable<IExportFactory<TContract>> serviceFactories,
             IContext? context = null)
-            where TService : class;
+            where TContract : class;
 
         /// <summary>
         /// Enumerates the enabled services from the provided services collection.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <param name="serviceFactories">The service export factories.</param>
         /// <param name="context">Context for the enabled check (optional).</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        IEnumerable<IExportFactory<TService, TMetadata>> WhereEnabled<TService, TMetadata>(
-            IEnumerable<IExportFactory<TService, TMetadata>> serviceFactories,
+        IEnumerable<IExportFactory<TContract, TMetadata>> WhereEnabled<TContract, TMetadata>(
+            IEnumerable<IExportFactory<TContract, TMetadata>> serviceFactories,
             IContext? context = null)
-            where TService : class;
+            where TContract : class;
     }
 }

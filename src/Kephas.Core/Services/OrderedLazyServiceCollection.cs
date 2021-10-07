@@ -18,19 +18,19 @@ namespace Kephas.Services
     /// <summary>
     /// Collection of ordered lazy services.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [OverridePriority(Priority.Low)]
-    public class OrderedLazyServiceCollection<TService, TServiceMetadata> : IOrderedLazyServiceCollection<TService, TServiceMetadata>
-        where TServiceMetadata : AppServiceMetadata
+    public class OrderedLazyServiceCollection<TContract, TMetadata> : IOrderedLazyServiceCollection<TContract, TMetadata>
+        where TMetadata : AppServiceMetadata
     {
-        private readonly ICollection<Lazy<TService, TServiceMetadata>> serviceFactories;
+        private readonly ICollection<Lazy<TContract, TMetadata>> serviceFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderedLazyServiceCollection{TService, TServiceMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="OrderedLazyServiceCollection{TContract, TMetadata}"/> class.
         /// </summary>
         /// <param name="serviceFactories">The service factories.</param>
-        public OrderedLazyServiceCollection(IEnumerable<Lazy<TService, TServiceMetadata>>? serviceFactories = null)
+        public OrderedLazyServiceCollection(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories = null)
         {
             this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
         }
@@ -42,8 +42,8 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered service factories.
         /// </returns>
-        public IEnumerable<Lazy<TService, TServiceMetadata>> GetServiceFactories(
-            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null)
+        public IEnumerable<Lazy<TContract, TMetadata>> GetServiceFactories(
+            Func<Lazy<TContract, TMetadata>, bool>? filter = null)
         {
             return filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
         }
@@ -55,8 +55,8 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered services.
         /// </returns>
-        public IEnumerable<TService> GetServices(
-            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null)
+        public IEnumerable<TContract> GetServices(
+            Func<Lazy<TContract, TMetadata>, bool>? filter = null)
         {
             var factories = filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
             foreach (var factory in factories)
@@ -71,7 +71,7 @@ namespace Kephas.Services
         /// <returns>
         /// The enumerator.
         /// </returns>
-        public IEnumerator<Lazy<TService, TServiceMetadata>> GetEnumerator()
+        public IEnumerator<Lazy<TContract, TMetadata>> GetEnumerator()
         {
             return this.serviceFactories.GetEnumerator();
         }
@@ -87,11 +87,11 @@ namespace Kephas.Services
             return this.GetEnumerator();
         }
 
-        private ICollection<Lazy<TService, TServiceMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TService, TServiceMetadata>>? serviceFactories)
+        private ICollection<Lazy<TContract, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories)
         {
             if (serviceFactories == null)
             {
-                return Array.Empty<Lazy<TService, TServiceMetadata>>();
+                return Array.Empty<Lazy<TContract, TMetadata>>();
             }
 
             var orderedFactories = serviceFactories

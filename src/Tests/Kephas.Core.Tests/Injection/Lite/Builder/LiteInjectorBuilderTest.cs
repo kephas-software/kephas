@@ -80,7 +80,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(IntGenericSvc) }));
 
             var serviceFactory = ambientServices.GetService<IExportFactory<INonGenericSvc, GenericSvcMetadata>>();
-            Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
+            Assert.AreSame(typeof(int), serviceFactory.Metadata.TargetServiceType);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(DisposableIntGenericSvc) }));
 
             var serviceFactory = ambientServices.GetService<IExportFactory<INonGenericSvc, GenericSvcMetadata>>();
-            Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
+            Assert.AreSame(typeof(int), serviceFactory.Metadata.TargetServiceType);
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
-                .Register<IDisposable>(b => b.WithInstance(disposable));
+                .Register<IDisposable>(b => b.ForInstance(disposable));
 
             ambientServices.BuildWithLite();
 
@@ -127,7 +127,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
-                .Register<IDisposable>(b => b.WithInstance(disposable).ExternallyOwned());
+                .Register<IDisposable>(b => b.ForInstance(disposable).ExternallyOwned());
 
             ambientServices.BuildWithLite();
 
@@ -418,7 +418,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public interface INonGenericSvc { }
 
         [AppServiceContract(ContractType = typeof(INonGenericSvc))]
-        public interface IGenericSvc<TService> : INonGenericSvc { }
+        public interface IGenericSvc<TTargetService> : INonGenericSvc { }
 
         public class IntGenericSvc : IGenericSvc<int> { }
 
@@ -434,8 +434,10 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             public GenericSvcMetadata(IDictionary<string, object?>? metadata) : base(metadata)
             {
                 if (metadata == null) { return; }
-                this.ServiceType = (Type)metadata.TryGetValue(nameof(this.ServiceType));
+                this.TargetServiceType = (Type?)metadata.TryGetValue(nameof(this.TargetServiceType));
             }
+
+            public Type? TargetServiceType { get; set; }
         }
 
         [AppServiceContract(AllowMultiple = true)]

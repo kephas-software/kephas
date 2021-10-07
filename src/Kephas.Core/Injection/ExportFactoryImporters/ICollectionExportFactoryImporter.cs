@@ -32,9 +32,9 @@ namespace Kephas.Injection.ExportFactoryImporters
     /// <summary>
     /// Generic service contract for importers of a collection of export factories.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface ICollectionExportFactoryImporter<out TService> : ICollectionExportFactoryImporter
+    public interface ICollectionExportFactoryImporter<out TTargetContract> : ICollectionExportFactoryImporter
     {
         /// <summary>
         /// Gets the export factories.
@@ -42,16 +42,16 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factories.
         /// </value>
-        new IEnumerable<IExportFactory<TService>> ExportFactories { get; }
+        new IEnumerable<IExportFactory<TTargetContract>> ExportFactories { get; }
     }
 
     /// <summary>
     /// Generic service contract for importers of a collection of export factories with metadata.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface ICollectionExportFactoryImporter<out TService, out TMetadata> : ICollectionExportFactoryImporter
+    public interface ICollectionExportFactoryImporter<out TTargetContract, out TMetadata> : ICollectionExportFactoryImporter
     {
         /// <summary>
         /// Gets the export factories.
@@ -59,6 +59,6 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factories.
         /// </value>
-        new IEnumerable<IExportFactory<TService, TMetadata>> ExportFactories { get; }
+        new IEnumerable<IExportFactory<TTargetContract, TMetadata>> ExportFactories { get; }
     }
 }

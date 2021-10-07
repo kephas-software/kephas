@@ -27,7 +27,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithInstancingStrategy(object instancingStrategy);
+        IServiceRegistrationBuilder ForInstancingStrategy(object instancingStrategy);
 
         /// <summary>
         /// Registers the service with the provided instance.
@@ -36,8 +36,8 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithInstance(object instance)
-            => this.WithInstancingStrategy(instance);
+        IServiceRegistrationBuilder ForInstance(object instance)
+            => this.ForInstancingStrategy(instance);
 
         /// <summary>
         /// Registers the service with the provided factory.
@@ -46,8 +46,8 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithFactory(Func<IInjector, object> factory)
-            => this.WithInstancingStrategy(factory);
+        IServiceRegistrationBuilder ForFactory(Func<IInjector, object> factory)
+            => this.ForInstancingStrategy(factory);
 
         /// <summary>
         /// Registers the service with the provided implementation type.
@@ -56,7 +56,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder WithType(Type serviceType)
-            => this.WithInstancingStrategy(serviceType);
+        IServiceRegistrationBuilder ForType(Type serviceType)
+            => this.ForInstancingStrategy(serviceType);
     }
 }

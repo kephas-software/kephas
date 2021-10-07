@@ -15,27 +15,27 @@ namespace Kephas.Injection
     /// <summary>
     /// An export.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    public class Export<TService> : IExport<TService>
+    /// <typeparam name="T">Type of the service.</typeparam>
+    public class Export<T> : IExport<T>
     {
         /// <summary>
         /// The lazy value.
         /// </summary>
-        private readonly Lazy<TService> lazyValue;
+        private readonly Lazy<T> lazyValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Export{TService}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public Export(Func<Tuple<TService, Action>> factory)
+        public Export(Func<Tuple<T, Action>> factory)
         {
-            this.lazyValue = new Lazy<TService>(() => factory().Item1);
+            this.lazyValue = new Lazy<T>(() => factory().Item1);
         }
 
         /// <summary>
         /// Gets the value.
         /// </summary>
-        public TService Value => this.lazyValue.Value;
+        public T Value => this.lazyValue.Value;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged

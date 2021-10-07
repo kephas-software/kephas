@@ -20,19 +20,19 @@ namespace Kephas.Services
     /// <summary>
     /// Collection of ordered services.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
-    /// <typeparam name="TServiceMetadata">Type of the service metadata.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
+    /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [OverridePriority(Priority.Low)]
-    public class OrderedServiceFactoryCollection<TService, TServiceMetadata> : IOrderedServiceFactoryCollection<TService, TServiceMetadata>
-        where TServiceMetadata : AppServiceMetadata
+    public class OrderedServiceFactoryCollection<TTargetContract, TMetadata> : IOrderedServiceFactoryCollection<TTargetContract, TMetadata>
+        where TMetadata : AppServiceMetadata
     {
-        private readonly ICollection<IExportFactory<TService, TServiceMetadata>> serviceFactories;
+        private readonly ICollection<IExportFactory<TTargetContract, TMetadata>> serviceFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderedServiceFactoryCollection{TService, TServiceMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="OrderedServiceFactoryCollection{TTargetContract, TMetadata}"/> class.
         /// </summary>
         /// <param name="serviceFactories">The service factories.</param>
-        public OrderedServiceFactoryCollection(IEnumerable<IExportFactory<TService, TServiceMetadata>>? serviceFactories = null)
+        public OrderedServiceFactoryCollection(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories = null)
         {
             this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
         }
@@ -44,8 +44,8 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered service factories.
         /// </returns>
-        public IEnumerable<IExportFactory<TService, TServiceMetadata>> GetServiceFactories(
-            Func<IExportFactory<TService, TServiceMetadata>, bool>? filter = null)
+        public IEnumerable<IExportFactory<TTargetContract, TMetadata>> GetServiceFactories(
+            Func<IExportFactory<TTargetContract, TMetadata>, bool>? filter = null)
         {
             return filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
         }
@@ -57,8 +57,8 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered services.
         /// </returns>
-        public IEnumerable<TService> GetServices(
-            Func<IExportFactory<TService, TServiceMetadata>, bool>? filter = null)
+        public IEnumerable<TTargetContract> GetServices(
+            Func<IExportFactory<TTargetContract, TMetadata>, bool>? filter = null)
         {
             var factories = filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
             foreach (var factory in factories)
@@ -73,7 +73,7 @@ namespace Kephas.Services
         /// <returns>
         /// The enumerator.
         /// </returns>
-        public IEnumerator<IExportFactory<TService, TServiceMetadata>> GetEnumerator()
+        public IEnumerator<IExportFactory<TTargetContract, TMetadata>> GetEnumerator()
         {
             return this.serviceFactories.GetEnumerator();
         }
@@ -89,11 +89,11 @@ namespace Kephas.Services
             return this.GetEnumerator();
         }
 
-        private ICollection<IExportFactory<TService, TServiceMetadata>> ComputeServiceFactories(IEnumerable<IExportFactory<TService, TServiceMetadata>>? serviceFactories)
+        private ICollection<IExportFactory<TTargetContract, TMetadata>> ComputeServiceFactories(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories)
         {
             if (serviceFactories == null)
             {
-                return Array.Empty<IExportFactory<TService, TServiceMetadata>>();
+                return Array.Empty<IExportFactory<TTargetContract, TMetadata>>();
             }
 
             var orderedFactories = serviceFactories

@@ -75,11 +75,11 @@ namespace Kephas.Application
             // register the app args if not already registered or the raw args are provided
             if (args != null)
             {
-                ambientServices.Register<IAppArgs>(b => b.WithInstance(args));
+                ambientServices.Register<IAppArgs>(b => b.ForInstance(args));
             }
             else if (!ambientServices.IsRegistered(typeof(IAppArgs)))
             {
-                ambientServices.Register<IAppArgs>(b => b.WithInstance(new AppArgs()));
+                ambientServices.Register<IAppArgs>(b => b.ForInstance(new AppArgs()));
             }
 
             return ambientServices;

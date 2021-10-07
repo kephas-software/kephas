@@ -36,26 +36,26 @@ namespace Kephas.Services
         /// <summary>
         /// Gets the service with the provided name.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns>
         /// The named service.
         /// </returns>
-        public TService GetNamedService<TService>(string serviceName)
+        public TContract GetNamedService<TContract>(string serviceName)
         {
             var exportFactories = this.injector
-                .GetExportFactories<TService, AppServiceMetadata>()
+                .GetExportFactories<TContract, AppServiceMetadata>()
                 .Order()
                 .Where(f => f.Metadata.ServiceName == serviceName)
                 .ToList();
             if (exportFactories.Count == 0)
             {
-                throw new ServiceException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception, serviceName, typeof(TService)));
+                throw new ServiceException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception, serviceName, typeof(TContract)));
             }
 
             if (exportFactories.Count > 1)
             {
-                throw new AmbiguousMatchException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(TService)));
+                throw new AmbiguousMatchException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(TContract)));
             }
 
             return exportFactories[0].CreateExportedValue();

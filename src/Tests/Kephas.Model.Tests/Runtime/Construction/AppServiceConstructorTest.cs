@@ -15,7 +15,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
-    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
     using NUnit.Framework;
@@ -23,9 +22,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
     [TestFixture]
     public class AppServiceConstructorTest : ConstructorTestBase
     {
-        private (INamedElement element, IRuntimeTypeInfo runtimeElement) TryCreateTestModelElement<TService>()
+        private (INamedElement element, IRuntimeTypeInfo runtimeElement) TryCreateTestModelElement<TContract>()
         {
-            return TryCreateTestModelElement(typeof(TService));
+            return TryCreateTestModelElement(typeof(TContract));
         }
 
         private (INamedElement element, IRuntimeTypeInfo runtimeElement) TryCreateTestModelElement(Type serviceType)

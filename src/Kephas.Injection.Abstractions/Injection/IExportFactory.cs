@@ -10,8 +10,6 @@
 
 namespace Kephas.Injection
 {
-    using Kephas.Services;
-
     /// <summary>
     /// Contract used to import parts that wish to dynamically create instances of other parts.
     /// </summary>

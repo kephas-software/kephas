@@ -19,11 +19,11 @@ namespace Kephas.Services
         /// <summary>
         /// Gets the service with the provided name.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns>
         /// The named service.
         /// </returns>
-        TService GetNamedService<TService>(string serviceName);
+        TContract GetNamedService<TContract>(string serviceName);
     }
 }

@@ -3,24 +3,20 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Typed logger for the <typeparamref name="TService" />.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Logging
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
-    /// NLog logger for the <typeparamref name="TService"/>.
+    /// NLog logger for the <typeparamref name="TTargetContract"/>.
     /// </summary>
-    /// <typeparam name="TService">The type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">The type of the target service contract.</typeparam>
     [OverridePriority(Priority.Low)]
-    public class TypedLogger<TService> : ILogger<TService>
+    public class TypedLogger<TTargetContract> : ILogger<TTargetContract>
     {
         /// <summary>
         /// The inner logger.
@@ -28,14 +24,14 @@ namespace Kephas.Logging
         private readonly ILogger innerLogger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypedLogger{TService}"/> class.
+        /// Initializes a new instance of the <see cref="TypedLogger{TTargetContract}"/> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         public TypedLogger(ILogManager logManager)
         {
             logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
 
-            this.innerLogger = logManager.GetLogger(typeof(TService)) ?? NullLogManager.GetNullLogger(typeof(TService));
+            this.innerLogger = logManager.GetLogger(typeof(TTargetContract)) ?? NullLogManager.GetNullLogger(typeof(TTargetContract));
         }
 
         /// <summary>

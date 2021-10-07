@@ -249,7 +249,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = new AmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(OpenGenericService<,>), b => b.WithType(typeof(OpenGenericService<,>)));
+            ambientServices.Register(typeof(OpenGenericService<,>), b => b.ForType(typeof(OpenGenericService<,>)));
 
             var service = ambientServices.GetService(typeof(OpenGenericService<string, int>));
             Assert.IsInstanceOf<OpenGenericService<string, int>>(service);
@@ -260,7 +260,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = new AmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(OpenGenericService<,>), b => b.WithType(typeof(OpenGenericService<,>)));
+            ambientServices.Register(typeof(OpenGenericService<,>), b => b.ForType(typeof(OpenGenericService<,>)));
             ambientServices.Register<OpenGenericDependency, OpenGenericDependency>();
 
             var service = ambientServices.GetService<OpenGenericDependency>();

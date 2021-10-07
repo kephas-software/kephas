@@ -29,9 +29,9 @@ namespace Kephas.Injection.ExportFactoryImporters
     /// <summary>
     /// Generic service contract for importers of an export factory with metadata.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IExportFactoryImporter<out TService> : IExportFactoryImporter
+    public interface IExportFactoryImporter<out TTargetContract> : IExportFactoryImporter
     {
         /// <summary>
         /// Gets the export factory.
@@ -39,16 +39,24 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factory.
         /// </value>
-        new IExportFactory<TService> ExportFactory { get; }
+        new IExportFactory<TTargetContract> ExportFactory { get; }
+
+        /// <summary>
+        /// Gets the export factory.
+        /// </summary>
+        /// <value>
+        /// The export factory.
+        /// </value>
+        object IExportFactoryImporter.ExportFactory => this.ExportFactory;
     }
 
     /// <summary>
     /// Generic service contract for importers of an export factory with metadata.
     /// </summary>
-    /// <typeparam name="TService">Type of the service.</typeparam>
+    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IExportFactoryImporter<out TService, out TMetadata> : IExportFactoryImporter
+    public interface IExportFactoryImporter<out TTargetContract, out TMetadata> : IExportFactoryImporter
     {
         /// <summary>
         /// Gets the export factory.
@@ -56,6 +64,14 @@ namespace Kephas.Injection.ExportFactoryImporters
         /// <value>
         /// The export factory.
         /// </value>
-        new IExportFactory<TService, TMetadata> ExportFactory { get; }
+        new IExportFactory<TTargetContract, TMetadata> ExportFactory { get; }
+
+        /// <summary>
+        /// Gets the export factory.
+        /// </summary>
+        /// <value>
+        /// The export factory.
+        /// </value>
+        object IExportFactoryImporter.ExportFactory => this.ExportFactory;
     }
 }
