@@ -64,7 +64,7 @@ namespace Kephas.Injection.Lite.Internal
 
             // source registration
             appServiceSource = this.serviceSources.FirstOrDefault(source => source.IsMatch(contractType));
-            return true;
+            return appServiceSource != null;
         }
 
         /// <summary>
