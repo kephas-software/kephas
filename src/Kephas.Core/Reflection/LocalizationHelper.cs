@@ -65,20 +65,6 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
-        /// Gets the localization for a <see cref="TypeInfo"/>.
-        /// </summary>
-        /// <param name="typeInfo">The type information to act on.</param>
-        /// <returns>
-        /// The type localization.
-        /// </returns>
-        public static ITypeInfoLocalization GetLocalization(this TypeInfo typeInfo)
-        {
-            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
-
-            return GetLocalization(typeInfo.AsType().AsRuntimeTypeInfo());
-        }
-
-        /// <summary>
         /// Gets the localization for a <see cref="ITypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The type information to act on.</param>

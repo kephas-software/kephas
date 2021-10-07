@@ -199,10 +199,7 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         public IServiceRegistrationBuilder ForInstancingStrategy(object instancingStrategy)
         {
-            if (instancingStrategy == null)
-            {
-                throw new ArgumentNullException(nameof(instancingStrategy));
-            }
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
             switch (instancingStrategy)
             {

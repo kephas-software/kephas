@@ -32,16 +32,6 @@ namespace Kephas.Core.Tests.Reflection
         }
 
         [Test]
-        public void GetLocalization_TypeInfo()
-        {
-            var localizableTypeInfo = typeof(LocalizableTestEntity).GetTypeInfo();
-            var localization = LocalizationHelper.GetLocalization(localizableTypeInfo);
-            Assert.IsNotNull(localization);
-            Assert.AreEqual("LocalizableTestEntity-Name", localization.Name);
-            Assert.AreEqual("LocalizableTestEntity-Description", localization.Description);
-        }
-
-        [Test]
         public void GetLocalization_ITypeInfo()
         {
             var localizableTypeInfo = typeof(LocalizableTestEntity).AsRuntimeTypeInfo();

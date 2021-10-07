@@ -59,7 +59,7 @@ namespace Kephas
         /// <value>
         /// The application runtime.
         /// </value>
-        public IAppRuntime AppRuntime => this.GetRequiredService<IAppRuntime>();
+        public IAppRuntime? AppRuntime => this.GetService<IAppRuntime>();
 
         /// <summary>
         /// Gets the log manager.
