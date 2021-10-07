@@ -167,7 +167,6 @@ namespace Kephas.Tests.Injection.Autofac
         public void ResolveMany_various_same_contract_registrations()
         {
             var container = this.CreateInjector(
-                parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
                 config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
 
             var filters = container.ResolveMany(typeof(IFilter));
@@ -181,7 +180,6 @@ namespace Kephas.Tests.Injection.Autofac
         public void GetService_various_same_contract_registrations()
         {
             var container = this.CreateInjector(
-                parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
                 config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
 
             var rawFilters = container.ToServiceProvider().GetService(typeof(IEnumerable<IFilter>));
@@ -317,9 +315,9 @@ namespace Kephas.Tests.Injection.Autofac
         {
             public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
             {
-                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton));
-                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient));
-                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), Substitute.For<IFilter>()));
+                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton) { AllowMultiple = true });
+                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient) { AllowMultiple = true });
+                yield return (typeof(IFilter), new AppServiceInfo(typeof(IFilter), Substitute.For<IFilter>()) { AllowMultiple = true });
             }
         }
 

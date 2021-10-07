@@ -44,10 +44,11 @@ namespace Kephas.Tests.Injection.Autofac
             var mockAppRuntime = ambientServices.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[]
+                .Returns(ci => new[]
                 {
                     typeof(IInjector).Assembly,
                     typeof(ILogger).Assembly,
+                    typeof(AmbientServices).Assembly,
                     typeof(AutofacInjector).Assembly,
                 });
 
@@ -65,7 +66,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var (builder, ambientServices) = this.CreateInjectorBuilder();
             var container = builder
-                .WithAssemblies(Array.Empty<Assembly>())
+                .WithAssemblies(typeof(AmbientServices).Assembly)
                 .Build();
 
             var loggerManager = container.Resolve<ILogManager>();
