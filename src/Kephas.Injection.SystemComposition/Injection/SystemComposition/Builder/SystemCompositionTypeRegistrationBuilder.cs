@@ -30,19 +30,23 @@ namespace Kephas.Injection.SystemComposition.Builder
     public class SystemCompositionTypeRegistrationBuilder : Loggable, ISystemCompositionRegistrationBuilder
     {
         private readonly PartConventionBuilder innerConventionBuilder;
+        private readonly Type serviceType;
         private Type? contractType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemCompositionTypeRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="innerConventionBuilder">The inner convention builder.</param>
+        /// <param name="serviceType">The service type.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         internal SystemCompositionTypeRegistrationBuilder(
             PartConventionBuilder innerConventionBuilder,
+            Type serviceType,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.innerConventionBuilder = innerConventionBuilder ?? throw new ArgumentNullException(nameof(innerConventionBuilder));
+            this.serviceType = serviceType;
         }
 
         /// <summary>
@@ -178,6 +182,7 @@ namespace Kephas.Injection.SystemComposition.Builder
                 throw new InvalidOperationException("The contract type is not set");
             }
 
+            configuration.WithPart(this.serviceType);
             this.innerConventionBuilder.Export(builder => builder.AsContractType(this.contractType));
         }
 

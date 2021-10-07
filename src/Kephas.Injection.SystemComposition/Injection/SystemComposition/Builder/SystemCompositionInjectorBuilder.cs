@@ -63,7 +63,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            var partBuilder = new SystemCompositionTypeRegistrationBuilder(this.innerConventionBuilder.ForType(type));
+            var partBuilder = new SystemCompositionTypeRegistrationBuilder(this.innerConventionBuilder.ForType(type), type);
             this.partBuilders.Add(partBuilder);
             return partBuilder;
         }
@@ -176,9 +176,6 @@ namespace Kephas.Injection.SystemComposition.Builder
         {
             this.RegisterScopeFactoryConventions();
 
-            this.containerConfiguration
-                .WithDefaultConventions(this.innerConventionBuilder);
-
             foreach (var provider in this.ExportProviders)
             {
                 this.containerConfiguration.WithProvider((ExportDescriptorProvider)provider);
@@ -193,6 +190,9 @@ namespace Kephas.Injection.SystemComposition.Builder
             {
                 partBuilder.Build(this.containerConfiguration);
             }
+
+            this.containerConfiguration
+                .WithDefaultConventions(this.innerConventionBuilder);
 
             return this.CreateCompositionContext(this.containerConfiguration);
         }
