@@ -135,9 +135,9 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Injection.Abstractions*/
-                           typeof(IContextFactory).GetTypeInfo().Assembly,     /* Kephas.Core*/
-                           typeof(SystemCompositionInjector).GetTypeInfo().Assembly, /* Kephas.Injection.SystemComposition */
+                           typeof(IInjector).Assembly,                  /* Kephas.Injection.Abstractions*/
+                           typeof(AmbientServices).Assembly,            /* Kephas.Core*/
+                           typeof(SystemCompositionInjector).Assembly,  /* Kephas.Injection.SystemComposition */
                        };
         }
 

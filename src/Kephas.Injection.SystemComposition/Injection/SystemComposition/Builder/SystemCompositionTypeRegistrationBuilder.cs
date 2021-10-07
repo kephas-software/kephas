@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-
 namespace Kephas.Injection.SystemComposition.Builder
 {
     using System;
@@ -24,6 +22,7 @@ namespace Kephas.Injection.SystemComposition.Builder
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition.Resources;
+    using Kephas.Logging;
 
     /// <summary>
     /// Conventions builder for a specific part.

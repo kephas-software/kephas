@@ -17,7 +17,7 @@ namespace Kephas.Scripting.Tests.Injection.SystemComposition
     public class SystemCompositionDefaultScriptProcessorTest : SystemCompositionScriptingTestBase
     {
         [Test]
-        public void DefaultMessageProcessor_Injection_success()
+        public void DefaultScriptProcessor_Injection_success()
         {
             var container = CreateInjector();
             var scriptingEngine = container.Resolve<IScriptProcessor>();
