@@ -151,7 +151,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IRegistrationBuilder IRegistrationBuilder.As(Type contractType)
+        public IRegistrationBuilder As(Type contractType)
         {
             this.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             return this;

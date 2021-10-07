@@ -78,7 +78,7 @@ namespace Kephas.Injection.SystemComposition.Builder
             Requires.NotNull(instance, nameof(instance));
 
             var partBuilder = new SystemCompositionRegistrationBuilder(instance);
-            partBuilder.Singleton();
+            partBuilder.Singleton().As(instance.GetType());
             this.partBuilders.Add(partBuilder);
             return partBuilder;
         }
@@ -94,6 +94,7 @@ namespace Kephas.Injection.SystemComposition.Builder
             Requires.NotNull(factory, nameof(factory));
 
             var partBuilder = new SystemCompositionRegistrationBuilder(factory);
+            partBuilder.As(type);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;

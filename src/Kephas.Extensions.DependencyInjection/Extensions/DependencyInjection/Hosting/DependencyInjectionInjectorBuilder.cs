@@ -79,7 +79,8 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
             {
-                InstancingStrategy = (Func<IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetService<IInjector>())),
+                ContractType = type,
+                InstancingStrategy = (Func<IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetRequiredService<IInjector>())),
             };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new DependencyInjectionRegistrationBuilder(descriptorBuilder);

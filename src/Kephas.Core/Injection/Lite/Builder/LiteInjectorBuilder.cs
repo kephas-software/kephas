@@ -80,6 +80,7 @@ namespace Kephas.Injection.Lite.Builder
                 InstancingStrategy = factory,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
+            descriptorBuilder.As(type);
             return descriptorBuilder;
         }
 

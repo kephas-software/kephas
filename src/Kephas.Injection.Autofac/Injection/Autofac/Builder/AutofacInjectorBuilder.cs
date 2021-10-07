@@ -104,6 +104,7 @@ namespace Kephas.Injection.Autofac.Builder
                     return factory(serviceProvider);
                 });
             var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder);
+            partBuilder.As(type);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
