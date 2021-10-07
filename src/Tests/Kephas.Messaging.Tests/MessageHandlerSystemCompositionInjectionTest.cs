@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageHandlerInjectionTest.cs" company="Kephas Software SRL">
+// <copyright file="MessageHandlerSystemCompositionInjectionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the message handler test class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Messaging.Tests
@@ -14,24 +11,23 @@ namespace Kephas.Messaging.Tests
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Injection;
     using Kephas.Messaging.AttributedModel;
     using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageHandlerAutofacInjectionTest : AutofacInjectionTestBase
+    public class MessageHandlerSystemCompositionInjectionTest : SystemCompositionInjectionTestBase
     {
         [Test]
         public void Injection_single_handler()
         {
             var container = this.CreateInjector(parts: new[]
-                                                            {
-                                                                typeof(IMessageHandler),
-                                                                typeof(IMessageHandler<>),
-                                                                typeof(HiTestHandler)
-                                                            });
+            {
+                typeof(IMessageHandler),
+                typeof(IMessageHandler<>),
+                typeof(HiTestHandler)
+            });
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
@@ -49,12 +45,12 @@ namespace Kephas.Messaging.Tests
         public void Injection_two_handlers()
         {
             var container = this.CreateInjector(parts: new[]
-                                                            {
-                                                                typeof(IMessageHandler),
-                                                                typeof(IMessageHandler<>),
-                                                                typeof(HiTestHandler),
-                                                                typeof(ThereTestHandler)
-                                                            });
+            {
+                typeof(IMessageHandler),
+                typeof(IMessageHandler<>),
+                typeof(HiTestHandler),
+                typeof(ThereTestHandler)
+            });
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
