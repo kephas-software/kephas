@@ -27,6 +27,7 @@ namespace Kephas.Tests.Injection.SystemComposition
     using Kephas.Services.Reflection;
     using Kephas.Testing.Injection;
     using NSubstitute;
+    using NSubstitute.Core;
     using NUnit.Framework;
 
     /// <summary>
@@ -43,7 +44,12 @@ namespace Kephas.Tests.Injection.SystemComposition
             var mockAppRuntime = ambientServices.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
+                .Returns(new[]
+                {
+                    typeof(ILogger).Assembly,
+                    typeof(AmbientServices).Assembly,
+                    typeof(SystemCompositionInjector).Assembly,
+                });
 
             var container = builder.Build();
 
@@ -57,7 +63,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         [Test]
         public void CreateInjector_simple_ambient_services_exported_no_assemblies()
         {
-            var (builder, ambientServices) = this.CreateCompositionContainerBuilder(assemblies: Array.Empty<Assembly>());
+            var (builder, ambientServices) = this.CreateCompositionContainerBuilder(assemblies: new[] { typeof(AmbientServices).Assembly });
             var container = builder
                 .Build();
 
@@ -73,9 +79,11 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssemblies(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssemblies(typeof(IContextFactory).GetTypeInfo().Assembly)
-                .WithAssemblies(typeof(SystemCompositionInjectorBuilder).GetTypeInfo().Assembly)
+                .WithAssemblies(
+                    typeof(IInjector).Assembly,
+                    typeof(ILogger).Assembly,
+                    typeof(AmbientServices).Assembly,
+                    typeof(SystemCompositionInjectorBuilder).Assembly)
                 .Build();
 
             var logger = container.Resolve<ILogger<SystemCompositionInjectionContainerTest.ExportedClass>>();
@@ -387,7 +395,8 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
-                .Returns((typeof(string), new AppServiceInfo(typeof(string), "123")));
+                .Returns((Func<CallInfo, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>>)
+                    (ci => new [] { (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), "123")) }));
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
             var mockPlatformManager = ambientServices.AppRuntime;
@@ -406,7 +415,8 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
-                .Returns((typeof(string), new AppServiceInfo(typeof(string), injector => "123")));
+                .Returns((Func<CallInfo, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>>)
+                    (ci => new [] { (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), _ => "123")) }));
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
             var mockPlatformManager = ambientServices.AppRuntime;
