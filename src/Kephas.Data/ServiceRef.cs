@@ -84,11 +84,11 @@ namespace Kephas.Data
         /// <returns>
         /// The named service provider.
         /// </returns>
-        protected virtual INamedServiceProvider GetNamedServiceProvider()
+        protected virtual INamedServiceResolver GetNamedServiceProvider()
         {
             var dataContext = this.GetDataContext(this.GetContainerEntityEntry());
             var injector = dataContext.Injector;
-            return injector.Resolve<INamedServiceProvider>();
+            return injector.Resolve<INamedServiceResolver>();
         }
     }
 }
