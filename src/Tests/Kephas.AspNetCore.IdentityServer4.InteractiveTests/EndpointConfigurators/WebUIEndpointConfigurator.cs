@@ -27,6 +27,9 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.EndpointConfigurato
         public void Configure(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext)
         {
             endpoints.MapRazorPages();
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller}/{action=Index}/{id?}");
         }
     }
 }
