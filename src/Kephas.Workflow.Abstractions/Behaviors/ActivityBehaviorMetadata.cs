@@ -34,7 +34,7 @@ namespace Kephas.Workflow.Behaviors
                 return;
             }
 
-            this.ActivityType = (Type)metadata.TryGetValue(nameof(this.ActivityType));
+            this.ActivityType = (Type?)metadata.TryGetValue(nameof(this.ActivityType));
         }
 
         /// <summary>
@@ -58,6 +58,6 @@ namespace Kephas.Workflow.Behaviors
         /// <value>
         /// The type of the activity.
         /// </value>
-        public Type ActivityType { get; }
+        public Type? ActivityType { get; }
     }
 }

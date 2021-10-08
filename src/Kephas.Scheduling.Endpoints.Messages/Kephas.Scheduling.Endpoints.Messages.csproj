@@ -16,9 +16,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Adds messaging endpoints for the scheduling services. The endpoints will work if Kephas.Messaging is referenced and the IMessageProcessor is used for processing the messages.
+            Adds messages for the scheduling services endpoints.
             Typically used areas and classes/interfaces/services:
-            - Enable/Disable/CancelScheduledJobHandler, Enable/Disable/CancelTriggerHandler, EnqueueHandler, GetCompleted/Running/ScheduledJobsHandler.
+            - Enable/Disable/CancelScheduledJobMessage, Enable/Disable/CancelTriggerMessage, EnqueueMessage, GetCompleted/Running/ScheduledJobsMessage.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -35,7 +35,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas scheduling endpoints</PackageTags>
+        <PackageTags>kephas scheduling endpoints messages</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -48,6 +48,8 @@
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        
+        <RootNamespace>Kephas.Scheduling.Endpoints</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -55,10 +57,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="stylecop.json" />
         <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
+            <Pack>true</Pack>
+            <PackagePath>\</PackagePath>
         </None>
     </ItemGroup>
 
@@ -68,10 +74,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
-        <ProjectReference Include="..\Kephas.Scheduling.Endpoints.Messages\Kephas.Scheduling.Endpoints.Messages.csproj" />
-        <ProjectReference Include="..\Kephas.Scheduling\Kephas.Scheduling.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />
+        <ProjectReference Include="..\Kephas.Scheduling.Abstractions\Kephas.Scheduling.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -84,21 +88,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

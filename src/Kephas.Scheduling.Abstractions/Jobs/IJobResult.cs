@@ -10,10 +10,6 @@
 
 namespace Kephas.Scheduling.Jobs
 {
-    using System;
-    using System.Threading;
-
-    using Kephas.Data;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Reflection;
