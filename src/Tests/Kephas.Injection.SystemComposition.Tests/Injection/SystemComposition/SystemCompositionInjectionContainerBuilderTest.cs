@@ -248,8 +248,11 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
-                .WithAssemblies(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssemblies(typeof(IContextFactory).GetTypeInfo().Assembly)
+                .WithAssemblies(
+                    typeof(IInjector).Assembly,
+                    typeof(AmbientServices).Assembly,
+                    typeof(ILogger).Assembly,
+                    typeof(SystemCompositionInjector).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .Build();
 

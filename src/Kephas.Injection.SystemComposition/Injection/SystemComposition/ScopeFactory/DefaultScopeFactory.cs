@@ -10,8 +10,8 @@
 
 namespace Kephas.Injection.SystemComposition.ScopeFactory
 {
+    using System;
     using System.Composition;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A MEF scope provider.
@@ -25,9 +25,8 @@ namespace Kephas.Injection.SystemComposition.ScopeFactory
         /// <param name="scopedContextFactory">The scoped context factory.</param>
         [ImportingConstructor]
         public DefaultScopeFactory([SharingBoundary(InjectionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
-            : base(scopedContextFactory)
+            : base(scopedContextFactory ?? throw new ArgumentNullException(nameof(scopedContextFactory)))
         {
-            Requires.NotNull(scopedContextFactory, nameof(scopedContextFactory));
         }
     }
 }
