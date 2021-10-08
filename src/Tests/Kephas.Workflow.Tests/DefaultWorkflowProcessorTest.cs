@@ -8,24 +8,35 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Workflow.Tests
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Runtime;
     using Kephas.Testing;
+    using Kephas.Testing.Injection;
     using Kephas.Workflow.Behaviors;
     using Kephas.Workflow.Reflection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultWorkflowProcessorTest : TestBase
+    public class DefaultWorkflowProcessorTest : InjectionTestBase
     {
+        [Test]
+        public void Injection()
+        {
+            var container = this.CreateInjector(
+                typeof(IWorkflowProcessor).Assembly,
+                typeof(DefaultWorkflowProcessor).Assembly);
+            var workflowProcessor = container.Resolve<IWorkflowProcessor>();
+            Assert.IsInstanceOf<DefaultWorkflowProcessor>(workflowProcessor);
+        }
+
         [Test]
         public async Task ExecuteAsync_basic_flow()
         {

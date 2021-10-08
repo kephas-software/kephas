@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Scheduling.Tests
 {
     using System;
@@ -18,6 +16,7 @@ namespace Kephas.Scheduling.Tests
 
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.JobStore;
@@ -41,7 +40,11 @@ namespace Kephas.Scheduling.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
+            var container = this.CreateInjector(
+                typeof(IScheduler).Assembly,
+                typeof(InProcessScheduler).Assembly,
+                typeof(IWorkflowProcessor).Assembly,
+                typeof(DefaultWorkflowProcessor).Assembly);
             var scheduler = container.Resolve<IScheduler>();
             Assert.IsInstanceOf<InProcessScheduler>(scheduler);
         }
