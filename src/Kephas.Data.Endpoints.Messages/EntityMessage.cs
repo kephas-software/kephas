@@ -21,7 +21,7 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The type of the entity.
         /// </value>
-        public string EntityType { get; set; }
+        public string? EntityType { get; set; }
 
         /// <summary>
         /// Gets or sets the entity reference, typically the ID.
@@ -29,7 +29,7 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The entity reference.
         /// </value>
-        public object EntityRef { get; set; }
+        public object? EntityRef { get; set; }
 
         /// <summary>
         /// Gets or sets options for controlling the operation.
@@ -37,6 +37,6 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The options.
         /// </value>
-        public object Options { get; set; }
+        public object? Options { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
@@ -16,11 +16,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides services for the data import/export (input/output).
+            Adds messages for the data services endpoints.
             Typically used areas and classes/interfaces/services:
-            - DataStreams: IDataStreamReader, IDataStreamWriter.
-            - Export: IDataExportService.
-            - Import: IDataImportService, IDataImportBehavior.
+            - PersistChangesMessage, QueryMessage, DataSourceMessage.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -37,7 +35,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas data input output import export</PackageTags>
+        <PackageTags>kephas data endpoints messages</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -50,6 +48,8 @@
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        
+        <RootNamespace>Kephas.Data.Endpoints</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -61,54 +61,39 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Properties\**" />
-      <EmbeddedResource Remove="Properties\**" />
-      <None Remove="Properties\**" />
-      <None Update="kephas.logo.stone.png">
-        <Pack>true</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
+        <Compile Remove="Properties\**" />
+        <EmbeddedResource Remove="Properties\**" />
+        <None Remove="Properties\**" />
+        <None Update="kephas.logo.stone.png">
+            <Pack>true</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="stylecop.json" />
+        <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
-        <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

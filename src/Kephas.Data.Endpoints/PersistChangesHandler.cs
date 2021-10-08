@@ -8,18 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.Endpoints
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Data.Capabilities;
     using Kephas.Data.Client.Capabilities;
     using Kephas.Data.Conversion;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Messaging;
     using Kephas.Model;
     using Kephas.Services;

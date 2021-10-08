@@ -55,6 +55,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Compile Remove="Properties\**" />
       <EmbeddedResource Remove="Properties\**" />
       <None Remove="Properties\**" />

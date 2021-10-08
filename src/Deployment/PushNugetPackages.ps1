@@ -25,6 +25,7 @@ $paths = @(
     "Kephas.Data",
     "Kephas.Data.Client",
     "Kephas.Data.Endpoints",
+    "Kephas.Data.Endpoints.Messages",
     "Kephas.Data.IO",
     "Kephas.Data.LLBLGen",
     "Kephas.Data.Model",

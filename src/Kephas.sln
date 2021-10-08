@@ -266,6 +266,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Endpoints.Me
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Abstractions", "Kephas.Plugins.Abstractions\Kephas.Plugins.Abstractions.csproj", "{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Endpoints.Messages", "Kephas.Data.Endpoints.Messages\Kephas.Data.Endpoints.Messages.csproj", "{68380EAA-4519-4A98-AFAF-B389812D98E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -736,6 +738,10 @@ Global
 		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68380EAA-4519-4A98-AFAF-B389812D98E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68380EAA-4519-4A98-AFAF-B389812D98E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68380EAA-4519-4A98-AFAF-B389812D98E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68380EAA-4519-4A98-AFAF-B389812D98E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

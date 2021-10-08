@@ -16,9 +16,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Adds messaging endpoints for data services. The endpoints wills work if Kephas.Messaging is referenced and the IMessageProcessor is used for processing the messages.
+            Adds messaging endpoints for data services. The endpoints will work if Kephas.Messaging is referenced and the IMessageProcessor is used for processing the messages.
             Typically used areas and classes/interfaces/services:
-            - PersistChangesMessage, QueryMessage, DataSourceMessage.
+            - PersistChangesHandler, QueryHandler, DataSourceHandler.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -76,6 +76,7 @@
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
+        <ProjectReference Include="..\Kephas.Data.Endpoints.Messages\Kephas.Data.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
