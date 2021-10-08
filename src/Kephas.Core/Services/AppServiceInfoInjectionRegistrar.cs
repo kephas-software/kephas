@@ -20,6 +20,7 @@ namespace Kephas.Services
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;
+    using Kephas.Injection.Configuration;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services.Reflection;
@@ -93,19 +94,8 @@ namespace Kephas.Services
                 var sortedServices = this.SortServiceInfos(appServiceInfos);
                 if (!appContractDefinition.AllowMultiple)
                 {
-                    if (sortedServices.Count > 1 && sortedServices[0].overridePriority == sortedServices[1].overridePriority)
-                    {
-                        throw new AmbiguousServiceResolutionException(
-                            string.Format(
-                                Strings.AmbiguousOverrideForAppServiceContract,
-                                contractDeclarationType,
-                                string.Join(
-                                    ", ",
-                                    sortedServices
-                                        .Select(item => $"{item.appServiceInfo}:{item.overridePriority}"))));
-                    }
-
-                    this.RegisterService(builder, contractDeclarationType, contractType, sortedServices[0].appServiceInfo, logger);
+                    var appServiceInfo = ResolveAmbiguousRegistration(contractDeclarationType, sortedServices, buildContext.Settings?.AmbiguousResolutionStrategy ?? AmbiguousServiceResolutionStrategy.ForcePriority);
+                    this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
                 }
                 else
                 {
@@ -162,6 +152,29 @@ namespace Kephas.Services
             rawType.IsConstructedGenericType && rawType.ContainsGenericParameters
                 ? rawType.GetGenericTypeDefinition()
                 : rawType;
+
+        private static IAppServiceInfo ResolveAmbiguousRegistration(Type contractDeclarationType, IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedServices, AmbiguousServiceResolutionStrategy serviceResolutionStrategy)
+        {
+            if (sortedServices.Count == 1)
+            {
+                return sortedServices[0].appServiceInfo;
+            }
+
+            var priority = sortedServices[0].overridePriority;
+            return serviceResolutionStrategy switch
+            {
+                AmbiguousServiceResolutionStrategy.UseFirst =>
+                    sortedServices[0].appServiceInfo,
+                AmbiguousServiceResolutionStrategy.UseLast =>
+                    sortedServices.Last(s => s.overridePriority == priority).appServiceInfo,
+                AmbiguousServiceResolutionStrategy.ForcePriority when priority == sortedServices[1].overridePriority =>
+                    throw new AmbiguousServiceResolutionException(string.Format(
+                        Strings.AmbiguousOverrideForAppServiceContract,
+                        contractDeclarationType,
+                        string.Join(", ", sortedServices.Select(item => $"{item.appServiceInfo}:{item.overridePriority}")))),
+                _ => sortedServices[0].appServiceInfo
+            };
+        }
 
         private void RegisterService(
             IInjectorBuilder injectorBuilder,
