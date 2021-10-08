@@ -262,6 +262,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Injection.Lite.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Abstractions", "Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj", "{9327D807-5842-4C1D-827C-28C100143038}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Endpoints.Messages", "Kephas.Plugins.Endpoints.Messages\Kephas.Plugins.Endpoints.Messages.csproj", "{5D86C702-400E-4F67-A0FF-1D1859D84F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Abstractions", "Kephas.Plugins.Abstractions\Kephas.Plugins.Abstractions.csproj", "{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -724,6 +728,14 @@ Global
 		{9327D807-5842-4C1D-827C-28C100143038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9327D807-5842-4C1D-827C-28C100143038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9327D807-5842-4C1D-827C-28C100143038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D86C702-400E-4F67-A0FF-1D1859D84F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D86C702-400E-4F67-A0FF-1D1859D84F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D86C702-400E-4F67-A0FF-1D1859D84F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D86C702-400E-4F67-A0FF-1D1859D84F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

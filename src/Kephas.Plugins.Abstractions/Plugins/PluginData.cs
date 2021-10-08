@@ -225,6 +225,7 @@ namespace Kephas.Plugins
         /// Gets or sets the version towards which the plugin is being updated.
         /// </summary>
         /// <param name="version">The version to be updated to.</param>
+        /// <returns>The plugin data.</returns>
         internal PluginData ChangeUpdatingToVersion(SemanticVersion? version)
             => this.ChangeData(nameof(this.UpdatingToVersion), version?.ToString());
 
