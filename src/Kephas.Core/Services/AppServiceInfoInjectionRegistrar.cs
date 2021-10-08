@@ -184,9 +184,9 @@ namespace Kephas.Services
                     .SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(contractType, ctorInfos)),
                 Func<IInjector, object> factory => injectorBuilder
                     .ForFactory(contractType, factory),
-                null => null,
-                var instance => injectorBuilder
+                { } instance => injectorBuilder
                     .ForInstance(instance),
+                _ => null,
             };
 
             if (partBuilder == null)

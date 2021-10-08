@@ -79,23 +79,19 @@ namespace Kephas.Injection.Lite.Builder
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
-                default:
-                    if (this.instancingStrategy == null)
-                    {
-                        if (!this.allowMultiple)
-                        {
-                            throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception.FormatWith(this.contractType, nameof(AppServiceContractAttribute.AllowMultiple), true));
-                        }
-
-                        return new MultiServiceInfo(this.contractType);
-                    }
-
-                    return new ServiceInfo(this.serviceRegistry, this.contractType, this.instancingStrategy)
+                case { } instance:
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, instance)
                     {
                         AllowMultiple = this.allowMultiple,
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
+                case var _:
+                    return this.allowMultiple
+                        ? new MultiServiceInfo(this.contractType)
+                        : throw new InvalidOperationException(
+                            Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception.FormatWith(
+                                this.contractType, nameof(AppServiceContractAttribute.AllowMultiple), true));
             }
         }
 
@@ -201,40 +197,28 @@ namespace Kephas.Injection.Lite.Builder
         {
             instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-            switch (instancingStrategy)
+            var contractType = instancingStrategy switch
             {
-                case Type implementationType:
-                    if (!this.contractType.IsAssignableFrom(implementationType)
-                        && !(this.contractType.IsGenericTypeDefinition
-                             && !implementationType.IsGenericTypeDefinition
-                             && implementationType.GetInterfaces().Any(i => i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType)))
-                        && !(this.contractType.IsGenericTypeDefinition
-                             && implementationType.IsGenericTypeDefinition
-                             && implementationType.GetInterfaces().Any(i => i.Name == this.contractType.Name)))
-                    {
-                        throw new ArgumentException(
+                Type implementationType =>
+                    this.MatchesContractType(implementationType)
+                        ? implementationType
+                        : throw new ArgumentException(
                             string.Format(
                                 Strings.AmbientServices_ServiceTypeAndImplementationMismatch_Exception,
                                 implementationType,
                                 this.contractType),
-                            nameof(implementationType));
-                    }
-
-                    break;
-                case Func<IInjector, object> factory:
-                    break;
-                case var instance:
-                    if (!this.contractType.IsInstanceOfType(instance))
-                    {
-                        throw new InvalidOperationException(
+                            nameof(implementationType)),
+                Func<IInjector, object> factory =>
+                    null,
+                var instance =>
+                    this.MatchesContractType(instance)
+                        ? instance.GetType()
+                        : throw new InvalidOperationException(
                             string.Format(
                                 Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception,
                                 instance.GetType(),
-                                this.contractType));
-                    }
-
-                    break;
-            }
+                                this.contractType)),
+            };
 
             this.instancingStrategy = instancingStrategy;
 
@@ -266,6 +250,23 @@ namespace Kephas.Injection.Lite.Builder
         {
             this.externallyOwned = true;
             return this;
+        }
+
+        private bool MatchesContractType(object instance)
+        {
+            return this.contractType.IsInstanceOfType(instance);
+        }
+
+        private bool MatchesContractType(Type implementationType)
+        {
+            return this.contractType.IsAssignableFrom(implementationType)
+                   || (this.contractType.IsGenericTypeDefinition
+                       && !implementationType.IsGenericTypeDefinition
+                       && implementationType.GetInterfaces().Any(i =>
+                           i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType)))
+                   || (this.contractType.IsGenericTypeDefinition
+                       && implementationType.IsGenericTypeDefinition
+                       && implementationType.GetInterfaces().Any(i => i.Name == this.contractType.Name));
         }
 
         private void EnsureContractTypeMatchesImplementationType(Type contractType, Type implementationType)

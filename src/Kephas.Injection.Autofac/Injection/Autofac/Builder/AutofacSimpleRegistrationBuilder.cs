@@ -26,16 +26,22 @@ namespace Kephas.Injection.Autofac.Builder
         private readonly ContainerBuilder containerBuilder;
 
         private readonly IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder;
+        private readonly bool isRegistered;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacSimpleRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         /// <param name="registrationBuilder">The registration builder.</param>
-        public AutofacSimpleRegistrationBuilder(ContainerBuilder containerBuilder, IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder)
+        /// <param name="isRegistered">Indicates whether the registration builder is already registered in the container builder.</param>
+        public AutofacSimpleRegistrationBuilder(
+            ContainerBuilder containerBuilder,
+            IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder,
+            bool isRegistered)
         {
             this.containerBuilder = containerBuilder;
             this.registrationBuilder = registrationBuilder;
+            this.isRegistered = isRegistered;
         }
 
         /// <summary>
@@ -148,6 +154,11 @@ namespace Kephas.Injection.Autofac.Builder
         /// </summary>
         public void Build()
         {
+            if (this.isRegistered)
+            {
+                return;
+            }
+
             var registration = this.registrationBuilder.CreateRegistration();
             this.containerBuilder.RegisterComponent(registration);
         }

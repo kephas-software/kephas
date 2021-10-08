@@ -12,6 +12,7 @@ namespace Kephas.Injection.Autofac.Builder
 {
     using System;
     using System.Collections.Generic;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Diagnostics.Contracts;
@@ -82,7 +83,7 @@ namespace Kephas.Injection.Autofac.Builder
         {
             var registrationBuilder = this.containerBuilder
                 .RegisterInstance(instance);
-            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder);
+            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: true);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
@@ -103,7 +104,7 @@ namespace Kephas.Injection.Autofac.Builder
                     var serviceProvider = context.Resolve<IInjector>();
                     return factory(serviceProvider);
                 });
-            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder);
+            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: false);
             partBuilder.As(type);
             this.partBuilders.Add(partBuilder);
 
