@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
@@ -22,6 +20,7 @@ namespace Kephas.Serialization.Json.Tests
 
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
@@ -438,13 +437,16 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
-        public async Task JsonSerializer_injection()
+        public async Task JsonSerializer_injection_autofac()
         {
             var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime()
-                .BuildWithSystemComposition(
+                .BuildWithAutofac(
                     b =>
-                    b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
+                    b.WithAssemblies(
+                        typeof(IInjector).Assembly,
+                        typeof(ISerializationService).Assembly,
+                        typeof(JsonSerializer).Assembly));
             var serializers = ambientServices.Injector.GetExportFactories<ISerializer, SerializerMetadata>();
             var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
 
@@ -452,7 +454,24 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
-        public async Task SerializeAsync_datacontract_hierarcy()
+        public async Task JsonSerializer_injection_lite()
+        {
+            var ambientServices = this.CreateAmbientServices()
+                .WithStaticAppRuntime()
+                .BuildWithLite(
+                    b =>
+                        b.WithAssemblies(
+                            typeof(IInjector).Assembly,
+                            typeof(ISerializationService).Assembly,
+                            typeof(JsonSerializer).Assembly));
+            var serializers = ambientServices.Injector.GetExportFactories<ISerializer, SerializerMetadata>();
+            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
+
+            Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
+        }
+
+        [Test]
+        public async Task SerializeAsync_datacontract_hierarchy()
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
