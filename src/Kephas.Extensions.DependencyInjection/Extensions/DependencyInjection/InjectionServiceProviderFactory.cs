@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Extensions.DependencyInjection
 {
     using System;
+
+    using Kephas.Injection;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         /// <returns>
-        /// An <see cref="T:System.IServiceProvider" />
+        /// An <see cref="T:System.IServiceProvider" />.
         /// </returns>
         public IServiceProvider CreateServiceProvider(IAmbientServices containerBuilder)
         {
