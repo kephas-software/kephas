@@ -133,7 +133,6 @@ namespace Kephas.Plugins
                     : new PluginData(appId, PluginState.Corrupt);
             }
 
-
             var data = splits.Length > 3 ? DataParse(splits[3..^1]) : null;
             if (!int.TryParse(splits[^1], out var checksum))
             {
