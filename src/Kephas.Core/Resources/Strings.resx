@@ -122,8 +122,12 @@
     <comment>Cannot get the implementation type for the provided abstract type info '{0}'.</comment>
   </data>
   <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
-    <value>Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. Identified eligible parts: {1}.</value>
-    <comment>Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. Identified eligible parts: {1}.</comment>
+    <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
+    <comment>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</comment>
+  </data>
+  <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
+    <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>
+    <comment>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</comment>
   </data>
   <data name="DefaultAppManager_InitializeCanceled_Exception" xml:space="preserve">
     <value>The application's initialize procedure was canceled, at {0:s}.</value>

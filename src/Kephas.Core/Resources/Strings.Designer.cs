@@ -133,7 +133,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. Identified eligible parts: {1}..
+        ///   Looks up a localized string similar to Multiple application services registered for the contract &apos;{0}&apos; and the override priority does not allow a proper service resolution. Registrations: {1}..
         /// </summary>
         public static string AmbiguousOverrideForAppServiceContract {
             get {
@@ -562,6 +562,15 @@ namespace Kephas.Resources {
         public static string LiteRegistrationBuilder_InvalidRegistration_Exception {
             get {
                 return ResourceManager.GetString("LiteRegistrationBuilder_InvalidRegistration_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple application services registered for the contract &apos;{contractType}&apos;. Strategy is {resolutionStrategy}, registrations: {registrations}..
+        /// </summary>
+        public static string MultipleRegistrationsForAppServiceContract {
+            get {
+                return ResourceManager.GetString("MultipleRegistrationsForAppServiceContract", resourceCulture);
             }
         }
         

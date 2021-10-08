@@ -21,6 +21,7 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Core.Tests.Services.DefaultAppServiceMetadata;
     using Kephas.Core.Tests.Services.DefaultExplicitAppServiceMetadata;
     using Kephas.Injection;
+    using Kephas.Injection.Configuration;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
@@ -142,7 +143,51 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_Single_override_service_failure()
+        public void RegisterServices_Single_service_multiple_registrations_first()
+        {
+            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
+
+            var parts = new[]
+            {
+                typeof(ISingleTestAppService),
+                typeof(SingleTestService),
+                typeof(SingleSameOverrideTestService),
+            };
+            var registrar = CreateAppServiceInfoInjectionRegistrar();
+            registrar.RegisterServices(
+                conventions,
+                new TestBuildContext(this.CreateAmbientServices()) { Settings = { AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseFirst } },
+                new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) });
+
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
+            Assert.IsFalse(conventions.TypeBuilders.ContainsKey(typeof(SingleSameOverrideTestService)));
+        }
+
+
+        [Test]
+        public void RegisterServices_Single_service_multiple_registrations_last()
+        {
+            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
+
+            var parts = new[]
+            {
+                typeof(ISingleTestAppService),
+                typeof(SingleTestService),
+                typeof(SingleSameOverrideTestService),
+            };
+            var registrar = CreateAppServiceInfoInjectionRegistrar();
+            registrar.RegisterServices(
+                conventions,
+                new TestBuildContext(this.CreateAmbientServices()) { Settings = { AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseLast } },
+                new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) });
+
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleSameOverrideTestService)));
+            Assert.IsFalse(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
+        }
+
+
+        [Test]
+        public void RegisterServices_Single_service_multiple_registrations_force_failure()
         {
             var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
 
@@ -155,7 +200,7 @@ namespace Kephas.Core.Tests.Services
             var registrar = CreateAppServiceInfoInjectionRegistrar();
             Assert.Throws<AmbiguousServiceResolutionException>(() => registrar.RegisterServices(
                 conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
+                new TestBuildContext(this.CreateAmbientServices()) { Settings = { AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority } },
                 new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) }));
         }
 

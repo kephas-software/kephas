@@ -94,7 +94,11 @@ namespace Kephas.Services
                 var sortedServices = this.SortServiceInfos(appServiceInfos);
                 if (!appContractDefinition.AllowMultiple)
                 {
-                    var appServiceInfo = ResolveAmbiguousRegistration(contractDeclarationType, sortedServices, buildContext.Settings?.AmbiguousResolutionStrategy ?? AmbiguousServiceResolutionStrategy.ForcePriority);
+                    var appServiceInfo = ResolveAmbiguousRegistration(
+                        contractDeclarationType,
+                        sortedServices,
+                        buildContext.Settings?.AmbiguousResolutionStrategy ?? AmbiguousServiceResolutionStrategy.ForcePriority,
+                        logger);
                     this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
                 }
                 else
@@ -153,11 +157,24 @@ namespace Kephas.Services
                 ? rawType.GetGenericTypeDefinition()
                 : rawType;
 
-        private static IAppServiceInfo ResolveAmbiguousRegistration(Type contractDeclarationType, IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedServices, AmbiguousServiceResolutionStrategy serviceResolutionStrategy)
+        private static IAppServiceInfo ResolveAmbiguousRegistration(
+            Type contractDeclarationType,
+            IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedServices,
+            AmbiguousServiceResolutionStrategy serviceResolutionStrategy,
+            ILogger logger)
         {
             if (sortedServices.Count == 1)
             {
                 return sortedServices[0].appServiceInfo;
+            }
+
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug(
+                    Strings.MultipleRegistrationsForAppServiceContract,
+                    contractDeclarationType,
+                    serviceResolutionStrategy,
+                    sortedServices.Select(item => $"{item.appServiceInfo}:{item.overridePriority}"));
             }
 
             var priority = sortedServices[0].overridePriority;
