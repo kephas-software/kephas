@@ -69,16 +69,18 @@ namespace Kephas.Extensions.DependencyInjection
                     }
                 }
 
+                // make sure AllowMultiple is set to true, as the ServiceCollection supports by default multiple registrations.
                 if (descriptor.ImplementationInstance != null)
                 {
-                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance));
+                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance) { AllowMultiple = true });
                 }
                 else if (descriptor.ImplementationFactory != null)
                 {
                     yield return (serviceType,
                                      new AppServiceInfo(
                                          serviceType,
-                                         ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider())));
+                                         ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider()))
+                                         { AllowMultiple = true });
                 }
                 else
                 {
@@ -94,7 +96,8 @@ namespace Kephas.Extensions.DependencyInjection
                                          serviceType,
                                          instanceType,
                                          lifetime,
-                                         serviceType.IsGenericTypeDefinition));
+                                         serviceType.IsGenericTypeDefinition)
+                                         { AllowMultiple = true });
                 }
             }
         }
