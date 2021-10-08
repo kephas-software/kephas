@@ -28,12 +28,16 @@ namespace Kephas.Model.Tests.Models.MixinInheritanceModel
     {
     }
 
-    [AspectFor(typeof(string))]
+    public class MyString {}
+
+    public class MyStringBuilder {}
+
+    [AspectFor(typeof(MyString))]
     interface IStringAspect
     {
     }
 
-    [AspectFor(typeof(StringBuilder))]
+    [AspectFor(typeof(MyStringBuilder))]
     interface IStringBuilderAspect : IStringAspect
     {
     }

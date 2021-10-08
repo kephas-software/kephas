@@ -25,7 +25,7 @@ namespace Kephas.Reflection.Dynamic
     /// </summary>
     public class DynamicTypeInfo : DynamicElementInfo, ITypeInfo, IIdentifiable
     {
-        private readonly ICollection<IElementInfo> members;
+        private readonly DynamicElementInfoCollection<IElementInfo> members;
         private readonly List<ITypeInfo> genericTypeArguments = new ();
         private readonly List<ITypeInfo> genericTypeParameters = new ();
         private List<ITypeInfo>? baseTypes;
