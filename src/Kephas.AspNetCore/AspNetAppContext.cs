@@ -14,7 +14,6 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Application;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Kephas.Commands;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -34,9 +33,9 @@ namespace Kephas.Application.AspNetCore
         public AspNetAppContext(
             IWebHostEnvironment hostEnvironment,
             IConfiguration configuration,
-            IAmbientServices? ambientServices = null,
-            IAppRuntime appRuntime = null,
-            IAppArgs appArgs = null)
+            IAmbientServices ambientServices,
+            IAppRuntime? appRuntime = null,
+            IAppArgs? appArgs = null)
             : base(ambientServices, appRuntime, appArgs)
         {
             this.HostEnvironment = hostEnvironment;
