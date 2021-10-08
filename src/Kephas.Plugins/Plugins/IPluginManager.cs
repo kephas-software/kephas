@@ -159,7 +159,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the latest available package.
         /// </returns>
-        public static async Task<IAppInfo> GetLatestAvailablePluginVersionAsync(this IPluginManager pluginManager, AppIdentity pluginIdentity, bool includePrerelease, CancellationToken cancellationToken = default)
+        public static async Task<IAppInfo?> GetLatestAvailablePluginVersionAsync(this IPluginManager pluginManager, AppIdentity pluginIdentity, bool includePrerelease, CancellationToken cancellationToken = default)
         {
             return (await pluginManager.GetAvailablePluginsAsync(
                     s => s
