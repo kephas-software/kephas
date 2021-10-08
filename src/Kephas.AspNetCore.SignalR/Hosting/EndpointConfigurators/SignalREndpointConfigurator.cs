@@ -19,6 +19,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.AspNetCore.SignalR;
+
     using HubMetadata = Kephas.AspNetCore.SignalR.HubMetadata;
 
     /// <summary>
