@@ -34,3 +34,13 @@ After building the signed packages:
 5. Run: powershell .\mongo-pack.ps1.
 
 After creating the nuget signed packages, publish them on nuget.org.
+
+--------------
+
+User kaloyank <Kaloyan.Kalchev@progress.com> sends the following message to the owners of Package 'MongoDB.Driver.signed 2.12.2'.
+Hi guys!
+I noticed something while using your signed MongoDB packages. The FileVersion of the signed libraries is missing from their metadata (or the meta overall is missing). I need this property in order to be able to redeploy an already deployed assembly through my installer app - I compare FileVersions, and redeploy if FileVersion is newer (not possible if FileVersion is null). Fortunately, I think I came up with a solution to that, in case it's an unintentional behavior. After some fiddling around with ildasm and ilasm tools (I guess you're using these to disassemble and reassemble MongoDB assemblies with a snk, respectively), I found out that if the reassembly tool does not know what metadata to add to the newly reassembled libraries, it, quite expectedly, produces an assembly without any metadata (FileVersion, and the like). The disassembly tool (ildasm), though, produces a metadata file - a <assembly-name>.res file, which can be used in the reassembly process using the /res key like this:
+ilasm ... /res:<assembly-name>.res ...
+This produces the desired result - a signed assembly with the proper metadata attached to it (FileVersion included). Is this a viable solution for you, so that you can, eventually, release next versions of the signed MongoDB assemblies with the correct metadata?
+Let me know if I can be of assistance.
+Greetings, Kaloyan

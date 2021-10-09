@@ -3,7 +3,7 @@ param (
 )
 
 $keyPath = "..\..\src\Kephas.snk"
-$editorPath = "$Env:ProgramFiles\Notepad++\notepad++.exe"
+$editorPath = "$Env:ProgramFiles\Notepad++\notepad++.exe".Replace(" (x86)", "")
 
 $assemblies = @(
     "mongodb.bson.$version\lib\net452\MongoDB.Bson",
@@ -29,6 +29,6 @@ foreach ($assembly in $assemblies) {
 	iex ".\ildasm.exe /all /out=$assembly.signed.il $assembly.dll > $assembly.decompile.log"
 	iex "& ""$editorPath"" ""$assembly.signed.il"""
 	Read-Host -Prompt "Decompiling complete, press ENTER key to start with compiling..."
-	iex "ilasm.exe /dll /key=$keyPath $assembly.signed.il > $assembly.compile.log"
+	iex "ilasm.exe /dll /key=$keyPath /res:$assembly.signed.res $assembly.signed.il > $assembly.compile.log"
 	Write-Host "Compiling done to $assembly.signed.dll."
 }

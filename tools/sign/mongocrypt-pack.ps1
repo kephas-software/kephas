@@ -17,21 +17,33 @@ foreach ($package in $packages) {
 	$sourceLicense = ".\$package.$version\License.txt"
 	Copy-Item "$sourceLicense" "$targetLicense"
 
-    $targetAssemblyNet45 = "$targetNugetPath\$package.signed.$version\lib\net452\$package"
-	Remove-Item -path "$targetAssemblyNet45.dll"
-#	Remove-Item -path "$targetAssemblyNet45.xml"
-	
-	$sourceAssemblyNet45 = ".\$package.$version\lib\net452\$package"
-	Copy-Item "$sourceAssemblyNet45.signed.dll" "$targetAssemblyNet45.dll"
-#	Copy-Item "$sourceAssemblyNet45.xml" "$targetAssemblyNet45.xml"
+	$targetBuild = "$targetNugetPath\$package.signed.$version\build"
+	Remove-Item -path "$targetBuild" -recurse
+	$sourceBuild = ".\$package.$version\build"
+	Copy-Item "$sourceBuild" "$targetBuild"
 
-    $targetAssemblyNetStandard15 = "$targetNugetPath\$package.signed.$version\lib\netstandard1.5\$package"
-	Remove-Item -path "$targetAssemblyNetStandard15.dll"
-#	Remove-Item -path "$targetAssemblyNetStandard15.xml"
+	$targetContent = "$targetNugetPath\$package.signed.$version\content"
+	Remove-Item -path "$targetContent" -recurse
+	$sourceContent = ".\$package.$version\content"
+	Copy-Item "$sourceContent" "$targetContent"
+
+	$targetContentFiles = "$targetNugetPath\$package.signed.$version\contentFiles"
+	Remove-Item -path "$targetContentFiles" -recurse
+	$sourceContentFiles = ".\$package.$version\contentFiles"
+	Copy-Item "$sourceContentFiles" "$targetContentFiles"
+
+	$targetRuntimes = "$targetNugetPath\$package.signed.$version\runtimes"
+	Remove-Item -path "$targetRuntimes" -recurse
+	$sourceRuntimes = ".\$package.$version\runtimes"
+	Copy-Item "$sourceRuntimes" "$targetRuntimes"
+
+    $targetAssemblyNet47 = "$targetNugetPath\$package.signed.$version\lib\net472\$package"
+	Remove-Item -path "$targetAssemblyNet47.dll"
+#	Remove-Item -path "$targetAssemblyNet47.xml"
 	
-	$sourceAssemblyNetStandard15 = ".\$package.$version\lib\netstandard1.5\$package"
-	Copy-Item "$sourceAssemblyNetStandard15.signed.dll" "$targetAssemblyNetStandard15.dll"
-#	Copy-Item "$sourceAssemblyNetStandard15.xml" "$targetAssemblyNetStandard15.xml"
+	$sourceAssemblyNet47 = ".\$package.$version\lib\net472\$package"
+	Copy-Item "$sourceAssemblyNet47.signed.dll" "$targetAssemblyNet47.dll"
+#	Copy-Item "$sourceAssemblyNet47.xml" "$targetAssemblyNet47.xml"
 
     $targetAssemblyNetStandard20 = "$targetNugetPath\$package.signed.$version\lib\netstandard2.0\$package"
 	Remove-Item -path "$targetAssemblyNetStandard20.dll"
