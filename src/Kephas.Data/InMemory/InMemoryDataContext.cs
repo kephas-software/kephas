@@ -12,6 +12,7 @@ using Kephas.Injection;
 
 namespace Kephas.Data.InMemory
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -57,10 +58,10 @@ namespace Kephas.Data.InMemory
         public InMemoryDataContext(IInjector injector, IDataCommandProvider dataCommandProvider, IDataBehaviorProvider dataBehaviorProvider, ISerializationService serializationService)
             : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             this.SerializationService = serializationService;
         }

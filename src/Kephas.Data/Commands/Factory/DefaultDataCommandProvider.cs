@@ -34,7 +34,7 @@ namespace Kephas.Data.Commands.Factory
         /// <param name="injector">The injector.</param>
         public DefaultDataCommandProvider(IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.injector = injector;
         }

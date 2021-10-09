@@ -12,7 +12,7 @@ namespace Kephas.Collections
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Diagnostics.CodeAnalysis;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -29,13 +29,10 @@ namespace Kephas.Collections
         /// <param name="key">The item's key.</param>
         /// <param name="defaultValue">The default value to return if the item could not be found.</param>
         /// <returns>The found value, or the default value.</returns>
-        public static TValue? TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue = default)
+        public static TValue? TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, [DisallowNull] TKey key, TValue? defaultValue = default)
         {
-            Requires.NotNull(dictionary, nameof(dictionary));
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
+            dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
+            key = key ?? throw new ArgumentNullException(nameof(key));
 
             return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
         }
@@ -52,7 +49,7 @@ namespace Kephas.Collections
         public static TDictionary Merge<TDictionary, TKey, TValue>(this TDictionary target, IDictionary<TKey, TValue>? source)
             where TDictionary : class, IDictionary<TKey, TValue>
         {
-            Requires.NotNull(target, nameof(target));
+            target = target ?? throw new ArgumentNullException(nameof(target));
 
             if (source == null)
             {

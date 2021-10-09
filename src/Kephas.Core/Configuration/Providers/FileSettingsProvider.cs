@@ -53,8 +53,8 @@ namespace Kephas.Configuration.Providers
             ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(serializationService, nameof(serializationService));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
             Requires.NotNull(mediaTypes, nameof(mediaTypes));
 
             this.AppRuntime = appRuntime;

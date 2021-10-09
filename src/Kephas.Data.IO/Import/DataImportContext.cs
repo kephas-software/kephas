@@ -40,7 +40,7 @@ namespace Kephas.Data.IO.Import
         public DataImportContext(IDataSpace dataSpace)
             : base(dataSpace)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             this.DataSpace = dataSpace;
         }

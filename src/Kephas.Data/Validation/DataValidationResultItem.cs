@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Validation
 {
+    using System;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
 
@@ -27,7 +28,7 @@ namespace Kephas.Data.Validation
         public DataValidationResultItem(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
             : base(message)
         {
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             this.MemberName = memberName;
             this.Severity = severity;

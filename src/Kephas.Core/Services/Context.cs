@@ -173,7 +173,7 @@ namespace Kephas.Services
         /// <param name="injector">The injector.</param>
         protected virtual void SetInjector(IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.AmbientServices = injector.Resolve<IAmbientServices>();
             this.Injector = injector;
@@ -207,7 +207,7 @@ namespace Kephas.Services
 
         private static IInjector GetParentInjector(IContext parentContext)
         {
-            Requires.NotNull(parentContext, nameof(parentContext));
+            parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
             Requires.NotNull(parentContext.Injector, nameof(parentContext.Injector));
 
             return parentContext.Injector;

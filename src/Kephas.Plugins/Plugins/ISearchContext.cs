@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins
 {
+    using System;
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
@@ -77,7 +78,7 @@ namespace Kephas.Plugins
         public static TContext PluginIdentity<TContext>(this TContext searchContext, AppIdentity? pluginIdentity)
             where TContext : class, ISearchContext
         {
-            Requires.NotNull(searchContext, nameof(searchContext));
+            searchContext = searchContext ?? throw new ArgumentNullException(nameof(searchContext));
 
             searchContext.PluginIdentity = pluginIdentity;
 
@@ -96,7 +97,7 @@ namespace Kephas.Plugins
         public static TContext SearchTerm<TContext>(this TContext searchContext, string? searchTerm)
             where TContext : class, ISearchContext
         {
-            Requires.NotNull(searchContext, nameof(searchContext));
+            searchContext = searchContext ?? throw new ArgumentNullException(nameof(searchContext));
 
             searchContext.SearchTerm = searchTerm;
 
@@ -115,7 +116,7 @@ namespace Kephas.Plugins
         public static TContext IncludePrerelease<TContext>(this TContext searchContext, bool includePrerelease)
             where TContext : class, ISearchContext
         {
-            Requires.NotNull(searchContext, nameof(searchContext));
+            searchContext = searchContext ?? throw new ArgumentNullException(nameof(searchContext));
 
             searchContext.IncludePrerelease = includePrerelease;
 
@@ -134,7 +135,7 @@ namespace Kephas.Plugins
         public static TContext Skip<TContext>(this TContext searchContext, int skip)
             where TContext : class, ISearchContext
         {
-            Requires.NotNull(searchContext, nameof(searchContext));
+            searchContext = searchContext ?? throw new ArgumentNullException(nameof(searchContext));
 
             searchContext.Skip = skip;
 
@@ -153,7 +154,7 @@ namespace Kephas.Plugins
         public static TContext Take<TContext>(this TContext searchContext, int take)
             where TContext : class, ISearchContext
         {
-            Requires.NotNull(searchContext, nameof(searchContext));
+            searchContext = searchContext ?? throw new ArgumentNullException(nameof(searchContext));
 
             searchContext.Take = take;
 

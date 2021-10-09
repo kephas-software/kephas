@@ -11,6 +11,7 @@
 namespace Kephas.Messaging.Events
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas;
@@ -41,8 +42,8 @@ namespace Kephas.Messaging.Events
             MessageTypeMatching messageTypeMatching)
             where TEvent : class
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             var messagingEventHub = GetMessagingEventHub(eventHub);
             return messagingEventHub.Subscribe(
@@ -70,8 +71,8 @@ namespace Kephas.Messaging.Events
             MessageTypeMatching messageTypeMatching)
             where TEvent : class
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             var messagingEventHub = GetMessagingEventHub(eventHub);
             return messagingEventHub.Subscribe(
@@ -98,9 +99,9 @@ namespace Kephas.Messaging.Events
         /// </returns>
         public static IEventSubscription Subscribe(this IEventHub eventHub, IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback)
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(match, nameof(match));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            match = match ?? throw new ArgumentNullException(nameof(match));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             var messagingEventHub = GetMessagingEventHub(eventHub);
             return messagingEventHub.Subscribe(match, callback);

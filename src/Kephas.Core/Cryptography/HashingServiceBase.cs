@@ -29,7 +29,7 @@ namespace Kephas.Cryptography
         /// <param name="contextFactory">The context factory.</param>
         public HashingServiceBase(IContextFactory contextFactory)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
 
             this.contextFactory = contextFactory;
         }
@@ -44,7 +44,7 @@ namespace Kephas.Cryptography
         /// </returns>
         public virtual byte[] Hash(byte[] value, Action<IHashingContext>? optionsConfig = null)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             var hashingContext = this.GetHashingContext(optionsConfig);
 

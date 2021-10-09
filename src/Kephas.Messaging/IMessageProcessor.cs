@@ -56,7 +56,7 @@ namespace Kephas.Messaging
         public static Task<IMessage?> ProcessAsync(this IMessageProcessor @this, object message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
         {
             Requires.NotNull(@this, nameof(@this));
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             return @this.ProcessAsync(message.ToMessage(), optionsConfig, token);
         }

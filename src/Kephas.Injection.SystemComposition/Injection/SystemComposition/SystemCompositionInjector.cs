@@ -10,9 +10,10 @@
 
 namespace Kephas.Injection.SystemComposition
 {
+    using System;
     using System.Composition;
     using System.Composition.Hosting;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Injection.SystemComposition.ExportProviders;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Kephas.Injection.SystemComposition
         /// <param name="configuration">The configuration.</param>
         protected internal SystemCompositionInjector(ContainerConfiguration configuration)
         {
-            Requires.NotNull(configuration, nameof(configuration));
+            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             // ReSharper disable once VirtualMemberCallInConstructor
             var compositionHost = this.CreateCompositionContext(configuration);

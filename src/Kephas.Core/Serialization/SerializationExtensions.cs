@@ -44,7 +44,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             if (serializedObj == null)
             {
@@ -79,7 +79,7 @@ namespace Kephas.Serialization
             Action<ISerializationContext>? optionsConfig = null)
             where TMediaType : IMediaType
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             if (serializedObj == null)
             {
@@ -115,7 +115,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             if (serializedObj == null)
             {
@@ -147,7 +147,7 @@ namespace Kephas.Serialization
             Action<ISerializationContext>? optionsConfig = null)
             where TMediaType : IMediaType
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             if (serializedObj == null)
             {
@@ -404,7 +404,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             if (obj == null)
             {
@@ -436,7 +436,7 @@ namespace Kephas.Serialization
             Action<ISerializationContext>? optionsConfig = null)
             where TMediaType : IMediaType
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             if (obj == null)
             {

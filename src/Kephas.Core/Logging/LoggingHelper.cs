@@ -10,7 +10,7 @@
 
 namespace Kephas.Logging
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
 
     /// <summary>
     /// The logging helper class.
@@ -30,7 +30,7 @@ namespace Kephas.Logging
             get => logManager;
             set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
                 logManager = value;
             }
         }

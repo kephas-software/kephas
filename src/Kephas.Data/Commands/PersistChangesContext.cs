@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Commands
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Data.Capabilities;
@@ -27,7 +28,7 @@ namespace Kephas.Data.Commands
         public PersistChangesContext(IDataContext dataContext)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         /// <summary>

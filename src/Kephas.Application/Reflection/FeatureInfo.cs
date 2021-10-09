@@ -134,7 +134,7 @@ namespace Kephas.Application.Reflection
         /// </returns>
         public static FeatureInfo FromMetadata(FeatureManagerMetadata metadata)
         {
-            Requires.NotNull(metadata, nameof(metadata));
+            metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
 
             if (metadata.FeatureInfo != null)
             {

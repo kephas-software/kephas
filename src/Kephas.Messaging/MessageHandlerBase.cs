@@ -60,7 +60,7 @@ namespace Kephas.Messaging
         /// </returns>
         async Task<IMessage?> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
             context = context ?? throw new ArgumentNullException(nameof(context));
 
             this.Logger = this.GetLogger(context);

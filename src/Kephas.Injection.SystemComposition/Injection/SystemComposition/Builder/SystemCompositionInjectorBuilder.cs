@@ -75,7 +75,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForInstance(object instance)
         {
-            Requires.NotNull(instance, nameof(instance));
+            instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
             var partBuilder = new SystemCompositionRegistrationBuilder(instance);
             partBuilder.Singleton().As(instance.GetType());
@@ -91,7 +91,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
-            Requires.NotNull(factory, nameof(factory));
+            factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
             var partBuilder = new SystemCompositionRegistrationBuilder(factory);
             partBuilder.As(type);

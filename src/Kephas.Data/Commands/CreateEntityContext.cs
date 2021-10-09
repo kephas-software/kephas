@@ -27,8 +27,8 @@ namespace Kephas.Data.Commands
         public CreateEntityContext(IDataContext dataContext, Type entityType)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             this.EntityType = entityType;
         }
@@ -55,7 +55,7 @@ namespace Kephas.Data.Commands
         public CreateEntityContext(IDataContext dataContext)
             : base(dataContext, typeof(T))
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Kephas.Application.AspNetCore.Controllers
             get => this.lazyLogger.Value;
             protected internal set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
                 this.lazyLogger = new Lazy<ILogger>(() => value);
             }
         }

@@ -56,7 +56,7 @@ namespace Kephas.Configuration
             ILogManager? logManager = null)
         {
             Requires.NotNull(settingsProviderSelector, nameof(settingsProviderSelector));
-            Requires.NotNull(appRuntime, nameof(appRuntime));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
             Requires.NotNull(lazyEventHub, nameof(lazyEventHub));
 
             this.settingsProviderSelector = settingsProviderSelector;

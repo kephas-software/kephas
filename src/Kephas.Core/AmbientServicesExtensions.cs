@@ -692,7 +692,7 @@ namespace Kephas
         public static IAmbientServices WithDefaultLicensingManager(this IAmbientServices ambientServices, IEncryptionService encryptionService)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(encryptionService, nameof(encryptionService));
+            encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
             const string LicenseRepositoryKey = "__LicenseRepository";
             ambientServices.Register<ILicensingManager>(new DefaultLicensingManager(appid =>
@@ -738,7 +738,7 @@ namespace Kephas
         public static IAmbientServices WithAppRuntime(this IAmbientServices ambientServices, IAppRuntime appRuntime)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(appRuntime, nameof(appRuntime));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
             var existingAppRuntime = ambientServices.AppRuntime;
             if (existingAppRuntime != null && existingAppRuntime != appRuntime)
@@ -766,7 +766,7 @@ namespace Kephas
         public static IAmbientServices WithInjector(this IAmbientServices ambientServices, IInjector injector)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             ambientServices.Register(injector);
 

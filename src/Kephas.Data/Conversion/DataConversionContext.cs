@@ -34,8 +34,8 @@ namespace Kephas.Data.Conversion
             Type? rootTargetType = null)
             : base(dataSpace)
         {
-            Requires.NotNull(conversionService, nameof(conversionService));
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             this.DataSpace = dataSpace;
             this.DataConversionService = conversionService;

@@ -411,7 +411,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             context.ReplyTo(message.Id, message.Sender, message.Trace);
             context.BrokeredMessage.BearerToken = message.BearerToken;

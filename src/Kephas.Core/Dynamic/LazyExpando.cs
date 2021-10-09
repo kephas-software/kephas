@@ -48,7 +48,7 @@ namespace Kephas.Dynamic
         public LazyExpando(IDictionary<string, object?> dictionary, Func<string, object?>? valueResolver = null)
             : base(dictionary)
         {
-            Requires.NotNull(dictionary, nameof(dictionary));
+            dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
 
             this.innerDictionary = dictionary;
             this.ValueResolver = valueResolver;

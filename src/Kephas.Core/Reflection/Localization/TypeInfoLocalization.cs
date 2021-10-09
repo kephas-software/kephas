@@ -10,9 +10,8 @@
 
 namespace Kephas.Reflection.Localization
 {
+    using System;
     using System.Collections.Generic;
-
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The type info localization.
@@ -65,7 +64,7 @@ namespace Kephas.Reflection.Localization
             get => this.members;
             protected internal set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
 
                 this.members = value;
             }

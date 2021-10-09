@@ -144,8 +144,8 @@ namespace Kephas.Data.LLBLGen
 
             set
             {
-                Requires.NotNull(key, nameof(key));
-                Requires.NotNull(value, nameof(value));
+                key = key ?? throw new ArgumentNullException(nameof(key));
+                value = value ?? throw new ArgumentNullException(nameof(value));
 
                 if (!key.Equals(value.Id))
                 {
@@ -189,7 +189,7 @@ namespace Kephas.Data.LLBLGen
         /// <param name="value">The object to add.</param>
         public void Add(IEntityEntry value)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             this.AddCore(value);
 
@@ -213,7 +213,7 @@ namespace Kephas.Data.LLBLGen
         /// </returns>
         public bool Remove(IEntityEntry value)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             var result = this.RemoveCore(value);
             if (result)
@@ -282,8 +282,8 @@ namespace Kephas.Data.LLBLGen
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
         void IDictionary<object, IEntityEntry>.Add(object key, IEntityEntry value)
         {
-            Requires.NotNull(key, nameof(key));
-            Requires.NotNull(value, nameof(value));
+            key = key ?? throw new ArgumentNullException(nameof(key));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             if (value.Id != key)
             {

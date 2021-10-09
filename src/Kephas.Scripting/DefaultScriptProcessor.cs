@@ -55,7 +55,7 @@ namespace Kephas.Scripting
             ICollection<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
             : base(contextFactory)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(languageServiceFactories, nameof(languageServiceFactories));
             Requires.NotNull(scriptingBehaviorFactories, nameof(scriptingBehaviorFactories));
 

@@ -10,6 +10,7 @@
 
 namespace Kephas.Data
 {
+    using System;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -25,7 +26,7 @@ namespace Kephas.Data
         public DataOperationContext(IDataContext dataContext)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             this.DataContext = dataContext;
         }

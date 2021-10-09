@@ -34,7 +34,7 @@ namespace Kephas.Operations
         public static TResult Value<TResult>(this TResult result, object? value)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             result.Value = value;
 
@@ -54,7 +54,7 @@ namespace Kephas.Operations
         public static TResult Value<TResult, TValue>(this TResult result, TValue value)
             where TResult : class, IOperationResult<TValue>
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             result.Value = value;
 
@@ -74,7 +74,7 @@ namespace Kephas.Operations
         public static TResult Complete<TResult>(this TResult result, TimeSpan? elapsed = null, OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             result.Elapsed = result.ComputeElapsed(elapsed);
             result.PercentCompleted = 1;
@@ -97,8 +97,8 @@ namespace Kephas.Operations
         public static TResult Fail<TResult>(this TResult result, Exception exception, TimeSpan? elapsed = null, OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
-            Requires.NotNull(exception, nameof(exception));
+            result = result ?? throw new ArgumentNullException(nameof(result));
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
             result.Elapsed = result.ComputeElapsed(elapsed);
             result.OperationState = operationState ?? GetOperationState(exception);
@@ -119,7 +119,7 @@ namespace Kephas.Operations
         public static TResult OperationState<TResult>(this TResult result, OperationState state)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             result.OperationState = state;
 
@@ -138,8 +138,8 @@ namespace Kephas.Operations
         public static TResult MergeException<TResult>(this TResult result, Exception ex)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
-            Requires.NotNull(ex, nameof(ex));
+            result = result ?? throw new ArgumentNullException(nameof(result));
+            ex = ex ?? throw new ArgumentNullException(nameof(ex));
 
             result.Exceptions.Add(ex);
 
@@ -158,8 +158,8 @@ namespace Kephas.Operations
         public static TResult MergeMessage<TResult>(this TResult result, string message)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
-            Requires.NotNull(message, nameof(message));
+            result = result ?? throw new ArgumentNullException(nameof(result));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             result.Messages.Add(new OperationMessage(message));
 
@@ -178,8 +178,8 @@ namespace Kephas.Operations
         public static TResult MergeMessage<TResult>(this TResult result, IOperationMessage message)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
-            Requires.NotNull(message, nameof(message));
+            result = result ?? throw new ArgumentNullException(nameof(result));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             result.Messages.Add(message);
 
@@ -198,7 +198,7 @@ namespace Kephas.Operations
         public static TResult MergeMessages<TResult>(this TResult result, IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             if (resultToMerge == null)
             {
@@ -223,7 +223,7 @@ namespace Kephas.Operations
         public static TResult MergeMessages<TResult>(this TResult result, Task<IOperationResult> asyncResult)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
             Requires.NotNull(asyncResult, nameof(asyncResult));
 
             if (!asyncResult.IsCompleted && !asyncResult.IsCanceled && !asyncResult.IsFaulted)
@@ -248,7 +248,7 @@ namespace Kephas.Operations
         public static TResult MergeAll<TResult>(this TResult result, IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             if (resultToMerge == null)
             {
@@ -272,7 +272,7 @@ namespace Kephas.Operations
         /// </returns>
         public static bool HasErrors(this IOperationResult result)
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             return result.Exceptions.Any(
                 e => (e is ISeverityQualifiedNotification qex
@@ -289,7 +289,7 @@ namespace Kephas.Operations
         /// </returns>
         public static bool HasWarnings(this IOperationResult result)
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             return result.Exceptions.Any(
                 e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
@@ -304,7 +304,7 @@ namespace Kephas.Operations
         /// </returns>
         public static IEnumerable<Exception> Warnings(this IOperationResult result)
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             return result.Exceptions.Where(
                 e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
@@ -316,7 +316,7 @@ namespace Kephas.Operations
         /// <param name="result">The operation result.</param>
         public static void ThrowIfHasErrors(this IOperationResult result)
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             var exceptions = result.Exceptions.Where(
                 e => (e is ISeverityQualifiedNotification qex
@@ -360,7 +360,7 @@ namespace Kephas.Operations
         /// <returns>The failed operation result.</returns>
         public static IOperationResult<TValue> ToOperationResult<TValue>(this Exception exception, TimeSpan? elapsed = null)
         {
-            Requires.NotNull(exception, nameof(exception));
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
             var state = GetOperationState(exception);
             return new OperationResult<TValue>()

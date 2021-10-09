@@ -54,7 +54,7 @@ namespace Kephas.Serialization.Json
             ICollection<IExportFactory<IJsonConverter, AppServiceMetadata>>? jsonConverters = null)
             : base(logManager)
         {
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
             Requires.NotNull(typeRegistry, nameof(typeRegistry));
 
             this.TypeResolver = typeResolver;

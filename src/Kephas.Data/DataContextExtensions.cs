@@ -39,7 +39,7 @@ namespace Kephas.Data
         /// </returns>
         public static IEntityEntry Detach(this IDataContext dataContext, object entity)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(entity, nameof(entity));
 
             var entityEntry = dataContext.GetEntityEntry(entity);
@@ -57,7 +57,7 @@ namespace Kephas.Data
         public static TCommand CreateCommand<TCommand>(this IDataContext dataContext)
             where TCommand : IDataCommand
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             return (TCommand)dataContext.CreateCommand(typeof(TCommand));
         }
@@ -76,8 +76,8 @@ namespace Kephas.Data
             Type entityType,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             var operationContext = new CreateEntityContext(dataContext, entityType);
 
@@ -98,8 +98,8 @@ namespace Kephas.Data
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(operationContext, nameof(operationContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
 
             return CreateCoreAsync(dataContext, operationContext, cancellationToken);
         }
@@ -118,7 +118,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             var operationContext = new CreateEntityContext<T>(dataContext);
             return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
@@ -140,8 +140,8 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(operationContext, nameof(operationContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
 
             return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
         }
@@ -164,8 +164,8 @@ namespace Kephas.Data
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             var findContext = new FindContext(dataContext, entityType, id, throwIfNotFound);
             return FindCoreAsync(dataContext, findContext, cancellationToken);
@@ -185,7 +185,7 @@ namespace Kephas.Data
             IFindContext findContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(findContext, nameof(findContext));
 
             return FindCoreAsync(dataContext, findContext, cancellationToken);
@@ -207,7 +207,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(findContext, nameof(findContext));
 
             return (T)await FindCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
@@ -231,7 +231,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
             return (T)await FindCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
@@ -251,7 +251,7 @@ namespace Kephas.Data
             IFindOneContext findContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(findContext, nameof(findContext));
 
             return await FindOneCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
@@ -273,7 +273,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(findContext, nameof(findContext));
 
             return (T)await FindOneCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
@@ -297,7 +297,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(criteria, nameof(criteria));
 
             var findOneContext = new FindOneContext<T>(dataContext, criteria, throwIfNotFound);
@@ -318,7 +318,7 @@ namespace Kephas.Data
             IPersistChangesContext? persistContext = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             persistContext ??= new PersistChangesContext(dataContext);
             if (persistContext.DataContext != dataContext)
@@ -340,7 +340,7 @@ namespace Kephas.Data
         /// </returns>
         public static IOperationResult DiscardChanges(this IDataContext dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             var command = (IDiscardChangesCommand)dataContext.CreateCommand(typeof(IDiscardChangesCommand));
             var persistContext = new DiscardChangesContext(dataContext);
@@ -357,7 +357,7 @@ namespace Kephas.Data
         public static void Delete<T>(this IDataContext dataContext, params T[] entities)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(entities, nameof(entities));
 
             var command = (IDeleteEntityCommand)dataContext.CreateCommand(typeof(IDeleteEntityCommand));
@@ -374,7 +374,7 @@ namespace Kephas.Data
         public static void Delete<T>(this IDataContext dataContext, IEnumerable<T> entities)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(entities, nameof(entities));
 
             var command = (IDeleteEntityCommand)dataContext.CreateCommand(typeof(IDeleteEntityCommand));
@@ -399,7 +399,7 @@ namespace Kephas.Data
             IBulkDeleteContext bulkDeleteContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(bulkDeleteContext, nameof(bulkDeleteContext));
 
             return await BulkDeleteCoreAsync(dataContext, bulkDeleteContext, cancellationToken).PreserveThreadContext();
@@ -426,7 +426,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(criteria, nameof(criteria));
 
             var bulkDeleteContext = new BulkDeleteContext<T>(dataContext, criteria, throwIfNotFound);
@@ -456,7 +456,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(criteria, nameof(criteria));
             Requires.NotNull(values, nameof(values));
 
@@ -481,7 +481,7 @@ namespace Kephas.Data
             IBulkUpdateContext bulkUpdateContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(bulkUpdateContext, nameof(bulkUpdateContext));
 
             return await BulkUpdateCoreAsync(dataContext, bulkUpdateContext, cancellationToken).PreserveThreadContext();
@@ -498,7 +498,7 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<object?> ExecuteAsync(this IDataContext dataContext, string commandText, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNullOrEmpty(commandText, nameof(commandText));
 
             var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
@@ -520,7 +520,7 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<object?> ExecuteAsync(this IDataContext dataContext, IExecuteContext executeContext, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             Requires.NotNull(executeContext, nameof(executeContext));
 
             if (executeContext.DataContext != dataContext)

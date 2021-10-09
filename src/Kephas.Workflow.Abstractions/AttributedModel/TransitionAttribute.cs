@@ -27,8 +27,8 @@ namespace Kephas.Workflow.AttributedModel
         /// <param name="to">The target state.</param>
         public TransitionAttribute(object from, object to)
         {
-            Requires.NotNull(from, nameof(from));
-            Requires.NotNull(to, nameof(to));
+            from = from ?? throw new ArgumentNullException(nameof(from));
+            to = to ?? throw new ArgumentNullException(nameof(to));
 
             this.From = new[] { from };
             this.To = to;
@@ -42,7 +42,7 @@ namespace Kephas.Workflow.AttributedModel
         public TransitionAttribute(object[] from, object to)
         {
             Requires.NotNullOrEmpty(from, nameof(from));
-            Requires.NotNull(to, nameof(to));
+            to = to ?? throw new ArgumentNullException(nameof(to));
 
             this.From = from;
             this.To = to;

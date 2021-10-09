@@ -73,7 +73,7 @@ namespace Kephas.Messaging
         {
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
             Requires.NotNull(messageMatch, nameof(messageMatch));
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             return messageMatchService.IsMatch(
                 messageMatch,

@@ -40,7 +40,7 @@ namespace Kephas.Orchestration.Diagnostics
         /// <param name="logManager">Optional. Manager for log.</param>
         public ProcessStarterFactory(IAppRuntime appRuntime, ILogManager? logManager = null)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
             if (!RuntimeEnvironment.IsWindows())
             {

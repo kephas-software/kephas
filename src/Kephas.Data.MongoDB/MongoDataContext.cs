@@ -33,8 +33,7 @@ namespace Kephas.Data.MongoDB
     [SupportedDataStoreKinds(DataStoreKind.MongoDB)]
     public class MongoDataContext : DataContextBase
     {
-        private static readonly ConcurrentDictionary<string, MongoClient> MongoClients =
-            new ConcurrentDictionary<string, MongoClient>();
+        private static readonly ConcurrentDictionary<string, MongoClient> MongoClients = new ();
 
         private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly IMongoNamingStrategy namingStrategy;
@@ -55,7 +54,7 @@ namespace Kephas.Data.MongoDB
             IMongoNamingStrategy namingStrategy)
             : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
             Requires.NotNull(typeRegistry, nameof(typeRegistry));

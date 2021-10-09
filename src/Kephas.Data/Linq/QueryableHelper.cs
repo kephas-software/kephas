@@ -112,7 +112,7 @@ namespace Kephas.Data.Linq
         public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             query = query ?? throw new ArgumentNullException(nameof(query));
-            Requires.NotNull(predicate, nameof(predicate));
+            predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
@@ -175,7 +175,7 @@ namespace Kephas.Data.Linq
         public static Task<T> SingleAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             query = query ?? throw new ArgumentNullException(nameof(query));
-            Requires.NotNull(predicate, nameof(predicate));
+            predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
@@ -238,7 +238,7 @@ namespace Kephas.Data.Linq
         public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             query = query ?? throw new ArgumentNullException(nameof(query));
-            Requires.NotNull(predicate, nameof(predicate));
+            predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
@@ -301,7 +301,7 @@ namespace Kephas.Data.Linq
         public static Task<T> FirstAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             query = query ?? throw new ArgumentNullException(nameof(query));
-            Requires.NotNull(predicate, nameof(predicate));
+            predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {

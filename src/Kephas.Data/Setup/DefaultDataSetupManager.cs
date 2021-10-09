@@ -39,7 +39,7 @@ namespace Kephas.Data.Setup
         /// <param name="dataInstallerFactories">The data installer factories.</param>
         public DefaultDataSetupManager(IContextFactory contextFactory, ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(dataInstallerFactories, nameof(dataInstallerFactories));
 
             this.contextFactory = contextFactory;

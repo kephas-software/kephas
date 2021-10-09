@@ -103,7 +103,7 @@ namespace Kephas.Plugins
         /// </returns>
         public static PluginData Parse(string value, bool throwOnInvalid = true)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             var splits = value.Split('\n');
             var appId = AppIdentity.Parse(splits[0]);

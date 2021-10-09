@@ -40,7 +40,7 @@ namespace Kephas.Data.IO.DataStreams
             ISerializationService serializationService,
             IMediaTypeProvider mediaTypeProvider)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
             Requires.NotNull(mediaTypeProvider, nameof(mediaTypeProvider));
 
             this.serializationService = serializationService;

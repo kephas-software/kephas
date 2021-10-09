@@ -10,9 +10,9 @@
 
 namespace Kephas.Testing.Injection
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using Autofac;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Autofac;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -20,7 +20,7 @@ namespace Kephas.Testing.Injection
     {
         public static AutofacInjector CreateInjector(this ContainerBuilder configuration)
         {
-            Requires.NotNull(configuration, nameof(configuration));
+            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             return new AutofacInjector(configuration);
         }

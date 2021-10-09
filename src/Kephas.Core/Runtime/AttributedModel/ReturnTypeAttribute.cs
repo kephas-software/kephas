@@ -26,7 +26,7 @@ namespace Kephas.Runtime.AttributedModel
         /// <param name="value">The type of the return value.</param>
         public ReturnTypeAttribute(Type value)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             this.Value = value;
         }

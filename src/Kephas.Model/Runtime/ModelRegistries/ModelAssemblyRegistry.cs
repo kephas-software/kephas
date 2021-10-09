@@ -53,7 +53,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
             ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
             Requires.NotNull(typeLoader, nameof(typeLoader));
             Requires.NotNull(modelAssemblyAttributeProvider, nameof(modelAssemblyAttributeProvider));
 

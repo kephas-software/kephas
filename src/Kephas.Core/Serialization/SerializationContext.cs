@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Serialization
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Net.Mime;
     using Kephas.Services;
 
@@ -31,7 +31,7 @@ namespace Kephas.Serialization
         public SerializationContext(IInjector injector, ISerializationService serializationService, Type? mediaType = null)
             : base(injector)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
+            serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             this.SerializationService = serializationService;
             this.MediaType = mediaType;

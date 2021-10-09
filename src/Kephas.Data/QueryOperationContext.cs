@@ -28,7 +28,7 @@ namespace Kephas.Data
         public QueryOperationContext(IDataContext dataContext)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace Kephas.Data
 
             set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
 
                 isTemporary = value;
             }
@@ -85,7 +85,7 @@ namespace Kephas.Data
 
             set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
 
                 isEmpty = value;
             }

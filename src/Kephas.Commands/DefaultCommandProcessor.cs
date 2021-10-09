@@ -10,6 +10,7 @@
 
 namespace Kephas.Commands
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -43,7 +44,7 @@ namespace Kephas.Commands
         {
             Requires.NotNull(resolver, nameof(resolver));
             Requires.NotNull(identityResolver, nameof(identityResolver));
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
 
             this.resolver = resolver;
             this.identityResolver = identityResolver;

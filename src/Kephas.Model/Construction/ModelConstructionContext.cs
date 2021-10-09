@@ -32,7 +32,7 @@ namespace Kephas.Model.Construction
         public ModelConstructionContext(IContext parentContext)
             : base(parentContext)
         {
-            Requires.NotNull(parentContext, nameof(parentContext));
+            parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
 
             this.Logger = parentContext.AmbientServices.GetLogger(this.GetType());
         }
@@ -44,7 +44,7 @@ namespace Kephas.Model.Construction
         public ModelConstructionContext(IInjector injector)
             : base(injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.Logger = injector.GetLogger(this.GetType());
         }

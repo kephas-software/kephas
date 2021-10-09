@@ -18,6 +18,7 @@
 
 namespace Kephas.Dynamic
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
@@ -78,7 +79,7 @@ namespace Kephas.Dynamic
         public Expando(IDictionary<string, object?> dictionary)
             : base(dictionary)
         {
-            Requires.NotNull(dictionary, nameof(dictionary));
+            dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
         }
 
         /// <summary>

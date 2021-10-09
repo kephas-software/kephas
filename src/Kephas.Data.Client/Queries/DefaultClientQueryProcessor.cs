@@ -60,10 +60,10 @@ namespace Kephas.Data.Client.Queries
             IExportFactory<IDataSpace> dataSpaceFactory,
             IRuntimeTypeRegistry typeRegistry)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(clientQueryConverter, nameof(clientQueryConverter));
-            Requires.NotNull(conversionService, nameof(conversionService));
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
             Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
             Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 

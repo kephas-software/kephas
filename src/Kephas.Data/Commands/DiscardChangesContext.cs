@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Commands
 {
+    using System;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -24,7 +25,7 @@ namespace Kephas.Data.Commands
         public DiscardChangesContext(IDataContext dataContext)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
     }
 }

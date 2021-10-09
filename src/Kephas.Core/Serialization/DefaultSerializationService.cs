@@ -41,7 +41,7 @@ namespace Kephas.Serialization
         /// <param name="serializerFactories">The serializer factories.</param>
         public DefaultSerializationService(IContextFactory contextFactory, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
             this.serializerFactories = serializerFactories.OrderAsDictionary(f => f.Metadata.MediaType);

@@ -44,7 +44,7 @@ namespace Kephas.Reflection
         public DefaultTypeResolver(IAppRuntime appRuntime, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
             this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
             this.getAppAssemblies = () => appRuntime.GetAppAssemblies();

@@ -80,12 +80,12 @@ namespace Kephas.Orchestration
             ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(eventHub, nameof(eventHub));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
             Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(messageProcessor, nameof(messageProcessor));
+            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
             Requires.NotNull(processStarterFactoryFactory, nameof(processStarterFactoryFactory));
-            Requires.NotNull(configuration, nameof(configuration));
+            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             Requires.NotNull(hostInfoProvider, nameof(hostInfoProvider));
 
             this.AppRuntime = appRuntime;

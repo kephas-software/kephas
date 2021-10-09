@@ -68,7 +68,7 @@ namespace Kephas.Data.Conversion
             ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
             : base(injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             Requires.NotNull(converterExportFactories, nameof(converterExportFactories));
             Requires.NotNull(targetResolverFactories, nameof(targetResolverFactories));
 

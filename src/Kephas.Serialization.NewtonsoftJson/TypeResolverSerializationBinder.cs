@@ -12,7 +12,6 @@ namespace Kephas.Serialization.Json
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     using Newtonsoft.Json.Serialization;
@@ -33,7 +32,7 @@ namespace Kephas.Serialization.Json
         /// <param name="typeResolver">The type resolver.</param>
         public TypeResolverSerializationBinder(ITypeResolver typeResolver)
         {
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
 
             this.typeResolver = typeResolver;
         }

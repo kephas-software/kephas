@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Workflow
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Kephas.Workflow
         public ActivityContext(IActivityContext parentContext, bool isThreadSafe = false)
             : base(parentContext, isThreadSafe)
         {
-            Requires.NotNull(parentContext, nameof(parentContext));
+            parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
 
             this.WorkflowProcessor = parentContext.WorkflowProcessor;
         }

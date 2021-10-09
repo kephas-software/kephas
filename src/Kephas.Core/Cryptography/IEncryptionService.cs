@@ -138,10 +138,10 @@ namespace Kephas.Cryptography
             Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(encryptionService, nameof(encryptionService));
+            encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
-            using var inputStream = new MemoryStream(input);
-            using var outputStream = new MemoryStream();
+            await using var inputStream = new MemoryStream(input);
+            await using var outputStream = new MemoryStream();
 
             await encryptionService.EncryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
             var outputBytes = outputStream.ToArray();
@@ -180,7 +180,7 @@ namespace Kephas.Cryptography
             byte[] input,
             Action<IEncryptionContext>? optionsConfig = null)
         {
-            Requires.NotNull(encryptionService, nameof(encryptionService));
+            encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
             using var inputStream = new MemoryStream(input);
             using var outputStream = new MemoryStream();
@@ -231,10 +231,10 @@ namespace Kephas.Cryptography
             Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(encryptionService, nameof(encryptionService));
+            encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
-            using var inputStream = new MemoryStream(input);
-            using var outputStream = new MemoryStream();
+            await using var inputStream = new MemoryStream(input);
+            await using var outputStream = new MemoryStream();
 
             await encryptionService.DecryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
             var outputBytes = outputStream.ToArray();
@@ -273,7 +273,7 @@ namespace Kephas.Cryptography
             byte[] input,
             Action<IEncryptionContext>? optionsConfig = null)
         {
-            Requires.NotNull(encryptionService, nameof(encryptionService));
+            encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
             using var inputStream = new MemoryStream(input);
             using var outputStream = new MemoryStream();

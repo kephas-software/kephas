@@ -58,7 +58,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override async Task<IFindResult> ExecuteAsync(TFindContext operationContext, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(operationContext, nameof(operationContext));
+            operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
             Requires.NotNull(operationContext.DataContext, nameof(operationContext.DataContext));
             Requires.NotNull(operationContext.EntityType, nameof(operationContext.EntityType));
 

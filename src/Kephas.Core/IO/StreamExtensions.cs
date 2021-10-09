@@ -10,6 +10,7 @@
 
 namespace Kephas.IO
 {
+    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Kephas.IO
         /// </returns>
         public static string ReadAllString(this Stream input)
         {
-            Requires.NotNull(input, nameof(input));
+            input = input ?? throw new ArgumentNullException(nameof(input));
 
             using var reader = new StreamReader(input);
             return reader.ReadToEnd();
@@ -46,7 +47,7 @@ namespace Kephas.IO
         /// </returns>
         public static async Task<string> ReadAllStringAsync(this Stream input)
         {
-            Requires.NotNull(input, nameof(input));
+            input = input ?? throw new ArgumentNullException(nameof(input));
 
             using var reader = new StreamReader(input);
             return await reader.ReadToEndAsync().PreserveThreadContext();
@@ -61,7 +62,7 @@ namespace Kephas.IO
         /// </returns>
         public static byte[] ReadAllBytes(this Stream input)
         {
-            Requires.NotNull(input, nameof(input));
+            input = input ?? throw new ArgumentNullException(nameof(input));
 
             using var mem = new MemoryStream();
 
@@ -87,7 +88,7 @@ namespace Kephas.IO
         /// </returns>
         public static async Task<byte[]> ReadAllBytesAsync(this Stream input, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(input, nameof(input));
+            input = input ?? throw new ArgumentNullException(nameof(input));
 
             using var mem = new MemoryStream();
 

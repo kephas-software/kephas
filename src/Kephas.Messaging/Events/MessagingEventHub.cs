@@ -57,8 +57,8 @@ namespace Kephas.Messaging.Events
         /// </returns>
         public virtual IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext?, CancellationToken, Task> callback)
         {
-            Requires.NotNull(match, nameof(match));
-            Requires.NotNull(callback, nameof(callback));
+            match = match ?? throw new ArgumentNullException(nameof(match));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             bool FuncMatch(object e) => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e), this.messageMatchService.GetMessageId(e));
             return this.Subscribe(FuncMatch, callback);

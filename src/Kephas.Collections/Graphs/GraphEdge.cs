@@ -10,7 +10,8 @@
 
 namespace Kephas.Graphs
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -25,8 +26,8 @@ namespace Kephas.Graphs
         /// <param name="to">The node where the edge ends.</param>
         protected internal GraphEdge(GraphNode from, GraphNode to)
         {
-            Requires.NotNull(from, nameof(from));
-            Requires.NotNull(to, nameof(to));
+            from = from ?? throw new ArgumentNullException(nameof(from));
+            to = to ?? throw new ArgumentNullException(nameof(to));
 
             this.From = from;
             this.To = to;

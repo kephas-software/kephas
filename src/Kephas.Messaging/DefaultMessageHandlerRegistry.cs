@@ -67,8 +67,8 @@ namespace Kephas.Messaging
         /// </returns>
         public IMessageHandlerRegistry RegisterHandler(IMessageHandler handler, MessageHandlerMetadata metadata)
         {
-            Requires.NotNull(handler, nameof(handler));
-            Requires.NotNull(metadata, nameof(metadata));
+            handler = handler ?? throw new ArgumentNullException(nameof(handler));
+            metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
 
             this.handlerRegistry.Add(new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, metadata));
             this.ResetFactoryCache(metadata.MessageMatch);

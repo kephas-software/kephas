@@ -37,7 +37,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// </returns>
         public static MethodInfo GetMethodInfo<T1, T2, T3, T4, T5>(Expression<Func<T1, T2, T3, T4, T5>> expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             return ((MethodCallExpression)expression.Body).Method;
         }
@@ -55,7 +55,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// </returns>
         public static MethodInfo GetMethodInfo<T1, T2, T3, T4>(Expression<Func<T1, T2, T3, T4>> expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             return ((MethodCallExpression)expression.Body).Method;
         }
@@ -72,7 +72,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// </returns>
         public static MethodInfo GetMethodInfo<T1, T2, T3>(Expression<Func<T1, T2, T3>> expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             return ((MethodCallExpression)expression.Body).Method;
         }
@@ -88,7 +88,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// </returns>
         public static MethodInfo GetMethodInfo<T1, T2>(Expression<Func<T1, T2>> expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             return ((MethodCallExpression)expression.Body).Method;
         }
@@ -103,7 +103,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// </returns>
         public static MethodInfo GetMethodInfo<T1>(Expression<Func<T1>> expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             return ((MethodCallExpression)expression.Body).Method;
         }

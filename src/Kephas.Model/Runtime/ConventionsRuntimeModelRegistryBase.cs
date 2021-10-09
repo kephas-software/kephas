@@ -59,7 +59,7 @@ namespace Kephas.Model.Runtime
             ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
             this.TypeResolver = typeResolver;
 
             this.Conventions = contextFactory.CreateContext<ModelRegistryConventions>();
@@ -134,7 +134,7 @@ namespace Kephas.Model.Runtime
 
         private static IEnumerable<Type> ResolveTypes(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
             Requires.NotNull(typeLoader, nameof(typeLoader));
 
             var assemblies = appRuntime.GetAppAssemblies();

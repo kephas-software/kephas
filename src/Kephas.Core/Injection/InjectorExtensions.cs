@@ -78,7 +78,7 @@ namespace Kephas.Injection
         [Pure]
         public static ILogger GetLogger(this IInjector injector, string loggerName)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             Requires.NotNullOrEmpty(loggerName, nameof(loggerName));
 
             return injector.Resolve<ILogManager>().GetLogger(loggerName);
@@ -95,7 +95,7 @@ namespace Kephas.Injection
         [Pure]
         public static ILogger GetLogger(this IInjector injector, Type type)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             type = type ?? throw new ArgumentNullException(nameof(type));
 
             return injector.Resolve<ILogManager>().GetLogger(type);
@@ -112,7 +112,7 @@ namespace Kephas.Injection
         [Pure]
         public static ILogger<T> GetLogger<T>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             return new TypedLogger<T>(injector.Resolve<ILogManager>());
         }
@@ -126,7 +126,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IServiceProvider ToServiceProvider(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             return injector as IServiceProvider
                    ?? new ServiceProviderAdapter(injector);
@@ -157,7 +157,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IExportFactory<T> GetExportFactory<T>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (IExportFactoryImporter)injector.Resolve(importerType);
@@ -175,7 +175,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IExportFactory<T, TMetadata> GetExportFactory<T, TMetadata>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (IExportFactoryImporter)injector.Resolve(importerType);
@@ -192,7 +192,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IEnumerable<IExportFactory<T>> GetExportFactories<T>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             var importerType = typeof(ICollectionExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (ICollectionExportFactoryImporter)injector.Resolve(importerType);
@@ -210,7 +210,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IEnumerable<IExportFactory<T, TMetadata>> GetExportFactories<T, TMetadata>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             var importerType = typeof(ICollectionExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (ICollectionExportFactoryImporter)injector.Resolve(importerType);
@@ -227,7 +227,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IExportFactory<T>? TryGetExportFactory<T>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (IExportFactoryImporter?)injector.TryResolve(importerType);
@@ -245,7 +245,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IExportFactory<T, TMetadata>? TryGetExportFactory<T, TMetadata>(this IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (IExportFactoryImporter?)injector.TryResolve(importerType);
@@ -262,7 +262,7 @@ namespace Kephas.Injection
         /// </returns>
         public static object GetExportFactory(this IInjector injector, Type contractType)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             var getExport = GetExportFactory1Method.MakeGenericMethod(contractType);
@@ -280,7 +280,7 @@ namespace Kephas.Injection
         /// </returns>
         public static object GetExportFactory(this IInjector injector, Type contractType, Type metadataType)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(metadataType, nameof(metadataType));
 
@@ -298,7 +298,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IEnumerable GetExportFactories(this IInjector injector, Type contractType)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             var getExport = GetExportFactories1Method.MakeGenericMethod(contractType);
@@ -316,7 +316,7 @@ namespace Kephas.Injection
         /// </returns>
         public static IEnumerable GetExportFactories(this IInjector injector, Type contractType, Type metadataType)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             Requires.NotNull(metadataType, nameof(metadataType));
 

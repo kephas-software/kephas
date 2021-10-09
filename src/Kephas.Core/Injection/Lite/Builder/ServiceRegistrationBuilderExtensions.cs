@@ -32,7 +32,7 @@ namespace Kephas.Injection.Lite.Builder
         public static IServiceRegistrationBuilder WithFactory(this IServiceRegistrationBuilder builder, Func<object> factory)
         {
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
-            Requires.NotNull(factory, nameof(factory));
+            factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
             return builder.ForFactory(ctx => factory());
         }

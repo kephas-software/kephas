@@ -30,8 +30,8 @@ namespace Kephas.Data.Commands
         public FindOneContext(IDataContext dataContext, Type entityType, Expression criteria, bool throwIfNotFound = true)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
             Requires.NotNull(criteria, nameof(criteria));
 
             this.EntityType = entityType;
@@ -79,7 +79,7 @@ namespace Kephas.Data.Commands
         public FindOneContext(IDataContext dataContext, Expression<Func<T, bool>> criteria, bool throwIfNotFound = true)
             : base(dataContext, typeof(T), criteria, throwIfNotFound)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         /// <summary>

@@ -106,7 +106,7 @@ namespace Kephas.Data.Linq
         /// </returns>
         public virtual IQueryable CreateQuery(Expression expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             var elementType = expression.Type.TryGetEnumerableItemType();
             var createQuery = CreateQueryMethod.MakeGenericMethod(elementType);
@@ -126,7 +126,7 @@ namespace Kephas.Data.Linq
         /// </returns>
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             var nativeQuery = this.NativeQueryProvider.CreateQuery<TElement>(expression);
             return this.CreateQuery(nativeQuery);
@@ -137,7 +137,7 @@ namespace Kephas.Data.Linq
         /// <param name="expression">An expression tree that represents a LINQ query.</param>
         public virtual object Execute(Expression expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             var expressionType = expression.Type;
             var expressionElementType = expressionType.TryGetEnumerableItemType();
@@ -156,7 +156,7 @@ namespace Kephas.Data.Linq
         /// <typeparam name="TResult">The type of the value that results from executing the query.</typeparam>
         public virtual TResult Execute<TResult>(Expression expression)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             var executionResult = this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
             return this.AttachEntitiesToDataContext(executionResult);
@@ -175,7 +175,7 @@ namespace Kephas.Data.Linq
         /// </returns>
         public virtual async Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(expression, nameof(expression));
+            expression = expression ?? throw new ArgumentNullException(nameof(expression));
 
             var expressionType = expression.Type;
             var expressionElementType = expressionType.TryGetEnumerableItemType();

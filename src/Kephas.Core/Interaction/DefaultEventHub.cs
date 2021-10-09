@@ -119,8 +119,8 @@ namespace Kephas.Interaction
         /// </returns>
         public virtual IEventSubscription Subscribe(Func<object, bool> match, Func<object, IContext?, CancellationToken, Task> callback)
         {
-            Requires.NotNull(match, nameof(match));
-            Requires.NotNull(callback, nameof(callback));
+            match = match ?? throw new ArgumentNullException(nameof(match));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             var subscription = new EventSubscription(
                 match,

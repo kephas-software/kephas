@@ -55,7 +55,7 @@ namespace Kephas.Services
         /// </returns>
         public static object CreateContext(this IContextFactory contextFactory, Type contextType, params object?[] args)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(contextType, nameof(contextType));
 
             var createContext = CreateContextMethod.MakeGenericMethod(contextType);
@@ -71,7 +71,7 @@ namespace Kephas.Services
         /// </returns>
         public static ILogManager GetLogManager(this IContextFactory contextFactory)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
 
             if (contextFactory is ContextFactory factory)
             {

@@ -59,7 +59,7 @@ namespace Kephas.Model
             IRuntimeModelElementFactory runtimeModelElementFactory)
             : base(contextFactory)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
             Requires.NotNull(modelInfoProviders, nameof(modelInfoProviders));
 

@@ -41,7 +41,7 @@ namespace Kephas.Data
         public static IQueryable<T> Query<T>(this IDataSpace dataSpace, Action<IQueryOperationContext>? queryConfig = null)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             return dataSpace[typeof(T)].Query<T>(queryConfig);
         }
@@ -57,7 +57,7 @@ namespace Kephas.Data
         /// </returns>
         public static IEntityEntry GetEntityEntry<T>(this IDataSpace dataSpace, T entity)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             return dataSpace[typeof(T)].GetEntityEntry(entity);
         }
@@ -76,8 +76,8 @@ namespace Kephas.Data
             Type entityType,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             var dataContext = dataSpace[entityType];
             var operationContext = new CreateEntityContext(dataContext, entityType);
@@ -99,8 +99,8 @@ namespace Kephas.Data
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
-            Requires.NotNull(operationContext, nameof(operationContext));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
+            operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
 
             var dataContext = dataSpace[operationContext.EntityType];
             return dataContext.CreateCoreAsync(operationContext, cancellationToken);
@@ -120,7 +120,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             var dataContext = dataSpace[typeof(T)];
             var operationContext = new CreateEntityContext<T>(dataContext);
@@ -143,8 +143,8 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
-            Requires.NotNull(operationContext, nameof(operationContext));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
+            operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
 
             var dataContext = dataSpace[typeof(T)];
             return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
@@ -168,8 +168,8 @@ namespace Kephas.Data
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             var dataContext = dataSpace[entityType];
             var findContext = new FindContext(dataContext, entityType, id, throwIfNotFound);
@@ -190,7 +190,7 @@ namespace Kephas.Data
             IFindContext findContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(findContext, nameof(findContext));
 
             var dataContext = dataSpace[findContext.EntityType];
@@ -213,7 +213,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(findContext, nameof(findContext));
 
             var dataContext = dataSpace[typeof(T)];
@@ -238,7 +238,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             var dataContext = dataSpace[typeof(T)];
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
@@ -259,7 +259,7 @@ namespace Kephas.Data
             IFindOneContext findContext,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(findContext, nameof(findContext));
 
             var dataContext = dataSpace[findContext.EntityType];
@@ -282,7 +282,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(findContext, nameof(findContext));
 
             var dataContext = dataSpace[typeof(T)];
@@ -307,7 +307,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(criteria, nameof(criteria));
 
             var dataContext = dataSpace[typeof(T)];
@@ -327,7 +327,7 @@ namespace Kephas.Data
             this IDataSpace dataSpace,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             var results = new List<IOperationResult>();
             foreach (var dataContext in dataSpace)
@@ -347,7 +347,7 @@ namespace Kephas.Data
         /// </returns>
         public static IEnumerable<IOperationResult> DiscardChanges(this IDataSpace dataSpace)
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
 
             var results = new List<IOperationResult>();
             foreach (var dataContext in dataSpace)
@@ -367,7 +367,7 @@ namespace Kephas.Data
         public static void Delete<T>(this IDataSpace dataSpace, params T[] entities)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(entities, nameof(entities));
 
             var dataContext = dataSpace[typeof(T)];
@@ -383,7 +383,7 @@ namespace Kephas.Data
         public static void Delete<T>(this IDataSpace dataSpace, IEnumerable<T> entities)
             where T : class
         {
-            Requires.NotNull(dataSpace, nameof(dataSpace));
+            dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
             Requires.NotNull(entities, nameof(entities));
 
             var dataContext = dataSpace[typeof(T)];

@@ -93,7 +93,7 @@ namespace Kephas.Data.Store
         /// </returns>
         public string GetDataStoreName(Type entityType, IContext? context = null)
         {
-            Requires.NotNull(entityType, nameof(entityType));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             return DataStoreTypeMappings.GetOrAdd(
                 entityType,

@@ -43,7 +43,7 @@ namespace Kephas.Workflow
         /// <param name="typeRegistry">Optional. The type registry.</param>
         protected StateMachineBase(TTarget target, IRuntimeTypeRegistry? typeRegistry = null)
         {
-            Requires.NotNull(target, nameof(target));
+            target = target ?? throw new ArgumentNullException(nameof(target));
 
             this.Target = target;
             this.typeRegistry = typeRegistry ?? RuntimeTypeRegistry.Instance;

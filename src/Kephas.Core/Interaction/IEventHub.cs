@@ -76,8 +76,8 @@ namespace Kephas.Interaction
         public static IEventSubscription Subscribe<TEvent>(this IEventHub eventHub, Func<TEvent, IContext?, CancellationToken, Task> callback)
             where TEvent : class
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             return eventHub.Subscribe(typeof(TEvent), (e, ctx, token) => callback((TEvent)e, ctx, token));
         }
@@ -95,8 +95,8 @@ namespace Kephas.Interaction
         public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext?, CancellationToken, Task<TResult>> callback)
             where TEvent : class
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             return eventHub.Subscribe(typeof(TEvent), (e, ctx, token) => callback((TEvent)e, ctx, token));
         }
@@ -113,8 +113,8 @@ namespace Kephas.Interaction
         public static IEventSubscription Subscribe<TEvent>(this IEventHub eventHub, Action<TEvent, IContext?> callback)
             where TEvent : class
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             return eventHub.Subscribe(
                 typeof(TEvent),
@@ -138,8 +138,8 @@ namespace Kephas.Interaction
         public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext?, TResult> callback)
             where TEvent : class
         {
-            Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(callback, nameof(callback));
+            eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
             return eventHub.Subscribe(
                 typeof(TEvent),

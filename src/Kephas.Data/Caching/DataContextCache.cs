@@ -118,8 +118,8 @@ namespace Kephas.Data.Caching
 
             set
             {
-                Requires.NotNull(key, nameof(key));
-                Requires.NotNull(value, nameof(value));
+                key = key ?? throw new ArgumentNullException(nameof(key));
+                value = value ?? throw new ArgumentNullException(nameof(value));
 
                 if (value.Id != key)
                 {
@@ -164,7 +164,7 @@ namespace Kephas.Data.Caching
         /// <param name="value">The object to add.</param>
         public virtual void Add(IEntityEntry value)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             this.items.Add(value.Id, value);
             this.entityEntryMappings.Add(value.Entity, value);
@@ -179,7 +179,7 @@ namespace Kephas.Data.Caching
         /// </returns>
         public virtual bool Remove(IEntityEntry value)
         {
-            Requires.NotNull(value, nameof(value));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             var result = this.items.Remove(value.Id);
             if (result)
@@ -232,8 +232,8 @@ namespace Kephas.Data.Caching
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
         void IDictionary<object, IEntityEntry>.Add(object key, IEntityEntry value)
         {
-            Requires.NotNull(key, nameof(key));
-            Requires.NotNull(value, nameof(value));
+            key = key ?? throw new ArgumentNullException(nameof(key));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
             if (value.Id != key)
             {

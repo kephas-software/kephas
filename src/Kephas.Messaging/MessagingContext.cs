@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingContext.cs" company="Kephas Software SRL">
+// <copyright file="MessagingContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Messaging
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -33,8 +33,8 @@ namespace Kephas.Messaging
             IMessage? message = null)
             : base(parentContext, merge: true)
         {
-            Requires.NotNull(parentContext, nameof(parentContext));
-            Requires.NotNull(messageProcessor, nameof(messageProcessor));
+            parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
+            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
 
             this.MessageProcessor = messageProcessor;
             this.Message = message;
@@ -52,7 +52,7 @@ namespace Kephas.Messaging
             IMessage? message = null)
             : base(injector)
         {
-            Requires.NotNull(messageProcessor, nameof(messageProcessor));
+            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
 
             this.MessageProcessor = messageProcessor;
             this.Message = message;

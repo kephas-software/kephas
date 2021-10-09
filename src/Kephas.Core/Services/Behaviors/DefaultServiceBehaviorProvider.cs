@@ -38,7 +38,7 @@ namespace Kephas.Services.Behaviors
             ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories = null)
         {
             this.injector = injector;
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.behaviorFactories = behaviorFactories?.Order().ToList()
                                      ?? new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>();

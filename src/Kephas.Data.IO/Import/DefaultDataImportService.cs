@@ -59,9 +59,9 @@ namespace Kephas.Data.IO.Import
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>>? behaviorFactories = null)
             : base(contextFactory)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));
-            Requires.NotNull(conversionService, nameof(conversionService));
+            conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
             Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
 
             this.contextFactory = contextFactory;

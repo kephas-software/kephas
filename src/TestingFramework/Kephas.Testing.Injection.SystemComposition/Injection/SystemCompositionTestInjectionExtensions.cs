@@ -10,6 +10,7 @@
 
 namespace Kephas.Testing.Injection
 {
+    using System;
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using Kephas.Diagnostics.Contracts;
@@ -20,7 +21,7 @@ namespace Kephas.Testing.Injection
     {
         public static SystemCompositionInjector CreateInjector(this ContainerConfiguration configuration)
         {
-            Requires.NotNull(configuration, nameof(configuration));
+            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             return new SystemCompositionInjector(configuration);
         }

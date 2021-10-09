@@ -45,7 +45,7 @@ namespace Kephas.Reflection
             get => createTypeInfoLocalizationFunc;
             set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
                 createTypeInfoLocalizationFunc = value;
             }
         }

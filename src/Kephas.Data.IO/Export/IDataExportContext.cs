@@ -92,7 +92,7 @@ namespace Kephas.Data.IO.Export
             Action<IClientQueryExecutionContext> optionsConfig)
             where TContext : class, IDataExportContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            dataExportContext = dataExportContext ?? throw new ArgumentNullException(nameof(dataExportContext));
 
             dataExportContext.QueryExecutionConfig = optionsConfig;
 
@@ -113,7 +113,7 @@ namespace Kephas.Data.IO.Export
             DataStream output)
             where TContext : class, IDataExportContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            dataExportContext = dataExportContext ?? throw new ArgumentNullException(nameof(dataExportContext));
 
             dataExportContext.Output = output;
 
@@ -134,7 +134,7 @@ namespace Kephas.Data.IO.Export
             IEnumerable<object> data)
             where TContext : class, IDataExportContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            dataExportContext = dataExportContext ?? throw new ArgumentNullException(nameof(dataExportContext));
 
             dataExportContext.Data = data;
 
@@ -155,7 +155,7 @@ namespace Kephas.Data.IO.Export
             ClientQuery query)
             where TContext : class, IDataExportContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            dataExportContext = dataExportContext ?? throw new ArgumentNullException(nameof(dataExportContext));
 
             dataExportContext.Query = query;
 
@@ -176,7 +176,7 @@ namespace Kephas.Data.IO.Export
             Type targetType)
             where TContext : class, IDataExportContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            dataExportContext = dataExportContext ?? throw new ArgumentNullException(nameof(dataExportContext));
 
             dataExportContext.DefaultRootTargetType = targetType;
 
@@ -197,7 +197,7 @@ namespace Kephas.Data.IO.Export
             bool throwOnNotFound)
             where TContext : class, IDataExportContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            dataExportContext = dataExportContext ?? throw new ArgumentNullException(nameof(dataExportContext));
 
             dataExportContext.ThrowOnNotFound = throwOnNotFound;
 

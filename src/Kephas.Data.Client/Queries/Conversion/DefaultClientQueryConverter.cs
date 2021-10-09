@@ -57,7 +57,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             ICollection<IExportFactory<IExpressionConverter, ExpressionConverterMetadata>> converterFactories,
             IRuntimeTypeRegistry typeRegistry)
         {
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
             Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
             Requires.NotNull(converterFactories, nameof(converterFactories));
 

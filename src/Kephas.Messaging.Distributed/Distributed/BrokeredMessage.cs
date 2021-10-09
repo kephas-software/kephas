@@ -45,7 +45,7 @@ namespace Kephas.Messaging.Distributed
         public BrokeredMessage(object message)
             : this()
         {
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             this.Content = message.ToMessage()!;
         }

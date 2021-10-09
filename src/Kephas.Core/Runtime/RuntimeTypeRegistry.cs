@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.AttributedModel;
-
 namespace Kephas.Runtime
 {
     using System;
@@ -15,8 +13,10 @@ namespace Kephas.Runtime
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Injection.AttributedModel;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime.Factories;
@@ -68,7 +68,7 @@ namespace Kephas.Runtime
             get => this.createRuntimeAssemblyInfoFunc;
             set
             {
-                Requires.NotNull(value, nameof(value));
+                value = value ?? throw new ArgumentNullException(nameof(value));
                 this.createRuntimeAssemblyInfoFunc = value;
             }
         }
@@ -116,7 +116,7 @@ namespace Kephas.Runtime
         /// <returns>The type information.</returns>
         public ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true)
         {
-            Requires.NotNull(typeToken, nameof(typeToken));
+            typeToken = typeToken ?? throw new ArgumentNullException(nameof(typeToken));
 
             return typeToken switch
             {
@@ -170,7 +170,7 @@ namespace Kephas.Runtime
         public void RegisterFactory<TFactory>(TFactory factory)
             where TFactory : class, IRuntimeElementInfoFactory
         {
-            Requires.NotNull(factory, nameof(factory));
+            factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
             var factoryType = typeof(TFactory);
             var elementType = factoryType.GetInterfaces()

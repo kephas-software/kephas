@@ -35,7 +35,7 @@ namespace Kephas.Injection.Internal
         /// <param name="injector">The injector.</param>
         public ServiceProviderAdapter(IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.injector = injector;
         }

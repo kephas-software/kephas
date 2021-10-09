@@ -35,7 +35,7 @@ namespace Kephas.Model
         /// <param name="typeResolver">The type resolver.</param>
         public DefaultProjectedTypeResolver(ITypeResolver typeResolver)
         {
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
 
             this.typeResolver = typeResolver;
         }

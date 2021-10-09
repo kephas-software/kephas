@@ -87,8 +87,8 @@ namespace Kephas.Cryptography
             Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(input, nameof(input));
-            Requires.NotNull(output, nameof(output));
+            input = input ?? throw new ArgumentNullException(nameof(input));
+            output = output ?? throw new ArgumentNullException(nameof(output));
 
             using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
@@ -111,8 +111,8 @@ namespace Kephas.Cryptography
             Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(input, nameof(input));
-            Requires.NotNull(output, nameof(output));
+            input = input ?? throw new ArgumentNullException(nameof(input));
+            output = output ?? throw new ArgumentNullException(nameof(output));
 
             using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
@@ -127,8 +127,8 @@ namespace Kephas.Cryptography
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         public void Encrypt(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null)
         {
-            Requires.NotNull(input, nameof(input));
-            Requires.NotNull(output, nameof(output));
+            input = input ?? throw new ArgumentNullException(nameof(input));
+            output = output ?? throw new ArgumentNullException(nameof(output));
 
             using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
@@ -143,8 +143,8 @@ namespace Kephas.Cryptography
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         public void Decrypt(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null)
         {
-            Requires.NotNull(input, nameof(input));
-            Requires.NotNull(output, nameof(output));
+            input = input ?? throw new ArgumentNullException(nameof(input));
+            output = output ?? throw new ArgumentNullException(nameof(output));
 
             using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);

@@ -29,8 +29,8 @@ namespace Kephas.Data.Commands
         public FindContext(IDataContext dataContext, Type entityType, object id, bool throwIfNotFound = true)
             : base(dataContext)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(entityType, nameof(entityType));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
 
             this.EntityType = entityType;
             this.Id = id;
@@ -77,7 +77,7 @@ namespace Kephas.Data.Commands
         public FindContext(IDataContext dataContext, object id, bool throwIfNotFound = true)
             : base(dataContext, typeof(T), id, throwIfNotFound)
         {
-            Requires.NotNull(dataContext, nameof(dataContext));
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Kephas.Data.Endpoints
         {
             Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
             Requires.NotNull(dataSourceService, nameof(dataSourceService));
-            Requires.NotNull(typeResolver, nameof(typeResolver));
+            typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
             Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
 
             this.dataSpaceFactory = dataSpaceFactory;

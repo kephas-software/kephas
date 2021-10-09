@@ -51,7 +51,7 @@ namespace Kephas.Messaging
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
             : base(contextFactory)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
             Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
@@ -82,7 +82,7 @@ namespace Kephas.Messaging
         /// </returns>
         public async Task<IMessage?> ProcessAsync(IMessage message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
         {
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(message);
             using var localContext = this.CreateProcessingContext(message, optionsConfig);

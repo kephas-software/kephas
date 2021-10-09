@@ -57,7 +57,7 @@ namespace Kephas.Data.Validation
         /// <param name="severity">The severity.</param>
         public DataValidationResult(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             this.Add(message, memberName, severity);
         }
@@ -71,7 +71,7 @@ namespace Kephas.Data.Validation
         /// <param name="severity">The severity.</param>
         public DataValidationResult(Exception exception, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
-            Requires.NotNull(exception, nameof(exception));
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
             this.Add(exception.Message, memberName, severity);
             this.MergeException(exception);
@@ -125,7 +125,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public DataValidationResult Add(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
-            Requires.NotNull(message, nameof(message));
+            message = message ?? throw new ArgumentNullException(nameof(message));
 
             this.MergeMessage(new DataValidationResultItem(message, memberName, severity));
             return this;

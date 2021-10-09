@@ -10,7 +10,8 @@
 
 namespace Kephas.Behaviors
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -21,12 +22,12 @@ namespace Kephas.Behaviors
         /// <summary>
         /// A behavior value representing the boolean value <c>false</c>.
         /// </summary>
-        public static readonly BehaviorValue<bool> False = new BehaviorValue<bool>(false);
+        public static readonly BehaviorValue<bool> False = new (false);
 
         /// <summary>
         /// A behavior value representing the boolean value <c>true</c>.
         /// </summary>
-        public static readonly BehaviorValue<bool> True = new BehaviorValue<bool>(true);
+        public static readonly BehaviorValue<bool> True = new (true);
 
         /// <summary>
         /// The key for the dynamic "Reason" property.
@@ -57,7 +58,7 @@ namespace Kephas.Behaviors
         /// </returns>
         public static IBehaviorValue<TValue> WithReason<TValue>(this IBehaviorValue<TValue> behavior, string reason)
         {
-            Requires.NotNull(behavior, nameof(behavior));
+            behavior = behavior ?? throw new ArgumentNullException(nameof(behavior));
 
             behavior[ReasonKey] = reason;
 

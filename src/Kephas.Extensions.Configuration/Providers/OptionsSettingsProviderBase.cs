@@ -40,7 +40,7 @@ namespace Kephas.Extensions.Configuration.Providers
         /// <param name="injector">The injector.</param>
         protected OptionsSettingsProviderBase(IInjector injector)
         {
-            Requires.NotNull(injector, nameof(injector));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.injector = injector;
             this.lazyFileSettingsProvider = new Lazy<FileSettingsProvider>(this.CreateFileSettingsProvider);

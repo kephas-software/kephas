@@ -55,8 +55,8 @@ namespace Kephas.Application
             ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? featureLifecycleBehaviorFactories = null)
             : base(injector)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(injector, nameof(injector));
+            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.AppRuntime = appRuntime;
             this.Injector = injector;

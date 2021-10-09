@@ -200,7 +200,7 @@ namespace Kephas.Services.Transitions
         /// <param name="exception">The exception which occured.</param>
         public void Fault(Exception exception)
         {
-            Requires.NotNull(exception, nameof(exception));
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
             if (this.IsFaulted)
             {

@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Validation
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -37,7 +38,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public static bool HasErrors(this IDataValidationResult result)
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             return result.Any(i => i.Severity == DataValidationSeverity.Error);
         }
@@ -51,7 +52,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public static IEnumerable<IDataValidationResultItem> GetErrors(this IDataValidationResult result)
         {
-            Requires.NotNull(result, nameof(result));
+            result = result ?? throw new ArgumentNullException(nameof(result));
 
             return result.Where(i => i.Severity == DataValidationSeverity.Error);
         }

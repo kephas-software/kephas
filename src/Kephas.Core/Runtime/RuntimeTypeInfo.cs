@@ -453,7 +453,7 @@ namespace Kephas.Runtime
         /// </returns>
         public bool TryGetValue(object? instance, string propertyName, out object? value)
         {
-            Requires.NotNull(instance, nameof(instance));
+            instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
             var dynamicProperty = this.GetProperty(propertyName, throwOnNotFound: false);
             value = dynamicProperty?.GetValue(instance);
@@ -529,7 +529,7 @@ namespace Kephas.Runtime
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
         public bool TryInvoke(object? instance, string methodName, IEnumerable<object?> args, out object? result)
         {
-            Requires.NotNull(instance, nameof(instance));
+            instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
             var matchingMethod = this.GetMatchingMethod(methodName, args, throwOnNotFound: false);
             if (matchingMethod == null)
