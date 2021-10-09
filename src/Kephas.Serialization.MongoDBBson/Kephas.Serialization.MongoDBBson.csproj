@@ -94,7 +94,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MongoDB.Bson.signed" Version="2.12.2" />
+        <PackageReference Include="MongoDB.Bson.signed" Version="2.13.2" />
     </ItemGroup>
 
     <ItemGroup>
