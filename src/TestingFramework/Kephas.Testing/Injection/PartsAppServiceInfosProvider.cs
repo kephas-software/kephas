@@ -51,11 +51,11 @@ namespace Kephas.Testing.Injection
         public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
         {
             return
-                from part in this.parts
-                where part.IsClass && !part.IsAbstract && !part.IsNestedPrivate && part.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null
-                let contractType = this.TryGetAppServiceContract(part)
-                where contractType != null
-                select (part, contractType!);
+                from serviceType in this.parts
+                where serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsNestedPrivate && serviceType.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null
+                let contractDeclarationType = this.TryGetAppServiceContract(serviceType)
+                where contractDeclarationType != null
+                select (serviceType, contractDeclarationType!);
         }
 
         private Type? TryGetAppServiceContract(Type part)
