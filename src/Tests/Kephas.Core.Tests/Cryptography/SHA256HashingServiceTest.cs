@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Cryptography
         public void Hash_with_salt(string value, string salt, string hash)
         {
             var contextFactory = this.CreateContextFactoryMock(() => new HashingContext(Substitute.For<IInjector>()));
-            var hashingService = new Sha256HashingService(contextFactory);
+            IHashingService hashingService = new Sha256HashingService(contextFactory);
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var saltBytes = Encoding.UTF8.GetBytes(salt);
             var hashBytes = hashingService.Hash(valueBytes, saltBytes);

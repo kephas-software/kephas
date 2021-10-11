@@ -35,7 +35,7 @@ namespace Kephas.Core.Tests.Cryptography
                     return value == valueString ? hashBytes : null;
                 });
 
-            var hash = HashingServiceExtensions.Hash(hashingService, valueString, optionsConfig);
+            var hash = hashingService.Hash(valueString, optionsConfig);
             var hashString = Encoding.UTF8.GetString(hash);
             Assert.AreEqual("8910", hashString);
         }
@@ -56,7 +56,7 @@ namespace Kephas.Core.Tests.Cryptography
                 return value == valueString ? hashBytes : null;
             });
 
-            var hash = HashingServiceExtensions.Hash(hashingService, valueString, salt);
+            var hash = hashingService.Hash(valueString, salt);
             var hashString = Encoding.UTF8.GetString(hash);
             Assert.AreEqual("8910", hashString);
         }
