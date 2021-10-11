@@ -107,15 +107,17 @@ namespace Kephas
             return this;
         }
 
-        internal HashCodeGenerator CombineSequence<T>(IReadOnlyList<T> list)
+        internal HashCodeGenerator CombineSequence<T>(IReadOnlyList<T>? list)
         {
-            if (list != null)
+            if (list == null)
             {
-                var count = list.Count;
-                for (var index = 0; index < count; ++index)
-                {
-                    this.CombineHashCode(list[index]?.GetHashCode() ?? 0);
-                }
+                return this;
+            }
+
+            var count = list.Count;
+            for (var index = 0; index < count; ++index)
+            {
+                this.CombineHashCode(list[index]?.GetHashCode() ?? 0);
             }
 
             return this;
@@ -123,13 +125,15 @@ namespace Kephas
 
         internal HashCodeGenerator CombineDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? dictionary)
         {
-            if (dictionary != null)
+            if (dictionary == null)
             {
-                foreach (var keyValuePair in dictionary.OrderBy(kv => kv.Key))
-                {
-                    this.CombineHashCode(keyValuePair.Key.GetHashCode());
-                    this.CombineHashCode(keyValuePair.Value.GetHashCode());
-                }
+                return this;
+            }
+
+            foreach (var (key, value) in dictionary.OrderBy(kv => kv.Key))
+            {
+                this.CombineHashCode(key.GetHashCode());
+                this.CombineHashCode(value.GetHashCode());
             }
 
             return this;

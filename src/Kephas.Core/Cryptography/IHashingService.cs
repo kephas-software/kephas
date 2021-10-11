@@ -11,10 +11,8 @@
 namespace Kephas.Cryptography
 {
     using System;
-    using System.Runtime.CompilerServices;
     using System.Text;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -31,61 +29,47 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashed value.
         /// </returns>
-        byte[] Hash(byte[] value, Action<IHashingContext>? optionsConfig = null);
-    }
+        public byte[] Hash(byte[] value, Action<IHashingContext>? optionsConfig = null);
 
-    /// <summary>
-    /// Extension methods for <see cref="IHashingService"/>.
-    /// </summary>
-    public static class HashingServiceExtensions
-    {
         /// <summary>
         /// Hashes the value with the optionally provided string.
         /// </summary>
-        /// <param name="hashingService">The hashing service.</param>
         /// <param name="value">The value to be hashed.</param>
         /// <param name="optionsConfig">Optional. Function for hashing options configuration.</param>
         /// <returns>
         /// The hashed value.
         /// </returns>
-        public static byte[] Hash(this IHashingService hashingService, string value, Action<IHashingContext>? optionsConfig = null)
+        public byte[] Hash(string value, Action<IHashingContext>? optionsConfig = null)
         {
-            Requires.NotNull(hashingService, nameof(hashingService));
+            value = value ?? throw new ArgumentNullException(nameof(value));
 
-            var valueBytes = string.IsNullOrEmpty(value) ? null : Encoding.UTF8.GetBytes(value);
-            return hashingService.Hash(valueBytes, optionsConfig);
+            return this.Hash(Encoding.UTF8.GetBytes(value), optionsConfig);
         }
 
         /// <summary>
         /// Hashes the value with the optionally provided string.
         /// </summary>
-        /// <param name="hashingService">The hashing service.</param>
         /// <param name="value">The value to be hashed.</param>
         /// <param name="salt">The hashing salt.</param>
         /// <returns>
         /// The hashed value.
         /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] Hash(this IHashingService hashingService, string value, byte[] salt)
+        public byte[] Hash(string value, byte[] salt)
         {
-            return Hash(hashingService, value, ctx => ctx.Salt(salt));
+            return this.Hash(value, ctx => ctx.Salt(salt));
         }
 
         /// <summary>
         /// Hashes the value with the optionally provided string.
         /// </summary>
-        /// <param name="hashingService">The hashing service.</param>
         /// <param name="value">The value to be hashed.</param>
         /// <param name="salt">The hashing salt.</param>
         /// <returns>
         /// The hashed value.
         /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] Hash(this IHashingService hashingService, byte[] value, byte[] salt)
+        public byte[] Hash(byte[] value, byte[] salt)
         {
-            Requires.NotNull(hashingService, nameof(hashingService));
-
-            return hashingService.Hash(value, ctx => ctx.Salt(salt));
+            return this.Hash(value, ctx => ctx.Salt(salt));
         }
     }
 }
