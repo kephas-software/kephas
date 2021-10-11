@@ -64,7 +64,7 @@ namespace Kephas.Injection.Lite.Builder
             {
                 case Type serviceType:
                     this.EnsureContractTypeMatchesImplementationType(this.contractType, serviceType);
-                    ((IRegistrationBuilder)this).AddMetadata(AppServiceInfoInjectionRegistrar.GetServiceMetadata(serviceType, this.contractDeclarationType));
+                    ((IRegistrationBuilder)this).AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, this.contractDeclarationType));
 
                     return new ServiceInfo(this.serviceRegistry, this.contractType, serviceType, this.lifetime != AppServiceLifetime.Transient)
                     {
