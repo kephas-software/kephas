@@ -11,18 +11,12 @@
 namespace Kephas.Extensions.Configuration.Providers
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
-    using Kephas.Application;
     using Kephas.Configuration.Providers;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Logging;
-    using Kephas.Net.Mime;
-    using Kephas.Serialization;
     using Kephas.Services;
     using Microsoft.Extensions.Options;
 
@@ -32,18 +26,20 @@ namespace Kephas.Extensions.Configuration.Providers
     public abstract class OptionsSettingsProviderBase : ISettingsProvider
     {
         private readonly IInjector injector;
-        private readonly Lazy<FileSettingsProvider> lazyFileSettingsProvider;
+        private readonly INamedServiceResolver serviceResolver;
+        private readonly Lazy<ISettingsProvider> lazyFileSettingsProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsSettingsProviderBase"/> class.
         /// </summary>
         /// <param name="injector">The injector.</param>
-        protected OptionsSettingsProviderBase(IInjector injector)
+        /// <param name="serviceResolver">The named service resolver.</param>
+        protected OptionsSettingsProviderBase(IInjector injector, INamedServiceResolver serviceResolver)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            this.injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            this.serviceResolver = serviceResolver ?? throw new ArgumentNullException(nameof(serviceResolver));
 
-            this.injector = injector;
-            this.lazyFileSettingsProvider = new Lazy<FileSettingsProvider>(this.CreateFileSettingsProvider);
+            this.lazyFileSettingsProvider = new Lazy<ISettingsProvider>(this.CreateFileSettingsProvider);
         }
 
         /// <summary>
@@ -76,13 +72,9 @@ namespace Kephas.Extensions.Configuration.Providers
         /// Creates a <see cref="FileSettingsProvider"/> instance.
         /// </summary>
         /// <returns>The newly created <see cref="FileSettingsProvider"/> instance.</returns>
-        protected virtual FileSettingsProvider CreateFileSettingsProvider()
+        protected virtual ISettingsProvider CreateFileSettingsProvider()
         {
-            return new FileSettingsProvider(
-                this.injector.Resolve<IAppRuntime>(),
-                this.injector.Resolve<ISerializationService>(),
-                this.injector.Resolve<ICollection<Lazy<IMediaType, MediaTypeMetadata>>>(),
-                this.injector.Resolve<ILogManager>());
+            return this.serviceResolver.GetNamedService<ISettingsProvider>(FileSettingsProvider.ServiceName);
         }
     }
 }

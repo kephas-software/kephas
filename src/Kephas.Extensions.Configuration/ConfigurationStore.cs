@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspNetConfigurationStore.cs" company="Kephas Software SRL">
+// <copyright file="ConfigurationStore.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,15 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Extensions.Configuration
 {
     using System.ComponentModel;
 
     using Kephas.Configuration;
     using Kephas.Dynamic;
-
+    using Kephas.Runtime;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>

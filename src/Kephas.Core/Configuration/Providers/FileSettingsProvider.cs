@@ -33,8 +33,14 @@ namespace Kephas.Configuration.Providers
     /// A file settings provider.
     /// </summary>
     [ProcessingPriority(Priority.BelowNormal)]
+    [ServiceName(ServiceName)]
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
+        /// <summary>
+        /// Gets the service name of <see cref="FileSettingsProvider"/>.
+        /// </summary>
+        public const string ServiceName = "File";
+
         private readonly ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes;
         private readonly ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)> fileInfos =
             new ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)>();
