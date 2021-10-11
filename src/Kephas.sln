@@ -250,29 +250,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Analyzers.TestAssembly", "Tests\Analyzers\Kephas.Analyzers.TestAssembly\Kephas.Analyzers.TestAssembly.csproj", "{D77C8131-6ABA-4B08-AD8D-CBD707B1E8CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Analyzers.Tests", "Tests\Analyzers\Kephas.Analyzers.Tests\Kephas.Analyzers.Tests.csproj", "{C349B544-099C-4604-A1B2-5CBC165AA999}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Analyzers.Tests", "Tests\Analyzers\Kephas.Analyzers.Tests\Kephas.Analyzers.Tests.csproj", "{C349B544-099C-4604-A1B2-5CBC165AA999}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Injection.Abstractions.Tests", "Tests\Kephas.Injection.Abstractions.Tests\Kephas.Injection.Abstractions.Tests.csproj", "{D686828B-B03F-44AB-97D0-C56985A8ED8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Abstractions.Tests", "Tests\Kephas.Injection.Abstractions.Tests\Kephas.Injection.Abstractions.Tests.csproj", "{D686828B-B03F-44AB-97D0-C56985A8ED8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Application", "TestingFramework\Kephas.Testing.Application\Kephas.Testing.Application.csproj", "{D55E4277-2A60-4D26-8F59-52A3CCE13CCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Application", "TestingFramework\Kephas.Testing.Application\Kephas.Testing.Application.csproj", "{D55E4277-2A60-4D26-8F59-52A3CCE13CCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Injection.Lite", "Kephas.Injection.Lite\Kephas.Injection.Lite.csproj", "{ECC1340D-352D-465F-A8A0-C136CD2EA779}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Lite", "Kephas.Injection.Lite\Kephas.Injection.Lite.csproj", "{ECC1340D-352D-465F-A8A0-C136CD2EA779}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Injection.Lite.Tests", "Tests\Kephas.Injection.Lite.Tests\Kephas.Injection.Lite.Tests.csproj", "{803C18D2-F5D5-4546-A7E2-FD6B7969889B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Lite.Tests", "Tests\Kephas.Injection.Lite.Tests\Kephas.Injection.Lite.Tests.csproj", "{803C18D2-F5D5-4546-A7E2-FD6B7969889B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Abstractions", "Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj", "{9327D807-5842-4C1D-827C-28C100143038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Abstractions", "Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj", "{9327D807-5842-4C1D-827C-28C100143038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Endpoints.Messages", "Kephas.Plugins.Endpoints.Messages\Kephas.Plugins.Endpoints.Messages.csproj", "{5D86C702-400E-4F67-A0FF-1D1859D84F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.Endpoints.Messages", "Kephas.Plugins.Endpoints.Messages\Kephas.Plugins.Endpoints.Messages.csproj", "{5D86C702-400E-4F67-A0FF-1D1859D84F2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Abstractions", "Kephas.Plugins.Abstractions\Kephas.Plugins.Abstractions.csproj", "{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.Abstractions", "Kephas.Plugins.Abstractions\Kephas.Plugins.Abstractions.csproj", "{B10DAF93-C730-4C25-9BA0-AB24AA7326A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Endpoints.Messages", "Kephas.Data.Endpoints.Messages\Kephas.Data.Endpoints.Messages.csproj", "{68380EAA-4519-4A98-AFAF-B389812D98E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Endpoints.Messages", "Kephas.Data.Endpoints.Messages\Kephas.Data.Endpoints.Messages.csproj", "{68380EAA-4519-4A98-AFAF-B389812D98E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Endpoints.Messages", "Kephas.Scheduling.Endpoints.Messages\Kephas.Scheduling.Endpoints.Messages.csproj", "{2711F502-4D58-41B3-9192-C29074CB5834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Endpoints.Messages", "Kephas.Scheduling.Endpoints.Messages\Kephas.Scheduling.Endpoints.Messages.csproj", "{2711F502-4D58-41B3-9192-C29074CB5834}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Abstractions", "Kephas.Scheduling.Abstractions\Kephas.Scheduling.Abstractions.csproj", "{80321BAE-11D5-4575-B820-FB30763075DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Abstractions", "Kephas.Scheduling.Abstractions\Kephas.Scheduling.Abstractions.csproj", "{80321BAE-11D5-4575-B820-FB30763075DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Abstractions", "Kephas.Workflow.Abstractions\Kephas.Workflow.Abstractions.csproj", "{CB129196-D2F7-4E60-ADD1-53884BCD5B9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow.Abstractions", "Kephas.Workflow.Abstractions\Kephas.Workflow.Abstractions.csproj", "{CB129196-D2F7-4E60-ADD1-53884BCD5B9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Server", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Server\Kephas.AspNetCore.Blazor.InteractiveTests.Server.csproj", "{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Client", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Client\Kephas.AspNetCore.Blazor.InteractiveTests.Client.csproj", "{258B6D61-DA0B-4D11-939D-EBCF65339F9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Shared", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj", "{27813CE7-46D1-441C-988F-4B87C870DEA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -760,6 +766,18 @@ Global
 		{CB129196-D2F7-4E60-ADD1-53884BCD5B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB129196-D2F7-4E60-ADD1-53884BCD5B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB129196-D2F7-4E60-ADD1-53884BCD5B9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{258B6D61-DA0B-4D11-939D-EBCF65339F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258B6D61-DA0B-4D11-939D-EBCF65339F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258B6D61-DA0B-4D11-939D-EBCF65339F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258B6D61-DA0B-4D11-939D-EBCF65339F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -818,6 +836,9 @@ Global
 		{D686828B-B03F-44AB-97D0-C56985A8ED8D} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{D55E4277-2A60-4D26-8F59-52A3CCE13CCE} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{803C18D2-F5D5-4546-A7E2-FD6B7969889B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{258B6D61-DA0B-4D11-939D-EBCF65339F9A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{27813CE7-46D1-441C-988F-4B87C870DEA4} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
