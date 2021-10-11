@@ -1,25 +1,24 @@
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
 {
+    using System.Threading.Tasks;
+
+    using Kephas.Application;
+    using Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application;
+
     public class Program
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
+            var clientApp = new ClientApp<App>(new AppArgs(args), a => a.BuildWithAutofac());
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-            await builder.Build().RunAsync();
+            await clientApp.BootstrapAsync();
         }
     }
 }

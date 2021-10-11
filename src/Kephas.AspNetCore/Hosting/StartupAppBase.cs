@@ -17,7 +17,6 @@ namespace Kephas.Application.AspNetCore.Hosting
 
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
-    using Kephas.Extensions.Hosting.Configuration;
     using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Services;
@@ -136,7 +135,6 @@ namespace Kephas.Application.AspNetCore.Hosting
                 this.AmbientServices
                     .WithServiceCollection(this.serviceCollection)
                     .ConfigureExtensionsLogging()
-                    .ConfigureExtensionsOptions()
                     .UseConfiguration(this.Configuration);
 
                 this.BeforeAppManagerInitialize(this.AppArgs);

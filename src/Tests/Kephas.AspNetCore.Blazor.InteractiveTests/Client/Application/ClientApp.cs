@@ -1,44 +1,41 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkerAppBase.cs" company="Kephas Software SRL">
+// <copyright file="ClientApp.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the worker application base class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions.Hosting.Application
+namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
 {
     using System;
     using System.Linq;
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
+    using Microsoft.AspNetCore.Components;
+    using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
 
     /// <summary>
-    /// A worker application base.
+    /// The client application.
     /// </summary>
-    public abstract class WorkerAppBase : AppBase
+    /// <seealso cref="Kephas.Application.AppBase" />
+    public class ClientApp<TApp> : AppBase
+        where TApp : IComponent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
+        /// Initializes a new instance of the <see cref="ClientApp{TApp}"/> class.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
         /// <param name="containerBuilder">Optional. The container builder.</param>
-        protected WorkerAppBase(
-            IAmbientServices? ambientServices = null,
+        public ClientApp(
             IAppArgs? appArgs = null,
-            CancellationTokenSource? appLifetimeTokenSource = null,
             Action<IAmbientServices>? containerBuilder = null)
-            : base(ambientServices, appLifetimeTokenSource, containerBuilder)
+            : base(new AmbientServices(), appLifetimeTokenSource: null, containerBuilder)
         {
             this.AppArgs = appArgs ?? new AppArgs();
         }
@@ -49,7 +46,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The host builder.
         /// </value>
-        protected IHostBuilder? HostBuilder { get; private set; }
+        protected WebAssemblyHostBuilder? HostBuilder { get; private set; }
 
         /// <summary>
         /// Gets the host.
@@ -57,7 +54,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The host.
         /// </value>
-        protected IHost? Host { get; private set; }
+        protected WebAssemblyHost? Host { get; private set; }
 
         /// <summary>
         /// Gets the application arguments.
@@ -79,33 +76,41 @@ namespace Kephas.Extensions.Hosting.Application
             this.HostBuilder = this.CreateHostBuilder(appArgs ?? this.AppArgs);
 
             this.HostBuilder
-                .UseServiceProviderFactory(new InjectionServiceProviderFactory(this.AmbientServices));
+                .ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices));
 
-            this.PreConfigureWorker(this.HostBuilder)
-                .ConfigureServices(services =>
+            this.PreConfigureWorker(
+                this.HostBuilder,
+                services =>
                 {
-                    this.AddBackgroundWorker(services);
+                    services.AddSingleton<WebAssemblyHost>(_ => this.Host!);
 
                     this.AmbientServices
                         .WithServiceCollection(services)
                         .ConfigureExtensionsLogging();
                 });
 
-            this.ConfigureWorker(this.HostBuilder)
-                .ConfigureServices(services =>
+            this.ConfigureWorker(
+                this.HostBuilder,
+                services =>
                 {
                     this.BuildWorkerServicesContainer(this.AmbientServices);
                 });
 
             this.PostConfigureWorker(this.HostBuilder);
 
-            if (appArgs?.RunAsService ?? false)
-            {
-                this.HostBuilder.UseWindowsService();
-                this.HostBuilder.UseSystemd();
-            }
-
             return base.BootstrapAsync(appArgs, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates the host builder.
+        /// </summary>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <returns>
+        /// The new host builder.
+        /// </returns>
+        protected virtual WebAssemblyHostBuilder CreateHostBuilder(IAppArgs appArgs)
+        {
+            return WebAssemblyHostBuilder.CreateDefault(appArgs.ToCommandArgs().ToArray());
         }
 
         /// <summary>
@@ -145,27 +150,22 @@ namespace Kephas.Extensions.Hosting.Application
         }
 
         /// <summary>
-        /// Creates the host builder.
-        /// </summary>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <returns>
-        /// The new host builder.
-        /// </returns>
-        protected virtual IHostBuilder CreateHostBuilder(IAppArgs appArgs)
-        {
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(appArgs.ToCommandArgs().ToArray());
-        }
-
-        /// <summary>
         /// Configures the worker before adding the background worker.
         ///  Here is the place where logging should be initialized.
         /// </summary>
         /// <param name="hostBuilder">The host builder.</param>
+        /// <param name="config">The services configuration callback.</param>
         /// <returns>
-        /// The provided <see cref="IHostBuilder"/>.
+        /// The provided <see cref="WebAssemblyHostBuilder"/>.
         /// </returns>
-        protected virtual IHostBuilder PreConfigureWorker(IHostBuilder hostBuilder)
+        protected virtual WebAssemblyHostBuilder PreConfigureWorker(WebAssemblyHostBuilder hostBuilder, Action<IServiceCollection>? config)
         {
+            hostBuilder.RootComponents.Add<TApp>("#app");
+
+            hostBuilder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress) });
+
+            config?.Invoke(hostBuilder.Services);
+
             return hostBuilder;
         }
 
@@ -174,11 +174,14 @@ namespace Kephas.Extensions.Hosting.Application
         /// should be initialized.
         /// </summary>
         /// <param name="hostBuilder">The host builder.</param>
+        /// <param name="config">The services configuration callback.</param>
         /// <returns>
-        /// The provided <see cref="IHostBuilder"/>.
+        /// The provided <see cref="WebAssemblyHostBuilder"/>.
         /// </returns>
-        protected virtual IHostBuilder ConfigureWorker(IHostBuilder hostBuilder)
+        protected virtual WebAssemblyHostBuilder ConfigureWorker(WebAssemblyHostBuilder hostBuilder, Action<IServiceCollection>? config)
         {
+            config?.Invoke(hostBuilder.Services);
+
             return hostBuilder;
         }
 
@@ -189,30 +192,11 @@ namespace Kephas.Extensions.Hosting.Application
         /// </summary>
         /// <param name="hostBuilder">The host builder.</param>
         /// <returns>
-        /// The provided <see cref="IHostBuilder"/>.
+        /// The provided <see cref="WebAssemblyHostBuilder"/>.
         /// </returns>
-        protected virtual IHostBuilder PostConfigureWorker(IHostBuilder hostBuilder)
+        protected virtual WebAssemblyHostBuilder PostConfigureWorker(WebAssemblyHostBuilder hostBuilder)
         {
             return hostBuilder;
-        }
-
-        /// <summary>
-        /// Runs the background task asynchronously.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual Task RunBackgroundTaskAsync(CancellationToken cancellationToken)
-        {
-            return base.InitializeAppManagerAsync(this.AppContext!, cancellationToken);
-        }
-
-        /// <summary>
-        /// Adds the background worker as a hosted service.
-        /// </summary>
-        /// <param name="services">The services.</param>
-        protected virtual void AddBackgroundWorker(IServiceCollection services)
-        {
-            services.AddHostedService(svc => new BackgroundWorker(this.RunBackgroundTaskAsync));
         }
     }
 }

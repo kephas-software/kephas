@@ -2,21 +2,61 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
   <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </AdditionalFiles>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Kephas.Application\Kephas.Application.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Commands\Kephas.Commands.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Extensions.Configuration\Kephas.Extensions.Configuration.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Extensions.Logging\Kephas.Extensions.Logging.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
+    <ProjectReference Include="..\..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
+
     <ProjectReference Include="..\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application" />
   </ItemGroup>
 
 </Project>
