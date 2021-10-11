@@ -11,6 +11,7 @@
 namespace Kephas.Injection.Autofac
 {
     using System.Collections.Concurrent;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection;

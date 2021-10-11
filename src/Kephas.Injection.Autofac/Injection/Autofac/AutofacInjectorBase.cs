@@ -12,6 +12,7 @@ namespace Kephas.Injection.Autofac
 {
     using System;
     using System.Collections.Generic;
+
     using global::Autofac;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
@@ -21,7 +22,7 @@ namespace Kephas.Injection.Autofac
     /// <summary>
     /// An Autofac injector base.
     /// </summary>
-    public abstract class AutofacInjectorBase : IInjector
+    public abstract class AutofacInjectorBase : IInjector, IServiceProvider
     {
         private readonly IInjectionContainer? root;
 
@@ -200,6 +201,17 @@ namespace Kephas.Injection.Autofac
 
             var scope = this.innerContainer!.BeginLifetimeScope();
             return (this.root ?? (IInjectionContainer)this).GetInjector(scope);
+        }
+
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="serviceType" />.
+        /// -or-
+        /// <see langword="null" /> if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.IServiceProvider.GetService?view=netstandard-2.1">`IServiceProvider.GetService` on docs.microsoft.com</a></footer>
+        object? IServiceProvider.GetService(Type serviceType)
+        {
+            return this.TryResolve(serviceType);
         }
 
         /// <summary>
