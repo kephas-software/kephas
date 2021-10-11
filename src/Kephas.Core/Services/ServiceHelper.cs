@@ -11,9 +11,14 @@
 namespace Kephas.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Collections;
+    using Kephas.Injection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -143,6 +148,41 @@ namespace Kephas.Services
                     disposableService.Dispose();
                     break;
             }
+        }
+
+        /// <summary>
+        /// Collects the metadata from the service type attributes and generic type arguments.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <returns>The metadata.</returns>
+        public static IDictionary<string, object?> GetServiceMetadata(Type serviceType, Type contractDeclarationType)
+        {
+            var metadata = new Dictionary<string, object?>();
+            serviceType.GetCustomAttributes()
+                .OfType<IMetadataProvider>()
+                .SelectMany(p => p.GetMetadata())
+                .ForEach(m => metadata[m.name] = m.value);
+
+            metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceType);
+
+            // add metadata from generic parameters
+            if (contractDeclarationType.IsGenericType)
+            {
+                var metadataSourceGenericType = contractDeclarationType.IsConstructedGenericType
+                    ? contractDeclarationType
+                    : serviceType.IsGenericType
+                        ? null
+                        : serviceType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == contractDeclarationType);
+                if (metadataSourceGenericType != null)
+                {
+                    IMetadataProvider.GetGenericTypeMetadataProvider(metadataSourceGenericType)
+                        .GetMetadata()
+                        .ForEach(m => metadata[m.name] = m.value);
+                }
+            }
+
+            return metadata;
         }
     }
 }

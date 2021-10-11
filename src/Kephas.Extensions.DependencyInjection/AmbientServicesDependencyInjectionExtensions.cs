@@ -55,31 +55,18 @@ namespace Kephas
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
         public static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAmbientServices ambientServices)
         {
-            AppServiceMetadata GetAppServiceMetadata(IRuntimeTypeInfo t)
-            {
-                var overridePriority = t.GetAttribute<OverridePriorityAttribute>()?.Value ?? 0;
-                var processingPriority = t.GetAttribute<ProcessingPriorityAttribute>()?.Value ?? Priority.Normal;
-                var isOverride = t.GetAttribute<OverrideAttribute>() != null;
-                var serviceName = t.GetAttribute<ServiceNameAttribute>()?.Value;
-                return new AppServiceMetadata(processingPriority, overridePriority, serviceName, isOverride)
-                {
-                    ServiceType = t.Type,
-                };
-            }
-
             var configuratorTypes = ambientServices!.AppRuntime.GetAppAssemblies()
                 .SelectMany(a => DefaultTypeLoader.Instance.GetExportedTypes(a)
                     .Where(t => typeof(IServicesConfigurator).IsAssignableFrom(t)
                                 && t.IsClass
                                 && !t.IsAbstract
-                                && t.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null))
-                .Select(t => ambientServices.TypeRegistry.GetTypeInfo(t));
+                                && t.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null));
             var orderedConfiguratorTypes = configuratorTypes
-                .Select(t => new ExportFactory<IServicesConfigurator, AppServiceMetadata>(
-                    () => (IServicesConfigurator)t.CreateInstance(),
-                    GetAppServiceMetadata(t)))
+                .Select(t => new Lazy<IServicesConfigurator, AppServiceMetadata>(
+                    () => (IServicesConfigurator)Activator.CreateInstance(t),
+                    new AppServiceMetadata(ServiceHelper.GetServiceMetadata(t, typeof(IServicesConfigurator)))))
                 .Order();
-            return orderedConfiguratorTypes.Select(f => f.CreateExportedValue());
+            return orderedConfiguratorTypes.Select(f => f.Value);
         }
     }
 }
