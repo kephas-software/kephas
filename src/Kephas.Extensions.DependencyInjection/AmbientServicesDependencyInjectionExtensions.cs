@@ -55,12 +55,12 @@ namespace Kephas
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
         public static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAmbientServices ambientServices)
         {
-            var configuratorTypes = ambientServices!.AppRuntime.GetAppAssemblies()
-                .SelectMany(a => DefaultTypeLoader.Instance.GetExportedTypes(a)
-                    .Where(t => typeof(IServicesConfigurator).IsAssignableFrom(t)
-                                && t.IsClass
-                                && !t.IsAbstract
-                                && t.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null));
+            var appAssemblies = ambientServices!.AppRuntime!.GetAppAssemblies();
+            var configuratorTypes = ServiceHelper.GetAppServiceInfosProviders(appAssemblies)
+                .SelectMany(p => p.GetAppServiceTypes())
+                .Where(t => t.contractDeclarationType == typeof(IServicesConfigurator))
+                .Select(t => t.serviceType)
+                .ToList();
             var orderedConfiguratorTypes = configuratorTypes
                 .Select(t => new Lazy<IServicesConfigurator, AppServiceMetadata>(
                     () => (IServicesConfigurator)Activator.CreateInstance(t),

@@ -144,11 +144,10 @@ namespace Kephas.Injection.Builder
         /// </returns>
         protected internal IList<IAppServiceInfosProvider> GetAppServiceInfosProviders()
         {
-            var context = this.BuildContext;
-            var assemblies = context.Assemblies.Count == 0 ? this.GetDefaultAssemblies() : context.Assemblies;
-            var providers = assemblies
-                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfosProvider>())
-                .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal)
+            var assemblies = this.BuildContext.Assemblies.Count == 0
+                ? this.GetDefaultAssemblies()
+                : this.BuildContext.Assemblies;
+            var providers = ServiceHelper.GetAppServiceInfosProviders(assemblies)
                 .Union(this.BuildContext.AppServiceInfosProviders)
                 .Union(new[] { this.Registry })
                 .ToList();

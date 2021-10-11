@@ -184,5 +184,23 @@ namespace Kephas.Services
 
             return metadata;
         }
+
+        /// <summary>
+        /// Gets the application service information providers.
+        /// </summary>
+        /// <param name="appAssemblies">The application assemblies.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// </returns>
+        public static IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IEnumerable<Assembly> appAssemblies)
+        {
+            appAssemblies = appAssemblies ?? throw new ArgumentNullException(nameof(appAssemblies));
+
+            var providers = appAssemblies
+                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfosProvider>())
+                .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
+
+            return providers;
+        }
     }
 }
