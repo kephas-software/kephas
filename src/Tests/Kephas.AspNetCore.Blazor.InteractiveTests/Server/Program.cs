@@ -1,26 +1,55 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Kephas.Application;
+    using Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions;
+    using Kephas.Cryptography;
+    using Kephas.Extensions.Hosting;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Hosting;
+
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            await CreateHostBuilder(args).Build().RunAsync();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var appArgs = new AppArgs(args);
+            var ambientServices = new AmbientServices();
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"))
+                .ConfigureAmbientServices(
+                    ambientServices,
+                    args,
+                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
+                .ConfigureWebHostDefaults(
+                    webBuilder => webBuilder
+                        .UseUrls("http://*:5800", "https://*:5801")
+                        .UseStartup<StartupApp>());
+        }
+
+        private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
+        {
+            return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
+        }
+
+        private class EncryptionService : AesEncryptionService
+        {
+            public EncryptionService(Func<IEncryptionContext> contextCtor) : base(contextCtor)
+            {
+            }
+        }
+    }}

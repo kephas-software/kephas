@@ -34,19 +34,19 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Client\Kephas.AspNetCore.Blazor.InteractiveTests.Client.csproj" />
 		<ProjectReference Include="..\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj" />
-		<ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
-		<ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
-		<ProjectReference Include="..\..\Kephas.Commands\Kephas.Commands.csproj" />
-		<ProjectReference Include="..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
-		<ProjectReference Include="..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
-		<ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-		<ProjectReference Include="..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
-		<ProjectReference Include="..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
-		<ProjectReference Include="..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
-		<ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
-		<ProjectReference Include="..\..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />
-		<ProjectReference Include="..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
+		<ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Application\Kephas.Application.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Commands\Kephas.Commands.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Core\Kephas.Core.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
 	</ItemGroup>
 
 

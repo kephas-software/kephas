@@ -5,20 +5,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.InteractiveTests.Controllers
+namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.Controllers
 {
     using System;
     using System.Linq;
     using System.Net.Mime;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Commands;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
