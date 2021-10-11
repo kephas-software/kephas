@@ -11,6 +11,7 @@
 namespace Kephas.Net.Mime
 {
     using System.Collections.Generic;
+
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
