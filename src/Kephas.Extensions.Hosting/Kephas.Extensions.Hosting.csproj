@@ -18,7 +18,7 @@
         <Description>
             Provides the integration of Kephas Framework with Microsoft.Extensions.Hosting.
             Typically used areas and classes/interfaces/services:
-            - CompositionServiceProviderFactory, WorkerAppBase.
+            - BackgroundWorker, WorkerAppBase.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -53,6 +53,10 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>TRACE;DEBUG</DefineConstants>
     </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Remove="stylecop.json" />
