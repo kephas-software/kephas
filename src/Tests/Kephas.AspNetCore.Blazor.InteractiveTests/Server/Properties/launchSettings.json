@@ -1,6 +1,6 @@
 {
     "profiles": {
-      "Kephas.AspNetCore.Blazor.InteractiveTests.Server": {
+      "Blazor.InteractiveTests.Server": {
         "commandName": "Project",
         "dotnetRunMessages": "true",
         "launchBrowser": true,
