@@ -14,7 +14,6 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     using Kephas.Collections;
     using Kephas.Injection;
@@ -22,6 +21,7 @@ namespace Kephas.Services
     using Kephas.Injection.Builder;
     using Kephas.Injection.Configuration;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services.Reflection;
 
@@ -50,40 +50,41 @@ namespace Kephas.Services
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
                 .Select(t => (
-                    contractDeclarationType: SanitizeType(t.contractDeclarationType),
+                    contractDeclarationType: t.contractDeclarationType.ToNormalizedType(),
                     appServiceInfo: t.appServiceInfo))
                 .ToList();
 
-            var appServiceInfoMap = this.BuildAppServiceInfoMap(
+            var serviceMap = this.BuildServiceMap(
                 appServiceInfoList,
                 appServiceInfoProviders
                     .SelectMany(p => p.GetAppServiceTypes(buildContext))
-                    .Select(t => (serviceType: SanitizeType(t.serviceType), contractDeclarationType: SanitizeType(t.contractDeclarationType)))
+                    .Select(t => (serviceType: t.serviceType.ToNormalizedType(), contractDeclarationType: t.contractDeclarationType.ToNormalizedType()))
                     .ToList(),
                 logger);
 
             buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
 
-            foreach (var (contractDeclarationType, appServiceInfos) in appServiceInfoMap)
+            foreach (var (contractDeclarationType, serviceEntry) in serviceMap)
             {
                 // first: split the contract info and the rest of the registrations.
-                var appContractDefinition = appServiceInfos[0];
+                var serviceRegistrations = serviceEntry.Registrations;
+                var appContractDefinition = serviceRegistrations[0];
                 if (appContractDefinition.IsContractDefinition())
                 {
-                    appServiceInfos.RemoveAt(0);
+                    serviceRegistrations.RemoveAt(0);
                 }
 
-                if (appServiceInfos.Count == 0)
+                if (serviceRegistrations.Count == 0)
                 {
                     logger.Warn("No service types registered for {contractDeclarationType}.", contractDeclarationType);
                     continue;
                 }
 
                 var contractType = appContractDefinition.ContractType ?? contractDeclarationType;
-                if (appServiceInfos.Count == 1)
+                if (serviceRegistrations.Count == 1)
                 {
                     // register one service, no matter if multiple or single.
-                    this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfos[0], logger);
+                    this.RegisterService(builder, contractDeclarationType, contractType, serviceRegistrations[0], logger);
                     continue;
                 }
 
@@ -91,19 +92,22 @@ namespace Kephas.Services
                 // and with the rest of the services:
                 // 1. if multiple are registered, register them in the computed order.
                 // 2. for single mode, pick the first one in the order and register it.
-                var sortedServices = this.SortServiceInfos(appServiceInfos);
+                var (sortedRegistrations, overriddenTypes) = this.SortRegistrations(serviceRegistrations, logger);
                 if (!appContractDefinition.AllowMultiple)
                 {
                     var appServiceInfo = ResolveAmbiguousRegistration(
                         contractDeclarationType,
-                        sortedServices,
+                        sortedRegistrations,
                         buildContext.Settings?.AmbiguousResolutionStrategy ?? AmbiguousServiceResolutionStrategy.ForcePriority,
                         logger);
                     this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
                 }
                 else
                 {
-                    foreach (var (appServiceInfo, _) in sortedServices)
+                    var filteredServiceInfos = overriddenTypes.Count == 0
+                        ? serviceRegistrations
+                        : serviceRegistrations.Where(i => !overriddenTypes.Contains(i.InstanceType)).ToList();
+                    foreach (var appServiceInfo in filteredServiceInfos)
                     {
                         this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
                     }
@@ -111,26 +115,15 @@ namespace Kephas.Services
             }
         }
 
-        /// <summary>
-        /// Sometimes the raw type provided is a constructed generic type
-        /// but not with proper type arguments. In this case return the generic type definition
-        /// because this is actually meant.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Type SanitizeType(Type rawType) =>
-            rawType.IsConstructedGenericType && rawType.ContainsGenericParameters
-                ? rawType.GetGenericTypeDefinition()
-                : rawType;
-
         private static IAppServiceInfo ResolveAmbiguousRegistration(
             Type contractDeclarationType,
-            IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedServices,
+            IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedRegistrations,
             AmbiguousServiceResolutionStrategy serviceResolutionStrategy,
             ILogger logger)
         {
-            if (sortedServices.Count == 1)
+            if (sortedRegistrations.Count == 1)
             {
-                return sortedServices[0].appServiceInfo;
+                return sortedRegistrations[0].appServiceInfo;
             }
 
             if (logger.IsDebugEnabled())
@@ -139,22 +132,22 @@ namespace Kephas.Services
                     Strings.MultipleRegistrationsForAppServiceContract,
                     contractDeclarationType,
                     serviceResolutionStrategy,
-                    sortedServices.Select(item => $"{item.appServiceInfo}:{item.overridePriority}"));
+                    sortedRegistrations.Select(item => $"{item.appServiceInfo}:{item.overridePriority}"));
             }
 
-            var priority = sortedServices[0].overridePriority;
+            var priority = sortedRegistrations[0].overridePriority;
             return serviceResolutionStrategy switch
             {
                 AmbiguousServiceResolutionStrategy.UseFirst =>
-                    sortedServices[0].appServiceInfo,
+                    sortedRegistrations[0].appServiceInfo,
                 AmbiguousServiceResolutionStrategy.UseLast =>
-                    sortedServices.Last(s => s.overridePriority == priority).appServiceInfo,
-                AmbiguousServiceResolutionStrategy.ForcePriority when priority == sortedServices[1].overridePriority =>
+                    sortedRegistrations.Last(s => s.overridePriority == priority).appServiceInfo,
+                AmbiguousServiceResolutionStrategy.ForcePriority when priority == sortedRegistrations[1].overridePriority =>
                     throw new AmbiguousServiceResolutionException(string.Format(
                         Strings.AmbiguousOverrideForAppServiceContract,
                         contractDeclarationType,
-                        string.Join(", ", sortedServices.Select(item => $"{item.appServiceInfo}:{item.overridePriority}")))),
-                _ => sortedServices[0].appServiceInfo
+                        string.Join(", ", sortedRegistrations.Select(item => $"{item.appServiceInfo}:{item.overridePriority}")))),
+                _ => sortedRegistrations[0].appServiceInfo
             };
         }
 
@@ -207,7 +200,7 @@ namespace Kephas.Services
             }
         }
 
-        private IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> SortServiceInfos(IEnumerable<IAppServiceInfo> appServiceInfos)
+        private (IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedRegistrations, IList<Type> overriddenTypes) SortRegistrations(IEnumerable<IAppServiceInfo> appServiceInfos, ILogger logger)
         {
             // leave the implementation with the runtime type info
             // so that it may be possible to use runtime added attributes
@@ -224,45 +217,49 @@ namespace Kephas.Services
 
             if (overriddenTypes.Count > 0)
             {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug("Excluding the following overridden services: {serviceInfos}", appServiceInfos.Where(i => overriddenTypes.Contains(i.InstanceType)).ToList());
+                }
+
                 // eliminate the overridden services
                 overrideChain = overrideChain
                     .Where(kv => !overriddenTypes.Contains(kv.appServiceInfo.InstanceType))
                     .ToList();
             }
 
-            return overrideChain;
+            return (overrideChain, overriddenTypes!);
         }
 
-        private IDictionary<Type, IList<IAppServiceInfo>> BuildAppServiceInfoMap(
+        private IDictionary<Type, ServiceEntry> BuildServiceMap(
                 IList<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfoList,
                 IEnumerable<(Type serviceType, Type contractDeclarationType)> serviceTypes,
                 ILogger logger)
         {
-            var dictionary = new Dictionary<Type, IList<IAppServiceInfo>>();
+            var serviceMap = new Dictionary<Type, ServiceEntry>();
 
             foreach (var (contractDeclarationType, appServiceInfo) in appServiceInfoList)
             {
-                if (!dictionary.TryGetValue(contractDeclarationType, out var appServiceInfos))
+                if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
                 {
-                    appServiceInfos = new List<IAppServiceInfo>();
-                    dictionary.Add(contractDeclarationType, appServiceInfos);
+                    serviceMap.Add(contractDeclarationType, serviceEntry = new ServiceEntry(contractDeclarationType));
                 }
 
-                appServiceInfos.Add(appServiceInfo);
+                serviceEntry.Registrations.Add(appServiceInfo);
             }
 
-            serviceTypes.ForEach(si => this.AddServiceType(dictionary, si.contractDeclarationType, si.serviceType, logger));
+            serviceTypes.ForEach(si => this.AddServiceType(serviceMap, si.contractDeclarationType, si.serviceType, logger));
 
-            return dictionary;
+            return serviceMap;
         }
 
         private void AddServiceType(
-            IDictionary<Type, IList<IAppServiceInfo>> appServiceInfoMap,
+            IDictionary<Type, ServiceEntry> serviceMap,
             Type contractDeclarationType,
             Type serviceType,
             ILogger logger)
         {
-            if (!appServiceInfoMap.TryGetValue(contractDeclarationType, out var appServiceInfos))
+            if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
             {
                 // if the contract declaration type is not found in the map,
                 // it may be because it is a constructed generic type and the
@@ -270,18 +267,18 @@ namespace Kephas.Services
                 if (contractDeclarationType.IsConstructedGenericType)
                 {
                     var contractDeclarationTypeGenericDefinition = contractDeclarationType.GetGenericTypeDefinition();
-                    if (appServiceInfoMap.TryGetValue(contractDeclarationTypeGenericDefinition, out appServiceInfos))
+                    if (serviceMap.TryGetValue(contractDeclarationTypeGenericDefinition, out serviceEntry))
                     {
                         // if the contract declaration based on the generic type definition is found,
                         // build a new contract declaration based on the constructed generic type
                         // and add a new entry in the map.
-                        var appServiceInfoGenericDefinition = appServiceInfos.First();
+                        var appServiceInfoGenericDefinition = serviceEntry.Registrations.First();
                         var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoGenericDefinition, contractDeclarationType);
-                        var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType)
-                            .AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
+                        IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType);
+                        appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
 
                         // add to the list of service infos on the first place the declaration.
-                        appServiceInfoMap[contractDeclarationType] = new List<IAppServiceInfo> { appServiceInfoDeclaration, appServiceInfo };
+                        serviceMap[contractDeclarationType] = new ServiceEntry(contractDeclarationType) { Registrations = { appServiceInfoDeclaration, appServiceInfo } };
                         return;
                     }
                 }
@@ -289,10 +286,10 @@ namespace Kephas.Services
             else
             {
                 // The first app service info in the list must be the contract declaration.
-                var appServiceInfoDeclaration = appServiceInfos.First();
-                var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType)
-                    .AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
-                appServiceInfos.Add(appServiceInfo);
+                var appServiceInfoDeclaration = serviceEntry.Registrations.First();
+                IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType);
+                appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
+                serviceEntry.Registrations.Add(appServiceInfo);
                 return;
             }
 
@@ -351,6 +348,20 @@ namespace Kephas.Services
             }
 
             return explicitlyMarkedConstructors[0];
+        }
+
+        private class ServiceEntry
+        {
+            public ServiceEntry(Type contractDeclarationType)
+            {
+                this.ContractDeclarationType = contractDeclarationType;
+            }
+
+            public Type ContractDeclarationType { get; set; }
+
+            public IList<IAppServiceInfo> Registrations { get; } = new List<IAppServiceInfo>();
+
+            public IList<Type> OverriddenTypes { get; } = new List<Type>();
         }
     }
 }

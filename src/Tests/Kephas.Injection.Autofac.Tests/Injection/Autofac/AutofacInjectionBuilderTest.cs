@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacInjectionContainerBuilderTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacInjectionBuilderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -23,7 +23,6 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
-    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Kephas.Testing.Injection;
@@ -35,7 +34,7 @@ namespace Kephas.Tests.Injection.Autofac
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacInjectionContainerBuilderTest : AutofacInjectionTestBase
+    public class AutofacInjectionBuilderTest : AutofacInjectionTestBase
     {
         [Test]
         public async Task CreateInjector_simple_ambient_services_exported()
@@ -149,7 +148,7 @@ namespace Kephas.Tests.Injection.Autofac
         }
 
         [Test]
-        public void ResolveMany_AppService_Multiple_Success()
+        public void ResolveMany_AppService_Multiple_Proper_Order()
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
@@ -160,6 +159,8 @@ namespace Kephas.Tests.Injection.Autofac
             var exports = container.ResolveMany<ITestMultiAppService>().ToList();
 
             Assert.AreEqual(2, exports.Count);
+            Assert.IsInstanceOf<TestMultiAppService1>(exports[0]);
+            Assert.IsInstanceOf<TestMultiAppService2>(exports[1]);
         }
 
         [Test]
