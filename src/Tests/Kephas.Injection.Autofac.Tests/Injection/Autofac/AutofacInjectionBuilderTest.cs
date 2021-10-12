@@ -148,7 +148,7 @@ namespace Kephas.Tests.Injection.Autofac
         }
 
         [Test]
-        public void ResolveMany_AppService_Multiple_Proper_Order()
+        public void ResolveMany_AppService_Multiple_Preserve_Order_types()
         {
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
@@ -161,6 +161,24 @@ namespace Kephas.Tests.Injection.Autofac
             Assert.AreEqual(2, exports.Count);
             Assert.IsInstanceOf<TestMultiAppService1>(exports[0]);
             Assert.IsInstanceOf<TestMultiAppService2>(exports[1]);
+        }
+
+        [Test]
+        public void ResolveMany_AppService_Multiple_Preserve_Order_mixed()
+        {
+            var builder = this.CreateInjectorBuilderWithStringLogger()
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly);
+            builder.ForFactory(typeof(ITestMultiAppService), _ => new TestMultiAppService1()).Transient();
+            builder.ForInstance(Substitute.For<ITestMultiAppService>()).As<ITestMultiAppService>();
+            builder.ForType(typeof(TestMultiAppService2)).As<ITestMultiAppService>();
+            var container = builder.Build();
+
+            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
+
+            Assert.AreEqual(3, exports.Count);
+            Assert.IsInstanceOf<TestMultiAppService1>(exports[0]);
+            Assert.IsTrue(exports[1].GetType().Name.Contains("Proxy"));
+            Assert.IsInstanceOf<TestMultiAppService2>(exports[2]);
         }
 
         [Test]

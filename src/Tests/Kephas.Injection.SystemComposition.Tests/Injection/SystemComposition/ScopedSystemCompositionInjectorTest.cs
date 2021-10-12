@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScopedSystemCompositionInjectionInjectorTest.cs" company="Kephas Software SRL">
+// <copyright file="ScopedSystemCompositionInjectorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,6 +11,7 @@
 namespace Kephas.Tests.Injection.SystemComposition
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Injection;
     using Kephas.Injection.SystemComposition;
     using Kephas.Testing.Injection;
@@ -21,7 +22,7 @@ namespace Kephas.Tests.Injection.SystemComposition
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ScopedSystemCompositionInjectionInjectorTest : SystemCompositionInjectionTestBase
+    public class ScopedSystemCompositionInjectorTest : SystemCompositionInjectionTestBase
     {
         [Test]
         public void CreateScopedInjector_NestedScopes()

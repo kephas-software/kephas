@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacSimpleRegistrationBuilder.cs" company="Kephas Software SRL">
+// <copyright file="AutofacInstanceRegistrationBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the autofac part builder class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Injection.Autofac.Builder
@@ -15,36 +12,35 @@ namespace Kephas.Injection.Autofac.Builder
     using System.Reflection;
 
     using global::Autofac;
-    using global::Autofac.Builder;
+    using Kephas.Collections;
     using Kephas.Injection.Builder;
 
     /// <summary>
     /// An Autofac part builder.
     /// </summary>
-    public class AutofacSimpleRegistrationBuilder : IAutofacRegistrationBuilder
+    public class AutofacInstanceRegistrationBuilder : IAutofacRegistrationBuilder
     {
         private readonly ContainerBuilder containerBuilder;
+        private readonly object instance;
 
-        private readonly IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder;
-        private readonly bool isRegistered;
         private readonly bool preserveRegistrationOrder;
+        private Type? contractType;
+        private IDictionary<string, object?>? metadata;
+        private bool isExternallyOwned;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacSimpleRegistrationBuilder"/> class.
+        /// Initializes a new instance of the <see cref="AutofacInstanceRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
-        /// <param name="registrationBuilder">The registration builder.</param>
-        /// <param name="isRegistered">Indicates whether the registration builder is already registered in the container builder.</param>
+        /// <param name="instance">The instance.</param>
         /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
-        public AutofacSimpleRegistrationBuilder(
+        public AutofacInstanceRegistrationBuilder(
             ContainerBuilder containerBuilder,
-            IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder,
-            bool isRegistered,
+            object instance,
             bool preserveRegistrationOrder)
         {
-            this.containerBuilder = containerBuilder;
-            this.registrationBuilder = registrationBuilder;
-            this.isRegistered = isRegistered;
+            this.containerBuilder = containerBuilder ?? throw new ArgumentNullException(nameof(containerBuilder));
+            this.instance = instance ?? throw new ArgumentNullException(nameof(instance));
             this.preserveRegistrationOrder = preserveRegistrationOrder;
         }
 
@@ -57,7 +53,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder As(Type contractType)
         {
-            this.registrationBuilder.As(contractType);
+            this.contractType = contractType;
             return this;
         }
 
@@ -69,7 +65,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder Singleton()
         {
-            this.registrationBuilder.SingleInstance();
+            // always singleton
             return this;
         }
 
@@ -81,7 +77,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder Scoped()
         {
-            this.registrationBuilder.InstancePerLifetimeScope();
+            // always singleton
             return this;
         }
 
@@ -110,7 +106,7 @@ namespace Kephas.Injection.Autofac.Builder
             Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
             Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
         {
-            // selecting a constructor is not supported for instance and factory
+            // selecting a constructor is not supported for instance
             return this;
         }
 
@@ -120,11 +116,11 @@ namespace Kephas.Injection.Autofac.Builder
         /// <param name="name">The name of the metadata item.</param>
         /// <param name="value">The metadata value.</param>
         /// <returns>
-        /// A part builder allowing further configuration.
+        /// A registration builder allowing further configuration.
         /// </returns>
         public IRegistrationBuilder AddMetadata(string name, object? value)
         {
-            this.registrationBuilder.WithMetadata(name, value);
+            (this.metadata ??= new Dictionary<string, object?>())[name] = value;
             return this;
         }
 
@@ -137,7 +133,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder AddMetadata(IDictionary<string, object?> metadata)
         {
-            this.registrationBuilder.WithMetadata(metadata);
+            (this.metadata ??= new Dictionary<string, object?>()).Merge(metadata);
             return this;
         }
 
@@ -149,7 +145,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder ExternallyOwned()
         {
-            this.registrationBuilder.ExternallyOwned();
+            this.isExternallyOwned = true;
             return this;
         }
 
@@ -158,18 +154,26 @@ namespace Kephas.Injection.Autofac.Builder
         /// </summary>
         public void Build()
         {
-            if (this.isRegistered)
+            var registrationBuilder = this.containerBuilder.RegisterInstance(this.instance);
+            if (this.contractType != null)
             {
-                return;
+                registrationBuilder.As(this.contractType);
+            }
+
+            if (this.metadata != null)
+            {
+                registrationBuilder.WithMetadata(this.metadata);
+            }
+
+            if (this.isExternallyOwned)
+            {
+                registrationBuilder.ExternallyOwned();
             }
 
             if (this.preserveRegistrationOrder)
             {
-                this.registrationBuilder.PreserveExistingDefaults();
+                registrationBuilder.PreserveExistingDefaults();
             }
-
-            var registration = this.registrationBuilder.CreateRegistration();
-            this.containerBuilder.RegisterComponent(registration);
         }
     }
 }

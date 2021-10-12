@@ -66,7 +66,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> that must be used to specify the rule.</returns>
         public override IRegistrationBuilder ForType(Type type)
         {
-            var partBuilder = new AutofacTypeRegistrationBuilder(this.containerBuilder, type, preserveRegistrationOrder: this.preserveRegistrationOrder);
+            var partBuilder = new AutofacTypeRegistrationBuilder(this.containerBuilder, type, this.preserveRegistrationOrder);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
@@ -79,13 +79,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForInstance(object instance)
         {
-            var registrationBuilder = this.containerBuilder.RegisterInstance(instance);
-            if (this.preserveRegistrationOrder)
-            {
-                registrationBuilder.PreserveExistingDefaults();
-            }
-
-            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: true, preserveRegistrationOrder: this.preserveRegistrationOrder);
+            var partBuilder = new AutofacInstanceRegistrationBuilder(this.containerBuilder, instance, this.preserveRegistrationOrder);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
@@ -99,11 +93,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
-            var registrationBuilder = RegistrationBuilder.ForDelegate(
-                type,
-                (context, _) => factory(context.Resolve<IInjector>()));
-            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: false, preserveRegistrationOrder: this.preserveRegistrationOrder);
-            partBuilder.As(type);
+            var partBuilder = new AutofacFactoryRegistrationBuilder(this.containerBuilder, type, factory, this.preserveRegistrationOrder);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
