@@ -1,21 +1,6 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:55795/",
-      "sslPort": 44313
-    }
-  },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Kephas.Application.AspNetCore.InteractiveTests": {
+    "InteractiveTests": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
