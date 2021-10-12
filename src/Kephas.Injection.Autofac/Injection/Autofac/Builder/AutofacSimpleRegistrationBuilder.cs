@@ -27,6 +27,7 @@ namespace Kephas.Injection.Autofac.Builder
 
         private readonly IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder;
         private readonly bool isRegistered;
+        private readonly bool preserveRegistrationOrder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacSimpleRegistrationBuilder"/> class.
@@ -34,14 +35,17 @@ namespace Kephas.Injection.Autofac.Builder
         /// <param name="containerBuilder">The container builder.</param>
         /// <param name="registrationBuilder">The registration builder.</param>
         /// <param name="isRegistered">Indicates whether the registration builder is already registered in the container builder.</param>
+        /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
         public AutofacSimpleRegistrationBuilder(
             ContainerBuilder containerBuilder,
             IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder,
-            bool isRegistered)
+            bool isRegistered,
+            bool preserveRegistrationOrder)
         {
             this.containerBuilder = containerBuilder;
             this.registrationBuilder = registrationBuilder;
             this.isRegistered = isRegistered;
+            this.preserveRegistrationOrder = preserveRegistrationOrder;
         }
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder AllowMultiple(bool value)
         {
-            // by default aAutofac allows multiple services.
+            // by default Autofac allows multiple services.
             return this;
         }
 
@@ -159,9 +163,12 @@ namespace Kephas.Injection.Autofac.Builder
                 return;
             }
 
-            var registration = this.registrationBuilder
-                .PreserveExistingDefaults()
-                .CreateRegistration();
+            if (this.preserveRegistrationOrder)
+            {
+                this.registrationBuilder.PreserveExistingDefaults();
+            }
+
+            var registration = this.registrationBuilder.CreateRegistration();
             this.containerBuilder.RegisterComponent(registration);
         }
     }

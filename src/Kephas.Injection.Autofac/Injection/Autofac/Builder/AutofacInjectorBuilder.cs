@@ -26,6 +26,7 @@ namespace Kephas.Injection.Autofac.Builder
     public class AutofacInjectorBuilder : InjectorBuilderBase<AutofacInjectorBuilder>
     {
         private readonly ContainerBuilder containerBuilder;
+        private readonly bool preserveRegistrationOrder;
         private readonly IList<Action<ContainerBuilder>> builderConfigs = new List<Action<ContainerBuilder>>();
         private readonly IList<IAutofacRegistrationBuilder> partBuilders = new List<IAutofacRegistrationBuilder>();
 
@@ -34,10 +35,12 @@ namespace Kephas.Injection.Autofac.Builder
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="containerBuilder">Optional. The container builder.</param>
-        public AutofacInjectorBuilder(IInjectionBuildContext context, ContainerBuilder? containerBuilder = null)
+        /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
+        public AutofacInjectorBuilder(IInjectionBuildContext context, ContainerBuilder? containerBuilder = null, bool preserveRegistrationOrder = true)
             : base(context)
         {
             this.containerBuilder = containerBuilder ?? new ContainerBuilder();
+            this.preserveRegistrationOrder = preserveRegistrationOrder;
         }
 
         /// <summary>
@@ -63,7 +66,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> that must be used to specify the rule.</returns>
         public override IRegistrationBuilder ForType(Type type)
         {
-            var partBuilder = new AutofacTypeRegistrationBuilder(this.containerBuilder) { ImplementationType = type };
+            var partBuilder = new AutofacTypeRegistrationBuilder(this.containerBuilder, type, preserveRegistrationOrder: this.preserveRegistrationOrder);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
@@ -76,10 +79,13 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForInstance(object instance)
         {
-            var registrationBuilder = this.containerBuilder
-                .RegisterInstance(instance)
-                .PreserveExistingDefaults();
-            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: true);
+            var registrationBuilder = this.containerBuilder.RegisterInstance(instance);
+            if (this.preserveRegistrationOrder)
+            {
+                registrationBuilder.PreserveExistingDefaults();
+            }
+
+            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: true, preserveRegistrationOrder: this.preserveRegistrationOrder);
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
@@ -95,12 +101,8 @@ namespace Kephas.Injection.Autofac.Builder
         {
             var registrationBuilder = RegistrationBuilder.ForDelegate(
                 type,
-                (context, parameters) =>
-                {
-                    var serviceProvider = context.Resolve<IInjector>();
-                    return factory(serviceProvider);
-                });
-            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: false);
+                (context, _) => factory(context.Resolve<IInjector>()));
+            var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: false, preserveRegistrationOrder: this.preserveRegistrationOrder);
             partBuilder.As(type);
             this.partBuilders.Add(partBuilder);
 

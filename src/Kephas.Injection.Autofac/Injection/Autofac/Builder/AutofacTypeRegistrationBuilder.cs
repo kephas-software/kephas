@@ -28,52 +28,31 @@ namespace Kephas.Injection.Autofac.Builder
     public class AutofacTypeRegistrationBuilder : Loggable, IAutofacRegistrationBuilder
     {
         private readonly ContainerBuilder containerBuilder;
+        private readonly Type implementationType;
+        private readonly bool preserveRegistrationOrder;
         private IDictionary<string, object?>? metadata;
+        private Type? contractType;
+        private AppServiceLifetime lifetime = AppServiceLifetime.Transient;
+        private Func<IEnumerable<ConstructorInfo>, ConstructorInfo?>? constructorSelector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacTypeRegistrationBuilder"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
+        /// <param name="implementationType">The implementation type.</param>
+        /// <param name="preserveRegistrationOrder">Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
         /// <param name="logManager">The log manager.</param>
         internal AutofacTypeRegistrationBuilder(
             ContainerBuilder containerBuilder,
+            Type implementationType,
+            bool preserveRegistrationOrder,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.containerBuilder = containerBuilder;
+            this.containerBuilder = containerBuilder ?? throw new ArgumentNullException(nameof(containerBuilder));
+            this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+            this.preserveRegistrationOrder = preserveRegistrationOrder;
         }
-
-        /// <summary>
-        /// Gets or sets the contract type (service key).
-        /// </summary>
-        /// <value>
-        /// The contract type (service key).
-        /// </value>
-        public Type? ContractType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the implementation.
-        /// </summary>
-        /// <value>
-        /// The type of the implementation.
-        /// </value>
-        public Type? ImplementationType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the lifetime.
-        /// </summary>
-        /// <value>
-        /// The lifetime.
-        /// </value>
-        public AppServiceLifetime Lifetime { get; set; } = AppServiceLifetime.Transient;
-
-        /// <summary>
-        /// Gets or sets the constructor selector.
-        /// </summary>
-        /// <value>
-        /// A function delegate that yields a ConstructorInfo.
-        /// </value>
-        public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?>? ConstructorSelector { get; set; }
 
         /// <summary>
         /// Indicates the declared service type. Typically this is the same as the contract type, but
@@ -86,9 +65,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder As(Type contractType)
         {
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-
-            this.ContractType = contractType;
+            this.contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             return this;
         }
 
@@ -100,7 +77,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder Singleton()
         {
-            this.Lifetime = AppServiceLifetime.Singleton;
+            this.lifetime = AppServiceLifetime.Singleton;
             return this;
         }
 
@@ -112,7 +89,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public IRegistrationBuilder Scoped()
         {
-            this.Lifetime = AppServiceLifetime.Scoped;
+            this.lifetime = AppServiceLifetime.Scoped;
             return this;
         }
 
@@ -128,7 +105,7 @@ namespace Kephas.Injection.Autofac.Builder
             Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
             Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
         {
-            this.ConstructorSelector = constructorSelector;
+            this.constructorSelector = constructorSelector ?? throw new ArgumentNullException(nameof(constructorSelector));
 
             return this;
         }
@@ -190,14 +167,21 @@ namespace Kephas.Injection.Autofac.Builder
         /// </summary>
         public void Build()
         {
-            if (this.ImplementationType != null)
+            if (this.implementationType.IsGenericTypeDefinition)
             {
-                this.RegisterService(this.ImplementationType);
-                return;
+                var registration = this.containerBuilder.RegisterGeneric(this.implementationType);
+                this.RegisterService(this.implementationType, registration);
             }
+            else
+            {
+                var registration = this.containerBuilder.RegisterType(this.implementationType);
+                if (this.preserveRegistrationOrder)
+                {
+                    registration.PreserveExistingDefaults();
+                }
 
-            throw new InvalidOperationException(
-                $"{nameof(this.ImplementationType)} must be set to build this descriptor.");
+                this.RegisterService(this.implementationType, registration);
+            }
         }
 
         /// <summary>
@@ -208,35 +192,21 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public override string ToString()
         {
-            return $"{this.ContractType}/{this.Lifetime}/{this.ImplementationType}";
-        }
-
-        private void RegisterService(Type implementationType)
-        {
-            if (implementationType.IsGenericTypeDefinition)
-            {
-                var registration = this.containerBuilder.RegisterGeneric(implementationType);
-                this.RegisterService(implementationType, registration);
-            }
-            else
-            {
-                var registration = this.containerBuilder.RegisterType(implementationType).PreserveExistingDefaults();
-                this.RegisterService(implementationType, registration);
-            }
+            return $"{this.contractType}/{this.lifetime}/{this.implementationType}";
         }
 
         private IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> RegisterService<TActivatorData, TRegistrationStyle>(
-            Type implementationType,
+            Type serviceType,
             IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
             where TActivatorData : ReflectionActivatorData
         {
             this.SetLifetime(registration);
-            if (this.ContractType != null)
+            if (this.contractType != null)
             {
-                registration.As(this.ContractType);
+                registration.As(this.contractType);
             }
 
-            this.SelectConstructor(registration, implementationType);
+            this.SelectConstructor(registration, serviceType);
 
             if (this.metadata != null)
             {
@@ -249,7 +219,7 @@ namespace Kephas.Injection.Autofac.Builder
         private IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> SetLifetime<TActivatorData, TRegistrationStyle>(
             IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
         {
-            return this.Lifetime switch
+            return this.lifetime switch
             {
                 AppServiceLifetime.Singleton => registration.SingleInstance(),
                 AppServiceLifetime.Scoped => registration.InstancePerLifetimeScope(),
@@ -262,12 +232,12 @@ namespace Kephas.Injection.Autofac.Builder
             Type type)
             where TActivatorData : ReflectionActivatorData
         {
-            if (this.ConstructorSelector == null)
+            if (this.constructorSelector == null)
             {
                 return;
             }
 
-            var constructor = this.ConstructorSelector(type.GetConstructors());
+            var constructor = this.constructorSelector(type.GetConstructors());
             if (constructor == null)
             {
                 // no constructor selected, it means we leave the selection up to Autofac.

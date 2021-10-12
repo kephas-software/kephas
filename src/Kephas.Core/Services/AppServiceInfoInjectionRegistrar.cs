@@ -106,7 +106,7 @@ namespace Kephas.Services
                 {
                     var filteredServiceInfos = overriddenTypes.Count == 0
                         ? serviceRegistrations
-                        : serviceRegistrations.Where(i => !overriddenTypes.Contains(i.InstanceType)).ToList();
+                        : serviceRegistrations.Where(i => !overriddenTypes.Contains(i.InstanceType));
                     foreach (var appServiceInfo in filteredServiceInfos)
                     {
                         this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
