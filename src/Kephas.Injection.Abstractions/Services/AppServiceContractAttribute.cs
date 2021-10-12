@@ -80,6 +80,15 @@ namespace Kephas.Services
         public object? InstancingStrategy => null;
 
         /// <summary>
+        /// Throws an exception indicating that metadata cannot be added to attributes.
+        /// </summary>
+        /// <param name="name">The metadata name.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>This <see cref="IAppServiceInfo"/>.</returns>
+        IAppServiceInfo IAppServiceInfo.AddMetadata(string name, object? value) =>
+            throw new NotSupportedException("Cannot add metadata to attribute instances.");
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>

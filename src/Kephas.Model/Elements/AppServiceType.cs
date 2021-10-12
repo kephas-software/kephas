@@ -80,12 +80,29 @@ namespace Kephas.Model.Elements
         public object? InstancingStrategy => this.appServiceInfo.InstancingStrategy;
 
         /// <summary>
+        /// Gets the supported metadata.
+        /// </summary>
+        /// <value>
+        /// The metadata.
+        /// </value>
+        public IDictionary<string, object?>? Metadata => this.appServiceInfo.Metadata;
+
+        /// <summary>
         /// Gets the service lifetime.
         /// </summary>
         /// <value>
         /// The service lifetime.
         /// </value>
         public AppServiceLifetime Lifetime => this.appServiceInfo.Lifetime;
+
+        /// <summary>
+        /// Adds the metadata with the provided name and value.
+        /// </summary>
+        /// <param name="name">The metadata name.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>This <see cref="IAppServiceInfo"/>.</returns>
+        IAppServiceInfo IAppServiceInfo.AddMetadata(string name, object? value) =>
+            throw new NotSupportedException("Cannot add metadata to the underlying service, instead add metadata directly to that service.");
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).

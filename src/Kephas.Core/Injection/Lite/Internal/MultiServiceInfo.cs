@@ -69,12 +69,13 @@ namespace Kephas.Injection.Lite.Internal
             this.serviceInfos.Add(serviceInfo);
         }
 
-        public object GetService(IServiceProvider serviceProvider, Type contractType)
-        {
+        public object GetService(IServiceProvider serviceProvider, Type contractType) =>
             throw new NotSupportedException("Only single service infos may provide services.");
-        }
 
         public IDictionary<string, object?>? Metadata { get; }
+
+        IAppServiceInfo IAppServiceInfo.AddMetadata(string name, object? value) =>
+            throw new NotSupportedException("Only single service infos may add metadata.");
 
         public IEnumerator<IServiceInfo> GetEnumerator() => serviceInfos.GetEnumerator();
 

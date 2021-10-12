@@ -161,25 +161,9 @@ namespace Kephas.Services.Reflection
         /// <param name="name">The metadata name.</param>
         /// <param name="value">The metadata value.</param>
         /// <returns>This <see cref="AppServiceInfo"/>.</returns>
-        public AppServiceInfo AddMetadata(string name, object? value)
+        public IAppServiceInfo AddMetadata(string name, object? value)
         {
             ((this.Metadata ??= new Dictionary<string, object?>())!)[name] = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the metadata with the provided name and value.
-        /// </summary>
-        /// <param name="metadata">The metadata to add.</param>
-        /// <returns>This <see cref="AppServiceInfo"/>.</returns>
-        public AppServiceInfo AddMetadata(IDictionary<string, object?> metadata)
-        {
-            if (metadata == null)
-            {
-                return this;
-            }
-
-            ((this.Metadata ??= new Dictionary<string, object?>())!).Merge(metadata);
             return this;
         }
 

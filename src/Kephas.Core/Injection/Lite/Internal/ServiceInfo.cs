@@ -101,6 +101,18 @@ namespace Kephas.Injection.Lite.Internal
         public IDictionary<string, object?>? Metadata { get; internal set; }
 
         /// <summary>
+        /// Adds the metadata with the provided name and value.
+        /// </summary>
+        /// <param name="name">The metadata name.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>This <see cref="AppServiceInfo"/>.</returns>
+        public IAppServiceInfo AddMetadata(string name, object? value)
+        {
+            ((this.Metadata ??= new Dictionary<string, object?>())!)[name] = value;
+            return this;
+        }
+
+        /// <summary>
         /// Makes a generic service information with closed generic types.
         /// </summary>
         /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>

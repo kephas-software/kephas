@@ -100,6 +100,44 @@ namespace Kephas.Services.Reflection
         bool IsContractDefinition() => this.InstancingStrategy == null;
 
         /// <summary>
+        /// Adds the metadata with the provided name and value.
+        /// </summary>
+        /// <param name="name">The metadata name.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>This <see cref="IAppServiceInfo"/>.</returns>
+        public IAppServiceInfo AddMetadata(string name, object? value)
+        {
+            if (this.Metadata == null)
+            {
+                throw new InvalidOperationException("Cannot add metadata as long as the instance is not set.");
+            }
+
+            this.Metadata[name] = value;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the metadata with the provided name and value.
+        /// </summary>
+        /// <param name="metadata">The metadata to add.</param>
+        /// <returns>This <see cref="IAppServiceInfo"/>.</returns>
+        public IAppServiceInfo AddMetadata(IDictionary<string, object?> metadata)
+        {
+            if (metadata == null)
+            {
+                return this;
+            }
+
+            foreach (var (name, value) in metadata)
+            {
+                this.AddMetadata(name, value);
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Gets the JSON string out of this <see cref="IAppServiceInfo"/>.
         /// </summary>
         /// <returns>The JSON string.</returns>
