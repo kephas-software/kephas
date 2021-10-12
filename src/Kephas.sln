@@ -274,11 +274,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Abstracti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow.Abstractions", "Kephas.Workflow.Abstractions\Kephas.Workflow.Abstractions.csproj", "{CB129196-D2F7-4E60-ADD1-53884BCD5B9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Server", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Server\Kephas.AspNetCore.Blazor.InteractiveTests.Server.csproj", "{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Server", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Server\Kephas.AspNetCore.Blazor.InteractiveTests.Server.csproj", "{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Client", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Client\Kephas.AspNetCore.Blazor.InteractiveTests.Client.csproj", "{258B6D61-DA0B-4D11-939D-EBCF65339F9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Client", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Client\Kephas.AspNetCore.Blazor.InteractiveTests.Client.csproj", "{258B6D61-DA0B-4D11-939D-EBCF65339F9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Shared", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj", "{27813CE7-46D1-441C-988F-4B87C870DEA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Shared", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj", "{27813CE7-46D1-441C-988F-4B87C870DEA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.DependencyInjection.Tests", "Tests\Kephas.Extensions.DependencyInjection.Tests\Kephas.Extensions.DependencyInjection.Tests.csproj", "{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -778,6 +780,10 @@ Global
 		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27813CE7-46D1-441C-988F-4B87C870DEA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -839,6 +845,7 @@ Global
 		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{258B6D61-DA0B-4D11-939D-EBCF65339F9A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{27813CE7-46D1-441C-988F-4B87C870DEA4} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
