@@ -82,7 +82,8 @@ namespace Kephas.Injection.Autofac.Builder
         public override IRegistrationBuilder ForInstance(object instance)
         {
             var registrationBuilder = this.containerBuilder
-                .RegisterInstance(instance);
+                .RegisterInstance(instance)
+                .PreserveExistingDefaults();
             var partBuilder = new AutofacSimpleRegistrationBuilder(this.containerBuilder, registrationBuilder, isRegistered: true);
             this.partBuilders.Add(partBuilder);
 

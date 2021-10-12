@@ -159,7 +159,9 @@ namespace Kephas.Injection.Autofac.Builder
                 return;
             }
 
-            var registration = this.registrationBuilder.CreateRegistration();
+            var registration = this.registrationBuilder
+                .PreserveExistingDefaults()
+                .CreateRegistration();
             this.containerBuilder.RegisterComponent(registration);
         }
     }

@@ -124,7 +124,7 @@ namespace Kephas.Injection.Autofac.Builder
             }
             else
             {
-                var registration = this.containerBuilder.RegisterType(implementationType);
+                var registration = this.containerBuilder.RegisterType(implementationType).PreserveExistingDefaults();
                 this.RegisterService(implementationType, registration);
             }
         }
