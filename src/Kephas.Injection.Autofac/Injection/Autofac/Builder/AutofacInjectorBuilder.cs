@@ -63,12 +63,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> that must be used to specify the rule.</returns>
         public override IRegistrationBuilder ForType(Type type)
         {
-            var registrationBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
-            {
-                ImplementationType = type,
-            };
-
-            var partBuilder = new AutofacTypeRegistrationBuilder(registrationBuilder);
+            var partBuilder = new AutofacTypeRegistrationBuilder(this.containerBuilder) { ImplementationType = type };
             this.partBuilders.Add(partBuilder);
 
             return partBuilder;
