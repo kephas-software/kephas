@@ -15,7 +15,7 @@ namespace Kephas.Reflection
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
@@ -42,6 +42,29 @@ namespace Kephas.Reflection
 
             return RuntimeTypeRegistry.Instance.GetTypeInfo(type);
         }
+
+        /// <summary>
+        /// Conerts the raw type to a type usable for the runtime operations.
+        /// This is either the non-generic type, the fully constructed generic type,
+        /// or the generic type definition.
+        /// </summary>
+        /// <remarks>
+        /// Sometimes the raw type provided is a constructed generic type
+        /// but not with all type arguments replaced. In this case the generic type definition
+        /// will be returned.
+        /// </remarks>
+        /// <param name="rawType">The raw type.</param>
+        /// <returns>The runtime type.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Type ToNormalizedType(this Type rawType)
+        {
+            rawType = rawType ?? throw new ArgumentNullException(nameof(rawType));
+
+            return rawType.IsConstructedGenericType && rawType.ContainsGenericParameters
+                ? rawType.GetGenericTypeDefinition()
+                : rawType;
+        }
+
 
         /// <summary>
         /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
