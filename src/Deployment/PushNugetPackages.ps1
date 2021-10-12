@@ -89,9 +89,9 @@ foreach ($path in $paths) {
     $packagename = get-packagename $path
     $packagepath = "..\$path\bin\$build\$packagename.$version.nupkg"
     if ($apiKey -eq "") {
-        .\NuGet.exe push $packagepath 
+        .\NuGet.exe push $packagepath -Source https://api.nuget.org/v3/index.json
     }
     else {
-        .\NuGet.exe push -ApiKey $apiKey $packagepath 
+        .\NuGet.exe push $packagepath -Source https://api.nuget.org/v3/index.json -ApiKey $apiKey
     }
 }
