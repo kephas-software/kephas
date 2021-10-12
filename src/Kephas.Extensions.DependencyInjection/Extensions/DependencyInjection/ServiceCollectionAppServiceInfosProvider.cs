@@ -22,7 +22,7 @@ namespace Kephas.Extensions.DependencyInjection
     using System.Linq;
 
     using Kephas.Injection;
-    using Kephas.Injection.Builder;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Microsoft.Extensions.DependencyInjection;
@@ -43,30 +43,28 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            var ambientServices = ((IInjectionBuildContext?)context)?.AmbientServices;
+            var ambientServices = ((IContext?)context)?.AmbientServices;
             if (ambientServices == null)
             {
                 yield break;
             }
 
             var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
-            var openGenericServiceTypes = new List<Type>();
+            var openGenericServiceTypes = new HashSet<Type>(
+                serviceCollection
+                    .Where(s => s.ServiceType.ToNormalizedType().IsGenericTypeDefinition)
+                    .Select(s => s.ServiceType.ToNormalizedType())
+                    .ToList());
 
             // make sure to register first the open generics, so that the constructed generics
             // are later ignored
-            foreach (var descriptor in serviceCollection.OrderBy(d => d.ServiceType.IsGenericTypeDefinition ? 0 : 1))
+            foreach (var descriptor in serviceCollection)
             {
-                var serviceType = descriptor.ServiceType;
-                if (serviceType.IsGenericTypeDefinition)
+                var serviceType = descriptor.ServiceType.ToNormalizedType();
+                var asOpenGeneric = serviceType.IsGenericTypeDefinition;
+                if (serviceType.IsConstructedGenericType && openGenericServiceTypes.Contains(serviceType.GetGenericTypeDefinition()))
                 {
-                    openGenericServiceTypes.Add(serviceType);
-                }
-                else if (serviceType.IsConstructedGenericType)
-                {
-                    if (openGenericServiceTypes.Contains(serviceType))
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 // make sure AllowMultiple is set to true, as the ServiceCollection supports by default multiple registrations.
@@ -96,7 +94,7 @@ namespace Kephas.Extensions.DependencyInjection
                                          serviceType,
                                          instanceType,
                                          lifetime,
-                                         serviceType.IsGenericTypeDefinition)
+                                         asOpenGeneric)
                                          { AllowMultiple = true });
                 }
             }
