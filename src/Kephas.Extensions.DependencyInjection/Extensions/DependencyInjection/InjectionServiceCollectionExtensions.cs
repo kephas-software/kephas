@@ -31,7 +31,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public static IAmbientServices WithServiceCollection(this IAmbientServices ambientServices, IServiceCollection serviceCollection)
         {
-            Requires.NotNull(serviceCollection, nameof(serviceCollection));
+            serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             // make sure to register the service collection *BEFORE* the attributed service provider.

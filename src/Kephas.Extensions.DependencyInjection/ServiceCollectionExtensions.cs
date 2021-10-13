@@ -29,7 +29,7 @@ namespace Kephas
             this IServiceCollection serviceCollection,
             IAmbientServices ambientServices)
         {
-            Requires.NotNull(serviceCollection, nameof(serviceCollection));
+            serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             serviceCollection.Add(new AmbientServicesServiceDescriptor(ambientServices));
@@ -44,7 +44,7 @@ namespace Kephas
         /// <returns>The ambient services.</returns>
         public static IAmbientServices? GetAmbientServices(this IServiceCollection serviceCollection, bool throwOnNotFound = true)
         {
-            Requires.NotNull(serviceCollection, nameof(serviceCollection));
+            serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
 
             var descriptor = serviceCollection.OfType<AmbientServicesServiceDescriptor>().FirstOrDefault();
             if (descriptor == null)
@@ -65,7 +65,7 @@ namespace Kephas
         /// <returns>The service instance, if one could be found.</returns>
         public static T? TryGetStartupService<T>(this IServiceCollection serviceCollection)
         {
-            Requires.NotNull(serviceCollection, nameof(serviceCollection));
+            serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
 
             var serviceDescriptor = serviceCollection.FirstOrDefault(s => s.ServiceType == typeof(T));
             if (serviceDescriptor == null)
