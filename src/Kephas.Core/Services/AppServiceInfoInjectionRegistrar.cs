@@ -211,7 +211,7 @@ namespace Kephas.Services
 
             // get the overridden services which should be eliminated
             var overriddenTypes = overrideChain
-                .Where(kv => (kv.appServiceInfo.Metadata?.TryGetValue(nameof(AppServiceMetadata.IsOverride)) ?? false) != null && kv.appServiceInfo.InstanceType?.BaseType != null)
+                .Where(kv => (bool)(kv.appServiceInfo.Metadata?.TryGetValue(nameof(AppServiceMetadata.IsOverride)) ?? false) && kv.appServiceInfo.InstanceType?.BaseType != null)
                 .Select(kv => kv.appServiceInfo.InstanceType?.BaseType)
                 .ToList();
 

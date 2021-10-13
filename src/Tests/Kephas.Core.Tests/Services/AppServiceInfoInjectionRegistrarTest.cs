@@ -60,6 +60,31 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
+        public void RegisterServices_Multiple_Derived()
+        {
+            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
+
+            var parts = new[]
+            {
+                typeof(IMultipleTestAppService),
+                typeof(MultipleTestService),
+                typeof(NewMultipleTestService),
+                typeof(DerivedMultipleTestService),
+            };
+            var registrar = CreateAppServiceInfoInjectionRegistrar();
+            registrar.RegisterServices(
+                conventions,
+                new TestBuildContext(this.CreateAmbientServices()),
+                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+
+            Assert.AreEqual(3, conventions.TypeBuilders.Count);
+
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(MultipleTestService)));
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(NewMultipleTestService)));
+            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(DerivedMultipleTestService)));
+        }
+
+        [Test]
         public void RegisterServices_Single_one_service()
         {
             var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
@@ -538,6 +563,8 @@ namespace Kephas.Core.Tests.Services
         public class MultipleTestService : IMultipleTestAppService { }
 
         public class NewMultipleTestService : IMultipleTestAppService { }
+
+        public class DerivedMultipleTestService : MultipleTestService { }
 
         [Override]
         public class ChainSingleOverrideTestService : SingleOverrideTestService { }
