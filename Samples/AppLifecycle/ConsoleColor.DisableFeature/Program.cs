@@ -24,11 +24,13 @@ namespace ConsoleColor.DisableFeature
         /// <param name="args">Array of command-line argument strings.</param>
         public static Task Main(string[] args)
         {
-            return new App(ambientServices =>
-                ambientServices
-                    .WithNLogManager()
-                    .WithStaticAppRuntime()
-                    .BuildWithLite()).BootstrapAsync(new AppArgs(args));
+            return new App(
+                appArgs: new AppArgs(args),
+                containerBuilder: ambientServices =>
+                    ambientServices
+                        .WithNLogManager()
+                        .WithStaticAppRuntime()
+                        .BuildWithAutofac()).RunAsync();
         }
     }
 }
