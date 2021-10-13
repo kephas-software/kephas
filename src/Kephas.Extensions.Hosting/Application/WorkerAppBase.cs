@@ -18,6 +18,7 @@ namespace Kephas.Extensions.Hosting.Application
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
+    using Kephas.Operations;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
@@ -38,9 +39,8 @@ namespace Kephas.Extensions.Hosting.Application
             IAppArgs? appArgs = null,
             CancellationTokenSource? appLifetimeTokenSource = null,
             Action<IAmbientServices>? containerBuilder = null)
-            : base(ambientServices, appLifetimeTokenSource, containerBuilder)
+            : base(ambientServices, appArgs, appLifetimeTokenSource, containerBuilder)
         {
-            this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
@@ -60,23 +60,22 @@ namespace Kephas.Extensions.Hosting.Application
         protected IHost? Host { get; private set; }
 
         /// <summary>
-        /// Gets the application arguments.
-        /// </summary>
-        protected IAppArgs AppArgs { get; }
-
-        /// <summary>
         /// Bootstraps the application asynchronously.
         /// </summary>
-        /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="mainCallback">
+        /// Optional. The callback for the main function.
+        /// If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
+        /// otherwise the application will end.
+        /// </param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
         public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            IAppArgs? appArgs = null,
+            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
-            this.HostBuilder = this.CreateHostBuilder(appArgs ?? this.AppArgs);
+            this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
             this.HostBuilder
                 .UseServiceProviderFactory(new InjectionServiceProviderFactory(this.AmbientServices));
@@ -99,13 +98,13 @@ namespace Kephas.Extensions.Hosting.Application
 
             this.PostConfigureWorker(this.HostBuilder);
 
-            if (appArgs?.RunAsService ?? false)
+            if (this.AppArgs?.RunAsService ?? false)
             {
                 this.HostBuilder.UseWindowsService();
                 this.HostBuilder.UseSystemd();
             }
 
-            return base.BootstrapAsync(appArgs, cancellationToken);
+            return base.BootstrapAsync(mainCallback, cancellationToken);
         }
 
         /// <summary>

@@ -20,8 +20,9 @@ namespace Kephas.Application
         /// <param name="containerBuilder">Optional. The container builder.</param>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
-        public App(Action<IAmbientServices>? containerBuilder = null, IAmbientServices? ambientServices = null)
-            : base(ambientServices, containerBuilder: containerBuilder)
+        /// <param name="appArgs">Optional. The application arguments.</param>
+        public App(Action<IAmbientServices>? containerBuilder = null, IAmbientServices? ambientServices = null, IAppArgs? appArgs = null)
+            : base(ambientServices, appArgs: appArgs, containerBuilder: containerBuilder)
         {
         }
     }

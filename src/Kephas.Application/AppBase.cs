@@ -16,6 +16,7 @@ namespace Kephas.Application
     using System.Threading.Tasks;
 
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Resources;
     using Kephas.Threading.Tasks;
 
@@ -35,11 +36,13 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
         /// <param name="containerBuilder">Optional. The container builder.</param>
-        protected AppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? appLifetimeTokenSource = null, Action<IAmbientServices>? containerBuilder = null)
+        protected AppBase(IAmbientServices? ambientServices = null, IAppArgs? appArgs = null, CancellationTokenSource? appLifetimeTokenSource = null, Action<IAmbientServices>? containerBuilder = null)
         {
             this.AmbientServices = ambientServices ?? new AmbientServices();
+            this.AppArgs = appArgs ?? new AppArgs();
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
             this.containerBuilder = containerBuilder;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
@@ -62,6 +65,11 @@ namespace Kephas.Application
         public IAppContext? AppContext { get; private set; }
 
         /// <summary>
+        /// Gets the application arguments.
+        /// </summary>
+        protected IAppArgs AppArgs { get; }
+
+        /// <summary>
         /// Gets or sets the cancellation token source used to stop the application.
         /// </summary>
         protected CancellationTokenSource? AppLifetimeTokenSource { get; set; }
@@ -77,27 +85,31 @@ namespace Kephas.Application
         /// <summary>
         /// Bootstraps the application asynchronously.
         /// </summary>
-        /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="mainCallback">
+        /// Optional. The callback for the main function.
+        /// If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
+        /// otherwise the application will end.
+        /// </param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
         public virtual async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            IAppArgs? appArgs = null,
+            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
             this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
             await Task.Yield();
 
-            this.BeforeAppManagerInitialize(appArgs);
+            this.BeforeAppManagerInitialize(this.AppArgs);
 
             await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
 
             this.AfterAppManagerInitialize();
 
             this.AppLifetimeTokenSource ??= new CancellationTokenSource();
-            var instruction = await this.Main(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
+            var instruction = await this.Main(mainCallback, this.AppLifetimeTokenSource.Token).PreserveThreadContext();
 
             if (instruction != AppShutdownInstruction.Shutdown)
             {
@@ -199,7 +211,7 @@ namespace Kephas.Application
                 // require the AppContext to be computed each time, so that if it is called
                 // to early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
-                this.AmbientServices.Register<IAppContext>(b => b.ForFactory(ctx => this.AppContext).Transient());
+                this.AmbientServices.Register<IAppContext>(b => b.ForFactory(ctx => this.AppContext!).Transient());
 
                 this.AmbientServices.RegisterAppArgs(appArgs);
 
@@ -235,18 +247,31 @@ namespace Kephas.Application
         /// <summary>
         /// Executes the application's main loop asynchronously.
         /// </summary>
+        /// <param name="mainCallback">The main callback.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown instruction.
         /// </returns>
-        protected virtual async Task<AppShutdownInstruction> Main(CancellationToken cancellationToken)
+        protected virtual async Task<AppShutdownInstruction> Main(Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback,  CancellationToken cancellationToken)
         {
             try
             {
-                var container = this.AmbientServices.Injector;
-                var mainLoop = container.Resolve<IAppMainLoop>();
-                var (result, instruction) = await mainLoop.Main(cancellationToken)
-                    .PreserveThreadContext();
+                IOperationResult result = 0.ToOperationResult();
+                var instruction = AppShutdownInstruction.Shutdown;
+                if (mainCallback != null)
+                {
+                    (result, instruction) = await mainCallback(this.AppArgs).PreserveThreadContext();
+                }
+                else
+                {
+                    var container = this.AmbientServices.Injector;
+                    var mainLoop = container.TryResolve<IAppMainLoop>();
+                    if (mainLoop != null)
+                    {
+                        (result, instruction) = await mainLoop.Main(cancellationToken).PreserveThreadContext();
+                    }
+                }
+
                 this.AppContext!.AppResult = result;
 
                 return instruction;
@@ -260,7 +285,7 @@ namespace Kephas.Application
             catch (Exception ex)
             {
                 this.Logger.Error(ex, "Error during waiting for shutdown signal.");
-                this.AppContext.Exception = ex;
+                this.AppContext!.Exception = ex;
 
                 return AppShutdownInstruction.Shutdown;
             }

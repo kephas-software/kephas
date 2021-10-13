@@ -16,6 +16,8 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
+    using Kephas.Operations;
+    using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
@@ -36,9 +38,8 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         public ClientApp(
             IAppArgs? appArgs = null,
             Action<IAmbientServices>? containerBuilder = null)
-            : base(new AmbientServices(), appLifetimeTokenSource: null, containerBuilder)
+            : base(new AmbientServices(), appArgs: appArgs, appLifetimeTokenSource: null, containerBuilder)
         {
-            this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
@@ -58,23 +59,22 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         protected WebAssemblyHost? Host { get; private set; }
 
         /// <summary>
-        /// Gets the application arguments.
-        /// </summary>
-        protected IAppArgs AppArgs { get; }
-
-        /// <summary>
         /// Bootstraps the application asynchronously.
         /// </summary>
-        /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="mainCallback">
+        /// Optional. The callback for the main function.
+        /// If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
+        /// otherwise the application will end.
+        /// </param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
         public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            IAppArgs? appArgs = null,
+            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
-            this.HostBuilder = this.CreateHostBuilder(appArgs ?? this.AppArgs);
+            this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
             this.HostBuilder
                 .ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices));
@@ -83,8 +83,6 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
                 this.HostBuilder,
                 services =>
                 {
-                    services.AddTransient<WebAssemblyHost>(_ => this.Host!);
-
                     this.AmbientServices
                         .WithServiceCollection(services)
                         .ConfigureExtensionsLogging();
@@ -99,7 +97,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
 
             this.PostConfigureWorker(this.HostBuilder);
 
-            return base.BootstrapAsync(appArgs, cancellationToken);
+            return base.BootstrapAsync(mainCallback ?? this.RunAsync, cancellationToken);
         }
 
         /// <summary>
@@ -135,6 +133,22 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         protected sealed override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             this.Host = this.HostBuilder!.Build();
+        }
+
+        /// <summary>
+        /// Runs the host asynchronously.
+        /// </summary>
+        /// <param name="appArgs">The application argument.</param>
+        /// <returns>A tuple providing the result and the shutdown instruction.</returns>
+        protected virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> RunAsync(IAppArgs appArgs)
+        {
+            if (this.Host == null)
+            {
+                throw new ApplicationException($"The host was not built. Ensure that {nameof(this.BuildServicesContainer)} method is called.");
+            }
+
+            await this.Host.RunAsync().PreserveThreadContext();
+            return (0.ToOperationResult(), AppShutdownInstruction.Shutdown);
         }
 
         /// <summary>
