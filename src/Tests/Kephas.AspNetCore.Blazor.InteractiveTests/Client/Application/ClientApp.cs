@@ -76,26 +76,13 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         {
             this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
-            this.HostBuilder
-                .ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices));
+            this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices));
 
-            this.PreConfigureWorker(
-                this.HostBuilder,
-                services =>
-                {
-                    this.AmbientServices
-                        .WithServiceCollection(services)
-                        .ConfigureExtensionsLogging();
-                });
+            this.ConfigureServices(this.HostBuilder);
 
-            this.ConfigureWorker(
-                this.HostBuilder,
-                services =>
-                {
-                    this.BuildWorkerServicesContainer(this.AmbientServices);
-                });
-
-            this.PostConfigureWorker(this.HostBuilder);
+            this.AmbientServices
+                .WithServiceCollection(this.HostBuilder.Services)
+                .ConfigureExtensionsLogging();
 
             return base.RunAsync(mainCallback ?? this.RunAsync, cancellationToken);
         }
@@ -113,55 +100,15 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         }
 
         /// <summary>
-        /// Initializes the application manager asynchronously.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the <see cref="T:Kephas.Application.IAppContext" />.
-        /// </returns>
-        protected override Task<IAppContext> InitializeAppManagerAsync(IAppContext appContext, CancellationToken cancellationToken)
-        {
-            // delay the initialization of the app manager until the host is started.
-            return Task.FromResult(appContext);
-        }
-
-        /// <summary>
-        /// Configures the ambient services asynchronously.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected sealed override void BuildServicesContainer(IAmbientServices ambientServices)
-        {
-            this.Host = this.HostBuilder!.Build();
-        }
-
-        /// <summary>
         /// Runs the host asynchronously.
         /// </summary>
         /// <param name="appArgs">The application argument.</param>
         /// <returns>A tuple providing the result and the shutdown instruction.</returns>
         protected virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> RunAsync(IAppArgs appArgs)
         {
-            if (this.Host == null)
-            {
-                throw new ApplicationException($"The host was not built. Ensure that {nameof(this.BuildServicesContainer)} method is called.");
-            }
-
+            this.Host = this.HostBuilder!.Build();
             await this.Host.RunAsync().PreserveThreadContext();
             return (0.ToOperationResult(), AppShutdownInstruction.Shutdown);
-        }
-
-        /// <summary>
-        /// Configures the ambient services asynchronously for this worker.
-        /// </summary>
-        /// <remarks>
-        /// Use this method instead of <see cref="BuildServicesContainer"/>
-        /// for configuring the worker ambient services.
-        /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected virtual void BuildWorkerServicesContainer(IAmbientServices ambientServices)
-        {
-            base.BuildServicesContainer(ambientServices);
         }
 
         /// <summary>
@@ -169,48 +116,15 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         ///  Here is the place where logging should be initialized.
         /// </summary>
         /// <param name="hostBuilder">The host builder.</param>
-        /// <param name="config">The services configuration callback.</param>
         /// <returns>
         /// The provided <see cref="WebAssemblyHostBuilder"/>.
         /// </returns>
-        protected virtual WebAssemblyHostBuilder PreConfigureWorker(WebAssemblyHostBuilder hostBuilder, Action<IServiceCollection>? config)
+        protected virtual WebAssemblyHostBuilder ConfigureServices(WebAssemblyHostBuilder hostBuilder)
         {
             hostBuilder.RootComponents.Add<TApp>("#app");
 
             hostBuilder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress) });
 
-            config?.Invoke(hostBuilder.Services);
-
-            return hostBuilder;
-        }
-
-        /// <summary>
-        /// Configures the worker. Here is the place where the Windows service or the Linux daemon
-        /// should be initialized.
-        /// </summary>
-        /// <param name="hostBuilder">The host builder.</param>
-        /// <param name="config">The services configuration callback.</param>
-        /// <returns>
-        /// The provided <see cref="WebAssemblyHostBuilder"/>.
-        /// </returns>
-        protected virtual WebAssemblyHostBuilder ConfigureWorker(WebAssemblyHostBuilder hostBuilder, Action<IServiceCollection>? config)
-        {
-            config?.Invoke(hostBuilder.Services);
-
-            return hostBuilder;
-        }
-
-        /// <summary>
-        /// Configures the worker after configuring the ambient services.
-        /// Here is the place to do whatever initialization is necessary before actually
-        /// going into the bootstrapping procedure.
-        /// </summary>
-        /// <param name="hostBuilder">The host builder.</param>
-        /// <returns>
-        /// The provided <see cref="WebAssemblyHostBuilder"/>.
-        /// </returns>
-        protected virtual WebAssemblyHostBuilder PostConfigureWorker(WebAssemblyHostBuilder hostBuilder)
-        {
             return hostBuilder;
         }
     }
