@@ -147,6 +147,13 @@ namespace Kephas.Injection.Builder
             var assemblies = this.BuildContext.Assemblies.Count == 0
                 ? this.GetDefaultAssemblies()
                 : this.BuildContext.Assemblies;
+
+            if (this.Logger.IsDebugEnabled())
+            {
+                var logAssemblies = assemblies;
+                this.Logger.Debug("Using application assemblies: {assemblies}.", logAssemblies.Select(a => $"{a.GetName().Name}, {a.GetName().Version}").ToList());
+            }
+
             var providers = ServiceHelper.GetAppServiceInfosProviders(assemblies)
                 .Union(this.BuildContext.AppServiceInfosProviders)
                 .Union(new[] { this.Registry })
