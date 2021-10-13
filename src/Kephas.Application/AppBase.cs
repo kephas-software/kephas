@@ -83,7 +83,7 @@ namespace Kephas.Application
         protected ILogger? Logger { get; set; }
 
         /// <summary>
-        /// Bootstraps the application asynchronously.
+        /// Runs the application asynchronously.
         /// </summary>
         /// <param name="mainCallback">
         /// Optional. The callback for the main function.
@@ -94,11 +94,11 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
+        public virtual async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
-            this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
+            this.Log(LogLevel.Info, null, Strings.App_RunAsync_Bootstrapping_Message);
 
             await Task.Yield();
 
@@ -206,7 +206,7 @@ namespace Kephas.Application
 
             try
             {
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
+                this.Log(LogLevel.Info, null, Strings.App_RunAsync_ConfiguringAmbientServices_Message);
 
                 // require the AppContext to be computed each time, so that if it is called
                 // to early, to be able to still get it at a later time.
@@ -226,7 +226,7 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
+                var bootstrapException = new BootstrapException(Strings.App_RunAsync_ErrorDuringConfiguration_Exception, ex)
                 {
                     AmbientServices = this.AmbientServices,
                 };
@@ -341,20 +341,20 @@ namespace Kephas.Application
         {
             try
             {
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
+                this.Log(LogLevel.Info, null, Strings.App_RunAsync_InitializingAppManager_Message);
 
                 var container = appContext.Injector;
                 var appManager = container.Resolve<IAppManager>();
 
                 await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
 
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
+                this.Log(LogLevel.Info, null, Strings.App_RunAsync_StartComplete_Message);
 
                 return appContext;
             }
             catch (Exception ex)
             {
-                var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
+                var bootstrapException = new BootstrapException(Strings.App_RunAsync_ErrorDuringConfiguration_Exception, ex)
                 {
                     AppContext = appContext,
                     AmbientServices = this.AmbientServices,
@@ -372,7 +372,7 @@ namespace Kephas.Application
                 }
                 catch (Exception shutdownEx)
                 {
-                    this.Log(LogLevel.Fatal, shutdownEx, Strings.App_BootstrapAsync_ErrorDuringForcedShutdown_Exception);
+                    this.Log(LogLevel.Fatal, shutdownEx, Strings.App_RunAsync_ErrorDuringForcedShutdown_Exception);
                 }
 
                 throw bootstrapException;

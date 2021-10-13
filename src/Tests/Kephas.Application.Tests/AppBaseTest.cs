@@ -33,7 +33,7 @@ namespace Kephas.Application.Tests
 
             IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
-            var (appContext, instruction) = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.RunAsync();
 
             Assert.IsNotNull(ambientServices);
             Assert.AreSame(app.AmbientServices, ambientServices);
@@ -47,14 +47,14 @@ namespace Kephas.Application.Tests
 
             IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
-            var (appContext, instruction) = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.RunAsync();
 
             Assert.AreSame(app.AmbientServices, ambientServices);
             Assert.AreSame(app.AmbientServices, appContext.AmbientServices);
         }
 
         [Test]
-        public async Task BootstrapAsync_appManager_invoked()
+        public async Task RunAsync_appManager_invoked()
         {
             var appManager = Substitute.For<IAppManager>();
 
@@ -63,13 +63,13 @@ namespace Kephas.Application.Tests
 
             IAmbientServices? ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
-            await app.BootstrapAsync();
+            await app.RunAsync();
 
             appManager.Received(1).InitializeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
         }
 
         [Test]
-        public async Task BootstrapAsync_wait_for_shutdown_exception_stops_application()
+        public async Task RunAsync_wait_for_shutdown_exception_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
             var termAwaiter = Substitute.For<IAppMainLoop>();
@@ -83,7 +83,7 @@ namespace Kephas.Application.Tests
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithInjector(injector));
-            var (appContext, instruction) = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.RunAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
@@ -91,7 +91,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task BootstrapAsync_shutdown_instruction_stops_application()
+        public async Task RunAsync_shutdown_instruction_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
             var mainLoop = Substitute.For<IAppMainLoop>();
@@ -105,7 +105,7 @@ namespace Kephas.Application.Tests
                 .Returns(mainLoop);
 
             var app = new TestApp(async b => b.WithInjector(injector));
-            var (appContext, instruction) = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.RunAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
@@ -113,7 +113,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task BootstrapAsync_none_instruction_does_not_stop_application()
+        public async Task RunAsync_none_instruction_does_not_stop_application()
         {
             var appManager = Substitute.For<IAppManager>();
             var termAwaiter = Substitute.For<IAppMainLoop>();
@@ -127,7 +127,7 @@ namespace Kephas.Application.Tests
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithInjector(injector));
-            var (appContext, instruction) = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.RunAsync();
 
             appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
@@ -135,11 +135,11 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task BootstrapAsync_injection()
+        public async Task RunAsync_injection()
         {
             var container = this.CreateInjector(parts: new[] { typeof(TestApp), typeof(TestMainLoop), typeof(TestShutdownFeatureManager) });
             var app = new TestApp(ambientServices: container.Resolve<IAmbientServices>());
-            var (appContext, instruction) = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.RunAsync();
 
             Assert.AreEqual(AppShutdownInstruction.Ignore, instruction);
 

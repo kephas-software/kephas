@@ -102,7 +102,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
+                this.Log(LogLevel.Fatal, ex, Strings.App_RunAsync_ErrorDuringConfiguration_Exception);
                 throw;
             }
 
@@ -135,7 +135,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
+                this.Log(LogLevel.Fatal, ex, Strings.App_RunAsync_ErrorDuringConfiguration_Exception);
                 throw;
             }
         }
@@ -179,7 +179,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.BootstrapAsync());
+            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.RunAsync());
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.

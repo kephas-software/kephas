@@ -144,25 +144,25 @@
   <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
     <value>Mehrere für den Contract {0} registrierte Anwendungsdienste und die Überschreibungspriorität ermöglichen keine ordnungsgemäße Dienstauflösung. Identifizierte mögliche Teile: {1}.</value>
   </data>
-  <data name="App_BootstrapAsync_Bootstrapping_Message" xml:space="preserve">
+  <data name="App_RunAsync_Bootstrapping_Message" xml:space="preserve">
     <value>Bootstrapping der Anwendung ...</value>
   </data>
-  <data name="App_BootstrapAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
+  <data name="App_RunAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
     <value>Umgebungsdienste konfigurieren ...</value>
   </data>
-  <data name="App_BootstrapAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
+  <data name="App_RunAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
     <value>Während des Anwendungskonfigurationsvorgangs sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
   </data>
-  <data name="App_BootstrapAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
+  <data name="App_RunAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
     <value>Während des erzwungenen Herunterfahrens der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
   </data>
-  <data name="App_BootstrapAsync_ErrorDuringInitialization_Exception" xml:space="preserve">
+  <data name="App_RunAsync_ErrorDuringInitialization_Exception" xml:space="preserve">
     <value>Während des Bootstrap-Vorgangs der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
   </data>
-  <data name="App_BootstrapAsync_InitializingAppManager_Message" xml:space="preserve">
+  <data name="App_RunAsync_InitializingAppManager_Message" xml:space="preserve">
     <value>App-Manager initialisieren ...</value>
   </data>
-  <data name="App_BootstrapAsync_StartComplete_Message" xml:space="preserve">
+  <data name="App_RunAsync_StartComplete_Message" xml:space="preserve">
     <value>Die Anwendung wurde erfolgreich gebootet.</value>
   </data>
   <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">

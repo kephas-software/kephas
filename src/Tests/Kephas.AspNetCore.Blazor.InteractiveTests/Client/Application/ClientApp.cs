@@ -59,7 +59,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         protected WebAssemblyHost? Host { get; private set; }
 
         /// <summary>
-        /// Bootstraps the application asynchronously.
+        /// Runs the application asynchronously.
         /// </summary>
         /// <param name="mainCallback">
         /// Optional. The callback for the main function.
@@ -70,7 +70,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
+        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
@@ -97,7 +97,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
 
             this.PostConfigureWorker(this.HostBuilder);
 
-            return base.BootstrapAsync(mainCallback ?? this.RunAsync, cancellationToken);
+            return base.RunAsync(mainCallback ?? this.RunAsync, cancellationToken);
         }
 
         /// <summary>

@@ -60,7 +60,7 @@ namespace Kephas.Extensions.Hosting.Application
         protected IHost? Host { get; private set; }
 
         /// <summary>
-        /// Bootstraps the application asynchronously.
+        /// Runs the application asynchronously.
         /// </summary>
         /// <param name="mainCallback">
         /// Optional. The callback for the main function.
@@ -71,7 +71,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
+        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
@@ -104,7 +104,7 @@ namespace Kephas.Extensions.Hosting.Application
                 this.HostBuilder.UseSystemd();
             }
 
-            return base.BootstrapAsync(mainCallback, cancellationToken);
+            return base.RunAsync(mainCallback, cancellationToken);
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         {
             var clientApp = new ClientApp<App>(new AppArgs(args), a => a.BuildWithAutofac());
 
-            await clientApp.BootstrapAsync();
+            await clientApp.RunAsync();
         }
     }
 }
