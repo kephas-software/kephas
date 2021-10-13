@@ -38,7 +38,7 @@ $paths = @(
     "Kephas.Injection.Abstractions",
     "Kephas.Injection.Autofac",
     "Kephas.Injection.Lite",
-    "Kephas.Injection.SystemComposition",
+#    "Kephas.Injection.SystemComposition",
     "Kephas.Logging.Log4Net",
     "Kephas.Logging.NLog",
     "Kephas.Logging.Serilog",
@@ -81,7 +81,7 @@ $paths = @(
     "TestingFramework\Kephas.Testing",
     "TestingFramework\Kephas.Testing.Application",
     "TestingFramework\Kephas.Testing.Injection.Autofac",
-    "TestingFramework\Kephas.Testing.Injection.SystemComposition",
+#    "TestingFramework\Kephas.Testing.Injection.SystemComposition",
     "TestingFramework\Kephas.Testing.Model"
 )
 
