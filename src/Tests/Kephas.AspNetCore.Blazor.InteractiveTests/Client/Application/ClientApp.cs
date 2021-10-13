@@ -23,6 +23,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
     /// <summary>
     /// The client application.
     /// </summary>
+    /// <typeparam name="TApp">The type of the Razor entry point component (typically App).</typeparam>
     /// <seealso cref="Kephas.Application.AppBase" />
     public class ClientApp<TApp> : AppBase
         where TApp : IComponent
@@ -82,7 +83,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
                 this.HostBuilder,
                 services =>
                 {
-                    services.AddSingleton<WebAssemblyHost>(_ => this.Host!);
+                    services.AddTransient<WebAssemblyHost>(_ => this.Host!);
 
                     this.AmbientServices
                         .WithServiceCollection(services)
