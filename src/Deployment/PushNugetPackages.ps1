@@ -37,7 +37,7 @@ $paths = @(
     "Kephas.Extensions.Logging",
     "Kephas.Injection.Abstractions",
     "Kephas.Injection.Autofac",
-    "Kephas.Injection.Lite",
+#    "Kephas.Injection.Lite",
 #    "Kephas.Injection.SystemComposition",
     "Kephas.Logging.Log4Net",
     "Kephas.Logging.NLog",
