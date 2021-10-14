@@ -5,14 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
+namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
 {
     using System;
     using System.Linq;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
