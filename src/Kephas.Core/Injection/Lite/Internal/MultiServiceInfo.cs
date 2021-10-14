@@ -19,6 +19,9 @@ namespace Kephas.Injection.Lite.Internal
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
+    /// <summary>
+    /// Service information for multiple services.
+    /// </summary>
     internal class MultiServiceInfo : IServiceInfo, IEnumerable<IServiceInfo>, IDisposable
     {
         private readonly IList<ServiceInfo> serviceInfos = new List<ServiceInfo>();
@@ -70,12 +73,12 @@ namespace Kephas.Injection.Lite.Internal
         }
 
         public object GetService(IServiceProvider serviceProvider, Type contractType) =>
-            throw new NotSupportedException("Only single service infos may provide services.");
+            throw new NotSupportedException($"Only single service infos may provide services ({contractType}).");
 
         public IDictionary<string, object?>? Metadata { get; }
 
         IAppServiceInfo IAppServiceInfo.AddMetadata(string name, object? value) =>
-            throw new NotSupportedException("Only single service infos may add metadata.");
+            throw new NotSupportedException($"Only single service infos may add metadata ({this.ContractType}).");
 
         public IEnumerator<IServiceInfo> GetEnumerator() => serviceInfos.GetEnumerator();
 
