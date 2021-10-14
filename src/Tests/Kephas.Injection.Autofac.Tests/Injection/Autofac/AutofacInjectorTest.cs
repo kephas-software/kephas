@@ -35,7 +35,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var builder = this.WithEmptyConfiguration();
             builder.RegisterTypes(types);
-            return new AutofacInjector(builder);
+            return new AutofacInjector(builder, null);
         }
 
         [Test]

@@ -15,12 +15,14 @@ namespace Kephas.Injection.Autofac
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection;
+    using Kephas.Logging;
 
     /// <summary>
     /// An Autofac injection container.
     /// </summary>
     public class AutofacInjector : AutofacInjectorBase, IInjectionContainer
     {
+        private readonly ILogManager? logManager;
         private readonly ConcurrentDictionary<IComponentContext, IInjector> map;
 
         private readonly IContainer container;
@@ -29,9 +31,11 @@ namespace Kephas.Injection.Autofac
         /// Initializes a new instance of the <see cref="AutofacInjector"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
-        public AutofacInjector(ContainerBuilder containerBuilder)
-            : base(null)
+        /// <param name="logManager">The log manager.</param>
+        public AutofacInjector(ContainerBuilder containerBuilder, ILogManager? logManager)
+            : base(null, logManager)
         {
+            this.logManager = logManager;
             this.map = new ConcurrentDictionary<IComponentContext, IInjector>();
 
             var registration = RegistrationBuilder
@@ -89,7 +93,7 @@ namespace Kephas.Injection.Autofac
         /// </returns>
         public IInjector GetInjector(ILifetimeScope scope)
         {
-            return this.map.GetOrAdd(scope, _ => new AutofacScopedInjector(this, scope));
+            return this.map.GetOrAdd(scope, _ => new AutofacScopedInjector(this, scope, this.logManager));
         }
     }
 }

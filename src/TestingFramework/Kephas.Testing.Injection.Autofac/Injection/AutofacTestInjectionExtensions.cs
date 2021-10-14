@@ -22,7 +22,7 @@ namespace Kephas.Testing.Injection
         {
             configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            return new AutofacInjector(configuration);
+            return new AutofacInjector(configuration, null);
         }
     }
 }

@@ -11,6 +11,7 @@
 namespace Kephas.Injection.Autofac
 {
     using global::Autofac;
+    using Kephas.Logging;
 
     /// <summary>
     /// An Autofac scoped injector.
@@ -22,8 +23,9 @@ namespace Kephas.Injection.Autofac
         /// </summary>
         /// <param name="root">The root.</param>
         /// <param name="scope">The scope.</param>
-        public AutofacScopedInjector(IInjectionContainer root, ILifetimeScope scope)
-            : base(root)
+        /// <param name="logManager">The log manager.</param>
+        public AutofacScopedInjector(IInjectionContainer root, ILifetimeScope scope, ILogManager? logManager)
+            : base(root, logManager)
         {
             this.Initialize(scope);
         }

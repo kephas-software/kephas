@@ -14,7 +14,6 @@ namespace Kephas.Injection.Autofac.Builder
     using System.Collections.Generic;
 
     using global::Autofac;
-    using global::Autofac.Builder;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Metadata;
@@ -120,7 +119,7 @@ namespace Kephas.Injection.Autofac.Builder
                 builderConfig(this.containerBuilder);
             }
 
-            return new AutofacInjector(this.containerBuilder);
+            return new AutofacInjector(this.containerBuilder, this.BuildContext?.AmbientServices?.LogManager);
         }
     }
 }

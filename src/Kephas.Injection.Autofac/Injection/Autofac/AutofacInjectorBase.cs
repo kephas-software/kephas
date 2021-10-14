@@ -14,7 +14,6 @@ namespace Kephas.Injection.Autofac
     using System.Collections.Generic;
 
     using global::Autofac;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Resources;
     using Kephas.Logging;
@@ -22,29 +21,22 @@ namespace Kephas.Injection.Autofac
     /// <summary>
     /// An Autofac injector base.
     /// </summary>
-    public abstract class AutofacInjectorBase : IInjector, IServiceProvider
+    public abstract class AutofacInjectorBase : Loggable, IInjector, IServiceProvider
     {
         private readonly IInjectionContainer? root;
 
         private ILifetimeScope? innerContainer;
-        private ILogger? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacInjectorBase"/> class.
         /// </summary>
         /// <param name="root">The root.</param>
-        internal AutofacInjectorBase(IInjectionContainer? root)
+        /// <param name="logManager">The log manager.</param>
+        internal AutofacInjectorBase(IInjectionContainer? root, ILogManager? logManager)
+            : base(logManager)
         {
             this.root = root;
         }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        protected ILogger? Logger => this.logger ??= this.GetLogger(this.innerContainer);
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -244,7 +236,7 @@ namespace Kephas.Injection.Autofac
         /// <param name="container">The inner container.</param>
         protected void Initialize(ILifetimeScope container)
         {
-            Requires.NotNull(container, nameof(container));
+            container = container ?? throw new ArgumentNullException(nameof(container));
 
             this.innerContainer = container;
         }
@@ -256,22 +248,9 @@ namespace Kephas.Injection.Autofac
         {
             if (this.innerContainer == null)
             {
+                this.Logger.Error(Strings.AutofacInjector_Disposed_Exception);
                 throw new ObjectDisposedException(Strings.AutofacInjector_Disposed_Exception);
             }
-        }
-
-        /// <summary>
-        /// Gets the logger from the provided container.
-        /// </summary>
-        /// <param name="container">The container used to get the logger.</param>
-        /// <returns>The logger.</returns>
-        protected ILogger? GetLogger(ILifetimeScope? container)
-        {
-            return container == null
-                ? null
-                : container.TryResolve<ILogManager>(out var logManager)
-                    ? logManager.GetLogger(this.GetType())
-                    : this.GetType().GetLogger();
         }
     }
 }
