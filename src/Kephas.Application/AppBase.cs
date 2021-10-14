@@ -201,6 +201,7 @@ namespace Kephas.Application
         {
             if (this.isConfigured)
             {
+                this.Log(LogLevel.Info, null, "Already configured, skipping configuration.");
                 return false;
             }
 
@@ -223,6 +224,8 @@ namespace Kephas.Application
                 // and after configuring the ambient services and the logger, as it may
                 // use registered services.
                 this.AppContext = this.CreateAppContext(this.AmbientServices);
+
+                this.Log(LogLevel.Info, null, "The ambient services are successfully configured.");
             }
             catch (Exception ex)
             {
@@ -321,10 +324,14 @@ namespace Kephas.Application
         {
             if (this.containerBuilder != null)
             {
+                this.Log(LogLevel.Debug, null, "Building the services container by using the build callback.");
+
                 this.containerBuilder(ambientServices);
             }
             else
             {
+                this.Log(LogLevel.Debug, null, "Building the services container by using Lite.");
+
                 ambientServices.BuildWithLite();
             }
         }
