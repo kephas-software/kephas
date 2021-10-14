@@ -78,7 +78,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
 
             this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices));
 
-            this.ConfigureServices(this.HostBuilder);
+            this.ConfigureHost(this.HostBuilder);
 
             this.AmbientServices
                 .WithServiceCollection(this.HostBuilder.Services)
@@ -112,20 +112,20 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client.Application
         }
 
         /// <summary>
-        /// Configures the worker before adding the background worker.
-        ///  Here is the place where logging should be initialized.
+        /// Configures the host. This is the place where the root component and all the services
+        /// should be added and configured.
         /// </summary>
-        /// <param name="hostBuilder">The host builder.</param>
+        /// <param name="builder">The host builder.</param>
         /// <returns>
         /// The provided <see cref="WebAssemblyHostBuilder"/>.
         /// </returns>
-        protected virtual WebAssemblyHostBuilder ConfigureServices(WebAssemblyHostBuilder hostBuilder)
+        protected virtual WebAssemblyHostBuilder ConfigureHost(WebAssemblyHostBuilder builder)
         {
-            hostBuilder.RootComponents.Add<TApp>("#app");
+            builder.RootComponents.Add<TApp>("#app");
 
-            hostBuilder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            return hostBuilder;
+            return builder;
         }
     }
 }
