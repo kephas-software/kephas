@@ -201,8 +201,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// </summary>
         /// <param name="appContext">The application context.</param>
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
-        protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(
-            IAspNetAppContext appContext)
+        protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(IAspNetAppContext appContext)
         {
             var container = appContext.Injector;
             var middlewareConfigurators = container
@@ -217,8 +216,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
-        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(
-            IAmbientServices ambientServices)
+        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
             => ambientServices.GetServicesConfigurators()
                 .Select(c => (Action<IServiceCollection, IAmbientServices>)c.ConfigureServices);
 
