@@ -2,9 +2,33 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
 </Project>

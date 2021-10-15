@@ -36,9 +36,9 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
                 .ConfigureExtensionsLogging();
         
             ConfigureAmbientServices(ambientServices);
-
+        
             // TODO this crashes
-            var logManager = ambientServices.Injector.Resolve<ILogManager>();
+            var appManager = ambientServices.Injector.Resolve<IAppManager>();
             
             var host = builder.Build();
             await host.RunAsync();
@@ -66,7 +66,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
             ambientServices
                 .WithSerilogManager(GetLoggerConfiguration())
                 .WithStaticAppRuntime()
-                .BuildWithLite();
+                .BuildWithAutofac();
         }
     }
 }
