@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ClientQueryExecutorBaseTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultClientQueryProcessorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.Client.Tests.Queries
 {
     using System;
@@ -17,9 +15,11 @@ namespace Kephas.Data.Client.Tests.Queries
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Data.Client.Queries;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
+    using Kephas.Injection;
     using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Runtime;
