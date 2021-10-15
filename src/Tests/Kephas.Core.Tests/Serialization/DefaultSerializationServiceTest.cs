@@ -309,7 +309,7 @@ namespace Kephas.Core.Tests.Serialization
             Assert.AreEqual("234", writer.GetStringBuilder().ToString());
         }
 
-        private DefaultSerializationService CreateSerializationServiceForJson(ISerializer serializer = null)
+        private DefaultSerializationService CreateSerializationServiceForJson(ISerializer? serializer = null)
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), serializer));
@@ -323,11 +323,11 @@ namespace Kephas.Core.Tests.Serialization
 
         private IExportFactory<ISerializer, SerializerMetadata> GetSerializerFactory(
             Type mediaType,
-            ISerializer serializer = null,
+            ISerializer? serializer = null,
             Priority overridePriority = Priority.Normal)
         {
             var metadata = new SerializerMetadata(mediaType, overridePriority: overridePriority);
-            serializer = serializer ?? Substitute.For<ISerializer>();
+            serializer ??= Substitute.For<ISerializer>();
             var factory = new ExportFactory<ISerializer, SerializerMetadata>(() => serializer, metadata);
             return factory;
         }

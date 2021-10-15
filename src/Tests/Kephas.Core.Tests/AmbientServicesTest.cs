@@ -48,7 +48,7 @@ namespace Kephas.Core.Tests
         public void Register_factory_cannot_set_null()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            Assert.That(() => ambientServices.Register(typeof(IInjector), (Func<object>)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Register(typeof(IInjector), (Func<IInjector, object>)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.RegisterTransient(typeof(IService), typeof(SimpleService));
+            ambientServices.Register(typeof(IService), typeof(SimpleService), b => b.Transient());
 
             var service = ambientServices.GetService(typeof(IService));
             Assert.IsInstanceOf<SimpleService>(service);
@@ -149,16 +149,16 @@ namespace Kephas.Core.Tests
         public void Register_conflicting_allow_multiple_first_single_failure()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(b => b.WithType<SimpleService>());
-            Assert.Throws<InvalidOperationException>(() => ambientServices.Register<IService>(b => b.WithType<DependentService>().AllowMultiple()));
+            ambientServices.Register<IService>(typeof(SimpleService));
+            Assert.Throws<InvalidOperationException>(() => ambientServices.Register<IService, DependentService>(b => b.AllowMultiple()));
         }
 
         [Test]
         public void Register_conflicting_allow_multiple_first_multiple_failure()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(b => b.WithType<SimpleService>().AllowMultiple());
-            Assert.Throws<InvalidOperationException>(() => ambientServices.Register<IService>(b => b.WithType<DependentService>()));
+            ambientServices.Register<IService>(typeof(SimpleService), b => b.AllowMultiple());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.Register<IService, DependentService>());
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Kephas.Core.Tests
         public void Register_service_factory_non_singleton()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.RegisterTransient(typeof(ILogManager), () => Substitute.For<ILogManager>());
+            ambientServices.Register(typeof(ILogManager), () => Substitute.For<ILogManager>(), b => b.Transient());
             var logManager1 = ambientServices.GetService(typeof(ILogManager));
             var logManager2 = ambientServices.GetService(typeof(ILogManager));
             Assert.AreNotSame(logManager1, logManager2);
@@ -184,8 +184,8 @@ namespace Kephas.Core.Tests
         public void Register_circular_dependency_singleton()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<CircularDependency1>(b => b.WithType<CircularDependency1>());
-            ambientServices.Register<CircularDependency2>(b => b.WithType<CircularDependency2>());
+            ambientServices.Register<CircularDependency1, CircularDependency1>();
+            ambientServices.Register<CircularDependency2, CircularDependency2>();
 
             Assert.Throws<CircularDependencyException>(() => ambientServices.GetService<CircularDependency1>());
         }
@@ -194,8 +194,8 @@ namespace Kephas.Core.Tests
         public void Register_circular_dependency_transient()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<CircularDependency1>(b => b.WithType<CircularDependency1>().Transient());
-            ambientServices.Register<CircularDependency2>(b => b.WithType<CircularDependency2>().Transient());
+            ambientServices.Register<CircularDependency1, CircularDependency1>(b => b.Transient());
+            ambientServices.Register<CircularDependency2, CircularDependency2>(b => b.Transient());
 
             Assert.Throws<CircularDependencyException>(() => ambientServices.GetService<CircularDependency1>());
         }
@@ -205,12 +205,12 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             ambientServices.Register<IService>(
-                b => b.WithFactory(
-                    () =>
-                        {
-                            Thread.Sleep(100);
-                            return Substitute.For<IService>();
-                        }).Transient());
+                () =>
+                {
+                    Thread.Sleep(100);
+                    return Substitute.For<IService>();
+                },
+                b => b.Transient());
 
             var tasks = new List<Task>();
             for (var i = 0; i < 20; i++)
@@ -226,12 +226,12 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             ambientServices.Register<IService>(
-                b => b.WithFactory(
-                    () =>
-                        {
-                            Thread.Sleep(100);
-                            return Substitute.For<IService>();
-                        }).Singleton());
+                () =>
+                {
+                    Thread.Sleep(100);
+                    return Substitute.For<IService>();
+                },
+                b => b.Singleton());
 
             var tasks = new List<Task>();
             for (var i = 0; i < 20; i++)
@@ -247,7 +247,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(OpenGenericService<,>), b => b.ForType(typeof(OpenGenericService<,>)));
+            ambientServices.Register(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
 
             var service = ambientServices.GetService(typeof(OpenGenericService<string, int>));
             Assert.IsInstanceOf<OpenGenericService<string, int>>(service);
@@ -258,7 +258,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(OpenGenericService<,>), b => b.ForType(typeof(OpenGenericService<,>)));
+            ambientServices.Register(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
             ambientServices.Register<OpenGenericDependency, OpenGenericDependency>();
 
             var service = ambientServices.GetService<OpenGenericDependency>();
@@ -327,8 +327,8 @@ namespace Kephas.Core.Tests
         public void GetService_enumeration_of_exportFactory_multiple()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(b => b.WithType<SimpleService>().AllowMultiple());
-            ambientServices.Register<IService>(b => b.WithType<OptionalDependentService>().AllowMultiple());
+            ambientServices.Register<IService, SimpleService>(b => b.AllowMultiple());
+            ambientServices.Register<IService, OptionalDependentService>(b => b.AllowMultiple());
             ambientServices.Register<DependentEnumerationService, DependentEnumerationService>();
 
             var dependent = ambientServices.GetService<DependentEnumerationService>();
@@ -345,7 +345,8 @@ namespace Kephas.Core.Tests
             IAmbientServices ambientServices = this.CreateAmbientServices();
             ambientServices.Register(
                 typeof(IDependency),
-                b => b.WithFactory(() => Substitute.For<IDependency>())
+                () => Substitute.For<IDependency>(),
+                b => b
                     .ProcessingPriority(Priority.Low)
                     .OverridePriority(Priority.AboveNormal)
                     .IsOverride());
@@ -363,7 +364,7 @@ namespace Kephas.Core.Tests
             IAmbientServices ambientServices = this.CreateAmbientServices();
             ambientServices.Register<IService, DependentService>();
 
-            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
+            var service = ambientServices.GetRequiredService<IExportFactory<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
             Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
@@ -373,7 +374,7 @@ namespace Kephas.Core.Tests
         public void GetService_exportFactory_with_metadata_from_generic()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().As<IService>());
+            ambientServices.RegisterService(typeof(IService<,>), typeof(GenericService), b => b.As<IService>());
 
             var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
             Assert.IsNotNull(service.Metadata);
@@ -398,7 +399,7 @@ namespace Kephas.Core.Tests
         public void GetService_lazy_with_metadata_from_generic()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().As<IService>());
+            ambientServices.RegisterService(typeof(IService<,>), typeof(GenericService), b => b.As<IService>());
 
             var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
@@ -537,9 +538,9 @@ namespace Kephas.Core.Tests
 
         public class OptionalDependentService : IService
         {
-            public IDependency Dependency { get; }
+            public IDependency? Dependency { get; }
 
-            public OptionalDependentService(IDependency dependency = null)
+            public OptionalDependentService(IDependency? dependency = null)
             {
                 this.Dependency = dependency;
             }

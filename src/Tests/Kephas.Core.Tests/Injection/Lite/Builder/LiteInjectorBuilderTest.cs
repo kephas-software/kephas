@@ -114,7 +114,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
-                .Register<IDisposable>(b => b.ForInstance(disposable));
+                .Register<IDisposable>(disposable);
 
             ambientServices.BuildWithLite();
 
@@ -128,7 +128,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
-                .Register<IDisposable>(b => b.ForInstance(disposable).ExternallyOwned());
+                .Register<IDisposable>(disposable, b => b.ExternallyOwned());
 
             ambientServices.BuildWithLite();
 

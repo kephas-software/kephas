@@ -23,7 +23,7 @@ namespace Kephas.Injection.Lite.Builder
     /// <summary>
     /// A service registration builder.
     /// </summary>
-    internal class ServiceRegistrationBuilder : IServiceRegistrationBuilder
+    internal class ServiceRegistrationBuilder : IRegistrationBuilder
     {
         private readonly IAppServiceRegistry serviceRegistry;
 
@@ -37,7 +37,7 @@ namespace Kephas.Injection.Lite.Builder
 
         private bool externallyOwned = false;
 
-        private object? instancingStrategy;
+        private object instancingStrategy;
 
         private IDictionary<string, object?>? metadata;
 
@@ -46,10 +46,12 @@ namespace Kephas.Injection.Lite.Builder
         /// </summary>
         /// <param name="serviceRegistry">The ambient services.</param>
         /// <param name="contractDeclarationType">The contract declaration type.</param>
-        public ServiceRegistrationBuilder(IAppServiceRegistry serviceRegistry, Type contractDeclarationType)
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        public ServiceRegistrationBuilder(IAppServiceRegistry serviceRegistry, Type contractDeclarationType, object instancingStrategy)
         {
-            this.contractType = this.contractDeclarationType = contractDeclarationType;
-            this.serviceRegistry = serviceRegistry;
+            this.serviceRegistry = serviceRegistry ?? throw new ArgumentNullException(nameof(serviceRegistry));
+            this.contractType = this.contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            this.SetInstancingStrategy(instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy)));
         }
 
         /// <summary>
@@ -187,16 +189,41 @@ namespace Kephas.Injection.Lite.Builder
         }
 
         /// <summary>
+        /// Adds metadata in form of (key, value) pairs.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder AddMetadata(string key, object? value)
+        {
+            (this.metadata ??= new Dictionary<string, object?>())[key] = value;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder ExternallyOwned()
+        {
+            this.externallyOwned = true;
+            return this;
+        }
+
+        /// <summary>
         /// Registers the service with the provided instance strategy.
         /// </summary>
         /// <param name="instancingStrategy">The service instance strategy.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public IServiceRegistrationBuilder ForInstancingStrategy(object instancingStrategy)
+        private IRegistrationBuilder SetInstancingStrategy(object instancingStrategy)
         {
-            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
-
             var contractType = instancingStrategy switch
             {
                 Type implementationType =>
@@ -222,33 +249,6 @@ namespace Kephas.Injection.Lite.Builder
 
             this.instancingStrategy = instancingStrategy;
 
-            return this;
-        }
-
-        /// <summary>
-        /// Adds metadata in form of (key, value) pairs.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public IRegistrationBuilder AddMetadata(string key, object? value)
-        {
-            (this.metadata ??= new Dictionary<string, object?>())[key] = value;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Indicates whether the created instances are disposed by an external owner.
-        /// </summary>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public IRegistrationBuilder ExternallyOwned()
-        {
-            this.externallyOwned = true;
             return this;
         }
 

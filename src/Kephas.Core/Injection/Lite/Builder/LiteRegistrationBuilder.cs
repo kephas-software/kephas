@@ -217,10 +217,8 @@ namespace Kephas.Injection.Lite.Builder
 
         internal void Build()
         {
-            void ConfigureService(IServiceRegistrationBuilder b)
+            void ConfigureService(IRegistrationBuilder b)
             {
-                b.ForInstancingStrategy(this.InstancingStrategy);
-
                 if (this.Lifetime == AppServiceLifetime.Singleton)
                 {
                     b.Singleton();
@@ -258,7 +256,7 @@ namespace Kephas.Injection.Lite.Builder
 
             if (this.InstancingStrategy != null)
             {
-                this.ambientServices.Register(this.ContractType, ConfigureService);
+                this.ambientServices.RegisterService(this.ContractType, this.InstancingStrategy, ConfigureService);
 
                 return;
             }

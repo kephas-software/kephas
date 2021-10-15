@@ -16,8 +16,6 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
 
     using Kephas.Application.Reflection;
-    using Kephas.Commands;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IAppRuntime"/>.
@@ -29,7 +27,7 @@ namespace Kephas.Application
         /// </summary>
         public const string FeaturesKey = "Features";
 
-        private static readonly IFeatureInfo[] EmptyFeatures = new IFeatureInfo[0];
+        private static readonly IFeatureInfo[] EmptyFeatures = Array.Empty<IFeatureInfo>();
 
         /// <summary>
         /// Gets the application features.
@@ -63,7 +61,7 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Register the application arguments as <see cref="IAppArgs"/> service.
+        /// RegisterService the application arguments as <see cref="IAppArgs"/> service.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments, if not already registered.</param>
@@ -75,18 +73,18 @@ namespace Kephas.Application
             // register the app args if not already registered or the raw args are provided
             if (args != null)
             {
-                ambientServices.Register<IAppArgs>(b => b.ForInstance(args));
+                ambientServices.Register<IAppArgs>(args);
             }
             else if (!ambientServices.IsRegistered(typeof(IAppArgs)))
             {
-                ambientServices.Register<IAppArgs>(b => b.ForInstance(new AppArgs()));
+                ambientServices.Register<IAppArgs>(new AppArgs());
             }
 
             return ambientServices;
         }
 
         /// <summary>
-        /// Register the application arguments as <see cref="IAppArgs"/> service.
+        /// RegisterService the application arguments as <see cref="IAppArgs"/> service.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments.</param>

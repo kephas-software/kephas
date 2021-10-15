@@ -245,7 +245,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_ambient_services_factory()
         {
             var ambientServices = this.CreateAmbientServices();
-            ambientServices.RegisterTransient(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+            ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
             var container = this.CreateInjectorWithBuilder(ambientServices);
 

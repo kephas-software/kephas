@@ -231,7 +231,7 @@ namespace Kephas.Core.Tests.Dynamic
     {
         public const string Constant = "gigi";
 
-        public TestExpandoWithConstants(object inner, IDictionary<string, object> innerDictionary = null)
+        public TestExpandoWithConstants(object inner, IDictionary<string, object?>? innerDictionary = null)
             : base(inner, innerDictionary)
         {
         }

@@ -97,81 +97,22 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="builder">The registration builder.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices Register<TContract>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            builder = builder ?? throw new ArgumentNullException(nameof(builder));
-
-            return ambientServices.Register(typeof(TContract), builder);
-        }
-
-        /// <summary>
-        /// Registers the provided service, allowing also multiple registrations.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="builder">The registration builder.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterMultiple<TContract>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            builder = builder ?? throw new ArgumentNullException(nameof(builder));
-
-            return ambientServices.Register(
-                typeof(TContract),
-                b =>
-                    {
-                        builder(b);
-                        b.AllowMultiple();
-                    });
-        }
-
-        /// <summary>
         /// Registers the provided service instance.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="service">The service.</param>
+        /// <param name="serviceInstance">The service instance.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<TContract>(this IAmbientServices ambientServices, TContract service)
+        public static IAmbientServices Register<TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(service, nameof(service));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            return ambientServices.Register(typeof(TContract), b => b.ForInstance(service));
-        }
-
-        /// <summary>
-        /// Registers the provided service instance, allowing also multiple registrations.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="service">The service.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterMultiple<TContract>(this IAmbientServices ambientServices, TContract service)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(service, nameof(service));
-
-            return ambientServices.Register(typeof(TContract), b => b.ForInstance(service).AllowMultiple());
+            return ambientServices.RegisterService(typeof(TContract), serviceInstance, builder);
         }
 
         /// <summary>
@@ -180,80 +121,49 @@ namespace Kephas
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <typeparam name="TService">Type of the service implementation.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<TContract, TService>(this IAmbientServices ambientServices)
+        public static IAmbientServices Register<TContract, TService>(this IAmbientServices ambientServices, Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            return ambientServices.Register(
+            return ambientServices.RegisterService(
                 typeof(TContract),
-                b => b.ForType(typeof(TService))
-                            .Singleton());
+                typeof(TService),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
-        /// Registers the provided service with implementation type as singleton, allowing also multiple registrations.
+        /// Registers the provided service with implementation type as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <typeparam name="TService">Type of the service implementation.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices RegisterMultiple<TContract, TService>(this IAmbientServices ambientServices)
+        public static IAmbientServices Register<TContract>(this IAmbientServices ambientServices, Type serviceType, Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-            return ambientServices.Register(
+            return ambientServices.RegisterService(
                 typeof(TContract),
-                b => b.ForType(typeof(TService))
-                      .Singleton()
-                      .AllowMultiple());
-        }
-
-        /// <summary>
-        /// Registers the provided service with implementation type as transient.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <typeparam name="TService">Type of the service implementation.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransient<TContract, TService>(this IAmbientServices ambientServices)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            return ambientServices.Register(
-                typeof(TContract),
-                b => b.ForType(typeof(TService))
-                            .Transient());
-        }
-
-        /// <summary>
-        /// Registers the provided service with implementation type as transient, allowing also multiple registrations.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <typeparam name="TService">Type of the service implementation.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransientMultiple<TContract, TService>(this IAmbientServices ambientServices)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            return ambientServices.Register(
-                typeof(TContract),
-                b => b.ForType(typeof(TService))
-                      .Transient()
-                      .AllowMultiple());
+                serviceType,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
@@ -262,92 +172,56 @@ namespace Kephas
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register<TContract>(
             this IAmbientServices ambientServices,
-            Func<TContract> serviceFactory)
+            Func<TContract> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.Register(
+            return ambientServices.RegisterService(
                 typeof(TContract),
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Singleton());
+                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
-        /// Registers the provided service as singleton factory, allowing also multiple registrations.
+        /// Registers the provided service as singleton factory.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices RegisterMultiple<TContract>(
+        public static IAmbientServices Register<TContract>(
             this IAmbientServices ambientServices,
-            Func<TContract> serviceFactory)
+            Func<IInjector, TContract> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.Register(
+            return ambientServices.RegisterService(
                 typeof(TContract),
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Singleton()
-                      .AllowMultiple());
-        }
-
-        /// <summary>
-        /// Registers the provided service as transient factory.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransient<TContract>(
-            this IAmbientServices ambientServices,
-            Func<TContract> serviceFactory)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            return ambientServices.Register(
-                typeof(TContract),
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Transient());
-        }
-
-        /// <summary>
-        /// Registers the provided service as transient factory, allowing also multiple registrations.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransientMultiple<TContract>(
-            this IAmbientServices ambientServices,
-            Func<TContract> serviceFactory)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            return ambientServices.Register(
-                typeof(TContract),
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Transient()
-                      .AllowMultiple());
+                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
@@ -356,235 +230,119 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="contractType">Type of the service contract.</param>
         /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type contractType,
-            Func<object> serviceFactory)
+            Func<object> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.Register(
+            return ambientServices.RegisterService(
                 contractType,
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Singleton());
+                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
-        /// Registers the provided service as singleton factory, allowing also multiple registrations.
+        /// Registers the provided service as singleton factory.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="contractType">Type of the service contract.</param>
         /// <param name="serviceFactory">The service factory.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterMultiple(
-            this IAmbientServices ambientServices,
-            Type contractType,
-            Func<object> serviceFactory)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            return ambientServices.Register(
-                contractType,
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Singleton()
-                      .AllowMultiple());
-        }
-
-        /// <summary>
-        /// Registers the provided service as transient factory.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service contract.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransient(
-            this IAmbientServices ambientServices,
-            Type contractType,
-            Func<object> serviceFactory)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            return ambientServices.Register(
-                contractType,
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Transient());
-        }
-
-        /// <summary>
-        /// Registers the provided service as transient factory, allowing also multiple registrations.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransientMultiple(
-            this IAmbientServices ambientServices,
-            Type contractType,
-            Func<object> serviceFactory)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            return ambientServices.Register(
-                contractType,
-                b => b.ForFactory(ctx => serviceFactory())
-                      .Transient()
-                      .AllowMultiple());
-        }
-
-        /// <summary>
-        /// Registers the provided service.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="service">The service.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type contractType,
-            object service)
+            Func<IInjector, object> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(service, nameof(service));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.Register(contractType, b => b.ForInstance(service));
-        }
-
-        /// <summary>
-        /// Registers the provided service, allowing also multiple registrations.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="service">The service.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterMultiple(
-            this IAmbientServices ambientServices,
-            Type contractType,
-            object service)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(service, nameof(service));
-
-            return ambientServices.Register(contractType, b => b.ForInstance(service).AllowMultiple());
+            return ambientServices.RegisterService(
+                contractType,
+                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
         /// Registers the provided service as singleton.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="serviceImplementationType">The service implementation type.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceType">The service implementation type.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type contractType,
-            Type serviceImplementationType)
+            Type serviceType,
+            Action<IRegistrationBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-            ambientServices.Register(
+            ambientServices.RegisterService(
                 contractType,
-                b => b.ForType(serviceImplementationType).Singleton());
+                serviceType,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
             return ambientServices;
         }
 
         /// <summary>
-        /// Registers the provided service as singleton, allowing also multiple registrations.
+        /// Registers the provided service instance as singleton.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="serviceImplementationType">The service implementation type.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceInstance">The service instance.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices RegisterMultiple(
+        public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type contractType,
-            Type serviceImplementationType)
+            object serviceInstance,
+            Action<IRegistrationBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            ambientServices.Register(
+            ambientServices.RegisterService(
                 contractType,
-                b => b.ForType(serviceImplementationType).Singleton().AllowMultiple());
-            return ambientServices;
-        }
-
-        /// <summary>
-        /// Registers the provided service as transient.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="serviceImplementationType">The service implementation type.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransient(
-            this IAmbientServices ambientServices,
-            Type contractType,
-            Type serviceImplementationType)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
-
-            ambientServices.Register(
-                contractType,
-                b => b.ForType(serviceImplementationType).Transient());
-            return ambientServices;
-        }
-
-        /// <summary>
-        /// Registers the provided service as transient, allowing also multiple registrations.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="contractType">Type of the service.</param>
-        /// <param name="serviceImplementationType">The service implementation type.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices RegisterTransientMultiple(
-            this IAmbientServices ambientServices,
-            Type contractType,
-            Type serviceImplementationType)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            serviceImplementationType = serviceImplementationType ?? throw new ArgumentNullException(nameof(serviceImplementationType));
-
-            ambientServices.Register(
-                contractType,
-                b => b.ForType(serviceImplementationType).Transient().AllowMultiple());
+                serviceInstance,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
             return ambientServices;
         }
 
@@ -608,17 +366,17 @@ namespace Kephas
         /// <summary>
         /// Gets the service with the provided type.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="contractType">Type of the service contract.</param>
         /// <returns>
         /// A service object of type <paramref name="contractType"/>.
         /// </returns>
-        public static object GetRequiredService(this IServiceProvider ambientServices, Type contractType)
+        public static object GetRequiredService(this IServiceProvider serviceProvider, Type contractType)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
-            var service = ambientServices.GetService(contractType);
+            var service = serviceProvider.GetService(contractType);
             if (service == null)
             {
                 throw new InjectionException(
@@ -634,16 +392,14 @@ namespace Kephas
         /// Gets the service with the provided type.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <returns>
         /// A service object of type <typeparamref name="TContract"/>.-or- <c>null</c> if there is no
         /// service object of type <typeparamref name="TContract"/>.
         /// </returns>
-        public static TContract GetRequiredService<TContract>(this IServiceProvider ambientServices)
-            where TContract : class
-        {
-            return (TContract)GetRequiredService(ambientServices, typeof(TContract));
-        }
+        public static TContract GetRequiredService<TContract>(this IServiceProvider serviceProvider)
+            where TContract : class =>
+            (TContract)GetRequiredService(serviceProvider, typeof(TContract));
 
         /// <summary>
         /// Sets the configuration store to the ambient services.
@@ -722,7 +478,7 @@ namespace Kephas
                 LoggingHelper.DefaultLogManager = logManager;
             }
 
-            ambientServices.Register<ILogManager>(b => b.ForInstance(logManager));
+            ambientServices.Register<ILogManager>(logManager);
 
             return ambientServices;
         }

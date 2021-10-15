@@ -16,6 +16,7 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Licensing;
     using Kephas.Logging;
@@ -81,16 +82,18 @@ namespace Kephas
         /// Registers the provided service using a registration builder.
         /// </summary>
         /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
         /// <param name="builder">The builder.</param>
         /// <returns>
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        public IAmbientServices Register(Type contractDeclarationType, Action<IServiceRegistrationBuilder> builder)
+        public IAmbientServices RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null)
         {
             contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-            var serviceBuilder = new ServiceRegistrationBuilder(this.ServiceRegistry, contractDeclarationType);
+            var serviceBuilder = new ServiceRegistrationBuilder(this.ServiceRegistry, contractDeclarationType, instancingStrategy);
             builder?.Invoke(serviceBuilder);
             this.ServiceRegistry.RegisterSource(serviceBuilder.Build());
 

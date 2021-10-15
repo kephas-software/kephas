@@ -111,22 +111,14 @@ namespace Kephas.Core.Tests.Services
 
         public class OverrideIdentityContext : Context
         {
-            /// <summary>
-            /// Validates the identity before changing it.
-            /// </summary>
-            /// <param name="currentValue">The current value.</param>
-            /// <param name="newValue">The new value.</param>
-            /// <returns>
-            /// True if validation succeeds, false if it fails.
-            /// </returns>
-            protected override bool ValidateIdentity(IIdentity currentValue, IIdentity newValue)
-            {
-                return true;
-            }
-
             public OverrideIdentityContext(IInjector injector, bool isThreadSafe = false)
                 : base(injector, isThreadSafe)
             {
+            }
+
+            protected override bool ValidateIdentity(IIdentity? currentValue, IIdentity? newValue)
+            {
+                return true;
             }
         }
     }

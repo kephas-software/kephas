@@ -10,7 +10,8 @@
 
 namespace Kephas.Services.Behaviors
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Kephas.Services.Behaviors
         public ServiceBehaviorContext(IInjector injector, TContract service, object? metadata = null, IContext? context = null)
             : this(injector, null, service, metadata, context)
         {
-            Requires.NotNull(service, nameof(service));
+            service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace Kephas.Services.Behaviors
         public ServiceBehaviorContext(IInjector injector, IExportFactory<TContract> serviceFactory, IContext? context = null)
             : this(injector, serviceFactory, null, GetExportMetadata(serviceFactory), context)
         {
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         }
 
         /// <summary>

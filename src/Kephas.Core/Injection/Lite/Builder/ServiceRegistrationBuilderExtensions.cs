@@ -22,37 +22,6 @@ namespace Kephas.Injection.Lite.Builder
     public static class ServiceRegistrationBuilderExtensions
     {
         /// <summary>
-        /// Registers the service with the provided factory.
-        /// </summary>
-        /// <param name="builder">The builder to act on.</param>
-        /// <param name="factory">The factory.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public static IServiceRegistrationBuilder WithFactory(this IServiceRegistrationBuilder builder, Func<object> factory)
-        {
-            builder = builder ?? throw new ArgumentNullException(nameof(builder));
-            factory = factory ?? throw new ArgumentNullException(nameof(factory));
-
-            return builder.ForFactory(ctx => factory());
-        }
-
-        /// <summary>
-        /// Registers the service with the provided implementation type.
-        /// </summary>
-        /// <typeparam name="TImplementation">Type of the implementation.</typeparam>
-        /// <param name="builder">The builder to act on.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public static IServiceRegistrationBuilder WithType<TImplementation>(this IServiceRegistrationBuilder builder)
-        {
-            builder = builder ?? throw new ArgumentNullException(nameof(builder));
-
-            return builder.ForType(typeof(TImplementation));
-        }
-
-        /// <summary>
         /// Sets the processing priority for the registered service.
         /// </summary>
         /// <param name="builder">The builder to act on.</param>
