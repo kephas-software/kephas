@@ -72,8 +72,16 @@ namespace Kephas.Injection.Lite.Internal
             this.serviceInfos.Add(serviceInfo);
         }
 
-        public object GetService(IServiceProvider serviceProvider, Type contractType) =>
-            throw new NotSupportedException($"Only single service infos may provide services ({contractType}).");
+        public object GetService(IServiceProvider serviceProvider, Type contractType)
+        {
+            if (this.serviceInfos.Count == 0)
+            {
+                throw new InjectionException($"No service resolving strategy registered for ({contractType}).");
+            }
+
+            // resolve the service from the last registration.
+            return this.serviceInfos[^1].GetService(serviceProvider, contractType);
+        }
 
         public IDictionary<string, object?>? Metadata { get; }
 
