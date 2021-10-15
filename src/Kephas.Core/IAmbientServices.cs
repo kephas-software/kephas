@@ -90,7 +90,6 @@ namespace Kephas
         public IAmbientServices RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null)
         {
             contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
-            builder = builder ?? throw new ArgumentNullException(nameof(builder));
             instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
             var serviceBuilder = new ServiceRegistrationBuilder(this.ServiceRegistry, contractDeclarationType, instancingStrategy);
