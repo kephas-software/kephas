@@ -69,6 +69,22 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
+        public async Task RunAsync_wait_for_shutdown_exception_stops_application_callback()
+        {
+            var appManager = Substitute.For<IAppManager>();
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>()
+                .Returns(appManager);
+
+            var app = new TestApp(async b => b.WithInjector(injector));
+            var (appContext, instruction) = await app.RunAsync(_ => throw new InvalidOperationException("bad thing happened"));
+
+            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            var appResult = (IOperationResult)appContext.AppResult;
+            Assert.IsNull(appResult);
+        }
+
+        [Test]
         public async Task RunAsync_wait_for_shutdown_exception_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
@@ -79,7 +95,7 @@ namespace Kephas.Application.Tests
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAppManager>()
                 .Returns(appManager);
-            injector.Resolve<IAppMainLoop>()
+            injector.TryResolve<IAppMainLoop>()
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithInjector(injector));
@@ -88,6 +104,23 @@ namespace Kephas.Application.Tests
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.IsNull(appResult);
+        }
+
+        [Test]
+        public async Task RunAsync_shutdown_instruction_stops_application_callback()
+        {
+            var appManager = Substitute.For<IAppManager>();
+
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>()
+                .Returns(appManager);
+
+            var app = new TestApp(async b => b.WithInjector(injector));
+            var (appContext, instruction) = await app.RunAsync(async _ => (new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
+
+            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            var appResult = (IOperationResult)appContext.AppResult;
+            Assert.AreEqual(12, appResult.Value);
         }
 
         [Test]
@@ -101,7 +134,7 @@ namespace Kephas.Application.Tests
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAppManager>()
                 .Returns(appManager);
-            injector.Resolve<IAppMainLoop>()
+            injector.TryResolve<IAppMainLoop>()
                 .Returns(mainLoop);
 
             var app = new TestApp(async b => b.WithInjector(injector));
@@ -110,6 +143,23 @@ namespace Kephas.Application.Tests
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.AreEqual(12, appResult.Value);
+        }
+
+        [Test]
+        public async Task RunAsync_none_instruction_does_not_stop_application_callback()
+        {
+            var appManager = Substitute.For<IAppManager>();
+
+            var injector = Substitute.For<IInjector>();
+            injector.Resolve<IAppManager>()
+                .Returns(appManager);
+
+            var app = new TestApp(async b => b.WithInjector(injector));
+            var (appContext, instruction) = await app.RunAsync(async _ => (new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
+
+            appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            var appResult = (IOperationResult)appContext.AppResult;
+            Assert.AreEqual(23, appResult.Value);
         }
 
         [Test]
@@ -123,7 +173,7 @@ namespace Kephas.Application.Tests
             var injector = Substitute.For<IInjector>();
             injector.Resolve<IAppManager>()
                 .Returns(appManager);
-            injector.Resolve<IAppMainLoop>()
+            injector.TryResolve<IAppMainLoop>()
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithInjector(injector));
