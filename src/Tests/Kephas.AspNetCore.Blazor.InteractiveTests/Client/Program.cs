@@ -20,38 +20,38 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
 
     public class Program
     {
-        public static async Task Main(string[] args)
-        {
-            IAmbientServices ambientServices = new AmbientServices();
-            
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.ConfigureContainer(new InjectionServiceProviderFactory(ambientServices));
-        
-            builder.RootComponents.Add<App>("#app");
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-        
-            ambientServices
-                .WithServiceCollection(builder.Services)
-                .ConfigureExtensionsLogging();
-        
-            ConfigureAmbientServices(ambientServices);
-        
-            // TODO this crashes
-            var appManager = ambientServices.Injector.Resolve<IAppManager>();
-            
-            var host = builder.Build();
-            await host.RunAsync();
-        }
-
         // public static async Task Main(string[] args)
         // {
-        //     var clientApp = new ClientApp<App>(
-        //         new AppArgs(args),
-        //         ConfigureAmbientServices);
+        //     IAmbientServices ambientServices = new AmbientServices();
+        //     
+        //     var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        //     builder.ConfigureContainer(new InjectionServiceProviderFactory(ambientServices));
         //
-        //     await clientApp.RunAsync();
+        //     builder.RootComponents.Add<App>("#app");
+        //     builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        //
+        //     ambientServices
+        //         .WithServiceCollection(builder.Services)
+        //         .ConfigureExtensionsLogging();
+        //
+        //     ConfigureAmbientServices(ambientServices);
+        //
+        //     // TODO this crashes
+        //     var appManager = ambientServices.Injector.Resolve<IAppManager>();
+        //     
+        //     var host = builder.Build();
+        //     await host.RunAsync();
         // }
-        
+
+        public static async Task Main(string[] args)
+        {
+            var clientApp = new ClientApp<App>(
+                new AppArgs(args),
+                ConfigureAmbientServices);
+
+            await clientApp.RunAsync();
+        }
+
         private static LoggerConfiguration GetLoggerConfiguration()
         {
             return new LoggerConfiguration()

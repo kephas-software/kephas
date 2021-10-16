@@ -6,6 +6,8 @@
 		<Nullable>enable</Nullable>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+
+		<BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
 	</PropertyGroup>
 
 	<ItemGroup>
