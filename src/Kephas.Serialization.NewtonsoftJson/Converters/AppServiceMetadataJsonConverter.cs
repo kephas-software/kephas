@@ -7,16 +7,10 @@
 
 namespace Kephas.Serialization.Json.Converters
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Kephas.Data.Formatting;
+    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Newtonsoft.Json;
-
-    using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
     /// <summary>
     /// JSON converter for <see cref="AppServiceMetadata"/>.
@@ -25,7 +19,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <see cref="AppServiceMetadata"/> should be processed before expandos, that's why the higher priority.
     /// </remarks>
     [ProcessingPriority(Priority.AboveNormal)]
-    public class AppServiceMetadataJsonConverter : DictionaryJsonConverter
+    public class AppServiceMetadataJsonConverter : ExpandoJsonConverter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadataJsonConverter"/> class.
@@ -33,66 +27,47 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
         public AppServiceMetadataJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
-            : base(typeRegistry, typeResolver)
+            : base(typeRegistry, typeResolver, typeof(AppServiceMetadata), typeof(AppServiceMetadata))
         {
         }
 
         /// <summary>
-        /// Determines whether this instance can convert the specified object type.
+        /// Creates the expando value which should collect the JSON values.
         /// </summary>
-        /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool CanConvert(Type objectType) =>
-            typeof(AppServiceMetadata).IsAssignableFrom(objectType);
-
-        /// <summary>Writes the JSON representation of the object.</summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>The newly created expando collector.</returns>
+        protected override IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
         {
-            if (value == null)
-            {
-                writer.WriteNull();
-                return;
-            }
-
-            var dictionary = ((IDataFormattable)value).ToData();
-            base.WriteJson(writer, dictionary, serializer);
+            return existingValue == null ? new Expando() : (IExpandoBase)existingValue;
         }
 
-        /// <summary>Reads the JSON representation of the object.</summary>
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-        /// <param name="objectType">Type of the object.</param>
-        /// <param name="existingValue">The existing value of object being read.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        /// <returns>The object value.</returns>
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        /// <summary>
+        /// Gets a value indicating whether the property can be written.
+        /// </summary>
+        /// <remarks>
+        /// All properties can be written as they are collected in an untyped expando.
+        /// </remarks>
+        /// <param name="propInfo">The property information.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>A value indicating whether the property can be written.</returns>
+        protected override bool CanWriteProperty(IRuntimePropertyInfo propInfo, object? existingValue)
         {
-            var dictionary = (IDictionary<string, object?>?)base.ReadJson(
-                reader,
-                typeof(Dictionary<string, object?>),
-                new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase),
-                serializer);
-            if (existingValue == null)
-            {
-                return Activator.CreateInstance(objectType, dictionary);
-            }
+            return existingValue == null || base.CanWriteProperty(propInfo, existingValue);
+        }
 
-            if (dictionary == null)
-            {
-                return null;
-            }
-
-            var metadata = (AppServiceMetadata)existingValue;
-            foreach (var (key, value) in dictionary)
-            {
-                metadata[key] = value;
-            }
-
-            return metadata;
+        /// <summary>
+        /// Gets the return value of the <see cref="ExpandoJsonConverter.ReadJson"/> operation.
+        /// </summary>
+        /// <param name="expandoTypeInfo">The return value type information.</param>
+        /// <param name="expandoCollector">The expando value collecting the properties.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>The read operation's return value.</returns>
+        protected override object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpandoBase expandoCollector, object? existingValue)
+        {
+            return existingValue != null
+                ? base.GetReadReturnValue(expandoTypeInfo, expandoCollector, existingValue)
+                : expandoTypeInfo.CreateInstance(expandoCollector.ToDictionary());
         }
     }
 }
