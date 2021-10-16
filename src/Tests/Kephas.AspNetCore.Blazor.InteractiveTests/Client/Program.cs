@@ -14,7 +14,6 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
-    using Kephas.Logging;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
