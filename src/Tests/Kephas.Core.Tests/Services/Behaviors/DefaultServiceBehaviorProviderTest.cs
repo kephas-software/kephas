@@ -13,6 +13,7 @@ using Kephas.Injection.ExportFactoryImporters;
 
 namespace Kephas.Core.Tests.Services.Behaviors
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -32,7 +33,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
             var ambientServicesMock = this.CreateInjectorWithFactories();
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
-            var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
+            IServiceBehaviorProvider provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
             var filteredServices = provider.WhereEnabled(services).ToList();
             Assert.AreEqual(services.Count, filteredServices.Count);
             Assert.AreEqual(services[0], filteredServices[0]);
@@ -45,7 +46,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeAllBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
-            var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeAllBehaviorMock });
+            IServiceBehaviorProvider provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeAllBehaviorMock });
             var filteredServices = provider.WhereEnabled(services).ToList();
             Assert.AreEqual(0, filteredServices.Count);
         }
@@ -58,7 +59,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
-            var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
+            IServiceBehaviorProvider provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
             var filteredServices = provider.WhereEnabled(services).ToList();
             Assert.AreEqual(services.Count, filteredServices.Count);
             Assert.AreEqual(services[0], filteredServices[0]);
@@ -72,13 +73,13 @@ namespace Kephas.Core.Tests.Services.Behaviors
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
             var services = new List<ITestService> { Substitute.For<ITestService>() };
 
-            var provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
+            IServiceBehaviorProvider provider = new DefaultServiceBehaviorProvider(ambientServicesMock, new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
             var filteredServices = provider.WhereEnabled(services).ToList();
             Assert.AreEqual(0, filteredServices.Count);
         }
 
 
-        private IInjector CreateInjectorWithFactories(params IExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>[] ruleFactories)
+        private IInjector CreateInjectorWithFactories(params Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[] ruleFactories)
         {
             var exporter = Substitute.For<ICollectionExportFactoryImporter>();
             exporter.ExportFactories.Returns(ruleFactories);
@@ -90,17 +91,17 @@ namespace Kephas.Core.Tests.Services.Behaviors
             return injector;
         }
 
-        private IExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata> CreateEnabledServiceBehaviorRuleFactory(
+        private Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata> CreateEnabledServiceBehaviorRuleFactory(
                 bool canApply,
                 bool isEndRule,
                 bool value,
                 Priority processingPriority = 0)
         {
             var service = this.CreateEnabledServiceBehaviorRule(canApply, isEndRule, value, processingPriority);
-            return new ExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>(() => service, new ServiceBehaviorRuleMetadata(typeof(ITestService), processingPriority: processingPriority));
+            return new Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(() => service, new ServiceBehaviorRuleMetadata(typeof(ITestService), processingPriority: processingPriority));
         }
 
-        private IEnabledServiceBehaviorRule<ITestService> CreateEnabledServiceBehaviorRule(bool canApply, bool isEndRule, bool value, Priority processingPriority = 0)
+        private IEnabledServiceBehaviorRule CreateEnabledServiceBehaviorRule(bool canApply, bool isEndRule, bool value, Priority processingPriority = 0)
         {
             var behaviorMock = Substitute.For<IEnabledServiceBehaviorRule<ITestService>>();
             behaviorMock

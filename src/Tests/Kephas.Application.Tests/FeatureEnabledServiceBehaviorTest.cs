@@ -9,6 +9,7 @@ using Kephas.Injection;
 
 namespace Kephas.Application.Tests
 {
+    using System;
     using System.Collections.Generic;
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
@@ -30,7 +31,7 @@ namespace Kephas.Application.Tests
                 new StaticAppRuntime(appId: "test-app"),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "enabled" }),
-                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory, enabledExportFactory });
+                new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory, enabledExportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
         }
@@ -43,7 +44,7 @@ namespace Kephas.Application.Tests
                 new StaticAppRuntime(appId: "test-app"),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "Test" }),
-                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
+                new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
         }
@@ -56,7 +57,7 @@ namespace Kephas.Application.Tests
                 new StaticAppRuntime(appId: "test-app"),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "test" }),
-                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
+                new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
         }
@@ -69,7 +70,7 @@ namespace Kephas.Application.Tests
                 new StaticAppRuntime(appId: "test-app"),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
-                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
+                new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsTrue(value.Value);
         }
@@ -82,7 +83,7 @@ namespace Kephas.Application.Tests
                 new StaticAppRuntime(appId: "non-test-app"),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
-                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
+                new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsFalse(value.Value);
         }
@@ -95,24 +96,24 @@ namespace Kephas.Application.Tests
                 new StaticAppRuntime(appId: "test-app"),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
-                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
+                new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
             var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
             Assert.IsFalse(value.Value);
         }
 
-        private ServiceBehaviorContext<IFeatureManager> GetServiceBehaviorContext(IExportFactory<IFeatureManager, FeatureManagerMetadata> exportFactory)
+        private ServiceBehaviorContext<IFeatureManager> GetServiceBehaviorContext(Lazy<IFeatureManager, FeatureManagerMetadata> exportFactory)
         {
             var context = new ServiceBehaviorContext<IFeatureManager>(
                 Substitute.For<IInjector>(),
-                exportFactory,
-                null);
+                () => exportFactory.Value,
+                exportFactory.Metadata);
             return context;
         }
 
-        private IExportFactory<IFeatureManager, FeatureManagerMetadata> GetFeatureExportFactory(string name, bool isRequired = false, string[]? dependencies = null, string[]? targetApps = null)
+        private Lazy<IFeatureManager, FeatureManagerMetadata> GetFeatureExportFactory(string name, bool isRequired = false, string[]? dependencies = null, string[]? targetApps = null)
         {
             var featureInfo = new FeatureInfo(name, "1.0", dependencies: dependencies, targetApps: targetApps, isRequired: isRequired);
-            var exportFactory = new ExportFactory<IFeatureManager, FeatureManagerMetadata>(
+            var exportFactory = new Lazy<IFeatureManager, FeatureManagerMetadata>(
                 () => Substitute.For<IFeatureManager>(),
                 new FeatureManagerMetadata(featureInfo));
             return exportFactory;

@@ -26,42 +26,13 @@ namespace Kephas.Services.Behaviors
         /// class.
         /// </summary>
         /// <param name="injector">The injector.</param>
-        /// <param name="service">The service.</param>
-        /// <param name="metadata">The metadata (optional).</param>
-        /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(IInjector injector, TContract service, object? metadata = null, IContext? context = null)
-            : this(injector, null, service, metadata, context)
-        {
-            service = service ?? throw new ArgumentNullException(nameof(service));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract}" />
-        /// class.
-        /// </summary>
-        /// <param name="injector">The injector.</param>
-        /// <param name="serviceFactory">The service export factory.</param>
-        /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(IInjector injector, IExportFactory<TContract> serviceFactory, IContext? context = null)
-            : this(injector, serviceFactory, null, GetExportMetadata(serviceFactory), context)
-        {
-            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract}" />
-        /// class.
-        /// </summary>
-        /// <param name="injector">The injector.</param>
-        /// <param name="serviceFactory">The service export factory.</param>
-        /// <param name="service">The service.</param>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="context">Context for the behavior (optional).</param>
-        private ServiceBehaviorContext(IInjector injector, IExportFactory<TContract>? serviceFactory, TContract? service, object? metadata = null, IContext? context = null)
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="metadata">Optional. The metadata.</param>
+        /// <param name="context">Optional. Context for the behavior.</param>
+        public ServiceBehaviorContext(IInjector injector, Func<TContract> serviceFactory, object? metadata = null, IContext? context = null)
             : base(injector)
         {
-            this.ServiceFactory = serviceFactory;
-            this.Service = service;
+            this.ServiceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             this.Metadata = metadata;
             this.Context = context;
         }
@@ -80,7 +51,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service.
         /// </value>
-        public TContract? Service { get; }
+        public TContract Service => this.ServiceFactory();
 
         /// <summary>
         /// Gets the service factory.
@@ -88,7 +59,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service factory.
         /// </value>
-        public IExportFactory<TContract>? ServiceFactory { get; }
+        public Func<TContract> ServiceFactory { get; }
 
         /// <summary>
         /// Gets the service metadata.
@@ -97,18 +68,5 @@ namespace Kephas.Services.Behaviors
         /// The service metadata.
         /// </value>
         public object? Metadata { get; }
-
-        /// <summary>
-        /// Gets export metadata.
-        /// </summary>
-        /// <param name="serviceExport">The service export.</param>
-        /// <returns>
-        /// The export metadata.
-        /// </returns>
-        private static object? GetExportMetadata(IExportFactory<TContract> serviceExport)
-        {
-            var metadata = serviceExport.ToDynamic()[nameof(IExportFactory<TContract, AppServiceMetadata>.Metadata)];
-            return metadata;
-        }
     }
 }

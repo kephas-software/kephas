@@ -41,7 +41,7 @@ namespace Kephas.Application
             IAppRuntime appRuntime,
             IAppContext appContext,
             IConfiguration<AppSettings> appConfiguration,
-            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureFactories)
+            ICollection<Lazy<IFeatureManager, FeatureManagerMetadata>> featureFactories)
         {
             this.appRuntime = appRuntime;
             this.appContext = appContext;

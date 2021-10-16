@@ -24,7 +24,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void CanApply_success()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), new TestService()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), () => new TestService()));
             Assert.IsTrue(canApply);
         }
 
@@ -32,7 +32,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void CanApply_failure_mismatched_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), new AnotherTestService()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), () => new AnotherTestService()));
             Assert.IsFalse(canApply);
         }
 
@@ -40,7 +40,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void CanApply_failure_mismatched_derived_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), new DerivedTestService()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), () => new DerivedTestService()));
             Assert.IsFalse(canApply);
         }
 

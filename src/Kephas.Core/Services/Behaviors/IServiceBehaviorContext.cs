@@ -10,7 +10,7 @@
 
 namespace Kephas.Services.Behaviors
 {
-    using Kephas.Injection;
+    using System;
 
     /// <summary>
     /// Interface for service behavior context.
@@ -33,7 +33,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service.
         /// </value>
-        TContract? Service { get; }
+        TContract Service { get; }
 
         /// <summary>
         /// Gets the service factory.
@@ -41,7 +41,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service factory.
         /// </value>
-        IExportFactory<TContract>? ServiceFactory { get; }
+        Func<TContract> ServiceFactory { get; }
 
         /// <summary>
         /// Gets the service metadata.
