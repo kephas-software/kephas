@@ -17,7 +17,7 @@ namespace Kephas.Data.Formatting
         /// </summary>
         /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        object ToData(IDataFormattingContext? context = null)
+        object? ToData(IDataFormattingContext? context = null)
         {
             return this.ToString();
         }

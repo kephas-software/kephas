@@ -15,9 +15,7 @@ namespace Kephas.Interaction
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
-    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>

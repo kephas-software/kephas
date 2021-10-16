@@ -34,8 +34,8 @@ namespace Kephas.Services
                 return;
             }
 
-            this.ProcessingPriority = (Priority)metadata.TryGetValue(nameof(this.ProcessingPriority), Priority.Normal)!;
-            this.OverridePriority = (Priority)metadata.TryGetValue(nameof(this.OverridePriority), Priority.Normal)!;
+            this.ProcessingPriority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(this.ProcessingPriority), Priority.Normal)!, typeof(int));
+            this.OverridePriority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(this.OverridePriority), Priority.Normal)!, typeof(int));
             this.ServiceName = (string?)metadata.TryGetValue(nameof(this.ServiceName));
             this.IsOverride = (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!;
             this.ServiceType = (Type?)metadata.TryGetValue(nameof(this.ServiceType));

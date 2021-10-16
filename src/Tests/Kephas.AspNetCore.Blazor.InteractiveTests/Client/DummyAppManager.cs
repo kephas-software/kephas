@@ -25,8 +25,8 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
             Lazy<IInjector, AppServiceMetadata> injector,
             IServiceBehaviorProvider? serviceBehaviorProvider = null,
             // ICollection<IAppLifecycleBehavior>? appLifecycleBehaviorFactories = null,
-            // ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories = null,
-            // ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? featureLifecycleBehaviorFactories = null
+            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories = null,
+            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? featureLifecycleBehaviorFactories = null,
             ILogManager? logManager = null)
             : base(logManager)
         {
