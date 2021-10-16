@@ -761,7 +761,7 @@ namespace Kephas.Application.Tests
 
         private IServiceBehaviorProvider GetServiceBehaviorProvider()
         {
-            var provider = new DefaultServiceBehaviorProvider(Substitute.For<IInjector>(), new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
+            var provider = new DefaultServiceBehaviorProvider(Substitute.For<IInjector>(), new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
             return provider;
         }
 
