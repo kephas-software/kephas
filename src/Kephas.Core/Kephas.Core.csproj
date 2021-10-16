@@ -29,7 +29,7 @@
             - Threading.Tasks: PreserveThreadContext extension method.
             - Cryptography: IEncryptionService, IHashingService.
             - Data: IIdentifiable, IIdGenerator.
-            - Diagnostics: Profiler, IProcessStarter.
+            - Diagnostics: Profiler.
             - Interaction: IEventHub, ISignal.
             - Commands: Command, IArgs, Args.
 
@@ -77,10 +77,6 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -122,6 +118,13 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="LinkerConfig.xml"/>
+        <EmbeddedResource Include="LinkerConfig.xml">
+            <LogicalName>$(MSBuildProjectName).xml</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

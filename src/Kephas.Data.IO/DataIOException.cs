@@ -55,15 +55,5 @@ namespace Kephas.Data.IO
         {
             return $"[{this.Timestamp:s} {this.Severity}] {base.ToString()}";
         }
-
-        /// <summary>
-        /// Converts this object to a serialization friendly representation.
-        /// </summary>
-        /// <param name="context">Optional. The formatting context.</param>
-        /// <returns>A serialization friendly object representing this object.</returns>
-        public object ToData(IDataFormattingContext? context = null)
-        {
-            return this.ToString();
-        }
     }
 }

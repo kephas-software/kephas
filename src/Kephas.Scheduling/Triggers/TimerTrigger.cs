@@ -124,14 +124,6 @@ namespace Kephas.Scheduling.Triggers
         }
 
         /// <summary>
-        /// Converts this object to a serialization friendly representation.
-        /// </summary>
-        /// <param name="context">Optional. The formatting context.</param>
-        /// <returns>A serialization friendly object representing this object.</returns>
-        public virtual object ToData(IDataFormattingContext? context = null)
-            => this.ToString();
-
-        /// <summary>
         /// Releases the unmanaged resources used by the <see cref="TriggerBase"/> and optionally
         /// releases the managed resources.
         /// </summary>

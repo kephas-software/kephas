@@ -65,10 +65,6 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-            <Pack>true</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -95,7 +91,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application" />
+        <None Remove="LinkerConfig.xml"/>
+        <EmbeddedResource Include="LinkerConfig.xml">
+            <LogicalName>$(MSBuildProjectName).xml</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

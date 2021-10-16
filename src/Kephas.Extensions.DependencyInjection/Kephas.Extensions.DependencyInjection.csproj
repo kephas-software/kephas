@@ -123,7 +123,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Extensions\DependencyInjection\Resources\" />
+        <None Remove="LinkerConfig.xml"/>
+        <EmbeddedResource Include="LinkerConfig.xml">
+            <LogicalName>$(MSBuildProjectName).xml</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
