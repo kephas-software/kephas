@@ -20,17 +20,14 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
 
     public class Program
     {
-        public static async Task Main(string[] args)
-        {
+        public static async Task Main(string[] args) =>
             await CreateHostBuilder(args).Build().RunAsync();
-        }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             var appArgs = new AppArgs(args);
             var ambientServices = new AmbientServices();
             return Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(b => b.AddJsonFile("appsettings.json"))
                 .ConfigureAmbientServices(
                     ambientServices,
                     args,
@@ -38,7 +35,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder
                         .UseKestrel()
-                        .UseStartup<StartupApp>());
+                        .UseStartup<Startup>());
         }
 
         private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)

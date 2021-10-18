@@ -34,7 +34,10 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// Base class for the ASP.NET startup.
     /// </summary>
     /// <remarks>
+    /// Typical use: define a Startup class inheriting from this class in the main assembly
+    /// (where the Program class is defined). Use the newly defined class in WebHostBuilder.UseStartup&lt;Startup&gt;().
     /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-3.1 for more options.
+    /// Another good read is https://stevetalkscode.co.uk/separating-aspnetcore-startup.
     /// </remarks>
     public abstract class StartupAppBase : AppBase
     {

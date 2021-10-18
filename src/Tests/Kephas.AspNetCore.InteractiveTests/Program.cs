@@ -31,19 +31,14 @@ namespace Kephas.AspNetCore.InteractiveTests
             var appArgs = new AppArgs(args);
             var ambientServices = new AmbientServices();
             return Host.CreateDefaultBuilder(args)
-                .ConfigureHostConfiguration(b => b
-                    .AddEnvironmentVariables()
-                    .AddCommandLine(args))
-                .ConfigureAppConfiguration((hostingContext, b) => b
-                    .AddJsonFile("appsettings.json")
-                    .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true))
                 .ConfigureAmbientServices(
                     ambientServices,
                     args,
                     (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder
-                        .UseStartup<StartupApp>());
+                        .UseStartup<Startup>()
+                        .UseKestrel());
         }
 
         private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
