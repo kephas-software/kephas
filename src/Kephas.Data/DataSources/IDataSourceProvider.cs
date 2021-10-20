@@ -42,7 +42,7 @@ namespace Kephas.Data.DataSources
         /// <returns>
         /// A promise of the data source.
         /// </returns>
-        Task<IEnumerable<object>> GetDataSourceAsync(
+        Task<IEnumerable<object>?> GetDataSourceAsync(
             IPropertyInfo propertyInfo,
             IDataSourceContext context,
             CancellationToken cancellationToken = default);

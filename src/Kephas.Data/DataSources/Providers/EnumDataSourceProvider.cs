@@ -37,7 +37,7 @@ namespace Kephas.Data.DataSources.Providers
         /// </returns>
         public bool CanHandle(IPropertyInfo propertyInfo, IDataSourceContext context)
         {
-            var typeInfo = ((IRuntimeTypeInfo)propertyInfo.ValueType).TypeInfo;
+            var typeInfo = ((IRuntimeTypeInfo)propertyInfo.ValueType).Type;
 
             if (typeInfo.IsEnum)
             {
@@ -49,7 +49,7 @@ namespace Kephas.Data.DataSources.Providers
 
             if (projectedPropertyInfo != null)
             {
-                typeInfo = ((IRuntimeTypeInfo)projectedPropertyInfo.ValueType).TypeInfo.GetNonNullableType();
+                typeInfo = ((IRuntimeTypeInfo)projectedPropertyInfo.ValueType).Type.GetNonNullableType();
                 if (typeInfo.IsEnum)
                 {
                     return true;
@@ -68,22 +68,22 @@ namespace Kephas.Data.DataSources.Providers
         /// <returns>
         /// A promise of the data source.
         /// </returns>
-        public Task<IEnumerable<object>> GetDataSourceAsync(
+        public Task<IEnumerable<object>?> GetDataSourceAsync(
             IPropertyInfo propertyInfo,
             IDataSourceContext context,
             CancellationToken cancellationToken = default)
         {
-            IEnumerable<IDataSourceItem> listSource = null;
+            IEnumerable<IDataSourceItem>? listSource = null;
             var type = this.GetEnumType(propertyInfo, context);
             if (type == null)
             {
-                return Task.FromResult<IEnumerable<object>>(null);
+                return Task.FromResult<IEnumerable<object>?>(null);
             }
 
-            var values = Enum.GetValues(type.AsType()).OfType<object>();
+            var values = Enum.GetValues(type).OfType<object>();
             listSource = values.Select(v => new DataSourceItem { Id = v, DisplayText = Enum.GetName(type, v) })
                                    .ToList();
-            return Task.FromResult<IEnumerable<object>>(listSource);
+            return Task.FromResult<IEnumerable<object>?>(listSource);
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Kephas.Data.DataSources.Providers
         /// <returns>
         /// The enum type.
         /// </returns>
-        private TypeInfo GetEnumType(IPropertyInfo propertyInfo, IDataSourceContext context)
+        private Type? GetEnumType(IPropertyInfo propertyInfo, IDataSourceContext context)
         {
-            var typeInfo = ((IRuntimeTypeInfo)propertyInfo.ValueType).TypeInfo.GetNonNullableType();
+            var typeInfo = ((IRuntimeTypeInfo)propertyInfo.ValueType).Type.GetNonNullableType();
             if (typeInfo.IsEnum)
             {
                 return typeInfo;
@@ -107,7 +107,7 @@ namespace Kephas.Data.DataSources.Providers
 
             if (projectedPropertyInfo != null)
             {
-                typeInfo = ((IRuntimeTypeInfo)projectedPropertyInfo.ValueType).TypeInfo;
+                typeInfo = ((IRuntimeTypeInfo)projectedPropertyInfo.ValueType).Type;
                 if (typeInfo.IsEnum)
                 {
                     return typeInfo;
