@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.ExportFactoryImporters;
-
 namespace Kephas.Application.Tests
 {
     using System;
@@ -23,6 +20,7 @@ namespace Kephas.Application.Tests
 
     using Kephas.Application;
     using Kephas.Application.Reflection;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
@@ -45,15 +43,14 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                                         this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
                                         this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
                                         // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
                                         this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: (Priority)Priority.Low),
-                    },
+                    }),
                 null);
             Assert.Throws<InvalidOperationException>(() => { var x = appManager.FeatureManagerFactories; });
         }
@@ -92,17 +89,16 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new[]
+                this.GetAppLifecycleBehaviors(new[]
                     {
                         new ExportFactory<IAppLifecycleBehavior, AppServiceMetadata>(() => behavior1, new FeatureManagerMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IAppLifecycleBehavior, AppServiceMetadata>(() => behavior2, new FeatureManagerMetadata(processingPriority: (Priority)1)),
-                    },
-                new[]
+                    }),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: (Priority)1)),
-                    },
+                    }),
                 null);
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -134,13 +130,12 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: (Priority)1)),
-                    },
+                    }),
                 null);
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -173,14 +168,13 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: (Priority)0)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: (Priority)int.MaxValue)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(processingPriority: (Priority)int.MinValue)),
-                    },
+                    }),
                 null);
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -203,14 +197,13 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
                         this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }),
                         this.CreateFeatureManagerFactory(featureManager3, "3", "1.0"),
-                    },
+                    }),
                 null);
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -240,9 +233,8 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 appRuntime,
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[] { factory1, factory2, factory3 },
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[] { factory1, factory2, factory3 }),
                 null);
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -277,9 +269,8 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[] { factory1, factory2, factory3 },
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[] { factory1, factory2, factory3 }),
                 null);
 
             appManager.Logger = logger;
@@ -316,9 +307,8 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[] { factory1 },
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[] { factory1 }),
                 null);
 
             appManager.Logger = logger;
@@ -358,18 +348,17 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata()),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata()),
-                    },
-                new[]
+                    }),
+                this.GetFeatureLifecycleBehaviors(new[]
                     {
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata(processingPriority: (Priority)1)),
-                    });
+                    }));
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
@@ -408,20 +397,19 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", dependencies: new[] { "3" }))),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", dependencies: new[] { "1" }))),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
-                    },
-                new[]
+                    }),
+                this.GetFeatureLifecycleBehaviors(new[]
                     {
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata("1")),
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata("2")),
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior3, new FeatureLifecycleBehaviorMetadata()),
-                    });
+                    }));
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
@@ -477,17 +465,16 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new[]
+                this.GetAppLifecycleBehaviors(new[]
                     {
                         new ExportFactory<IAppLifecycleBehavior, AppServiceMetadata>(() => behavior1, new FeatureManagerMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IAppLifecycleBehavior, AppServiceMetadata>(() => behavior2, new FeatureManagerMetadata(processingPriority: (Priority)1)),
-                    },
-                new[]
+                    }),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: (Priority)1)),
-                    },
+                    }),
                 null);
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -519,13 +506,12 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(processingPriority: (Priority)1)),
-                    },
+                    }),
                 null);
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -558,14 +544,13 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(processingPriority: (Priority)0)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(processingPriority: (Priority)int.MaxValue)),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(processingPriority: (Priority)int.MinValue)),
-                    },
+                    }),
                 null);
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -588,14 +573,13 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", dependencies: new[] { "3" }))),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", dependencies: new[] { "1" }))),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
-                    },
+                    }),
                 null);
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -630,20 +614,19 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", dependencies: new[] { "3" }))),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", dependencies: new[] { "1" }))),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
-                    },
-                new[]
+                    }),
+                this.GetFeatureLifecycleBehaviors(new[]
                     {
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata("1")),
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata("2")),
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior3, new FeatureLifecycleBehaviorMetadata()),
-                    });
+                    }));
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
@@ -684,18 +667,17 @@ namespace Kephas.Application.Tests
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
                 this.GetInjector(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
+                this.GetAppLifecycleBehaviors(),
+                this.GetFeatureManagers(new[]
                     {
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata()),
                         new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata()),
-                    },
-                new[]
+                    }),
+                this.GetFeatureLifecycleBehaviors(new[]
                     {
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata(processingPriority: (Priority)2)),
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata(processingPriority: (Priority)1)),
-                    });
+                    }));
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
@@ -759,22 +741,30 @@ namespace Kephas.Application.Tests
             return featureManager;
         }
 
-        private IServiceBehaviorProvider GetServiceBehaviorProvider()
-        {
-            var provider = new DefaultServiceBehaviorProvider(Substitute.For<IInjector>(), new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
-            return provider;
-        }
-
         private IInjector GetInjector()
         {
-            var exporter = Substitute.For<ICollectionExportFactoryImporter>();
-            exporter.ExportFactories.Returns(Array.Empty<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
-
             var injector = Substitute.For<IInjector>();
-            injector.Resolve(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>))
-                .Returns(exporter);
-
             return injector;
         }
+
+        private IEnabledServiceFactoryCollection<TService, TMetadata> GetEnabledFactoryCollection<TService, TMetadata>(
+            IEnumerable<IExportFactory<TService, TMetadata>>? factories = null)
+        {
+            var collection = Substitute.For<IEnabledServiceFactoryCollection<TService, TMetadata>>();
+            collection.GetEnumerator().Returns((factories ?? new List<IExportFactory<TService, TMetadata>>()).GetEnumerator());
+            return collection;
+        }
+
+        private IEnabledServiceFactoryCollection<IAppLifecycleBehavior, AppServiceMetadata> GetAppLifecycleBehaviors(
+            IEnumerable<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>? factories = null)
+            => this.GetEnabledFactoryCollection(factories);
+
+        private IEnabledServiceFactoryCollection<IFeatureManager, FeatureManagerMetadata> GetFeatureManagers(
+            IEnumerable<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? factories = null)
+            => this.GetEnabledFactoryCollection(factories);
+
+        private IEnabledServiceFactoryCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata> GetFeatureLifecycleBehaviors(
+            IEnumerable<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? factories = null)
+            => this.GetEnabledFactoryCollection(factories);
     }
 }

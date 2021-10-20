@@ -29,8 +29,8 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <summary>
         /// The GetExportFactoryDescriptors method.
         /// </summary>
-        private static readonly MethodInfo GetExportFactoryDescriptorsMethod = typeof(ExportFactoryWithMetadataExportDescriptorProvider).GetTypeInfo()
-                                                                            .GetDeclaredMethod(nameof(GetExportFactoryDescriptors));
+        private static readonly MethodInfo GetExportFactoryDescriptorsMethod =
+            typeof(ExportFactoryWithMetadataExportDescriptorProvider).GetTypeInfo().GetDeclaredMethod(nameof(GetExportFactoryDescriptors));
 
         /// <summary>
         /// The lifetime context factory.
@@ -113,8 +113,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <returns>An enumeration of export promises.</returns>
         public override IEnumerable<ExportDescriptorPromise> GetExportDescriptors(CompositionContract contract, DependencyAccessor definitionAccessor)
         {
-            if (!contract.ContractType.GetTypeInfo().IsGenericType ||
-                        contract.ContractType.GetGenericTypeDefinition() != typeof(IExportFactory<,>))
+            if (!contract.ContractType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
             {
                 // ReSharper disable once ArrangeStaticMemberQualifier
                 return ExportDescriptorProvider.NoExportDescriptors;

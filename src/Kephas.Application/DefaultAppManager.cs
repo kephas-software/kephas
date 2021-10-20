@@ -16,9 +16,9 @@ namespace Kephas.Application
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application.Reflection;
     using Kephas.Diagnostics;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Resources;
@@ -42,17 +42,15 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="injector">The ambient services.</param>
-        /// <param name="serviceBehaviorProvider">Optional. The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">Optional. The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">Optional. The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">Optional. The feature lifecycle behavior factories.</param>
         public DefaultAppManager(
             IAppRuntime appRuntime,
             IInjector injector,
-            IServiceBehaviorProvider? serviceBehaviorProvider = null,
-            ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>? appLifecycleBehaviorFactories = null,
-            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories = null,
-            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? featureLifecycleBehaviorFactories = null)
+            IEnabledServiceFactoryCollection<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
+            IEnabledServiceFactoryCollection<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
+            IEnabledServiceFactoryCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
             : base(injector)
         {
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
@@ -60,27 +58,20 @@ namespace Kephas.Application
 
             this.AppRuntime = appRuntime;
             this.Injector = injector;
-            this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(injector);
             this.lazyAppLifecycleBehaviorFactories = new Lazy<ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>>(
                 () => appLifecycleBehaviorFactories == null
                                      ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
-                                     : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).Order().ToList());
+                                     : appLifecycleBehaviorFactories.Order().ToList());
 
             this.lazyFeatureManagerFactories = new Lazy<ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>>(
-                () =>
-                {
-                    this.EnsureMetadataHasFeatureInfo(featureManagerFactories);
-
-                    return featureManagerFactories == null
-                        ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
-                        : this.SortEnabledFeatureManagerFactories(
-                            this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
-                });
+                () => featureManagerFactories == null
+                                    ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
+                                    : this.SortEnabledFeatureManagerFactories(featureManagerFactories.ToList()));
 
             this.lazyFeatureLifecycleBehaviorFactories = new Lazy<ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>>(
                 () => featureLifecycleBehaviorFactories == null
                                      ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
-                                     : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).Order().ToList());
+                                     : featureLifecycleBehaviorFactories.Order().ToList());
         }
 
         /// <summary>
@@ -95,11 +86,6 @@ namespace Kephas.Application
         /// The injector.
         /// </value>
         protected IInjector Injector { get; }
-
-        /// <summary>
-        /// Gets the service behavior provider.
-        /// </summary>
-        protected IServiceBehaviorProvider ServiceBehaviorProvider { get; }
 
         /// <summary>
         /// Gets the application lifecycle behavior factories.
@@ -632,19 +618,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Calculates the feature information based on the <see cref="FeatureManagerMetadata"/>
-        /// if not explicitly provided.
-        /// </summary>
-        /// <param name="featureManagerMetadata">The feature manager metadata.</param>
-        /// <returns>
-        /// The calculated feature information.
-        /// </returns>
-        protected virtual FeatureInfo ComputeDefaultFeatureInfo(FeatureManagerMetadata featureManagerMetadata)
-        {
-            return FeatureInfo.FromMetadata(featureManagerMetadata);
-        }
-
-        /// <summary>
         /// Compares two feature managers regarding to their processing priority.
         /// </summary>
         /// <param name="fm1">The first fm.</param>
@@ -680,23 +653,6 @@ namespace Kephas.Application
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Ensures that all feature managers have the FeatureInfo property set.
-        /// </summary>
-        /// <param name="featureManagerFactories">The feature manager factories.</param>
-        private void EnsureMetadataHasFeatureInfo(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories)
-        {
-            if (featureManagerFactories == null)
-            {
-                return;
-            }
-
-            foreach (var fmFactory in featureManagerFactories)
-            {
-                fmFactory.Metadata.FeatureInfo ??= this.ComputeDefaultFeatureInfo(fmFactory.Metadata);
-            }
         }
 
         private (string featureIdentifier, Type featureType) GetFeatureInfo(IFeatureManager featureManager, FeatureManagerMetadata featureManagerMetadata)

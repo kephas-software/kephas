@@ -117,7 +117,7 @@ namespace Kephas.Application.Tests
         {
         }
 
-        public class RequiredFeatureManagerServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager>
+        public class RequiredFeatureManagerServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager, FeatureManagerMetadata>
         {
             /// <summary>
             /// Gets the behavior value.
@@ -126,9 +126,9 @@ namespace Kephas.Application.Tests
             /// <returns>
             /// The behavior value.
             /// </returns>
-            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IFeatureManager> context)
+            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata> context)
             {
-                return (context.Metadata as FeatureManagerMetadata)?.FeatureInfo.IsRequired.ToBehaviorValue() ?? BehaviorValue.False;
+                return context.Metadata.FeatureInfo?.IsRequired.ToBehaviorValue() ?? BehaviorValue.False;
             }
         }
     }

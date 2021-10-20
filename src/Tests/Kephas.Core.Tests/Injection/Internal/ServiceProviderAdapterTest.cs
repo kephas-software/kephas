@@ -8,16 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Kephas.Injection;
-using Kephas.Injection.ExportFactoryImporters;
-using Kephas.Injection.Internal;
-using NSubstitute;
-using NUnit.Framework;
-
 namespace Kephas.Core.Tests.Injection.Internal
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Injection;
+    using Kephas.Injection.Internal;
+    using NSubstitute;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ServiceProviderAdapterTest
     {
@@ -47,7 +47,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactory_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(IExportFactoryImporter<string>)).Returns(this.CreateExportFactoryImporter("exported test"));
+            context.Resolve(typeof(IExportFactory<string>)).Returns(this.CreateExportFactory("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string>?)adapter.GetService(typeof(IExportFactory<string>))!;
@@ -58,7 +58,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactory_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(IExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            context.Resolve(typeof(IExportFactory<string, string>)).Returns(this.CreateExportFactory("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string, string>?)adapter.GetService(typeof(IExportFactory<string, string>))!;
@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_enumerable_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string>)).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(IEnumerable<IExportFactory<string>>)).Returns(this.GetEnumeration("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string>>?)adapter.GetService(typeof(IEnumerable<IExportFactory<string>>))!;
@@ -82,7 +82,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_enumerable_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(IEnumerable<IExportFactory<string, string>>)).Returns(this.GetEnumeration("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string, string>>?)adapter.GetService(typeof(IEnumerable<IExportFactory<string, string>>))!;
@@ -95,7 +95,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_collection_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string>)).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(IEnumerable<IExportFactory<string>>)).Returns(this.GetEnumeration("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string>>?)adapter.GetService(typeof(ICollection<IExportFactory<string>>))!;
@@ -107,7 +107,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_collection_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(IEnumerable<IExportFactory<string, string>>)).Returns(this.GetEnumeration("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string, string>>?)adapter.GetService(typeof(ICollection<IExportFactory<string, string>>))!;
@@ -120,7 +120,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_list_generic_1_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string>)).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.Resolve(typeof(IEnumerable<IExportFactory<string>>)).Returns(this.GetEnumeration("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string>>?)adapter.GetService(typeof(IList<IExportFactory<string>>))!;
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests.Injection.Internal
         public void GetService_ExportFactories_list_generic_2_success()
         {
             var context = Substitute.For<IInjector>();
-            context.Resolve(typeof(ICollectionExportFactoryImporter<string, string>)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.Resolve(typeof(IEnumerable<IExportFactory<string, string>>)).Returns(this.GetEnumeration("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string, string>>?)adapter.GetService(typeof(IList<IExportFactory<string, string>>))!;
@@ -202,29 +202,19 @@ namespace Kephas.Core.Tests.Injection.Internal
             Assert.AreEqual("world", result.Skip(1).First());
         }
 
-        private IExportFactoryImporter<T> CreateExportFactoryImporter<T>(T value)
+        private IExportFactory<T> CreateExportFactory<T>(T value)
         {
-            return new ExportFactoryImporter<T>(new ExportFactory<T>(() => value));
+            return new ExportFactory<T>(() => value);
         }
 
-        private IExportFactoryImporter<T, TMetadata> CreateExportFactoryImporter<T, TMetadata>(T value, TMetadata metadata)
+        private IExportFactory<T, TMetadata> CreateExportFactory<T, TMetadata>(T value, TMetadata metadata)
         {
-            return new ExportFactoryImporter<T, TMetadata>(new ExportFactory<T, TMetadata>(() => value, metadata));
-        }
-
-        private ICollectionExportFactoryImporter<T> CreateExportFactoriesImporter<T>(T value)
-        {
-            return new CollectionExportFactoryImporter<T>(this.GetEnumeration(value));
+            return new ExportFactory<T, TMetadata>(() => value, metadata);
         }
 
         IEnumerable<IExportFactory<T>> GetEnumeration<T>(T value)
         {
             yield return new ExportFactory<T>(() => value);
-        }
-
-        private ICollectionExportFactoryImporter<T, TMetadata> CreateExportFactoriesImporter<T, TMetadata>(T value, TMetadata metadata)
-        {
-            return new CollectionExportFactoryImporter<T, TMetadata>(this.GetEnumeration(value, metadata));
         }
 
         IEnumerable<IExportFactory<T, TMetadata>> GetEnumeration<T, TMetadata>(T value, TMetadata metadata)

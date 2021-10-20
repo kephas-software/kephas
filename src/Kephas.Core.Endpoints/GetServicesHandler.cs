@@ -74,7 +74,7 @@ namespace Kephas.Core.Endpoints
 
         private IEnumerable<AppServiceMetadata> GetServicesMetadata<TContract>(bool ordered)
         {
-            var factories = this.injector.GetExportFactories<TContract, AppServiceMetadata>();
+            var factories = this.injector.ResolveMany<Lazy<TContract, AppServiceMetadata>>();
             return ordered
                 ? factories.Order().Select(f => f.Metadata)
                 : factories.Select(f => f.Metadata);

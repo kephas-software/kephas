@@ -34,7 +34,7 @@ namespace Kephas.Application
                 return;
             }
 
-            this.FeatureInfo = (FeatureInfo?)metadata.TryGetValue(nameof(this.FeatureInfo));
+            this.FeatureInfo = (FeatureInfo?)metadata.TryGetValue(nameof(this.FeatureInfo)) ?? FeatureInfo.FromMetadata(this);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Kephas.Application
         public FeatureManagerMetadata(FeatureInfo? featureInfo = null, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            this.FeatureInfo = featureInfo;
+            this.FeatureInfo = featureInfo ?? FeatureInfo.FromMetadata(this);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Kephas.Application
         /// <value>
         /// Information describing the feature.
         /// </value>
-        public FeatureInfo? FeatureInfo { get; internal set; }
+        public FeatureInfo FeatureInfo { get; }
 
         /// <summary>
         /// Returns a string that represents the current object.

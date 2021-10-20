@@ -354,9 +354,9 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             }
         }
 
-        public class CanDisableMessageRouterEnabledRule : EnabledServiceBehaviorRuleBase<IMessageRouter, DefaultMessageBrokerTest.CanDisableMessageRouter>
+        public class CanDisableMessageRouterEnabledRule : EnabledServiceBehaviorRuleBase<IMessageRouter, AppServiceMetadata, DefaultMessageBrokerTest.CanDisableMessageRouter>
         {
-            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IMessageRouter> context)
+            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IMessageRouter, AppServiceMetadata> context)
             {
                 return (context.Service as DefaultMessageBrokerTest.CanDisableMessageRouter).Enabled ? BehaviorValue.True : BehaviorValue.False;
             }
@@ -381,10 +381,9 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             public RemoteMessageBroker(
                 IContextFactory contextFactory,
                 IAppRuntime appRuntime,
-                ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-                ISerializationService serializationService,
-                IServiceBehaviorProvider? serviceBehaviorProvider = null)
-                : base(contextFactory, appRuntime, routerFactories, serviceBehaviorProvider)
+                IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories,
+                ISerializationService serializationService)
+                : base(contextFactory, appRuntime, routerFactories)
             {
                 this.serializationService = serializationService;
             }
@@ -410,9 +409,8 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             public LoggableMessageBroker(
                 IContextFactory contextFactory,
                 IAppRuntime appRuntime,
-                ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-                IServiceBehaviorProvider? serviceBehaviorProvider = null)
-                : base(contextFactory, appRuntime, routerFactories, serviceBehaviorProvider)
+                IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
+                : base(contextFactory, appRuntime, routerFactories)
             {
             }
 
@@ -447,7 +445,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         {
             public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 
-            public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+            public Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }
@@ -463,7 +461,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         {
             public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 
-            public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+            public Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }

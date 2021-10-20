@@ -50,19 +50,6 @@ namespace Kephas.Injection.Internal
         /// </returns>
         public object? GetService(Type serviceType)
         {
-            if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<>)))
-            {
-                var contractType = serviceType.GenericTypeArguments[0];
-                return this.injector.GetExportFactory(contractType);
-            }
-
-            if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
-            {
-                var contractType = serviceType.GenericTypeArguments[0];
-                var metadataType = serviceType.GenericTypeArguments[1];
-                return this.injector.GetExportFactory(contractType, metadataType);
-            }
-
             if (serviceType.IsConstructedGenericOf(typeof(IEnumerable<>)) ||
                 serviceType.IsConstructedGenericOf(typeof(ICollection<>)) ||
                 serviceType.IsConstructedGenericOf(typeof(IList<>)) ||
@@ -71,19 +58,6 @@ namespace Kephas.Injection.Internal
                 var exportType = serviceType.TryGetEnumerableItemType();
                 if (exportType != null)
                 {
-                    if (exportType.IsConstructedGenericOf(typeof(IExportFactory<>)))
-                    {
-                        var contractType = exportType.GenericTypeArguments[0];
-                        return this.injector.GetExportFactories(contractType);
-                    }
-
-                    if (exportType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
-                    {
-                        var contractType = exportType.GenericTypeArguments[0];
-                        var metadataType = exportType.GenericTypeArguments[1];
-                        return this.injector.GetExportFactories(contractType, metadataType);
-                    }
-
                     var exports = this.injector.ResolveMany(exportType);
                     if (serviceType.IsClass)
                     {

@@ -38,7 +38,7 @@ namespace Kephas.Messaging.Tests
             Assert.AreEqual(1, handlers.Count);
             Assert.IsInstanceOf<HiTestHandler>(handlers[0]);
 
-            var handlerFactories = container.GetExportFactories<IMessageHandler, MessageHandlerMetadata>()
+            var handlerFactories = container.ResolveMany<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()
                 .OrderBy(f => f.Metadata.MessageId)
                 .ToList();
             Assert.AreEqual(1, handlerFactories.Count);
@@ -53,7 +53,7 @@ namespace Kephas.Messaging.Tests
                                                                 typeof(IMessageHandler),
                                                                 typeof(IMessageHandler<>),
                                                                 typeof(HiTestHandler),
-                                                                typeof(ThereTestHandler)
+                                                                typeof(ThereTestHandler),
                                                             });
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Tests
             Assert.AreEqual(2, handlers.Count);
             Assert.IsInstanceOf<HiTestHandler>(handlers[0]);
 
-            var handlerFactories = container.GetExportFactories<IMessageHandler, MessageHandlerMetadata>()
+            var handlerFactories = container.ResolveMany<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()
                 .OrderBy(f => f.Metadata.MessageId)
                 .ToList();
             Assert.AreEqual(2, handlerFactories.Count);

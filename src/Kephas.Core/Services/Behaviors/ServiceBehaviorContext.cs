@@ -18,32 +18,23 @@ namespace Kephas.Services.Behaviors
     /// The default implementation of a service behavior context.
     /// </summary>
     /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    public class ServiceBehaviorContext<TContract> : Context, IServiceBehaviorContext<TContract>
+    /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
+    public class ServiceBehaviorContext<TContract, TMetadata> : Context, IServiceBehaviorContext<TContract, TMetadata>
         where TContract : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract}" />
+        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract, TMetadata}" />
         /// class.
         /// </summary>
         /// <param name="injector">The injector.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="metadata">Optional. The metadata.</param>
-        /// <param name="context">Optional. Context for the behavior.</param>
-        public ServiceBehaviorContext(IInjector injector, Func<TContract> serviceFactory, object? metadata = null, IContext? context = null)
+        public ServiceBehaviorContext(IInjector injector, Func<TContract> serviceFactory, TMetadata metadata)
             : base(injector)
         {
             this.ServiceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             this.Metadata = metadata;
-            this.Context = context;
         }
-
-        /// <summary>
-        /// Gets the behavior context.
-        /// </summary>
-        /// <value>
-        /// The behavior context.
-        /// </value>
-        public IContext? Context { get; }
 
         /// <summary>
         /// Gets the service.
@@ -67,6 +58,6 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service metadata.
         /// </value>
-        public object? Metadata { get; }
+        public TMetadata Metadata { get; }
     }
 }

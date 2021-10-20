@@ -42,11 +42,9 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         private readonly
             ConcurrentDictionary<string, (CancellationTokenSource? cancellationTokenSource,
-                TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary =
-                new ConcurrentDictionary<string, (CancellationTokenSource?, TaskCompletionSource<IMessage?>)>();
+                TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary = new ();
 
         private readonly IContextFactory contextFactory;
-        private readonly IServiceBehaviorProvider? serviceBehaviorProvider;
         private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<(Regex? regex, bool isFallback, IMessageRouter router)>? routerMap;
@@ -56,18 +54,15 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="routerFactories">The router factories.</param>
-        /// <param name="serviceBehaviorProvider">Optional. The service behavior provider.</param>
+        /// <param name="routerFactories">The enabled router factories.</param>
         public DefaultMessageBroker(
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
-            ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-            IServiceBehaviorProvider? serviceBehaviorProvider = null)
+            IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
             : base(contextFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
             this.contextFactory = contextFactory;
-            this.serviceBehaviorProvider = serviceBehaviorProvider;
             this.routerFactories = routerFactories.Order();
             this.Id = $"{appRuntime.GetAppId()}/{appRuntime.GetAppInstanceId()}";
         }
@@ -345,14 +340,7 @@ namespace Kephas.Messaging.Distributed
             ICollection<(Regex? regex, bool isFallback, IMessageRouter router)> map,
             Func<(Regex? regex, bool isFallback, IMessageRouter router), bool> predicate)
         {
-            if (this.serviceBehaviorProvider == null)
-            {
-                return map.FirstOrDefault(predicate).router;
-            }
-
-            return this.serviceBehaviorProvider
-                .WhereEnabled(map.Where(predicate).Select(e => e.router))
-                .FirstOrDefault();
+            return map.FirstOrDefault(predicate).router;
         }
 
         private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext? context)

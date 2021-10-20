@@ -32,21 +32,18 @@ namespace Kephas.Application.AspNetCore
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="injector">The injector.</param>
-        /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public AspNetAppManager(
             IAppRuntime appRuntime,
             IInjector injector,
-            IServiceBehaviorProvider serviceBehaviorProvider,
-            ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
-            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
-            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories)
+            IEnabledServiceFactoryCollection<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
+            IEnabledServiceFactoryCollection<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
+            IEnabledServiceFactoryCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
             : base(
                 appRuntime,
                 injector,
-                serviceBehaviorProvider,
                 appLifecycleBehaviorFactories,
                 featureManagerFactories,
                 featureLifecycleBehaviorFactories)

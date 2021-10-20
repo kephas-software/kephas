@@ -28,8 +28,8 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <summary>
         /// The get export factory definitions method.
         /// </summary>
-        private static readonly MethodInfo GetExportFactoryDefinitionsMethod = typeof(ExportFactoryExportDescriptorProvider).GetTypeInfo()
-                                                                                    .GetDeclaredMethod(nameof(GetExportFactoryDescriptors));
+        private static readonly MethodInfo GetExportFactoryDefinitionsMethod =
+            typeof(ExportFactoryExportDescriptorProvider).GetTypeInfo().GetDeclaredMethod(nameof(GetExportFactoryDescriptors));
 
         /// <summary>
         /// The lifetime context factory.
@@ -66,13 +66,13 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         {
             var productContract = exportFactoryContract.ChangeType(typeof(TProduct));
             // ReSharper disable once NotAccessedVariable
-            var boundaries = new string[0];
+            var boundaries = Array.Empty<string>();
 
             if (exportFactoryContract.TryUnwrapMetadataConstraint(Constants.SharingBoundaryImportMetadataConstraintName, out IEnumerable<string> specifiedBoundaries, out var unwrapped))
             {
                 productContract = unwrapped.ChangeType(typeof(TProduct));
                 // ReSharper disable once RedundantAssignment
-                boundaries = (specifiedBoundaries ?? new string[0]).ToArray();
+                boundaries = (specifiedBoundaries ?? Array.Empty<string>()).ToArray();
             }
 
             return definitionAccessor.ResolveDependencies("product", productContract, false)
@@ -110,7 +110,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <returns>An enumeration of export promises.</returns>
         public override IEnumerable<ExportDescriptorPromise> GetExportDescriptors(CompositionContract contract, DependencyAccessor definitionAccessor)
         {
-            if (!contract.ContractType.IsConstructedGenericType || contract.ContractType.GetGenericTypeDefinition() != typeof(IExportFactory<>))
+            if (!contract.ContractType.IsConstructedGenericOf(typeof(IExportFactory<>)))
             {
                 // ReSharper disable once ArrangeStaticMemberQualifier
                 return ExportDescriptorProvider.NoExportDescriptors;

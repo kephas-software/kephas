@@ -13,14 +13,14 @@ namespace Kephas.Messaging.Redis.Routing
     using Kephas.Interaction;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Redis;
-    using Kephas.Redis.Interaction;
+    using Kephas.Redis.Interaction;using Kephas.Services;
     using Kephas.Services.Behaviors;
 
     /// <summary>
     /// Rule for enabling/disabling the Redis app message router.
     /// </summary>
     public class RedisAppMessageRouterEnabledRule
-        : EnabledServiceBehaviorRuleBase<IMessageRouter, RedisAppMessageRouter>, IDisposable
+        : EnabledServiceBehaviorRuleBase<IMessageRouter, AppServiceMetadata, RedisAppMessageRouter>, IDisposable
     {
         private readonly IEventSubscription? redisClientStartedSubscription;
         private readonly IEventSubscription? redisClientStoppingSubscription;
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// <see cref="BehaviorValue.True"/> if the Redis connection is initialized, <see cref="BehaviorValue.False"/> otherwise.
         /// </returns>
-        public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IMessageRouter> context)
+        public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IMessageRouter, AppServiceMetadata> context)
         {
             return this.isEnabled ? BehaviorValue.True : BehaviorValue.False;
         }

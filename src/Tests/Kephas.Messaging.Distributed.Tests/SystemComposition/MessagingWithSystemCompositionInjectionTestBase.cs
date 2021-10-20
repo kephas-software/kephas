@@ -15,11 +15,10 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Injection;
-    using Kephas.Injection.ExportFactoryImporters;
-    using Kephas.Injection.SystemComposition.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
@@ -67,11 +66,15 @@ namespace Kephas.Messaging.Tests.SystemComposition
                                         Substitute.For<IAuthenticationService>(),
                                         args.Length > 0 ? args[0] : null);
 
-            container.Resolve(typeof(IExportFactoryImporter<IContextFactory>))
+            container.Resolve(typeof(IExportFactory<IContextFactory>))
                 .Returns(ci =>
-                    new ExportFactoryImporter<IContextFactory>(
                         new ExportFactory<IContextFactory>(
-                            () => this.CreateContextFactoryMock(ctxCreator))));
+                            () => this.CreateContextFactoryMock(ctxCreator)));
+
+            container.Resolve(typeof(Lazy<IContextFactory>))
+                .Returns(ci =>
+                    new Lazy<IContextFactory>(
+                        () => this.CreateContextFactoryMock(ctxCreator)));
 
             container.Resolve(typeof(IContextFactory))
                 .Returns(ci => this.CreateContextFactoryMock(ctxCreator));

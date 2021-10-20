@@ -32,7 +32,7 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        TContext CreateContext<TContext>(params object[] args)
+        TContext CreateContext<TContext>(params object?[] args)
             where TContext : class;
     }
 
@@ -42,7 +42,7 @@ namespace Kephas.Services
     public static class ContextFactoryExtensions
     {
         private static readonly MethodInfo CreateContextMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ((IContextFactory)null!).CreateContext<string>((object[])null!));
+            ReflectionHelper.GetGenericMethodOf(_ => ((IContextFactory)null!).CreateContext<string>((object?[])null!));
 
         /// <summary>
         /// Creates a typed context.

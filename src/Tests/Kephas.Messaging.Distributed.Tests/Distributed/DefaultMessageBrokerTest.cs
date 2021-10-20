@@ -364,10 +364,9 @@ namespace Kephas.Messaging.Tests.Distributed
             public RemoteMessageBroker(
                 IContextFactory contextFactory,
                 IAppRuntime appRuntime,
-                ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-                ISerializationService serializationService,
-                IServiceBehaviorProvider? serviceBehaviorProvider = null)
-                : base(contextFactory, appRuntime, routerFactories, serviceBehaviorProvider)
+                IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories,
+                ISerializationService serializationService)
+                : base(contextFactory, appRuntime, routerFactories)
             {
                 this.serializationService = serializationService;
             }
@@ -393,9 +392,8 @@ namespace Kephas.Messaging.Tests.Distributed
             public LoggableMessageBroker(
                 IContextFactory contextFactory,
                 IAppRuntime appRuntime,
-                ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-                IServiceBehaviorProvider? serviceBehaviorProvider = null)
-                : base(contextFactory, appRuntime, routerFactories, serviceBehaviorProvider)
+                IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
+                : base(contextFactory, appRuntime, routerFactories)
             {
             }
 
@@ -454,9 +452,9 @@ namespace Kephas.Messaging.Tests.Distributed
             }
         }
 
-        public class CanDisableMessageRouterEnabledRule : EnabledServiceBehaviorRuleBase<IMessageRouter, CanDisableMessageRouter>
+        public class CanDisableMessageRouterEnabledRule : EnabledServiceBehaviorRuleBase<IMessageRouter, AppServiceMetadata, CanDisableMessageRouter>
         {
-            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IMessageRouter> context)
+            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IMessageRouter, AppServiceMetadata> context)
             {
                 return (context.Service as CanDisableMessageRouter).Enabled ? BehaviorValue.True : BehaviorValue.False;
             }

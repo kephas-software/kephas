@@ -23,12 +23,10 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="injector">The injector.</param>
-        /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         public ClientAppManager(
             IAppRuntime appRuntime,
-            IInjector injector,
-            IServiceBehaviorProvider? serviceBehaviorProvider = null)
-            : base(appRuntime, injector, serviceBehaviorProvider)
+            IInjector injector)
+            : base(appRuntime, injector)
         {
         }
     }

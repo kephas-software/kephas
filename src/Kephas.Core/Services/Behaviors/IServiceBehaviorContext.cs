@@ -16,17 +16,10 @@ namespace Kephas.Services.Behaviors
     /// Interface for service behavior context.
     /// </summary>
     /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    public interface IServiceBehaviorContext<out TContract> : IContext
+    /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
+    public interface IServiceBehaviorContext<out TContract, out TMetadata> : IContext
         where TContract : class
     {
-        /// <summary>
-        /// Gets the behavior context.
-        /// </summary>
-        /// <value>
-        /// The behavior context.
-        /// </value>
-        IContext? Context { get; }
-
         /// <summary>
         /// Gets the service.
         /// </summary>
@@ -49,6 +42,6 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service metadata.
         /// </value>
-        object? Metadata { get; }
+        TMetadata Metadata { get; }
     }
 }

@@ -10,6 +10,7 @@
 
 namespace Kephas.Services
 {
+    using System;
     using System.Linq;
     using System.Reflection;
 
@@ -44,7 +45,7 @@ namespace Kephas.Services
         public TContract GetNamedService<TContract>(string serviceName)
         {
             var exportFactories = this.injector
-                .GetExportFactories<TContract, AppServiceMetadata>()
+                .ResolveMany<Lazy<TContract, AppServiceMetadata>>()
                 .Order()
                 .Where(f => f.Metadata.ServiceName == serviceName)
                 .ToList();
@@ -58,7 +59,7 @@ namespace Kephas.Services
                 throw new AmbiguousMatchException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(TContract)));
             }
 
-            return exportFactories[0].CreateExportedValue();
+            return exportFactories[0].Value;
         }
     }
 }

@@ -14,7 +14,6 @@ namespace Kephas.Services.Behaviors
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A service behavior rule metadata.
@@ -34,20 +33,23 @@ namespace Kephas.Services.Behaviors
             }
 
             this.ContractType = (Type?)metadata.TryGetValue(nameof(this.ContractType));
+            this.MetadataType = (Type?)metadata.TryGetValue(nameof(this.MetadataType));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceBehaviorRuleMetadata"/> class.
         /// </summary>
         /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="metadataType">Optional. The metadata type.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public ServiceBehaviorRuleMetadata(Type contractType, Priority processingPriority = 0, Priority overridePriority = 0)
+        public ServiceBehaviorRuleMetadata(Type contractType, Type? metadataType = null, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
             this.ContractType = contractType;
+            this.MetadataType = metadataType;
         }
 
         /// <summary>
@@ -57,5 +59,10 @@ namespace Kephas.Services.Behaviors
         /// The type of the service contract.
         /// </value>
         public Type? ContractType { get; }
+
+        /// <summary>
+        /// Gets the type of the service metadata.
+        /// </summary>
+        public Type? MetadataType { get; }
     }
 }

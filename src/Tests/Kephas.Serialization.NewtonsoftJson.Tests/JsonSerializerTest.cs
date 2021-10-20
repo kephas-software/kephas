@@ -447,8 +447,8 @@ namespace Kephas.Serialization.Json.Tests
                         typeof(IInjector).Assembly,
                         typeof(ISerializationService).Assembly,
                         typeof(JsonSerializer).Assembly));
-            var serializers = ambientServices.Injector.GetExportFactories<ISerializer, SerializerMetadata>();
-            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
+            var serializers = ambientServices.Injector.ResolveMany<Lazy<ISerializer, SerializerMetadata>>();
+            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.Value;
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }
@@ -464,8 +464,8 @@ namespace Kephas.Serialization.Json.Tests
                             typeof(IInjector).Assembly,
                             typeof(ISerializationService).Assembly,
                             typeof(JsonSerializer).Assembly));
-            var serializers = ambientServices.Injector.GetExportFactories<ISerializer, SerializerMetadata>();
-            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
+            var serializers = ambientServices.Injector.ResolveMany<Lazy<ISerializer, SerializerMetadata>>();
+            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.Value;
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }

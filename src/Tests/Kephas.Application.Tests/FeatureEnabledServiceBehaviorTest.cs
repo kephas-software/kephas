@@ -101,9 +101,9 @@ namespace Kephas.Application.Tests
             Assert.IsFalse(value.Value);
         }
 
-        private ServiceBehaviorContext<IFeatureManager> GetServiceBehaviorContext(Lazy<IFeatureManager, FeatureManagerMetadata> exportFactory)
+        private ServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata> GetServiceBehaviorContext(Lazy<IFeatureManager, FeatureManagerMetadata> exportFactory)
         {
-            var context = new ServiceBehaviorContext<IFeatureManager>(
+            var context = new ServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata>(
                 Substitute.For<IInjector>(),
                 () => exportFactory.Value,
                 exportFactory.Metadata);

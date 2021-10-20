@@ -13,6 +13,7 @@ using Kephas.Injection;
 namespace Kephas.Core.Tests.Services.Behaviors
 {
     using Kephas.Behaviors;
+    using Kephas.Services;
     using Kephas.Services.Behaviors;
     using NSubstitute;
     using NUnit.Framework;
@@ -24,7 +25,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void CanApply_success()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), () => new TestService()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IInjector>(), () => new TestService(), new AppServiceMetadata()));
             Assert.IsTrue(canApply);
         }
 
@@ -32,7 +33,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void CanApply_failure_mismatched_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), () => new AnotherTestService()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IInjector>(), () => new AnotherTestService(), new AppServiceMetadata()));
             Assert.IsFalse(canApply);
         }
 
@@ -40,7 +41,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         public void CanApply_failure_mismatched_derived_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<IInjector>(), () => new DerivedTestService()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IInjector>(), () => new DerivedTestService(), new AppServiceMetadata()));
             Assert.IsFalse(canApply);
         }
 
@@ -49,7 +50,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         private class DerivedTestService : TestService { }
         private class AnotherTestService : ITestService { }
 
-        private class TestEnabledServiceBehaviorRule : EnabledServiceBehaviorRuleBase<ITestService, TestService>
+        private class TestEnabledServiceBehaviorRule : EnabledServiceBehaviorRuleBase<ITestService, AppServiceMetadata, TestService>
         {
             /// <summary>
             /// Gets the behavior value.
@@ -58,7 +59,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
             /// <returns>
             /// The behavior value.
             /// </returns>
-            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<ITestService> context)
+            public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<ITestService, AppServiceMetadata> context)
             {
                 return BehaviorValue.True;
             }

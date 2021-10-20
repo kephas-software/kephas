@@ -23,7 +23,7 @@ namespace Kephas.Application
     /// <summary>
     /// A feature enabled service behavior.
     /// </summary>
-    public class FeatureEnabledServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager>
+    public class FeatureEnabledServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager, FeatureManagerMetadata>
     {
         private readonly IAppRuntime appRuntime;
         private readonly IAppContext appContext;
@@ -55,9 +55,9 @@ namespace Kephas.Application
         /// <summary>Gets the behavior value.</summary>
         /// <param name="context">The context.</param>
         /// <returns>The behavior value.</returns>
-        public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IFeatureManager> context)
+        public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata> context)
         {
-            var featureInfo = (context.Metadata as FeatureManagerMetadata)?.FeatureInfo;
+            var featureInfo = context.Metadata?.FeatureInfo;
             if (featureInfo == null)
             {
                 // TODO localization
