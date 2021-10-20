@@ -38,47 +38,7 @@ namespace Kephas.Injection.Internal
         /// </returns>
         public object Resolve(Type contractType)
         {
-            return this.serviceProvider.GetService(contractType);
-        }
-
-        /// <summary>
-        /// Resolves the specified contract type returning multiple instances.
-        /// </summary>
-        /// <param name="contractType">Type of the contract.</param>
-        /// <returns>
-        /// An enumeration of objects implementing <paramref name="contractType"/>.
-        /// </returns>
-        public IEnumerable<object> ResolveMany(Type contractType)
-        {
-            var collectionType = typeof(IEnumerable<>).MakeGenericType(contractType);
-            return (IEnumerable<object>)this.serviceProvider.GetService(collectionType);
-        }
-
-        /// <summary>
-        /// Resolves the specified contract type.
-        /// </summary>
-        /// <typeparam name="T">The service type.</typeparam>
-        /// <returns>
-        /// An object implementing <typeparamref name="T" />.
-        /// </returns>
-        public T Resolve<T>()
-            where T : class
-        {
-            return (T)this.serviceProvider.GetService(typeof(T));
-        }
-
-        /// <summary>
-        /// Resolves the specified contract type returning multiple instances.
-        /// </summary>
-        /// <typeparam name="T">The service type.</typeparam>
-        /// <returns>
-        /// An enumeration of objects implementing <typeparamref name="T" />.
-        /// </returns>
-        public IEnumerable<T> ResolveMany<T>()
-            where T : class
-        {
-            var collectionType = typeof(IEnumerable<>).MakeGenericType(typeof(T));
-            return (IEnumerable<T>)this.serviceProvider.GetService(collectionType);
+            return this.serviceProvider.GetRequiredService(contractType ?? throw new ArgumentNullException(nameof(contractType)));
         }
 
         /// <summary>
@@ -89,23 +49,9 @@ namespace Kephas.Injection.Internal
         /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object TryResolve(Type contractType)
+        public object? TryResolve(Type contractType)
         {
-            return this.serviceProvider.GetService(contractType);
-        }
-
-        /// <summary>
-        /// Tries to resolve the specified contract type.
-        /// </summary>
-        /// <typeparam name="T">The service type.</typeparam>
-        /// <returns>
-        /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
-        /// provided contract was not found.
-        /// </returns>
-        public T? TryResolve<T>()
-            where T : class
-        {
-            return (T?)this.serviceProvider.GetService(typeof(T));
+            return this.serviceProvider.GetService(contractType ?? throw new ArgumentNullException(nameof(contractType)));
         }
 
         /// <summary>

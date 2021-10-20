@@ -26,6 +26,7 @@ namespace Kephas.Reflection
                 return assemblyFullName.StartsWith("System")
                     || assemblyFullName.StartsWith("mscorlib")
                     || assemblyFullName.StartsWith("Microsoft")
+                    || assemblyFullName.StartsWith("netstandard")
                     || assemblyFullName.StartsWith("vshost32")
                     || assemblyFullName.StartsWith("Mono");
             };

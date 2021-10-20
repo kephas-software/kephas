@@ -27,7 +27,11 @@ namespace Kephas.Injection
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        IEnumerable<object> ResolveMany(Type contractType);
+        IEnumerable<object> ResolveMany(Type contractType)
+            => (IEnumerable<object>)this.Resolve(
+                typeof(IEnumerable<>).MakeGenericType(
+                    contractType ??
+                        throw new ArgumentNullException(nameof(contractType))));
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -48,7 +52,8 @@ namespace Kephas.Injection
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
         IEnumerable<T> ResolveMany<T>()
-            where T : class;
+            where T : class =>
+            this.Resolve<IEnumerable<T>>();
 
         /// <summary>
         /// Tries to resolve the specified contract type.

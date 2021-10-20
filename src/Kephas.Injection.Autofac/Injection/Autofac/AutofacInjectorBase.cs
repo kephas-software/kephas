@@ -76,7 +76,7 @@ namespace Kephas.Injection.Autofac
         {
             this.AssertNotDisposed();
 
-            var collectionContract = typeof(IEnumerable<>).MakeGenericType(contractType);
+            var collectionContract = typeof(IEnumerable<>).MakeGenericType(contractType ?? throw new ArgumentNullException(nameof(contractType)));
 
             if (this.Logger.IsDebugEnabled())
             {

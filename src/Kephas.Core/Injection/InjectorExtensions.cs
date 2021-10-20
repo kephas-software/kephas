@@ -159,9 +159,8 @@ namespace Kephas.Injection
         {
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
-            var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
-            var importer = (IExportFactoryImporter)injector.Resolve(importerType);
-            return (IExportFactory<T>)importer.ExportFactory;
+            var importer = injector.Resolve<IExportFactoryImporter<T>>();
+            return importer.ExportFactory;
         }
 
         /// <summary>
@@ -177,9 +176,8 @@ namespace Kephas.Injection
         {
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
-            var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
-            var importer = (IExportFactoryImporter)injector.Resolve(importerType);
-            return (IExportFactory<T, TMetadata>)importer.ExportFactory;
+            var importer = injector.Resolve<IExportFactoryImporter<T, TMetadata>>();
+            return importer.ExportFactory;
         }
 
         /// <summary>
