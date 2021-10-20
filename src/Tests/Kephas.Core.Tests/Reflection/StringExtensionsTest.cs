@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReflectionStringExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="StringExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,68 +15,68 @@ namespace Kephas.Core.Tests.Reflection
     using NUnit.Framework;
 
     [TestFixture]
-    public class ReflectionStringExtensionsTest
+    public class StringExtensionsTest
     {
         [Test]
         public void ToCamelCase_one_char()
         {
-            var actual = ReflectionStringExtensions.ToCamelCase("A");
+            var actual = StringExtensions.ToCamelCase("A");
             Assert.AreEqual("a", actual);
         }
 
         [Test]
         public void ToCamelCase_common()
         {
-            var actual = ReflectionStringExtensions.ToCamelCase("ToCamelCase");
+            var actual = StringExtensions.ToCamelCase("ToCamelCase");
             Assert.AreEqual("toCamelCase", actual);
         }
 
         [Test]
         public void ToCamelCase_multiple_capitals()
         {
-            var actual = ReflectionStringExtensions.ToCamelCase("SSHKey");
+            var actual = StringExtensions.ToCamelCase("SSHKey");
             Assert.AreEqual("sshKey", actual);
         }
 
         [Test]
         public void ToCamelCase_all_caps()
         {
-            var actual = ReflectionStringExtensions.ToCamelCase("PLUGINSFOLDER");
+            var actual = StringExtensions.ToCamelCase("PLUGINSFOLDER");
             Assert.AreEqual("PLUGINSFOLDER", actual);
         }
 
         [Test]
         public void ToCamelCase_double_underscores()
         {
-            var actual = ReflectionStringExtensions.ToCamelCase("KEPHAS__PLUGINSFOLDER");
+            var actual = StringExtensions.ToCamelCase("KEPHAS__PLUGINSFOLDER");
             Assert.AreEqual("KEPHAS__PLUGINSFOLDER", actual);
         }
 
         [Test]
         public void ToCamelCase_double_dashes()
         {
-            var actual = ReflectionStringExtensions.ToCamelCase("KEPHAS--PLUGINSFOLDER");
+            var actual = StringExtensions.ToCamelCase("KEPHAS--PLUGINSFOLDER");
             Assert.AreEqual("KEPHAS--PLUGINSFOLDER", actual);
         }
 
         [Test]
         public void ToPascalCase_one_char()
         {
-            var actual = ReflectionStringExtensions.ToPascalCase("a");
+            var actual = StringExtensions.ToPascalCase("a");
             Assert.AreEqual("A", actual);
         }
 
         [Test]
         public void ToPascalCase_double_underscores()
         {
-            var actual = ReflectionStringExtensions.ToPascalCase("KEPHAS__PLUGINSFOLDER");
+            var actual = StringExtensions.ToPascalCase("KEPHAS__PLUGINSFOLDER");
             Assert.AreEqual("KEPHAS__PLUGINSFOLDER", actual);
         }
 
         [Test]
         public void ToPascalCase_double_dashes()
         {
-            var actual = ReflectionStringExtensions.ToPascalCase("KEPHAS--PLUGINSFOLDER");
+            var actual = StringExtensions.ToPascalCase("KEPHAS--PLUGINSFOLDER");
             Assert.AreEqual("KEPHAS--PLUGINSFOLDER", actual);
         }
     }
