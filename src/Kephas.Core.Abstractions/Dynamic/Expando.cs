@@ -22,8 +22,6 @@ namespace Kephas.Dynamic
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// <para>
     /// Class that provides extensible properties and methods. This
@@ -95,7 +93,7 @@ namespace Kephas.Dynamic
         public Expando(object innerObject, bool isThreadSafe = false)
             : base(innerObject, GetDictionary(innerObject, isThreadSafe))
         {
-            Requires.NotNull(innerObject, nameof(innerObject));
+            innerObject = innerObject ?? throw new ArgumentNullException(nameof(innerObject));
         }
 
         /// <summary>
@@ -115,7 +113,7 @@ namespace Kephas.Dynamic
             }
 
             return isThreadSafe
-                       ? (IDictionary<string, object?>)new ConcurrentDictionary<string, object?>()
+                       ? new ConcurrentDictionary<string, object?>()
                        : new Dictionary<string, object?>();
         }
     }

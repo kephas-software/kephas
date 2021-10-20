@@ -204,7 +204,7 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         IRegistrationBuilder IRegistrationBuilder.SelectConstructor(
             Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
-            Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
+            Action<ParameterInfo, IParameterBuilder>? parameterBuilder)
         {
             // TODO not supported.
             if (this.Logger.IsTraceEnabled())

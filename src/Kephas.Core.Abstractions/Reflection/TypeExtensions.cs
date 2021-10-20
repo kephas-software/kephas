@@ -16,8 +16,6 @@ namespace Kephas.Reflection
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Extension methods for types.
@@ -30,21 +28,7 @@ namespace Kephas.Reflection
         internal static readonly Type ObjectType = typeof(object);
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="Type"/> instance.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// The provided <see cref="Type"/>'s associated <see cref="IRuntimeTypeInfo"/>.
-        /// </returns>
-        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type)
-        {
-            type = type ?? throw new ArgumentNullException(nameof(type));
-
-            return RuntimeTypeRegistry.Instance.GetTypeInfo(type);
-        }
-
-        /// <summary>
-        /// Conerts the raw type to a type usable for the runtime operations.
+        /// Converts the raw type to a type usable for the runtime operations.
         /// This is either the non-generic type, the fully constructed generic type,
         /// or the generic type definition.
         /// </summary>
@@ -76,7 +60,9 @@ namespace Kephas.Reflection
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            return IntrospectionExtensions.GetTypeInfo(type).GetNonNullableType().AsType();
+            return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)
+                ? type.GenericTypeArguments[0]
+                : type;
         }
 
         /// <summary>
@@ -90,7 +76,7 @@ namespace Kephas.Reflection
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            return IntrospectionExtensions.GetTypeInfo(type).IsNullableType();
+            return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         /// <summary>
@@ -317,7 +303,7 @@ namespace Kephas.Reflection
         public static Type? GetBaseConstructedGenericOf(this Type type, Type openGenericType)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
-            Requires.NotNull(openGenericType, nameof(openGenericType));
+            openGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
 
             if (openGenericType.IsClass)
             {
@@ -328,7 +314,7 @@ namespace Kephas.Reflection
                         return type;
                     }
 
-                    type = type.BaseType;
+                    type = type.BaseType!;
                 }
             }
             else if (openGenericType.IsInterface)
@@ -350,7 +336,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The qualified full name.
         /// </returns>
-        public static string GetQualifiedFullName(this Type type, bool stripVersionInfo = true)
+        public static string? GetQualifiedFullName(this Type type, bool stripVersionInfo = true)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 

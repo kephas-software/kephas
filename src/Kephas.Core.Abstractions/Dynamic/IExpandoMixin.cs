@@ -13,7 +13,7 @@ namespace Kephas.Dynamic
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
-    using Kephas.Runtime;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Mixin for providing a default implementation of an <see cref="IExpandoBase"/>.
@@ -153,7 +153,7 @@ namespace Kephas.Dynamic
             if (innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var innerObjectType = innerObject.GetType();
-                foreach (var prop in RuntimeTypeInfo.GetTypeProperties(innerObjectType))
+                foreach (var prop in ReflectionHelper.GetTypeProperties(innerObjectType))
                 {
                     var propName = prop.Name;
                     var value = prop.GetValue(innerObject);
@@ -166,7 +166,7 @@ namespace Kephas.Dynamic
             if (self != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var thisType = self.GetType();
-                foreach (var prop in RuntimeTypeInfo.GetTypeProperties(thisType))
+                foreach (var prop in ReflectionHelper.GetTypeProperties(thisType))
                 {
                     var propName = prop.Name;
                     var value = prop.GetValue(self);

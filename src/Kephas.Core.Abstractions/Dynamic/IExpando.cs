@@ -19,41 +19,7 @@ namespace Kephas.Dynamic
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
-    using Kephas.Runtime;
-
-    /// <summary>
-    /// Enumerates the flags for controlling the member binding through indexer or dynamic member access.
-    /// </summary>
-    [Flags]
-    public enum ExpandoMemberBinderKind
-    {
-        /// <summary>
-        /// No binders should be used.
-        /// </summary>
-        None = 0x00,
-
-        /// <summary>
-        /// Use only the binder for the inner dictionary.
-        /// </summary>
-        InnerDictionary = 0x01,
-
-        /// <summary>
-        /// Use only the binder for the inner object.
-        /// </summary>
-        InnerObject = 0x02,
-
-        /// <summary>
-        /// Use only the binder for the current expando object.
-        /// </summary>
-        This = 0x04,
-
-        /// <summary>
-        /// Use all member binders.
-        /// </summary>
-        All = InnerDictionary | InnerObject | This,
-    }
 
 
     /// <summary>
@@ -93,7 +59,7 @@ namespace Kephas.Dynamic
             where T : class, TContract
             where TContract : IDynamic
         {
-            Requires.NotNull(expando, nameof(expando));
+            expando = expando ?? throw new ArgumentNullException(nameof(expando));
 
             optionsConfig?.Invoke(expando);
 
@@ -115,7 +81,7 @@ namespace Kephas.Dynamic
         public static T Merge<T>(this T expando, object? source)
             where T : class, IDynamic
         {
-            Requires.NotNull(expando, nameof(expando));
+            expando = expando ?? throw new ArgumentNullException(nameof(expando));
 
             if (source == null || ReferenceEquals(expando, source))
             {
@@ -130,11 +96,11 @@ namespace Kephas.Dynamic
                 if (genericItemTypeDefinition == typeof(KeyValuePair<,>)
                     && itemType.GenericTypeArguments[0] == typeof(string))
                 {
-                    var keyProperty = itemType.GetProperty(nameof(KeyValuePair<string, object>.Key), BindingFlags.Instance | BindingFlags.Public);
-                    var valueProperty = itemType.GetProperty(nameof(KeyValuePair<string, object>.Value), BindingFlags.Instance | BindingFlags.Public);
+                    var keyProperty = itemType.GetProperty(nameof(KeyValuePair<string, object>.Key), BindingFlags.Instance | BindingFlags.Public)!;
+                    var valueProperty = itemType.GetProperty(nameof(KeyValuePair<string, object>.Value), BindingFlags.Instance | BindingFlags.Public)!;
                     foreach (var kv in ((IEnumerable)source).Cast<object>())
                     {
-                        var key = (string)keyProperty.GetValue(kv);
+                        var key = (string)keyProperty.GetValue(kv)!;
                         if (!key.IsPrivate())
                         {
                             var value = valueProperty.GetValue(kv);
@@ -174,7 +140,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public static T? GetLaxValue<T>(this IDynamic expando, string member, T? defaultValue = default)
         {
-            Requires.NotNull(expando, nameof(expando));
+            expando = expando ?? throw new ArgumentNullException(nameof(expando));
 
             var pascalName = member.ToPascalCase();
             var value = expando[pascalName];
@@ -184,25 +150,14 @@ namespace Kephas.Dynamic
                 value = expando[camelName];
             }
 
-            if (value == null)
+            return value switch
             {
-                return defaultValue;
-            }
-
-            if (value is T typedValue)
-            {
-                return typedValue;
-            }
-
-            if (value is string stringValue)
-            {
-                if (Parsers.TryGetValue(typeof(T), out var parser))
-                {
-                    return (T)(parser(stringValue) ?? defaultValue);
-                }
-            }
-
-            return defaultValue;
+                null => defaultValue,
+                T typedValue => typedValue,
+                string stringValue when Parsers.TryGetValue(typeof(T), out var parser) =>
+                    (T?)(parser(stringValue) ?? defaultValue),
+                _ => defaultValue
+            };
         }
     }
 }

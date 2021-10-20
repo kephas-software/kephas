@@ -591,18 +591,6 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the type's proper properties: public, non-static, and without parameters.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>An enumeration of property infos.</returns>
-        protected internal static IEnumerable<PropertyInfo> GetTypeProperties(Type type)
-        {
-            return type.GetRuntimeProperties()
-                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
-                            && p.GetIndexParameters().Length == 0);
-        }
-
-        /// <summary>
         /// Creates the member infos.
         /// </summary>
         /// <param name="membersConfig">Optional. The members configuration.</param>
@@ -682,7 +670,7 @@ namespace Kephas.Runtime
         /// </returns>
         protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool>? criteria = null)
         {
-            var runtimeMembers = GetTypeProperties(type);
+            var runtimeMembers = ReflectionHelper.GetTypeProperties(type);
 
             IRuntimePropertyInfo PropertyFactory(PropertyInfo propertyInfo, int position, ILogger? logger)
             {

@@ -21,14 +21,11 @@ namespace Kephas.Dynamic
     using System;
     using System.Collections.Generic;
     using System.Dynamic;
-    using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Runtime;
 
     /// <summary>
     /// <para>
@@ -58,7 +55,7 @@ namespace Kephas.Dynamic
     /// </summary>
     public abstract class ExpandoBase : DynamicObject, IExpando, IExpandoMixin
     {
-        private IDictionary<string, object?> innerDictionary;
+        private IDictionary<string, object?>? innerDictionary;
         private WeakReference<object>? innerObjectRef;
         private bool ignoreCase;
 
@@ -87,7 +84,7 @@ namespace Kephas.Dynamic
         /// </param>
         protected ExpandoBase(object? innerObject, IDictionary<string, object?>? innerDictionary = null)
         {
-            Requires.NotNull(innerObject, nameof(innerObject));
+            innerObject = innerObject ?? throw new ArgumentNullException(nameof(innerObject));
 
             if (innerObject is IDictionary<string, object?> innerObjectDictionary)
             {
@@ -109,7 +106,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets the inner dictionary.
         /// </summary>
-        IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.innerDictionary;
+        IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.innerDictionary!;
 
         /// <summary>
         /// Gets a weak reference to the inner object.
@@ -129,7 +126,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets the inner dictionary.
         /// </summary>
-        protected IDictionary<string, object?> InnerDictionary => this.innerDictionary;
+        protected IDictionary<string, object?> InnerDictionary => this.innerDictionary!;
 
         /// <summary>
         /// Gets or sets the binders to use when retrieving the expando members.
@@ -171,7 +168,7 @@ namespace Kephas.Dynamic
                 && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var type = this.GetType();
-                foreach (var property in RuntimeTypeInfo.GetTypeProperties(type))
+                foreach (var property in ReflectionHelper.GetTypeProperties(type))
                 {
                     var propName = property.Name;
                     if (!hashSet.Contains(propName))
@@ -187,7 +184,7 @@ namespace Kephas.Dynamic
                 && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var type = innerObject.GetType();
-                foreach (var property in RuntimeTypeInfo.GetTypeProperties(type!))
+                foreach (var property in ReflectionHelper.GetTypeProperties(type!))
                 {
                     var propName = property.Name;
                     if (!hashSet.Contains(propName))
@@ -201,7 +198,7 @@ namespace Kephas.Dynamic
             // last, check the dictionary for members.
             if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
             {
-                foreach (var propName in this.innerDictionary.Keys)
+                foreach (var propName in this.innerDictionary!.Keys)
                 {
                     if (!hashSet.Contains(propName))
                     {
@@ -259,7 +256,7 @@ namespace Kephas.Dynamic
             var innerObject = this.TryGetInnerObject();
             throw new MemberAccessException(
                 string.Format(
-                    Strings.RuntimePropertyInfo_SetValue_Exception,
+                    AbstractionStrings.RuntimePropertyInfo_SetValue_Exception,
                     binder.Name,
                     innerObject != null ? innerObject.GetType() : this.GetType()));
         }
@@ -288,7 +285,7 @@ namespace Kephas.Dynamic
                 if (delegateValue is not Delegate invokable)
                 {
                     throw new MemberAccessException(string.Format(
-                        Strings.ExpandoBase_CannotInvokeNonDelegate_Exception,
+                        AbstractionStrings.ExpandoBase_CannotInvokeNonDelegate_Exception,
                         binder.Name,
                         delegateValue?.GetType()));
                 }
@@ -341,7 +338,7 @@ namespace Kephas.Dynamic
             }
 
             if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary)
-                && this.innerDictionary.TryGetValue(binder.Name, out var method))
+                && this.innerDictionary!.TryGetValue(binder.Name, out var method))
             {
                 return TryInvokeDelegateProperty(method, out result);
             }

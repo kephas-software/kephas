@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicObjectExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="ObjectExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Tests for <see cref="DynamicObjectExtensions" />
+//   Tests for <see cref="ObjectExtensions" />
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Core.Tests
     /// Tests for <see cref="DynamicObjectExtensions"/>
     /// </summary>
     [TestFixture]
-    public class DynamicObjectExtensionsTest
+    public class ObjectExtensionsTest
     {
         [Test]
         public void ToDynamic_dynamic()

@@ -11,7 +11,9 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -282,7 +284,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The invocation result.
         /// </returns>
-        public static object? Call(this MethodInfo methodInfo, object? instance, params object?[] arguments)
+        public static object? Call(this MethodInfo methodInfo, object? instance, params object?[]? arguments)
         {
             try
             {
@@ -293,6 +295,18 @@ namespace Kephas.Reflection
             {
                 throw tie.InnerException!;
             }
+        }
+
+        /// <summary>
+        /// Gets the type's proper properties: public, non-static, and without parameters.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>An enumeration of property infos.</returns>
+        public static IEnumerable<PropertyInfo> GetTypeProperties(Type type)
+        {
+            return type.GetRuntimeProperties()
+                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
+                            && p.GetIndexParameters().Length == 0);
         }
     }
 }
