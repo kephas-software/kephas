@@ -258,26 +258,6 @@
   <data name="DefaultMediaTypeProvider_NotFound_Exception" xml:space="preserve">
     <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
   </data>
-  <data name="App_RunAsync_Bootstrapping_Message" xml:space="preserve">
-    <value>Bootstrapping the application...</value>
-    <comment>Bootstrapping the application...</comment>
-  </data>
-  <data name="App_RunAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
-    <value>Configuring the ambient services...</value>
-    <comment>Configuring the ambient services...</comment>
-  </data>
-  <data name="App_RunAsync_InitializingAppManager_Message" xml:space="preserve">
-    <value>Initializing the app manager...</value>
-    <comment>Initializing the app manager...</comment>
-  </data>
-  <data name="App_RunAsync_ErrorDuringInitialization_Exception" xml:space="preserve">
-    <value>Errors occurred during the application bootstrap procedure, please check the exception details for more information.</value>
-    <comment>Errors occurred during the application bootstrap procedure, please check the exception details for more information.</comment>
-  </data>
-  <data name="App_RunAsync_StartComplete_Message" xml:space="preserve">
-    <value>The application bootstrapped successfully.</value>
-    <comment>The application bootstrapped successfully.</comment>
-  </data>
   <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
     <value>Shutting down the application...</value>
     <comment>Shutting down the application...</comment>
@@ -292,14 +272,6 @@
   </data>
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{type}'.</value>
-  </data>
-  <data name="App_RunAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
-    <value>Errors occurred during the application configuration procedure, please check the exception details for more information.</value>
-    <comment>Errors occurred during the application configuration procedure, please check the exception details for more information.</comment>
-  </data>
-  <data name="App_RunAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
-    <value>Errors occurred during the application forced shut down procedure, please check the exception details for more information.</value>
-    <comment>Errors occurred during the application forced shut down procedure, please check the exception details for more information.</comment>
   </data>
   <data name="DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception" xml:space="preserve">
     <value>No service found for {0}/{1}.</value>

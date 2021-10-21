@@ -39,7 +39,7 @@ namespace Kephas.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Resources.Strings", typeof(AbstractionStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Resources.AbstractionStrings", typeof(AbstractionStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -138,69 +138,6 @@ namespace Kephas.Resources {
         public static string AmbiguousOverrideForAppServiceContract {
             get {
                 return ResourceManager.GetString("AmbiguousOverrideForAppServiceContract", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bootstrapping the application....
-        /// </summary>
-        public static string App_RunAsync_Bootstrapping_Message {
-            get {
-                return ResourceManager.GetString("App_RunAsync_Bootstrapping_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Configuring the ambient services....
-        /// </summary>
-        public static string App_RunAsync_ConfiguringAmbientServices_Message {
-            get {
-                return ResourceManager.GetString("App_RunAsync_ConfiguringAmbientServices_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during the application configuration procedure, please check the exception details for more information..
-        /// </summary>
-        public static string App_RunAsync_ErrorDuringConfiguration_Exception {
-            get {
-                return ResourceManager.GetString("App_RunAsync_ErrorDuringConfiguration_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during the application forced shut down procedure, please check the exception details for more information..
-        /// </summary>
-        public static string App_RunAsync_ErrorDuringForcedShutdown_Exception {
-            get {
-                return ResourceManager.GetString("App_RunAsync_ErrorDuringForcedShutdown_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during the application bootstrap procedure, please check the exception details for more information..
-        /// </summary>
-        public static string App_RunAsync_ErrorDuringInitialization_Exception {
-            get {
-                return ResourceManager.GetString("App_RunAsync_ErrorDuringInitialization_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initializing the app manager....
-        /// </summary>
-        public static string App_RunAsync_InitializingAppManager_Message {
-            get {
-                return ResourceManager.GetString("App_RunAsync_InitializingAppManager_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The application bootstrapped successfully..
-        /// </summary>
-        public static string App_RunAsync_StartComplete_Message {
-            get {
-                return ResourceManager.GetString("App_RunAsync_StartComplete_Message", resourceCulture);
             }
         }
         
