@@ -34,7 +34,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
                 new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
             };
 
-            var provider = new EnabledServiceCollection<ITestService>(
+            var provider = new EnabledLazyServiceCollection<ITestService, AppServiceMetadata>(
                 services,
                 ambientServicesMock.Resolve<IContextFactory>(),
                 new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
@@ -68,12 +68,12 @@ namespace Kephas.Core.Tests.Services.Behaviors
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: (Priority)1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: true, value: true, processingPriority: 0);
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
-            var services = new List<Lazy<ITestService, AppServiceMetadata>>
+            var services = new List<IExportFactory<ITestService, AppServiceMetadata>>
             {
-                new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
+                new ExportFactory<ITestService, AppServiceMetadata>(() => Substitute.For<ITestService>(), new AppServiceMetadata()),
             };
 
-            var provider = new EnabledServiceCollection<ITestService>(
+            var provider = new EnabledServiceFactoryCollection<ITestService, AppServiceMetadata>(
                 services,
                 ambientServicesMock.Resolve<IContextFactory>(),
                 new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
@@ -114,8 +114,8 @@ namespace Kephas.Core.Tests.Services.Behaviors
             contextFactory.CreateContext<ServiceBehaviorContext<ITestService, AppServiceMetadata>>(Arg.Any<object?[]>())
                 .Returns(ci => new ServiceBehaviorContext<ITestService, AppServiceMetadata>(
                     injector,
-                    ci.Arg<Func<ITestService>>(),
-                    ci.Arg<AppServiceMetadata>()));
+                    ci.Arg<object?[]>()[0] as Func<ITestService>,
+                    ci.Arg<object?[]>()[1] as AppServiceMetadata));
 
             injector.Resolve(typeof(IContextFactory)).Returns(contextFactory);
             injector.Resolve<IContextFactory>().Returns(contextFactory);

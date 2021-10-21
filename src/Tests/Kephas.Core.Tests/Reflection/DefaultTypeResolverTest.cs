@@ -128,7 +128,7 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            Assert.Throws<TypeLoadException>(() => resolver.ResolveType("IServiceBehaviorContext`1[[Kephas.Interaction.ISignal]]"));
+            Assert.Throws<TypeLoadException>(() => resolver.ResolveType("IServiceBehaviorContext`2[[Kephas.Interaction.ISignal,Kephas.Services.AppServiceMetadata]]"));
         }
 
         [Test]
