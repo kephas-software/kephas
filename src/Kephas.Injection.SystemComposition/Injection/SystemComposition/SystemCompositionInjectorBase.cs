@@ -14,16 +14,25 @@ namespace Kephas.Injection.SystemComposition
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Composition;
+    using System.Linq;
+    using System.Reflection;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.SystemComposition.Resources;
     using Kephas.Injection.SystemComposition.ScopeFactory;
+    using Kephas.Reflection;
 
     /// <summary>
     /// A MEF injector.
     /// </summary>
-    public abstract class SystemCompositionInjectorBase : IInjector
+    public abstract class SystemCompositionInjectorBase : IInjector, IServiceProvider
     {
+        private static readonly MethodInfo ToEnumerableMethod = ReflectionHelper.GetGenericMethodOf(
+            _ => SystemCompositionInjectorBase.ToEnumerable<int>(null));
+
+        private static readonly MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
+            _ => SystemCompositionInjectorBase.ToList<int>(null));
+
         private static readonly ConcurrentDictionary<CompositionContext, IInjector> Map = new ();
 
         private CompositionContext? innerCompositionContext;
@@ -45,7 +54,8 @@ namespace Kephas.Injection.SystemComposition
         {
             this.AssertNotDisposed();
 
-            return this.innerCompositionContext!.GetExport(contractType);
+            return this.TryResolveCollection(contractType)
+                   ?? this.innerCompositionContext!.GetExport(contractType);
         }
 
         /// <summary>
@@ -73,7 +83,8 @@ namespace Kephas.Injection.SystemComposition
         {
             this.AssertNotDisposed();
 
-            return this.innerCompositionContext!.GetExport<T>();
+            return this.TryResolveCollection(typeof(T)) as T
+                   ?? this.innerCompositionContext!.GetExport<T>();
         }
 
         /// <summary>
@@ -103,7 +114,8 @@ namespace Kephas.Injection.SystemComposition
         {
             this.AssertNotDisposed();
 
-            return this.innerCompositionContext!.TryGetExport(contractType, out var component) ? component : null;
+            return this.TryResolveCollection(contractType)
+                   ?? (this.innerCompositionContext!.TryGetExport(contractType, out var component) ? component : null);
         }
 
         /// <summary>
@@ -118,8 +130,17 @@ namespace Kephas.Injection.SystemComposition
         {
             this.AssertNotDisposed();
 
-            return this.innerCompositionContext!.TryGetExport(out T component) ? component : null;
+            return this.TryResolveCollection(typeof(T)) as T
+                   ?? (this.innerCompositionContext!.TryGetExport(out T component) ? component : null);
         }
+
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="serviceType" />.
+        /// -or-
+        /// <see langword="null" /> if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.IServiceProvider.GetService?view=netstandard-2.1">`IServiceProvider.GetService` on docs.microsoft.com</a></footer>
+        object? IServiceProvider.GetService(Type serviceType) => this.TryResolve(serviceType);
 
         /// <summary>
         /// Creates a new scoped injector.
@@ -210,16 +231,46 @@ namespace Kephas.Injection.SystemComposition
             }
         }
 
-        /// <summary>
-        /// Gets the injector wrapper for the provided injector.
-        /// </summary>
-        /// <param name="scopedContextExport">The scoped context export.</param>
-        /// <returns>
-        /// The injector.
-        /// </returns>
+        private object? TryResolveCollection(Type contractType)
+        {
+            if (contractType.IsConstructedGenericOf(typeof(IEnumerable<>)) ||
+                contractType.IsConstructedGenericOf(typeof(ICollection<>)) ||
+                contractType.IsConstructedGenericOf(typeof(IList<>)) ||
+                contractType.IsConstructedGenericOf(typeof(List<>)))
+            {
+                var exportType = contractType.TryGetEnumerableItemType();
+                if (exportType != null)
+                {
+                    var exports = this.innerCompositionContext!.GetExports(exportType);
+                    if (contractType.IsClass)
+                    {
+                        var toList = ToListMethod.MakeGenericMethod(exportType);
+                        return toList.Call(null, exports);
+                    }
+                    else
+                    {
+                        var toEnumerable = ToEnumerableMethod.MakeGenericMethod(contractType);
+                        return toEnumerable.Call(null, exports);
+                    }
+                }
+            }
+
+            return null;
+        }
+
         private static IInjector GetOrAddCompositionContext(System.Composition.Export<CompositionContext> scopedContextExport)
         {
             return Map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionInjector(scopedContextExport));
+        }
+
+        private static TEnumerable ToEnumerable<TEnumerable>(IEnumerable<object> exports)
+        {
+            return (TEnumerable)exports;
+        }
+
+        private static List<TItem> ToList<TItem>(IEnumerable<object> exports)
+        {
+            return exports.Cast<TItem>().ToList();
         }
     }
 }

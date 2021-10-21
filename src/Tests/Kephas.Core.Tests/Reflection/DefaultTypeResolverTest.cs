@@ -117,9 +117,10 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`1[[Kephas.Interaction.ISignal]]");
-            Assert.AreEqual("IServiceBehaviorContext`1", type.Name);
+            var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`2[[Kephas.Interaction.ISignal,Kephas.Services.AppServiceMetadata]]");
+            Assert.AreEqual("IServiceBehaviorContext`2", type.Name);
             Assert.AreEqual("ISignal", type.GenericTypeArguments[0].Name);
+            Assert.AreEqual("AppServiceMetadata", type.GenericTypeArguments[1].Name);
         }
 
         [Test]

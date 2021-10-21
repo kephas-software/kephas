@@ -20,12 +20,6 @@ namespace Kephas.Injection.Internal
     /// </summary>
     internal class ServiceProviderAdapter : IServiceProvider
     {
-        private static readonly MethodInfo ToEnumerableMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ((ServiceProviderAdapter)null).ToEnumerable<int>(null));
-
-        private static readonly MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ((ServiceProviderAdapter)null).ToList<int>(null));
-
         private readonly IInjector injector;
 
         /// <summary>
@@ -50,39 +44,7 @@ namespace Kephas.Injection.Internal
         /// </returns>
         public object? GetService(Type serviceType)
         {
-            if (serviceType.IsConstructedGenericOf(typeof(IEnumerable<>)) ||
-                serviceType.IsConstructedGenericOf(typeof(ICollection<>)) ||
-                serviceType.IsConstructedGenericOf(typeof(IList<>)) ||
-                serviceType.IsConstructedGenericOf(typeof(List<>)))
-            {
-                var exportType = serviceType.TryGetEnumerableItemType();
-                if (exportType != null)
-                {
-                    var exports = this.injector.ResolveMany(exportType);
-                    if (serviceType.IsClass)
-                    {
-                        var toList = ToListMethod.MakeGenericMethod(exportType);
-                        return toList.Call(this, exports);
-                    }
-                    else
-                    {
-                        var toEnumerable = ToEnumerableMethod.MakeGenericMethod(serviceType);
-                        return toEnumerable.Call(this, exports);
-                    }
-                }
-            }
-
             return this.injector.TryResolve(serviceType);
-        }
-
-        private TEnumerable ToEnumerable<TEnumerable>(IEnumerable<object> exports)
-        {
-            return (TEnumerable)exports;
-        }
-
-        private List<TItem> ToList<TItem>(IEnumerable<object> exports)
-        {
-            return exports.Cast<TItem>().ToList();
         }
     }
 }
