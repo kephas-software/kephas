@@ -104,22 +104,23 @@ namespace Kephas.Reflection
                 }
 
                 var qualifiedName = new QualifiedFullName(typeName);
+                var appAssemblies = this.getAppAssemblies();
                 if (qualifiedName.AssemblyName == null)
                 {
-                    type = this.getAppAssemblies()
+                    type = appAssemblies
                         .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
                         .FirstOrDefault(t => t != null);
 
                     if (type == null && qualifiedName.Namespace == null)
                     {
-                        type = this.ResolveTypeByNameOnly(qualifiedName.Name, this.getAppAssemblies());
+                        type = this.ResolveTypeByNameOnly(qualifiedName.Name, appAssemblies);
                     }
 
                     return type;
                 }
 
                 var assemblyName = qualifiedName.AssemblyName.Name;
-                var assembly = this.getAppAssemblies()
+                var assembly = appAssemblies
                     .FirstOrDefault(a => a.GetName().Name == assemblyName);
                 if (assembly == null)
                 {
