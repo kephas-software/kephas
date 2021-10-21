@@ -150,7 +150,7 @@ namespace Kephas.Injection.SystemComposition
         /// </returns>
         public virtual IInjector CreateScopedInjector()
         {
-            var scopeProvider = this.Resolve<IScopeFactory>();
+            var scopeProvider = this.innerCompositionContext!.GetExport<IScopeFactory>();
 
             var scopedContextExport = scopeProvider.CreateScopedContextExport();
             return GetOrAddCompositionContext(scopedContextExport);
