@@ -117,7 +117,7 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`2[[Kephas.Interaction.ISignal,Kephas.Services.AppServiceMetadata]]");
+            var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`2[[Kephas.Interaction.ISignal],[Kephas.Services.AppServiceMetadata]]");
             Assert.AreEqual("IServiceBehaviorContext`2", type.Name);
             Assert.AreEqual("ISignal", type.GenericTypeArguments[0].Name);
             Assert.AreEqual("AppServiceMetadata", type.GenericTypeArguments[1].Name);
@@ -128,7 +128,7 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            Assert.Throws<TypeLoadException>(() => resolver.ResolveType("IServiceBehaviorContext`2[[Kephas.Interaction.ISignal,Kephas.Services.AppServiceMetadata]]"));
+            Assert.Throws<TypeLoadException>(() => resolver.ResolveType("IServiceBehaviorContext`2[[Kephas.Interaction.ISignal],[Kephas.Services.AppServiceMetadata]]"));
         }
 
         [Test]
