@@ -12,6 +12,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
@@ -123,6 +124,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
             builder.RootComponents.Add<TApp>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddSingleton<IAppManager, ClientAppManager>();
 
             return builder;
         }

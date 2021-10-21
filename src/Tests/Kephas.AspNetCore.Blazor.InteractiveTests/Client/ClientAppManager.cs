@@ -15,8 +15,12 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     /// <summary>
     /// The client app manager.
     /// </summary>
+    /// <remarks>
+    /// Made the class internal and add it to the service collection in <see cref="ClientApp{TApp}.ConfigureHost"/>,
+    /// otherwise it will be used on server, too, overriding the server app manager.
+    /// </remarks>
     [OverridePriority(Priority.Highest)]
-    public class ClientAppManager : DefaultAppManager
+    internal class ClientAppManager : DefaultAppManager
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientAppManager"/> class.
