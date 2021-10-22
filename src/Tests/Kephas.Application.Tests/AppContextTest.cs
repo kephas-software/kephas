@@ -25,7 +25,7 @@ namespace Kephas.Application.Tests
             var ambientServices = Substitute.For<IAmbientServices>();
             var appRuntime = Substitute.For<IAppRuntime>();
 
-            ambientServices.AppRuntime.Returns(appRuntime);
+            ambientServices.GetAppRuntime().Returns(appRuntime);
             var appContext = new AppContext(ambientServices);
             Assert.AreSame(appRuntime, appContext.AppRuntime);
         }

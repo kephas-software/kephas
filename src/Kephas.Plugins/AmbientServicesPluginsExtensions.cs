@@ -63,7 +63,7 @@ namespace Kephas
 
             var appRuntime = new PluginsAppRuntime(
                     name => ambientServices.LogManager.GetLogger(name),
-                    (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
+                    (appid, ctx) => ambientServices.GetLicensingManager().CheckLicense(appid, ctx),
                     null,
                     assemblyFilter,
                     appFolder,

@@ -75,8 +75,8 @@ namespace Kephas.Tests.Orchestration
             var ambientServices = this.CreateAmbientServices();
             var messageBroker = Substitute.For<IMessageBroker>();
             var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime[AppRuntimeBase.AppIdKey].Returns("hi");
-            appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("there");
+            appRuntime[IAppRuntime.AppIdKey].Returns("hi");
+            appRuntime[IAppRuntime.AppInstanceIdKey].Returns("there");
 
             var hostInfoProvider = Substitute.For<IHostInfoProvider>();
             hostInfoProvider.GetHostAddress().Returns(IPAddress.Loopback);

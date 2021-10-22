@@ -5,18 +5,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Operations;
-using Kephas.Services;
-using Kephas.Threading.Tasks;
-
 namespace Kephas.Scheduling.Endpoints
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Logging;
     using Kephas.Messaging;
+    using Kephas.Operations;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Message handler for <see cref="CancelRunningJobMessage"/>.

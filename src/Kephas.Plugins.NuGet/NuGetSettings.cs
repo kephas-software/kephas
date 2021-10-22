@@ -42,7 +42,7 @@ namespace Kephas.Plugins.NuGet
         /// <value>
         /// The relative folder within the package containing the configuration files.
         /// </value>
-        public string PackageConfigFolder { get; set; } = AppRuntimeBase.DefaultConfigFolder;
+        public string PackageConfigFolder { get; set; } = IAppRuntime.DefaultConfigFolder;
 
         /// <summary>
         /// Gets or sets the search term used for identifying plugins.

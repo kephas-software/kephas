@@ -40,7 +40,7 @@ namespace Kephas.Application.AspNetCore
             var appConfiguration = container.Resolve<IConfiguration<AppSettings>>();
             var appContext = container.Resolve<IAppContext>();
             var instanceSettings = appConfiguration.GetSettings(appContext);
-            var appRuntime = ambientServices.AppRuntime;
+            var appRuntime = ambientServices.GetAppRuntime();
 
             var logger = ambientServices.LogManager.GetLogger<StartupAppBase>();
             var urlSettings = instanceSettings?.Host?.Urls;

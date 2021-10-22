@@ -212,7 +212,7 @@ namespace Kephas.Orchestration.Application
 
                 var counter = Interlocked.Increment(ref this.workerCounter);
                 var appInstanceId = this.GetAppInstanceId(appId, appSettings, counter);
-                var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings, [AppRuntimeBase.AppInstanceIdKey] = appInstanceId };
+                var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings, [IAppRuntime.AppInstanceIdKey] = appInstanceId };
                 startTasks.Add(this.StartWorkerProcessAsync(appInfo, appSettings, appContext, cancellationToken));
             }
 

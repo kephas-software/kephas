@@ -135,7 +135,7 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        public override object ToData(IDataFormattingContext? context = null)
+        public override object ToData(object? context = null)
         {
             var expando = base.ToData(context).ToDynamic();
             expando[nameof(this.ScheduledJobId)] = this.ScheduledJobId;

@@ -194,7 +194,7 @@ namespace Kephas.Injection.Builder
             return Profiler.WithDebugStopwatch(
                 () =>
                 {
-                    var rawAssemblies = this.BuildContext.AmbientServices.AppRuntime?.GetAppAssemblies()
+                    var rawAssemblies = this.BuildContext.AmbientServices.GetAppRuntime()?.GetAppAssemblies()
                                         ?? new List<Assembly>();
                     var appAssemblies = this.WhereNotSystemAssemblies(rawAssemblies);
 

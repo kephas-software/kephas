@@ -30,7 +30,7 @@ namespace Kephas.Orchestration.Application
             return new RuntimeAppInfo
             {
                 AppId = appInfo.Identity.Id,
-                AppInstanceId = appInfo[AppRuntimeBase.AppInstanceIdKey] as string,
+                AppInstanceId = appInfo[IAppRuntime.AppInstanceIdKey] as string,
                 IsRoot = false,
             };
         }

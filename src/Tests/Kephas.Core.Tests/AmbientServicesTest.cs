@@ -495,7 +495,7 @@ namespace Kephas.Core.Tests
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAppRuntime));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
-            Assert.AreSame(((IAmbientServices)ambientServices).AppRuntime, info.InstanceFactory(null));
+            Assert.AreSame(((IAmbientServices)ambientServices).GetAppRuntime(), info.InstanceFactory(null));
         }
 
         public interface IService { }

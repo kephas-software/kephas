@@ -32,7 +32,7 @@ namespace Kephas.Application
             IAppArgs? appArgs = null)
             : base(ambientServices)
         {
-            this.AppRuntime = appRuntime ?? this.AmbientServices?.AppRuntime!;
+            this.AppRuntime = appRuntime ?? this.AmbientServices.GetAppRuntime()!;
             this.AppArgs = appArgs ?? new AppArgs();
         }
 

@@ -98,6 +98,6 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>A value indicating whether the service contract is not part of a third party assembly.</returns>
         protected static bool IsNotThirdParty((Type contractType, IAppServiceInfo appServiceInfo) serviceContract, IAmbientServices ambientServices)
-            => ambientServices.AppRuntime.GetAppAssemblies().Contains(serviceContract.contractType.Assembly);
+            => ambientServices.GetAppRuntime()!.GetAppAssemblies().Contains(serviceContract.contractType.Assembly);
     }
 }

@@ -55,7 +55,7 @@ namespace Kephas
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
         public static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAmbientServices ambientServices)
         {
-            var appAssemblies = ambientServices!.AppRuntime!.GetAppAssemblies();
+            var appAssemblies = ambientServices!.GetAppRuntime()!.GetAppAssemblies();
             var configuratorTypes = ServiceHelper.GetAppServiceInfosProviders(appAssemblies)
                 .SelectMany(p => p.GetAppServiceTypes())
                 .Where(t => t.contractDeclarationType == typeof(IServicesConfigurator))

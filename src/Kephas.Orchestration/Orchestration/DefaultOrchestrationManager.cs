@@ -549,7 +549,7 @@ namespace Kephas.Orchestration
             var appArgs = new Args
             {
                 [AppArgs.AppIdArgName] = appInfo.Identity.Id,
-                [AppArgs.AppInstanceIdArgName] = appInfo[AppRuntimeBase.AppInstanceIdKey],
+                [AppArgs.AppInstanceIdArgName] = appInfo[IAppRuntime.AppInstanceIdKey],
                 [AppArgs.RootArgName] = this.GetRootAppInstanceId(),
                 [AppArgs.EnvArgName] = this.GetEnvironment(),
             }.Merge(arguments);

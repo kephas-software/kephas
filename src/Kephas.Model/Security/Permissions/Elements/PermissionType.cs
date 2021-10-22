@@ -96,7 +96,7 @@ namespace Kephas.Model.Security.Permissions.Elements
             this.Scoping = permInfoPart?.Scoping ?? Scoping.Global;
             this.TokenName = permInfoPart?.TokenName ?? this.Name;
 
-            var typeRegistry = constructionContext.AmbientServices.TypeRegistry;
+            var typeRegistry = constructionContext.RuntimeTypeRegistry;
             this.GrantedPermissions = this.BaseMixins
                 .OfType<IPermissionInfo>()
                 .ToList()
@@ -131,7 +131,7 @@ namespace Kephas.Model.Security.Permissions.Elements
                 return baseTypes;
             }
 
-            var typeRegistry = constructionContext.AmbientServices.TypeRegistry;
+            var typeRegistry = constructionContext.RuntimeTypeRegistry;
             var grantedPermTypes = new HashSet<ITypeInfo>(
                 grantedAttrs
                     .Where(a => a.PermissionTypes != null)

@@ -23,7 +23,7 @@ namespace Kephas
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
-    using Kephas.Resources;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -79,6 +79,36 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// The application runtime.
+        /// </returns>
+        public static IAppRuntime? GetAppRuntime(this IAmbientServices ambientServices) =>
+            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetService<IAppRuntime>();
+
+        /// <summary>
+        /// Gets the runtime type registry.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// The runtime type registry.
+        /// </returns>
+        public static IRuntimeTypeRegistry GetTypeRegistry(this IAmbientServices ambientServices) =>
+            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<IRuntimeTypeRegistry>();
+
+        /// <summary>
+        /// Gets the licensing manager.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// The licensing manager.
+        /// </returns>
+        public static ILicensingManager GetLicensingManager(this IAmbientServices ambientServices) =>
+            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<ILicensingManager>();
+
+        /// <summary>
         /// Configures the settings.
         /// </summary>
         /// <typeparam name="TSettings">Type of the settings.</typeparam>
@@ -92,7 +122,7 @@ namespace Kephas
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            ambientServices.ConfigurationStore.Configure(optionsConfig);
+            ambientServices.GetRequiredService<IConfigurationStore>().Configure(optionsConfig);
             return ambientServices;
         }
 
@@ -347,61 +377,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets the service with the provided type.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// A service object of type <typeparamref name="TContract"/>.-or- <c>null</c> if there is no
-        /// service object of type <typeparamref name="TContract"/>.
-        /// </returns>
-        public static TContract? GetService<TContract>(this IServiceProvider ambientServices)
-            where TContract : class
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            return (TContract?)ambientServices.GetService(typeof(TContract));
-        }
-
-        /// <summary>
-        /// Gets the service with the provided type.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="contractType">Type of the service contract.</param>
-        /// <returns>
-        /// A service object of type <paramref name="contractType"/>.
-        /// </returns>
-        public static object GetRequiredService(this IServiceProvider serviceProvider, Type contractType)
-        {
-            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-
-            var service = serviceProvider.GetService(contractType);
-            if (service == null)
-            {
-                throw new InjectionException(
-                    string.Format(
-                        Strings.AmbientServices_RequiredServiceNotRegistered_Exception,
-                        contractType));
-            }
-
-            return service;
-        }
-
-        /// <summary>
-        /// Gets the service with the provided type.
-        /// </summary>
-        /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <returns>
-        /// A service object of type <typeparamref name="TContract"/>.-or- <c>null</c> if there is no
-        /// service object of type <typeparamref name="TContract"/>.
-        /// </returns>
-        public static TContract GetRequiredService<TContract>(this IServiceProvider serviceProvider)
-            where TContract : class =>
-            (TContract)GetRequiredService(serviceProvider, typeof(TContract));
-
-        /// <summary>
         /// Sets the configuration store to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
@@ -453,7 +428,7 @@ namespace Kephas
             const string LicenseRepositoryKey = "__LicenseRepository";
             ambientServices.Register<ILicensingManager>(new DefaultLicensingManager(appid =>
                 ((ambientServices[LicenseRepositoryKey] as ILicenseRepository)
-                    ?? (ILicenseRepository)(ambientServices[LicenseRepositoryKey] = new LicenseRepository(ambientServices.AppRuntime, encryptionService)))
+                    ?? (ILicenseRepository)(ambientServices[LicenseRepositoryKey] = new LicenseRepository(ambientServices.GetAppRuntime(), encryptionService)))
                         .GetLicenseData(appid)));
 
             return ambientServices;
@@ -496,7 +471,7 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
-            var existingAppRuntime = ambientServices.AppRuntime;
+            var existingAppRuntime = ambientServices.GetAppRuntime();
             if (existingAppRuntime != null && existingAppRuntime != appRuntime)
             {
                 ServiceHelper.Finalize(existingAppRuntime);
@@ -544,10 +519,9 @@ namespace Kephas
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TInjectorBuilder));
             var context = new InjectionBuildContext(ambientServices);
 
-            var containerBuilder = (TInjectorBuilder)builderType.CreateInstance(new[] { context });
+            var containerBuilder = (TInjectorBuilder)Activator.CreateInstance(typeof(TInjectorBuilder), context);
 
             builderOptions?.Invoke(containerBuilder);
 

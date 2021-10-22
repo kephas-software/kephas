@@ -31,7 +31,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new AppServiceTypeConstructor();
             var context = this.GetConstructionContext();
-            var runtimeElement = context.AmbientServices.TypeRegistry.GetTypeInfo(serviceType);
+            var runtimeElement = context.RuntimeTypeRegistry.GetTypeInfo(serviceType);
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
             return (modelElement, runtimeElement);

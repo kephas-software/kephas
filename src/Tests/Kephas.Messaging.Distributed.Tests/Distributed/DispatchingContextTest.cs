@@ -60,8 +60,8 @@ namespace Kephas.Messaging.Tests.Distributed
         public void From_sender_id()
         {
             var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime[AppRuntimeBase.AppIdKey].Returns("app-id");
-            appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("app-instance-id");
+            appRuntime[IAppRuntime.AppIdKey].Returns("app-id");
+            appRuntime[IAppRuntime.AppInstanceIdKey].Returns("app-instance-id");
 
             var builder = new DispatchingContext(
                 Substitute.For<IInjector>(),

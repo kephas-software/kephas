@@ -42,7 +42,7 @@ namespace Kephas.AspNetCore.InteractiveTests.Extensions
             var loggerConfig = new LoggerConfiguration();
             loggerConfig
                 .ReadFrom.Configuration(configuration)
-                .Enrich.With(new AppLogEventEnricher(ambientServices.AppRuntime));
+                .Enrich.With(new AppLogEventEnricher(ambientServices.GetAppRuntime()!));
 
             var minimumLevel = configuration.GetValue<LogEventLevel?>("Serilog:MinimumLevel") ?? LogEventLevel.Information;
 

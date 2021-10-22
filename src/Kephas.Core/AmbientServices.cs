@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Builder;
-
 namespace Kephas
 {
     using System;
@@ -40,7 +38,7 @@ namespace Kephas
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
     [ExcludeFromInjection]
-    public class AmbientServices : Expando, IAmbientServices, IAppServiceInfosProvider
+    public class AmbientServices : Expando, IAmbientServicesMixin, IAppServiceInfosProvider
     {
         private readonly IAppServiceRegistry registry;
 
@@ -81,7 +79,7 @@ namespace Kephas
         /// <summary>
         /// Gets the service registry.
         /// </summary>
-        IAppServiceRegistry IAmbientServices.ServiceRegistry => this.registry;
+        IAppServiceRegistry IAmbientServicesMixin.ServiceRegistry => this.registry;
 
         /// <summary>
         /// Gets the application service infos in this collection.

@@ -15,6 +15,7 @@ namespace Kephas.Model.Construction
 
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -64,5 +65,10 @@ namespace Kephas.Model.Construction
         /// A function for getting a model element.
         /// </value>
         Func<IElementInfo?, IElementInfo> TryGetModelElementInfo { get; set; }
+
+        /// <summary>
+        /// Gets the runtime type registry.
+        /// </summary>
+        IRuntimeTypeRegistry RuntimeTypeRegistry => this.AmbientServices.GetTypeRegistry();
     }
 }

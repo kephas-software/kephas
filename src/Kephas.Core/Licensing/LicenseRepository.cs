@@ -99,7 +99,7 @@ namespace Kephas.Licensing
             var locations = this.appRuntime.GetAppLicenseLocations();
             return locations.Any()
                 ? locations
-                : new[] { this.appRuntime.GetFullPath(AppRuntimeBase.DefaultLicenseFolder) };
+                : new[] { this.appRuntime.GetFullPath(IAppRuntime.DefaultLicenseFolder) };
         }
 
         private LicenseData? GetLicenseData(string licenseFilePath)

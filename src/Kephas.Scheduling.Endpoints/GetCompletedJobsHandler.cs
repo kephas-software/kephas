@@ -82,7 +82,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>A serializable return value.</returns>
         protected virtual object? GetJobReturnValue(IJobResult jobResult, IMessagingContext messagingContext)
         {
-            using var formattingContext = new DataFormattingContext(messagingContext);
+            using var formattingContext = new Context(messagingContext);
             return jobResult.OperationState == OperationState.Completed && jobResult.Value != null
                 ? jobResult.Value.ToData(formattingContext)
                 : null;

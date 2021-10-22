@@ -37,7 +37,7 @@ namespace Kephas.Model.Tests.Runtime
         {
             var provider = new SystemPrimitiveTypesModelInfoProvider(Substitute.For<IRuntimeModelElementFactory>());
             var context = this.GetConstructionContext();
-            var typeRegistry = context.AmbientServices.TypeRegistry;
+            var typeRegistry = context.RuntimeTypeRegistry;
             var elementInfos = (await provider.GetElementInfosAsync(context)).Cast<IValueType>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeRegistry.GetTypeInfo(typeof(bool)) && info.IsPrimitive));

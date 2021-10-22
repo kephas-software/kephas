@@ -26,7 +26,7 @@ namespace Kephas.Application.AspNetCore
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>An enumeration of application assemblies.</returns>
         public static IEnumerable<Assembly> GetAppAssemblies(this IAmbientServices ambientServices)
-            => ambientServices!.AppRuntime.GetAppAssemblies();
+            => ambientServices!.GetAppRuntime()!.GetAppAssemblies();
 
         /// <summary>
         /// Configures the <see cref="ApplicationPartManager"/> of the <see cref="IMvcBuilder.PartManager"/> using

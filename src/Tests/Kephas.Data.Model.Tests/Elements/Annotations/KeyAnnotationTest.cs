@@ -72,7 +72,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
             foreach (var propName in properties)
             {
                 var property = new Property(context, propName);
-                property.ValueType = context.AmbientServices.TypeRegistry.GetTypeInfo(typeof(string));
+                property.ValueType = context.RuntimeTypeRegistry.GetTypeInfo(typeof(string));
                 ((IConstructibleElement)classifier).AddMember(property);
             }
 

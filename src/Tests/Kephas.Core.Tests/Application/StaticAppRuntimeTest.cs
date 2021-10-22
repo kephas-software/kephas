@@ -28,8 +28,8 @@ namespace Kephas.Core.Tests.Application
             var appRuntime = new StaticAppRuntime(
                 appArgs: new Expando
                 {
-                    [StaticAppRuntime.AppIdKey] = "test",
-                    [StaticAppRuntime.AppInstanceIdKey] = "test-2",
+                    [IAppRuntime.AppIdKey] = "test",
+                    [IAppRuntime.AppInstanceIdKey] = "test-2",
                 });
             Assert.AreEqual("test", appRuntime.GetAppId());
             Assert.AreEqual("test-2", appRuntime.GetAppInstanceId());
@@ -77,11 +77,11 @@ namespace Kephas.Core.Tests.Application
 
             if (RuntimeEnvironment.IsWindows())
             {
-                Assert.IsTrue(configLocations.Any(l => l.EndsWith($"\\root\\{StaticAppRuntime.DefaultConfigFolder}")));
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith($"\\root\\{IAppRuntime.DefaultConfigFolder}")));
             }
             else
             {
-                Assert.IsTrue(configLocations.Any(l => l.EndsWith($"/root/{StaticAppRuntime.DefaultConfigFolder}")));
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith($"/root/{IAppRuntime.DefaultConfigFolder}")));
             }
         }
 

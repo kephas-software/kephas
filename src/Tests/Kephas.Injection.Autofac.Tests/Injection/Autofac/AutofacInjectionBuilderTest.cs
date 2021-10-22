@@ -40,7 +40,7 @@ namespace Kephas.Tests.Injection.Autofac
         public async Task CreateInjector_simple_ambient_services_exported()
         {
             var (builder, ambientServices) = this.CreateInjectorBuilder();
-            var mockAppRuntime = ambientServices.AppRuntime;
+            var mockAppRuntime = ambientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(ci => new[]
@@ -72,7 +72,7 @@ namespace Kephas.Tests.Injection.Autofac
             Assert.AreEqual(ambientServices.LogManager, loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
-            Assert.AreEqual(ambientServices.AppRuntime, platformManager);
+            Assert.AreEqual(ambientServices.GetAppRuntime(), platformManager);
         }
 
         [Test]
@@ -358,7 +358,7 @@ namespace Kephas.Tests.Injection.Autofac
                 });
 
             var (factory, ambientServices) = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
-            var mockAppRuntime = ambientServices.AppRuntime;
+            var mockAppRuntime = ambientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
@@ -379,7 +379,7 @@ namespace Kephas.Tests.Injection.Autofac
                 });
 
             var (factory, ambientServices) = this.CreateInjectorBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
-            var mockPlatformManager = ambientServices.AppRuntime;
+            var mockPlatformManager = ambientServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });

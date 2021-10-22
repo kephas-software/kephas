@@ -41,7 +41,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         public async Task CreateInjector_simple_ambient_services_exported()
         {
             var (builder, ambientServices) = this.CreateCompositionContainerBuilder();
-            var mockAppRuntime = ambientServices.AppRuntime;
+            var mockAppRuntime = ambientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[]
@@ -71,7 +71,7 @@ namespace Kephas.Tests.Injection.SystemComposition
             Assert.AreEqual(ambientServices.LogManager, loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
-            Assert.AreEqual(ambientServices.AppRuntime, platformManager);
+            Assert.AreEqual(ambientServices.GetAppRuntime(), platformManager);
         }
 
         [Test]
@@ -402,7 +402,7 @@ namespace Kephas.Tests.Injection.SystemComposition
                     (ci => new [] { (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), "123")) }));
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
-            var mockPlatformManager = ambientServices.AppRuntime;
+            var mockPlatformManager = ambientServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });
@@ -422,7 +422,7 @@ namespace Kephas.Tests.Injection.SystemComposition
                     (ci => new [] { (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), _ => "123")) }));
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
-            var mockPlatformManager = ambientServices.AppRuntime;
+            var mockPlatformManager = ambientServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(SystemCompositionInjector).GetTypeInfo().Assembly });

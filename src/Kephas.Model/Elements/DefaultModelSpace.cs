@@ -174,7 +174,7 @@ namespace Kephas.Model.Elements
             var classifier = typeToken switch
             {
                 Type type => this.TryGetClassifier(
-                    this.ConstructionContext.AmbientServices.TypeRegistry.GetTypeInfo(type)),
+                    this.ConstructionContext.RuntimeTypeRegistry.GetTypeInfo(type)),
                 ITypeInfo typeInfo => this.TryGetClassifier(typeInfo),
                 _ => throw new NotSupportedException(
                     $"Token type {typeToken?.GetType()} not supported. Try providing a {nameof(Type)} or a {nameof(ITypeInfo)}.")
