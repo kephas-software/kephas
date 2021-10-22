@@ -284,6 +284,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Dependenc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kephas.AspNetCore.Blazor.InteractiveTests", "Kephas.AspNetCore.Blazor.InteractiveTests", "{DE7786B7-0168-412F-AEBA-1D294E78D640}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection", "Kephas.Reflection\Kephas.Reflection.csproj", "{1F0CCF32-E424-4822-94C8-293F16CF425A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -786,6 +788,10 @@ Global
 		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

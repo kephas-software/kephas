@@ -109,7 +109,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null);
+        ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, dynamic? constructionContext = null);
 
         /// <summary>
         /// Gets the <see cref="Type"/> for the provided <see cref="ITypeInfo"/> instance.

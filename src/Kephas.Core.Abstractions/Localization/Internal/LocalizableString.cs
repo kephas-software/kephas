@@ -26,7 +26,7 @@ namespace Kephas.Localization.Internal
         /// <summary>
         /// The cached result.
         /// </summary>
-        private Func<string>? cachedResult;
+        private Func<string?>? cachedResult;
 
         /// <summary>
         /// The property value.
@@ -53,7 +53,7 @@ namespace Kephas.Localization.Internal
         /// <value>
         /// The value.
         /// </value>
-        public string Value
+        public string? Value
         {
             get => this.propertyValue;
             set
@@ -95,7 +95,7 @@ namespace Kephas.Localization.Internal
         /// <returns>
         /// The localizable value.
         /// </returns>
-        public string GetLocalizableValue()
+        public string? GetLocalizableValue()
         {
             if (this.cachedResult != null)
             {
@@ -117,7 +117,7 @@ namespace Kephas.Localization.Internal
                 else
                 {
                     var getMethod = property.GetMethod;
-                    if ((object)getMethod == null || !getMethod.IsPublic || !getMethod.IsStatic)
+                    if ((object?)getMethod == null || !getMethod.IsPublic || !getMethod.IsStatic)
                     {
                         resourceStringNotAccessible = true;
                     }
@@ -135,7 +135,7 @@ namespace Kephas.Localization.Internal
                 }
                 else
                 {
-                    this.cachedResult = () => (string)property.GetValue(null, null);
+                    this.cachedResult = () => (string?)property!.GetValue(null, null);
                 }
             }
 

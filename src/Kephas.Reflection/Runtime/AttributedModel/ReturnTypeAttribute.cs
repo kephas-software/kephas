@@ -12,8 +12,6 @@ namespace Kephas.Runtime.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Attribute for indicating the return type of an operation.
     /// </summary>

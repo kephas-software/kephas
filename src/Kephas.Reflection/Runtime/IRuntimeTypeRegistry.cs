@@ -10,7 +10,6 @@ namespace Kephas.Runtime
     using System;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime.Factories;
 

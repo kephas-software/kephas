@@ -219,7 +219,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, dynamic? constructionContext = null)
         {
             // TODO redirect generic type creation through ModelSpace
             throw new NotImplementedException();

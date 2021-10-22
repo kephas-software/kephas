@@ -10,23 +10,19 @@
 
 namespace Kephas.Reflection.Localization
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
+    using System;
 
-    using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Localization;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Localization information for <see cref="IElementInfo"/>.
     /// </summary>
     public abstract class ElementInfoLocalization : Localization, IElementInfoLocalization
     {
-        private string name;
-        private string description;
-        private string shortName;
-        private string prompt;
+        private string? name;
+        private string? description;
+        private string? shortName;
+        private string? prompt;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementInfoLocalization"/> class.
@@ -43,7 +39,7 @@ namespace Kephas.Reflection.Localization
         /// <param name="elementInfo">Information describing the element.</param>
         protected ElementInfoLocalization(IElementInfo elementInfo)
         {
-            Requires.NotNull(elementInfo, nameof(elementInfo));
+            elementInfo = elementInfo ?? throw new ArgumentNullException(nameof(elementInfo));
 
             // ReSharper disable once VirtualMemberCallInConstructor
             this.DisplayInfo = this.GetDisplayInfo(elementInfo);
@@ -55,7 +51,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized name.
         /// </value>
-        public virtual string Name
+        public virtual string? Name
         {
             get => this.DisplayInfo == null
                 ? this.name
@@ -69,7 +65,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized description.
         /// </value>
-        public virtual string Description
+        public virtual string? Description
         {
             get => this.DisplayInfo == null
                 ? this.description
@@ -86,7 +82,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized short name.
         /// </value>
-        public string ShortName
+        public string? ShortName
         {
             get => this.DisplayInfo == null
                 ? this.shortName
@@ -100,7 +96,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized value that will be used to set the watermark for prompts in the UI.
         /// </value>
-        public string Prompt
+        public string? Prompt
         {
             get => this.DisplayInfo == null
                 ? this.prompt

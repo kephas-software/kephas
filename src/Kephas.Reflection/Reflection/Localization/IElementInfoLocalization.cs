@@ -23,7 +23,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized name.
         /// </value>
-        string Name { get; }
+        string? Name { get; }
 
         /// <summary>
         /// Gets the localized description.
@@ -31,7 +31,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized description.
         /// </value>
-        string Description { get; }
+        string? Description { get; }
 
         /// <summary>
         /// Gets the localized short name.
@@ -42,7 +42,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized short name.
         /// </value>
-        string ShortName { get; }
+        string? ShortName { get; }
 
         /// <summary>
         /// Gets the localized value that will be used to set the watermark for prompts in the UI.
@@ -50,6 +50,6 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized value that will be used to set the watermark for prompts in the UI.
         /// </value>
-        string Prompt { get; }
+        string? Prompt { get; }
     }
 }

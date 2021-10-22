@@ -11,8 +11,6 @@ namespace Kephas.Versioning
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>A strict SemVer implementation.</summary>
     public class SemanticVersion : IFormattable, IComparable, IComparable<SemanticVersion>, IEquatable<SemanticVersion>
     {
@@ -151,9 +149,7 @@ namespace Kephas.Versioning
         /// <param name="metadata">The build metadata.</param>
         protected SemanticVersion(Version version, IEnumerable<string>? releaseLabels, string? metadata)
         {
-            Requires.NotNull(version, nameof(version));
-
-            this.version = SemanticVersion.NormalizeVersionValue(version);
+            this.version = SemanticVersion.NormalizeVersionValue(version ?? throw new ArgumentNullException(nameof(version)));
             this.Metadata = metadata;
             if (releaseLabels == null)
             {

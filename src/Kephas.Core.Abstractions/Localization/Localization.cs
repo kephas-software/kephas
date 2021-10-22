@@ -22,7 +22,7 @@ namespace Kephas.Localization
         /// <summary>
         /// The culture.
         /// </summary>
-        private CultureInfo culture;
+        private CultureInfo? culture;
 
         /// <summary>
         /// Gets or sets the culture.

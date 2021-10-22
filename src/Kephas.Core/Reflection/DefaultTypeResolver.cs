@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.AttributedModel;
-
 namespace Kephas.Reflection
 {
     using System;
@@ -19,7 +17,7 @@ namespace Kephas.Reflection
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection.AttributedModel;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
@@ -31,7 +29,7 @@ namespace Kephas.Reflection
     public class DefaultTypeResolver : Loggable, ITypeResolver
     {
         private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
-        private readonly ConcurrentDictionary<string, Type?> typeCache = new ConcurrentDictionary<string, Type?>();
+        private readonly ConcurrentDictionary<string, Type?> typeCache = new ();
         private readonly ITypeLoader typeLoader;
 
         /// <summary>
@@ -59,7 +57,7 @@ namespace Kephas.Reflection
         public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(getAppAssemblies, nameof(getAppAssemblies));
+            getAppAssemblies = this.getAppAssemblies ?? throw new ArgumentNullException(nameof(getAppAssemblies));
 
             this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
             this.getAppAssemblies = getAppAssemblies;
@@ -75,7 +73,7 @@ namespace Kephas.Reflection
         /// </returns>
         public Type? ResolveType(string typeName, bool throwOnNotFound = true)
         {
-            Requires.NotNull(typeName, nameof(typeName));
+            typeName = typeName ?? throw new ArgumentNullException(nameof(typeName));
 
             var type = this.typeCache.GetOrAdd(typeName, _ => this.ResolveTypeCore(typeName));
             if (type == null && throwOnNotFound)

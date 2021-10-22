@@ -563,7 +563,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, dynamic? constructionContext = null)
         {
             var constructedType = this.TypeInfo.MakeGenericType(typeArguments.Cast<IRuntimeTypeInfo>().Select(t => t.Type).ToArray());
             return this.TypeRegistry.GetTypeInfo(constructedType);

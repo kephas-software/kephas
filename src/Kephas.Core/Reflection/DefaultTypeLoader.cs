@@ -16,7 +16,6 @@ namespace Kephas.Reflection
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;
 

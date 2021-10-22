@@ -51,7 +51,7 @@ namespace Kephas.Activation
             var implementationType = this.GetImplementationType(typeInfo, activationContext);
             if (implementationType == null)
             {
-                throw new ActivationException(string.Format(Strings.ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception, typeInfo));
+                throw new ActivationException(string.Format(ReflectionStrings.ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception, typeInfo));
             }
 
             return implementationType.CreateInstance(args);
@@ -77,7 +77,7 @@ namespace Kephas.Activation
 
             if (implementationType == null && throwOnNotFound)
             {
-                throw new ActivationException(string.Format(Strings.ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception, abstractType));
+                throw new ActivationException(string.Format(ReflectionStrings.ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception, abstractType));
             }
 
             return implementationType;

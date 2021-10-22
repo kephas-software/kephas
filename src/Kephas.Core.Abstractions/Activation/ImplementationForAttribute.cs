@@ -12,8 +12,6 @@ namespace Kephas.Activation
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Attribute associating implementations to their abstract model.
     /// </summary>
@@ -32,7 +30,7 @@ namespace Kephas.Activation
         /// <param name="abstractTypeParts">A variable-length parameters list containing parts of the provided abstract type.</param>
         public ImplementationForAttribute(Type abstractType, params Type[] abstractTypeParts)
         {
-            Requires.NotNull(abstractType, nameof(abstractType));
+            abstractType = abstractType ?? throw new ArgumentNullException(nameof(abstractType));
 
             this.AbstractType = abstractType;
             this.AbstractTypeParts = abstractTypeParts ?? Array.Empty<Type>();

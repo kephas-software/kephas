@@ -7,9 +7,8 @@
 
 namespace Kephas.Reflection
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
-
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The display attribute adapter.
@@ -24,7 +23,7 @@ namespace Kephas.Reflection
         /// <param name="displayAttr">The display attribute.</param>
         public DisplayAttributeAdapter(DisplayAttribute displayAttr)
         {
-            Requires.NotNull(displayAttr, nameof(displayAttr));
+            displayAttr = displayAttr ?? throw new ArgumentNullException(nameof(displayAttr));
 
             this.displayAttr = displayAttr;
         }

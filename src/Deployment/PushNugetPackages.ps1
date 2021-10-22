@@ -59,6 +59,7 @@ $paths = @(
     "Kephas.Plugins.Endpoints.Messages",
     "Kephas.Plugins.NuGet",
     "Kephas.Redis",
+    "Kephas.Reflection",
     "Kephas.Scheduling",
     "Kephas.Scheduling.Abstractions",
     "Kephas.Scheduling.Endpoints",
