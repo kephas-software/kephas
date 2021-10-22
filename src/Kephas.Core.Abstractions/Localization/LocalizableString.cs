@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Localization.Internal
+namespace Kephas.Localization
 {
     using System;
     using System.Reflection;
@@ -16,7 +16,7 @@ namespace Kephas.Localization.Internal
     /// <summary>
     /// A localizable string.
     /// </summary>
-    internal class LocalizableString
+    public class LocalizableString
     {
         /// <summary>
         /// Name of the property.
