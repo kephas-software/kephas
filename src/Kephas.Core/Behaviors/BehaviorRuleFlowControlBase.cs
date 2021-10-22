@@ -12,10 +12,10 @@ namespace Kephas.Behaviors
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Collections;
     using Kephas.Injection;
     using Kephas.Logging;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>

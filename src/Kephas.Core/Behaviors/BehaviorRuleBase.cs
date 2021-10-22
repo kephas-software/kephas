@@ -47,18 +47,6 @@ namespace Kephas.Behaviors
         /// <returns>
         /// The behavior value.
         /// </returns>
-        IBehaviorValue IBehaviorRule<TContext>.GetValue(TContext context)
-        {
-            return this.GetValue(context);
-        }
-
-        /// <summary>
-        /// Gets the behavior value.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// The behavior value.
-        /// </returns>
         public abstract IBehaviorValue<TValue> GetValue(TContext context);
     }
 }

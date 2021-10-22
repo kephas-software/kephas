@@ -10,7 +10,6 @@ namespace Kephas.Commands
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -26,7 +25,7 @@ namespace Kephas.Commands
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
         public static TArgs AsArgs<TArgs>(this IDynamic args)
         {
-            Requires.NotNull(args, nameof(args));
+            args = args ?? throw new ArgumentNullException(nameof(args));
             return args is TArgs appArgs ? appArgs : (TArgs)Activator.CreateInstance(typeof(TArgs), args)!;
         }
 
@@ -37,7 +36,7 @@ namespace Kephas.Commands
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
         public static IArgs AsArgs(this IDynamic args)
         {
-            Requires.NotNull(args, nameof(args));
+            args = args ?? throw new ArgumentNullException(nameof(args));
             return args is IArgs appArgs ? appArgs : new Args(args);
         }
 
@@ -49,7 +48,7 @@ namespace Kephas.Commands
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
         public static TArgs AsArgs<TArgs>(this IDictionary<string, object?> args)
         {
-            Requires.NotNull(args, nameof(args));
+            args = args ?? throw new ArgumentNullException(nameof(args));
             return (TArgs)Activator.CreateInstance(typeof(TArgs), args)!;
         }
 
@@ -60,7 +59,7 @@ namespace Kephas.Commands
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
         public static IArgs AsArgs(this IDictionary<string, object?> args)
         {
-            Requires.NotNull(args, nameof(args));
+            args = args ?? throw new ArgumentNullException(nameof(args));
             return new Args(args);
         }
 

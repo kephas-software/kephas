@@ -31,7 +31,7 @@ namespace Kephas.Collections
         /// </code>
         /// </example>
         /// <remarks>
-        ///   This method was intended to return the passed values to provide method chaining. Howver due to defered execution the compiler would actually never run the entire code at all.
+        ///   This method was intended to return the passed values to provide method chaining. However due to deferred execution the compiler would actually never run the entire code at all.
         /// </remarks>
         public static void ForEach<T>(this IEnumerable<T> values, Action<T> action)
         {

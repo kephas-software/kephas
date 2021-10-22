@@ -19,7 +19,7 @@ namespace Kephas.Services
     /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IOrderedLazyServiceCollection<TTargetContract, TMetadata> : IEnumerable<Lazy<TTargetContract, TMetadata>>
+    public interface IOrderedLazyServiceCollection<TTargetContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata> : IEnumerable<Lazy<TTargetContract, TMetadata>>
         where TMetadata : AppServiceMetadata
     {
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrderedServiceFactoryCollection.cs" company="Kephas Software SRL">
+// <copyright file="OrderedLazyServiceCollection.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,8 +7,6 @@
 //   Implements the ordered service collection class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Injection;
 
 namespace Kephas.Services
 {
@@ -18,21 +16,21 @@ namespace Kephas.Services
     using System.Linq;
 
     /// <summary>
-    /// Collection of ordered services.
+    /// Collection of ordered lazy services.
     /// </summary>
-    /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
+    /// <typeparam name="TContract">Type of the service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [OverridePriority(Priority.Low)]
-    public class OrderedServiceFactoryCollection<TTargetContract, TMetadata> : IOrderedServiceFactoryCollection<TTargetContract, TMetadata>
+    public class OrderedLazyServiceCollection<TContract, TMetadata> : IOrderedLazyServiceCollection<TContract, TMetadata>
         where TMetadata : AppServiceMetadata
     {
-        private readonly ICollection<IExportFactory<TTargetContract, TMetadata>> serviceFactories;
+        private readonly ICollection<Lazy<TContract, TMetadata>> serviceFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderedServiceFactoryCollection{TTargetContract, TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="OrderedLazyServiceCollection{TContract, TMetadata}"/> class.
         /// </summary>
         /// <param name="serviceFactories">The service factories.</param>
-        public OrderedServiceFactoryCollection(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories = null)
+        public OrderedLazyServiceCollection(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories = null)
         {
             this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
         }
@@ -44,8 +42,8 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered service factories.
         /// </returns>
-        public IEnumerable<IExportFactory<TTargetContract, TMetadata>> GetServiceFactories(
-            Func<IExportFactory<TTargetContract, TMetadata>, bool>? filter = null)
+        public IEnumerable<Lazy<TContract, TMetadata>> GetServiceFactories(
+            Func<Lazy<TContract, TMetadata>, bool>? filter = null)
         {
             return filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
         }
@@ -57,13 +55,13 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered services.
         /// </returns>
-        public IEnumerable<TTargetContract> GetServices(
-            Func<IExportFactory<TTargetContract, TMetadata>, bool>? filter = null)
+        public IEnumerable<TContract> GetServices(
+            Func<Lazy<TContract, TMetadata>, bool>? filter = null)
         {
             var factories = filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
             foreach (var factory in factories)
             {
-                yield return factory.CreateExportedValue();
+                yield return factory.Value;
             }
         }
 
@@ -73,7 +71,7 @@ namespace Kephas.Services
         /// <returns>
         /// The enumerator.
         /// </returns>
-        public IEnumerator<IExportFactory<TTargetContract, TMetadata>> GetEnumerator()
+        public IEnumerator<Lazy<TContract, TMetadata>> GetEnumerator()
         {
             return this.serviceFactories.GetEnumerator();
         }
@@ -89,11 +87,11 @@ namespace Kephas.Services
             return this.GetEnumerator();
         }
 
-        private ICollection<IExportFactory<TTargetContract, TMetadata>> ComputeServiceFactories(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories)
+        private ICollection<Lazy<TContract, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories)
         {
             if (serviceFactories == null)
             {
-                return Array.Empty<IExportFactory<TTargetContract, TMetadata>>();
+                return Array.Empty<Lazy<TContract, TMetadata>>();
             }
 
             var orderedFactories = serviceFactories

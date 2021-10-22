@@ -10,6 +10,8 @@
 
 namespace Kephas.Injection
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Contract used to import parts that wish to dynamically create instances of other parts.
     /// </summary>
@@ -21,6 +23,14 @@ namespace Kephas.Injection
         /// </summary>
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
         IExport<T> CreateExport();
+
+        /// <summary>
+        /// Convenience method that creates the exported value.
+        /// </summary>
+        /// <returns>
+        /// The exported value.
+        /// </returns>
+        public T CreateExportedValue() => this.CreateExport().Value;
     }
 
     /// <summary>
@@ -28,7 +38,7 @@ namespace Kephas.Injection
     /// </summary>
     /// <typeparam name="T">The contract type being created.</typeparam>
     /// <typeparam name="TMetadata">The metadata required from the export.</typeparam>
-    public interface IExportFactory<out T, out TMetadata> : IExportFactory<T>
+    public interface IExportFactory<out T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IExportFactory<T>
     {
         /// <summary>
         /// Gets the metadata associated with the export.

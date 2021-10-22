@@ -21,7 +21,7 @@ namespace Kephas.Services
     /// <typeparam name="TContract">Type of the service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IOrderedServiceFactoryCollection<out TContract, out TMetadata> : IEnumerable<IExportFactory<TContract, TMetadata>>
+    public interface IOrderedServiceFactoryCollection<out TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IEnumerable<IExportFactory<TContract, TMetadata>>
         where TMetadata : AppServiceMetadata
     {
         /// <summary>
@@ -31,8 +31,7 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered service factories.
         /// </returns>
-        IEnumerable<IExportFactory<TContract, TMetadata>> GetServiceFactories(
-            Func<IExportFactory<TContract, TMetadata>, bool>? filter = null);
+        IEnumerable<IExportFactory<TContract, TMetadata>> GetServiceFactories(Func<IExportFactory<TContract, TMetadata>, bool>? filter = null);
 
         /// <summary>
         /// Gets the services in the appropriate order.
@@ -41,7 +40,6 @@ namespace Kephas.Services
         /// <returns>
         /// The ordered services.
         /// </returns>
-        IEnumerable<TContract> GetServices(
-            Func<IExportFactory<TContract, TMetadata>, bool>? filter = null);
+        IEnumerable<TContract> GetServices(Func<IExportFactory<TContract, TMetadata>, bool>? filter = null);
     }
 }

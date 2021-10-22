@@ -51,12 +51,12 @@ namespace Kephas.Services
                 .ToList();
             if (exportFactories.Count == 0)
             {
-                throw new ServiceException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception, serviceName, typeof(TContract)));
+                throw new ServiceException(string.Format(AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception, serviceName, typeof(TContract)));
             }
 
             if (exportFactories.Count > 1)
             {
-                throw new AmbiguousMatchException(string.Format(Strings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(TContract)));
+                throw new AmbiguousMatchException(string.Format(AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(TContract)));
             }
 
             return exportFactories[0].Value;

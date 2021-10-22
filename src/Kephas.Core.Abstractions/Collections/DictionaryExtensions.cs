@@ -13,7 +13,6 @@ namespace Kephas.Collections
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IDictionary{TKey,TValue}"/>.

@@ -13,21 +13,6 @@
     public static class ExportFactoryExtensions
     {
         /// <summary>
-        /// Convenience method that creates the exported value.
-        /// </summary>
-        /// <typeparam name="T">The exported value type.</typeparam>
-        /// <param name="exportFactory">The export factory.</param>
-        /// <returns>
-        /// The exported value.
-        /// </returns>
-        public static T CreateExportedValue<T>(this IExportFactory<T> exportFactory)
-        {
-            exportFactory = exportFactory ?? throw new ArgumentNullException(nameof(exportFactory));
-
-            return exportFactory.CreateExport().Value;
-        }
-
-        /// <summary>
         /// Convenience method that creates the exported value and initializes it.
         /// </summary>
         /// <typeparam name="T">The exported value type.</typeparam>

@@ -28,6 +28,6 @@ namespace Kephas.Reflection
         /// <returns>
         /// A Type.
         /// </returns>
-        Type? ResolveType(string typeName, bool throwOnNotFound = true);
+        Type? ResolveType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] string typeName, bool throwOnNotFound = true);
     }
 }

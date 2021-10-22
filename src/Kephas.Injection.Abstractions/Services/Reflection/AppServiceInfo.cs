@@ -13,8 +13,6 @@ namespace Kephas.Services.Reflection
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Injection;
 
@@ -49,7 +47,7 @@ namespace Kephas.Services.Reflection
         public AppServiceInfo(Type contractType, object serviceInstance)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceInstance, nameof(serviceInstance));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
             this.SetContractType(contractType);
             this.InstancingStrategy = serviceInstance;
@@ -65,7 +63,7 @@ namespace Kephas.Services.Reflection
         public AppServiceInfo(Type contractType, Func<IInjector, object> serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceInstanceFactory, nameof(serviceInstanceFactory));
+            serviceInstanceFactory = serviceInstanceFactory ?? throw new ArgumentNullException(nameof(serviceInstanceFactory));
 
             this.SetContractType(contractType);
             this.InstancingStrategy = serviceInstanceFactory;
@@ -85,7 +83,7 @@ namespace Kephas.Services.Reflection
         public AppServiceInfo(Type contractType, Type serviceType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(serviceType, nameof(serviceType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
             this.SetContractType(contractType);
             this.InstancingStrategy = serviceType;
@@ -102,7 +100,7 @@ namespace Kephas.Services.Reflection
         internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType, object? instancingStrategy = null)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
             this.SetContractType(contractType ?? appServiceInfo.ContractType);
             this.InstancingStrategy = instancingStrategy ?? appServiceInfo.InstancingStrategy;

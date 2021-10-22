@@ -14,7 +14,6 @@ namespace Kephas.Commands
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -97,7 +96,7 @@ namespace Kephas.Commands
         /// </returns>
         protected static IDictionary<string, object?> ComputeArgs(IDictionary<string, object?> args)
         {
-            Requires.NotNull(args, nameof(args));
+            args = args ?? throw new ArgumentNullException(nameof(args));
 
             var dictionary = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
             dictionary.AddRange(args);
@@ -113,7 +112,7 @@ namespace Kephas.Commands
         /// </returns>
         protected static IDictionary<string, object?> ComputeArgs(string commandLine)
         {
-            Requires.NotNull(commandLine, nameof(commandLine));
+            commandLine = commandLine ?? throw new ArgumentNullException(nameof(commandLine));
 
             var args = commandLine.Split(new[] { ' ', '\r', '\n', '\t' }, new[] { '"' });
             return ComputeArgs(args);
@@ -128,7 +127,7 @@ namespace Kephas.Commands
         /// </returns>
         protected static IDictionary<string, object?> ComputeArgs(IEnumerable<string> args)
         {
-            Requires.NotNull(args, nameof(args));
+            args = args ?? throw new ArgumentNullException(nameof(args));
 
             var cmdArgs = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
 

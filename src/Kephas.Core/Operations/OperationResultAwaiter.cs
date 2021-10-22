@@ -15,7 +15,6 @@ namespace Kephas.Operations
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 

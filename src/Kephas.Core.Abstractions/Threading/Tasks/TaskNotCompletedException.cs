@@ -25,7 +25,7 @@ namespace Kephas.Threading.Tasks
         /// </summary>
         /// <param name="task">The task that is not completed.</param>
         public TaskNotCompletedException(Task task)
-            : base(Strings.TaskNotCompletedException_Message)
+            : base(AbstractionStrings.TaskNotCompletedException_Message)
         {
             this.Task = task;
         }

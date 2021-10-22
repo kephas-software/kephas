@@ -59,7 +59,11 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The contract type of the export.
         /// </value>
-        Type? ContractType { get; }
+        Type? ContractType
+        {
+            [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+            get;
+        }
 
         /// <summary>
         /// Gets the instancing strategy: factory, type, or instance.
@@ -80,7 +84,11 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The type of the service instance.
         /// </value>
-        Type? InstanceType => this.InstancingStrategy as Type;
+        Type? InstanceType
+        {
+            [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+            get => this.InstancingStrategy as Type;
+        }
 
         /// <summary>
         /// Gets the service instance factory.

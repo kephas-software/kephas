@@ -7,9 +7,8 @@
 
 namespace Kephas.Services.Reflection
 {
+    using System;
     using System.Runtime.CompilerServices;
-
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IAppServiceInfo"/>.
@@ -26,7 +25,7 @@ namespace Kephas.Services.Reflection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsSingleton(this IAppServiceInfo appServiceInfo)
         {
-            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
             return appServiceInfo.Lifetime == AppServiceLifetime.Singleton;
         }
@@ -41,7 +40,7 @@ namespace Kephas.Services.Reflection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsScoped(this IAppServiceInfo appServiceInfo)
         {
-            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
             return appServiceInfo.Lifetime == AppServiceLifetime.Scoped;
         }
@@ -56,7 +55,7 @@ namespace Kephas.Services.Reflection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsTransient(this IAppServiceInfo appServiceInfo)
         {
-            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
             return appServiceInfo.Lifetime == AppServiceLifetime.Transient;
         }

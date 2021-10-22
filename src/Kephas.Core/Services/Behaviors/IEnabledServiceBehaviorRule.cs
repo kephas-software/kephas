@@ -25,7 +25,7 @@ namespace Kephas.Services.Behaviors
     /// <typeparam name="TContract">Type of the service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [SingletonAppServiceContract(ContractType = typeof(IEnabledServiceBehaviorRule), AllowMultiple = true)]
-    public interface IEnabledServiceBehaviorRule<in TContract, in TMetadata> : IBehaviorRule<IServiceBehaviorContext<TContract, TMetadata>, bool>, IEnabledServiceBehaviorRule
+    public interface IEnabledServiceBehaviorRule<in TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] in TMetadata> : IBehaviorRule<IServiceBehaviorContext<TContract, TMetadata>, bool>, IEnabledServiceBehaviorRule
         where TContract : class
     {
     }

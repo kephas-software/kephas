@@ -12,7 +12,6 @@ namespace Kephas.Data
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
 
     /// <summary>
@@ -25,9 +24,9 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="keyName">The name of the key.</param>
         public DuplicateKeyException(string keyName)
-            : base(Strings.DuplicateKeyException_Message)
+            : base(AbstractionStrings.DuplicateKeyException_Message)
         {
-            Requires.NotNullOrEmpty(keyName, nameof(keyName));
+            keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
 
             this.KeyName = keyName;
         }
@@ -40,7 +39,7 @@ namespace Kephas.Data
         public DuplicateKeyException(string keyName, string message)
             : base(message)
         {
-            Requires.NotNullOrEmpty(keyName, nameof(keyName));
+            keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
 
             this.KeyName = keyName;
         }
@@ -55,7 +54,7 @@ namespace Kephas.Data
         public DuplicateKeyException(string keyName, string message, Exception inner)
             : base(message, inner)
         {
-            Requires.NotNullOrEmpty(keyName, nameof(keyName));
+            keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
 
             this.KeyName = keyName;
         }

@@ -16,7 +16,6 @@ namespace Kephas.Services
     using System.Runtime.CompilerServices;
 
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Resources;
 
@@ -82,11 +81,12 @@ namespace Kephas.Services
             Func<IExportFactory<T, TMetadata>, TKey> keyFunc,
             Func<IExportFactory<T, TMetadata>, TValue> valueFunc,
             IEqualityComparer<TKey>? keyComparer = null)
+            where TKey : notnull
             where TMetadata : AppServiceMetadata
         {
             serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
-            Requires.NotNull(keyFunc, nameof(keyFunc));
-            Requires.NotNull(valueFunc, nameof(valueFunc));
+            keyFunc = keyFunc ?? throw new ArgumentNullException(nameof(keyFunc));
+            valueFunc = valueFunc ?? throw new ArgumentNullException(nameof(valueFunc));
 
             return serviceFactories
                 .Order()
@@ -122,11 +122,12 @@ namespace Kephas.Services
             Func<Lazy<T, TMetadata>, TKey> keyFunc,
             Func<Lazy<T, TMetadata>, TValue> valueFunc,
             IEqualityComparer<TKey>? keyComparer = null)
+            where TKey : notnull
             where TMetadata : AppServiceMetadata
         {
             serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
-            Requires.NotNull(keyFunc, nameof(keyFunc));
-            Requires.NotNull(valueFunc, nameof(valueFunc));
+            keyFunc = keyFunc ?? throw new ArgumentNullException(nameof(keyFunc));
+            valueFunc = valueFunc ?? throw new ArgumentNullException(nameof(valueFunc));
 
             return serviceFactories
                 .Order()
@@ -159,6 +160,7 @@ namespace Kephas.Services
             this IEnumerable<IExportFactory<T, TMetadata>> serviceFactories,
             Func<IExportFactory<T, TMetadata>, TKey> keyFunc,
             IEqualityComparer<TKey>? keyComparer = null)
+            where TKey : notnull
             where TMetadata : AppServiceMetadata
         {
             return serviceFactories
@@ -192,6 +194,7 @@ namespace Kephas.Services
             this IEnumerable<Lazy<T, TMetadata>> serviceFactories,
             Func<Lazy<T, TMetadata>, TKey> keyFunc,
             IEqualityComparer<TKey>? keyComparer = null)
+            where TKey : notnull
             where TMetadata : AppServiceMetadata
         {
             return serviceFactories
@@ -209,11 +212,12 @@ namespace Kephas.Services
             Func<TFactory, TKey> keyFunc,
             Func<TFactory, TValue> valueFunc,
             IEqualityComparer<TKey>? keyComparer = null)
+            where TKey : notnull
             where TMetadata : AppServiceMetadata
         {
             serviceFactories = serviceFactories ?? throw new ArgumentNullException(nameof(serviceFactories));
-            Requires.NotNull(keyFunc, nameof(keyFunc));
-            Requires.NotNull(valueFunc, nameof(valueFunc));
+            keyFunc = keyFunc ?? throw new ArgumentNullException(nameof(keyFunc));
+            valueFunc = valueFunc ?? throw new ArgumentNullException(nameof(valueFunc));
 
             var dictionary = keyComparer == null ? new Dictionary<TKey, TValue>() : new Dictionary<TKey, TValue>(keyComparer);
 
@@ -239,7 +243,7 @@ namespace Kephas.Services
                     if (g0meta.OverridePriority == g1meta.OverridePriority
                         && g0meta.ProcessingPriority == g1meta.ProcessingPriority)
                     {
-                        throw new DuplicateKeyException("Key", string.Format(Strings.CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception, typeof(T), g0meta, g1meta));
+                        throw new DuplicateKeyException("Key", string.Format(AbstractionStrings.CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception, typeof(T), g0meta, g1meta));
                     }
 
                     dictionary.Add(key, valueFunc(group[0].factory));

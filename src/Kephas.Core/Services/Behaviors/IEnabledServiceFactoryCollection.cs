@@ -17,7 +17,7 @@ namespace Kephas.Services.Behaviors
     /// <typeparam name="TContract">The service contract type.</typeparam>
     /// <typeparam name="TMetadata">The service metadata type.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IEnabledServiceFactoryCollection<out TContract, out TMetadata> : IEnumerable<IExportFactory<TContract, TMetadata>>
+    public interface IEnabledServiceFactoryCollection<out TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IEnumerable<IExportFactory<TContract, TMetadata>>
     {
     }
 }

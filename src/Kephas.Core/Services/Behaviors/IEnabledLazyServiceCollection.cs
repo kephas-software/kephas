@@ -9,6 +9,7 @@ namespace Kephas.Services.Behaviors
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Service enumerating enabled lazy services of type <typeparamref name="TContract"/>.
@@ -16,7 +17,7 @@ namespace Kephas.Services.Behaviors
     /// <typeparam name="TContract">The service contract type.</typeparam>
     /// <typeparam name="TMetadata">The service metadata type.</typeparam>
     [AppServiceContract(AsOpenGeneric = true)]
-    public interface IEnabledLazyServiceCollection<TContract, TMetadata> : IEnumerable<Lazy<TContract, TMetadata>>
+    public interface IEnabledLazyServiceCollection<TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata> : IEnumerable<Lazy<TContract, TMetadata>>
     {
     }
 }

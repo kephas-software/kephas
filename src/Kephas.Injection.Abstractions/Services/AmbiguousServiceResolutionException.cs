@@ -19,7 +19,9 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="message">The message.</param>
         public AmbiguousServiceResolutionException(string message)
-            : base(message) { }
+            : base(message)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbiguousServiceResolutionException"/> class.
@@ -27,6 +29,8 @@ namespace Kephas.Services
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner exception.</param>
         public AmbiguousServiceResolutionException(string message, Exception inner)
-            : base(message, inner) { }
+            : base(message, inner)
+        {
+        }
     }
 }

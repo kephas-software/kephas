@@ -39,5 +39,13 @@ namespace Kephas.Behaviors
         /// The behavior value.
         /// </value>
         new TValue Value { get; }
+
+        /// <summary>
+        /// Gets the behavior value.
+        /// </summary>
+        /// <value>
+        /// The behavior value.
+        /// </value>
+        object? IBehaviorValue.Value => this.Value;
     }
 }
