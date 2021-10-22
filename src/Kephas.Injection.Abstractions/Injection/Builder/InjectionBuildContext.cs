@@ -13,7 +13,7 @@ namespace Kephas.Injection.Builder
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Application;
+
     using Kephas.Injection.Configuration;
     using Kephas.Services;
 
@@ -28,7 +28,6 @@ namespace Kephas.Injection.Builder
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="assemblies">
         /// An enumeration of assemblies used in injection.
-        /// If not provided, the application assemblies provided by the <see cref="IAppRuntime"/> is used.
         /// </param>
         public InjectionBuildContext(IAmbientServices ambientServices, IList<Assembly>? assemblies = null)
             : base(ambientServices ?? throw new ArgumentNullException(nameof(ambientServices)))

@@ -105,7 +105,7 @@ namespace Kephas.Services
             }
             else
             {
-                context.SetPropertyValue(nameof(ILoggable.Logger), contextLogger);
+                context[nameof(ILoggable.Logger)] = contextLogger;
             }
 
             return context;

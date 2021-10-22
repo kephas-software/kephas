@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Services
 {
     using System;
@@ -17,8 +15,8 @@ namespace Kephas.Services
     using System.Security.Principal;
 
     using Kephas;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Resources;
 
@@ -94,7 +92,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The ambient services.
         /// </newValue>
-        public IAmbientServices AmbientServices { get; private set; }
+        public IAmbientServices AmbientServices { get; private set; } = null!;
 
         /// <summary>
         /// Gets the dependency injection/injector.
@@ -102,7 +100,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The injector.
         /// </newValue>
-        public IInjector Injector { get; private set; }
+        public IInjector Injector { get; private set; } = null!;
 
         /// <summary>
         /// Gets or sets the authenticated user.
@@ -153,7 +151,8 @@ namespace Kephas.Services
         {
             if (currentValue != null && currentValue != newValue)
             {
-                throw new SecurityException(Strings.Context_CannotChangeIdentity_Exception);
+                // TODO throw new SecurityException(Strings.Context_CannotChangeIdentity_Exception);
+                throw new SecurityException("Cannot change the identity in the context once it has been set.");
             }
 
             return true;
@@ -208,7 +207,10 @@ namespace Kephas.Services
         private static IInjector GetParentInjector(IContext parentContext)
         {
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
-            Requires.NotNull(parentContext.Injector, nameof(parentContext.Injector));
+            if (parentContext.Injector == null)
+            {
+                throw new ArgumentNullException(nameof(parentContext.Injector));
+            }
 
             return parentContext.Injector;
         }

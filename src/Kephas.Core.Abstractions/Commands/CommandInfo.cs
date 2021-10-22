@@ -7,7 +7,8 @@
 
 namespace Kephas.Commands
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -21,7 +22,7 @@ namespace Kephas.Commands
         /// <param name="commandLine">The command line.</param>
         public CommandInfo(string commandLine)
         {
-            Requires.NotNullOrEmpty(commandLine, nameof(commandLine));
+            commandLine = commandLine ?? throw new ArgumentNullException(nameof(commandLine));
 
             (this.Name, this.Args) = this.ParseCore(commandLine);
         }
@@ -33,9 +34,7 @@ namespace Kephas.Commands
         /// <param name="args">The command arguments.</param>
         public CommandInfo(string name, IDynamic? args)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
-
-            this.Name = name;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name));
             this.Args = args ?? new Args();
         }
 

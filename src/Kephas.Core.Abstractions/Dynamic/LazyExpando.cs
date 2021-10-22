@@ -13,7 +13,6 @@ namespace Kephas.Dynamic
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>

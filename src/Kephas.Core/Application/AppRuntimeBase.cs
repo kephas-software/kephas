@@ -15,14 +15,11 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net;
-    using System.Net.Sockets;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Runtime.Loader;
     using System.Runtime.Versioning;
-    using System.Text.RegularExpressions;
 
     using Kephas.Collections;
     using Kephas.Dynamic;
