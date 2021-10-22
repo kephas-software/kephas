@@ -13,7 +13,6 @@ namespace Kephas.Reflection
     using System;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection.Localization;
 
     /// <summary>
@@ -94,9 +93,9 @@ namespace Kephas.Reflection
         /// </returns>
         public static IMemberInfoLocalization GetLocalization(this PropertyInfo propertyInfo)
         {
-            Requires.NotNull(propertyInfo, nameof(propertyInfo));
+            propertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
 
-            var runtimeTypeInfo = propertyInfo.DeclaringType.AsRuntimeTypeInfo();
+            var runtimeTypeInfo = propertyInfo.DeclaringType!.AsRuntimeTypeInfo();
             var runtimePropertyInfo = runtimeTypeInfo.Properties[propertyInfo.Name];
             return GetLocalization(runtimePropertyInfo);
         }
@@ -110,7 +109,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static IMemberInfoLocalization GetLocalization(this IPropertyInfo propertyInfo)
         {
-            Requires.NotNull(propertyInfo, nameof(propertyInfo));
+            propertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
 
             var localization = propertyInfo[LocalizationPropertyName] as IMemberInfoLocalization;
             if (localization == null)

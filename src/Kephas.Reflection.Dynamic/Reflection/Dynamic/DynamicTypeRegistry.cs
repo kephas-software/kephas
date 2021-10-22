@@ -15,7 +15,6 @@ namespace Kephas.Reflection.Dynamic
     using System.Threading.Tasks;
 
     using Kephas.Data;
-    using Kephas.Data.Formatting;
     using Kephas.Dynamic;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;

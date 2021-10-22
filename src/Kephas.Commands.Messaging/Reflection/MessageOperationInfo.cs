@@ -38,7 +38,7 @@ namespace Kephas.Commands.Messaging.Reflection
         {
             Requires.NotNull(messageType, nameof(messageType));
             Requires.NotNull(lazyMessageProcessor, nameof(lazyMessageProcessor));
-            Requires.NotNull(typeRegistry, nameof(typeRegistry));
+            typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
 
             this.MessageType = messageType;
             this.LazyMessageProcessor = lazyMessageProcessor;

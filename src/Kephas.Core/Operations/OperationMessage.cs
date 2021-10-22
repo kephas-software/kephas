@@ -13,7 +13,6 @@ namespace Kephas.Operations
     using System;
 
     using Kephas.Data.Formatting;
-    using Kephas.Dynamic;
 
     /// <summary>
     /// An operation message.

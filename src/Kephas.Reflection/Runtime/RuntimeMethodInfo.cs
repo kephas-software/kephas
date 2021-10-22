@@ -16,8 +16,6 @@ namespace Kephas.Runtime
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -40,9 +38,7 @@ namespace Kephas.Runtime
         internal RuntimeMethodInfo(IRuntimeTypeRegistry typeRegistry, MethodInfo methodInfo, ILogger? logger = null)
             : base(typeRegistry, logger)
         {
-            Requires.NotNull(methodInfo, nameof(methodInfo));
-
-            this.MethodInfo = methodInfo;
+            this.MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
             this.Name = methodInfo.Name;
             this.FullName = methodInfo.DeclaringType?.FullName + "." + methodInfo.Name;
         }
@@ -93,7 +89,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo? DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.MethodInfo.DeclaringType);
+        public IElementInfo? DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.MethodInfo.DeclaringType!);
 
         /// <summary>
         /// Gets the method info.

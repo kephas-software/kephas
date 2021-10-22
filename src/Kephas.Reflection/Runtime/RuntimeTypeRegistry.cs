@@ -14,7 +14,6 @@ namespace Kephas.Runtime
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Injection.AttributedModel;
     using Kephas.Logging;

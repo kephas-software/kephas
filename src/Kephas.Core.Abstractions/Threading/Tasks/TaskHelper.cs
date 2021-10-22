@@ -17,7 +17,6 @@ namespace Kephas.Threading.Tasks
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -386,9 +385,7 @@ namespace Kephas.Threading.Tasks
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
-
-            var task = Task.Run(action, cancellationToken);
+            var task = Task.Run(action ?? throw new ArgumentNullException(nameof(action)), cancellationToken);
             Task? completedTask = null;
             try
             {
@@ -486,9 +483,7 @@ namespace Kephas.Threading.Tasks
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(func, nameof(func));
-
-            var task = Task.Run(func, cancellationToken);
+            var task = Task.Run(func ?? throw new ArgumentNullException(nameof(func)), cancellationToken);
             Task? completedTask = null;
             try
             {

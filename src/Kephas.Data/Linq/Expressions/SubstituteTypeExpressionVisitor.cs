@@ -47,7 +47,7 @@ namespace Kephas.Data.Linq.Expressions
             this.implementationTypeResolver = (t, ctx) =>
                 {
                     var implementationType = implementationTypeResolver?.Invoke(t, ctx)
-                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(), throwOnNotFound: false, activationContext: ctx) as IRuntimeTypeInfo)?.Type;
+                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(), activationContext: ctx, throwOnNotFound: false) as IRuntimeTypeInfo)?.Type;
                     return implementationType;
                 };
             this.constantHandlers = constantHandlers ?? GetDefaultSubstituteTypeConstantHandlers();

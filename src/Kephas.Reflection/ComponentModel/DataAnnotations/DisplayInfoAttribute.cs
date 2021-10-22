@@ -12,9 +12,8 @@ namespace Kephas.ComponentModel.DataAnnotations
 {
     using System;
 
-    using Kephas.Localization.Internal;
+    using Kephas.Localization;
     using Kephas.Reflection;
-    using Kephas.Reflection.Localization;
 
     /// <summary>
     /// Display attribute for types.
@@ -22,10 +21,10 @@ namespace Kephas.ComponentModel.DataAnnotations
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
     public class DisplayInfoAttribute : Attribute, IDisplayInfo
     {
-        private readonly LocalizableString description = new LocalizableString(nameof(Description));
-        private readonly LocalizableString name = new LocalizableString(nameof(Name));
-        private readonly LocalizableString shortName = new LocalizableString(nameof(ShortName));
-        private readonly LocalizableString prompt = new LocalizableString(nameof(Prompt));
+        private readonly LocalizableString description = new (nameof(Description));
+        private readonly LocalizableString name = new (nameof(Name));
+        private readonly LocalizableString shortName = new (nameof(ShortName));
+        private readonly LocalizableString prompt = new (nameof(Prompt));
 
         /// <summary>
         /// The resource type.
@@ -62,7 +61,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <value>
         /// The name.
         /// </value>
-        public string Name
+        public string? Name
         {
             get => this.name.Value;
             set
@@ -82,7 +81,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <value>
         /// The description.
         /// </value>
-        public string Description
+        public string? Description
         {
             get => this.description.Value;
             set
@@ -102,7 +101,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <value>
         /// The prompt.
         /// </value>
-        public string Prompt
+        public string? Prompt
         {
             get => this.prompt.Value;
             set
@@ -122,7 +121,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <value>
         /// The short name.
         /// </value>
-        public string ShortName
+        public string? ShortName
         {
             get => this.shortName.Value;
             set

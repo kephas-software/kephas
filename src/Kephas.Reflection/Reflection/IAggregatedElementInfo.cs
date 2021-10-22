@@ -11,6 +11,7 @@
 namespace Kephas.Reflection
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Contract for aggregated element information.
@@ -24,5 +25,17 @@ namespace Kephas.Reflection
         /// The parts.
         /// </value>
         IEnumerable<object> Parts { get; }
+
+        /// <summary>
+        /// Indicates whether the <see cref="IAggregatedElementInfo"/> aggregates the provided part at any level.
+        /// </summary>
+        /// <param name="part">The part.</param>
+        /// <returns>
+        /// <c>true</c> if the part is aggregated, <c>false</c> if not.
+        /// </returns>
+        public bool Aggregates(object part)
+        {
+            return this.Parts.Any(p => p == part || (p as IAggregatedElementInfo)?.Aggregates(part) == true);
+        }
     }
 }

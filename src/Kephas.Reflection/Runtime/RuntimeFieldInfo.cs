@@ -68,7 +68,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.FieldInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.FieldInfo.DeclaringType!);
 
         /// <summary>
         /// Gets the field information.

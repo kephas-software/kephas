@@ -197,7 +197,7 @@ namespace Kephas.Runtime
                     .GetProperty("IsMacOS", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
                 if (isMacOSProperty != null)
                 {
-                    var isMacOS = (bool)isMacOSProperty.GetValue(null);
+                    var isMacOS = (bool)isMacOSProperty.GetValue(null)!;
                     if (isMacOS)
                     {
                         return PlatformID.MacOSX;

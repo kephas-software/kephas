@@ -10,11 +10,11 @@
 
 namespace Kephas.Messaging.Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Runtime;
     using Kephas.Operations;
@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Application
         /// <param name="typeRegistry">The type registry.</param>
         public MessagingAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
         {
-            Requires.NotNull(typeRegistry, nameof(typeRegistry));
+            typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
 
             this.typeRegistry = typeRegistry;
         }

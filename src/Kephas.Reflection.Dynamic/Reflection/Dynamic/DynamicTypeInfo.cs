@@ -173,7 +173,7 @@ namespace Kephas.Reflection.Dynamic
 
             if (throwIfNotFound)
             {
-                throw new KeyNotFoundException(string.Format(Strings.RuntimeTypeInfo_MemberNotFound_Exception, name, this));
+                throw new KeyNotFoundException(string.Format(ReflectionStrings.RuntimeTypeInfo_MemberNotFound_Exception, name, this));
             }
 
             return null;

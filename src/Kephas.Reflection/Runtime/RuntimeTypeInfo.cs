@@ -18,12 +18,10 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime.Factories;
-    using Kephas.Services;
 
     /// <summary>
     /// An object activator delegate.
@@ -32,7 +30,7 @@ namespace Kephas.Runtime
     /// <returns>
     /// An object.
     /// </returns>
-    internal delegate object InstanceActivator(params object?[] args);
+    internal delegate object InstanceActivator(params object?[]? args);
 
     /// <summary>
     /// Provides optimized and extensible access to a type's methods and properties at runtime.
@@ -67,7 +65,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The default value.
         /// </summary>
-        private object defaultValue;
+        private object? defaultValue;
 
         /// <summary>
         /// True if default value created.
@@ -119,7 +117,7 @@ namespace Kephas.Runtime
             this.Type = type;
             this.TypeInfo = typeInfo;
             this.Name = type.Name;
-            this.FullName = typeInfo.FullName;
+            this.FullName = typeInfo.FullName!;
             this.Namespace = type.Namespace;
         }
 
@@ -145,7 +143,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The full name qualified with the module.
         /// </value>
-        public string QualifiedFullName => this.TypeInfo.GetQualifiedFullName();
+        public string QualifiedFullName => this.TypeInfo.GetQualifiedFullName()!;
 
         /// <summary>
         /// Gets the namespace of the type.
@@ -161,7 +159,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The default value.
         /// </value>
-        public object DefaultValue
+        public object? DefaultValue
         {
             get
             {
@@ -397,21 +395,21 @@ namespace Kephas.Runtime
         /// </returns>
         public IElementInfo? GetMember(string name, bool throwIfNotFound = true)
         {
-            if (this.Fields.TryGetValue(name, out IRuntimeFieldInfo fieldInfo))
+            if (this.Fields.TryGetValue(name, out IRuntimeFieldInfo? fieldInfo))
             {
                 return fieldInfo;
             }
 
-            if (this.Properties.TryGetValue(name, out IRuntimePropertyInfo propertyInfo))
+            if (this.Properties.TryGetValue(name, out IRuntimePropertyInfo? propertyInfo))
             {
                 return propertyInfo;
             }
 
-            if (this.Methods.TryGetValue(name, out ICollection<IRuntimeMethodInfo> methodInfos))
+            if (this.Methods.TryGetValue(name, out ICollection<IRuntimeMethodInfo>? methodInfos))
             {
                 if (methodInfos.Count > 1)
                 {
-                    throw new AmbiguousMatchException(Strings.RuntimeTypeInfo_AmbiguousMember_Exception.FormatWith(name, this, nameof(this.Methods)));
+                    throw new AmbiguousMatchException(ReflectionStrings.RuntimeTypeInfo_AmbiguousMember_Exception.FormatWith(name, this, nameof(this.Methods)));
                 }
 
                 return methodInfos.First();
@@ -419,7 +417,7 @@ namespace Kephas.Runtime
 
             if (throwIfNotFound)
             {
-                throw new KeyNotFoundException(Strings.RuntimeTypeInfo_MemberNotFound_Exception.FormatWith(name, this.Type));
+                throw new KeyNotFoundException(ReflectionStrings.RuntimeTypeInfo_MemberNotFound_Exception.FormatWith(name, this.Type));
             }
 
             return null;
@@ -838,11 +836,11 @@ namespace Kephas.Runtime
         /// </returns>
         private IRuntimePropertyInfo? GetProperty(string propertyName, bool throwOnNotFound = true)
         {
-            if (!this.GetProperties().TryGetValue(propertyName, out IRuntimePropertyInfo propertyInfo))
+            if (!this.GetProperties().TryGetValue(propertyName, out IRuntimePropertyInfo? propertyInfo))
             {
                 if (throwOnNotFound)
                 {
-                    throw new MemberAccessException(string.Format(Strings.RuntimeTypeInfo_PropertyNotFound_Exception, propertyName, this.Type));
+                    throw new MemberAccessException(string.Format(ReflectionStrings.RuntimeTypeInfo_PropertyNotFound_Exception, propertyName, this.Type));
                 }
 
                 return null;
@@ -861,7 +859,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IList<IRuntimeMethodInfo>? GetMethods(string methodName, bool throwOnNotFound = true)
         {
-            if (!this.GetMethods().TryGetValue(methodName, out ICollection<IRuntimeMethodInfo> methodInfos))
+            if (!this.GetMethods().TryGetValue(methodName, out ICollection<IRuntimeMethodInfo>? methodInfos))
             {
                 if (throwOnNotFound)
                 {
@@ -933,12 +931,12 @@ namespace Kephas.Runtime
 
             if (constructors.Count == 0)
             {
-                return args => throw new InvalidOperationException(string.Format(Strings.RuntimeTypeInfo_NoPublicConstructorDefined_Exception, this.Type));
+                return args => throw new InvalidOperationException(string.Format(ReflectionStrings.RuntimeTypeInfo_NoPublicConstructorDefined_Exception, this.Type));
             }
 
             if (constructors.Count > 1)
             {
-                return args => args == null ? Activator.CreateInstance(this.Type) : Activator.CreateInstance(this.Type, args);
+                return args => args == null ? Activator.CreateInstance(this.Type)! : Activator.CreateInstance(this.Type, args)!;
             }
 
             var constructor = constructors[0];

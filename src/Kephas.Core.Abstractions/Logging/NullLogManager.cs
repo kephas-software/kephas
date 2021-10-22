@@ -17,7 +17,6 @@ namespace Kephas.Logging
     /// <summary>
     /// A log manager service which does not log anything.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
     public class NullLogManager : ILogManager
     {
         /// <summary>

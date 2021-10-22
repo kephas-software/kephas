@@ -43,10 +43,7 @@ namespace Kephas.Activation
         /// <returns>
         /// An instance of the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        public virtual object CreateInstance(
-            ITypeInfo typeInfo,
-            IEnumerable<object?>? args = null,
-            IContext? activationContext = null)
+        public virtual object CreateInstance(ITypeInfo typeInfo, IEnumerable<object?>? args = null, dynamic? activationContext = null)
         {
             var implementationType = this.GetImplementationType(typeInfo, activationContext);
             if (implementationType == null)
@@ -66,10 +63,7 @@ namespace Kephas.Activation
         /// <returns>
         /// The implementation type for the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        public virtual ITypeInfo? GetImplementationType(
-            ITypeInfo abstractType,
-            IContext? activationContext = null,
-            bool throwOnNotFound = true)
+        public virtual ITypeInfo? GetImplementationType(ITypeInfo abstractType,  dynamic? activationContext = null, bool throwOnNotFound = true)
         {
             var implementationType = this.implementationTypeMap.GetOrAdd(
                 abstractType,
@@ -118,10 +112,7 @@ namespace Kephas.Activation
         /// <returns>
         /// The implementation type for the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        protected virtual ITypeInfo? ComputeImplementationType(
-            ITypeInfo abstractType,
-            IContext? activationContext = null,
-            bool throwOnNotFound = true)
+        protected virtual ITypeInfo? ComputeImplementationType(ITypeInfo abstractType, dynamic? activationContext = null, bool throwOnNotFound = true)
         {
             var runtimeTypeInfo = this.TryGetTypeInfo(abstractType);
             if (runtimeTypeInfo != null && (runtimeTypeInfo.IsAbstract || runtimeTypeInfo.IsInterface))

@@ -19,7 +19,7 @@
         <Description>
             Provides abstractions for the dependency injection infrastructure.
             Typically used areas and classes/interfaces/services:
-            - Reflection: ITypeInfo, ITypeLoader.
+            - Reflection: ITypeRegistry, ITypeInfo, RuntimeTypeInfo, ITypeLoader.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -73,6 +73,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -108,6 +109,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

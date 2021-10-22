@@ -286,6 +286,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kephas.AspNetCore.Blazor.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection", "Kephas.Reflection\Kephas.Reflection.csproj", "{1F0CCF32-E424-4822-94C8-293F16CF425A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Dynamic", "Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj", "{C3856507-F883-4B23-8023-9284A9143032}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -792,6 +794,10 @@ Global
 		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F0CCF32-E424-4822-94C8-293F16CF425A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3856507-F883-4B23-8023-9284A9143032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3856507-F883-4B23-8023-9284A9143032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3856507-F883-4B23-8023-9284A9143032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3856507-F883-4B23-8023-9284A9143032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

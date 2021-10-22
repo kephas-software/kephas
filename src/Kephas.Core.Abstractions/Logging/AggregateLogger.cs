@@ -33,7 +33,7 @@ namespace Kephas.Logging
         /// <param name="loggers">A variable-length parameters list containing loggers.</param>
         public AggregateLogger(params ILogger[]? loggers)
         {
-            this.loggers = loggers ?? new ILogger[0];
+            this.loggers = loggers ?? Array.Empty<ILogger>();
         }
 
         /// <summary>

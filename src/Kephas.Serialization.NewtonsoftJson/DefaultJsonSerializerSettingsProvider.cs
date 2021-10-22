@@ -55,7 +55,7 @@ namespace Kephas.Serialization.Json
             : base(logManager)
         {
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
-            Requires.NotNull(typeRegistry, nameof(typeRegistry));
+            typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
 
             this.TypeResolver = typeResolver;
             this.TypeRegistry = typeRegistry;

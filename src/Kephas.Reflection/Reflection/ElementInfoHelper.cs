@@ -43,13 +43,13 @@ namespace Kephas.Reflection
             }
 
             var annotations = elementInfo?.Annotations;
-            displayInfo = annotations?.OfType<IDisplayInfo>().FirstOrDefault();
+            displayInfo = annotations?.OfType<IDisplayInfo>().FirstOrDefault()!;
             if (displayInfo == null)
             {
                 displayInfo = annotations
                     ?.OfType<IAttributeProvider>()
                     .Select(p => p.GetAttribute<DisplayInfoAttribute>())
-                    .FirstOrDefault(a => a != null);
+                    .FirstOrDefault(a => a != null)!;
 
                 if (displayInfo == null)
                 {
@@ -66,7 +66,7 @@ namespace Kephas.Reflection
                 displayInfo = new DisplayInfoAttribute();
             }
 
-            elementInfo[DisplayInfoKey] = displayInfo;
+            elementInfo![DisplayInfoKey] = displayInfo;
             return displayInfo;
         }
 

@@ -15,7 +15,6 @@ namespace Kephas.Runtime
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -49,7 +48,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The name of the element.
         /// </value>
-        public string Name => this.assembly.GetName().Name;
+        public string Name => this.assembly.GetName().Name!;
 
         /// <summary>
         /// Gets the full name of the element.
@@ -57,7 +56,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The full name of the element.
         /// </value>
-        public string FullName => this.assembly.FullName;
+        public string FullName => this.assembly.FullName!;
 
         /// <summary>
         /// Gets the element annotations.

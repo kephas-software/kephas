@@ -13,7 +13,6 @@ namespace Kephas.Threading.Tasks
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -43,9 +42,7 @@ namespace Kephas.Threading.Tasks
         /// <param name="threadContextPool">The thread context pool.</param>
         internal ThreadContextBuilder(IDynamic threadContextPool)
         {
-            Requires.NotNull(threadContextPool, nameof(threadContextPool));
-
-            this.threadContextPool = threadContextPool;
+            this.threadContextPool = threadContextPool ?? throw new ArgumentNullException(nameof(threadContextPool));
         }
 
         /// <summary>
@@ -57,7 +54,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public ThreadContextBuilder WithStoreAction(Action<ThreadContext> storeAction)
         {
-            Requires.NotNull(storeAction, nameof(storeAction));
+            storeAction = storeAction ?? throw new ArgumentNullException(nameof(storeAction));
 
             var storeActions = this.GetOrCreateContextActions(ThreadingContextStoreActionsKey);
             storeActions.Add(storeAction);
@@ -74,7 +71,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public ThreadContextBuilder WithRestoreAction(Action<ThreadContext> restoreAction)
         {
-            Requires.NotNull(restoreAction, nameof(restoreAction));
+            restoreAction = restoreAction ?? throw new ArgumentNullException(nameof(restoreAction));
 
             var restoreActions = this.GetOrCreateContextActions(ThreadingContextRestoreActionsKey);
             restoreActions.Add(restoreAction);

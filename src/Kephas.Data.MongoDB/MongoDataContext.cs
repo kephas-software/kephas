@@ -57,7 +57,7 @@ namespace Kephas.Data.MongoDB
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
-            Requires.NotNull(typeRegistry, nameof(typeRegistry));
+            typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
             Requires.NotNull(namingStrategy, nameof(namingStrategy));
 
             this.typeRegistry = typeRegistry;

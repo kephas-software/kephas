@@ -10,9 +10,8 @@
 
 namespace Kephas.Reflection
 {
+    using System;
     using System.Reflection;
-
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A qualified full name.
@@ -47,7 +46,7 @@ namespace Kephas.Reflection
         /// <summary>
         /// Gets the name part from the type name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; private set; } = null!;
 
         /// <summary>
         /// Gets the namespace part from the type name.
@@ -60,7 +59,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The name of the type.
         /// </value>
-        public string TypeName { get; private set; }
+        public string TypeName { get; private set; } = null!;
 
         /// <summary>
         /// Gets the name of the assembly.
@@ -82,7 +81,7 @@ namespace Kephas.Reflection
 
         private static (string typeName, string? assemblyName) ParseParts(string qualifiedFullName)
         {
-            Requires.NotNullOrEmpty(qualifiedFullName, nameof(qualifiedFullName));
+            qualifiedFullName = qualifiedFullName ?? throw new ArgumentNullException(nameof(qualifiedFullName));
 
             var endGenericTypeNameIndex = qualifiedFullName.LastIndexOf(GenericClosingBracket);
             int typeNameLength;

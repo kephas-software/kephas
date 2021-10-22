@@ -5,14 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Reflection.Dynamic
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
-
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Collection of dynamic element infos.
@@ -30,9 +27,7 @@ namespace Kephas.Reflection.Dynamic
         /// <param name="declaringContainer">The declaring container.</param>
         public DynamicElementInfoCollection(IElementInfo declaringContainer)
         {
-            Requires.NotNull(declaringContainer, nameof(declaringContainer));
-
-            this.declaringContainer = declaringContainer;
+            this.declaringContainer = declaringContainer ?? throw new ArgumentNullException(nameof(declaringContainer));
         }
 
         /// <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>

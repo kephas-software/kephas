@@ -22,25 +22,35 @@ namespace Kephas.Reflection
     /// <summary>
     /// The default type loader.
     /// </summary>
-    public class DefaultTypeLoader : Loggable, ITypeLoader
+    public class DefaultTypeLoader : ILoggable, ITypeLoader
     {
-        private static readonly Lazy<ITypeLoader> LazyInstance = new Lazy<ITypeLoader>(() => new DefaultTypeLoader());
-        private readonly ConcurrentDictionary<Assembly, IEnumerable<Type>> assemblyCache =
-            new ConcurrentDictionary<Assembly, IEnumerable<Type>>();
+        private static readonly Lazy<ITypeLoader> LazyInstance = new (() => new DefaultTypeLoader());
+        private readonly ConcurrentDictionary<Assembly, IEnumerable<Type>> assemblyCache = new ();
+
+        private readonly Lazy<ILogger> lazyLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
         public DefaultTypeLoader(ILogManager? logManager = null)
-            : base(logManager)
         {
+            this.lazyLogger = new Lazy<ILogger>(
+                () => (logManager ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType()));
         }
 
         /// <summary>
         /// Gets the static instance of the <see cref="DefaultTypeLoader"/>.
         /// </summary>
         public static ITypeLoader Instance => LazyInstance.Value;
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger Logger => this.lazyLogger.Value;
 
         /// <summary>
         /// Gets the loadable exported types from the provided assembly.
@@ -61,22 +71,22 @@ namespace Kephas.Reflection
                     // http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
                     try
                     {
-                        return assembly.IsDynamic ? new Type[0] : assembly.ExportedTypes;
+                        return assembly.IsDynamic ? Type.EmptyTypes : assembly.ExportedTypes;
                     }
                     catch (ReflectionTypeLoadException e)
                     {
-                        this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
-                        return e.Types.Where(t => t != null);
+                        this.Logger.Error(e, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+                        return e.Types.Where(t => t != null)!;
                     }
                     catch (TypeLoadException tle)
                     {
-                        this.Logger.Error(tle, Strings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
+                        this.Logger.Error(tle, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
 
                         return this.GetLoadableDefinedTypes(assembly);
                     }
                     catch (Exception e)
                     {
-                        this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+                        this.Logger.Error(e, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
 
                         return this.GetLoadableDefinedTypes(assembly);
                     }
@@ -98,8 +108,8 @@ namespace Kephas.Reflection
             }
             catch (ReflectionTypeLoadException e)
             {
-                this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly);
-                return e.Types.Where(t => t != null);
+                this.Logger.Error(e, ReflectionStrings.DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly);
+                return e.Types.Where(t => t != null)!;
             }
         }
     }

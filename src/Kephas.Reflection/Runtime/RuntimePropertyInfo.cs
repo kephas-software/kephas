@@ -150,7 +150,7 @@ namespace Kephas.Runtime
             var setDelegate = this.lazySetter.Value;
             if (setDelegate == null)
             {
-                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, this.PropertyInfo.DeclaringType));
+                throw new MemberAccessException(string.Format(ReflectionStrings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, this.PropertyInfo.DeclaringType));
             }
 
             setDelegate(obj, value);
@@ -169,7 +169,7 @@ namespace Kephas.Runtime
             var getDelegate = this.lazyGetter.Value;
             if (getDelegate == null)
             {
-                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, this.PropertyInfo.DeclaringType));
+                throw new MemberAccessException(string.Format(ReflectionStrings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, this.PropertyInfo.DeclaringType));
             }
 
             return getDelegate(obj);
@@ -224,7 +224,7 @@ namespace Kephas.Runtime
                 }
 
                 var getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
-                return o => getter((T)o);
+                return o => getter((T)o!);
             }
             catch (ArgumentException ex)
             {
@@ -266,7 +266,7 @@ namespace Kephas.Runtime
                 }
 
                 var setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
-                return (o, v) => setter((T)o, (TMember)v);
+                return (o, v) => setter((T)o!, (TMember)v!);
             }
             catch (ArgumentException ex)
             {

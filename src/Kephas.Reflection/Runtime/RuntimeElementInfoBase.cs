@@ -7,7 +7,8 @@
 
 namespace Kephas.Runtime
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Dynamic;
     using Kephas.Logging;
 
@@ -16,11 +17,6 @@ namespace Kephas.Runtime
     /// </summary>
     public abstract class RuntimeElementInfoBase : Expando
     {
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        protected readonly ILogger? Logger;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeElementInfoBase"/> class.
         /// </summary>
@@ -31,9 +27,7 @@ namespace Kephas.Runtime
             ILogger? logger = null)
             : base(isThreadSafe: true)
         {
-            Requires.NotNull(typeRegistry, nameof(typeRegistry));
-
-            this.TypeRegistry = typeRegistry;
+            this.TypeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
             this.Logger = logger;
         }
 
@@ -41,5 +35,10 @@ namespace Kephas.Runtime
         /// Gets the container type registry.
         /// </summary>
         public IRuntimeTypeRegistry TypeRegistry { get; }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger? Logger { get; }
     }
 }

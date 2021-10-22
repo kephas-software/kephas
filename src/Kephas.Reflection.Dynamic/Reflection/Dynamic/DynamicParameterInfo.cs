@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicPropertyInfo.cs" company="Kephas Software SRL">
+// <copyright file="DynamicParameterInfo.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the dynamic property information class.
+//   Implements the dynamic parameter information class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,35 +14,34 @@ namespace Kephas.Reflection.Dynamic
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Serialization;
 
     /// <summary>
-    /// Dynamic property information.
+    /// Dynamic parameter information.
     /// </summary>
-    public class DynamicPropertyInfo : DynamicElementInfo, IPropertyInfo
+    public class DynamicParameterInfo : DynamicElementInfo, IParameterInfo
     {
         private ITypeInfo? valueType;
         private string? valueTypeName;
 
         /// <summary>
-        /// Gets or sets the type of the property.
+        /// Gets or sets the type of the parameter.
         /// </summary>
         /// <value>
-        /// The type of the property.
+        /// The type of the parameter.
         /// </value>
         [ExcludeFromSerialization]
-        public virtual ITypeInfo ValueType
+        public ITypeInfo ValueType
         {
-            get => this.valueType ??= this.TryGetType(this.valueTypeName);
+            get => (this.valueType ??= this.TryGetType(this.valueTypeName))!;
             set => this.valueType = value;
         }
 
         /// <summary>
-        /// Gets or sets the type name of the property.
+        /// Gets or sets the type name of the parameter.
         /// </summary>
-        public virtual string? ValueTypeName
+        public string? ValueTypeName
         {
             get => this.valueTypeName ?? this.valueType?.FullName;
             set
@@ -53,20 +52,36 @@ namespace Kephas.Reflection.Dynamic
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the property can be written to.
+        /// Gets the position in the parameter's list.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
+        /// The position in the parameter's list.
         /// </value>
-        public virtual bool CanWrite { get; set; } = true;
+        public new int Position => base.Position;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the property value can be read.
+        /// Gets or sets a value indicating whether this parameter is optional.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// <c>true</c> if the parameter is optional, <c>false</c> otherwise.
         /// </value>
-        public virtual bool CanRead { get; set; } = true;
+        public bool IsOptional { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the parameter is for input.
+        /// </summary>
+        /// <value>
+        /// True if this parameter is for input, false if not.
+        /// </value>
+        public bool IsIn { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the parameter is for output.
+        /// </summary>
+        /// <value>
+        /// True if this parameter is for output, false if not.
+        /// </value>
+        public bool IsOut { get; set; }
 
         /// <summary>
         /// Gets the type of the element's value asynchronously.
@@ -77,7 +92,7 @@ namespace Kephas.Reflection.Dynamic
         /// </returns>
         public virtual async Task<ITypeInfo> GetValueTypeAsync(CancellationToken cancellationToken = default)
         {
-            return this.valueType ??= await this.TryGetTypeAsync(this.valueTypeName, cancellationToken);
+            return (this.valueType ??= await this.TryGetTypeAsync(this.valueTypeName, cancellationToken))!;
         }
 
         /// <summary>
@@ -85,14 +100,9 @@ namespace Kephas.Reflection.Dynamic
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public virtual void SetValue(object? obj, object? value)
+        public void SetValue(object? obj, object? value)
         {
             obj = obj ?? throw new ArgumentNullException(nameof(obj));
-
-            if (!this.CanWrite)
-            {
-                throw new InvalidOperationException($"Property '{this.Name}' is read-only.");
-            }
 
             if (obj is IDynamic expando)
             {
@@ -109,14 +119,9 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The value.
         /// </returns>
-        public virtual object? GetValue(object? obj)
+        public object? GetValue(object? obj)
         {
             obj = obj ?? throw new ArgumentNullException(nameof(obj));
-
-            if (!this.CanRead)
-            {
-                throw new InvalidOperationException($"Property '{this.Name}' is write-only.");
-            }
 
             if (obj is IDynamic expando)
             {

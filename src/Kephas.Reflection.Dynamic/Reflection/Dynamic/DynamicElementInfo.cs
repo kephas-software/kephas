@@ -34,7 +34,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The name of the element.
         /// </value>
-        public virtual string Name { get; set; }
+        public virtual string Name { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the full name of the element.
@@ -151,7 +151,7 @@ namespace Kephas.Reflection.Dynamic
             IElementInfo ancestor = this;
             while (ancestor is { } and not ITypeRegistry)
             {
-                ancestor = ancestor.DeclaringContainer;
+                ancestor = ancestor.DeclaringContainer!;
             }
 
             return ancestor as ITypeRegistry;

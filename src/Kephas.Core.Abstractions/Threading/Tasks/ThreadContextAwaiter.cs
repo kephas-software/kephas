@@ -16,8 +16,6 @@ namespace Kephas.Threading.Tasks
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Awaiter preserving the thread context.
     /// </summary>
