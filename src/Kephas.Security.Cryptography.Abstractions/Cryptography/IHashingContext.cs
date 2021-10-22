@@ -10,7 +10,8 @@
 
 namespace Kephas.Cryptography
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Services;
 
     /// <summary>
@@ -24,7 +25,7 @@ namespace Kephas.Cryptography
         /// <value>
         /// The salt.
         /// </value>
-        byte[] Salt { get; set; }
+        byte[]? Salt { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the service should use the default salt.
@@ -52,10 +53,8 @@ namespace Kephas.Cryptography
         public static TContext Salt<TContext>(this TContext hashingContext, byte[] salt)
             where TContext : class, IHashingContext
         {
-            Requires.NotNull(hashingContext, nameof(hashingContext));
-            Requires.NotNull(salt, nameof(salt));
-
-            hashingContext.Salt = salt;
+            hashingContext = hashingContext ?? throw new ArgumentNullException(nameof(hashingContext));
+            hashingContext.Salt = salt ?? throw new ArgumentNullException(nameof(salt));
 
             return hashingContext;
         }
@@ -72,7 +71,7 @@ namespace Kephas.Cryptography
         public static TContext UseDefaultSalt<TContext>(this TContext hashingContext, bool value)
             where TContext : class, IHashingContext
         {
-            Requires.NotNull(hashingContext, nameof(hashingContext));
+            hashingContext = hashingContext ?? throw new ArgumentNullException(nameof(hashingContext));
 
             hashingContext.UseDefaultSalt = value;
 

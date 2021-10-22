@@ -11,7 +11,7 @@
 namespace Kephas.Cryptography
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Services;
 
     /// <summary>

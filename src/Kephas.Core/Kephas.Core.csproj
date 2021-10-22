@@ -99,7 +99,6 @@
         <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
         <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
         <PackageReference Include="System.Reflection" Version="4.3.0" />
-        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
         <PackageReference Include="System.Security.Principal" Version="4.3.0" />
     </ItemGroup>
 

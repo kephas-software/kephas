@@ -17,10 +17,8 @@ namespace Kephas.Cryptography
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -43,11 +41,8 @@ namespace Kephas.Cryptography
             Func<IEncryptionContext> contextCtor,
             Func<IEncryptionContext, TAlgorithm> algorithmCtor)
         {
-            Requires.NotNull(contextCtor, nameof(contextCtor));
-            Requires.NotNull(algorithmCtor, nameof(algorithmCtor));
-
-            this.contextCtor = contextCtor;
-            this.algorithmCtor = algorithmCtor;
+            this.contextCtor = contextCtor ?? throw new ArgumentNullException(nameof(contextCtor));
+            this.algorithmCtor = algorithmCtor ?? throw new ArgumentNullException(nameof(algorithmCtor));
         }
 
         /// <summary>

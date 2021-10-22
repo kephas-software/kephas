@@ -87,10 +87,10 @@ namespace Kephas.Application
                 var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());
                 var assemblyFiles = this.EnumerateFiles(directory, AssemblyFileSearchPattern).Select(Path.GetFileName);
                 var assemblyFilesToLoad = assemblyFiles
-                                            .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
-                                            .Where(f => assemblyFilter(this.GetAssemblyName(f)));
+                                            .Where(f => !loadedAssemblyFiles.Contains(f!.ToLowerInvariant()))
+                                            .Where(f => assemblyFilter(this.GetAssemblyName(f!)));
                 assemblies.AddRange(assemblyFilesToLoad
-                                        .Select(f => this.LoadAssemblyFromPath(Path.Combine(directory, f)))
+                                        .Select(f => this.LoadAssemblyFromPath(Path.Combine(directory, f!)))
                                         .Where(a => assemblyFilter(a.GetName())));
             }
         }

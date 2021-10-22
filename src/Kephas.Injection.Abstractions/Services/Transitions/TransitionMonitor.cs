@@ -13,8 +13,6 @@ namespace Kephas.Services.Transitions
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Class monitoring the state of a service transition.
     /// </summary>
@@ -124,7 +122,7 @@ namespace Kephas.Services.Transitions
         {
             if (!this.IsNotStarted)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsNotStarted_Exception, this.transitionName, this.serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.AbstractionStrings.TransitionMonitor_AssertIsNotStarted_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -135,7 +133,7 @@ namespace Kephas.Services.Transitions
         {
             if (!this.IsInProgress)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsInProgress_Exception, this.transitionName, this.serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.AbstractionStrings.TransitionMonitor_AssertIsInProgress_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -146,7 +144,7 @@ namespace Kephas.Services.Transitions
         {
             if (!this.IsCompleted)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsCompleted_Exception, this.transitionName, this.serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.AbstractionStrings.TransitionMonitor_AssertIsCompleted_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -157,7 +155,7 @@ namespace Kephas.Services.Transitions
         {
             if (!this.IsCompleted || this.IsFaulted)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsCompletedSuccessfully_Exception, this.transitionName, this.serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.AbstractionStrings.TransitionMonitor_AssertIsCompletedSuccessfully_Exception, this.transitionName, this.serviceName));
             }
         }
 

@@ -13,8 +13,6 @@ namespace Kephas.Services.Transitions
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Class monitoring the finalization state for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TServiceImplementation"/>.
     /// </summary>

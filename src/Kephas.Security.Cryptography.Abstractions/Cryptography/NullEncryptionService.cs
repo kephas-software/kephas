@@ -15,7 +15,6 @@ namespace Kephas.Cryptography
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -34,7 +33,7 @@ namespace Kephas.Cryptography
         /// </returns>
         public byte[] GenerateKey(Action<IEncryptionContext>? optionsConfig = null)
         {
-            return null;
+            return null!;
         }
 
         /// <summary>

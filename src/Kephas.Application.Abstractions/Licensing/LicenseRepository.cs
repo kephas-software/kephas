@@ -10,6 +10,7 @@
 
 namespace Kephas.Licensing
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -66,7 +67,9 @@ namespace Kephas.Licensing
         /// <param name="rawLicenseData">Raw information describing the license.</param>
         public void StoreRawLicenseData(AppIdentity appIdentity, string rawLicenseData)
         {
-            var fileName = $"{appIdentity?.Id ?? LicenseFileName}.lic";
+            appIdentity = appIdentity ?? throw new ArgumentNullException(nameof(appIdentity));
+
+            var fileName = $"{appIdentity.Id ?? LicenseFileName}.lic";
             var licenseLocation = this.GetLicenseLocations(appIdentity).First();
             if (!Directory.Exists(licenseLocation))
             {

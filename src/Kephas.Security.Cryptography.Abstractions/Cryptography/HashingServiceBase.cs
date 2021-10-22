@@ -13,7 +13,6 @@ namespace Kephas.Cryptography
     using System;
     using System.Security.Cryptography;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

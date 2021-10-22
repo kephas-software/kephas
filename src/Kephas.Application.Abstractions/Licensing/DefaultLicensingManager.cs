@@ -18,7 +18,6 @@ namespace Kephas.Licensing
 
     using Kephas.Application;
     using Kephas.Cryptography;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -56,9 +55,7 @@ namespace Kephas.Licensing
         /// <param name="licenseDataGetter">The license data getter.</param>
         public DefaultLicensingManager(Func<AppIdentity, IEnumerable<LicenseData>> licenseDataGetter)
         {
-            Requires.NotNull(licenseDataGetter, nameof(licenseDataGetter));
-
-            this.licenseDataGetter = licenseDataGetter;
+            this.licenseDataGetter = licenseDataGetter ?? throw new ArgumentNullException(nameof(licenseDataGetter));
         }
 
         /// <summary>
@@ -196,12 +193,12 @@ namespace Kephas.Licensing
         private bool IsVersionMatch(string versionRange, SemanticVersion? version)
         {
             var range = VersionRange.Parse(versionRange);
-            if (range?.MinVersion != null && (version == null || version < range?.MinVersion))
+            if (range?.MinVersion != null && (version == null || version < range.MinVersion))
             {
                 return false;
             }
 
-            if (range?.MaxVersion != null && (version == null || version > range?.MaxVersion))
+            if (range?.MaxVersion != null && (version == null || version > range.MaxVersion))
             {
                 return false;
             }

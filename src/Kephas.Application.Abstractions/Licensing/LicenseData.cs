@@ -15,7 +15,6 @@ namespace Kephas.Licensing
     using System.Linq;
 
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Class storing license data.
@@ -49,12 +48,12 @@ namespace Kephas.Licensing
             DateTime? validTo = null,
             IDictionary<string, string?>? data = null)
         {
-            Requires.NotNullOrEmpty(id, nameof(id));
-            Requires.NotNullOrEmpty(appId, nameof(appId));
-            Requires.NotNullOrEmpty(appVersionRange, nameof(appVersionRange));
-            Requires.NotNullOrEmpty(licenseType, nameof(licenseType));
-            Requires.NotNullOrEmpty(licensedTo, nameof(licensedTo));
-            Requires.NotNullOrEmpty(licensedBy, nameof(licensedBy));
+            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Argument must not be empty", nameof(id));
+            if (string.IsNullOrEmpty(appId)) throw new ArgumentException("Argument must not be empty", nameof(appId));
+            if (string.IsNullOrEmpty(appVersionRange)) throw new ArgumentException("Argument must not be empty", nameof(appVersionRange));
+            if (string.IsNullOrEmpty(licenseType)) throw new ArgumentException("Argument must not be empty", nameof(licenseType));
+            if (string.IsNullOrEmpty(licensedTo)) throw new ArgumentException("Argument must not be empty", nameof(licensedTo));
+            if (string.IsNullOrEmpty(licensedBy)) throw new ArgumentException("Argument must not be empty", nameof(licensedBy));
 
             this.Id = id;
             this.AppId = appId;
@@ -178,7 +177,7 @@ namespace Kephas.Licensing
                 throw new InvalidLicenseDataException($"The license data for {id} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).");
             }
 
-            var licenseData = new LicenseData(id, appId, appVersionRange, licenseType, licensedTo, licensedBy, validFrom, validTo, data);
+            var licenseData = new LicenseData(id, appId!, appVersionRange!, licenseType!, licensedTo!, licensedBy!, validFrom, validTo, data);
             licenseData.Validate(checksum);
 
             return licenseData;

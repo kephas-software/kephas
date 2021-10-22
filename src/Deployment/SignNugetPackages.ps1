@@ -75,6 +75,7 @@ $paths = @(
     "..\Kephas.Scripting.Lua",
     "..\Kephas.Scripting.Python",
     "..\Kephas.Security.Cryptography",
+    "..\Kephas.Security.Cryptography.Abstractions",
     "..\Kephas.Security.Permissions",
     "..\Kephas.Serialization.MongoDBBson",
     "..\Kephas.Serialization.NewtonsoftJson",

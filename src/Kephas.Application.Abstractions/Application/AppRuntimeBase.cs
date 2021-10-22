@@ -104,7 +104,7 @@ namespace Kephas.Application
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(
-                Assembly.GetEntryAssembly(),
+                Assembly.GetEntryAssembly()!,
                 isRoot ?? this.AppArgs.RunAsRoot,
                 appId ?? this.AppArgs.AppId,
                 appInstanceId ?? this.AppArgs.AppInstanceId,
@@ -382,7 +382,7 @@ namespace Kephas.Application
                 var version = assemblyName.Version;
                 var publicKeyToken = assemblyName.GetPublicKeyToken();
                 bool? match;
-                (assembly, match) = appAssemblies.Select(a => (assembly: a, match: this.IsAssemblyMatch(a.GetName(), name, version, publicKeyToken))).FirstOrDefault(m => m.match != false);
+                (assembly, match) = appAssemblies.Select(a => (assembly: a, match: this.IsAssemblyMatch(a.GetName(), name!, version!, publicKeyToken!))).FirstOrDefault(m => m.match != false);
 
                 if (assembly == null)
                 {
@@ -504,7 +504,7 @@ namespace Kephas.Application
             }
 
             var assemblyName = entryAssembly?.GetName();
-            if (assemblyName == null || assemblyName.Name.Contains("TestRunner"))
+            if (assemblyName == null || assemblyName.Name!.Contains("TestRunner"))
             {
                 return "App";
             }
@@ -634,7 +634,7 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n);
+                this.Logger.Warn(ex, AbstractionStrings.AppRuntimeBase_CannotLoadAssembly_Exception, n);
                 return null;
             }
         }

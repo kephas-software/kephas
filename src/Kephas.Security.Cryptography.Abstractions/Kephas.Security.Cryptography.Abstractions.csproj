@@ -36,7 +36,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas core abstractions</PackageTags>
+        <PackageTags>kephas cryptography abstractions</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -83,14 +83,6 @@
         </PackageReference>
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='netstandard2.1'">
-            <ItemGroup>
-                <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-            </ItemGroup>
-        </When>
-    </Choose>
-
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
@@ -103,23 +95,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\ApplicationStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>ApplicationStrings.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Update="Resources\ApplicationStrings.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>ApplicationStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
-      <ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
-      <ProjectReference Include="..\Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj" />
-      <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
-      <ProjectReference Include="..\Kephas.Security.Cryptography.Abstractions\Kephas.Security.Cryptography.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>
