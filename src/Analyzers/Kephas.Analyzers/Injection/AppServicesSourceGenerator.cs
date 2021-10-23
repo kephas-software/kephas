@@ -132,7 +132,7 @@ using Kephas.Services;
                     var typeFullName = InjectionHelper.GetTypeFullName(classSyntax);
                     try
                     {
-                        source.AppendLine($"            yield return (typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                        source.AppendLine($"            yield return IAppServiceInfosProvider.GetServiceRegistration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
                     }
                     catch (Exception ex)
                     {
