@@ -34,7 +34,7 @@ namespace Kephas.Security.Permissions.Runtime
         /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="type">The type.</param>
         /// <param name="logger">Optional. The logger.</param>
-        protected internal RuntimePermissionInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+        protected internal RuntimePermissionInfo(IRuntimeTypeRegistry typeRegistry, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, ILogger? logger = null)
             : base(typeRegistry, type, logger)
         {
             var permTypeAttr = this.GetAttributes<Attribute>().OfType<IScoped>().FirstOrDefault();

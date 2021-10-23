@@ -42,7 +42,7 @@ namespace Kephas.Runtime.Factories
     /// a simple mean of collecting meta information about this kind of services.
     /// </remarks>
     [SingletonAppServiceContract(ContractType = typeof(IRuntimeElementInfoFactory), AllowMultiple = true)]
-    public interface IRuntimeElementInfoFactory<out TElement, in TReflectElement> : IRuntimeElementInfoFactory
+    public interface IRuntimeElementInfoFactory<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TElement, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] in TReflectElement> : IRuntimeElementInfoFactory
         where TElement : IRuntimeElementInfo
         where TReflectElement : MemberInfo
     {
@@ -65,7 +65,7 @@ namespace Kephas.Runtime.Factories
     /// <typeparam name="TElement">The runtime element type.</typeparam>
     /// <typeparam name="TReflectElement">The reflection element type.</typeparam>
     public abstract class
-        RuntimeElementInfoFactoryBase<TElement, TReflectElement> : IRuntimeElementInfoFactory<TElement, TReflectElement>
+        RuntimeElementInfoFactoryBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TElement, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TReflectElement> : IRuntimeElementInfoFactory<TElement, TReflectElement>
         where TElement : class, IRuntimeElementInfo
         where TReflectElement : MemberInfo
     {

@@ -23,19 +23,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A runtime type.</returns>
-        IRuntimeTypeInfo GetTypeInfo(Type type);
-
-        /// <summary>
-        /// Gets the runtime type information.
-        /// </summary>
-        /// <param name="typeInfo">The type information.</param>
-        /// <returns>A runtime type.</returns>
-        IRuntimeTypeInfo GetTypeInfo(TypeInfo typeInfo)
-        {
-            typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
-
-            return this.GetTypeInfo(typeInfo.AsType());
-        }
+        IRuntimeTypeInfo GetTypeInfo([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type);
 
         /// <summary>
         /// Gets the runtime assembly.

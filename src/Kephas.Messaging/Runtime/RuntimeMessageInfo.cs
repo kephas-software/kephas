@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Runtime
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
         /// <param name="logger">Optional. The logger.</param>
-        protected internal RuntimeMessageInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+        protected internal RuntimeMessageInfo(IRuntimeTypeRegistry typeRegistry, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, ILogger? logger = null)
             : base(typeRegistry, type, logger)
         {
         }

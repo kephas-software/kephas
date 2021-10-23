@@ -26,7 +26,7 @@ namespace Kephas.Services
         /// Should implement the <see cref="IAppServiceInfosProvider"/> interface.
         /// </param>
         /// <param name="processingPriority">Adds the processing priority in which the attributes will be processed.</param>
-        public AppServicesAttribute(Type providerType, Priority processingPriority = Priority.Normal)
+        public AppServicesAttribute([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type providerType, Priority processingPriority = Priority.Normal)
         {
             this.ProviderType = providerType ?? throw new ArgumentNullException(nameof(providerType));
             this.ProcessingPriority = processingPriority;

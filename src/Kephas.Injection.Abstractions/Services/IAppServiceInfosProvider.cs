@@ -54,6 +54,17 @@ namespace Kephas.Services
             => Enumerable.Empty<(Type serviceType, Type contractDeclarationType)>();
 
         /// <summary>
+        /// Gets a service registration marking both the service and the contract types as dynamically accessed.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>A tuple of service and contract types.</returns>
+        public static (Type serviceType, Type contractDeclarationType) GetServiceRegistration(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType)
+            => (serviceType, contractType);
+
+        /// <summary>
         /// Tries the get the application service information from the custom attributes.
         /// </summary>
         /// <param name="type">The contract declaration type.</param>

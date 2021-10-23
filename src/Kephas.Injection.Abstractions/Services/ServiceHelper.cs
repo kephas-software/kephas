@@ -156,7 +156,9 @@ namespace Kephas.Services
         /// <param name="serviceType">The service type.</param>
         /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <returns>The metadata.</returns>
-        public static IDictionary<string, object?> GetServiceMetadata(Type serviceType, Type contractDeclarationType)
+        public static IDictionary<string, object?> GetServiceMetadata(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType)
         {
             var metadata = new Dictionary<string, object?>();
             serviceType.GetCustomAttributes()

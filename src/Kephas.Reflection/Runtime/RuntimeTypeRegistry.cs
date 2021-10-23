@@ -197,7 +197,7 @@ namespace Kephas.Runtime
 
         private class DefaultRuntimeTypeInfoFactory : RuntimeTypeInfoFactoryBase
         {
-            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
+            public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type reflectInfo, int position = -1, ILogger? logger = null)
                 => new RuntimeTypeInfo(registry, reflectInfo, logger);
         }
     }

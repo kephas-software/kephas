@@ -86,20 +86,12 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
         /// <param name="typeRegistry">The container type serviceRegistry.</param>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <param name="logger">Optional. The logger.</param>
-        internal RuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, TypeInfo typeInfo, ILogger? logger = null)
-            : this(typeRegistry, typeInfo.AsType(), typeInfo, logger)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The container type serviceRegistry.</param>
         /// <param name="type">The type.</param>
         /// <param name="logger">Optional. The logger.</param>
-        protected internal RuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+        protected internal RuntimeTypeInfo(
+            IRuntimeTypeRegistry typeRegistry,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type,
+            ILogger? logger = null)
             : this(typeRegistry, type, type.GetTypeInfo(), logger)
         {
         }
@@ -111,7 +103,11 @@ namespace Kephas.Runtime
         /// <param name="type">The type.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         /// <param name="logger">The logger.</param>
-        private RuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, Type type, TypeInfo typeInfo, ILogger? logger)
+        private RuntimeTypeInfo(
+            IRuntimeTypeRegistry typeRegistry,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type,
+            TypeInfo typeInfo,
+            ILogger? logger)
             : base(typeRegistry, logger)
         {
             this.Type = type;

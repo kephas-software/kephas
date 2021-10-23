@@ -80,7 +80,7 @@ namespace Kephas.Core.Tests.Reflection
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
             logger.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>())
                 .Returns(ci => { log.AppendLine($"{ci.Arg<LogLevel>()} {ci.Arg<string>()}-{ci.Arg<object[]>()?.FirstOrDefault()}"); return true; });
-            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(DateTime).GetTypeInfo(), logger);
+            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(DateTime), logger);
 
             object dateTime = DateTime.Now;
             var date = typeInfo.GetValue(dateTime, "Date");

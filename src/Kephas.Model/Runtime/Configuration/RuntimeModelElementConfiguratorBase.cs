@@ -128,7 +128,7 @@ namespace Kephas.Model.Runtime.Configuration
         /// <returns>
         /// A TConfigurator.
         /// </returns>
-        public virtual TConfigurator AddAttribute<TAttribute>()
+        public virtual TConfigurator AddAttribute<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TAttribute>()
             where TAttribute : Attribute
         {
             var attr = Activator.CreateInstance(typeof(TAttribute));
