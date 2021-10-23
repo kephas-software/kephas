@@ -71,13 +71,13 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        public TContext CreateContext<TContext>(params object?[] args)
+        public TContext CreateContext<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContext>(params object?[] args)
             where TContext : class
         {
             var contextType = typeof(TContext);
             if (!contextType.IsClass || contextType.IsAbstract)
             {
-                throw new ArgumentException(Strings.ContextFactory_CreateContext_ContextTypeMustBeInstatiable.FormatWith(contextType));
+                throw new ArgumentException(AbstractionStrings.ContextFactory_CreateContext_ContextTypeMustBeInstatiable.FormatWith(contextType));
             }
 
             // if (args.Any(a => a == null))
@@ -85,7 +85,7 @@ namespace Kephas.Services
             //     throw new ArgumentException(Strings.ContextFactory_CreateContext_NonNullArguments.FormatWith(contextType));
             // }
 
-            var signature = new Signature(args.Select(a => a?.GetType()));
+            var signature = new Signature(args.Select(a => a?.GetType())!);
             var typeSignCache = this.signatureCache.GetOrAdd(contextType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
             var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(contextType, signature));
             return (TContext)creatorFunc(args);
@@ -107,18 +107,18 @@ namespace Kephas.Services
                 {
                     return args =>
                     {
-                        return ctor.Invoke(argIndexMap.Select(i => i >= 0 ? args[i] : argResolverMap[-i]()).ToArray());
+                        return ctor.Invoke(argIndexMap.Select(i => i >= 0 ? args[i] : argResolverMap![-i]()).ToArray());
                     };
                 }
             }
 
-            throw new InvalidOperationException(Strings.ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor.FormatWith(signature, contextType));
+            throw new InvalidOperationException(AbstractionStrings.ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor.FormatWith(signature, contextType));
         }
 
-        private (List<int>? argIndexMap, List<Func<object>>? argResolverMap) GetSignatureMaps(Signature signature, ParameterInfo[] paramInfos)
+        private (List<int>? argIndexMap, List<Func<object?>>? argResolverMap) GetSignatureMaps(Signature signature, ParameterInfo[] paramInfos)
         {
             var argIndexMap = new List<int>();
-            var argResolverMap = new List<Func<object>>
+            var argResolverMap = new List<Func<object?>?>
                 {
                     null,
                     () => this.ambientServices,
@@ -160,7 +160,7 @@ namespace Kephas.Services
                 }
             }
 
-            return (argIndexMap, argResolverMap);
+            return (argIndexMap, argResolverMap)!;
         }
 
         private int? GetArgIndex(Signature signature, Type paramType)

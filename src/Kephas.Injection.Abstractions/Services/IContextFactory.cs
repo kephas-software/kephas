@@ -24,7 +24,7 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        TContext CreateContext<TContext>(params object?[] args)
+        TContext CreateContext<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContext>(params object?[] args)
             where TContext : class;
     }
 }

@@ -30,7 +30,7 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        public static object CreateContext(this IContextFactory contextFactory, Type contextType, params object?[] args)
+        public static object CreateContext(this IContextFactory contextFactory, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contextType, params object?[] args)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             contextType = contextType ?? throw new ArgumentNullException(nameof(contextType));
