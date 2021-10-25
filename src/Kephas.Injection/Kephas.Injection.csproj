@@ -109,4 +109,8 @@
         <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Behaviors" />
+    </ItemGroup>
+
 </Project>

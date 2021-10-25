@@ -240,7 +240,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Messages",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Distributed.Tests", "Tests\Kephas.Messaging.Distributed.Tests\Kephas.Messaging.Distributed.Tests.csproj", "{76138A6C-5FA3-46CB-BD8D-068694B136FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Abstractions", "Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj", "{A2902491-83EB-454B-8B2B-C97D679D9915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection", "Kephas.Injection\Kephas.Injection.csproj", "{A2902491-83EB-454B-8B2B-C97D679D9915}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{2E7C2BA3-8717-4C8B-8BF9-BBE423D8340F}"
 EndProject
@@ -252,7 +252,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Analyzers.TestAssemb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Analyzers.Tests", "Tests\Analyzers\Kephas.Analyzers.Tests\Kephas.Analyzers.Tests.csproj", "{C349B544-099C-4604-A1B2-5CBC165AA999}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Abstractions.Tests", "Tests\Kephas.Injection.Abstractions.Tests\Kephas.Injection.Abstractions.Tests.csproj", "{D686828B-B03F-44AB-97D0-C56985A8ED8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Tests", "Tests\Kephas.Injection.Tests\Kephas.Injection.Tests.csproj", "{D686828B-B03F-44AB-97D0-C56985A8ED8D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Application", "TestingFramework\Kephas.Testing.Application\Kephas.Testing.Application.csproj", "{D55E4277-2A60-4D26-8F59-52A3CCE13CCE}"
 EndProject

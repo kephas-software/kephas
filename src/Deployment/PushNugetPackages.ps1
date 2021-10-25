@@ -38,7 +38,7 @@ $paths = @(
     "Kephas.Extensions.DependencyInjection",
     "Kephas.Extensions.Hosting",
     "Kephas.Extensions.Logging",
-    "Kephas.Injection.Abstractions",
+    "Kephas.Injection",
     "Kephas.Injection.Autofac",
     "Kephas.Injection.Lite",
 #    "Kephas.Injection.SystemComposition",

@@ -121,7 +121,7 @@
       <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
       <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
       <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
-      <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
       <ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
       <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
       <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
