@@ -12,6 +12,7 @@ namespace Kephas
 
     using Kephas.Injection;
     using Kephas.Injection.Builder;
+    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -20,22 +21,6 @@ namespace Kephas
     public static class InjectionAmbientServicesExtensions
     {
         internal const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
-
-        /// <summary>
-        /// Gets the registered application service contracts.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
-        /// value is the <see cref="IAppServiceInfo"/>.
-        /// </returns>
-        internal static IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(this IAmbientServices ambientServices)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            return ambientServices[AppServiceInfosKey] as IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>
-                   ?? Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
-        }
 
         /// <summary>
         /// Registers the provided service instance.
@@ -285,6 +270,97 @@ namespace Kephas
                     builder?.Invoke(b);
                 });
             return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the injector to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="injector">The injector.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices WithInjector(this IAmbientServices ambientServices, IInjector injector)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+
+            ambientServices.Register(injector);
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the injector to the ambient services.
+        /// </summary>
+        /// <typeparam name="TInjectorBuilder">Type of the injector builder.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="builderOptions">The injector builder configuration.</param>
+        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices WithInjector<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? builderOptions = null)
+            where TInjectorBuilder : IInjectorBuilder
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+
+            var context = new InjectionBuildContext(ambientServices);
+
+            var containerBuilder = (TInjectorBuilder)Activator.CreateInstance(typeof(TInjectorBuilder), context)!;
+
+            builderOptions?.Invoke(containerBuilder);
+
+            return ambientServices.WithInjector(containerBuilder.Build());
+        }
+
+        /// <summary>
+        /// Gets the registered application service contracts.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
+        /// value is the <see cref="IAppServiceInfo"/>.
+        /// </returns>
+        internal static IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(this IAmbientServices ambientServices)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+
+            return ambientServices[AppServiceInfosKey] as IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>
+                   ?? Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
+        }
+
+        /// <summary>
+        /// Gets the registered application service contracts.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServiceInfos">An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
+        /// value is the <see cref="IAppServiceInfo"/>.</param>
+        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfos)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+
+            // Lite injector exclude its own services, so add them now.
+            // CAUTION: this assumes that the app service infos from the other registration sources
+            // did not add them already, so after that do not call SetAppServiceInfos!
+            if ((bool?)ambientServices[InjectorExtensions.LiteInjectionKey] ?? false)
+            {
+                var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceInfos(null);
+                var allServiceInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
+                if (liteServiceInfos != null)
+                {
+                    allServiceInfos.AddRange(liteServiceInfos);
+                }
+
+                if (appServiceInfos != null)
+                {
+                    allServiceInfos.AddRange(appServiceInfos);
+                }
+
+                appServiceInfos = allServiceInfos;
+            }
+
+            ambientServices[AppServiceInfosKey] = appServiceInfos;
         }
     }
 }

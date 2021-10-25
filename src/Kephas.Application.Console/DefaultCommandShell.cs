@@ -36,8 +36,9 @@ namespace Kephas.Application.Console
         /// </summary>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public DefaultCommandShell(ICommandProcessor commandProcessor, ISerializationService serializationService)
-            : this(new DefaultConsole(), commandProcessor, serializationService)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public DefaultCommandShell(ICommandProcessor commandProcessor, ISerializationService serializationService, ILogManager? logManager = null)
+            : this(new DefaultConsole(), commandProcessor, serializationService, logManager)
         {
         }
 
@@ -47,8 +48,10 @@ namespace Kephas.Application.Console
         /// <param name="console">The console.</param>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         [InjectConstructor]
-        public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService)
+        public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, ILogManager? logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(console, nameof(console));
             Requires.NotNull(commandProcessor, nameof(commandProcessor));

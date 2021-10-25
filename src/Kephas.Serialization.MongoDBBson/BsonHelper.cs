@@ -12,7 +12,6 @@ namespace Kephas.Serialization.Bson
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using MongoDB.Bson.Serialization;
 
     /// <summary>

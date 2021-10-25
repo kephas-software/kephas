@@ -18,6 +18,7 @@
         <Description>
             Provides a lightweight dependency injection implementation.
             Typically used areas and classes/interfaces/services:
+            - Injection: LiteInjectorBuilder.
             - IAmbientServices.BuildWithLite().
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
@@ -92,6 +93,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
+        <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -99,7 +101,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml"/>
+        <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>

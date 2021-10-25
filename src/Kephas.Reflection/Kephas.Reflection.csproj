@@ -110,6 +110,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
       <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
     </ItemGroup>
 
 </Project>

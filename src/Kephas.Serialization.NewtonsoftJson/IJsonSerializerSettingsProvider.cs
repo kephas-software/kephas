@@ -10,7 +10,6 @@
 
 namespace Kephas.Serialization.Json
 {
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     using Newtonsoft.Json;

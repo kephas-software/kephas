@@ -15,10 +15,8 @@ namespace Kephas.Serialization.Json
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -59,7 +57,7 @@ namespace Kephas.Serialization.Json
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(textWriter, nameof(textWriter));
+            textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
 
             await Task.Yield();
 
@@ -77,7 +75,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        public async Task<string?> SerializeAsync(
+        public async Task<string> SerializeAsync(
             object? obj,
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
@@ -103,7 +101,7 @@ namespace Kephas.Serialization.Json
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(textReader, nameof(textReader));
+            textReader = textReader ?? throw new ArgumentNullException(nameof(textReader));
 
             await Task.Yield();
 
@@ -122,7 +120,7 @@ namespace Kephas.Serialization.Json
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public async Task<object?> DeserializeAsync(
-            string? serializedObj,
+            string serializedObj,
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
         {
@@ -141,7 +139,7 @@ namespace Kephas.Serialization.Json
         /// <param name="context">The context containing serialization options.</param>
         public void Serialize(object? obj, TextWriter textWriter, ISerializationContext? context = null)
         {
-            Requires.NotNull(textWriter, nameof(textWriter));
+            textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
 
             var settings = this.GetJsonSerializerSettings(context);
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
@@ -156,13 +154,8 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The serialized object.
         /// </returns>
-        public string? Serialize(object? obj, ISerializationContext? context = null)
+        public string Serialize(object? obj, ISerializationContext? context = null)
         {
-            if (obj == null)
-            {
-                return null;
-            }
-
             var settings = this.GetJsonSerializerSettings(context);
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
             using var writer = new StringWriter();
@@ -179,9 +172,9 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public object Deserialize(TextReader textReader, ISerializationContext? context = null)
+        public object? Deserialize(TextReader textReader, ISerializationContext? context = null)
         {
-            Requires.NotNull(textReader, nameof(textReader));
+            textReader = textReader ?? throw new ArgumentNullException(nameof(textReader));
 
             var settings = this.GetJsonSerializerSettings(context);
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
@@ -209,13 +202,8 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public object? Deserialize(string? serializedObj, ISerializationContext? context = null)
+        public object? Deserialize(string serializedObj, ISerializationContext? context = null)
         {
-            if (serializedObj == null)
-            {
-                return null;
-            }
-
             using var reader = new StringReader(serializedObj);
             return this.Deserialize(reader, context);
         }
@@ -231,7 +219,7 @@ namespace Kephas.Serialization.Json
             return settings;
         }
 
-        private object PostDeserialize(object obj, Type rootObjectType)
+        private object? PostDeserialize(object? obj, Type rootObjectType)
         {
             if (rootObjectType != typeof(object))
             {

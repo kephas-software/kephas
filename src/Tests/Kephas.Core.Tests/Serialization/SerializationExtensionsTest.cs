@@ -22,7 +22,7 @@
             var serializer = this.CreateStringSerializerMock("ok");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var result = await SerializationExtensions.SerializeAsync<JsonMediaType>(serializationService, new TestEntity());
+            var result = await serializationService.SerializeAsync<JsonMediaType>(new TestEntity());
             Assert.AreEqual("ok", result);
         }
 
@@ -32,7 +32,7 @@
             var serializer = this.CreateStringSerializerMock("ok");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var result = SerializationExtensions.Serialize<JsonMediaType>(serializationService, new TestEntity());
+            var result = serializationService.Serialize<JsonMediaType>(new TestEntity());
             Assert.AreEqual("ok", result);
         }
 
@@ -42,7 +42,7 @@
             var serializer = this.CreateStringSerializerMock("ok");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var result = await SerializationExtensions.JsonSerializeAsync(serializationService, new TestEntity());
+            var result = await serializationService.JsonSerializeAsync(new TestEntity());
             Assert.AreEqual("ok", result);
         }
 
@@ -52,7 +52,7 @@
             var serializer = this.CreateStringSerializerMock("ok");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var result = SerializationExtensions.JsonSerialize(serializationService, new TestEntity());
+            var result = serializationService.JsonSerialize(new TestEntity());
             Assert.AreEqual("ok", result);
         }
 
@@ -82,7 +82,7 @@
             var deserializer = this.CreateStringDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = await SerializationExtensions.DeserializeAsync<JsonMediaType>(serializationService, "my object");
+            var result = await serializationService.DeserializeAsync<JsonMediaType>("my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }
@@ -93,7 +93,7 @@
             var deserializer = this.CreateStringDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = await SerializationExtensions.DeserializeAsync<JsonMediaType>(serializationService, null);
+            var result = await serializationService.DeserializeAsync<JsonMediaType>(null);
             Assert.IsNull(result);
         }
 
@@ -103,7 +103,7 @@
             var deserializer = this.CreateStringSyncDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = SerializationExtensions.Deserialize<JsonMediaType>(serializationService, "my object");
+            var result = serializationService.Deserialize<JsonMediaType>("my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }
@@ -114,7 +114,7 @@
             var deserializer = this.CreateStringSyncDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = SerializationExtensions.Deserialize<JsonMediaType>(serializationService, null);
+            var result = serializationService.Deserialize<JsonMediaType>(null);
             Assert.IsNull(result);
         }
 
@@ -124,7 +124,7 @@
             var deserializer = this.CreateStringDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = await SerializationExtensions.JsonDeserializeAsync(serializationService, "my object");
+            var result = await serializationService.JsonDeserializeAsync("my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }
@@ -135,7 +135,7 @@
             var deserializer = this.CreateStringSyncDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = SerializationExtensions.JsonDeserialize(serializationService, "my object");
+            var result = serializationService.JsonDeserialize("my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }

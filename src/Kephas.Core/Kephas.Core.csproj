@@ -19,18 +19,9 @@
         <Description>
             Provides a common infrastructure for other framework components.
             Typically used areas and classes/interfaces/services:
-            - Ambient services: IAmbientServices, AmbientServices.
-            - Injection: LiteInjectorBuilder.
-            - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior, AppIdentity.
-            - Serialization: ISerializationService.
-            - Operations: IOperation, OperationResult.
-            - Services: SingletonAppServiceContractAttribute, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
-            - Threading.Tasks: PreserveThreadContext extension method.
             - Cryptography: IEncryptionService, IHashingService.
             - Data: IIdentifiable, IIdGenerator.
             - Diagnostics: Profiler.
-            - Interaction: IEventHub, ISignal.
-            - Commands: Command, IArgs, Args.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -131,8 +122,12 @@
     <ItemGroup>
       <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
       <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
       <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
+      <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
+      <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
       <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
     </ItemGroup>
 

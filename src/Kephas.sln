@@ -294,6 +294,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Operations", "Kephas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Security.Cryptography.Abstractions", "Kephas.Security.Cryptography.Abstractions\Kephas.Security.Cryptography.Abstractions.csproj", "{EDA92BA5-43E5-4507-A8D0-AEEF5CFF0E44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging", "Kephas.Logging\Kephas.Logging.csproj", "{F9917455-4240-49DB-A756-346D42147205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Configuration", "Kephas.Configuration\Kephas.Configuration.csproj", "{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization", "Kephas.Serialization\Kephas.Serialization.csproj", "{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Interaction", "Kephas.Interaction\Kephas.Interaction.csproj", "{FB364589-A98D-458B-857D-A834D008A3C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -816,6 +824,22 @@ Global
 		{EDA92BA5-43E5-4507-A8D0-AEEF5CFF0E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDA92BA5-43E5-4507-A8D0-AEEF5CFF0E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDA92BA5-43E5-4507-A8D0-AEEF5CFF0E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9917455-4240-49DB-A756-346D42147205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9917455-4240-49DB-A756-346D42147205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9917455-4240-49DB-A756-346D42147205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9917455-4240-49DB-A756-346D42147205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB364589-A98D-458B-857D-A834D008A3C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB364589-A98D-458B-857D-A834D008A3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB364589-A98D-458B-857D-A834D008A3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB364589-A98D-458B-857D-A834D008A3C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

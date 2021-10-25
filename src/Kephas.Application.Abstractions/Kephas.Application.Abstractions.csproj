@@ -17,9 +17,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides abstractions for the dependency injection infrastructure.
+            Provides abstractions for the application infrastructure.
             Typically used areas and classes/interfaces/services:
-            - Logging: ILogManager, ILogger.
+            - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior, AppIdentity.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -36,7 +36,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas core abstractions</PackageTags>
+        <PackageTags>kephas application abstractions</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -116,6 +116,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
       <ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
       <ProjectReference Include="..\Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj" />
       <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />

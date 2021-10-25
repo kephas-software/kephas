@@ -12,12 +12,12 @@ namespace Kephas
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Injection.Lite.Internal;
     using Kephas.Licensing;
     using Kephas.Logging;
@@ -67,19 +67,26 @@ namespace Kephas
             }
 
             this.registry
-                .RegisterSource(new LazyServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new LazyWithMetadataServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new ExportFactoryServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new ListServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new CollectionServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new EnumerableServiceSource(this.registry, typeRegistry));
+                .RegisterSource(new LazyServiceSource(this.registry))
+                .RegisterSource(new LazyWithMetadataServiceSource(this.registry))
+                .RegisterSource(new ExportFactoryServiceSource(this.registry))
+                .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry))
+                .RegisterSource(new ListServiceSource(this.registry))
+                .RegisterSource(new CollectionServiceSource(this.registry))
+                .RegisterSource(new EnumerableServiceSource(this.registry));
         }
 
         /// <summary>
         /// Gets the service registry.
         /// </summary>
         IAppServiceRegistry IAmbientServicesMixin.ServiceRegistry => this.registry;
+
+        /// <summary>
+        /// Gets the application assemblies.
+        /// </summary>
+        /// <returns>An enumeration of application assemblies.</returns>
+        public IEnumerable<Assembly> GetAppAssemblies()
+            => this.GetAppRuntime()!.GetAppAssemblies();
 
         /// <summary>
         /// Gets the application service infos in this collection.
@@ -94,7 +101,7 @@ namespace Kephas
             // Lite injector does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,
             // this is a message that ALL registration infos should be returned.
-            if (context != null && ((bool?)this[LiteInjectorBuilder.LiteInjectionKey] ?? false))
+            if (context != null && ((bool?)this[InjectorExtensions.LiteInjectionKey] ?? false))
             {
                 yield break;
             }

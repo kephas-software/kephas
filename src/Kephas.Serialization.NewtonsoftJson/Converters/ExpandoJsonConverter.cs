@@ -10,7 +10,6 @@ namespace Kephas.Serialization.Json.Converters
     using System;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -43,8 +42,8 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="defaultImplementationType">The expando default implementation type.</param>
         protected ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, Type expandoBaseType, Type defaultImplementationType)
         {
-            Requires.NotNull(expandoBaseType, nameof(expandoBaseType));
-            Requires.NotNull(defaultImplementationType, nameof(defaultImplementationType));
+            expandoBaseType = expandoBaseType ?? throw new ArgumentNullException(nameof(expandoBaseType));
+            defaultImplementationType = defaultImplementationType ?? throw new ArgumentNullException(nameof(defaultImplementationType));
 
             this.TypeRegistry = typeRegistry;
             this.TypeResolver = typeResolver;

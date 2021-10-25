@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Serialization.Json
 {
     using System;
@@ -17,7 +15,7 @@ namespace Kephas.Serialization.Json
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;

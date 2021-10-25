@@ -56,7 +56,7 @@ namespace Kephas.Serialization.Bson
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public object? Deserialize(string? serializedObj, ISerializationContext context)
+        public object? Deserialize(string serializedObj, ISerializationContext context)
         {
             if (serializedObj == null)
             {
@@ -99,7 +99,8 @@ namespace Kephas.Serialization.Bson
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public async Task<object?> DeserializeAsync(string? serializedObj, ISerializationContext context, CancellationToken cancellationToken = default)
+        public async Task<object?> DeserializeAsync(string serializedObj, ISerializationContext context,
+            CancellationToken cancellationToken = default)
         {
             await Task.Yield();
 
@@ -133,7 +134,7 @@ namespace Kephas.Serialization.Bson
         /// <returns>
         /// The serialized object.
         /// </returns>
-        public string? Serialize(object? obj, ISerializationContext context)
+        public string Serialize(object? obj, ISerializationContext context)
         {
             if (obj == null)
             {
@@ -156,7 +157,8 @@ namespace Kephas.Serialization.Bson
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task SerializeAsync(object? obj, TextWriter textWriter, ISerializationContext context, CancellationToken cancellationToken = default)
+        public async Task SerializeAsync(object? obj, TextWriter textWriter, ISerializationContext context,
+            CancellationToken cancellationToken = default)
         {
             await Task.Yield();
 
@@ -174,7 +176,8 @@ namespace Kephas.Serialization.Bson
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        public async Task<string?> SerializeAsync(object? obj, ISerializationContext context, CancellationToken cancellationToken = default)
+        public async Task<string> SerializeAsync(object? obj, ISerializationContext context,
+            CancellationToken cancellationToken = default)
         {
             await Task.Yield();
 

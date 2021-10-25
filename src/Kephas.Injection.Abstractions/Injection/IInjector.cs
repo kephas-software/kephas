@@ -20,14 +20,14 @@ namespace Kephas.Injection
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        object Resolve(Type contractType);
+        object Resolve([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType);
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        IEnumerable<object> ResolveMany(Type contractType)
+        IEnumerable<object> ResolveMany([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType)
             => (IEnumerable<object>)this.Resolve(
                 typeof(IEnumerable<>).MakeGenericType(
                     contractType ??
@@ -40,7 +40,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        T Resolve<T>()
+        T Resolve<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
             where T : class
             => (T)this.Resolve(typeof(T));
 
@@ -51,7 +51,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        IEnumerable<T> ResolveMany<T>()
+        IEnumerable<T> ResolveMany<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
             where T : class =>
             this.Resolve<IEnumerable<T>>();
 
@@ -60,7 +60,7 @@ namespace Kephas.Injection
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the provided contract was not found.</returns>
-        object? TryResolve(Type contractType);
+        object? TryResolve([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType);
 
         /// <summary>
         /// Tries to resolve the specified contract type.
@@ -69,7 +69,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        T? TryResolve<T>()
+        T? TryResolve<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
             where T : class
             => (T?)this.TryResolve(typeof(T));
 

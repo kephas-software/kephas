@@ -14,7 +14,6 @@ namespace Kephas.Serialization.Json
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -58,7 +57,7 @@ namespace Kephas.Serialization.Json
             this JsonSerializerSettings settings,
             ISerializationContext? context)
         {
-            Requires.NotNull(settings, nameof(settings));
+            settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
             if (context == null)
             {
