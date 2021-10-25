@@ -13,8 +13,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using Kephas.Commands.Messaging.Endpoints;
+    using Kephas.Commands.Endpoints;
     using Kephas.Commands.Messaging.Reflection;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;

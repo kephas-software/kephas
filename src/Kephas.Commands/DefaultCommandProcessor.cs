@@ -14,7 +14,6 @@ namespace Kephas.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
@@ -42,8 +41,8 @@ namespace Kephas.Commands
             ICommandIdentityResolver identityResolver,
             IContextFactory contextFactory)
         {
-            Requires.NotNull(resolver, nameof(resolver));
-            Requires.NotNull(identityResolver, nameof(identityResolver));
+            resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
+            identityResolver = identityResolver ?? throw new ArgumentNullException(nameof(identityResolver));
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
 
             this.resolver = resolver;

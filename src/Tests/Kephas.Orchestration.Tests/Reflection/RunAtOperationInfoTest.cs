@@ -16,7 +16,7 @@ namespace Kephas.Tests.Reflection
 
     using Kephas.Application;
     using Kephas.Commands;
-    using Kephas.Commands.Messaging.Endpoints;
+    using Kephas.Commands.Endpoints;
     using Kephas.Configuration;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;

@@ -10,11 +10,11 @@
 
 namespace Kephas.Graphs
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
 
     /// <summary>
@@ -103,7 +103,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected internal bool AddNode(IGraphNode node)
         {
-            Requires.NotNull(node, nameof(node));
+            node = node ?? throw new ArgumentNullException(nameof(node));
 
             if (this.nodes.Contains(node))
             {
@@ -123,7 +123,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected internal bool AddEdge(IGraphEdge edge)
         {
-            Requires.NotNull(edge, nameof(edge));
+            edge = edge ?? throw new ArgumentNullException(nameof(edge));
 
             if (this.edges.Contains(edge))
             {
@@ -223,7 +223,7 @@ namespace Kephas.Graphs
             var fromNodes = this.FindNodesByValue(fromValue).Take(2).ToList();
             if (fromNodes.Count > 1)
             {
-                throw new AmbiguousMatchException(string.Format(Strings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, fromValue));
+                throw new AmbiguousMatchException(string.Format(AbstractionStrings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, fromValue));
             }
 
             var from = fromNodes.Count == 0 ? this.AddNode(fromValue) : fromNodes[0];
@@ -231,7 +231,7 @@ namespace Kephas.Graphs
             var toNodes = this.FindNodesByValue(toValue).Take(2).ToList();
             if (toNodes.Count > 1)
             {
-                throw new AmbiguousMatchException(string.Format(Strings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, toValue));
+                throw new AmbiguousMatchException(string.Format(AbstractionStrings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, toValue));
             }
 
             var to = toNodes.Count == 0 ? this.AddNode(toValue) : toNodes[0];

@@ -15,7 +15,6 @@ namespace Kephas.Sets
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Graphs;
     using Kephas.Resources;
 
@@ -42,8 +41,8 @@ namespace Kephas.Sets
         /// <param name="partialComparer">The partial comparer function.</param>
         public PartialOrderedSet(IEnumerable<TValue> values, Func<TValue, TValue, int?> partialComparer)
         {
-            Requires.NotNull(values, nameof(values));
-            Requires.NotNull(partialComparer, nameof(partialComparer));
+            values = values ?? throw new ArgumentNullException(nameof(values));
+            partialComparer = partialComparer ?? throw new ArgumentNullException(nameof(partialComparer));
 
             this.InitializeOrderGraph(values.ToList(), partialComparer);
         }
@@ -148,7 +147,7 @@ namespace Kephas.Sets
                     // it means that there are cycles in the graph, which indicate
                     // an unsound graph
                     var badNodes = string.Join(", ", eligibleNodes.Select(n => n.Value));
-                    throw new InvalidOperationException(string.Format(Strings.PartialOrderedSet_BadComparer_ProducesCycles_Exception, badNodes));
+                    throw new InvalidOperationException(string.Format(AbstractionStrings.PartialOrderedSet_BadComparer_ProducesCycles_Exception, badNodes));
                 }
 
                 orderedNodes.AddRange(minNodes);

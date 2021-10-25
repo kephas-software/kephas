@@ -49,6 +49,8 @@
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        
+        <RootNamespace>Kephas.Commands</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -57,16 +59,15 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
+        <ProjectReference Include="..\Kephas.Commands.Endpoints.Messages\Kephas.Commands.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Commands\Kephas.Commands.csproj" />
+        <ProjectReference Include="..\Kephas.Core.Endpoints.Messages\Kephas.Core.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
@@ -96,10 +97,14 @@
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
+      <EmbeddedResource Update="Messaging\Resources\Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml"/>
+        <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>

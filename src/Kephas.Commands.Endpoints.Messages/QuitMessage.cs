@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Endpoints
+namespace Kephas.Commands.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
-    using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 

@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.CodeAnalysis.Generation
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace Kephas.CodeAnalysis.Generation
             ICodeFormatter? codeFormatter = null)
             : base(injector)
         {
-            Requires.NotNull(codeGenerator, nameof(codeGenerator));
+            codeGenerator = codeGenerator ?? throw new ArgumentNullException(nameof(codeGenerator));
 
             this.CodeGenerator = codeGenerator;
             this.CodeFormatter = codeFormatter ?? new CodeFormatter();

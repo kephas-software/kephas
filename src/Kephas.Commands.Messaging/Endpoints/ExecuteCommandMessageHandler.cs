@@ -5,17 +5,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Diagnostics.Contracts;
-using Kephas.Threading.Tasks;
-
-namespace Kephas.Commands.Messaging.Endpoints
+namespace Kephas.Commands.Endpoints
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Message handler for <see cref="ExecuteCommandMessage"/>.

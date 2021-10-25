@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Endpoints
+namespace Kephas.Commands.Endpoints
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Commands.Messaging.Resources;
     using Kephas.Messaging;
     using Kephas.Reflection;

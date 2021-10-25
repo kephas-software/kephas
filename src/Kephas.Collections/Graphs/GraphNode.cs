@@ -10,9 +10,9 @@
 
 namespace Kephas.Graphs
 {
+    using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -89,7 +89,7 @@ namespace Kephas.Graphs
         /// <param name="edge">The edge.</param>
         protected internal void AddIncomingEdge(GraphEdge edge)
         {
-            Requires.NotNull(edge, nameof(edge));
+            edge = edge ?? throw new ArgumentNullException(nameof(edge));
 
             this.incomingEdges.Add(edge);
             this.AddConnectedNode(edge.From);
@@ -102,7 +102,7 @@ namespace Kephas.Graphs
         /// <param name="edge">The edge.</param>
         protected internal void AddOutgoingEdge(GraphEdge edge)
         {
-            Requires.NotNull(edge, nameof(edge));
+            edge = edge ?? throw new ArgumentNullException(nameof(edge));
 
             this.outgoingEdges.Add(edge);
             this.AddConnectedNode(edge.To);

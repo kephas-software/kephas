@@ -14,7 +14,7 @@ namespace Kephas.Reflection
     using System.Threading.Tasks;
 
     using Kephas.Commands;
-    using Kephas.Commands.Messaging.Endpoints;
+    using Kephas.Commands.Endpoints;
     using Kephas.Dynamic;
     using Kephas.Messaging.Distributed;
     using Kephas.Reflection.Dynamic;

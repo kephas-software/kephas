@@ -302,6 +302,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization", "Kep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Interaction", "Kephas.Interaction\Kephas.Interaction.csproj", "{FB364589-A98D-458B-857D-A834D008A3C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Commands.Endpoints.Messages", "Kephas.Commands.Endpoints.Messages\Kephas.Commands.Endpoints.Messages.csproj", "{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -840,6 +842,10 @@ Global
 		{FB364589-A98D-458B-857D-A834D008A3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB364589-A98D-458B-857D-A834D008A3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB364589-A98D-458B-857D-A834D008A3C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

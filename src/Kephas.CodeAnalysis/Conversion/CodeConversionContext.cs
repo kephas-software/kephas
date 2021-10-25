@@ -10,7 +10,8 @@
 
 namespace Kephas.CodeAnalysis.Conversion
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Injection;
     using Kephas.Services;
 
@@ -29,7 +30,7 @@ namespace Kephas.CodeAnalysis.Conversion
             ICodeConverter codeConverter)
             : base(injector)
         {
-            Requires.NotNull(codeConverter, nameof(codeConverter));
+            codeConverter = codeConverter ?? throw new ArgumentNullException(nameof(codeConverter));
 
             this.CodeConverter = codeConverter;
         }

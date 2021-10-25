@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Endpoints
+namespace Kephas.Commands.Endpoints
 {
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;

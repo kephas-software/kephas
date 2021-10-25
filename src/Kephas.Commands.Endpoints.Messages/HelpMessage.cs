@@ -8,8 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Endpoints
+namespace Kephas.Commands.Endpoints
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.ComponentModel.DataAnnotations;
@@ -60,6 +61,6 @@ namespace Kephas.Commands.Messaging.Endpoints
         /// <value>
         /// The parameters.
         /// </value>
-        public string[] Parameters { get; set; }
+        public string[] Parameters { get; set; } = Array.Empty<string>();
     }
 }

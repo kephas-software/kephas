@@ -10,7 +10,7 @@
 
 namespace Kephas.CodeAnalysis.Generation
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
 
     /// <summary>
     /// Interface for code formatter.
@@ -45,7 +45,7 @@ namespace Kephas.CodeAnalysis.Generation
         /// <param name="formatter">The formatter to act on.</param>
         public static void IncreaseIndent(this ICodeFormatter formatter)
         {
-            Requires.NotNull(formatter, nameof(formatter));
+            formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
 
             formatter.IndentUnits++;
         }
@@ -56,7 +56,7 @@ namespace Kephas.CodeAnalysis.Generation
         /// <param name="formatter">The formatter to act on.</param>
         public static void DecreaseIndent(this ICodeFormatter formatter)
         {
-            Requires.NotNull(formatter, nameof(formatter));
+            formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
 
             if (formatter.IndentUnits <= 0)
             {
@@ -75,7 +75,7 @@ namespace Kephas.CodeAnalysis.Generation
         /// </returns>
         public static string CurrentIndent(this ICodeFormatter formatter)
         {
-            Requires.NotNull(formatter, nameof(formatter));
+            formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
 
             return formatter.IndentUnits <= 0 || formatter.IndentUnits <= 0
                        ? string.Empty

@@ -13,8 +13,7 @@ namespace Kephas.Commands.Messaging.Tests
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Kephas.Commands.Messaging.Endpoints;
+    using Kephas.Commands.Endpoints;
     using Kephas.Dynamic;
     using NUnit.Framework;
 
