@@ -60,20 +60,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+        <SupportedPlatform Include="browser"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
-        <AdditionalFiles Include="stylecop.json" />
+        <None Remove="stylecop.json"/>
+        <AdditionalFiles Include="stylecop.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <None Include="..\Kephas.snk" Link="Kephas.snk"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0"/>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -85,11 +85,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml" />
+        <None Remove="LinkerConfig.xml"/>
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>
@@ -108,9 +108,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
-      <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj" />
-      <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj"/>
+        <ProjectReference Include="..\Kephas.Injection.Abstractions\Kephas.Injection.Abstractions.csproj"/>
+        <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj"/>
     </ItemGroup>
 
 </Project>

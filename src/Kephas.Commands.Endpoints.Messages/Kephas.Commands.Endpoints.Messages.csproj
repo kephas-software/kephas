@@ -60,16 +60,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+        <SupportedPlatform Include="browser"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
-        <AdditionalFiles Include="stylecop.json" />
+        <None Remove="stylecop.json"/>
+        <AdditionalFiles Include="stylecop.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <None Include="..\Kephas.snk" Link="Kephas.snk"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -84,19 +84,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml" />
+        <None Remove="LinkerConfig.xml"/>
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-      <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj"/>
+        <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj"/>
     </ItemGroup>
 
 </Project>
