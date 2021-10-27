@@ -184,8 +184,14 @@ namespace Kephas.Injection.Builder
         /// </returns>
         protected internal TBuilder RegisterServices()
         {
+            var appServiceInfosProviders = this.GetAppServiceInfosProviders();
+            if (this.Logger.IsDebugEnabled())
+            {
+                this.Logger.Debug("Registering conventions from providers '{appServiceInfosProviders}...", appServiceInfosProviders);
+            }
+
             new AppServiceInfoInjectionRegistrar()
-                .RegisterServices(this, this.BuildContext, this.GetAppServiceInfosProviders());
+                .RegisterServices(this, this.BuildContext, appServiceInfosProviders);
 
             if (this.Logger.IsDebugEnabled())
             {
