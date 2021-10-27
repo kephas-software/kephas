@@ -63,9 +63,6 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -100,9 +97,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Strings.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
         <EmbeddedResource Update="Resources\Strings.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Strings.Designer.cs</LastGenOutput>
