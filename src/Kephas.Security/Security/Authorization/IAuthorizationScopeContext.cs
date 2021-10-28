@@ -13,7 +13,6 @@ namespace Kephas.Security.Authorization
     using System;
     using System.Runtime.CompilerServices;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -49,9 +48,8 @@ namespace Kephas.Security.Authorization
             where TContext : class, IAuthorizationScopeContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(callingContext, nameof(callingContext));
 
-            context.CallingContext = callingContext;
+            context.CallingContext = callingContext ?? throw new ArgumentNullException(nameof(callingContext));
             return context;
         }
     }

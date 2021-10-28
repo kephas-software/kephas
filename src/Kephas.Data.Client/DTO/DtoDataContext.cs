@@ -8,19 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Injection.AttributedModel;
-
 namespace Kephas.Data.Client.DTO
 {
     using System;
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+
     using Kephas.Data.Behaviors;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Data.Store;
+    using Kephas.Injection;
+    using Kephas.Injection.AttributedModel;
     using Kephas.Serialization;
 
     /// <summary>

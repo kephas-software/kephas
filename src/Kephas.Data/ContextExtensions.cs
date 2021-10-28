@@ -15,7 +15,6 @@ namespace Kephas.Data
     using System.Linq;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

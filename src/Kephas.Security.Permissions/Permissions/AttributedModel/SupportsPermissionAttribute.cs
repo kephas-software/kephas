@@ -12,9 +12,7 @@ namespace Kephas.Security.Permissions.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Services;
 
     /// <summary>
     /// Attribute indicating that the decorated element supports the enumerated permissions.
@@ -33,9 +31,7 @@ namespace Kephas.Security.Permissions.AttributedModel
         /// <param name="permissions">A variable-length parameters list containing the required permissions.</param>
         public SupportsPermissionAttribute(params Type[] permissions)
         {
-            Requires.NotNullOrEmpty(permissions, nameof(permissions));
-
-            this.PermissionTypes = permissions;
+            this.PermissionTypes = permissions ?? throw new ArgumentNullException(nameof(permissions));
         }
 
         /// <summary>

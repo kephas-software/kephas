@@ -67,13 +67,6 @@
 
     <ItemGroup>
       <None Remove="stylecop.json" />
-      <None Update="kephas.logo.stone.png">
-        <Pack>true</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
       <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -90,15 +83,16 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
         <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
         <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
         <ProjectReference Include="..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj" />
     </ItemGroup>
 
@@ -108,9 +102,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Strings.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
         <EmbeddedResource Update="Resources\Strings.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Strings.Designer.cs</LastGenOutput>

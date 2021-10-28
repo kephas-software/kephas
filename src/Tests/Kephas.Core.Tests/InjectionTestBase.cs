@@ -68,7 +68,7 @@ namespace Kephas.Core.Tests
 
         public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
         {
-            var builder = WithInjectorBuilder()
+            var builder = this.WithInjectorBuilder()
                 .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly);
             config?.Invoke(builder);
             return builder.Build();
@@ -86,8 +86,8 @@ namespace Kephas.Core.Tests
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Injection.Abstractions */
-                           typeof(IContextFactory).GetTypeInfo().Assembly,     /* Kephas.Core */
+                           typeof(IInjector).Assembly,          /* Kephas.Injection */
+                           typeof(IContextFactory).Assembly,    /* Kephas.Core */
                        };
         }
 

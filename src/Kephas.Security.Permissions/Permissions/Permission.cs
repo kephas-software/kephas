@@ -13,7 +13,6 @@ namespace Kephas.Security.Permissions
     using System.Text;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Stores permission information.
@@ -33,9 +32,7 @@ namespace Kephas.Security.Permissions
         /// <param name="sections">The sections.</param>
         public Permission(string tokenName, string? scope, string[]? sections)
         {
-            Requires.NotNull(tokenName, nameof(tokenName));
-
-            this.TokenName = tokenName;
+            this.TokenName = tokenName ?? throw new ArgumentNullException(nameof(tokenName));
             this.Scope = scope;
             this.Sections = sections;
         }
@@ -84,7 +81,7 @@ namespace Kephas.Security.Permissions
         /// <returns>A new permission created by parsing the provided string.</returns>
         public static Permission Parse(string permissionString)
         {
-            Requires.NotNullOrEmpty(permissionString, nameof(permissionString));
+            permissionString = permissionString ?? throw new ArgumentNullException(nameof(permissionString));
 
             var splits = permissionString.Split(SeparatorChar);
             var tokenName = EnsureNormalizedString(splits[0]);
@@ -157,10 +154,9 @@ namespace Kephas.Security.Permissions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static string EnsureNormalizedString(string? str)
+        private static string EnsureNormalizedString(string str)
         {
-            Requires.NotNullOrEmpty(str, nameof(str));
-            return str!;
+            return string.IsNullOrEmpty(str) ? throw new ArgumentNullException(nameof(str)) : str;
         }
     }
 }

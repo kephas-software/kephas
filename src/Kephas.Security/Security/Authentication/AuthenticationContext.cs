@@ -10,7 +10,7 @@
 
 namespace Kephas.Security.Authentication
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
     using Kephas.Injection;
     using Kephas.Services;
 
@@ -36,9 +36,7 @@ namespace Kephas.Security.Authentication
         public AuthenticationContext(IInjector injector, ICredentials credentials)
             : base(injector)
         {
-            Requires.NotNull(credentials, nameof(credentials));
-
-            this.Credentials = credentials;
+            this.Credentials = credentials ?? throw new ArgumentNullException(nameof(credentials));
         }
 
         /// <summary>

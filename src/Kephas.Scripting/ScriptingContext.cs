@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Scripting
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -36,9 +35,8 @@ namespace Kephas.Scripting
         /// </summary>
         /// <param name="executionContext">The execution context.</param>
         public ScriptingContext(IContext executionContext)
-            : base(executionContext)
+            : base(executionContext ?? throw new ArgumentNullException(nameof(executionContext)))
         {
-            Requires.NotNull(executionContext, nameof(executionContext));
         }
 
         /// <summary>

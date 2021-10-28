@@ -140,7 +140,7 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Injection.Abstractions */
+                           typeof(IInjector).GetTypeInfo().Assembly,     /* Kephas.Injection */
                            typeof(IContextFactory).GetTypeInfo().Assembly,     /* Kephas.Core */
                            typeof(AutofacInjector).GetTypeInfo().Assembly, /* Kephas.Injection.Autofac */
                        };

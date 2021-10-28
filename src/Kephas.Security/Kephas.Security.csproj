@@ -17,9 +17,11 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides abstractions for the dependency injection infrastructure.
+            Provides abstractions for the security infrastructure.
             Typically used areas and classes/interfaces/services:
-            - Logging: ILogManager, ILogger.
+            - Authentication: IAuthenticationService.
+            - Authorization: IAuthorizationService.
+            - Permissions: IPermissionInfo.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -36,7 +38,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas cryptography abstractions</PackageTags>
+        <PackageTags>kephas security</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -60,16 +62,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser"/>
+        <SupportedPlatform Include="browser" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json"/>
-        <AdditionalFiles Include="stylecop.json"/>
+        <None Remove="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk"/>
+        <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <ItemGroup>
@@ -84,19 +86,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml"/>
+        <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
-        <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj"/>
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
+        <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
     </ItemGroup>
 
 </Project>

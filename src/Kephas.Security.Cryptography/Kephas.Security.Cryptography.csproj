@@ -83,7 +83,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+		<ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
+		<ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -92,9 +93,6 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Strings.resx</DependentUpon>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Update="Resources\Strings.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Strings.Designer.cs</LastGenOutput>

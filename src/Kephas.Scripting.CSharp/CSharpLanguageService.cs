@@ -20,7 +20,6 @@ namespace Kephas.Scripting.CSharp
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.IO;
     using Kephas.Scripting.AttributedModel;
@@ -64,8 +63,11 @@ namespace Kephas.Scripting.CSharp
             IContext? executionContext = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(script, nameof(script));
-            Requires.NotNull(script.SourceCode, nameof(script.SourceCode));
+            script = script ?? throw new ArgumentNullException(nameof(script));
+            if (script.SourceCode == null)
+            {
+                throw new ArgumentException($"{nameof(script.SourceCode)} must nut be null.", nameof(script));
+            }
 
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals { Args = args };

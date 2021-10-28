@@ -13,7 +13,6 @@ namespace Kephas.Application
     using System;
 
     using Kephas.Application.Reflection;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -28,9 +27,7 @@ namespace Kephas.Application
         /// <param name="version">The feature version.</param>
         public FeatureRef(string name, string? version)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
-
-            this.Name = name;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name));
             this.Version = string.IsNullOrEmpty(version) ? null : Version.Parse(version);
         }
 

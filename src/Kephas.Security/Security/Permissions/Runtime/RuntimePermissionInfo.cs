@@ -68,7 +68,7 @@ namespace Kephas.Security.Permissions.Runtime
         public IEnumerable<IPermissionInfo> GrantedPermissions =>
             this.grantedPermissions ??= this.Annotations.OfType<IGrantsPermissionAnnotation>()
                 .SelectMany(attr => attr.PermissionTypes)
-                .Union(new List<Type>(this.Type.GetInterfaces()) { this.Type.BaseType }
+                .Union(new List<Type>(this.Type.GetInterfaces()) { this.Type.BaseType! }
                     .Where(t => t != null))
                 .Select(t => this.TypeRegistry.GetTypeInfo(t))
                 .OfType<IPermissionInfo>()

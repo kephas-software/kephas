@@ -13,7 +13,6 @@ namespace Kephas.Application
     using System;
 
     using Kephas.Application.Reflection;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
 
     /// <summary>
@@ -31,7 +30,7 @@ namespace Kephas.Application
         /// <param name="targetApps">Optional. The target applications where the feature will be loaded.</param>
         public FeatureInfoAttribute(string feature, string? version = null, bool isRequired = false, string[]? dependencies = null, string[]? targetApps = null)
         {
-            Requires.NotNullOrEmpty(feature, nameof(feature));
+            feature = feature ?? throw new ArgumentNullException(nameof(feature));
 
             this.Value = new FeatureInfo(feature, version, isRequired, dependencies, targetApps);
         }

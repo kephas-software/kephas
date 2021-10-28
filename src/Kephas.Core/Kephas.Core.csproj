@@ -86,7 +86,6 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
         <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
         <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
         <PackageReference Include="System.Reflection" Version="4.3.0" />
@@ -126,6 +125,11 @@
       <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
       <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
       <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
+      <ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Security" />
     </ItemGroup>
 
 </Project>

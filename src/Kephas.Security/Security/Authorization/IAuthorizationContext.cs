@@ -1,60 +1,70 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAuthenticationContext.cs" company="Kephas Software SRL">
+// <copyright file="IAuthorizationContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAuthenticationContext interface.
+//   Declares the IAuthorizationContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security.Authentication
+namespace Kephas.Security.Authorization
 {
     using System;
+    using System.Collections.Generic;
     using System.Runtime.CompilerServices;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for authentication context.
+    /// Interface for authorization context.
     /// </summary>
-    public interface IAuthenticationContext : IContext
+    public interface IAuthorizationContext : IContext
     {
         /// <summary>
-        /// Gets the credentials.
+        /// Gets the required permissions.
         /// </summary>
         /// <value>
-        /// The credentials.
+        /// The required permissions.
         /// </value>
-        ICredentials? Credentials { get; }
+        IEnumerable<object> RequiredPermissions { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to throw on failure.
+        /// Gets the authorization scope.
         /// </summary>
         /// <value>
-        /// True if throw on failure, false if not.
+        /// The scope.
+        /// </value>
+        object? Scope { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to throw on authorization failure.
+        /// If <c>false</c> is indicated, the authorization check will return <c>false</c> upon failure,
+        /// otherwise an exception will occur.
+        /// </summary>
+        /// <value>
+        /// True to throw on authorization failure, false to not throw and return <c>false</c>.
         /// </value>
         bool ThrowOnFailure { get; set; }
     }
 
     /// <summary>
-    /// Extension methods for <see cref="IAuthenticationContext"/>.
+    /// Extension methods for <see cref="IAuthorizationContext"/>.
     /// </summary>
-    public static class AuthenticationContextExtensions
+    public static class AuthorizationContextExtensions
     {
         /// <summary>
         /// Sets a value indicating whether to throw on failure.
         /// </summary>
-        /// <typeparam name="TContext">Actual type of the authentication context.</typeparam>
-        /// <param name="context">The authentication context.</param>
+        /// <typeparam name="TContext">Actual type of the authorization context.</typeparam>
+        /// <param name="context">The authorization context.</param>
         /// <param name="value">True to throw on failure, false otherwise.</param>
         /// <returns>
-        /// This <see cref="IAuthenticationContext"/>.
+        /// This <see cref="IAuthorizationContext"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TContext ThrowOnFailure<TContext>(this TContext context, bool value)
-            where TContext : class, IAuthenticationContext
+            where TContext : class, IAuthorizationContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
 

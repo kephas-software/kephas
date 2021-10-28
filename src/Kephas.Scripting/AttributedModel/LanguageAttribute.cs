@@ -11,7 +11,7 @@
 namespace Kephas.Scripting.AttributedModel
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Injection;
 
     /// <summary>
@@ -26,8 +26,7 @@ namespace Kephas.Scripting.AttributedModel
         /// <param name="value">The value.</param>
         public LanguageAttribute(string value)
         {
-            Requires.NotNullOrEmpty(value, nameof(value));
-
+            value = value ?? throw new ArgumentNullException(nameof(value));
             this.Value = new[] { value };
         }
 
@@ -37,9 +36,7 @@ namespace Kephas.Scripting.AttributedModel
         /// <param name="value">The value.</param>
         public LanguageAttribute(params string[] value)
         {
-            Requires.NotNullOrEmpty(value, nameof(value));
-
-            this.Value = value;
+            this.Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>Gets the metadata value.</summary>

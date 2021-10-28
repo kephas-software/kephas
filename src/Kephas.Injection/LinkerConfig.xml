@@ -4,5 +4,5 @@
   stripped by the IL Linker even if they aren't referenced by user code.
 -->
 <linker>
-    <assembly fullname="Kephas.Injection.Abstractions" />
+    <assembly fullname="Kephas.Injection" />
 </linker>

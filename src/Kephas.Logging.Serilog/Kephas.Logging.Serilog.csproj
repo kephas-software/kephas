@@ -84,7 +84,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
     </ItemGroup>

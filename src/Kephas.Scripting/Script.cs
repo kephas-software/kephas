@@ -10,7 +10,8 @@
 
 namespace Kephas.Scripting
 {
-    using Kephas.Diagnostics.Contracts;
+    using System;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -25,11 +26,8 @@ namespace Kephas.Scripting
         /// <param name="sourceCode">The source code.</param>
         public Script(string language, object sourceCode)
         {
-            Requires.NotNullOrEmpty(language, nameof(language));
-            Requires.NotNull(sourceCode, nameof(sourceCode));
-
-            this.Language = language;
-            this.SourceCode = sourceCode;
+            this.Language = language ?? throw new ArgumentNullException(nameof(language));
+            this.SourceCode = sourceCode ?? throw new ArgumentNullException(nameof(sourceCode));
         }
 
         /// <summary>

@@ -10,9 +10,10 @@
 
 namespace Kephas.Scripting
 {
+    using System;
     using System.Collections.Generic;
+
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -45,9 +46,7 @@ namespace Kephas.Scripting
         public ScriptingBehaviorMetadata(string[] language, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
-            Requires.NotNullOrEmpty(language, nameof(language));
-
-            this.Language = language;
+            this.Language = language ?? throw new ArgumentNullException(nameof(language));
         }
 
         /// <summary>

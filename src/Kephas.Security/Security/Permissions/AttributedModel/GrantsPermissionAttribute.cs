@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequiresPermissionAttribute.cs" company="Kephas Software SRL">
+// <copyright file="GrantsPermissionAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the requires permission attribute class.
+//   Implements the grant permission attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,37 +12,33 @@ namespace Kephas.Security.Permissions.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
-    using Kephas.Services;
 
     /// <summary>
-    /// Attribute indicating the required permission to access/execute/use the decorated element.
+    /// Attribute indicating that the permission to access/execute/use the decorated element is granted.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
-    public class RequiresPermissionAttribute : Attribute, IRequiresPermissionAnnotation, IMetadataValue<Type[]>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
+    public class GrantsPermissionAttribute : Attribute, IGrantsPermissionAnnotation, IMetadataValue<Type[]>
     {
         /// <summary>
         /// The permission types metadata key.
         /// </summary>
-        public const string PermissionTypesMetadataKey = "RequiresPermissionTypes";
+        public const string PermissionTypesMetadataKey = "GrantsPermissionTypes";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RequiresPermissionAttribute"/> class.
+        /// Initializes a new instance of the <see cref="GrantsPermissionAttribute"/> class.
         /// </summary>
         /// <param name="permissions">A variable-length parameters list containing the required permissions.</param>
-        public RequiresPermissionAttribute(params Type[] permissions)
+        public GrantsPermissionAttribute(params Type[] permissions)
         {
-            Requires.NotNullOrEmpty(permissions, nameof(permissions));
-
-            this.PermissionTypes = permissions;
+            this.PermissionTypes = permissions ?? throw new ArgumentNullException(nameof(permissions));
         }
 
         /// <summary>
-        /// Gets the types of the required permissions.
+        /// Gets the types of the granted permissions.
         /// </summary>
         /// <value>
-        /// The types of the required permissions.
+        /// The types of the granted permissions.
         /// </value>
         public Type[] PermissionTypes { get; }
 

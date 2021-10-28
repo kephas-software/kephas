@@ -18,7 +18,6 @@ namespace Kephas.Scripting
 
     using Kephas;
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Scripting.Resources;
@@ -56,8 +55,8 @@ namespace Kephas.Scripting
             : base(contextFactory)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(languageServiceFactories, nameof(languageServiceFactories));
-            Requires.NotNull(scriptingBehaviorFactories, nameof(scriptingBehaviorFactories));
+            languageServiceFactories = languageServiceFactories ?? throw new ArgumentNullException(nameof(languageServiceFactories));
+            scriptingBehaviorFactories = scriptingBehaviorFactories ?? throw new ArgumentNullException(nameof(scriptingBehaviorFactories));
 
             this.ContextFactory = contextFactory;
 
@@ -123,7 +122,7 @@ namespace Kephas.Scripting
             Action<IScriptingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(script, nameof(script));
+            script = script ?? throw new ArgumentNullException(nameof(script));
 
             var languageServiceFactory = this.languageServiceFactories.TryGetValue(script.Language);
             if (languageServiceFactory == null)

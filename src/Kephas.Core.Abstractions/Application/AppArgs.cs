@@ -9,9 +9,9 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using Kephas.Commands;
-    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Dynamic;
     using Kephas.Logging;
 
@@ -117,7 +117,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets or sets the environment name.
         /// </summary>
-        [DisplayInfo(ShortName = "Env")]
+        [Display(ShortName = "Env")]
         public string? Environment
         {
             get => this[EnvArgName] as string;
@@ -127,7 +127,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets or sets the ID of the root application instance, if set.
         /// </summary>
-        [DisplayInfo(ShortName = "Root")]
+        [Display(ShortName = "Root")]
         public string? RootAppInstanceId
         {
             get => this[RootArgName] as string;
