@@ -19,7 +19,7 @@ namespace Kephas.Services
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, IHasProcessingPriority
     {
-        private Lazy<ILogger> lazyLogger = new (() => LoggingHelper.DefaultLogManager.GetLogger(typeof(AppServicesAttribute)));
+        private readonly Lazy<ILogger> lazyLogger = new (() => LoggingHelper.DefaultLogManager.GetLogger(typeof(AppServicesAttribute)));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesAttribute"/> class.
@@ -53,7 +53,7 @@ namespace Kephas.Services
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        protected ILogger Logger => this.lazyLogger.Value;
+        private ILogger Logger => this.lazyLogger.Value;
 
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.
@@ -66,15 +66,15 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
         {
-            if (this.Logger.IsDebugEnabled())
+            if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Debug("Creating instance of {providerType}", this.ProviderType);
+                this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceInfos));
             }
 
             var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
-            if (this.Logger.IsDebugEnabled())
+            if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Debug("Instance of {providerType} created successfully.", this.ProviderType);
+                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceInfos));
             }
 
             return provider?.GetAppServiceInfos(context) ?? Array.Empty<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
@@ -89,15 +89,15 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
         {
-            if (this.Logger.IsDebugEnabled())
+            if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Debug("Creating instance of {providerType}", this.ProviderType);
+                this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceTypes));
             }
 
             var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
-            if (this.Logger.IsDebugEnabled())
+            if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Debug("Instance of {providerType} created successfully.", this.ProviderType);
+                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceTypes));
             }
 
             return provider?.GetAppServiceTypes(context) ?? Array.Empty<(Type serviceType, Type contractDeclarationType)>();

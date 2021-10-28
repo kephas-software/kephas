@@ -32,7 +32,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         private static LoggerConfiguration GetLoggerConfiguration()
         {
             return new LoggerConfiguration()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()
                 .WriteTo.BrowserConsole();
         }
