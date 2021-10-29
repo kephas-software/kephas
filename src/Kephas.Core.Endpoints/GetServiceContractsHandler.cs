@@ -44,7 +44,7 @@ namespace Kephas.Core.Endpoints
         {
             var appServiceInfos = this.ambientServices
                 .GetAppServiceInfos()
-                .Select(i => (IAppServiceInfo)new AppServiceInfo(i.appServiceInfo, i.contractType));
+                .Select(i => (IAppServiceInfo)new AppServiceInfo(i.AppServiceInfo, i.ContractDeclarationType));
 
             if (!string.IsNullOrEmpty(message.ContractType))
             {

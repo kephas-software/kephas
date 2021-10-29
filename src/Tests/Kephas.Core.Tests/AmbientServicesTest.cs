@@ -447,11 +447,11 @@ namespace Kephas.Core.Tests
             var ambientServices = (AmbientServices)this.CreateAmbientServices().WithStaticAppRuntime();
             var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>());
 
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(ILogManager));
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(ILogManager));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
 
-            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAppRuntime));
+            (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(IAppRuntime));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
         }
@@ -464,12 +464,12 @@ namespace Kephas.Core.Tests
 
             Assert.AreEqual(2, appServiceInfos.Count());
 
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAmbientServices));
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(IAmbientServices));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(ambientServices, info.InstanceFactory(null));
 
-            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IRuntimeTypeRegistry));
+            (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(IRuntimeTypeRegistry));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(RuntimeTypeRegistry.Instance, info.InstanceFactory(null));
@@ -492,7 +492,7 @@ namespace Kephas.Core.Tests
             ambientServices[InjectorExtensions.LiteInjectionKey] = true;
             var appServiceInfos = ambientServices.GetAppServiceInfos(null);
 
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractDeclarationType == typeof(IAppRuntime));
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(IAppRuntime));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(((IAmbientServices)ambientServices).GetAppRuntime(), info.InstanceFactory(null));

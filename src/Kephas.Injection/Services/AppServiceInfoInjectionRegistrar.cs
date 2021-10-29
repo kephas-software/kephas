@@ -49,9 +49,9 @@ namespace Kephas.Services
             // get all type infos from the injection assemblies
             var appServiceInfoList = appServiceInfoProviders
                 .SelectMany(p => p.GetAppServiceInfos(buildContext))
-                .Select(t => (
-                    contractDeclarationType: t.contractDeclarationType.ToNormalizedType(),
-                    appServiceInfo: t.appServiceInfo))
+                .Select(t => new ContractDeclaration(
+                    t.ContractDeclarationType.ToNormalizedType(),
+                    t.AppServiceInfo))
                 .ToList();
 
             if (logger.IsDebugEnabled())
@@ -60,7 +60,7 @@ namespace Kephas.Services
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(IAppServiceInfosProvider appServiceInfosProvider)
+            IEnumerable<ServiceDeclaration> GetAppServiceTypes(IAppServiceInfosProvider appServiceInfosProvider)
             {
                 if (logger.IsDebugEnabled())
                 {
@@ -71,16 +71,16 @@ namespace Kephas.Services
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            (Type serviceType, Type contractDeclarationType) GetServiceTypeEntry((Type serviceType, Type contractDeclarationType) valueTuple)
+            ServiceDeclaration GetServiceTypeEntry(ServiceDeclaration serviceDeclaration)
             {
-                var (serviceType, contractDeclarationType) = valueTuple;
+                var (serviceType, contractDeclarationType) = serviceDeclaration;
 
                 if (logger.IsDebugEnabled())
                 {
                     logger.Debug("Getting the service type entry for {serviceType}/{contractDeclarationType}", serviceType, contractDeclarationType);
                 }
 
-                return (serviceType: serviceType.ToNormalizedType(), contractDeclarationType: contractDeclarationType.ToNormalizedType());
+                return new ServiceDeclaration(serviceType.ToNormalizedType(), contractDeclarationType.ToNormalizedType());
             }
 
             var serviceTypes = appServiceInfoProviders
@@ -273,8 +273,8 @@ namespace Kephas.Services
         }
 
         private IDictionary<Type, ServiceEntry> BuildServiceMap(
-                IList<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfoList,
-                IEnumerable<(Type serviceType, Type contractDeclarationType)> serviceTypes,
+                IList<ContractDeclaration> appServiceInfoList,
+                IEnumerable<ServiceDeclaration> serviceTypes,
                 ILogger logger)
         {
             var serviceMap = new Dictionary<Type, ServiceEntry>();
@@ -294,7 +294,7 @@ namespace Kephas.Services
                 serviceEntry.Registrations.Add(appServiceInfo);
             }
 
-            serviceTypes.ForEach(si => this.AddServiceType(serviceMap, si.contractDeclarationType, si.serviceType, logger));
+            serviceTypes.ForEach(si => this.AddServiceType(serviceMap, si.ContractDeclarationType, si.ServiceType, logger));
 
             return serviceMap;
         }

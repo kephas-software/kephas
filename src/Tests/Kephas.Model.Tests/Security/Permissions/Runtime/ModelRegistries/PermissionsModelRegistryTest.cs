@@ -34,9 +34,9 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
-                .GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
@@ -69,9 +69,9 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_ExcludeFromModel()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
-                .GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();

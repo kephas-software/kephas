@@ -17,6 +17,24 @@ namespace Kephas.Services
     using Kephas.Services.Reflection;
 
     /// <summary>
+    /// Service contract declaration record.
+    /// </summary>
+    /// <param name="ContractDeclarationType">The contract declaration type.</param>
+    /// <param name="AppServiceInfo">The <see cref="IAppServiceInfo"/> attached to the contract declaration type.</param>
+    public record ContractDeclaration(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ContractDeclarationType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] IAppServiceInfo AppServiceInfo);
+
+    /// <summary>
+    /// Service implementation declaration record.
+    /// </summary>
+    /// <param name="ServiceType">The service type.</param>
+    /// <param name="ContractDeclarationType">The contract declaration type.</param>
+    public record ServiceDeclaration(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ServiceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ContractDeclarationType);
+
+    /// <summary>
     /// Interface providing the <see cref="GetAppServiceInfos"/> method,
     /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
@@ -40,7 +58,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
             => GetAppServiceInfosCore(this, context);
 
         /// <summary>
@@ -50,19 +68,8 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
-            => Enumerable.Empty<(Type serviceType, Type contractDeclarationType)>();
-
-        /// <summary>
-        /// Gets a service registration marking both the service and the contract types as dynamically accessed.
-        /// </summary>
-        /// <param name="serviceType">The service type.</param>
-        /// <param name="contractType">The contract type.</param>
-        /// <returns>A tuple of service and contract types.</returns>
-        public static (Type serviceType, Type contractDeclarationType) GetServiceRegistration(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType)
-            => (serviceType, contractType);
+        public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)
+            => Enumerable.Empty<ServiceDeclaration>();
 
         /// <summary>
         /// Tries the get the application service information from the custom attributes.
@@ -84,7 +91,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        protected internal static IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfosCore(IAppServiceInfosProvider provider, dynamic? context = null)
+        protected internal static IEnumerable<ContractDeclaration> GetAppServiceInfosCore(IAppServiceInfosProvider provider, dynamic? context = null)
         {
             var contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
             if (contractDeclarationTypes == null)
@@ -97,7 +104,7 @@ namespace Kephas.Services
                 var appServiceInfo = provider.TryGetAppServiceInfo(contractType);
                 if (appServiceInfo != null)
                 {
-                    yield return (contractType, appServiceInfo);
+                    yield return new ContractDeclaration(contractType, appServiceInfo);
                 }
             }
         }

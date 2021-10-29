@@ -41,7 +41,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
         {
             var ambientServices = ((IContext?)context)?.AmbientServices;
             if (ambientServices == null)
@@ -70,12 +70,13 @@ namespace Kephas.Extensions.DependencyInjection
                 // make sure AllowMultiple is set to true, as the ServiceCollection supports by default multiple registrations.
                 if (descriptor.ImplementationInstance != null)
                 {
-                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance) { AllowMultiple = true });
+                    yield return new ContractDeclaration(serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance) { AllowMultiple = true });
                 }
                 else if (descriptor.ImplementationFactory != null)
                 {
-                    yield return (serviceType,
-                                     new AppServiceInfo(
+                    yield return new ContractDeclaration(
+                                        serviceType,
+                                        new AppServiceInfo(
                                          serviceType,
                                          ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider()))
                                          { AllowMultiple = true });
@@ -89,8 +90,9 @@ namespace Kephas.Extensions.DependencyInjection
                                            ? AppServiceLifetime.Scoped
                                            : AppServiceLifetime.Transient;
 
-                    yield return (serviceType,
-                                     new AppServiceInfo(
+                    yield return new ContractDeclaration(
+                                        serviceType,
+                                        new AppServiceInfo(
                                          serviceType,
                                          instanceType,
                                          lifetime,

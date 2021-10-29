@@ -38,7 +38,7 @@ namespace Kephas.Tests.Services
             var attr = new AppServicesAttribute(typeof(AppServicesProvider));
 
             var serviceInfos = attr.GetAppServiceInfos();
-            CollectionAssert.AreEqual(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.contractDeclarationType));
+            CollectionAssert.AreEqual(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.ContractDeclarationType));
             CollectionAssert.IsEmpty(attr.GetAppServiceTypes());
         }
 

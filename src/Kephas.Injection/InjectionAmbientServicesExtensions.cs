@@ -322,12 +322,12 @@ namespace Kephas
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        internal static IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(this IAmbientServices ambientServices)
+        internal static IEnumerable<ContractDeclaration> GetAppServiceInfos(this IAmbientServices ambientServices)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            return ambientServices[AppServiceInfosKey] as IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>
-                   ?? Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
+            return ambientServices[AppServiceInfosKey] as IEnumerable<ContractDeclaration>
+                   ?? Array.Empty<ContractDeclaration>();
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appServiceInfos">An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.</param>
-        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> appServiceInfos)
+        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<ContractDeclaration> appServiceInfos)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
@@ -346,7 +346,7 @@ namespace Kephas
             if ((bool?)ambientServices[InjectorExtensions.LiteInjectionKey] ?? false)
             {
                 var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceInfos(null);
-                var allServiceInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
+                var allServiceInfos = new List<ContractDeclaration>();
                 if (liteServiceInfos != null)
                 {
                     allServiceInfos.AddRange(liteServiceInfos);

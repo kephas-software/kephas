@@ -96,7 +96,7 @@ namespace Kephas
         /// An enumerator that allows foreach to be used to process the application service infos in this
         /// collection.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
         {
             // Lite injector does not need to add to ambient services again its services
             // However, when the registration context and the candidate types are both null,
@@ -108,9 +108,9 @@ namespace Kephas
 
             // exclude the injector from the list as it is the responsibility
             // of each injector implementation to register itself in the DI container.
-            foreach ((Type contractDeclarationType, IAppServiceInfo appServiceInfo) s in this.registry.GetAppServiceInfos(context))
+            foreach (ContractDeclaration s in this.registry.GetAppServiceInfos(context))
             {
-                if (ReferenceEquals(s.contractDeclarationType, typeof(IInjector)))
+                if (ReferenceEquals(s.ContractDeclarationType, typeof(IInjector)))
                 {
                     continue;
                 }

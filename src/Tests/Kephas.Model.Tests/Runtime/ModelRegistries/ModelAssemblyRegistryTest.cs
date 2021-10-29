@@ -60,9 +60,10 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly });
+            var appRuntime = Substitute.For<IAmbientServices>();
+            appRuntime
+                .GetAppAssemblies()
+                .Returns(new[] { typeof(ModelAssemblyRegistry).Assembly });
 
             var registry = new ModelAssemblyRegistry(appRuntime, new DefaultTypeLoader(null), new DefaultModelAssemblyAttributeProvider(), new RuntimeTypeRegistry());
             var elements = await registry.GetRuntimeElementsAsync();
@@ -73,9 +74,10 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_exclude_from_model()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ModelAssemblyRegistryTest).GetTypeInfo().Assembly });
+            var appRuntime = Substitute.For<IAmbientServices>();
+            appRuntime
+                .GetAppAssemblies()
+                .Returns(new[] { typeof(ModelAssemblyRegistryTest).Assembly });
 
             var attrProvider = Substitute.For<IModelAssemblyAttributeProvider>();
             attrProvider.GetModelAssemblyAttributes(Arg.Any<Assembly>()).Returns(

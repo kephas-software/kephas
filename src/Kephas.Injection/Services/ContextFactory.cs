@@ -39,7 +39,7 @@ namespace Kephas.Services
 
         private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>> signatureCache = new ();
 
-        private readonly IList<(Type contractType, IAppServiceInfo appServiceInfo)> appServiceInfos;
+        private readonly IList<ContractDeclaration> appServiceInfos;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextFactory"/> class.
@@ -135,14 +135,14 @@ namespace Kephas.Services
                 }
                 else
                 {
-                    var appServiceInfo = this.appServiceInfos?.FirstOrDefault(i => i.contractType == paramType);
-                    if (appServiceInfo != null && appServiceInfo.Value.appServiceInfo == null && paramType.IsGenericType)
+                    var appServiceInfo = this.appServiceInfos?.FirstOrDefault(i => i.ContractDeclarationType == paramType);
+                    if (appServiceInfo == null && paramType.IsGenericType)
                     {
                         var genericDefParamType = paramType.GetGenericTypeDefinition();
-                        appServiceInfo = this.appServiceInfos?.FirstOrDefault(i => i.contractType == genericDefParamType);
+                        appServiceInfo = this.appServiceInfos?.FirstOrDefault(i => i.ContractDeclarationType == genericDefParamType);
                     }
 
-                    if (appServiceInfo != null && appServiceInfo.Value.appServiceInfo != null && !appServiceInfo.Value.appServiceInfo.AllowMultiple)
+                    if (appServiceInfo?.AppServiceInfo != null && !appServiceInfo.AppServiceInfo.AllowMultiple)
                     {
                         argIndexMap.Add(-argResolverMap.Count);
                         argResolverMap.Add(() => this.injector.Resolve(paramType));

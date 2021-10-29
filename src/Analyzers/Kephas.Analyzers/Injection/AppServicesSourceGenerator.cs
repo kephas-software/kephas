@@ -115,7 +115,7 @@ using Kephas.Services;
 
             source.AppendLine($@"       }}");
             source.AppendLine();
-            source.AppendLine($@"       public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)");
+            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)");
             source.AppendLine($@"       {{");
 
             if (serviceTypes.Count > 0)
@@ -132,7 +132,7 @@ using Kephas.Services;
                     var typeFullName = InjectionHelper.GetTypeFullName(classSyntax);
                     try
                     {
-                        source.AppendLine($"            yield return IAppServiceInfosProvider.GetServiceRegistration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                        source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
                     }
                     catch (Exception ex)
                     {

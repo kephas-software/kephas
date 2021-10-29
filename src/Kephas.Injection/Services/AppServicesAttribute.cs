@@ -64,7 +64,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
         {
             if (this.Logger.IsTraceEnabled())
             {
@@ -87,7 +87,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)
         {
             if (this.Logger.IsTraceEnabled())
             {
@@ -101,6 +101,15 @@ namespace Kephas.Services
             }
 
             return provider?.GetAppServiceTypes(context) ?? Array.Empty<(Type serviceType, Type contractDeclarationType)>();
+        }
+
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.ToString?view=netstandard-2.1">`Object.ToString` on docs.microsoft.com</a></footer>
+        public override string ToString()
+        {
+            return $"AppServices/{this.ProviderType}/{this.ProcessingPriority}";
         }
     }
 }

@@ -21,9 +21,11 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync()
         {
-            var appAssemblies = new List<Assembly> { typeof(CoreSettings).Assembly };
-            var appRuntime = new StaticAppRuntime(appAssemblies: appAssemblies);
-            await ServiceHelper.InitializeAsync(appRuntime);
+            var appRuntime = Substitute.For<IAmbientServices>();
+            appRuntime
+                .GetAppAssemblies()
+                .Returns(new[] { typeof(CoreSettings).Assembly });
+
             var handler = new GetSettingsTypesHandler(appRuntime, new DefaultTypeLoader());
             var result = await handler.ProcessAsync(
                 new GetSettingsTypesMessage(),

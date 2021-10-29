@@ -392,14 +392,14 @@ namespace Kephas.Tests.Injection.Autofac
 
         private class TestAppServiceInfosProvider : IAppServiceInfosProvider
         {
-            private readonly IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> serviceInfos;
+            private readonly IEnumerable<ContractDeclaration> serviceInfos;
 
             public TestAppServiceInfosProvider(IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> serviceInfos)
             {
-                this.serviceInfos = serviceInfos;
+                this.serviceInfos = serviceInfos.Select(si => new ContractDeclaration(si.contractDeclarationType, si.appServiceInfo)).ToList();
             }
 
-            public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null) => this.serviceInfos;
+            public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null) => this.serviceInfos;
         }
 
         private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)

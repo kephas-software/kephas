@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     public class AppServicesModelRegistry : IRuntimeModelRegistry
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
-        private readonly Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter;
+        private readonly Func<ContractDeclaration, IAmbientServices, bool>? filter;
 
         /// <summary>
         /// The key for the app service metadata.
@@ -52,7 +52,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         protected internal AppServicesModelRegistry(
             IAmbientServices ambientServices,
             IRuntimeTypeRegistry typeRegistry,
-            Func<(Type contractType, IAppServiceInfo appServiceInfo), IAmbientServices, bool>? filter)
+            Func<ContractDeclaration, IAmbientServices, bool>? filter)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
@@ -83,8 +83,8 @@ namespace Kephas.Model.Runtime.ModelRegistries
 
             var types = new HashSet<IRuntimeTypeInfo>(appServiceInfos.Select(i =>
                 {
-                    var typeInfo = this.typeRegistry.GetTypeInfo(i.contractType);
-                    typeInfo[AppServiceKey] = i.appServiceInfo;
+                    var typeInfo = this.typeRegistry.GetTypeInfo(i.ContractDeclarationType);
+                    typeInfo[AppServiceKey] = i.AppServiceInfo;
                     return typeInfo;
                 }));
 
@@ -94,10 +94,10 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <summary>
         /// Gets a value indicating whether the service contract is not part of a third party assembly.
         /// </summary>
-        /// <param name="serviceContract">The service contract to be tested.</param>
+        /// <param name="contractDeclaration">The service contract to be tested.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>A value indicating whether the service contract is not part of a third party assembly.</returns>
-        protected static bool IsNotThirdParty((Type contractType, IAppServiceInfo appServiceInfo) serviceContract, IAmbientServices ambientServices)
-            => ambientServices.GetAppRuntime()!.GetAppAssemblies().Contains(serviceContract.contractType.Assembly);
+        protected static bool IsNotThirdParty(ContractDeclaration contractDeclaration, IAmbientServices ambientServices)
+            => ambientServices.GetAppAssemblies().Contains(contractDeclaration.ContractDeclarationType.Assembly);
     }
 }

@@ -48,14 +48,14 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<(Type serviceType, Type contractDeclarationType)> GetAppServiceTypes(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)
         {
             return
                 from serviceType in this.parts
                 where serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsNestedPrivate && serviceType.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null
                 let contractDeclarationType = this.TryGetAppServiceContract(serviceType)
                 where contractDeclarationType != null
-                select (serviceType, contractDeclarationType!);
+                select new ServiceDeclaration(serviceType, contractDeclarationType!);
         }
 
         private Type? TryGetAppServiceContract(Type part)

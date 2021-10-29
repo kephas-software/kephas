@@ -32,11 +32,11 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
         {
             if ((context as IContext)?.AmbientServices is not IAppServiceInfosProvider ambientServicesProvider)
             {
-                return Array.Empty<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
+                return Array.Empty<ContractDeclaration>();
             }
 
             return ambientServicesProvider.GetAppServiceInfos(context);

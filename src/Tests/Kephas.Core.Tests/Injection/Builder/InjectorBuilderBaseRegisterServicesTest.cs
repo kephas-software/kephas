@@ -55,15 +55,15 @@ namespace Kephas.Core.Tests.Injection.Builder
 
     public class CalculatorAppServiceInfosProvider : IAppServiceInfosProvider
     {
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
         {
-            yield return (
+            yield return new ContractDeclaration(
                 typeof(ICalculator),
                 new AppServiceInfo(typeof(ICalculator), typeof(ScientificCalculator))
                         { AllowMultiple = true }
                     .AddMetadata("type", "Scientific"));
 
-            yield return (
+            yield return new ContractDeclaration(
                 typeof(ICalculator),
                 new AppServiceInfo(typeof(ICalculator), typeof(StandardCalculator))
                         { AllowMultiple = true }

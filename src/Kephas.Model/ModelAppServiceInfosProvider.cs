@@ -29,9 +29,9 @@ namespace Kephas.Model
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
         {
-            yield return (
+            yield return new ContractDeclaration(
                 typeof(IModelSpace),
                 new AppServiceInfo(
                     typeof(IModelSpace),

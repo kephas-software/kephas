@@ -59,11 +59,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+            var appServicesInfos = new List<ContractDeclaration>
             {
-                   (typeof(int), Substitute.For<IAppServiceInfo>()),
-                   (typeof(string), Substitute.For<IAppServiceInfo>()),
-                   (typeof(bool), Substitute.For<IAppServiceInfo>()),
+                   new (typeof(int), Substitute.For<IAppServiceInfo>()),
+                   new (typeof(string), Substitute.For<IAppServiceInfo>()),
+                   new (typeof(bool), Substitute.For<IAppServiceInfo>()),
             };
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
@@ -73,7 +73,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
             Assert.AreEqual(3, types.Count);
-            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractDeclarationType == t.Type)));
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.ContractDeclarationType == t.Type)));
             Assert.IsTrue(types.All(t => t[AppServicesModelRegistry.AppServiceKey] is IAppServiceInfo));
         }
 
@@ -81,34 +81,34 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_with_filter()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+            var appServicesInfos = new List<ContractDeclaration>
             {
-                (typeof(int), Substitute.For<IAppServiceInfo>()),
-                (typeof(string), Substitute.For<IAppServiceInfo>()),
-                (typeof(bool), Substitute.For<IAppServiceInfo>()),
+                new (typeof(int), Substitute.For<IAppServiceInfo>()),
+                new (typeof(string), Substitute.For<IAppServiceInfo>()),
+                new (typeof(bool), Substitute.For<IAppServiceInfo>()),
             };
 
             ambientServices.SetAppServiceInfos(appServicesInfos);
 
-            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetTypeRegistry(), (sc, amb) => sc.contractType == typeof(int));
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetTypeRegistry(), (sc, amb) => sc.ContractDeclarationType == typeof(int));
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
             Assert.AreEqual(1, types.Count);
-            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractDeclarationType == t.Type)));
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.ContractDeclarationType == t.Type)));
         }
 
         [Test]
         public async Task GetRuntimeElementsAsync_with_default_filter()
         {
             var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
-            var appServicesInfos = new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
+            var appServicesInfos = new List<ContractDeclaration>
             {
-                (typeof(int), Substitute.For<IAppServiceInfo>()),
-                (typeof(string), Substitute.For<IAppServiceInfo>()),
-                (typeof(bool), Substitute.For<IAppServiceInfo>()),
-                (typeof(IRuntimeModelRegistry), Substitute.For<IAppServiceInfo>()),
-                (typeof(IModelSpace), Substitute.For<IAppServiceInfo>()),
+                new (typeof(int), Substitute.For<IAppServiceInfo>()),
+                new (typeof(string), Substitute.For<IAppServiceInfo>()),
+                new (typeof(bool), Substitute.For<IAppServiceInfo>()),
+                new (typeof(IRuntimeModelRegistry), Substitute.For<IAppServiceInfo>()),
+                new (typeof(IModelSpace), Substitute.For<IAppServiceInfo>()),
             };
 
             ambientServices.SetAppServiceInfos(appServicesInfos);

@@ -39,10 +39,10 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             var serviceInfos = provider.GetAppServiceInfos(context).ToList();
 
             Assert.AreEqual(1, serviceInfos.Count);
-            Assert.AreEqual(typeof(string), serviceInfos[0].contractDeclarationType);
+            Assert.AreEqual(typeof(string), serviceInfos[0].ContractDeclarationType);
             if (serviceInfos[0] is not
                 {
-                    appServiceInfo:
+                    AppServiceInfo:
                     {
                         InstancingStrategy: "hello",
                         AllowMultiple: true,
@@ -52,7 +52,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
                     }
                 })
             {
-                Assert.Fail($"The {serviceInfos[0].contractDeclarationType} service is not properly registered");
+                Assert.Fail($"The {serviceInfos[0].ContractDeclarationType} service is not properly registered");
             }
         }
 
@@ -67,11 +67,11 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             var serviceInfos = provider.GetAppServiceInfos(context).ToList();
 
             Assert.AreEqual(1, serviceInfos.Count);
-            Assert.AreEqual(typeof(ICollection<>), serviceInfos[0].contractDeclarationType);
-            Assert.AreEqual(typeof(List<>), serviceInfos[0].appServiceInfo.InstancingStrategy);
+            Assert.AreEqual(typeof(ICollection<>), serviceInfos[0].ContractDeclarationType);
+            Assert.AreEqual(typeof(List<>), serviceInfos[0].AppServiceInfo.InstancingStrategy);
             if (serviceInfos[0] is not
                 {
-                    appServiceInfo:
+                    AppServiceInfo:
                     {
                         AllowMultiple: true,
                         Lifetime: AppServiceLifetime.Singleton,
@@ -80,7 +80,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
                     }
                 })
             {
-                Assert.Fail($"The {serviceInfos[0].contractDeclarationType} service is not properly registered");
+                Assert.Fail($"The {serviceInfos[0].ContractDeclarationType} service is not properly registered");
             }
         }
 
