@@ -398,8 +398,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
-                .Returns((Func<CallInfo, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>>)
-                    (ci => new [] { (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), "123")) }));
+                .Returns((IEnumerable<ContractDeclaration>)new ContractDeclaration[] { new (typeof(string), new AppServiceInfo(typeof(string), "123")) });
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
             var mockPlatformManager = ambientServices.GetAppRuntime();
@@ -418,8 +417,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
             registrar.GetAppServiceInfos(Arg.Any<dynamic>())
-                .Returns((Func<CallInfo, IEnumerable<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>>)
-                    (ci => new [] { (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), _ => "123")) }));
+                .Returns(new ContractDeclaration[] { new (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), _ => "123")) });
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
             var mockPlatformManager = ambientServices.GetAppRuntime();

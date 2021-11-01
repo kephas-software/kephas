@@ -25,9 +25,22 @@
         </AdditionalFiles>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
+	<Choose>
+		<When Condition="'$(TargetFramework)'=='net6.0'">
+			<ItemGroup>
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.2.21480.10" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.2.21480.10" PrivateAssets="all" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
+
+	<ItemGroup>
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
         <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="1.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

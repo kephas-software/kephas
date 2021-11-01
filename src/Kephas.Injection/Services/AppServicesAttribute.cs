@@ -78,7 +78,7 @@ namespace Kephas.Services
                 this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceInfos));
             }
 
-            return provider?.GetAppServiceInfos(context) ?? Array.Empty<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>();
+            return provider?.GetAppServiceInfos(context) ?? Array.Empty<ContractDeclaration>();
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Kephas.Services
                 this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceTypes));
             }
 
-            return provider?.GetAppServiceTypes(context) ?? Array.Empty<(Type serviceType, Type contractDeclarationType)>();
+            return provider?.GetAppServiceTypes(context) ?? Array.Empty<ServiceDeclaration>();
         }
 
 

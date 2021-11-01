@@ -93,7 +93,7 @@ using Kephas.Services;
             source.AppendLine($@"#endif");
             source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
-            source.AppendLine($@"       public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null)");
+            source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(dynamic? context = null)");
             source.AppendLine($@"       {{");
 
             if (contractTypes.Count > 0)
@@ -119,6 +119,9 @@ using Kephas.Services;
 
             source.AppendLine($@"       }}");
             source.AppendLine();
+            source.AppendLine($@"#if NET6_0_OR_GREATER");
+            source.AppendLine($@"       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
+            source.AppendLine($@"#endif");
             source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)");
             source.AppendLine($@"       {{");
 

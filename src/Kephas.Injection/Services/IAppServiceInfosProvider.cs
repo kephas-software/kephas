@@ -24,7 +24,7 @@ namespace Kephas.Services
     /// <param name="AppServiceInfo">The <see cref="IAppServiceInfo"/> attached to the contract declaration type.</param>
     public record ContractDeclaration(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ContractDeclarationType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] IAppServiceInfo AppServiceInfo);
+        IAppServiceInfo AppServiceInfo);
 
     /// <summary>
     /// Service implementation declaration record.
@@ -44,15 +44,6 @@ namespace Kephas.Services
 #endif
     public interface IAppServiceInfosProvider
     {
-        /// <summary>
-        /// Gets the contract declaration types.
-        /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
-        /// <returns>
-        /// The contract declaration types.
-        /// </returns>
-        public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null) => null;
-
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.
         /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
@@ -112,5 +103,14 @@ namespace Kephas.Services
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the contract declaration types.
+        /// </summary>
+        /// <param name="context">Optional. The context in which the service types are requested.</param>
+        /// <returns>
+        /// The contract declaration types.
+        /// </returns>
+        protected internal IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null) => null;
     }
 }
