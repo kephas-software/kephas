@@ -11,6 +11,7 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Services;
 

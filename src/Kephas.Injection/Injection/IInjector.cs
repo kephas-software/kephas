@@ -9,6 +9,7 @@ namespace Kephas.Injection
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Public interface for the injector.

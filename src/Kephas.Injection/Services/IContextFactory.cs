@@ -10,6 +10,8 @@
 
 namespace Kephas.Services
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Interface for context factory.
     /// </summary>

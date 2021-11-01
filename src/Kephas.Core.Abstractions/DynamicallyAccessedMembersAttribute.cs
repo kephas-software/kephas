@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NETSTANDARD2_1
+
 namespace Kephas
 {
     using System;
@@ -70,3 +72,5 @@ namespace Kephas
         public DynamicallyAccessedMemberTypes MemberTypes { get; }
     }
 }
+
+#endif

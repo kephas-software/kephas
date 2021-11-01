@@ -13,6 +13,7 @@ namespace Kephas.Services
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
 
@@ -21,7 +22,6 @@ namespace Kephas.Services
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Services.Reflection;
 
     /// <summary>
     /// A context factory.

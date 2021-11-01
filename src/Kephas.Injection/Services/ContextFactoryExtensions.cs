@@ -8,6 +8,7 @@
 namespace Kephas.Services
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     using Kephas.Logging;

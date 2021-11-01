@@ -12,6 +12,7 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Kephas.Services.Reflection;
@@ -38,6 +39,9 @@ namespace Kephas.Services
     /// Interface providing the <see cref="GetAppServiceInfos"/> method,
     /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
+#if NET6_0_OR_GREATER
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
     public interface IAppServiceInfosProvider
     {
         /// <summary>

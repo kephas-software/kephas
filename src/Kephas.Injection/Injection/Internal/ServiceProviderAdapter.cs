@@ -8,6 +8,7 @@
 namespace Kephas.Injection.Internal
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Adapter for <see cref="IServiceProvider"/> based on <see cref="IInjector"/>.

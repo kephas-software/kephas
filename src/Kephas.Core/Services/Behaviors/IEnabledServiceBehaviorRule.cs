@@ -10,6 +10,8 @@
 
 namespace Kephas.Services.Behaviors
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Behaviors;
 
     /// <summary>

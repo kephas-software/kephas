@@ -11,6 +11,7 @@
 namespace Kephas.Data.Runtime
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Data.Reflection;
     using Kephas.Logging;

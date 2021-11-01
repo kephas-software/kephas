@@ -11,6 +11,7 @@
 namespace Kephas.Messaging.Runtime
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Logging;
     using Kephas.Messaging.Reflection;

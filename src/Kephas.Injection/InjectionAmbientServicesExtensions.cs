@@ -9,6 +9,7 @@ namespace Kephas
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Injection;
     using Kephas.Injection.Builder;

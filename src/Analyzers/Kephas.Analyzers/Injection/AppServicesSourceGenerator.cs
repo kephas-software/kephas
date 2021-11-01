@@ -57,6 +57,7 @@ namespace Kephas.Analyzers.Injection
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using Kephas.Services;
 
@@ -87,6 +88,9 @@ using Kephas.Services;
 
             source.AppendLine($@"namespace {serviceTypeProvider.typeNamespace}");
             source.AppendLine($@"{{");
+            source.AppendLine($@"#if NET6_0_OR_GREATER");
+            source.AppendLine($@"   [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
+            source.AppendLine($@"#endif");
             source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
             source.AppendLine($@"       public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null)");

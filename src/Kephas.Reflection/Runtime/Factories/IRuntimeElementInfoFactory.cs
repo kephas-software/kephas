@@ -7,6 +7,7 @@
 
 namespace Kephas.Runtime.Factories
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     using Kephas.Logging;
