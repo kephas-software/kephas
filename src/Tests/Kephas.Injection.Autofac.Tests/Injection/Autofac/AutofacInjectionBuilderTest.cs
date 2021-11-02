@@ -399,7 +399,7 @@ namespace Kephas.Tests.Injection.Autofac
                 this.serviceInfos = serviceInfos.Select(si => new ContractDeclaration(si.contractDeclarationType, si.appServiceInfo)).ToList();
             }
 
-            public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null) => this.serviceInfos;
+            public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null) => this.serviceInfos;
         }
 
         private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)

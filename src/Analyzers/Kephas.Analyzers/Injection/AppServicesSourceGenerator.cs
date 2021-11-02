@@ -120,7 +120,7 @@ using Kephas.Services;
             source.AppendLine($@"       }}");
             source.AppendLine();
             source.AppendLine($@"       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
-            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)");
+            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)");
             source.AppendLine($@"       {{");
 
             if (serviceTypes.Count > 0)

@@ -346,7 +346,7 @@ namespace Kephas
             // did not add them already, so after that do not call SetAppServiceInfos!
             if ((bool?)ambientServices[InjectorExtensions.LiteInjectionKey] ?? false)
             {
-                var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceInfos(null);
+                var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceContracts(null);
                 var allServiceInfos = new List<ContractDeclaration>();
                 if (liteServiceInfos != null)
                 {

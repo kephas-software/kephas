@@ -23,7 +23,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
         public void GetAppServiceInfos_empty_context()
         {
             var provider = new ServiceCollectionAppServiceInfosProvider();
-            var serviceInfos = provider.GetAppServiceInfos();
+            var serviceInfos = provider.GetAppServiceContracts();
 
             CollectionAssert.IsEmpty(serviceInfos);
         }
@@ -36,7 +36,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             {
                 services.AddSingleton<string>("hello");
             });
-            var serviceInfos = provider.GetAppServiceInfos(context).ToList();
+            var serviceInfos = provider.GetAppServiceContracts(context).ToList();
 
             Assert.AreEqual(1, serviceInfos.Count);
             Assert.AreEqual(typeof(string), serviceInfos[0].ContractDeclarationType);
@@ -64,7 +64,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             {
                 services.AddSingleton(typeof(ICollection<>), typeof(List<>));
             });
-            var serviceInfos = provider.GetAppServiceInfos(context).ToList();
+            var serviceInfos = provider.GetAppServiceContracts(context).ToList();
 
             Assert.AreEqual(1, serviceInfos.Count);
             Assert.AreEqual(typeof(ICollection<>), serviceInfos[0].ContractDeclarationType);

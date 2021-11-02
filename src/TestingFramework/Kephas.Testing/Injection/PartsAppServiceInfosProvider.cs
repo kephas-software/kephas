@@ -48,7 +48,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)
         {
             return
                 from serviceType in this.parts

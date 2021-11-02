@@ -65,20 +65,20 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null)
         {
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceInfos));
+                this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceContracts));
             }
 
             var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceInfos));
+                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceContracts));
             }
 
-            return provider?.GetAppServiceInfos(context) ?? Array.Empty<ContractDeclaration>();
+            return provider?.GetAppServiceContracts(context) ?? Array.Empty<ContractDeclaration>();
         }
 
         /// <summary>
@@ -88,20 +88,20 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)
         {
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceTypes));
+                this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServices));
             }
 
             var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceTypes));
+                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServices));
             }
 
-            return provider?.GetAppServiceTypes(context) ?? Array.Empty<ServiceDeclaration>();
+            return provider?.GetAppServices(context) ?? Array.Empty<ServiceDeclaration>();
         }
 
 

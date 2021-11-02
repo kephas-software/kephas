@@ -39,7 +39,7 @@ namespace Kephas.Analyzers.Tests.Injection
 
             var provider = Activator.CreateInstance(appServicesAttr.ProviderType)!;
             var typesProvider = (IAppServiceInfosProvider)provider;
-            var services = typesProvider.GetAppServiceTypes();
+            var services = typesProvider.GetAppServices();
 
             var expectedServices = new (Type serviceType, Type contractDeclarationType)[]
             {

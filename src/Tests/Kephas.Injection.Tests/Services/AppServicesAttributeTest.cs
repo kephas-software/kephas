@@ -22,8 +22,8 @@ namespace Kephas.Tests.Services
         {
             var attr = new AppServicesAttribute(typeof(NullAppServicesProvider));
 
-            CollectionAssert.IsEmpty(attr.GetAppServiceInfos());
-            CollectionAssert.IsEmpty(attr.GetAppServiceTypes());
+            CollectionAssert.IsEmpty(attr.GetAppServiceContracts());
+            CollectionAssert.IsEmpty(attr.GetAppServices());
         }
 
         [Test]
@@ -37,9 +37,9 @@ namespace Kephas.Tests.Services
         {
             var attr = new AppServicesAttribute(typeof(AppServicesProvider));
 
-            var serviceInfos = attr.GetAppServiceInfos();
+            var serviceInfos = attr.GetAppServiceContracts();
             CollectionAssert.AreEqual(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.ContractDeclarationType));
-            CollectionAssert.IsEmpty(attr.GetAppServiceTypes());
+            CollectionAssert.IsEmpty(attr.GetAppServices());
         }
 
         private class NullAppServicesProvider : IAppServiceInfosProvider

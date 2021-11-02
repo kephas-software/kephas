@@ -94,7 +94,7 @@ namespace Kephas.Injection.Lite.Internal
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null) =>
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null) =>
             this.services.Values
                 .SelectMany(s => this.ToAppServiceInfos(s).Select(si => new ContractDeclaration(si.ContractType!, si)));
 

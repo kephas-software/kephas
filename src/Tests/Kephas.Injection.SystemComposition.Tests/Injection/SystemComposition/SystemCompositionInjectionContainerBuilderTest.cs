@@ -397,7 +397,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         public async Task CreateInjector_instance_registration()
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
-            registrar.GetAppServiceInfos(Arg.Any<dynamic>())
+            registrar.GetAppServiceContracts(Arg.Any<dynamic>())
                 .Returns((IEnumerable<ContractDeclaration>)new ContractDeclaration[] { new (typeof(string), new AppServiceInfo(typeof(string), "123")) });
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));
@@ -416,7 +416,7 @@ namespace Kephas.Tests.Injection.SystemComposition
         public async Task CreateInjector_instance_factory_registration()
         {
             var registrar = Substitute.For<IAppServiceInfosProvider>();
-            registrar.GetAppServiceInfos(Arg.Any<dynamic>())
+            registrar.GetAppServiceContracts(Arg.Any<dynamic>())
                 .Returns(new ContractDeclaration[] { new (typeof(string), (IAppServiceInfo)new AppServiceInfo(typeof(string), _ => "123")) });
 
             var (factory, ambientServices) = this.CreateCompositionContainerBuilder(ctx => ctx.AppServiceInfosProviders.Add(registrar));

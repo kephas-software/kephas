@@ -48,7 +48,7 @@ namespace Kephas.Services
 
             // get all type infos from the injection assemblies
             var appServiceInfoList = appServiceInfoProviders
-                .SelectMany(p => p.GetAppServiceInfos(buildContext))
+                .SelectMany(p => p.GetAppServiceContracts(buildContext))
                 .Select(t => new ContractDeclaration(
                     t.ContractDeclarationType.ToNormalizedType(),
                     t.AppServiceInfo))
@@ -67,7 +67,7 @@ namespace Kephas.Services
                     logger.Debug("Getting the service types from provider {provider}...", appServiceInfosProvider.GetType());
                 }
 
-                return appServiceInfosProvider.GetAppServiceTypes(buildContext);
+                return appServiceInfosProvider.GetAppServices(buildContext);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

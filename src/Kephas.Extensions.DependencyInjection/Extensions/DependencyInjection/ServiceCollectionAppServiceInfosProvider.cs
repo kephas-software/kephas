@@ -41,7 +41,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null)
         {
             var ambientServices = ((IContext?)context)?.AmbientServices;
             if (ambientServices == null)

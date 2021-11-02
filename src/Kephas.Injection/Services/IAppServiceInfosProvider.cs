@@ -36,7 +36,7 @@ namespace Kephas.Services
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ContractDeclarationType);
 
     /// <summary>
-    /// Interface providing the <see cref="GetAppServiceInfos"/> method,
+    /// Interface providing the <see cref="GetAppServiceContracts"/> method,
     /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
 #if NET6_0_OR_GREATER
@@ -53,8 +53,8 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceInfos(dynamic? context = null)
-            => GetAppServiceInfosCore(this, context);
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null)
+            => GetAppServiceContractDeclarations(this, context);
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
@@ -63,7 +63,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)
             => Enumerable.Empty<ServiceDeclaration>();
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        protected internal static IEnumerable<ContractDeclaration> GetAppServiceInfosCore(IAppServiceInfosProvider provider, dynamic? context = null)
+        protected internal static IEnumerable<ContractDeclaration> GetAppServiceContractDeclarations(IAppServiceInfosProvider provider, dynamic? context = null)
         {
             var contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
             if (contractDeclarationTypes == null)
