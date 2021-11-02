@@ -119,9 +119,7 @@ using Kephas.Services;
 
             source.AppendLine($@"       }}");
             source.AppendLine();
-            source.AppendLine($@"#if NET6_0_OR_GREATER");
             source.AppendLine($@"       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
-            source.AppendLine($@"#endif");
             source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServiceTypes(dynamic? context = null)");
             source.AppendLine($@"       {{");
 
