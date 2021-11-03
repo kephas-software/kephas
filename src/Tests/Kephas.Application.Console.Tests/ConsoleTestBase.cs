@@ -48,6 +48,7 @@ namespace Kephas.Application.Console.Tests
             assemblies.AddRange(new[]
                         {
                             typeof(IAppManager).Assembly,           // Kephas.Application
+                            typeof(IAppManager).Assembly,           // Kephas.Application
                             typeof(ICommandProcessor).Assembly,     // Kephas.Commands
                             typeof(IConsole).Assembly,              // Kephas.Application.Console
                         });

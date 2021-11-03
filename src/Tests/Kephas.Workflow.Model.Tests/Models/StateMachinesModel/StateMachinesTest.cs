@@ -9,7 +9,7 @@ namespace Kephas.Workflow.Model.Tests.Models.StateMachinesModel
 {
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using Kephas.Model;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -27,7 +27,7 @@ namespace Kephas.Workflow.Model.Tests.Models.StateMachinesModel
         {
             var typeRegistry = new RuntimeTypeRegistry();
             var behavior = new WorkflowAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
+            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
 
             var container = this.CreateInjectorForModel(
                 new AmbientServices(typeRegistry: typeRegistry),

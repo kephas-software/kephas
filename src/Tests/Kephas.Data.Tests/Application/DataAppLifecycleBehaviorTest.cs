@@ -10,7 +10,7 @@ using Kephas.Data.Runtime;
 namespace Kephas.Data.Tests.Application
 {
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using Kephas.Data.Application;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -25,7 +25,7 @@ namespace Kephas.Data.Tests.Application
         {
             var typeRegistry = new RuntimeTypeRegistry();
             var behavior = new DataAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
+            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
             var typeInfo = typeRegistry.GetTypeInfo(typeof(IMyEntity));
 
             Assert.IsInstanceOf<RefRuntimePropertyInfo>(typeInfo.Properties[nameof(IMyEntity.StringRef)]);
@@ -37,7 +37,7 @@ namespace Kephas.Data.Tests.Application
         {
             var typeRegistry = new RuntimeTypeRegistry();
             var behavior = new DataAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
+            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
             var typeInfo = typeRegistry.GetTypeInfo(typeof(IMyServiceEntity));
 
             Assert.IsInstanceOf<ServiceRefRuntimePropertyInfo>(typeInfo.Properties[nameof(IMyServiceEntity.StringServiceRef)]);

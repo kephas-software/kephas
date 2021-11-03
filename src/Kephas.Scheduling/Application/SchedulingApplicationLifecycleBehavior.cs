@@ -49,7 +49,7 @@ namespace Kephas.Scheduling.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new SchedulingTypeInfoFactory());
@@ -66,7 +66,7 @@ namespace Kephas.Scheduling.Application
         /// The asynchronous result.
         /// </returns>
         public async Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             await ServiceHelper.InitializeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
@@ -82,26 +82,11 @@ namespace Kephas.Scheduling.Application
         /// A Task.
         /// </returns>
         public async Task<IOperationResult> BeforeAppFinalizeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             await ServiceHelper.FinalizeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public Task<IOperationResult> AfterAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }
 }

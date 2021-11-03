@@ -7,6 +7,7 @@
 
 namespace Kephas.Plugins.Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -33,8 +34,8 @@ namespace Kephas.Plugins.Application
         /// <param name="eventHub">The event hub.</param>
         public PluginsAppLifecycleBehavior(IAppRuntime appRuntime, IEventHub eventHub)
         {
-            this.appRuntime = appRuntime;
-            this.eventHub = eventHub;
+            this.appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            this.eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
         }
 
         /// <summary>
@@ -49,44 +50,10 @@ namespace Kephas.Plugins.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription = this.eventHub.Subscribe<AppSetupQueryEvent>((e, c) => e.SetupEnabled = e.SetupEnabled && !this.appRuntime.PluginsEnabled());
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous initialization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called before the application starts its asynchronous finalization.
-        /// </summary>
-        /// <remarks>
-        /// To interrupt finalization, simply throw any appropriate exception.
-        /// Caution! Interrupting the finalization may cause the application to remain in an undefined state.
-        /// </remarks>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> BeforeAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
@@ -99,7 +66,7 @@ namespace Kephas.Plugins.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> AfterAppFinalizeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription?.Dispose();

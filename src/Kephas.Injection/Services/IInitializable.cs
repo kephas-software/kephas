@@ -10,6 +10,8 @@
 
 namespace Kephas.Services
 {
+    using System;
+
     /// <summary>
     /// Provides the <see cref="Initialize"/> method for service initialization.
     /// </summary>
@@ -20,5 +22,34 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
         void Initialize(IContext? context = null);
+    }
+
+    /// <summary>
+    /// Provides the <see cref="Initialize"/> method for service initialization.
+    /// </summary>
+    /// <typeparam name="TContext">The context type.</typeparam>
+    public interface IInitializable<in TContext> : IInitializable
+        where TContext : class, IContext
+    {
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        void Initialize(TContext? context = null);
+
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        void IInitializable.Initialize(IContext? context)
+        {
+            var typedContext = context as TContext;
+            if (typedContext == null && context != null)
+            {
+                throw new ArgumentException($"Expecting a context of type {typeof(TContext)}, instead received {context}.", nameof(context));
+            }
+
+            this.Initialize(typedContext);
+        }
     }
 }

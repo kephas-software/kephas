@@ -38,7 +38,7 @@ namespace Kephas.Application
         /// An asynchronous result yielding the operation result.
         /// </returns>
         Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
@@ -53,7 +53,7 @@ namespace Kephas.Application
         /// An asynchronous result yielding the operation result.
         /// </returns>
         Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
@@ -72,7 +72,7 @@ namespace Kephas.Application
         /// An asynchronous result yielding the operation result.
         /// </returns>
         Task<IOperationResult> BeforeAppFinalizeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
@@ -86,7 +86,9 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task<IOperationResult> AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }

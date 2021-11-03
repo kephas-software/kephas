@@ -36,9 +36,7 @@ namespace Kephas.Messaging.Application
         /// <param name="typeRegistry">The type registry.</param>
         public MessagingAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
         {
-            typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
-
-            this.typeRegistry = typeRegistry;
+            this.typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace Kephas.Messaging.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory());

@@ -36,57 +36,12 @@ namespace Kephas.Data.MongoDB.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             Id.AddEmptyValue(ObjectId.Empty);
             Id.AddTemporaryValueCheck(value => value is ObjectId id && id < ObjectId.Empty);
 
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous initialization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called before the application starts its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public Task<IOperationResult> BeforeAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public Task<IOperationResult> AfterAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }

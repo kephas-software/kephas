@@ -11,7 +11,6 @@
 namespace Kephas.Application.AspNetCore
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -58,14 +57,14 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            if (!(appContext is IAspNetAppContext))
+            if (appContext is not IAspNetAppContext)
             {
                 throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
             }
 
-            return base.InitializeAppAsync(appContext, cancellationToken);
+            return base.InitializeAsync(appContext, cancellationToken);
         }
 
         /// <summary>
@@ -76,14 +75,14 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            if (!(appContext is IAspNetAppContext))
+            if (appContext is not IAspNetAppContext)
             {
                 throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
             }
 
-            return base.FinalizeAppAsync(appContext, cancellationToken);
+            return base.FinalizeAsync(appContext, cancellationToken);
         }
     }
 }

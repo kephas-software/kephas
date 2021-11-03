@@ -10,9 +10,6 @@
 
 namespace Kephas.Application
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
     using Kephas.Services;
 
     /// <summary>
@@ -31,26 +28,7 @@ namespace Kephas.Application
     /// </code>
     /// </example>
     [SingletonAppServiceContract]
-    public interface IAppManager
+    public interface IAppManager : IAsyncInitializable<IAppContext>, IAsyncFinalizable<IAppContext>
     {
-        /// <summary>
-        /// Initializes the application asynchronously.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Finalizes the application asynchronously.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default);
     }
 }

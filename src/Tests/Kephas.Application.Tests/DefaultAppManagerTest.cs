@@ -101,7 +101,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(6, order.Count);
             Assert.AreEqual(12, order[0]);
@@ -113,7 +113,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_right_featureManager_order_processingPriority()
+        public async Task InitializeAsync_right_featureManager_order_processingPriority()
         {
             var order = new List<int>();
 
@@ -138,7 +138,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(2, order.Count);
             Assert.AreEqual(2, order[0]);
@@ -146,7 +146,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_right_featureManager_order_processingPriority_marginal_values()
+        public async Task InitializeAsync_right_featureManager_order_processingPriority_marginal_values()
         {
             var order = new List<int>();
 
@@ -177,7 +177,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, order.Count);
             Assert.AreEqual(3, order[0]);
@@ -186,7 +186,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_right_featureManager_order_dependencies()
+        public async Task InitializeAsync_right_featureManager_order_dependencies()
         {
             var order = new List<int>();
 
@@ -206,7 +206,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, order.Count);
             Assert.AreEqual(3, order[0]);
@@ -215,7 +215,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_features_set_in_app_manifest()
+        public async Task InitializeAsync_features_set_in_app_manifest()
         {
             var featureManager1 = this.CreateFeatureManager();
             var featureManager2 = this.CreateFeatureManager();
@@ -237,7 +237,7 @@ namespace Kephas.Application.Tests
                 this.GetFeatureManagers(new[] { factory1, factory2, factory3 }),
                 null);
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, appRuntime.GetFeatures().Count());
 
@@ -248,7 +248,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_ok_failed_optional_feature()
+        public async Task InitializeAsync_ok_failed_optional_feature()
         {
             var order = new List<int>();
 
@@ -274,7 +274,7 @@ namespace Kephas.Application.Tests
                 null);
 
             appManager.Logger = logger;
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(2, order.Count);
             Assert.AreEqual(3, order[0]);
@@ -290,7 +290,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_exception_failed_required_feature()
+        public async Task InitializeAsync_exception_failed_required_feature()
         {
             var order = new List<int>();
 
@@ -312,7 +312,7 @@ namespace Kephas.Application.Tests
                 null);
 
             appManager.Logger = logger;
-            Assert.That(() => appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None), Throws.InvalidOperationException);
+            Assert.That(() => appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None), Throws.InvalidOperationException);
 
             var log = sb.ToString();
             if (!log.Contains("Error: {feature} ({featureKind}) failed to initialize. See the inner exception for more details. (InvalidOperationException)"))
@@ -325,7 +325,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_right_behavior_order()
+        public async Task InitializeAsync_right_behavior_order()
         {
             var order = new List<string>();
 
@@ -360,7 +360,7 @@ namespace Kephas.Application.Tests
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata(processingPriority: (Priority)1)),
                     }));
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(8, order.Count);
             Assert.AreEqual("Before2", order[0]);
@@ -374,7 +374,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task InitializeAppAsync_right_feature_behavior_order_with_filter()
+        public async Task InitializeAsync_right_feature_behavior_order_with_filter()
         {
             var order = new List<int>();
 
@@ -411,7 +411,7 @@ namespace Kephas.Application.Tests
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior3, new FeatureLifecycleBehaviorMetadata()),
                     }));
 
-            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.InitializeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, order.Count);
             Assert.AreEqual(3, order[0]);
@@ -432,7 +432,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task FinalizeAppAsync_right_app_behavior_order()
+        public async Task FinalizeAsync_right_app_behavior_order()
         {
             var order = new List<int>();
 
@@ -477,7 +477,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.FinalizeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(6, order.Count);
             Assert.AreEqual(11, order[0]);
@@ -489,7 +489,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task FinalizeAppAsync_right_featureManager_order_processingPriority()
+        public async Task FinalizeAsync_right_featureManager_order_processingPriority()
         {
             var order = new List<int>();
 
@@ -514,7 +514,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.FinalizeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(2, order.Count);
             Assert.AreEqual(1, order[0]);
@@ -522,7 +522,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task FinalizeAppAsync_right_featureManager_order_processingPriority_marginal_values()
+        public async Task FinalizeAsync_right_featureManager_order_processingPriority_marginal_values()
         {
             var order = new List<int>();
 
@@ -553,7 +553,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.FinalizeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, order.Count);
             Assert.AreEqual(2, order[0]);
@@ -562,7 +562,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task FinalizeAppAsync_right_featureManager_order_dependencies()
+        public async Task FinalizeAsync_right_featureManager_order_dependencies()
         {
             var order = new List<int>();
 
@@ -582,7 +582,7 @@ namespace Kephas.Application.Tests
                     }),
                 null);
 
-            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.FinalizeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, order.Count);
             Assert.AreEqual(2, order[0]);
@@ -591,7 +591,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task FinalizeAppAsync_right_feature_behavior_order_with_filter()
+        public async Task FinalizeAsync_right_feature_behavior_order_with_filter()
         {
             var order = new List<int>();
 
@@ -628,7 +628,7 @@ namespace Kephas.Application.Tests
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior3, new FeatureLifecycleBehaviorMetadata()),
                     }));
 
-            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.FinalizeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(3, order.Count);
             Assert.AreEqual(2, order[0]);
@@ -649,7 +649,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public async Task FinalizeAppAsync_right_behavior_order()
+        public async Task FinalizeAsync_right_behavior_order()
         {
             var order = new List<string>();
 
@@ -679,7 +679,7 @@ namespace Kephas.Application.Tests
                         new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata(processingPriority: (Priority)1)),
                     }));
 
-            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+            await appManager.FinalizeAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(8, order.Count);
             Assert.AreEqual("Before1", order[0]);

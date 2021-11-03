@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingAppLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="DistributedMessagingAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -55,7 +55,7 @@ namespace Kephas.Messaging.Distributed.Application
         /// The asynchronous result.
         /// </returns>
         public async Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.InitializeConfig(appContext);
@@ -73,7 +73,7 @@ namespace Kephas.Messaging.Distributed.Application
         /// A Task.
         /// </returns>
         public async Task<IOperationResult> AfterAppFinalizeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             await ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();

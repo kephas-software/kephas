@@ -19,7 +19,6 @@ namespace Kephas.Scheduling.Quartz.Application
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Quartz.Logging;
-    using Kephas.Services;
 
     /// <summary>
     /// Application lifecycle behavior initializing the Quartz infrastructure.
@@ -48,56 +47,11 @@ namespace Kephas.Scheduling.Quartz.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             LogProvider.SetCurrentLogProvider(new QuartzLogProvider(this.logManager));
 
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous initialization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called before the application starts its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public Task<IOperationResult> BeforeAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
-
-        /// <summary>
-        /// Interceptor called after the application completes its asynchronous finalization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        public Task<IOperationResult> AfterAppFinalizeAsync(
-            IContext appContext,
-            CancellationToken cancellationToken = default)
-        {
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }

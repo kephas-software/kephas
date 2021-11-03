@@ -122,7 +122,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual async Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public virtual async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public virtual async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             try
             {

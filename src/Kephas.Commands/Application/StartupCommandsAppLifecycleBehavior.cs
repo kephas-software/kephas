@@ -46,7 +46,7 @@ namespace Kephas.Commands.Application
         /// An asynchronous result yielding the operation result.
         /// </returns>
         public Task<IOperationResult> AfterAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.subscription.Dispose();

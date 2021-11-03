@@ -12,7 +12,6 @@ namespace Kephas.Application
 {
     using System;
 
-    using Kephas.Commands;
     using Kephas.Services;
 
     /// <summary>

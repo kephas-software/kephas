@@ -65,7 +65,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
             await app.RunAsync();
 
-            appManager.Received(1).InitializeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(1).InitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.RunAsync(_ => throw new InvalidOperationException("bad thing happened"));
 
-            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.IsNull(appResult);
         }
@@ -101,7 +101,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.RunAsync();
 
-            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.IsNull(appResult);
         }
@@ -118,7 +118,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.RunAsync(async _ => (new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
-            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.AreEqual(12, appResult.Value);
         }
@@ -140,7 +140,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.RunAsync();
 
-            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.AreEqual(12, appResult.Value);
         }
@@ -157,7 +157,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.RunAsync(async _ => (new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
-            appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(0).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.AreEqual(23, appResult.Value);
         }
@@ -179,7 +179,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(async b => b.WithInjector(injector));
             var (appContext, instruction) = await app.RunAsync();
 
-            appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(0).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.AreEqual(23, appResult.Value);
         }
@@ -209,7 +209,7 @@ namespace Kephas.Application.Tests
             var app = new TestApp(ambientServices: ambientServices);
             await app.ShutdownAsync();
 
-            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
         }
 
         public class TestShutdownFeatureManager : FeatureManagerBase

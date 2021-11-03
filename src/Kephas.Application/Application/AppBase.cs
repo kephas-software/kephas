@@ -353,7 +353,7 @@ namespace Kephas.Application
                 var container = appContext.Injector;
                 var appManager = container.Resolve<IAppManager>();
 
-                await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
+                await appManager.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
 
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_StartComplete_Message);
 
@@ -405,7 +405,7 @@ namespace Kephas.Application
                 appContext = container.Resolve<IAppContext>();
                 var appManager = container.Resolve<IAppManager>();
 
-                await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
+                await appManager.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
 
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
 

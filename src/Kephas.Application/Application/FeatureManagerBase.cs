@@ -58,8 +58,10 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
         {
+            appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+
             this.EnsureLoggerInitialized(appContext);
 
             this.InitializationMonitor.Start();
@@ -84,8 +86,10 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public async Task FinalizeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
         {
+            appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+
             this.EnsureLoggerInitialized(appContext);
 
             this.FinalizationMonitor.Start();
@@ -100,32 +104,6 @@ namespace Kephas.Application
                 this.FinalizationMonitor.Fault(ex);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Initializes the service asynchronously.
-        /// </summary>
-        /// <param name="context">An optional context for initialization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// An awaitable task.
-        /// </returns>
-        Task IAsyncInitializable.InitializeAsync(IContext? context, CancellationToken cancellationToken)
-        {
-            return this.InitializeAsync(GetAppContext(context), cancellationToken);
-        }
-
-        /// <summary>
-        /// Finalizes the service.
-        /// </summary>
-        /// <param name="context">An optional context for finalization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        Task IAsyncFinalizable.FinalizeAsync(IContext? context, CancellationToken cancellationToken)
-        {
-            return this.FinalizeAsync(GetAppContext(context), cancellationToken);
         }
 
         /// <summary>
@@ -152,14 +130,6 @@ namespace Kephas.Application
         protected virtual Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAppContext GetAppContext(IContext? context)
-        {
-            return context is IAppContext appContext
-                ? appContext
-                : throw new ApplicationException(Strings.MismatchedAppContext_Exception.FormatWith(nameof(IAppContext)));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

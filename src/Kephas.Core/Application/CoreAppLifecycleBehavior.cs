@@ -41,7 +41,7 @@ namespace Kephas.Application
         /// The asynchronous result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
-            IContext appContext,
+            IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new ConfigurationTypeInfoFactory());

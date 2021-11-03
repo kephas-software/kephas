@@ -61,12 +61,12 @@ namespace Kephas.Tests.Orchestration
             AppHeartbeatEvent? heartbeat = null;
             registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => (heartbeat = e).ToEvent());
 
-            await appManager.InitializeAppAsync(new AppContext(ambientServices));
+            await appManager.InitializeAsync(new AppContext(ambientServices));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
 
             Assert.NotNull(heartbeat);
 
-            await appManager.FinalizeAppAsync(new AppContext(ambientServices));
+            await appManager.FinalizeAsync(new AppContext(ambientServices));
         }
 
         [Test]

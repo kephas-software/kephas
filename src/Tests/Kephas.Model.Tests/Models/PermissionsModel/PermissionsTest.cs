@@ -9,7 +9,7 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
 {
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using Kephas.Model.Security.Permissions.Elements;
     using Kephas.Runtime;
     using Kephas.Security.Application;
@@ -27,7 +27,7 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
         {
             var typeRegistry = new RuntimeTypeRegistry();
             var behavior = new SecurityAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IContext>());
+            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
 
             var container = this.CreateInjectorForModel(
                 new AmbientServices(typeRegistry: typeRegistry),

@@ -25,6 +25,6 @@ namespace Kephas
         /// <value>
         /// The task settings.
         /// </value>
-        public TaskSettings Task { get; set; } = new TaskSettings();
+        public TaskSettings Task { get; set; } = new ();
     }
 }

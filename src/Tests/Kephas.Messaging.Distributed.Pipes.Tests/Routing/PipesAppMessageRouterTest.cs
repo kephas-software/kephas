@@ -256,7 +256,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 container.Resolve<IAmbientServices>(),
                 container.Resolve<IAppRuntime>(),
                 appArgs);
-            await appManager.InitializeAppAsync(appContext);
+            await appManager.InitializeAsync(appContext);
 
             if (slaveAppInfo != null)
             {
@@ -268,7 +268,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         private async Task FinalizeAppAsync(IInjector container)
         {
             var appManager = container.Resolve<IAppManager>();
-            await appManager.FinalizeAppAsync(
+            await appManager.FinalizeAsync(
                 new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 

@@ -60,32 +60,39 @@ namespace Kephas.Services
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            IEnumerable<ServiceDeclaration> GetAppServiceTypes(IAppServiceInfosProvider appServiceInfosProvider)
+            IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfosProvider appServiceInfosProvider)
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Getting the service types from provider {provider}...", appServiceInfosProvider.GetType());
+                    logger.Debug("Getting the app services from provider {provider}...", appServiceInfosProvider);
                 }
 
-                return appServiceInfosProvider.GetAppServices(buildContext);
+                var appServices = appServiceInfosProvider.GetAppServices(buildContext);
+
+                if (logger.IsTraceEnabled())
+                {
+                    logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfosProvider);
+                }
+
+                return appServices;
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            ServiceDeclaration GetServiceTypeEntry(ServiceDeclaration serviceDeclaration)
+            ServiceDeclaration NormalizeAppService(ServiceDeclaration serviceDeclaration)
             {
                 var (serviceType, contractDeclarationType) = serviceDeclaration;
 
-                if (logger.IsDebugEnabled())
+                if (logger.IsTraceEnabled())
                 {
-                    logger.Debug("Getting the service type entry for {serviceType}/{contractDeclarationType}", serviceType, contractDeclarationType);
+                    logger.Trace("Normalizing the service declaration for {serviceType}/{contractDeclarationType}.", serviceType, contractDeclarationType);
                 }
 
                 return new ServiceDeclaration(serviceType.ToNormalizedType(), contractDeclarationType.ToNormalizedType());
             }
 
             var serviceTypes = appServiceInfoProviders
-                .SelectMany(GetAppServiceTypes)
-                .Select(GetServiceTypeEntry)
+                .SelectMany(GetAppServices)
+                .Select(NormalizeAppService)
                 .ToList();
 
             if (logger.IsDebugEnabled())

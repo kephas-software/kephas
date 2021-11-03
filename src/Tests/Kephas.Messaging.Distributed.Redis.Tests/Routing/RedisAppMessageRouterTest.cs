@@ -213,14 +213,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         private async Task InitializeAppAsync(IInjector container)
         {
             var appManager = container.Resolve<IAppManager>();
-            await appManager.InitializeAppAsync(
+            await appManager.InitializeAsync(
                 new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 
         private async Task FinalizeAppAsync(IInjector container)
         {
             var appManager = container.Resolve<IAppManager>();
-            await appManager.FinalizeAppAsync(
+            await appManager.FinalizeAsync(
                 new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 
