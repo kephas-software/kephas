@@ -5,15 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Data.Runtime;
-
 namespace Kephas.Data.Tests.Application
 {
     using System.Threading.Tasks;
+
     using Kephas.Application;
-    using Kephas.Data.Application;
+    using Kephas.Data.Runtime;
     using Kephas.Runtime;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -24,8 +22,7 @@ namespace Kephas.Data.Tests.Application
         public async Task BeforeAppInitializeAsync_RefRuntimePropertyInfoFactory_registered()
         {
             var typeRegistry = new RuntimeTypeRegistry();
-            var behavior = new DataAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+            this.RegisterFactories(typeRegistry);
             var typeInfo = typeRegistry.GetTypeInfo(typeof(IMyEntity));
 
             Assert.IsInstanceOf<RefRuntimePropertyInfo>(typeInfo.Properties[nameof(IMyEntity.StringRef)]);
@@ -36,12 +33,18 @@ namespace Kephas.Data.Tests.Application
         public async Task BeforeAppInitializeAsync_ServiceRefRuntimePropertyInfoFactory_registered()
         {
             var typeRegistry = new RuntimeTypeRegistry();
-            var behavior = new DataAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+            this.RegisterFactories(typeRegistry);
             var typeInfo = typeRegistry.GetTypeInfo(typeof(IMyServiceEntity));
 
             Assert.IsInstanceOf<ServiceRefRuntimePropertyInfo>(typeInfo.Properties[nameof(IMyServiceEntity.StringServiceRef)]);
             Assert.IsInstanceOf<ServiceRefRuntimePropertyInfo>(typeInfo.Properties[nameof(IMyServiceEntity.ObjectServiceRef)]);
+        }
+
+        private void RegisterFactories(RuntimeTypeRegistry typeRegistry)
+        {
+            typeRegistry.RegisterFactory(new RuntimeEntityInfoFactory());
+            typeRegistry.RegisterFactory(new RefRuntimePropertyInfoFactory());
+            typeRegistry.RegisterFactory(new ServiceRefRuntimePropertyInfoFactory());
         }
 
         public interface IMyEntity

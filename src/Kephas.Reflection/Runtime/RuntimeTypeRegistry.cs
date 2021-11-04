@@ -172,7 +172,7 @@ namespace Kephas.Runtime
         {
             factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
-            var factoryType = typeof(TFactory);
+            var factoryType = factory.GetType();
             var elementType = factoryType.GetInterfaces()
                 .FirstOrDefault(i => i.IsConstructedGenericOf(typeof(IRuntimeElementInfoFactory<,>)))
                 ?.GenericTypeArguments[1];

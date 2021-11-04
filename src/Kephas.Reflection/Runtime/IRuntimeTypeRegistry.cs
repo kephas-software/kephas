@@ -46,23 +46,4 @@ namespace Kephas.Runtime
         void RegisterFactory<TFactory>(TFactory factory)
             where TFactory : class, IRuntimeElementInfoFactory;
     }
-
-    /// <summary>
-    /// Extension methods for <see cref="IRuntimeTypeRegistry"/>.
-    /// </summary>
-    public static class RuntimeTypeRegistryExtensions
-    {
-        /// <summary>
-        /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
-        /// </summary>
-        /// <remarks>
-        /// Factories are called in the inverse order of their addition, meaning that the last added factory
-        /// is invoked first. This is by design, so that the non-framework code has a change to override the
-        /// default behavior.
-        /// </remarks>
-        /// <param name="registry">The type registry.</param>
-        /// <param name="factory">The factory.</param>
-        public static void RegisterFactory(this IRuntimeTypeRegistry registry, IRuntimeTypeInfoFactory factory)
-            => registry.RegisterFactory<IRuntimeTypeInfoFactory>(factory);
-    }
 }
