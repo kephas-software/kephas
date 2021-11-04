@@ -16,7 +16,6 @@ namespace Kephas.Plugins
 
     using Kephas.Application;
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Versioning;
 
     /// <summary>
@@ -44,9 +43,7 @@ namespace Kephas.Plugins
         /// <param name="data">Optional. The additional data associated with the plugin.</param>
         public PluginData(AppIdentity identity, PluginState state, PluginKind kind = PluginKind.Embedded, IDictionary<string, string?>? data = null)
         {
-            Requires.NotNull(identity, nameof(identity));
-
-            this.Identity = identity;
+            this.Identity = identity ?? throw new ArgumentNullException(nameof(identity));
             this.State = state;
             this.Kind = kind;
             this.Data = data ?? new Dictionary<string, string?>();
@@ -156,7 +153,7 @@ namespace Kephas.Plugins
         /// </returns>
         public PluginData ChangeIdentity(AppIdentity pluginIdentity)
         {
-            Requires.NotNull(pluginIdentity, nameof(pluginIdentity));
+            pluginIdentity = pluginIdentity ?? throw new ArgumentNullException(nameof(pluginIdentity));
 
             if (!this.Identity.Id.Equals(pluginIdentity.Id, StringComparison.CurrentCultureIgnoreCase)
                 || !(this.Identity.Version?.Equals(pluginIdentity.Version)

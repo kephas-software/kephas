@@ -89,7 +89,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
+        <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
+        <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
+        <ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
+        <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -97,7 +101,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml"/>
+        <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>

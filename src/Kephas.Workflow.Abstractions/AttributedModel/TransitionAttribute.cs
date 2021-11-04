@@ -12,8 +12,6 @@ namespace Kephas.Workflow.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// Attribute for transition.
     /// </summary>
@@ -28,10 +26,9 @@ namespace Kephas.Workflow.AttributedModel
         public TransitionAttribute(object from, object to)
         {
             from = from ?? throw new ArgumentNullException(nameof(from));
-            to = to ?? throw new ArgumentNullException(nameof(to));
 
             this.From = new[] { from };
-            this.To = to;
+            this.To = to ?? throw new ArgumentNullException(nameof(to));
         }
 
         /// <summary>
@@ -41,11 +38,8 @@ namespace Kephas.Workflow.AttributedModel
         /// <param name="to">The target state.</param>
         public TransitionAttribute(object[] from, object to)
         {
-            Requires.NotNullOrEmpty(from, nameof(from));
-            to = to ?? throw new ArgumentNullException(nameof(to));
-
-            this.From = from;
-            this.To = to;
+            this.From = from ?? throw new ArgumentNullException(nameof(from));
+            this.To = to ?? throw new ArgumentNullException(nameof(to));
         }
 
         /// <summary>

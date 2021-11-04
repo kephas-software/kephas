@@ -14,7 +14,6 @@ namespace Kephas.Workflow.Behaviors
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -47,9 +46,7 @@ namespace Kephas.Workflow.Behaviors
         public ActivityBehaviorMetadata(Type activityType, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
-            Requires.NotNull(activityType, nameof(activityType));
-
-            this.ActivityType = activityType;
+            this.ActivityType = activityType ?? throw new ArgumentNullException(nameof(activityType));
         }
 
         /// <summary>

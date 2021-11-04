@@ -12,7 +12,6 @@ namespace Kephas.Workflow
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -86,9 +85,8 @@ namespace Kephas.Workflow
             where TContext : class, IActivityContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(activity, nameof(activity));
 
-            context.Activity = activity;
+            context.Activity = activity ?? throw new ArgumentNullException(nameof(activity));
 
             return context;
         }
