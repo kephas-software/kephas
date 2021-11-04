@@ -48,7 +48,6 @@ namespace Kephas.Data.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new RuntimeEntityInfoFactory());
             this.typeRegistry.RegisterFactory(new RefRuntimePropertyInfoFactory());
             this.typeRegistry.RegisterFactory(new ServiceRefRuntimePropertyInfoFactory());
 

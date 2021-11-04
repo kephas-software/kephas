@@ -9,15 +9,11 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using Kephas.Application;
+
     using Kephas.Model;
     using Kephas.Runtime;
-    using Kephas.Security.Authorization;
-    using Kephas.Services;
-    using Kephas.Testing.Model;
-    using Kephas.Workflow.Application;
     using Kephas.Workflow.Model.Elements;
-    using NSubstitute;
+    using Kephas.Workflow.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
@@ -27,8 +23,7 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
         public async Task InitializeAsync_activityinfo_support()
         {
             var typeRegistry = new RuntimeTypeRegistry();
-            var behavior = new WorkflowAppLifecycleBehavior(typeRegistry);
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+            typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
 
             var container = this.CreateInjectorForModel(
                 new AmbientServices(typeRegistry: typeRegistry),

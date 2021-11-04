@@ -125,8 +125,4 @@
 		<ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Security" />
-	</ItemGroup>
-
 </Project>

@@ -1,51 +1,60 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SecurityAppLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeTypeInfoFactoryAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security.Application
+namespace Kephas.Application
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application;
     using Kephas.Operations;
     using Kephas.Runtime;
-    using Kephas.Security.Runtime;
+    using Kephas.Runtime.Factories;
     using Kephas.Services;
 
     /// <summary>
-    /// An authorization application lifecycle behavior.
+    /// Application lifecycle behavior for registering <see cref="IRuntimeTypeInfoFactory"/> services.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
-    public class SecurityAppLifecycleBehavior : IAppLifecycleBehavior
+    [ProcessingPriority(Priority.Highest)]
+    public class RuntimeTypeInfoFactoryAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
+        private readonly ICollection<Lazy<IRuntimeTypeInfoFactory>> lazyFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityAppLifecycleBehavior"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeTypeInfoFactoryAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        public SecurityAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="lazyFactories">The lazy factories.</param>
+        public RuntimeTypeInfoFactoryAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry, ICollection<Lazy<IRuntimeTypeInfoFactory>> lazyFactories)
         {
             this.typeRegistry = typeRegistry;
+            this.lazyFactories = lazyFactories;
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
         public Task<IOperationResult> BeforeAppInitializeAsync(
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            this.typeRegistry.RegisterFactory(new SecurityTypeInfoFactory());
+            foreach (var lazyFactory in this.lazyFactories)
+            {
+                this.typeRegistry.RegisterFactory(lazyFactory.Value);
+            }
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
