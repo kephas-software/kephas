@@ -11,11 +11,10 @@ namespace Kephas.Threading
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Class used for execution synchronization.
+    /// Class used for execution synchronization in asynchronous calls.
     /// </summary>
     public sealed class Lock : IDisposable
     {
@@ -28,7 +27,7 @@ namespace Kephas.Threading
         /// <returns>An asynchronous result.</returns>
         public async Task EnterAsync(Func<Task> action)
         {
-            Requires.NotNull(action, nameof(action));
+            action = action ?? throw new ArgumentNullException(nameof(action));
 
             await this.semaphore.WaitAsync().PreserveThreadContext();
             try
@@ -49,7 +48,7 @@ namespace Kephas.Threading
         /// <returns>An asynchronous result.</returns>
         public async Task EnterAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            action = action ?? throw new ArgumentNullException(nameof(action));
 
             await this.semaphore.WaitAsync(cancellationToken).PreserveThreadContext();
             try
@@ -70,7 +69,7 @@ namespace Kephas.Threading
         /// <returns>An asynchronous result.</returns>
         public async Task<T> EnterAsync<T>(Func<Task<T>> action)
         {
-            Requires.NotNull(action, nameof(action));
+            action = action ?? throw new ArgumentNullException(nameof(action));
 
             await this.semaphore.WaitAsync().PreserveThreadContext();
             try
@@ -93,7 +92,7 @@ namespace Kephas.Threading
         /// <returns>An asynchronous result.</returns>
         public async Task<T> EnterAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            action = action ?? throw new ArgumentNullException(nameof(action));
 
             await this.semaphore.WaitAsync(cancellationToken).PreserveThreadContext();
             try

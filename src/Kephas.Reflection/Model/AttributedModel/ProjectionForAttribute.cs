@@ -12,7 +12,6 @@ namespace Kephas.Model.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -27,9 +26,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="projectedType">Type of the projected.</param>
         public ProjectionForAttribute(Type projectedType)
         {
-            Requires.NotNull(projectedType, nameof(projectedType));
-
-            this.ProjectedType = projectedType;
+            this.ProjectedType = projectedType ?? throw new ArgumentNullException(nameof(projectedType));
             this.ProjectedTypeName = projectedType.GetAssemblyQualifiedShortName();
         }
 
@@ -39,9 +36,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="projectedTypeName">The name of the projected type.</param>
         public ProjectionForAttribute(string projectedTypeName)
         {
-            Requires.NotNullOrEmpty(projectedTypeName, nameof(projectedTypeName));
-
-            this.ProjectedTypeName = projectedTypeName;
+            this.ProjectedTypeName = projectedTypeName ?? throw new ArgumentNullException(nameof(projectedTypeName));
         }
 
         /// <summary>

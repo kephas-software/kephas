@@ -13,8 +13,6 @@ namespace Kephas.Text.Encoding
     using System;
     using System.Text;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
     /// A Base64 data.
     /// </summary>
@@ -26,7 +24,7 @@ namespace Kephas.Text.Encoding
         /// <param name="base64String">The base64 string.</param>
         public Base64Data(string base64String)
         {
-            Requires.NotNullOrEmpty(base64String, nameof(base64String));
+            base64String = base64String ?? throw new ArgumentNullException(nameof(base64String));
 
             var indexOfComma = base64String.IndexOf(",", StringComparison.Ordinal);
             var plainString = base64String;
@@ -46,9 +44,7 @@ namespace Kephas.Text.Encoding
         /// <param name="mimeType">The MIME type (optional).</param>
         public Base64Data(byte[] bytes, string? mimeType = null)
         {
-            Requires.NotNull(bytes, nameof(bytes));
-
-            this.Bytes = bytes;
+            this.Bytes = bytes ?? throw new ArgumentNullException(nameof(bytes));
             this.MimeType = mimeType;
         }
 
@@ -103,7 +99,7 @@ namespace Kephas.Text.Encoding
         /// </returns>
         public static string ToBase64String(string plainString, string? mimeType = null)
         {
-            Requires.NotNull(plainString, nameof(plainString));
+            plainString = plainString ?? throw new ArgumentNullException(nameof(plainString));
 
             var bytes = Encoding.UTF8.GetBytes(plainString);
 

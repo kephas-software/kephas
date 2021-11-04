@@ -54,8 +54,8 @@ namespace Kephas.Data
             ICollection<IExportFactory<IDataContext, DataContextMetadata>> dataContextFactories,
             IDataStoreProvider dataStoreProvider)
         {
-            Requires.NotNull(dataContextFactories, nameof(dataContextFactories));
-            Requires.NotNull(dataStoreProvider, nameof(dataStoreProvider));
+            dataContextFactories = dataContextFactories ?? throw new ArgumentNullException(nameof(dataContextFactories));
+            dataStoreProvider = dataStoreProvider ?? throw new ArgumentNullException(nameof(dataStoreProvider));
 
             var factoriesByDataStoreKind =
                 dataContextFactories.SelectMany(

@@ -13,7 +13,6 @@ namespace Kephas.Data
     using System;
 
     using Kephas.Configuration;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.AttributedModel;
     using Kephas.Services;
 
@@ -69,9 +68,7 @@ namespace Kephas.Data
         /// <param name="settings">Options for controlling the operation.</param>
         internal DefaultIdGenerator(IdGeneratorSettings settings)
         {
-            Requires.NotNull(settings, nameof(settings));
-
-            this.settings = settings;
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
             this.maxRandom = (1 << this.settings.DiscriminatorBitLength) - 1;
             this.timestampShift = this.settings.DiscriminatorBitLength + this.settings.NamespaceIdentifierBitLength;

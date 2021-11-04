@@ -32,7 +32,7 @@ namespace Kephas.Data.Commands
         {
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             entityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
-            Requires.NotNull(criteria, nameof(criteria));
+            criteria = criteria ?? throw new ArgumentNullException(nameof(criteria));
 
             this.EntityType = entityType;
             this.Criteria = criteria;

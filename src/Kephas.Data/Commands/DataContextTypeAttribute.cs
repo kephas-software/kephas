@@ -27,7 +27,7 @@ namespace Kephas.Data.Commands
         /// <param name="dataContextType">Type of the data context.</param>
         public DataContextTypeAttribute(Type dataContextType)
         {
-            Requires.NotNull(dataContextType, nameof(dataContextType));
+            dataContextType = dataContextType ?? throw new ArgumentNullException(nameof(dataContextType));
 
             this.Value = dataContextType;
         }

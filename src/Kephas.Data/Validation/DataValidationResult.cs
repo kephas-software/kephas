@@ -43,7 +43,7 @@ namespace Kephas.Data.Validation
         /// <param name="items">The items to add.</param>
         public DataValidationResult(params IDataValidationResultItem[] items)
         {
-            Requires.NotNull(items, nameof(items));
+            items = items ?? throw new ArgumentNullException(nameof(items));
 
             this.Add(items);
         }
@@ -108,7 +108,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public DataValidationResult Add(params IDataValidationResultItem[] items)
         {
-            Requires.NotNull(items, nameof(items));
+            items = items ?? throw new ArgumentNullException(nameof(items));
 
             items.ForEach(m => this.MergeMessage(m));
             return this;

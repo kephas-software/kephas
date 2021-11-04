@@ -58,7 +58,7 @@ namespace Kephas.Data.Capabilities
         /// <param name="entity">The entity.</param>
         public EntityEntry(object entity)
         {
-            Requires.NotNull(entity, nameof(entity));
+            entity = entity ?? throw new ArgumentNullException(nameof(entity));
 
             this.Entity = entity;
             this.Id = Guid.NewGuid();

@@ -29,6 +29,6 @@ namespace Kephas.Model
         /// <returns>
         /// The resolved type or <c>null</c>, if <paramref name="throwOnNotFound"/> is set to false and a projected type could not be found.
         /// </returns>
-        Type ResolveProjectedType(Type projectionType, IContext? context = null, bool throwOnNotFound = true);
+        Type? ResolveProjectedType(Type projectionType, IContext? context = null, bool throwOnNotFound = true);
     }
 }

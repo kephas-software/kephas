@@ -191,7 +191,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(findContext, nameof(findContext));
+            findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[findContext.EntityType];
             return dataContext.FindCoreAsync(findContext, cancellationToken);
@@ -214,7 +214,7 @@ namespace Kephas.Data
             where T : class
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(findContext, nameof(findContext));
+            findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[typeof(T)];
             return (T)await dataContext.FindCoreAsync(findContext, cancellationToken).PreserveThreadContext();
@@ -260,7 +260,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(findContext, nameof(findContext));
+            findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[findContext.EntityType];
             return await dataContext.FindOneCoreAsync(findContext, cancellationToken).PreserveThreadContext();
@@ -283,7 +283,7 @@ namespace Kephas.Data
             where T : class
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(findContext, nameof(findContext));
+            findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[typeof(T)];
             return (T)await dataContext.FindOneCoreAsync(findContext, cancellationToken).PreserveThreadContext();
@@ -308,7 +308,7 @@ namespace Kephas.Data
             where T : class
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(criteria, nameof(criteria));
+            criteria = criteria ?? throw new ArgumentNullException(nameof(criteria));
 
             var dataContext = dataSpace[typeof(T)];
             var findOneContext = new FindOneContext<T>(dataContext, criteria, throwIfNotFound);
@@ -368,7 +368,7 @@ namespace Kephas.Data
             where T : class
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(entities, nameof(entities));
+            entities = entities ?? throw new ArgumentNullException(nameof(entities));
 
             var dataContext = dataSpace[typeof(T)];
             dataContext.Delete(entities);
@@ -384,7 +384,7 @@ namespace Kephas.Data
             where T : class
         {
             dataSpace = dataSpace ?? throw new ArgumentNullException(nameof(dataSpace));
-            Requires.NotNull(entities, nameof(entities));
+            entities = entities ?? throw new ArgumentNullException(nameof(entities));
 
             var dataContext = dataSpace[typeof(T)];
             dataContext.Delete(entities);

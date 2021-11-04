@@ -14,7 +14,6 @@ namespace Kephas.Model
     using System.Reflection;
 
     using Kephas.Activation;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -39,7 +38,7 @@ namespace Kephas.Model
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            if (!(type[AbstractTypeInfoName] is ITypeInfo abstractTypeInfo))
+            if (type[AbstractTypeInfoName] is not ITypeInfo abstractTypeInfo)
             {
                 var implementationFor = type.GetAttribute<ImplementationForAttribute>();
                 abstractTypeInfo = implementationFor?.AbstractType != null

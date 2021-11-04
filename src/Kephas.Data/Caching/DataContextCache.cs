@@ -48,7 +48,7 @@ namespace Kephas.Data.Caching
         /// <param name="entityEntryMappings">The entity entry mappings.</param>
         protected DataContextCache(IDictionary<object, IEntityEntry> items, IDictionary<object, IEntityEntry> entityEntryMappings)
         {
-            Requires.NotNull(items, nameof(items));
+            items = items ?? throw new ArgumentNullException(nameof(items));
             Requires.NotNull(entityEntryMappings, nameof(entityEntryMappings));
 
             this.items = items;

@@ -15,6 +15,7 @@ $paths = @(
     "Kephas.AspNetCore",
     "Kephas.AspNetCore.IdentityServer4",
     "Kephas.AspNetCore.SignalR",
+    "Kephas.Behaviors",
     "Kephas.CodeAnalysis",
     "Kephas.Collections",
     "Kephas.Commands",

@@ -57,7 +57,7 @@ namespace Kephas.Data.LLBLGen
         /// <param name="relation">The relation.</param>
         public LLBLGenCollectionAdapter(IEntityEntryAware entity, ICollection<TEntityImplementation> collectionImplementation, IRelationPredicateBucket relation)
         {
-            Requires.NotNull(entity, nameof(entity));
+            entity = entity ?? throw new ArgumentNullException(nameof(entity));
             Requires.NotNull(collectionImplementation, nameof(collectionImplementation));
             Requires.NotNull(relation, nameof(relation));
 

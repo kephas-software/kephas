@@ -65,7 +65,7 @@ namespace Kephas.Data.LLBLGen
         /// <param name="entityEntryMappings">The entity information mappings.</param>
         protected LLBLGenCache(IDictionary<object, IEntityEntry> items, IDictionary<Guid, IEntityEntry> entityEntryMappings)
         {
-            Requires.NotNull(items, nameof(items));
+            items = items ?? throw new ArgumentNullException(nameof(items));
             Requires.NotNull(entityEntryMappings, nameof(entityEntryMappings));
 
             this.items = items;

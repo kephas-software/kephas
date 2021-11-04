@@ -193,7 +193,7 @@ namespace Kephas.Data
         /// </returns>
         public virtual IEntityEntry GetEntityEntry(object entity)
         {
-            Requires.NotNull(entity, nameof(entity));
+            entity = entity ?? throw new ArgumentNullException(nameof(entity));
 
             // Try to get the entity info from the local cache.
             var entityEntry = this.LocalCache.GetEntityEntry(entity);
@@ -209,7 +209,7 @@ namespace Kephas.Data
         /// </returns>
         public virtual IEntityEntry Attach(object entity)
         {
-            Requires.NotNull(entity, nameof(entity));
+            entity = entity ?? throw new ArgumentNullException(nameof(entity));
 
             return this.AttachCore(entity, attachEntityGraph: true);
         }

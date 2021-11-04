@@ -45,7 +45,7 @@ namespace Kephas.Data.Commands
         public DataCommandMetadata(Type dataContextType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            Requires.NotNull(dataContextType, nameof(dataContextType));
+            dataContextType = dataContextType ?? throw new ArgumentNullException(nameof(dataContextType));
 
             this.DataContextType = dataContextType;
         }

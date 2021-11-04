@@ -1,11 +1,8 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesExtensions.cs" company="Kephas Software SRL">
+// <copyright file="ConfigurationAmbientServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the ambient services extensions class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas
@@ -13,24 +10,12 @@ namespace Kephas
     using System;
 
     using Kephas.Configuration;
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Runtime;
 
     /// <summary>
-    /// Extension methods for <see cref="IAmbientServices"/>.
+    /// Extension methods for <see cref="IAmbientServices"/> related to configuration.
     /// </summary>
-    public static class AmbientServicesExtensions
+    public static class ConfigurationAmbientServicesExtensions
     {
-        /// <summary>
-        /// Gets the runtime type registry.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// The runtime type registry.
-        /// </returns>
-        public static IRuntimeTypeRegistry GetTypeRegistry(this IAmbientServices ambientServices) =>
-            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<IRuntimeTypeRegistry>();
-
         /// <summary>
         /// Configures the settings.
         /// </summary>
@@ -60,7 +45,7 @@ namespace Kephas
         public static IAmbientServices WithConfigurationStore(this IAmbientServices ambientServices, IConfigurationStore configurationStore)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(configurationStore, nameof(configurationStore));
+            configurationStore = configurationStore ?? throw new ArgumentNullException(nameof(configurationStore));
 
             ambientServices.Register(configurationStore);
 

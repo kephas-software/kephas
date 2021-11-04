@@ -63,7 +63,7 @@ namespace Kephas.Data
         public static TContext ImplementationTypeResolver<TContext>(this TContext queryContext, Func<Type, IContext, Type> resolver)
             where TContext : class, IQueryOperationContext
         {
-            Requires.NotNull(queryContext, nameof(queryContext));
+            queryContext = queryContext ?? throw new ArgumentNullException(nameof(queryContext));
 
             queryContext.ImplementationTypeResolver = resolver;
 
@@ -82,7 +82,7 @@ namespace Kephas.Data
         public static TContext Options<TContext>(this TContext queryContext, object options)
             where TContext : class, IQueryOperationContext
         {
-            Requires.NotNull(queryContext, nameof(queryContext));
+            queryContext = queryContext ?? throw new ArgumentNullException(nameof(queryContext));
 
             queryContext.Options = options;
 
@@ -101,7 +101,7 @@ namespace Kephas.Data
         public static TContext Query<TContext>(this TContext queryContext, IQueryable query)
             where TContext : class, IQueryOperationContext
         {
-            Requires.NotNull(queryContext, nameof(queryContext));
+            queryContext = queryContext ?? throw new ArgumentNullException(nameof(queryContext));
 
             queryContext.Query = query;
 

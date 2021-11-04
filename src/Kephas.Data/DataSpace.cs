@@ -61,7 +61,7 @@ namespace Kephas.Data
             : base(injector, isThreadSafe)
         {
             Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
-            Requires.NotNull(dataStoreProvider, nameof(dataStoreProvider));
+            dataStoreProvider = dataStoreProvider ?? throw new ArgumentNullException(nameof(dataStoreProvider));
 
             this.dataContextFactory = dataContextFactory;
             this.dataStoreProvider = dataStoreProvider;

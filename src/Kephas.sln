@@ -304,6 +304,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Commands.Endpoints.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Security", "Kephas.Security\Kephas.Security.csproj", "{7CC3D05A-21E0-4A1D-9E20-84AB3DD5F182}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Behaviors", "Kephas.Behaviors\Kephas.Behaviors.csproj", "{2F758309-A0B8-4DED-9521-EEAA0E294A6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -846,6 +848,10 @@ Global
 		{7CC3D05A-21E0-4A1D-9E20-84AB3DD5F182}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CC3D05A-21E0-4A1D-9E20-84AB3DD5F182}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CC3D05A-21E0-4A1D-9E20-84AB3DD5F182}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F758309-A0B8-4DED-9521-EEAA0E294A6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F758309-A0B8-4DED-9521-EEAA0E294A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F758309-A0B8-4DED-9521-EEAA0E294A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F758309-A0B8-4DED-9521-EEAA0E294A6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
