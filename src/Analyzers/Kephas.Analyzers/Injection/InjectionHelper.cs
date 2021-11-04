@@ -224,6 +224,97 @@ namespace Kephas.Analyzers.Injection
             return sb.ToString();
         }
 
+        public static bool AppendAppServicesProviderClass(
+            (string typeNamespace, string typeName) serviceTypeProvider,
+            StringBuilder source,
+            GeneratorExecutionContext context,
+            IList<TypeDeclarationSyntax> contractTypes,
+            IList<ServiceDeclaration> serviceTypes)
+        {
+            var isProviderEmpty = true;
+
+            source.AppendLine($@"namespace {serviceTypeProvider.typeNamespace}");
+            source.AppendLine($@"{{");
+            source.AppendLine($@"#if NET6_0_OR_GREATER");
+            source.AppendLine($@"   [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
+            source.AppendLine($@"#endif");
+            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
+            source.AppendLine($@"   {{");
+            source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(dynamic? context = null)");
+            source.AppendLine($@"       {{");
+
+            if (contractTypes.Count > 0)
+            {
+                var contractTypesBuilder = new StringBuilder();
+                foreach (var typeSyntax in contractTypes)
+                {
+                    var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax);
+                    source.AppendLine($"            yield return typeof({typeFullName});");
+                    contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
+                }
+
+                isProviderEmpty = false;
+
+                contractTypesBuilder.Length -= 2;
+
+                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {contractTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+            }
+            else
+            {
+                source.AppendLine($"            yield break;");
+            }
+
+            source.AppendLine($@"       }}");
+            source.AppendLine();
+            source.AppendLine($@"       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
+            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)");
+            source.AppendLine($@"       {{");
+
+            if (serviceTypes.Count > 0)
+            {
+                var serviceTypesBuilder = new StringBuilder();
+                foreach (var serviceDeclaration in serviceTypes)
+                {
+                    var appServiceContract = serviceDeclaration.ContractType;
+                    if (appServiceContract == null)
+                    {
+                        continue;
+                    }
+
+                    var typeFullName = InjectionHelper.GetTypeFullName(serviceDeclaration.ServiceType);
+                    try
+                    {
+                        source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                    }
+                    catch (Exception ex)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG2000", nameof(AppServicesSourceGenerator), $"Error while generating the service type for {typeFullName}: {ex.Message}", "Kephas", DiagnosticSeverity.Warning, isEnabledByDefault: true), Location.None));
+                    }
+
+                    serviceTypesBuilder.Append($"{serviceDeclaration.ServiceType.Identifier}, ");
+
+                    isProviderEmpty = false;
+                }
+
+                if (serviceTypesBuilder.Length > 0)
+                {
+                    serviceTypesBuilder.Length -= 2;
+
+                    context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {serviceTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+                }
+                else
+                {
+                    source.AppendLine($"            yield break;");
+                }
+            }
+
+            source.AppendLine($@"       }}");
+            source.AppendLine($@"   }}");
+            source.AppendLine($@"}}");
+
+            return !isProviderEmpty;
+        }
+
         private static bool ContainsAttribute(AttributeSyntax attributeSyntax, IEnumerable<string> attrs)
         {
             var attrName = attributeSyntax.Name.ToString();
