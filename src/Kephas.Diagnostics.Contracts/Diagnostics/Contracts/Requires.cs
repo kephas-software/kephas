@@ -59,7 +59,7 @@ namespace Kephas.Diagnostics.Contracts
 
             if (value!.Length == 0)
             {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, AbstractionStrings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
 
             Contract.EndContractBlock();
@@ -82,7 +82,7 @@ namespace Kephas.Diagnostics.Contracts
 
             if (value!.Length == 0)
             {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, AbstractionStrings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
 
             Contract.EndContractBlock();

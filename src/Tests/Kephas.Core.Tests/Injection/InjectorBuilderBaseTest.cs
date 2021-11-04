@@ -34,7 +34,7 @@ namespace Kephas.Core.Tests.Injection
         [Test]
         public void Build_success()
         {
-            var ambientServices = new AmbientServices(registerDefaultServices: false)
+            var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: null)
                 .Register(Substitute.For<ILogManager>())
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());

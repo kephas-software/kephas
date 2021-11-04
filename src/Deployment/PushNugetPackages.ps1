@@ -35,6 +35,7 @@ $paths = @(
     "Kephas.Data.Model",
     "Kephas.Data.Model.Abstractions",
     "Kephas.Data.MongoDB",
+    "Kephas.Diagnostics.Contracts",
     "Kephas.Extensions.Configuration",
     "Kephas.Extensions.DependencyInjection",
     "Kephas.Extensions.Hosting",

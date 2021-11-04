@@ -10,9 +10,9 @@ namespace Kephas.Application
     using System;
 
     /// <summary>
-    /// Default implementation of <see cref="AppBase"/>.
+    /// Default implementation of <see cref="AppBase{TAmbientServices}"/>.
     /// </summary>
-    public class App : AppBase
+    public class App : AppBase<AmbientServices>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
@@ -22,7 +22,7 @@ namespace Kephas.Application
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public App(Action<IAmbientServices>? containerBuilder = null, IAmbientServices? ambientServices = null, IAppArgs? appArgs = null)
-            : base(ambientServices, appArgs: appArgs, containerBuilder: containerBuilder)
+            : base(ambientServices, appArgs: appArgs, builder: containerBuilder)
         {
         }
     }

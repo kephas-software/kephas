@@ -12,7 +12,6 @@ namespace Kephas
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition.Builder;
 

@@ -45,7 +45,7 @@ namespace Kephas.Commands.Endpoints
         /// </returns>
         public override async Task<IMessage?> ProcessAsync(QuitMessage message, IMessagingContext context, CancellationToken token)
         {
-            await this.eventHub.PublishAsync(new ShutdownSignal("Shutdown triggered by user"), context).PreserveThreadContext();
+            await this.eventHub.PublishAsync(new ShutdownSignal("Shutdown triggered by user"), context, token).PreserveThreadContext();
             return null;
         }
     }

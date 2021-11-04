@@ -66,9 +66,6 @@
 
     <ItemGroup>
       <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
       <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -90,7 +87,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

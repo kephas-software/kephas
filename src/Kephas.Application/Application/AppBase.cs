@@ -23,28 +23,29 @@ namespace Kephas.Application
     /// <summary>
     /// Base class for the application's root.
     /// </summary>
+    /// <typeparam name="TAmbientServices">The actual class implementing <see cref="IAmbientServices"/>.</typeparam>
     /// <remarks>
     /// You should inherit this class and override at least the <see cref="BuildServicesContainer"/> method.
     /// </remarks>
-    public abstract class AppBase
+    public abstract class AppBase<TAmbientServices>
+        where TAmbientServices : IAmbientServices, new()
     {
-        private readonly Action<IAmbientServices>? containerBuilder;
+        private readonly Action<IAmbientServices>? builder;
         private bool isConfigured;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppBase"/> class.
+        /// Initializes a new instance of the <see cref="AppBase{TAmbientServices}"/> class.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided then
-        ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
+        /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
-        /// <param name="containerBuilder">Optional. The container builder.</param>
-        protected AppBase(IAmbientServices? ambientServices = null, IAppArgs? appArgs = null, CancellationTokenSource? appLifetimeTokenSource = null, Action<IAmbientServices>? containerBuilder = null)
+        /// <param name="builder">Optional. The container builder.</param>
+        protected AppBase(IAmbientServices? ambientServices = null, IAppArgs? appArgs = null, CancellationTokenSource? appLifetimeTokenSource = null, Action<IAmbientServices>? builder = null)
         {
-            this.AmbientServices = ambientServices ?? new AmbientServices();
+            this.AmbientServices = ambientServices ?? new TAmbientServices();
             this.AppArgs = appArgs ?? new AppArgs();
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
-            this.containerBuilder = containerBuilder;
+            this.builder = builder;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
 
@@ -322,11 +323,11 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         protected virtual void BuildServicesContainer(IAmbientServices ambientServices)
         {
-            if (this.containerBuilder != null)
+            if (this.builder != null)
             {
                 this.Log(LogLevel.Debug, null, "Building the services container by using the build callback.");
 
-                this.containerBuilder(ambientServices);
+                this.builder(ambientServices);
             }
             else
             {

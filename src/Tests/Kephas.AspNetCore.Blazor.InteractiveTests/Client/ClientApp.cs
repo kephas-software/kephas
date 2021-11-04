@@ -26,8 +26,8 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     /// The client application.
     /// </summary>
     /// <typeparam name="TApp">The type of the Razor entry point component (typically App).</typeparam>
-    /// <seealso cref="Kephas.Application.AppBase" />
-    public class ClientApp<TApp> : AppBase
+    /// <seealso cref="AppBase{TAmbientServices}" />
+    public class ClientApp<TApp> : AppBase<AmbientServices>
         where TApp : IComponent
     {
         /// <summary>

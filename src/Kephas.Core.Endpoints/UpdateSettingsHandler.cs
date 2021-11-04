@@ -105,7 +105,7 @@ namespace Kephas.Core.Endpoints
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
             var configuration = this.injector.Resolve(configurationType);
             var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
-                .GetMember(nameof(IConfiguration<CoreSettings>.UpdateSettingsAsync));
+                .GetMember(nameof(IConfiguration<NullLogManager>.UpdateSettingsAsync));
             var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }).PreserveThreadContext());
             return new ResponseMessage
             {

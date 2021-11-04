@@ -14,6 +14,7 @@ namespace Kephas.Core.Endpoints
     using System.Threading.Tasks;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Reflection;
 
@@ -76,7 +77,7 @@ namespace Kephas.Core.Endpoints
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
             var configuration = this.injector.Resolve(configurationType);
-            var getSettings = configurationType.GetMethod(nameof(IConfiguration<CoreSettings>.GetSettings));
+            var getSettings = configurationType.GetMethod(nameof(IConfiguration<NullLogManager>.GetSettings));
             var settings = getSettings?.Call(configuration, context);
             return new GetSettingsResponseMessage
             {

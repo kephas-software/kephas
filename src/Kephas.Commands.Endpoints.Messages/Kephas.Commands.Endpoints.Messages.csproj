@@ -96,8 +96,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj"/>
+        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
         <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj"/>
+        <ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj"/>
+        <ProjectReference Include="..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj"/>
     </ItemGroup>
 
 </Project>

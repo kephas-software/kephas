@@ -37,11 +37,18 @@
                 <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.12" />
             </ItemGroup>
         </When>
-        <Otherwise>
+        <When Condition="'$(TargetFramework)'=='net5.0'">
             <ItemGroup>
                 <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
                 <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.4" />
                 <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0-rc.2.21480.10" />
+                <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.0-rc.2.21480.10" />
+                <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.2.21480.5" />
             </ItemGroup>
         </Otherwise>
     </Choose>
@@ -66,10 +73,11 @@
         <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Commands\Kephas.Commands.csproj" />
         <ProjectReference Include="..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
-        <ProjectReference Include="..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
         <ProjectReference Include="..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
+        <ProjectReference Include="..\..\Kephas.Injection\Kephas.Injection.csproj" />
+        <ProjectReference Include="..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
         <ProjectReference Include="..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
         <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />

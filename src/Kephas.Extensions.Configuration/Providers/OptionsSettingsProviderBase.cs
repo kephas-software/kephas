@@ -17,6 +17,7 @@ namespace Kephas.Extensions.Configuration.Providers
     using Kephas;
     using Kephas.Configuration.Providers;
     using Kephas.Injection;
+    using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.Extensions.Options;
 
@@ -53,7 +54,7 @@ namespace Kephas.Extensions.Configuration.Providers
         public virtual object? GetSettings(Type settingsType, IContext? context)
         {
             var options = this.injector.TryResolve(typeof(IOptions<>).MakeGenericType(settingsType));
-            return options?.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
+            return options?.GetPropertyValue(nameof(IOptions<NullLogManager>.Value));
         }
 
         /// <summary>

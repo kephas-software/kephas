@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Diagnostics.Contracts;
-
 namespace Kephas.Messaging.Redis.Routing
 {
     using System;
@@ -19,6 +17,7 @@ namespace Kephas.Messaging.Redis.Routing
 
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.ExceptionHandling;
     using Kephas.Interaction;
     using Kephas.Logging;

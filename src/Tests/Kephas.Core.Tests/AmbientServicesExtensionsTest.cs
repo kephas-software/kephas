@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void WithInjector_builder()
         {
-            var ambientServices = new AmbientServices(registerDefaultServices: false)
+            var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: null)
                 .Register(Substitute.For<ILogManager>())
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());

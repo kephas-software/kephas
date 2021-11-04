@@ -45,9 +45,27 @@ namespace Kephas
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
+        public AmbientServices()
+            : this(registerDefaultServices: true, typeRegistry: null)
+        {
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AmbientServices"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public AmbientServices(IRuntimeTypeRegistry? typeRegistry)
+            : this(registerDefaultServices: true, typeRegistry: typeRegistry)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AmbientServices"/> class.
+        /// </summary>
         /// <param name="registerDefaultServices">Optional. True to register default services.</param>
         /// <param name="typeRegistry">Optional. The type registry.</param>
-        public AmbientServices(bool registerDefaultServices = true, IRuntimeTypeRegistry? typeRegistry = null)
+        protected internal AmbientServices(bool registerDefaultServices, IRuntimeTypeRegistry? typeRegistry)
         {
             this.registry = new ServiceRegistry();
 

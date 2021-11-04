@@ -13,8 +13,8 @@ namespace Kephas.Application.Reflection
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+
     using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -64,9 +64,7 @@ namespace Kephas.Application.Reflection
             string[]? dependencies = null,
             string[]? targetApps = null)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
-
-            this.Name = name;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name));
             this.IsRequired = isRequired;
             this.Version = version ?? new Version(0, 0);
             this.Dependencies = dependencies ?? Array.Empty<string>();
