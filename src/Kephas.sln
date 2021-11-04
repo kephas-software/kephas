@@ -260,7 +260,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Lite", "Ke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Lite.Tests", "Tests\Kephas.Injection.Lite.Tests\Kephas.Injection.Lite.Tests.csproj", "{803C18D2-F5D5-4546-A7E2-FD6B7969889B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Abstractions", "Kephas.Core.Abstractions\Kephas.Core.Abstractions.csproj", "{9327D807-5842-4C1D-827C-28C100143038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Abstractions", "Kephas.Abstractions\Kephas.Abstractions.csproj", "{9327D807-5842-4C1D-827C-28C100143038}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.Endpoints.Messages", "Kephas.Plugins.Endpoints.Messages\Kephas.Plugins.Endpoints.Messages.csproj", "{5D86C702-400E-4F67-A0FF-1D1859D84F2D}"
 EndProject

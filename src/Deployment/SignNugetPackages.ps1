@@ -10,6 +10,7 @@ function get-packagename([string]$pathname) {
 }
 
 $paths = @(
+    "..\Kephas.Abstractions",
     "..\Kephas.Application",
     "..\Kephas.Application.Abstractions",
     "..\Kephas.Application.Console",
@@ -24,7 +25,6 @@ $paths = @(
     "..\Kephas.Commands.Messaging",
     "..\Kephas.Configuration",
     "..\Kephas.Core",
-    "..\Kephas.Core.Abstractions",
     "..\Kephas.Core.Endpoints",
     "..\Kephas.Core.Endpoints.Messages",
     "..\Kephas.Data",
