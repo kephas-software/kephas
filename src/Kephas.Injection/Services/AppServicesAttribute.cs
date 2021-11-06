@@ -101,7 +101,17 @@ namespace Kephas.Services
                 this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServices));
             }
 
-            return provider?.GetAppServices(context) ?? Array.Empty<ServiceDeclaration>();
+            var services = provider?.GetAppServices(context) ?? Array.Empty<ServiceDeclaration>();
+            foreach (var service in services)
+            {
+                if (this.Logger.IsTraceEnabled())
+                {
+                    this.Logger.Trace("Getting service...");
+                    this.Logger.Trace($"Yielding {service.ServiceType} for {service.ContractDeclarationType}...");
+                }
+
+                yield return service;
+            }
         }
 
 
