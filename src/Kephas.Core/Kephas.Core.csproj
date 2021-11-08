@@ -8,7 +8,7 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-		<Version>10.1.0-dev.2</Version>
+		<Version>10.1.0-dev.3</Version>
 		<AssemblyVersion>10.1.0.0</AssemblyVersion>
 		<FileVersion>10.1.0.0</FileVersion>
 		<Authors>Kephas Software SRL</Authors>
@@ -17,11 +17,10 @@
 
 		<CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
 		<Description>
-			Provides a common infrastructure for other framework components.
+			Aggregates the most used Kephas infrastructure to provide a .
 			Typically used areas and classes/interfaces/services:
-			- Cryptography: IEncryptionService, IHashingService.
+			- AmbientServices
 			- Data: IIdentifiable, IIdGenerator.
-			- Diagnostics: Profiler.
 
 			Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
 		</Description>

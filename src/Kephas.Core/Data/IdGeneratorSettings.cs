@@ -15,7 +15,7 @@ namespace Kephas.Data
     using Kephas.Configuration;
 
     /// <summary>
-    /// Settings for the <see cref="DefaultIdGenerator"/>.
+    /// Settings for the <see cref="IIdGenerator"/>.
     /// </summary>
     public class IdGeneratorSettings : ISettings
     {
