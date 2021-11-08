@@ -238,7 +238,7 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"#if NET6_0_OR_GREATER");
             source.AppendLine($@"   [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
             source.AppendLine($@"#endif");
-            source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
+            source.AppendLine($@"   internal partial class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
             source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
             source.AppendLine($@"       {{");
@@ -265,8 +265,7 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($"            }};");
             source.AppendLine($@"       }}");
             source.AppendLine();
-            source.AppendLine($@"       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
-            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)");
+            source.AppendLine($@"       IEnumerable<ServiceDeclaration> IAppServiceInfosProvider.GetAppServices(IContext? context)");
             source.AppendLine($@"       {{");
             source.AppendLine($@"           return new ServiceDeclaration[]");
             source.AppendLine($@"           {{");
@@ -285,7 +284,7 @@ namespace Kephas.Analyzers.Injection
                     var typeFullName = InjectionHelper.GetTypeFullName(serviceDeclaration.ServiceType);
                     try
                     {
-                        source.AppendLine($"                new (typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)})),");
+                        source.AppendLine($"                new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)})),");
                     }
                     catch (Exception ex)
                     {
