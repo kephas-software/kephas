@@ -240,8 +240,10 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"#endif");
             source.AppendLine($@"   public class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
-            source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(dynamic? context = null)");
+            source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
             source.AppendLine($@"       {{");
+            source.AppendLine($@"           return new Type[]");
+            source.AppendLine($@"           {{");
 
             if (contractTypes.Count > 0)
             {
@@ -249,7 +251,7 @@ namespace Kephas.Analyzers.Injection
                 foreach (var typeSyntax in contractTypes)
                 {
                     var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax);
-                    source.AppendLine($"            yield return typeof({typeFullName});");
+                    source.AppendLine($"                typeof({typeFullName}),");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
 
@@ -259,16 +261,15 @@ namespace Kephas.Analyzers.Injection
 
                 context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {contractTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
             }
-            else
-            {
-                source.AppendLine($"            yield break;");
-            }
 
+            source.AppendLine($"            }};");
             source.AppendLine($@"       }}");
             source.AppendLine();
             source.AppendLine($@"       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
-            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)");
+            source.AppendLine($@"       public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)");
             source.AppendLine($@"       {{");
+            source.AppendLine($@"           return new ServiceDeclaration[]");
+            source.AppendLine($@"           {{");
 
             if (serviceTypes.Count > 0)
             {
@@ -284,7 +285,7 @@ namespace Kephas.Analyzers.Injection
                     var typeFullName = InjectionHelper.GetTypeFullName(serviceDeclaration.ServiceType);
                     try
                     {
-                        source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                        source.AppendLine($"                new (typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)})),");
                     }
                     catch (Exception ex)
                     {
@@ -302,12 +303,9 @@ namespace Kephas.Analyzers.Injection
 
                     context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {serviceTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
                 }
-                else
-                {
-                    source.AppendLine($"            yield break;");
-                }
             }
 
+            source.AppendLine($@"           }};");
             source.AppendLine($@"       }}");
             source.AppendLine($@"   }}");
             source.AppendLine($@"}}");

@@ -304,7 +304,7 @@ namespace Kephas.Injection.Builder
             /// <returns>
             /// An enumeration of application service information objects and their associated contract type.
             /// </returns>
-            public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null)
+            public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
             {
                 return this.appServiceInfos.Select(i => new ContractDeclaration(i.ContractType!, i));
             }
@@ -312,11 +312,11 @@ namespace Kephas.Injection.Builder
             /// <summary>
             /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
             /// </summary>
-            /// <param name="context">Optional. The context in which the service types are requested.</param>
+            /// <param name="context">Optional. The context in which the contracts are requested.</param>
             /// <returns>
             /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
             /// </returns>
-            public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)
+            public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)
             {
                 yield break;
             }

@@ -65,57 +65,73 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
         {
             if (this.Logger.IsTraceEnabled())
             {
                 this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceContracts));
             }
 
-            var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
-            if (this.Logger.IsTraceEnabled())
+            if (Activator.CreateInstance(this.ProviderType) is not IAppServiceInfosProvider provider)
             {
-                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServiceContracts));
+                this.Logger.Warn($"Instance of {{providerType}} cannot be converted to {nameof(IAppServiceInfosProvider)}.", this.ProviderType);
+                return Enumerable.Empty<ContractDeclaration>();
             }
 
-            return provider?.GetAppServiceContracts(context) ?? Array.Empty<ContractDeclaration>();
+            if (this.Logger.IsTraceEnabled())
+            {
+                this.Logger.Trace("Instance {provider} of {providerType} created successfully in {operation}.", provider, this.ProviderType, nameof(this.GetAppServiceContracts));
+            }
+
+            return provider.GetAppServiceContracts(context) ?? Array.Empty<ContractDeclaration>();
         }
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
+        /// <param name="context">Optional. The context in which the contracts are requested.</param>
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)
         {
             if (this.Logger.IsTraceEnabled())
             {
                 this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServices));
             }
 
-            var provider = Activator.CreateInstance(this.ProviderType) as IAppServiceInfosProvider;
+            if (Activator.CreateInstance(this.ProviderType) is not IAppServiceInfosProvider provider)
+            {
+                this.Logger.Warn($"Instance of {{providerType}} cannot be converted to {nameof(IAppServiceInfosProvider)}.", this.ProviderType);
+                return Enumerable.Empty<ServiceDeclaration>();
+            }
+
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServices));
+                this.Logger.Trace("Instance {provider} of {providerType} created successfully in {operation}.", provider, this.ProviderType, nameof(this.GetAppServices));
             }
 
-            IEnumerable<ServiceDeclaration> services = provider?.GetAppServices(context) ?? Enumerable.Empty<ServiceDeclaration>();
-            if (this.Logger.IsTraceEnabled() && !services.Any())
+            try
             {
-                this.Logger.Trace("{providerType} yielded not services.", this.ProviderType);
-            }
-
-            foreach (var service in services)
-            {
+                var services = provider.GetAppServices(context) ?? Enumerable.Empty<ServiceDeclaration>();
                 if (this.Logger.IsTraceEnabled())
                 {
-                    this.Logger.Trace("Getting service...");
-                    this.Logger.Trace($"Yielding {service.ServiceType} for {service.ContractDeclarationType}...");
+                    if (services.Any())
+                    {
+                        this.Logger.Trace("{provider} yielded services: {services}.", provider, services);
+                    }
+                    else
+                    {
+                        this.Logger.Trace("{provider} yielded not services.", provider);
+                    }
                 }
 
-                yield return service;
+                return services;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while getting the services from {provider}.", provider);
+                return Enumerable.Empty<ServiceDeclaration>();
             }
         }
 

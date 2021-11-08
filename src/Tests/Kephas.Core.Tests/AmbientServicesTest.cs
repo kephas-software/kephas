@@ -445,7 +445,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_default_services()
         {
             var ambientServices = (AmbientServices)this.CreateAmbientServices().WithStaticAppRuntime();
-            var appServiceInfos = ambientServices.GetAppServiceContracts(new List<Type>());
+            var appServiceInfos = ambientServices.GetAppServiceContracts();
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(ILogManager));
             Assert.IsNotNull(info);
@@ -460,7 +460,7 @@ namespace Kephas.Core.Tests
         public void GetAppServiceInfos_no_default_services()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: null);
-            var appServiceInfos = ambientServices.GetAppServiceContracts(new List<Type>());
+            var appServiceInfos = ambientServices.GetAppServiceContracts();
 
             Assert.AreEqual(2, appServiceInfos.Count());
 
@@ -480,7 +480,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = (AmbientServices)this.CreateAmbientServices();
             ambientServices[InjectorExtensions.LiteInjectionKey] = true;
-            var appServiceInfos = ambientServices.GetAppServiceContracts(new List<Type>());
+            var appServiceInfos = ambientServices.GetAppServiceContracts();
 
             Assert.IsFalse(appServiceInfos.Any());
         }

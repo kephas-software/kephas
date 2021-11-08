@@ -57,7 +57,7 @@ namespace Kephas
         {
             var appAssemblies = ambientServices.GetAppAssemblies();
             var configuratorTypes = ServiceHelper.GetAppServiceInfosProviders(appAssemblies)
-                .SelectMany(p => p.GetAppServices())
+                .SelectMany(p => p.GetAppServices(null))
                 .Where(t => t.ContractDeclarationType == typeof(IServicesConfigurator))
                 .Select(t => t.ServiceType)
                 .ToList();

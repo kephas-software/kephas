@@ -78,36 +78,6 @@ using Kephas.Services;
             return ("Kephas.Injection.Generated", $"AppServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
         }
 
-        private void AppendServiceProviderTypes((string typeNamespace, string typeName) serviceTypeProvider, StringBuilder source)
-        {
-            source.Append($@"   serviceProviderTypes: new Type[] {{ typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}) }}");
-        }
-
-        private void AppendContractDeclarationTypes(StringBuilder source, GeneratorExecutionContext context, IList<TypeDeclarationSyntax> contractTypes)
-        {
-            source.AppendLine($@"   contractDeclarationTypes: new Type[] {{");
-
-            var contractTypesBuilder = new StringBuilder();
-            if (contractTypes.Count > 0)
-            {
-                foreach (var typeSyntax in contractTypes)
-                {
-                    var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax);
-                    source.AppendLine($"        typeof({typeFullName}),");
-                    contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
-                }
-
-                contractTypesBuilder.Length -= 2;
-                source.Length -= Environment.NewLine.Length;
-                source.Length -= 1;
-                source.AppendLine();
-
-                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {contractTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
-            }
-
-            source.Append($@"   }}");
-        }
-
         private class SyntaxReceiver : ISyntaxContextReceiver
         {
             internal IList<TypeDeclarationSyntax> ContractTypes = new List<TypeDeclarationSyntax>();

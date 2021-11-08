@@ -39,9 +39,6 @@ namespace Kephas.Services
     /// Interface providing the <see cref="GetAppServiceContracts"/> method,
     /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
-#if NET6_0_OR_GREATER
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
     public interface IAppServiceInfosProvider
     {
         /// <summary>
@@ -49,21 +46,21 @@ namespace Kephas.Services
         /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
         /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
+        /// <param name="context">Optional. The context in which the contracts are requested.</param>
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts(dynamic? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
             => GetAppServiceContractDeclarations(this, context);
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
+        /// <param name="context">Optional. The context in which the services are requested.</param>
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServices(dynamic? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)
             => Enumerable.Empty<ServiceDeclaration>();
 
         /// <summary>
@@ -111,6 +108,6 @@ namespace Kephas.Services
         /// <returns>
         /// The contract declaration types.
         /// </returns>
-        protected internal IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null) => null;
+        protected internal IEnumerable<Type>? GetContractDeclarationTypes(IContext? context = null) => null;
     }
 }
