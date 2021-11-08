@@ -16,6 +16,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
@@ -106,6 +107,8 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         /// <returns>A tuple providing the result and the shutdown instruction.</returns>
         protected virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> RunAsync(IAppArgs appArgs)
         {
+            this.Log(LogLevel.Debug, null, "The host is starting.");
+
             this.Host = this.HostBuilder!.Build();
             await this.Host.RunAsync().PreserveThreadContext();
             return (0.ToOperationResult(), AppShutdownInstruction.Shutdown);
@@ -121,6 +124,8 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         /// </returns>
         protected virtual WebAssemblyHostBuilder ConfigureHost(WebAssemblyHostBuilder builder)
         {
+            this.Log(LogLevel.Debug, null, "Configuring the host...");
+
             builder.RootComponents.Add<TApp>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

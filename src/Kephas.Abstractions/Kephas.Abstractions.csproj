@@ -94,9 +94,14 @@
                 <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
             </ItemGroup>
         </When>
-        <Otherwise>
+		<When Condition="'$(TargetFramework)'=='net5.0'">
+			<ItemGroup>
+				<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
             <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+                <PackageReference Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
             </ItemGroup>
         </Otherwise>
     </Choose>    

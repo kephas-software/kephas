@@ -56,21 +56,28 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Properties\" />
-    </ItemGroup>
+	<Choose>
+		<When Condition="'$(TargetFramework)'=='netstandard2.1'">
+			<ItemGroup>
+				<PackageReference Include="System.CodeDom" Version="4.7.0" />
+			</ItemGroup>
+		</When>
+		<When Condition="'$(TargetFramework)'=='net5.0'">
+			<ItemGroup>
+				<PackageReference Include="System.CodeDom" Version="5.0.0" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<PackageReference Include="System.CodeDom" Version="6.0.0" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
 
-    <ItemGroup>
+	<ItemGroup>
         <PackageReference Include="IronPython" Version="2.7.11" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
@@ -81,7 +88,6 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.CodeDom" Version="4.7.0" />
     </ItemGroup>
 
     <ItemGroup>

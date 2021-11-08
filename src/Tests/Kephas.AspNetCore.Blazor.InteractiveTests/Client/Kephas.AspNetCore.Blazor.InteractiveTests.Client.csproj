@@ -26,28 +26,29 @@
     </ItemGroup>
 
 	<Choose>
-		<When Condition="'$(TargetFramework)'=='net6.0'">
+		<When Condition="'$(TargetFramework)'=='net5.0'">
 			<ItemGroup>
-				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.2.21480.10" />
-				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.2.21480.10" PrivateAssets="all" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
+				<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
 			</ItemGroup>
 		</When>
 		<Otherwise>
 			<ItemGroup>
-				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
-				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+				<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
 			</ItemGroup>
 		</Otherwise>
 	</Choose>
 
 	<ItemGroup>
-        <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
         <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="1.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>

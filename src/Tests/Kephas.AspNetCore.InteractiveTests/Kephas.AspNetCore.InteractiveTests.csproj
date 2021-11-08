@@ -21,7 +21,7 @@
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.10.0" />
         <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
-        <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
@@ -46,9 +46,9 @@
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0-rc.2.21480.10" />
-                <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.0-rc.2.21480.10" />
-                <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.2.21480.5" />
+                <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
+                <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.0" />
+                <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
             </ItemGroup>
         </Otherwise>
     </Choose>

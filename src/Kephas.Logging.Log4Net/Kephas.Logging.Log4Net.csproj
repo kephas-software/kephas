@@ -75,7 +75,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="log4net" Version="2.0.12" />
+        <PackageReference Include="log4net" Version="2.0.13" />
     </ItemGroup>
 
     <ItemGroup>
@@ -85,7 +85,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml"/>
+        <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>$(MSBuildProjectName).xml</LogicalName>
         </EmbeddedResource>
