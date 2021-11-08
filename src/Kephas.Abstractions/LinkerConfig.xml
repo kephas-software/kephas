@@ -4,5 +4,8 @@
   stripped by the IL Linker even if they aren't referenced by user code.
 -->
 <linker>
+    <assembly fullname="System.Linq" />
+    <assembly fullname="System.Linq.Expressions" />
+    <assembly fullname="System.Linq.Queryable" />
     <assembly fullname="Kephas.Abstractions" />
 </linker>
