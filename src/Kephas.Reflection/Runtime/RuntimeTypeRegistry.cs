@@ -132,7 +132,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A runtime type.</returns>
-        public IRuntimeTypeInfo GetTypeInfo(Type type)
+        public IRuntimeTypeInfo GetTypeInfo([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
@@ -167,7 +167,7 @@ namespace Kephas.Runtime
         /// default behavior.
         /// </remarks>
         /// <param name="factory">The factory.</param>
-        public void RegisterFactory<TFactory>(TFactory factory)
+        public void RegisterFactory<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TFactory>(TFactory factory)
             where TFactory : class, IRuntimeElementInfoFactory
         {
             factory = factory ?? throw new ArgumentNullException(nameof(factory));

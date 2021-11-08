@@ -43,7 +43,7 @@ namespace Kephas.Runtime
         /// default behavior.
         /// </remarks>
         /// <param name="factory">The factory.</param>
-        void RegisterFactory<TFactory>(TFactory factory)
+        void RegisterFactory<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TFactory>(TFactory factory)
             where TFactory : class, IRuntimeElementInfoFactory;
     }
 }

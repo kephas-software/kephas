@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+		<IsTrimmable>false</IsTrimmable>
 
         <Version>10.1.0-dev.3</Version>
         <AssemblyVersion>10.1.0.0</AssemblyVersion>

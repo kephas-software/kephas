@@ -13,8 +13,8 @@ namespace Kephas.Reflection
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection;
     using System.Runtime.CompilerServices;
 
     /// <summary>
@@ -40,7 +40,7 @@ namespace Kephas.Reflection
         /// <param name="rawType">The raw type.</param>
         /// <returns>The runtime type.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Type ToNormalizedType(this Type rawType)
+        public static Type ToNormalizedType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type rawType)
         {
             rawType = rawType ?? throw new ArgumentNullException(nameof(rawType));
 
@@ -56,7 +56,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The type to be checked.</param>
         /// <returns>A <see cref="Type"/> instance.</returns>
-        public static Type GetNonNullableType(this Type type)
+        public static Type GetNonNullableType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
@@ -72,7 +72,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsNullableType(this Type type)
+        public static bool IsNullableType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
@@ -86,7 +86,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is enumerable; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsEnumerable(this Type type)
+        public static bool IsEnumerable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return type != null
                    && typeof(IEnumerable).IsAssignableFrom(type);
@@ -99,7 +99,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsReadOnlyCollection(this Type type)
+        public static bool IsReadOnlyCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             if (type == null)
             {
@@ -122,7 +122,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsCollection(this Type type)
+        public static bool IsCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             if (type == null)
             {
@@ -145,7 +145,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsDictionary(this Type type)
+        public static bool IsDictionary([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             if (type == null)
             {
@@ -168,7 +168,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is enumerable; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsQueryable(this Type type)
+        public static bool IsQueryable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return type != null
                    && typeof(IQueryable).IsAssignableFrom(type);
@@ -179,7 +179,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The enumerable type.</param>
         /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
-        public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType(this Type type)
+        public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return TryGetDictionaryKeyItemType(type, typeof(IDictionary<,>));
         }
@@ -190,7 +190,7 @@ namespace Kephas.Reflection
         /// <param name="type">The enumerable type.</param>
         /// <param name="dictionaryGenericType">The dictionary generic type.</param>
         /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
-        public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType(this Type type, Type dictionaryGenericType)
+        public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type dictionaryGenericType)
         {
             if (!type.IsDictionary())
             {
@@ -216,7 +216,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The enumerable type.</param>
         /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
-        public static Type? TryGetEnumerableItemType(this Type type)
+        public static Type? TryGetEnumerableItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return TryGetEnumerableItemType(type, typeof(IEnumerable<>));
         }
@@ -226,7 +226,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The queryable type.</param>
         /// <returns>The item type if the provided type is queryable, otherwise <c>null</c>.</returns>
-        public static Type? TryGetQueryableItemType(this Type type)
+        public static Type? TryGetQueryableItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return TryGetEnumerableItemType(type, typeof(IQueryable<>));
         }
@@ -236,7 +236,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The collection type.</param>
         /// <returns>The item type if the provided type is a collection, otherwise <c>null</c>.</returns>
-        public static Type? TryGetCollectionItemType(this Type type)
+        public static Type? TryGetCollectionItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return TryGetEnumerableItemType(type, typeof(ICollection<>));
         }
@@ -249,7 +249,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The enumerable item type.
         /// </returns>
-        public static Type? TryGetEnumerableItemType(this Type type, Type enumerableGenericType)
+        public static Type? TryGetEnumerableItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type enumerableGenericType)
         {
             if (!type.IsEnumerable())
             {
@@ -278,7 +278,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// <c>true</c> if the type is a constructed generic of the provided open generic type, <c>false</c> otherwise.
         /// </returns>
-        public static bool IsConstructedGenericOf(this Type type, Type openGenericType)
+        public static bool IsConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
@@ -300,7 +300,7 @@ namespace Kephas.Reflection
         /// Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;));
         /// </code>
         /// </example>
-        public static Type? GetBaseConstructedGenericOf(this Type type, Type openGenericType)
+        public static Type? GetBaseConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
             openGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
@@ -336,7 +336,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The qualified full name.
         /// </returns>
-        public static string? GetQualifiedFullName(this Type type, bool stripVersionInfo = true)
+        public static string? GetQualifiedFullName([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, bool stripVersionInfo = true)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 

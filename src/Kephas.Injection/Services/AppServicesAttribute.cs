@@ -83,7 +83,16 @@ namespace Kephas.Services
                 this.Logger.Trace("Instance {provider} of {providerType} created successfully in {operation}.", provider, this.ProviderType, nameof(this.GetAppServiceContracts));
             }
 
-            return provider.GetAppServiceContracts(context) ?? Array.Empty<ContractDeclaration>();
+            try
+            {
+                var contracts = provider.GetAppServiceContracts(context) ?? Array.Empty<ContractDeclaration>();
+                return contracts.ToArray();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while getting the service contracts from {provider}.", provider);
+                return Enumerable.Empty<ContractDeclaration>();
+            }
         }
 
         /// <summary>
@@ -114,23 +123,16 @@ namespace Kephas.Services
             try
             {
                 var services = provider.GetAppServices(context) ?? Enumerable.Empty<ServiceDeclaration>();
-                if (this.Logger.IsTraceEnabled())
+                if (this.Logger.IsTraceEnabled() && !services.Any())
                 {
-                    if (services.Any())
-                    {
-                        this.Logger.Trace("{provider} yielded services: {services}.", provider, services);
-                    }
-                    else
-                    {
-                        this.Logger.Trace("{provider} yielded not services.", provider);
-                    }
+                    this.Logger.Trace("Instance {provider} did not provide any services in {operation}.", provider, nameof(this.GetAppServices));
                 }
 
-                return services;
+                return services.ToArray();
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while getting the services from {provider}.", provider);
+                this.Logger.Error(ex, "Error while getting the service declarations from {provider}.", provider);
                 return Enumerable.Empty<ServiceDeclaration>();
             }
         }
