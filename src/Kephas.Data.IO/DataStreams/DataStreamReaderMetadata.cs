@@ -11,6 +11,7 @@
 namespace Kephas.Data.IO.DataStreams
 {
     using System.Collections.Generic;
+
     using Kephas.Collections;
     using Kephas.Services;
 

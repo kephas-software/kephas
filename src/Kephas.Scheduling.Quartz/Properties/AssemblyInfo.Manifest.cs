@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
+
 using Kephas.Model.AttributedModel;
+
+[assembly: AssemblyMetadata("IsTrimmable", "False")]
 
 [assembly: ModelAssembly("Kephas.Scheduling.Quartz.JobStore.Model")]

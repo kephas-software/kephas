@@ -5,7 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
 using System.Runtime.CompilerServices;
+
+[assembly: AssemblyMetadata("IsTrimmable", "False")]
 
 [assembly: InternalsVisibleTo("Kephas.Application.Console.Tests, PublicKey=" +
                               "0024000004800000940000000602000000240000525341310004000001000100fdab739edd4ea5" +

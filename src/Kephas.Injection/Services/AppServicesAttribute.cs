@@ -10,7 +10,7 @@ namespace Kephas.Services
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Linq;
     using Kephas.Logging;
     using Kephas.Services.Reflection;
 
@@ -101,7 +101,12 @@ namespace Kephas.Services
                 this.Logger.Trace("Instance of {providerType} created successfully in {operation}.", this.ProviderType, nameof(this.GetAppServices));
             }
 
-            var services = provider?.GetAppServices(context) ?? Array.Empty<ServiceDeclaration>();
+            IEnumerable<ServiceDeclaration> services = provider?.GetAppServices(context) ?? Enumerable.Empty<ServiceDeclaration>();
+            if (this.Logger.IsTraceEnabled() && !services.Any())
+            {
+                this.Logger.Trace("{providerType} yielded not services.", this.ProviderType);
+            }
+
             foreach (var service in services)
             {
                 if (this.Logger.IsTraceEnabled())

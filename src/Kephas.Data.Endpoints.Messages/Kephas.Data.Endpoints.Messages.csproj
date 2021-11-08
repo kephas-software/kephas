@@ -61,20 +61,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="Properties\**" />
-        <EmbeddedResource Remove="Properties\**" />
-        <None Remove="Properties\**" />
-        <None Update="kephas.logo.stone.png">
-            <Pack>true</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
