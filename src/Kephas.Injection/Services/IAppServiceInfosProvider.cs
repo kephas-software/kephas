@@ -39,6 +39,9 @@ namespace Kephas.Services
     /// Interface providing the <see cref="GetAppServiceContracts"/> method,
     /// which collects <see cref="IAppServiceInfo"/> data together with the contract declaration type.
     /// </summary>
+#if NET6_0_OR_GREATER
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
     public interface IAppServiceInfosProvider
     {
         /// <summary>
