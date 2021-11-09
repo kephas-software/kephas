@@ -43,13 +43,13 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
         {
-            var ambientServices = ((IContext?)context)?.AmbientServices;
-            if (ambientServices == null)
+            var ambientServices = context?.AmbientServices;
+            var serviceCollection = ambientServices?.GetService<IServiceCollection>();
+            if (serviceCollection == null)
             {
                 yield break;
             }
 
-            var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
             var openGenericServiceTypes = new HashSet<Type>(
                 serviceCollection
                     .Where(s => s.ServiceType.ToNormalizedType().IsGenericTypeDefinition)
