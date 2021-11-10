@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Application
             var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains") && !n.FullName.StartsWith("ReSharper"));
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(5, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(16, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
             Assert.AreEqual(0, assemblyList.Count(a => a.FullName.StartsWith("JetBrains")));
         }
 

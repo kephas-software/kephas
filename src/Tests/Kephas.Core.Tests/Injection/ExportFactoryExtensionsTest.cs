@@ -8,15 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Threading;
-using System.Threading.Tasks;
-using Kephas.Injection;
-using Kephas.Services;
-using NSubstitute;
-using NUnit.Framework;
-
 namespace Kephas.Core.Tests.Injection
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Kephas.Injection;
+    using Kephas.Services;
+    using NSubstitute;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ExportFactoryExtensionsTest
     {
@@ -26,8 +27,7 @@ namespace Kephas.Core.Tests.Injection
             var initializable = Substitute.For<IInitializable>();
             var export = Substitute.For<IExport<IInitializable>>();
             export.Value.Returns(initializable);
-            var factory = Substitute.For<IExportFactory<IInitializable>>();
-            factory.CreateExport().Returns(export);
+            IExportFactory<IInitializable> factory = new ExportFactory<IInitializable>(() => export.Value);
 
             var initializableValue = factory.CreateExportedValue();
 

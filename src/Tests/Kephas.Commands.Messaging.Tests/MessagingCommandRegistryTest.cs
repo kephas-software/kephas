@@ -12,14 +12,24 @@ namespace Kephas.Commands.Messaging.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
     using Kephas.Commands.Endpoints;
     using Kephas.Dynamic;
+    using Kephas.Security.Authorization;
     using NUnit.Framework;
 
     [TestFixture]
     public class MessagingCommandRegistryTest : CommandsTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(IAuthorizationService).Assembly,     // Kephas.Security
+            };
+        }
+
         [Test]
         public void Injection()
         {

@@ -1,5 +1,6 @@
 ﻿namespace Kephas.Core.Tests.Serialization
 {
+    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -88,13 +89,12 @@
         }
 
         [Test]
-        public async Task DeserializeAsync_SerializationService_null()
+        public void DeserializeAsync_SerializationService_null()
         {
             var deserializer = this.CreateStringDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = await serializationService.DeserializeAsync<JsonMediaType>(null);
-            Assert.IsNull(result);
+            Assert.ThrowsAsync<ArgumentNullException>(() => serializationService.DeserializeAsync<JsonMediaType>(null));
         }
 
         [Test]
@@ -114,8 +114,7 @@
             var deserializer = this.CreateStringSyncDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = serializationService.Deserialize<JsonMediaType>(null);
-            Assert.IsNull(result);
+            Assert.Throws<ArgumentNullException>(() => serializationService.Deserialize<JsonMediaType>(null));
         }
 
         [Test]

@@ -22,7 +22,7 @@ namespace Kephas.Core.Tests.Licensing
         [Test]
         public void LicenseData_id_empty()
         {
-            Assert.Throws<ArgumentNullException>(() => new LicenseData(null, "test", "1.0:2.0", "standard", "you", "me"));
+            Assert.Throws<ArgumentException>(() => new LicenseData(null, "test", "1.0:2.0", "standard", "you", "me"));
         }
 
         [Test]

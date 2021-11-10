@@ -25,6 +25,14 @@ namespace Kephas.Application.Tests
     [TestFixture]
     public class DefaultAppManagerInjectionTest : ApplicationTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(IConfiguration<>).Assembly,      // Kephas.Configuration
+            };
+        }
+
         public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,

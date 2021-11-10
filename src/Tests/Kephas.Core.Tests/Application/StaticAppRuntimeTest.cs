@@ -43,7 +43,7 @@ namespace Kephas.Core.Tests.Application
             var assemblies = appRuntime.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(5, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(16, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
             Assert.AreEqual(0, assemblyList.Count(a => a.FullName.StartsWith("JetBrains")));
         }
 
@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Application
             var assemblies = appRuntime.GetAppAssemblies();
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(5, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(16, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
         }
 
         [Test]
@@ -135,6 +135,8 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual("netcoreapp3.1", appFramework);
 #elif NET5_0
             Assert.AreEqual("net5.0", appFramework);
+#elif NET6_0
+            Assert.AreEqual("net6.0", appFramework);
 #else
             Assert.IsTrue(appFramework.StartsWith("net"), "Expected a .NET Core app framework.");
 #endif

@@ -168,7 +168,7 @@ namespace Kephas.Tests.Plugins.Application
             var appLocation = Path.GetFullPath("/");
             var appRuntime = new PluginsAppRuntime(appFolder: appLocation);
 
-            var pluginsFolder = Path.Combine(appLocation, "Plugins");
+            var pluginsFolder = Path.Combine(appLocation, PluginsAppRuntime.DefaultPluginsFolder);
             Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
             Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
         }

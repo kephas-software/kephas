@@ -8,13 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Services;
-
 namespace Kephas.Core.Tests.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -23,13 +21,27 @@ namespace Kephas.Core.Tests.Configuration
     using Kephas.Configuration.Interaction;
     using Kephas.Configuration.Providers;
     using Kephas.Core.Tests;
+    using Kephas.Injection;
     using Kephas.Interaction;
+    using Kephas.Serialization;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
     public class ConfigurationTest : InjectionTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(IEventHub).Assembly,         // Kephas.Interaction
+                typeof(IContextFactory).Assembly,   // Kephas.Injection
+                typeof(IConfiguration<>).Assembly,  // Kephas.Configuration
+                typeof(ISerializationService).Assembly,  // Kephas.Serialization
+            };
+        }
+
         [Test]
         public void GetSettings_default_provider()
         {
