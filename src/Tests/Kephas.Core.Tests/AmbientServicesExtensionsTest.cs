@@ -68,7 +68,7 @@ namespace Kephas.Core.Tests
         public void WithInjector_builder_missing_required_constructor()
         {
             var ambientServices = this.CreateAmbientServices();
-            Assert.Throws<InvalidOperationException>(() => ambientServices.WithInjector<BadTestInjectorBuilder>());
+            Assert.Throws<MissingMethodException>(() => ambientServices.WithInjector<BadTestInjectorBuilder>());
         }
 
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>

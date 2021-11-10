@@ -65,7 +65,7 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("Kephas.IAmbientServices, Kephas.Core");
+            var type = resolver.ResolveType("Kephas.IAmbientServices, Kephas.Injection");
             Assert.AreSame(typeof(IAmbientServices), type);
         }
 
@@ -74,7 +74,7 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("IAmbientServices, Kephas.Core");
+            var type = resolver.ResolveType("IAmbientServices, Kephas.Injection");
             Assert.AreSame(typeof(IAmbientServices), type);
         }
 
