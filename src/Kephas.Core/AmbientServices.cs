@@ -12,6 +12,7 @@ namespace Kephas
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Configuration;
@@ -104,7 +105,7 @@ namespace Kephas
         /// </summary>
         /// <returns>An enumeration of application assemblies.</returns>
         public IEnumerable<Assembly> GetAppAssemblies()
-            => this.GetAppRuntime()!.GetAppAssemblies();
+            => this.GetAppRuntime()?.GetAppAssemblies() ?? Enumerable.Empty<Assembly>();
 
         /// <summary>
         /// Gets the application service infos in this collection.
