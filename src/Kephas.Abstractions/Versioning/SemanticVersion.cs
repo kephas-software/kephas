@@ -210,6 +210,16 @@ namespace Kephas.Versioning
         public virtual string? Metadata { get; }
 
         /// <summary>
+        /// Converts this <see cref="SemanticVersion"/> to a <see cref="Version"/>.
+        /// </summary>
+        /// <param name="version">The semantic version.</param>
+        /// <returns>The version part of the <see cref="SemanticVersion"/>.</returns>
+        public static explicit operator Version(SemanticVersion version)
+        {
+            return version.version;
+        }
+
+        /// <summary>
         /// Equals operator.
         /// </summary>
         /// <param name="version1">The first instance to compare.</param>
