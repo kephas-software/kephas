@@ -29,6 +29,7 @@ namespace Kephas.Application
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Transitions;
+    using Kephas.Versioning;
 
     /// <summary>
     /// An application application runtime providing only assemblies loaded by the runtime.
@@ -475,7 +476,7 @@ namespace Kephas.Application
             {
                 if (fwkDescription.StartsWith(match))
                 {
-                    var version = new Version(fwkDescription[(match.Length + 1)..]);
+                    var version = (Version)SemanticVersion.Parse(fwkDescription[(match.Length + 1)..]);
                     version = version.Major == 4 && version.Revision != 0
                         ? match == ".NET Core"
                             ? new Version(2, 1)
