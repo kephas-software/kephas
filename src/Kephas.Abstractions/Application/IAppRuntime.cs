@@ -27,12 +27,12 @@ namespace Kephas.Application
         /// <summary>
         /// The default configuration folder.
         /// </summary>
-        public static readonly string DefaultConfigFolder = "Config";
+        public static readonly string DefaultConfigFolder = "config";
 
         /// <summary>
         /// The default license folder.
         /// </summary>
-        public static readonly string DefaultLicenseFolder = "Licenses";
+        public static readonly string DefaultLicenseFolder = "licenses";
 
         /// <summary>
         /// The application identifier key.

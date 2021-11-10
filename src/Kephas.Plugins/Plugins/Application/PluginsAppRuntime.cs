@@ -41,7 +41,7 @@ namespace Kephas.Plugins.Application
         /// <summary>
         /// Pathname of the plugins folder.
         /// </summary>
-        public const string DefaultPluginsFolder = "Plugins";
+        public const string DefaultPluginsFolder = "plugins";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
