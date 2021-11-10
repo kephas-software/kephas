@@ -25,7 +25,6 @@ namespace Kephas
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Provides the global ambient services.
@@ -42,6 +41,7 @@ namespace Kephas
     public class AmbientServices : Expando, IAmbientServicesMixin, IAmbientServices, IAppServiceInfosProvider
     {
         private readonly IAppServiceRegistry registry;
+        private bool isDisposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
@@ -144,6 +144,12 @@ namespace Kephas
         /// </summary>
         public void Dispose()
         {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            this.isDisposed = true;
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }

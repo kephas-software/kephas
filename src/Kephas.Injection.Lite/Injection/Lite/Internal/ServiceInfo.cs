@@ -59,8 +59,8 @@ namespace Kephas.Injection.Lite.Internal
             this.InstancingStrategy = instanceType;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => this.GetInstanceResolver(serviceRegistry, instanceType)(), contractType)
-                                   : new LazyFactory(() => this.GetInstanceResolver(serviceRegistry, instanceType)(), contractType);
+                                   ? new LazyValue(injector => this.GetInstanceResolver(serviceRegistry, instanceType)(), contractType)
+                                   : new LazyFactory(injector => this.GetInstanceResolver(serviceRegistry, instanceType)(), contractType);
         }
 
         /// <summary>
@@ -70,15 +70,15 @@ namespace Kephas.Injection.Lite.Internal
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="isSingleton">True if is singleton, false if not.</param>
-        public ServiceInfo(IAppServiceRegistry serviceRegistry, Type contractType, Func<IInjector, object> serviceFactory, bool isSingleton)
+        public ServiceInfo(IAppServiceRegistry serviceRegistry, Type contractType, Func<IInjector?, object> serviceFactory, bool isSingleton)
             : this(serviceRegistry)
         {
             this.ContractType = contractType;
             this.InstancingStrategy = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => serviceFactory(serviceRegistry.GetRequiredService<IInjector>()), contractType)
-                                   : new LazyFactory(() => serviceFactory(serviceRegistry.GetRequiredService<IInjector>()), contractType);
+                                   ? new LazyValue(serviceFactory, contractType)
+                                   : new LazyFactory(serviceFactory, contractType);
         }
 
         private ServiceInfo(IAppServiceRegistry serviceRegistry)
@@ -152,7 +152,7 @@ namespace Kephas.Injection.Lite.Internal
 
         public AppServiceInfo ToAppServiceInfo()
         {
-            return new AppServiceInfo(this.ContractType!, ctx => this.GetServiceCore(), this.Lifetime)
+            return new AppServiceInfo(this.ContractType!, this.GetServiceCore, this.Lifetime)
             {
                 AllowMultiple = this.AllowMultiple,
             };
@@ -160,9 +160,9 @@ namespace Kephas.Injection.Lite.Internal
 
         public bool IsMatch(Type contractType) => contractType == this.ContractType;
 
-        public object GetService(IServiceProvider serviceProvider, Type contractType) => this.GetServiceCore();
+        public object GetService(IServiceProvider serviceProvider, Type contractType) => this.GetServiceCore(serviceProvider as IInjector);
 
-        protected virtual object GetServiceCore() => this.lazyFactory.GetValue();
+        protected virtual object GetServiceCore(IInjector? injector) => this.lazyFactory.GetValue(injector);
 
         public void Dispose()
         {
@@ -245,7 +245,7 @@ namespace Kephas.Injection.Lite.Internal
         {
             private object? value;
 
-            public LazyValue(Func<object> factory, Type serviceType)
+            public LazyValue(Func<IInjector?, object> factory, Type serviceType)
                 : base(factory, serviceType)
             {
             }
@@ -256,7 +256,7 @@ namespace Kephas.Injection.Lite.Internal
                 this.value = value;
             }
 
-            public override object GetValue()
+            public override object GetValue(IInjector? injector)
             {
                 if (this.value != null)
                 {
@@ -270,7 +270,7 @@ namespace Kephas.Injection.Lite.Internal
                         return this.value;
                     }
 
-                    return this.value = base.GetValue();
+                    return this.value = base.GetValue(injector);
                 }
             }
 
@@ -285,13 +285,13 @@ namespace Kephas.Injection.Lite.Internal
         private class LazyFactory : IDisposable
         {
             [ThreadStatic]
-            private static List<LazyFactory> isProducing;
+            private static List<LazyFactory>? isProducing;
 
-            protected readonly Func<object> factory;
+            protected readonly Func<IInjector?, object> factory;
 
             private readonly Type serviceType;
 
-            public LazyFactory(Func<object> factory, Type serviceType)
+            public LazyFactory(Func<IInjector?, object> factory, Type serviceType)
             {
                 this.factory = factory;
                 this.serviceType = serviceType;
@@ -301,7 +301,7 @@ namespace Kephas.Injection.Lite.Internal
             {
             }
 
-            public virtual object GetValue()
+            public virtual object GetValue(IInjector? injector)
             {
                 // at one time, a single value may be produced per thread
                 // otherwise it means that it occured a circular dependency
@@ -317,7 +317,7 @@ namespace Kephas.Injection.Lite.Internal
                 isProducing.Add(this);
                 try
                 {
-                    var value = this.factory();
+                    var value = this.factory(injector);
                     return value;
                 }
                 finally

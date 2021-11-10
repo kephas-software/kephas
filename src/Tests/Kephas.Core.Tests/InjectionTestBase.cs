@@ -87,7 +87,6 @@ namespace Kephas.Core.Tests
             return new List<Assembly>
                        {
                            typeof(IInjector).Assembly,          /* Kephas.Injection */
-                           typeof(IContextFactory).Assembly,    /* Kephas.Core */
                        };
         }
 

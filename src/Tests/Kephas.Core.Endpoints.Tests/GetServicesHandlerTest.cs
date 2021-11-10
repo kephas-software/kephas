@@ -5,15 +5,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Core.Endpoints.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+
     using Kephas.Data;
+    using Kephas.Injection;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Endpoints;
     using Kephas.Model.AttributedModel;
@@ -25,6 +27,15 @@ namespace Kephas.Core.Endpoints.Tests
     [TestFixture]
     public class GetServicesHandlerTest : InjectionTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(ILogger<>).Assembly,         // Kephas.Logging
+                typeof(ITypeResolver).Assembly,     // Kephas.Reflection
+            };
+        }
+
         [Test]
         public async Task ProcessAsync_missing_contracttype()
         {

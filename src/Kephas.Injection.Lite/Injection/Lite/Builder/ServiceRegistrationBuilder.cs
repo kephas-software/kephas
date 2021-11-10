@@ -74,7 +74,7 @@ namespace Kephas.Injection.Lite.Builder
                         ExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
-                case Func<IInjector, object> factory:
+                case Func<IInjector?, object> factory:
                     return new ServiceInfo(this.serviceRegistry, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,

@@ -7,7 +7,9 @@
 
 namespace Kephas.Core.Endpoints.Tests
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using Kephas.Logging;
@@ -20,6 +22,14 @@ namespace Kephas.Core.Endpoints.Tests
     [TestFixture]
     public class GetServiceContractsHandlerTest : InjectionTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(ILogger<>).Assembly,         // Kephas.Logging
+            };
+        }
+
         [Test]
         public async Task ProcessAsync_all()
         {
