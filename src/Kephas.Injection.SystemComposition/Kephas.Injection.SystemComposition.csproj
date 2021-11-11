@@ -3,7 +3,9 @@
     <PropertyGroup>
         <TargetFrameworks>net6.0;net5.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
@@ -128,7 +130,7 @@
     <ItemGroup>
         <None Remove="LinkerConfig.xml"/>
         <EmbeddedResource Include="LinkerConfig.xml">
-            <LogicalName>$(MSBuildProjectName).xml</LogicalName>
+            <LogicalName>ILLink.Descriptors.xml</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
     

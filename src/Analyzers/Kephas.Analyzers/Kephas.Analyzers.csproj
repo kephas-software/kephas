@@ -3,7 +3,9 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <WarningsAsErrors>nullable</WarningsAsErrors>
 
         <Version>10.1.0-dev.5</Version>
