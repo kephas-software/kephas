@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Orchestration.Diagnostics;
-
 namespace Kephas.Orchestration.Application
 {
     using System;
@@ -27,6 +25,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Orchestration.Configuration;
+    using Kephas.Orchestration.Diagnostics;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
