@@ -125,11 +125,12 @@ namespace Kephas.Scripting.Python
                 scope.SetVariable(kv.Key, kv.Value);
             }
 
-            var source = script.SourceCode is string codeText
-                ? this.engine.CreateScriptSourceFromString(codeText, SourceCodeKind.AutoDetect)
-                : script.SourceCode is Stream codeStream
-                    ? this.engine.CreateScriptSource(new BasicStreamContentProvider(codeStream), $"dynamicCode.py")
-                    : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
+            var source = script.SourceCode switch
+            {
+                string codeText => this.engine.CreateScriptSourceFromString(codeText, SourceCodeKind.AutoDetect),
+                Stream codeStream => this.engine.CreateScriptSource(new BasicStreamContentProvider(codeStream), $"dynamicCode.py"),
+                _ => throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream))
+            };
 
             return (scope, source);
         }
