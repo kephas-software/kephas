@@ -10,14 +10,17 @@
 
 namespace Kephas.Scripting.Python
 {
+    using System;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using IronPython.Hosting;
-
+    using Kephas.Application;
+    using Kephas.Configuration;
     using Kephas.Dynamic;
-    using Kephas.Reflection;
+    using Kephas.Logging;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
     using Microsoft.Scripting;
@@ -27,7 +30,7 @@ namespace Kephas.Scripting.Python
     /// A Python language service.
     /// </summary>
     [Language(Language, LanguageAlt)]
-    public class PythonLanguageService : ILanguageService
+    public class PythonLanguageService : Loggable, ILanguageService, IInitializable
     {
         /// <summary>
         /// The language identifier.
@@ -39,18 +42,27 @@ namespace Kephas.Scripting.Python
         /// </summary>
         public const string LanguageAlt = "py";
 
-        /// <summary>
-        /// Name of the return value variable.
-        /// </summary>
         private const string ReturnValueVariableName = "returnValue";
 
+        private readonly IConfiguration<PythonSettings>? pythonConfiguration;
+        private readonly IAppRuntime? appRuntime;
         private readonly ScriptEngine engine;
+        private bool isInitialized = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PythonLanguageService"/> class.
         /// </summary>
-        public PythonLanguageService()
+        /// <param name="pythonConfiguration">The Python engine configuration.</param>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public PythonLanguageService(
+            IConfiguration<PythonSettings>? pythonConfiguration = null,
+            IAppRuntime? appRuntime = null,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
+            this.pythonConfiguration = pythonConfiguration;
+            this.appRuntime = appRuntime;
             this.engine = IronPython.Hosting.Python.CreateEngine();
         }
 
@@ -71,6 +83,8 @@ namespace Kephas.Scripting.Python
             IContext? executionContext = null)
         {
             // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
+
+            this.Initialize();
 
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals { Args = args };
@@ -102,6 +116,8 @@ namespace Kephas.Scripting.Python
         {
             // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
 
+            this.Initialize();
+
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals { Args = args };
 
@@ -114,11 +130,74 @@ namespace Kephas.Scripting.Python
             return returnValue;
         }
 
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        public void Initialize(IContext? context = null)
+        {
+            if (this.isInitialized)
+            {
+                return;
+            }
+
+            lock (this.engine)
+            {
+                if (this.isInitialized)
+                {
+                    return;
+                }
+
+                var settings = this.pythonConfiguration?.GetSettings(context);
+                this.SetSearchPaths(settings);
+                this.SetGlobalModules(settings);
+
+                this.isInitialized = true;
+            }
+        }
+
+        private void SetSearchPaths(PythonSettings? settings)
+        {
+            var basePath = this.appRuntime?.GetAppLocation();
+            var searchPaths = basePath != null
+                ? settings?.SearchPaths?.Select(p => Path.Combine(basePath, p)).ToArray()
+                : settings?.SearchPaths;
+            if (searchPaths != null)
+            {
+                this.engine.SetSearchPaths(searchPaths);
+            }
+        }
+
+        private void SetGlobalModules(PythonSettings? settings)
+        {
+            var globalScope = this.engine.CreateScope();
+            this.engine.Runtime.Globals = globalScope;
+
+            globalScope.ImportModule("clr");
+            this.engine.Execute("import clr", globalScope);
+
+            var globalModules = settings?.GlobalModules;
+            if (globalModules == null)
+            {
+                return;
+            }
+
+            foreach (var globalModule in globalModules)
+            {
+                try
+                {
+                    globalScope.ImportModule(globalModule);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex, "Could not import global module '{module}' from '{modules}'.", globalModule, globalModules);
+                }
+            }
+        }
+
         private (ScriptScope scope, ScriptSource source) PrepareScope(IScript script, IScriptGlobals scriptGlobals)
         {
             var scope = this.engine.CreateScope();
-            scope.ImportModule("clr");
-            this.engine.Execute("import clr", scope);
 
             foreach (var kv in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
             {

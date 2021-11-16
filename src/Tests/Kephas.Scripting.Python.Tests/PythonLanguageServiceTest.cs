@@ -41,6 +41,26 @@ namespace Kephas.Scripting.Python.Tests
         }
 
         [Test]
+        public async Task ExecuteAsync_DateTime()
+        {
+            var langService = new PythonLanguageService();
+            var script = new Script(PythonLanguageService.Language, "from System import DateTime\nDateTime(2000, 12, 25)");
+            var result = await langService.ExecuteAsync(script);
+
+            Assert.AreEqual(new DateTime(2000, 12, 25), result);
+        }
+
+        [Test]
+        public void Execute_DateTime()
+        {
+            var langService = new PythonLanguageService();
+            var script = new Script(PythonLanguageService.Language, "from System import DateTime\nDateTime(2000, 12, 25)");
+            var result = langService.Execute(script);
+
+            Assert.AreEqual(new DateTime(2000, 12, 25), result);
+        }
+
+        [Test]
         public async Task ExecuteAsync_function()
         {
             var langService = new PythonLanguageService();
