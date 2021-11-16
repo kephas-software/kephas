@@ -8,7 +8,7 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-		<Version>10.1.0-dev.5</Version>
+		<Version>10.1.0-dev.6</Version>
 		<AssemblyVersion>10.1.0.0</AssemblyVersion>
 		<FileVersion>10.1.0.0</FileVersion>
 		<Authors>Kephas Software SRL</Authors>
