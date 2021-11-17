@@ -57,58 +57,22 @@ namespace Kephas.Interaction
         {
             @event = @event ?? throw new ArgumentNullException(nameof(@event));
 
-            IList<EventSubscription> subscriptionsCopy;
-            lock (this.subscriptions)
+            var isOneWay = context?.GetLaxValue(nameof(InteractionContext.IsOneWay), false) ?? false;
+            var delay = context?.GetLaxValue(nameof(InteractionContext.Delay), TimeSpan.Zero) ?? TimeSpan.Zero;
+
+            if (delay < TimeSpan.Zero)
             {
-                subscriptionsCopy = this.subscriptions.Where(s => s.Match(@event)).ToList();
+                throw new InvalidOperationException($"Cannot have a delay less the zero: {delay:c}.");
             }
 
-            var resultList = new List<object?>();
-            var result = new OperationResult<IEnumerable<object?>>
+            if (isOneWay)
             {
-                OperationState = OperationState.Completed,
-                Value = resultList,
-            };
-            foreach (var subscription in subscriptionsCopy)
-            {
-                try
-                {
-                    var task = subscription.Callback?.Invoke(this.GetEventContent(@event), context, cancellationToken);
-                    if (task != null)
-                    {
-                        await task.PreserveThreadContext();
-                        resultList.Add(task.GetResult());
-                    }
-                }
-                catch (InterruptSignal interruption)
-                {
-                    switch (interruption.Severity)
-                    {
-                        case SeverityLevel.Info:
-                            resultList.Add(interruption.Result);
-                            result.Complete();
-                            break;
-                        case SeverityLevel.Warning:
-                            resultList.Add(interruption.Result);
-                            result.Complete(operationState: OperationState.Warning);
-                            this.Logger.Warn(interruption.InnerException ?? interruption, "A warning interruption occurred when invoking subscription callback for '{event}'.", @event);
-                            break;
-                        default:
-                            result.Fail(interruption.InnerException ?? interruption, operationState: OperationState.Aborted);
-                            this.Logger.Log((LogLevel)interruption.Severity, interruption.InnerException ?? interruption, AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
-                            break;
-                    }
-
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    result.Fail(ex);
-                    this.Logger.Error(ex, AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
-                }
+#pragma warning disable 4014
+                this.PublishCoreAsync(@event, context, delay, cancellationToken);
+#pragma warning restore 4014
             }
 
-            return result.Complete(operationState: result.HasErrors() ? OperationState.Failed : OperationState.Completed);
+            return await this.PublishCoreAsync(@event, context, delay, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -221,6 +185,80 @@ namespace Kephas.Interaction
         protected virtual Func<object, bool> GetTypeMatch(Type typeMatch)
         {
             return e => typeMatch == e.GetType();
+        }
+
+        private async Task<IOperationResult<IEnumerable<object?>>> PublishCoreAsync(
+            object @event,
+            IContext? context,
+            TimeSpan delay,
+            CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+
+            if (delay > TimeSpan.Zero)
+            {
+                await Task.Delay(delay, cancellationToken).PreserveThreadContext();
+            }
+
+            IList<EventSubscription> subscriptionsCopy;
+            lock (this.subscriptions)
+            {
+                subscriptionsCopy = this.subscriptions.Where(s => s.Match(@event)).ToList();
+            }
+
+            var resultList = new List<object?>();
+            var result = new OperationResult<IEnumerable<object?>>
+            {
+                OperationState = OperationState.Completed,
+                Value = resultList,
+            };
+            foreach (var subscription in subscriptionsCopy)
+            {
+                try
+                {
+                    var task = subscription.Callback?.Invoke(this.GetEventContent(@event), context, cancellationToken);
+                    if (task != null)
+                    {
+                        await task.PreserveThreadContext();
+                        resultList.Add(task.GetResult());
+                    }
+                }
+                catch (InterruptSignal interruption)
+                {
+                    switch (interruption.Severity)
+                    {
+                        case SeverityLevel.Info:
+                            resultList.Add(interruption.Result);
+                            result.Complete();
+                            break;
+                        case SeverityLevel.Warning:
+                            resultList.Add(interruption.Result);
+                            result.Complete(operationState: OperationState.Warning);
+                            this.Logger.Warn(
+                                interruption.InnerException ?? interruption,
+                                "A warning interruption occurred when invoking subscription callback for '{event}'.",
+                                @event);
+                            break;
+                        default:
+                            result.Fail(interruption.InnerException ?? interruption, operationState: OperationState.Aborted);
+                            this.Logger.Log(
+                                (LogLevel)interruption.Severity,
+                                interruption.InnerException ?? interruption,
+                                AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback,
+                                @event);
+                            break;
+                    }
+
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    result.Fail(ex);
+                    this.Logger.Error(ex, AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
+                }
+            }
+
+            return result.Complete(operationState: result.HasErrors() ? OperationState.Failed : OperationState.Completed);
         }
 
         /// <summary>

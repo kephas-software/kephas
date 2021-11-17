@@ -15,6 +15,7 @@ namespace Kephas.Core.Tests.Interaction
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -33,7 +34,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_func()
         {
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             eventHub.Subscribe<string, string>((e, ctx) => e);
 
             var result = await eventHub.PublishAsync("hello", null);
@@ -43,7 +44,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_async_func()
         {
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             eventHub.Subscribe<string, string>((e, ctx, ct) => Task.FromResult(e));
 
             var result = await eventHub.PublishAsync("hello", null);
@@ -54,7 +55,7 @@ namespace Kephas.Core.Tests.Interaction
         public async Task Subscribe_action()
         {
             var calls = 0;
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             eventHub.Subscribe<string>((e, ctx) => calls++);
 
             var result = await eventHub.PublishAsync("hello", null);
@@ -66,7 +67,7 @@ namespace Kephas.Core.Tests.Interaction
         public async Task Subscribe_async_action()
         {
             var calls = 0;
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             eventHub.Subscribe<string>((e, ctx, ct) =>
             {
                 calls++;
@@ -76,6 +77,11 @@ namespace Kephas.Core.Tests.Interaction
             var result = await eventHub.PublishAsync("hello", null);
             CollectionAssert.AreEqual(new List<object?> { null }, result.Value);
             Assert.AreEqual(1, calls);
+        }
+
+        private DefaultEventHub CreateEventHub(IContextFactory? contextFactory = null)
+        {
+            return new DefaultEventHub(Substitute.For<IContextFactory>());
         }
     }
 }
