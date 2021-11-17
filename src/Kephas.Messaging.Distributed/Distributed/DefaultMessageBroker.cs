@@ -427,7 +427,6 @@ namespace Kephas.Messaging.Distributed
 
                 var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
                 return new[] { (action, reply, router) };
-
             }
 
             var recipientMappings = brokeredMessage.Recipients
