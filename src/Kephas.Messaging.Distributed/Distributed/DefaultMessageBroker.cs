@@ -174,7 +174,7 @@ namespace Kephas.Messaging.Distributed
                 map.Router.ReplyReceived += this.HandleReplyReceived;
             }
 
-            this.Logger.Debug("{messageBroker} with ID '{messageBrokerId}' registered message routers: {routers}.", this, this.Id, this.routerMap.Select(r => r.Metadata.ServiceType).ToArray());
+            this.Logger.Debug("Message broker {messageBroker} registered message routers: {routers}.", this, this.Id, this.routerMap.Select(r => r.Metadata.ServiceType).ToArray());
 
             this.initMonitor.Complete();
         }
@@ -343,7 +343,7 @@ namespace Kephas.Messaging.Distributed
             ICollection<RouterEntry> map,
             Func<RouterEntry, bool> predicate)
         {
-            return map.FirstOrDefault(predicate).Router;
+            return map.FirstOrDefault(predicate)?.Router;
         }
 
         private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext? context)
