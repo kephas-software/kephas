@@ -11,6 +11,7 @@
 namespace Kephas.Messaging.Redis.Routing
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -53,6 +54,9 @@ namespace Kephas.Messaging.Redis.Routing
         private bool isRedisChannelInitialized;
         private IEventSubscription? redisClientStartedSubscription;
         private IEventSubscription? redisClientStoppingSubscription;
+
+        private ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, IMessage? reply)> taskSource,
+            Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisAppMessageRouter"/> class.
@@ -143,6 +147,9 @@ namespace Kephas.Messaging.Redis.Routing
             this.Logger.Info($"Completed initialization of the Redis channel.");
 
             this.isRedisChannelInitialized = true;
+
+            // all the entries in the pre init queue should be processed now.
+            await this.PostInitializeRedisChannelAsync().PreserveThreadContext();
         }
 
         /// <summary>
@@ -191,43 +198,63 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        protected override Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            if (!this.isRedisChannelInitialized)
+            async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputCoreAsync()
             {
-                return await base.RouteOutputAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
-            }
-
-            if (brokeredMessage.Recipients?.Any() ?? false)
-            {
-                var groups = brokeredMessage.Recipients
-                    .GroupBy(r => this.GetChannelName(r))
-                    .Select(g => (channelName: g.Key, recipients: g))
-                    .ToList();
-
-                if (groups.Count == 1)
+                if (brokeredMessage.Recipients?.Any() ?? false)
                 {
-                    var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken).PreserveThreadContext();
-                    await this.PublishAsync(serializedMessage, groups[0].channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+                    var groups = brokeredMessage.Recipients
+                        .GroupBy(r => this.GetChannelName(r))
+                        .Select(g => (channelName: g.Key, recipients: g))
+                        .ToList();
+
+                    if (groups.Count == 1)
+                    {
+                        var serializedMessage = await this.serializationService
+                            .SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
+                            .PreserveThreadContext();
+                        await this.PublishAsync(serializedMessage, groups[0].channelName, brokeredMessage.IsOneWay)
+                            .PreserveThreadContext();
+                    }
+                    else
+                    {
+                        foreach (var (channelName, recipients) in groups)
+                        {
+                            var serializedMessage = await this.serializationService
+                                .SerializeAsync(brokeredMessage.Clone(recipients), ctx => ctx.IncludeTypeInfo(true), cancellationToken)
+                                .PreserveThreadContext();
+                            await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay)
+                                .PreserveThreadContext();
+                        }
+                    }
                 }
                 else
                 {
-                    foreach (var (channelName, recipients) in groups)
-                    {
-                        var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage.Clone(recipients), ctx => ctx.IncludeTypeInfo(true), cancellationToken).PreserveThreadContext();
-                        await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
-                    }
+                    var serializedMessage = await this.serializationService
+                        .SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
+                        .PreserveThreadContext();
+                    await this.PublishAsync(serializedMessage, this.redisRootChannelName, brokeredMessage.IsOneWay)
+                        .PreserveThreadContext();
                 }
-            }
-            else
-            {
-                var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken).PreserveThreadContext();
-                await this.PublishAsync(serializedMessage, this.redisRootChannelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+
+                return (RoutingInstruction.None, null);
             }
 
-            return (RoutingInstruction.None, null);
+            // if the Redis channel is initialized, use it
+            if (this.isRedisChannelInitialized)
+            {
+                return RouteOutputCoreAsync();
+            }
+
+            // otherwise postpone the execution until the channel gets initialized.
+            var taskCompletionSource = new TaskCompletionSource<(RoutingInstruction action, IMessage? reply)>();
+            this.preInitQueue.Enqueue((taskCompletionSource, RouteOutputCoreAsync));
+            return brokeredMessage.IsOneWay
+                ? Task.FromResult<(RoutingInstruction action, IMessage? reply)>((RoutingInstruction.None, null))
+                : taskCompletionSource.Task;
         }
 
         /// <summary>
@@ -303,6 +330,22 @@ namespace Kephas.Messaging.Redis.Routing
                 this.subConnection = null;
 
                 this.isRedisChannelInitialized = false;
+            }
+        }
+
+        private async Task PostInitializeRedisChannelAsync()
+        {
+            while (this.preInitQueue.TryDequeue(out var queueEntry))
+            {
+                try
+                {
+                    var result = await queueEntry.asyncRouteAction().PreserveThreadContext();
+                    queueEntry.taskSource.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    queueEntry.taskSource.SetException(ex);
+                }
             }
         }
 
