@@ -71,7 +71,10 @@ namespace Kephas.Orchestration.Endpoints
             if ((message.AppInstanceId == this.appRuntime.GetAppInstanceId() && (message.AppId == this.appRuntime.GetAppId() || string.IsNullOrEmpty(message.AppId)))
                 || (message.AppId == this.appRuntime.GetAppId() && string.IsNullOrEmpty(message.AppInstanceId)))
             {
-                await this.eventHub.PublishAsync(new ShutdownSignal("Handle stop app instance."), context, token).PreserveThreadContext();
+                await this.eventHub.PublishAsync<InteractionContext>(
+                    new ShutdownSignal("Handle stop app instance."),
+                    ctx => ctx.Impersonate(context).OneWay().WithDelay(TimeSpan.FromSeconds(2)),
+                    token).PreserveThreadContext();
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Shutdown request received. Good bye!";
             }
             else

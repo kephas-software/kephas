@@ -10,12 +10,14 @@
 
 namespace Kephas.Commands.Endpoints
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Interaction;
     using Kephas.Messaging;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -45,7 +47,10 @@ namespace Kephas.Commands.Endpoints
         /// </returns>
         public override async Task<IMessage?> ProcessAsync(QuitMessage message, IMessagingContext context, CancellationToken token)
         {
-            await this.eventHub.PublishAsync(new ShutdownSignal("Shutdown triggered by user"), context, token).PreserveThreadContext();
+            await this.eventHub.PublishAsync<InteractionContext>(
+                new ShutdownSignal("Shutdown triggered by user"),
+                ctx => ctx.Impersonate(context).OneWay().WithDelay(TimeSpan.FromSeconds(2)),
+                token).PreserveThreadContext();
             return null;
         }
     }
