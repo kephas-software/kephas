@@ -19,7 +19,7 @@ namespace Kephas.Cryptography
     /// The AES encryption service.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class AesEncryptionService : SymmetricEncryptionServiceBase<AesManaged>
+    public class AesEncryptionService : SymmetricEncryptionServiceBase<Aes>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
@@ -35,7 +35,7 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="contextCtor">The context constructor.</param>
         protected AesEncryptionService(Func<IEncryptionContext> contextCtor)
-            : base(contextCtor, ctx => new AesManaged())
+            : base(contextCtor, ctx => Aes.Create())
         {
         }
     }
