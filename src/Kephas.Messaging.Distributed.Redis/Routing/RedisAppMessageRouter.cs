@@ -26,6 +26,7 @@ namespace Kephas.Messaging.Redis.Routing
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Model.AttributedModel;
+    using Kephas.Operations;
     using Kephas.Redis;
     using Kephas.Redis.Configuration;
     using Kephas.Redis.Interaction;
@@ -46,17 +47,18 @@ namespace Kephas.Messaging.Redis.Routing
         private readonly ISerializationService serializationService;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
+
+        private readonly ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, IMessage? reply)> taskSource,
+            Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new ();
+
         private ISubscriber? publisher;
         private IConnectionMultiplexer? subConnection;
         private ISubscriber? subscriber;
         private string redisRootChannelName;
         private IConnectionMultiplexer? pubConnection;
-        private bool isRedisChannelInitialized;
+        private OperationState redisChannelInitializationState = OperationState.NotStarted;
         private IEventSubscription? redisClientStartedSubscription;
         private IEventSubscription? redisClientStoppingSubscription;
-
-        private ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, IMessage? reply)> taskSource,
-            Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisAppMessageRouter"/> class.
@@ -125,28 +127,37 @@ namespace Kephas.Messaging.Redis.Routing
 
             if (signal.Severity.IsError())
             {
-                this.Logger.Info($"Redis client initialization failed, cancelling initialization of the Redis channel.");
+                this.redisChannelInitializationState = OperationState.Failed;
+                this.Logger.Info("Redis client initialization failed, cancelling initialization of the Redis channel. The routing will fallback to the base type '{routerBaseType}'.", typeof(RedisAppMessageRouter).BaseType);
                 return;
             }
 
-            this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
+            try
+            {
+                this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
 
-            var redisNamespace = this.redisConfiguration.GetSettings(this.AppContext).Namespace;
-            this.redisRootChannelName = string.IsNullOrEmpty(redisNamespace) ? ChannelType : $"{redisNamespace}:{ChannelType}";
+                var redisNamespace = this.redisConfiguration.GetSettings(this.AppContext).Namespace;
+                this.redisRootChannelName = string.IsNullOrEmpty(redisNamespace) ? ChannelType : $"{redisNamespace}:{ChannelType}";
 
-            this.pubConnection = this.redisConnectionManager.CreateConnection();
-            this.publisher = this.pubConnection.GetSubscriber();
+                this.pubConnection = this.redisConnectionManager.CreateConnection();
+                this.publisher = this.pubConnection.GetSubscriber();
 
-            this.subConnection = this.redisConnectionManager.CreateConnection();
-            this.subscriber = this.subConnection.GetSubscriber();
+                this.subConnection = this.redisConnectionManager.CreateConnection();
+                this.subscriber = this.subConnection.GetSubscriber();
 
-            await this.subscriber.SubscribeAsync(this.redisRootChannelName, this.HandleOnMessage).PreserveThreadContext();
-            await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}", this.HandleOnMessage).PreserveThreadContext();
-            await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppInstanceId()}", this.HandleOnMessage).PreserveThreadContext();
+                await this.subscriber.SubscribeAsync(this.redisRootChannelName, this.HandleOnMessage).PreserveThreadContext();
+                await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}", this.HandleOnMessage).PreserveThreadContext();
+                await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppInstanceId()}", this.HandleOnMessage).PreserveThreadContext();
 
-            this.Logger.Info($"Completed initialization of the Redis channel.");
+                this.Logger.Info($"Completed initialization of the Redis channel.");
 
-            this.isRedisChannelInitialized = true;
+                this.redisChannelInitializationState = OperationState.Completed;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Redis connection could not be created.");
+                this.redisChannelInitializationState = OperationState.Failed;
+            }
 
             // all the entries in the pre init queue should be processed now.
             await this.PostInitializeRedisChannelAsync().PreserveThreadContext();
@@ -243,18 +254,22 @@ namespace Kephas.Messaging.Redis.Routing
                 return (RoutingInstruction.None, null);
             }
 
-            // if the Redis channel is initialized, use it
-            if (this.isRedisChannelInitialized)
+            switch (this.redisChannelInitializationState)
             {
-                return RouteOutputCoreAsync();
+                case OperationState.Failed:
+                    // if the Redis channel failed to initialize, leave the base route the message.
+                    return base.RouteOutputAsync(brokeredMessage, context, cancellationToken);
+                case OperationState.Completed:
+                    // if the Redis channel is initialized, use it.
+                    return RouteOutputCoreAsync();
+                default:
+                    // otherwise postpone the execution until the channel gets initialized.
+                    var taskCompletionSource = new TaskCompletionSource<(RoutingInstruction action, IMessage? reply)>();
+                    this.preInitQueue.Enqueue((taskCompletionSource, RouteOutputCoreAsync));
+                    return brokeredMessage.IsOneWay
+                        ? Task.FromResult<(RoutingInstruction action, IMessage? reply)>((RoutingInstruction.None, null))
+                        : taskCompletionSource.Task;
             }
-
-            // otherwise postpone the execution until the channel gets initialized.
-            var taskCompletionSource = new TaskCompletionSource<(RoutingInstruction action, IMessage? reply)>();
-            this.preInitQueue.Enqueue((taskCompletionSource, RouteOutputCoreAsync));
-            return brokeredMessage.IsOneWay
-                ? Task.FromResult<(RoutingInstruction action, IMessage? reply)>((RoutingInstruction.None, null))
-                : taskCompletionSource.Task;
         }
 
         /// <summary>
@@ -266,7 +281,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// </returns>
         protected override string GetChannelName(IEndpoint recipient)
         {
-            if (!this.isRedisChannelInitialized)
+            if (this.redisChannelInitializationState != OperationState.Completed)
             {
                 return base.GetChannelName(recipient);
             }
@@ -308,7 +323,7 @@ namespace Kephas.Messaging.Redis.Routing
             this.redisClientStoppingSubscription?.Dispose();
             this.redisClientStoppingSubscription = null;
 
-            if (this.isRedisChannelInitialized)
+            if (this.redisChannelInitializationState == OperationState.Completed)
             {
                 this.redisConnectionManager.DisposeConnection(this.pubConnection!);
                 this.pubConnection = null;
@@ -329,7 +344,7 @@ namespace Kephas.Messaging.Redis.Routing
                 this.redisConnectionManager.DisposeConnection(this.subConnection!);
                 this.subConnection = null;
 
-                this.isRedisChannelInitialized = false;
+                this.redisChannelInitializationState = OperationState.NotStarted;
             }
         }
 
