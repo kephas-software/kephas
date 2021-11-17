@@ -47,7 +47,7 @@ namespace Kephas.Messaging.Distributed
         private readonly IContextFactory contextFactory;
         private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
-        private ICollection<(Regex? regex, bool isFallback, IMessageRouter router)>? routerMap;
+        private ICollection<RouterEntry>? routerMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
@@ -122,7 +122,7 @@ namespace Kephas.Messaging.Distributed
                 this.LogBeforeSend(brokeredMessage);
                 this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                     .ContinueWith(
-                        t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
+                        t => this.Logger.Error(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                         TaskContinuationOptions.OnlyOnFaulted);
                 return Task.FromResult<IMessage?>(null);
             }
@@ -132,7 +132,7 @@ namespace Kephas.Messaging.Distributed
             this.LogBeforeSend(brokeredMessage);
             this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                 .ContinueWith(
-                    t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
+                    t => this.Logger.Error(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                     TaskContinuationOptions.OnlyOnFaulted);
 
             // Returns an awaiter for the answer, must pair with the reply ID.
@@ -159,19 +159,22 @@ namespace Kephas.Messaging.Distributed
                             : this.GetReceiverMatch(f.Metadata.ReceiverMatchProviderType, context)
                         : this.GetReceiverMatch(f.Metadata.ReceiverMatch, context),
                     isFallback: f.Metadata.IsFallback,
-                    asyncRouter: this.TryCreateRouterAsync(f, context, cancellationToken)))
+                    asyncRouter: this.TryCreateRouterAsync(f, context, cancellationToken),
+                    metadata: f.Metadata))
                 .ToList();
 
             await Task.WhenAll(asyncRouterMap.Select(m => m.asyncRouter)).PreserveThreadContext();
 
             this.routerMap = asyncRouterMap
                                 .Where(m => m.asyncRouter.Result != null)
-                                .Select(m => (m.regex, m.isFallback, m.asyncRouter.Result!))
+                                .Select(m => new RouterEntry(m.regex, m.isFallback, m.asyncRouter.Result!, m.metadata))
                                 .ToList();
             foreach (var map in this.routerMap)
             {
-                map.router.ReplyReceived += this.HandleReplyReceived;
+                map.Router.ReplyReceived += this.HandleReplyReceived;
             }
+
+            this.Logger.Debug("{messageBroker} with ID '{messageBrokerId}' registered message routers: {routers}.", this, this.Id, this.routerMap.Select(r => r.Metadata.ServiceType).ToArray());
 
             this.initMonitor.Complete();
         }
@@ -188,7 +191,7 @@ namespace Kephas.Messaging.Distributed
         {
             if (this.routerMap != null)
             {
-                foreach (var (_, _, router) in this.routerMap)
+                foreach (var (_, _, router, _) in this.routerMap)
                 {
                     router.ReplyReceived -= this.HandleReplyReceived;
                     await ServiceHelper.FinalizeAsync(router, cancellationToken: cancellationToken).PreserveThreadContext();
@@ -337,10 +340,10 @@ namespace Kephas.Messaging.Distributed
         /// <param name="predicate">The select predicate.</param>
         /// <returns>The selected message router or <c>null</c>.</returns>
         protected virtual IMessageRouter? SelectRouter(
-            ICollection<(Regex? regex, bool isFallback, IMessageRouter router)> map,
-            Func<(Regex? regex, bool isFallback, IMessageRouter router), bool> predicate)
+            ICollection<RouterEntry> map,
+            Func<RouterEntry, bool> predicate)
         {
-            return map.FirstOrDefault(predicate).router;
+            return map.FirstOrDefault(predicate).Router;
         }
 
         private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext? context)
@@ -416,18 +419,19 @@ namespace Kephas.Messaging.Distributed
         {
             if (brokeredMessage.Recipients == null || !brokeredMessage.Recipients.Any())
             {
-                var router = this.SelectRouter(this.routerMap!, f => f.isFallback);
-                if (router != null)
+                var router = this.SelectRouter(this.routerMap!, f => f.IsFallback);
+                if (router == null)
                 {
-                    var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
-                    return new[] { (action, reply, router) };
+                    throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
                 }
 
-                throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
+                var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
+                return new[] { (action, reply, router) };
+
             }
 
             var recipientMappings = brokeredMessage.Recipients
-                .Select(r => (recipient: r, router: this.SelectRouter(this.routerMap!, f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false))))
+                .Select(r => (recipient: r, router: this.SelectRouter(this.routerMap!, f => f.IsFallback || (f.Regex?.IsMatch(r.Url.ToString()) ?? false))))
                 .ToList();
             var unhandledRecipients = recipientMappings
                 .Where(c => c.router == null)
@@ -578,5 +582,14 @@ namespace Kephas.Messaging.Distributed
             // TODO localization
             this.Logger.Warn(timeoutException, "Timeout after {timeout:c} for '{message}'.", brokeredMessage.Timeout, brokeredMessage);
         }
+
+        /// <summary>
+        /// Entry for a message router.
+        /// </summary>
+        /// <param name="Regex">The regular expression used for matching.</param>
+        /// <param name="IsFallback">Indicates whether this is a fallback router.</param>
+        /// <param name="Router">The router.</param>
+        /// <param name="Metadata">The metadata.</param>
+        protected record RouterEntry(Regex? Regex, bool IsFallback, IMessageRouter Router, MessageRouterMetadata Metadata);
     }
 }
