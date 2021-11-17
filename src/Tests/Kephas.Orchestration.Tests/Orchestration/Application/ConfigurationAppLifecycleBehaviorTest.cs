@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Tests.Orchestration.Application
 {
     using System;
@@ -18,6 +16,7 @@ namespace Kephas.Tests.Orchestration.Application
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
+    using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
@@ -35,7 +34,7 @@ namespace Kephas.Tests.Orchestration.Application
         public async Task BeforeAppInitializeAsync_from_other_appinstance()
         {
             var appRuntime = new StaticAppRuntime();
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();
             messageBroker.DispatchAsync(
@@ -66,7 +65,7 @@ namespace Kephas.Tests.Orchestration.Application
         public async Task BeforeAppInitializeAsync_from_this_appinstance_only()
         {
             var appRuntime = new StaticAppRuntime();
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();
 
@@ -99,7 +98,7 @@ namespace Kephas.Tests.Orchestration.Application
         public async Task BeforeAppInitializeAsync_from_this_appinstance()
         {
             var appRuntime = new StaticAppRuntime();
-            var eventHub = new DefaultEventHub();
+            var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();
 
@@ -146,6 +145,11 @@ namespace Kephas.Tests.Orchestration.Application
         private IEnumerable<IRuntimeAppInfo> GetLiveApps(params string[] instanceIds)
         {
             return instanceIds.Select(iid => new RuntimeAppInfo { AppInstanceId = iid });
+        }
+
+        private IEventHub CreateEventHub(IContextFactory? contextFactory = null)
+        {
+            return new DefaultEventHub(Substitute.For<IContextFactory>());
         }
     }
 }

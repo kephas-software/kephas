@@ -15,7 +15,7 @@ namespace Kephas.Interaction
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -29,15 +29,18 @@ namespace Kephas.Interaction
     [OverridePriority(Priority.Low)]
     public class DefaultEventHub : Loggable, IEventHub, IDisposable
     {
+        private readonly IContextFactory contextFactory;
         private readonly IList<EventSubscription> subscriptions = new List<EventSubscription>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public DefaultEventHub(ILogManager? logManager = null)
+        public DefaultEventHub(IContextFactory contextFactory, ILogManager? logManager = null)
             : base(logManager)
         {
+            this.contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
         }
 
         /// <summary>
@@ -106,6 +109,24 @@ namespace Kephas.Interaction
             }
 
             return result.Complete(operationState: result.HasErrors() ? OperationState.Failed : OperationState.Completed);
+        }
+
+        /// <summary>
+        /// Publishes the event asynchronously to its subscribers.
+        /// </summary>
+        /// <typeparam name="TContext">The context type.</typeparam>
+        /// <param name="event">The event.</param>
+        /// <param name="options">The options to configure the context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result containing the operation result.
+        /// The encapsulated value is an enumeration of return values from each subscriber.
+        /// </returns>
+        public Task<IOperationResult<IEnumerable<object?>>> PublishAsync<TContext>(object @event, Action<TContext> options, CancellationToken cancellationToken = default)
+            where TContext : class, IContext
+        {
+            var context = this.contextFactory.CreateContext<TContext>().Merge(options);
+            return this.PublishAsync(@event, context, cancellationToken);
         }
 
         /// <summary>

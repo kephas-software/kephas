@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ExceptionHandling;
-
 namespace Kephas.Core.Tests.Interaction
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Kephas.ExceptionHandling;
     using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Services;
@@ -28,7 +27,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             var stringEvent = string.Empty;
             IContext? stringContext = null;
             Exception? exEvent = null;
@@ -67,7 +66,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event_exception()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             var stringEvent = string.Empty;
             IContext? stringContext = null;
             Exception? exEvent = null;
@@ -97,7 +96,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event_with_return_value()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             using (hub.Subscribe(
                 e => e is string,
                 (e, ctx, token) => Task.FromResult(12)))
@@ -116,7 +115,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event_with_return_value_interrupt_success()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             using (hub.Subscribe(
                 e => e is string,
                 (e, ctx, token) => Task.FromException(new InterruptSignal(12))))
@@ -135,7 +134,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event_with_return_value_interrupt_fail_error()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             using (hub.Subscribe(
                 e => e is string,
                 (e, ctx, token) => Task.FromException(new InterruptSignal(severity: SeverityLevel.Error))))
@@ -155,7 +154,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event_with_return_value_interrupt_fail_exception()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             using (hub.Subscribe(
                 e => e is string,
                 (e, ctx, token) => Task.FromException(new InterruptSignal(new InvalidOperationException()))))
@@ -175,7 +174,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_matching_event_with_multiple_return_values()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             using (hub.Subscribe(
                 e => e is string,
                 (e, ctx, token) => Task.FromResult(12)))
@@ -194,7 +193,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_typed_matching_event()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             var stringEvent = string.Empty;
             IContext? stringContext = null;
             Exception? exEvent = null;
@@ -229,7 +228,7 @@ namespace Kephas.Core.Tests.Interaction
         [Test]
         public async Task Subscribe_typed_matching_event_with_return_value()
         {
-            var hub = new DefaultEventHub();
+            var hub = this.CreateEventHub();
             var stringEvent = string.Empty;
             IContext? stringContext = null;
             Exception? exEvent = null;
@@ -259,6 +258,11 @@ namespace Kephas.Core.Tests.Interaction
                 Assert.IsFalse(result.HasErrors());
                 CollectionAssert.AreEqual(new List<object?> { 12 }, result.Value);
             }
+        }
+
+        private DefaultEventHub CreateEventHub(IContextFactory? contextFactory = null)
+        {
+            return new DefaultEventHub(Substitute.For<IContextFactory>());
         }
     }
 }

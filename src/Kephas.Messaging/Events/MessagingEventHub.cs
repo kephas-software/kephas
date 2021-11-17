@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Events
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -30,14 +31,16 @@ namespace Kephas.Messaging.Events
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingEventHub"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="messageMatchService">The message match service.</param>
         /// <param name="handlerRegistry">The handler registry.</param>
-        public MessagingEventHub(IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public MessagingEventHub(IContextFactory contextFactory, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, ILogManager? logManager = null)
+            : base(contextFactory, logManager)
         {
-            Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
+            this.messageMatchService = messageMatchService ?? throw new ArgumentNullException(nameof(messageMatchService));
+            handlerRegistry = handlerRegistry ?? throw new ArgumentNullException(nameof(handlerRegistry));
 
-            this.messageMatchService = messageMatchService;
             handlerRegistry.RegisterHandler(
                 new FuncMessageHandler<object>(async (e, ctx, token) =>
                 {
