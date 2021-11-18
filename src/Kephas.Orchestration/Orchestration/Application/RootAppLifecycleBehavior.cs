@@ -311,17 +311,17 @@ namespace Kephas.Orchestration.Application
                 {
                     if (!acknowledgedProcesses.Contains(workerProcess.Id))
                     {
-                        logger.Warn($"Worker application process '${workerProcessInfo}' (#{workerProcess.Id}) did not respond to the stop command, trying to kill it.");
+                        logger.Warn($"Worker application process '{workerProcessInfo}' (#{workerProcess.Id}) did not respond to the stop command, trying to kill it.");
                     }
 
                     var secondsToWait = this.WaitForExit(workerProcess);
                     if (workerProcess.HasExited)
                     {
-                        logger.Info($"Worker process '${workerProcessInfo}' (#{workerProcess.Id}) exited at {workerProcess.ExitTime:s}");
+                        logger.Info($"Worker process '{workerProcessInfo}' (#{workerProcess.Id}) exited at {workerProcess.ExitTime:s}");
                     }
                     else
                     {
-                        logger.Warn($"Worker process '${workerProcessInfo}' (#{workerProcess.Id}) did not exit in the first {secondsToWait}s, killing it.");
+                        logger.Warn($"Worker process '{workerProcessInfo}' (#{workerProcess.Id}) did not exit in the first {secondsToWait}s, killing it.");
                         workerProcess.Kill();
                     }
                 }
