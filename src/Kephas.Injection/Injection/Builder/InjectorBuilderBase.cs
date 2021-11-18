@@ -165,7 +165,14 @@ namespace Kephas.Injection.Builder
             if (this.Logger.IsDebugEnabled())
             {
                 var logAssemblies = assemblies;
-                this.Logger.Debug("Using application assemblies: {assemblies}.", logAssemblies.Select(a => $"{a.GetName().Name}, {a.GetName().Version}").ToList());
+                try
+                {
+                    this.Logger.Debug("Using application assemblies: {assemblies}.", logAssemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Debug(ex, "Error while logging application assemblies.");
+                }
             }
 
             var providers = ServiceHelper.GetAppServiceInfosProviders(assemblies)
@@ -259,13 +266,20 @@ namespace Kephas.Injection.Builder
             action = action ?? throw new ArgumentNullException(nameof(action));
 
             logger?.Log(logLevel, "{operation}. Started at: {startedAt:s}.", memberName, DateTime.Now);
-
             var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            var value = action();
-            logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
-            return value;
+            try
+            {
+                stopwatch.Start();
+                var value = action();
+                logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
+                return value;
+            }
+            catch (Exception ex)
+            {
+                logger?.Log(LogLevel.Error, ex, "{operation}. Failed at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
+                throw;
+            }
         }
 
         /// <summary>
