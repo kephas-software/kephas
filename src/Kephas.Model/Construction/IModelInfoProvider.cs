@@ -45,6 +45,6 @@ namespace Kephas.Model.Construction
         /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
         /// For any other errors an exception should be thrown.
         /// </remarks>
-        IElementInfo? TryGetModelElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext);
+        IElementInfo? TryGetModelElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext) => nativeElementInfo;
     }
 }
