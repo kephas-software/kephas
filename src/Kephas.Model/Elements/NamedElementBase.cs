@@ -53,7 +53,7 @@ namespace Kephas.Model.Elements
 
             if (constructionContext.ModelSpace == null)
             {
-                if (!(this is IModelSpace thisModelSpace))
+                if (this is not IModelSpace thisModelSpace)
                 {
                     throw new InvalidOperationException(Strings.NamedElementBase_MissingModelSpaceInConstructionContext_Exception);
                 }
