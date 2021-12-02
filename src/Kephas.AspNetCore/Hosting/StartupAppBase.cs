@@ -15,9 +15,6 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Extensions.Configuration;
-    using Kephas.Extensions.DependencyInjection;
-    using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -41,7 +38,6 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// </remarks>
     public abstract class StartupAppBase : AppBase<AmbientServices>
     {
-        private IServiceCollection? serviceCollection;
         private Task? bootstrapTask;
 
         /// <summary>
@@ -51,14 +47,12 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="config">The configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="containerBuilder">Optional. The container builder.</param>
         protected StartupAppBase(
             IWebHostEnvironment env,
             IConfiguration config,
             IAmbientServices? ambientServices = null,
-            IAppArgs? appArgs = null,
-            Action<IAmbientServices>? containerBuilder = null)
-            : base(ambientServices, appArgs: appArgs, builder: containerBuilder)
+            IAppArgs? appArgs = null)
+            : base(ambientServices, appArgs: appArgs)
         {
             this.HostEnvironment = env;
             this.Configuration = config;
@@ -108,39 +102,6 @@ namespace Kephas.Application.AspNetCore.Hosting
                 this.Log(LogLevel.Fatal, ex, Strings.App_RunAsync_ErrorDuringConfiguration_Exception);
                 throw;
             }
-
-            this.serviceCollection = services;
-        }
-
-        /// <summary>
-        /// The <see cref="ConfigureContainer"/> method is called by the host after all app configuration is set up
-        /// to complete the configuration. This is the place where the container should be built.
-        /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services.</param>
-        public virtual void ConfigureContainer(IAmbientServices ambientServices)
-        {
-            this.AmbientServices = ambientServices;
-
-            if (this.serviceCollection == null)
-            {
-                throw new ApplicationException(
-                    $"The service collection is not initialize. Possible cause: {nameof(this.ConfigureServices)} was not called.");
-            }
-
-            try
-            {
-                this.AmbientServices
-                    .WithServiceCollection(this.serviceCollection)
-                    .ConfigureExtensionsLogging()
-                    .UseConfiguration(this.Configuration);
-
-                this.BeforeAppManagerInitialize(this.AppArgs);
-            }
-            catch (Exception ex)
-            {
-                this.Log(LogLevel.Fatal, ex, Strings.App_RunAsync_ErrorDuringConfiguration_Exception);
-                throw;
-            }
         }
 
         /// <summary>
@@ -168,10 +129,16 @@ namespace Kephas.Application.AspNetCore.Hosting
             {
                 if (this.bootstrapTask == null)
                 {
-                    throw new ApplicationException("The bootstrap task is not initialized!");
+                    if (!this.IsRunning)
+                    {
+                        throw new ApplicationException("The bootstrap task is not initialized!");
+                    }
+                }
+                else
+                {
+                    await this.bootstrapTask.PreserveThreadContext();
                 }
 
-                await this.bootstrapTask.PreserveThreadContext();
                 await next.Invoke();
             });
 
@@ -182,12 +149,18 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.RunAsync());
+            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.IsRunning ? null : this.RunAsync());
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
-            appLifetime.ApplicationStopped.Register(() => this.DisposeServicesContainer());
+            appLifetime.ApplicationStopped.Register(() =>
+            {
+                if (!this.IsRunning)
+                {
+                    this.DisposeServicesContainer();
+                }
+            });
         }
 
         /// <summary>
@@ -206,7 +179,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
         protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(IAspNetAppContext appContext)
         {
-            var container = appContext.Injector;
+            var container = appContext.AmbientServices.Injector;
             var middlewareConfigurators = container
                 .Resolve<IOrderedServiceFactoryCollection<IMiddlewareConfigurator, AppServiceMetadata>>()
                 .GetServices()
@@ -247,6 +220,17 @@ namespace Kephas.Application.AspNetCore.Hosting
                 this.AmbientServices,
                 appArgs: ambientServices.GetService<IAppArgs>());
             return appContext;
+        }
+
+        /// <summary>
+        /// The building of the services container is the responsibility of the host.
+        /// </summary>
+        /// <remarks>
+        /// Override this method to initialize the startup services, like log manager and configuration manager.
+        /// </remarks>
+        /// <param name="ambientServices">The ambient services.</param>
+        protected override void BuildServicesContainer(IAmbientServices ambientServices)
+        {
         }
     }
 }

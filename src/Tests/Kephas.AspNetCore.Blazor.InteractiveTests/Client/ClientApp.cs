@@ -31,16 +31,19 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     public class ClientApp<TApp> : AppBase<AmbientServices>
         where TApp : IComponent
     {
+        private readonly Action<IAmbientServices> containerBuilder;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientApp{TApp}"/> class.
         /// </summary>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="containerBuilder">Optional. The container builder.</param>
         public ClientApp(
-            IAppArgs? appArgs = null,
-            Action<IAmbientServices>? containerBuilder = null)
-            : base(new AmbientServices(), appArgs: appArgs, appLifetimeTokenSource: null, containerBuilder)
+            Action<IAmbientServices> containerBuilder,
+            IAppArgs? appArgs = null)
+            : base(new AmbientServices(), appArgs: appArgs, appLifetimeTokenSource: null)
         {
+            this.containerBuilder = containerBuilder;
         }
 
         /// <summary>
@@ -77,13 +80,13 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         {
             this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
-            this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices));
+            this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices, this.containerBuilder));
 
             this.ConfigureHost(this.HostBuilder);
 
             this.AmbientServices
                 .WithServiceCollection(this.HostBuilder.Services)
-                .ConfigureExtensionsLogging();
+                .ConfigureExtensionsLogging(this.HostBuilder.Services);
 
             return base.RunAsync(mainCallback ?? this.RunAsync, cancellationToken);
         }

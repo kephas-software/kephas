@@ -10,15 +10,34 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
         <IsPackable>false</IsPackable>
-        <SpaRoot>ClientApp\</SpaRoot>
-        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-
-        <!-- Set this to true if you enable server-side prerendering -->
-        <BuildServerSideRenderer>false</BuildServerSideRenderer>
     </PropertyGroup>
+
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net5.0'">
+            <PropertyGroup>
+                <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+                <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+
+                <SpaRoot>ClientApp\</SpaRoot>
+                <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+                <!-- Set this to true if you enable server-side prerendering -->
+                <BuildServerSideRenderer>false</BuildServerSideRenderer>
+            </PropertyGroup>
+        </When>
+        <Otherwise>
+            <PropertyGroup>
+                <SpaRoot>ClientApp\</SpaRoot>
+                <SpaProxyServerUrl>https://localhost:44402</SpaProxyServerUrl>
+                <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+            </PropertyGroup>
+
+            <ItemGroup>
+                <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.10.0" />
@@ -32,13 +51,6 @@
     </ItemGroup>
     
     <Choose>
-        <When Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-            <ItemGroup>
-                <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.12" />
-                <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.12" />
-                <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.12" />
-            </ItemGroup>
-        </When>
         <When Condition="'$(TargetFramework)'=='net5.0'">
             <ItemGroup>
                 <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
@@ -49,8 +61,6 @@
         <Otherwise>
             <ItemGroup>
                 <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
-                <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.0" />
-                <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
             </ItemGroup>
         </Otherwise>
     </Choose>
@@ -63,9 +73,6 @@
 
     <ItemGroup>
         <Content Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -96,19 +103,33 @@
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     </Target>
 
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net5.0'">
+            <ItemGroup>
+                <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
+                <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.4" />
+                <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
+
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
         <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
-        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
         <!-- Include the newly-built files in the publish output -->
         <ItemGroup>
             <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
-            <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
             <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-                <RelativePath>%(DistFiles.Identity)</RelativePath>
+                <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
                 <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+                <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             </ResolvedFileToPublish>
         </ItemGroup>
     </Target>

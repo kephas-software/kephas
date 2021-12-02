@@ -24,6 +24,17 @@ namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
         /// <param name="ambientServices">The ambient services.</param>
         public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
         {
+#if NET6_0_OR_GREATER
+            services
+                .AddControllersWithViews()
+                .AddNewtonsoftJson(
+                    options =>
+                    {
+                        var jsonSettingsProvider = ambientServices.Injector
+                            .Resolve<IJsonSerializerSettingsProvider>();
+                        jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
+                    });
+#else
             services
                 .AddRazorPages()
                 .AddNewtonsoftJson(
@@ -33,6 +44,7 @@ namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
                             .Resolve<IJsonSerializerSettingsProvider>();
                         jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
                     });
+#endif
         }
     }
 }

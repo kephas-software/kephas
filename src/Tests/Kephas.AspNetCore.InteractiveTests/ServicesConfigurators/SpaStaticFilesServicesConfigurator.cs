@@ -5,6 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NET6_0_OR_GREATER
+#else
+
 namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
 {
     using Microsoft.Extensions.DependencyInjection;
@@ -26,3 +29,5 @@ namespace Kephas.AspNetCore.InteractiveTests.ServicesConfigurators
         }
     }
 }
+
+#endif

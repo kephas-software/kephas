@@ -22,6 +22,20 @@ namespace Kephas.AspNetCore.InteractiveTests.MiddlewareConfigurators
             var app = appContext.AppBuilder;
             var env = appContext.HostEnvironment;
 
+#if NET6_0_OR_GREATER
+            // Configure the HTTP request pipeline.
+            if (!env.IsDevelopment())
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+
+            app.UseAuthorization();
+#else
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -40,6 +54,7 @@ namespace Kephas.AspNetCore.InteractiveTests.MiddlewareConfigurators
             app.UseRouting();
 
             app.UseAuthorization();
+#endif
         }
     }
 }

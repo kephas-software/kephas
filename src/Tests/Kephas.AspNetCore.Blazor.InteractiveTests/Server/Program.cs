@@ -31,6 +31,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
                 .ConfigureAmbientServices(
                     ambientServices,
                     args,
+                    ambient => ambient.BuildWithAutofac(),
                     (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder

@@ -21,14 +21,17 @@ namespace Kephas.Extensions.DependencyInjection
     public class InjectionServiceProviderFactory : IServiceProviderFactory<IAmbientServices>
     {
         private readonly IAmbientServices ambientServices;
+        private readonly Action<IAmbientServices> containerBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionServiceProviderFactory"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        public InjectionServiceProviderFactory(IAmbientServices ambientServices)
+        /// <param name="containerBuilder">The container builder.</param>
+        public InjectionServiceProviderFactory(IAmbientServices ambientServices, Action<IAmbientServices> containerBuilder)
         {
             this.ambientServices = ambientServices;
+            this.containerBuilder = containerBuilder;
         }
 
         /// <summary>
@@ -41,6 +44,9 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IAmbientServices CreateBuilder(IServiceCollection services)
         {
+            this.ambientServices.WithServiceCollection(services);
+            this.containerBuilder(this.ambientServices);
+
             return this.ambientServices;
         }
 

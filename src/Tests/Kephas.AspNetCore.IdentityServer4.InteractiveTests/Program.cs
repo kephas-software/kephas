@@ -61,6 +61,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests
                                 .ConfigureAmbientServices(
                                     ambientServices,
                                     args,
+                                    ambient => ambient.BuildWithAutofac(),
                                     (services, ambient) => ambient.SetupAmbientServices(appArgs, CreateEncryptionService, services.TryGetStartupService<IConfiguration>(), appLifetimeTokenSource))
                                 .ConfigureWebHostDefaults(
                                     webBuilder => webBuilder

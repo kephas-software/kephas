@@ -5,52 +5,69 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.InteractiveTests
-{
-    using System;
-    using System.Threading.Tasks;
+using System;
 
-    using Kephas.Application;
-    using Kephas.AspNetCore.InteractiveTests.Extensions;
-    using Kephas.Cryptography;
-    using Kephas.Extensions.Hosting;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Hosting;
-    using Serilog;
+using Kephas;
+using Kephas.Application;
+using Kephas.AspNetCore.InteractiveTests;
+using Kephas.AspNetCore.InteractiveTests.Extensions;
+using Kephas.Cryptography;
+using Kephas.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
-    public class Program
-    {
-        public static async Task Main(string[] args)
+#if NET6_0_OR_GREATER
+
+var appArgs = new AppArgs(args);
+var ambientServices = new AmbientServices();
+await new WebApp(
+        new AppArgs(args),
+        builder =>
         {
-            await CreateHostBuilder(args).Build().RunAsync();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            var appArgs = new AppArgs(args);
-            var ambientServices = new AmbientServices();
-            return Host.CreateDefaultBuilder(args)
+            builder.Host
                 .ConfigureAmbientServices(
                     ambientServices,
                     args,
-                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
-                .ConfigureWebHostDefaults(
-                    webBuilder => webBuilder
-                        .UseStartup<Startup>()
-                        .UseKestrel());
-        }
+                    ambient => ambient.BuildWithAutofac(),
+                    (services, ambient) =>
+                        ambient.SetupAmbientServices(
+                            CreateEncryptionService,
+                            services.TryGetStartupService<IConfiguration>()));
+        })
+    .RunAsync();
 
-        private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
-        {
-            return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
-        }
+#else
 
-        private class EncryptionService : AesEncryptionService
-        {
-            public EncryptionService(Func<IEncryptionContext> contextCtor) : base(contextCtor)
-            {
-            }
-        }
+await CreateHostBuilder(args).Build().RunAsync();
+
+static IHostBuilder CreateHostBuilder(string[] args)
+{
+    var appArgs = new AppArgs(args);
+    var ambientServices = new AmbientServices();
+    return Host.CreateDefaultBuilder(args)
+        .ConfigureAmbientServices(
+            ambientServices,
+            args,
+            ambient => ambient.BuildWithAutofac(),
+            (services, ambient) =>
+                ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
+        .ConfigureWebHostDefaults(
+            webBuilder => webBuilder
+                .UseStartup<Startup>()
+                .UseKestrel());
+}
+
+#endif
+
+static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
+{
+    return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
+}
+
+class EncryptionService : AesEncryptionService
+{
+    public EncryptionService(Func<IEncryptionContext> contextCtor) : base(contextCtor)
+    {
     }
 }

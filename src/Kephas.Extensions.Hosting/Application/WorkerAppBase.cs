@@ -27,20 +27,23 @@ namespace Kephas.Extensions.Hosting.Application
     /// </summary>
     public abstract class WorkerAppBase : AppBase<AmbientServices>
     {
+        private readonly Action<IAmbientServices> containerBuilder;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
         /// </summary>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
-        /// <param name="containerBuilder">Optional. The container builder.</param>
         protected WorkerAppBase(
+            Action<IAmbientServices> containerBuilder,
             IAmbientServices? ambientServices = null,
             IAppArgs? appArgs = null,
-            CancellationTokenSource? appLifetimeTokenSource = null,
-            Action<IAmbientServices>? containerBuilder = null)
-            : base(ambientServices, appArgs, appLifetimeTokenSource, containerBuilder)
+            CancellationTokenSource? appLifetimeTokenSource = null)
+            : base(ambientServices, appArgs, appLifetimeTokenSource)
         {
+            this.containerBuilder = containerBuilder;
         }
 
         /// <summary>
@@ -78,7 +81,7 @@ namespace Kephas.Extensions.Hosting.Application
             this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
             this.HostBuilder
-                .UseServiceProviderFactory(new InjectionServiceProviderFactory(this.AmbientServices));
+                .UseServiceProviderFactory(new InjectionServiceProviderFactory(this.AmbientServices, this.containerBuilder));
 
             this.PreConfigureWorker(this.HostBuilder)
                 .ConfigureServices(services =>
@@ -87,14 +90,10 @@ namespace Kephas.Extensions.Hosting.Application
 
                     this.AmbientServices
                         .WithServiceCollection(services)
-                        .ConfigureExtensionsLogging();
+                        .ConfigureExtensionsLogging(services);
                 });
 
-            this.ConfigureWorker(this.HostBuilder)
-                .ConfigureServices(services =>
-                {
-                    this.BuildWorkerServicesContainer(this.AmbientServices);
-                });
+            this.ConfigureWorker(this.HostBuilder);
 
             this.PostConfigureWorker(this.HostBuilder);
 
@@ -128,19 +127,6 @@ namespace Kephas.Extensions.Hosting.Application
         protected sealed override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             this.Host = this.HostBuilder!.Build();
-        }
-
-        /// <summary>
-        /// Configures the ambient services asynchronously for this worker.
-        /// </summary>
-        /// <remarks>
-        /// Use this method instead of <see cref="BuildServicesContainer"/>
-        /// for configuring the worker ambient services.
-        /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected virtual void BuildWorkerServicesContainer(IAmbientServices ambientServices)
-        {
-            base.BuildServicesContainer(ambientServices);
         }
 
         /// <summary>

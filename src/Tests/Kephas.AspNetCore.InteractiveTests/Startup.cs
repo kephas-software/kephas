@@ -19,7 +19,7 @@ namespace Kephas.AspNetCore.InteractiveTests
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
         public Startup(IWebHostEnvironment env, IConfiguration config)
-            : base(env, config, containerBuilder: ambientServices => ambientServices.BuildWithAutofac())
+            : base(env, config)
         {
         }
     }

@@ -5,6 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NET6_0_OR_GREATER
+#else
+
 namespace Kephas.AspNetCore.InteractiveTests.MiddlewareConfigurators
 {
     using System;
@@ -54,3 +57,5 @@ namespace Kephas.AspNetCore.InteractiveTests.MiddlewareConfigurators
         }
     }
 }
+
+#endif

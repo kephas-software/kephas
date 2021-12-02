@@ -28,11 +28,12 @@ namespace Kephas.Extensions.Hosting
         /// For ASP.NET Core applications, do not create the container here, but instead in the Startup.ConfigureAmbientServices method.
         /// </remarks>
         /// <param name="hostBuilder">The host builder.</param>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
         /// <returns>The provided host builder.</returns>
-        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
+        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, Action<IAmbientServices> containerBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
-            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), null, setupAction);
+            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), null, containerBuilder, setupAction);
         }
 
         /// <summary>
@@ -43,11 +44,12 @@ namespace Kephas.Extensions.Hosting
         /// </remarks>
         /// <param name="hostBuilder">The host builder.</param>
         /// <param name="args">The application arguments.</param>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
         /// <returns>The provided host builder.</returns>
-        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IEnumerable<string>? args, Action<IServiceCollection, IAmbientServices>? setupAction = null)
+        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IEnumerable<string>? args, Action<IAmbientServices> containerBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
-            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), args, setupAction);
+            return ConfigureAmbientServices(hostBuilder, new AmbientServices(), args, containerBuilder, setupAction);
         }
 
         /// <summary>
@@ -59,15 +61,16 @@ namespace Kephas.Extensions.Hosting
         /// <param name="hostBuilder">The host builder.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">The application arguments.</param>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
         /// <returns>The provided host builder.</returns>
-        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IEnumerable<string>? args, Action<IServiceCollection, IAmbientServices>? setupAction = null)
+        public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IEnumerable<string>? args, Action<IAmbientServices> containerBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
             Requires.NotNull(hostBuilder, nameof(hostBuilder));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             hostBuilder
-                .UseServiceProviderFactory(new InjectionServiceProviderFactory(ambientServices))
+                .UseServiceProviderFactory(new InjectionServiceProviderFactory(ambientServices, containerBuilder))
                 .ConfigureServices(services =>
                 {
                     services.AddAmbientServices(ambientServices);

@@ -26,10 +26,18 @@ namespace Kephas.AspNetCore.InteractiveTests.EndpointConfigurators
         /// <param name="appContext">Context for the application.</param>
         public void Configure(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext)
         {
+#if NET6_0_OR_GREATER
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller}/{action=Index}/{id?}");
+
+            endpoints.MapFallbackToFile("index.html");
+#else
             endpoints.MapRazorPages();
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
+#endif
         }
     }
 }

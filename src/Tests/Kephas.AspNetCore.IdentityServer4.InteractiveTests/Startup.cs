@@ -15,7 +15,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests
     public class Startup : StartupAppBase
     {
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
-            : base(env, configuration, containerBuilder: b => b.BuildWithAutofac())
+            : base(env, configuration)
         {
         }
     }
