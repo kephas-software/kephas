@@ -66,6 +66,11 @@ namespace Kephas.Application
         public IAppContext? AppContext { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether the application is running.
+        /// </summary>
+        public bool IsRunning { get; private set; }
+
+        /// <summary>
         /// Gets the application arguments.
         /// </summary>
         protected IAppArgs AppArgs { get; }
@@ -101,6 +106,8 @@ namespace Kephas.Application
         {
             this.Log(LogLevel.Info, null, Strings.App_RunAsync_Bootstrapping_Message);
 
+            this.IsRunning = true;
+
             await Task.Yield();
 
             this.BeforeAppManagerInitialize(this.AppArgs);
@@ -126,6 +133,10 @@ namespace Kephas.Application
                 this.Logger.Fatal(ex, "Abnormal application termination.");
                 this.AppContext.Exception = ex;
                 return (null, instruction);
+            }
+            finally
+            {
+                this.IsRunning = false;
             }
 
             return (this.AppContext, instruction);
