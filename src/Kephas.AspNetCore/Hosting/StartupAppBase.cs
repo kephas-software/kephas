@@ -102,6 +102,8 @@ namespace Kephas.Application.AspNetCore.Hosting
                 this.Log(LogLevel.Fatal, ex, Strings.App_RunAsync_ErrorDuringConfiguration_Exception);
                 throw;
             }
+
+            this.BeforeAppManagerInitialize(this.AppArgs);
         }
 
         /// <summary>
@@ -209,16 +211,17 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// Creates the application context.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appArgs">The application arguments.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected override IAppContext CreateAppContext(IAmbientServices ambientServices)
+        protected override IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs)
         {
             var appContext = new AspNetAppContext(
                 this.HostEnvironment,
                 this.Configuration,
                 this.AmbientServices,
-                appArgs: ambientServices.GetService<IAppArgs>());
+                appArgs: appArgs);
             return appContext;
         }
 

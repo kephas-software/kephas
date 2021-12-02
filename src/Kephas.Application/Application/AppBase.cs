@@ -235,7 +235,7 @@ namespace Kephas.Application
                 // it is important to create the app context before initializing the application manager
                 // and after configuring the ambient services and the logger, as it may
                 // use registered services.
-                this.AppContext = this.CreateAppContext(this.AmbientServices);
+                this.AppContext = this.CreateAppContext(this.AmbientServices, appArgs);
 
                 this.Log(LogLevel.Info, null, "The ambient services are successfully configured.");
             }
@@ -439,14 +439,13 @@ namespace Kephas.Application
         /// Creates the application context.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appArgs">The application arguments.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices)
+        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs)
         {
-            var appContext = new AppContext(
-                                     ambientServices,
-                                     appArgs: ambientServices.GetService<IAppArgs>())
+            var appContext = new AppContext(ambientServices, appArgs: appArgs)
             {
                 Logger = this.Logger,
             };
