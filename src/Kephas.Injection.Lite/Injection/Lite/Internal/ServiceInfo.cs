@@ -96,7 +96,10 @@ namespace Kephas.Injection.Lite.Internal
 
         public object? InstancingStrategy { get; }
 
-        public bool ExternallyOwned { get; internal set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether the service is externally owned and should not be disposed by the container.
+        /// </summary>
+        public bool IsExternallyOwned { get; internal set; }
 
         public IDictionary<string, object?>? Metadata { get; internal set; }
 
@@ -144,7 +147,7 @@ namespace Kephas.Injection.Lite.Internal
             var closedServiceInfo = new ServiceInfo(serviceProvider, closedContractType, closedInstanceType, this.IsSingleton())
             {
                 AllowMultiple = this.AllowMultiple,
-                ExternallyOwned = this.ExternallyOwned,
+                IsExternallyOwned = this.IsExternallyOwned,
             };
 
             return closedServiceInfo;
@@ -155,6 +158,7 @@ namespace Kephas.Injection.Lite.Internal
             return new AppServiceInfo(this.ContractType!, this.GetServiceCore, this.Lifetime)
             {
                 AllowMultiple = this.AllowMultiple,
+                IsExternallyOwned = this.IsExternallyOwned,
             };
         }
 
@@ -166,7 +170,7 @@ namespace Kephas.Injection.Lite.Internal
 
         public void Dispose()
         {
-            if (!this.ExternallyOwned)
+            if (!this.IsExternallyOwned)
             {
                 this.lazyFactory.Dispose();
             }

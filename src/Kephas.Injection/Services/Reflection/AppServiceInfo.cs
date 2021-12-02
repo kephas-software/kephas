@@ -154,6 +154,11 @@ namespace Kephas.Services.Reflection
         public object? InstancingStrategy { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the service is externally owned and should not be disposed by the container. 
+        /// </summary>
+        public bool IsExternallyOwned { get; internal set; }
+
+        /// <summary>
         /// Adds the metadata with the provided name and value.
         /// </summary>
         /// <param name="name">The metadata name.</param>

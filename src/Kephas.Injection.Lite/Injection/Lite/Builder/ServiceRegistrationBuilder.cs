@@ -71,21 +71,21 @@ namespace Kephas.Injection.Lite.Builder
                     return new ServiceInfo(this.serviceRegistry, this.contractType, serviceType, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
-                        ExternallyOwned = this.externallyOwned,
+                        IsExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
                 case Func<IInjector?, object> factory:
                     return new ServiceInfo(this.serviceRegistry, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
-                        ExternallyOwned = this.externallyOwned,
+                        IsExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
                 case { } instance:
                     return new ServiceInfo(this.serviceRegistry, this.contractType, instance)
                     {
                         AllowMultiple = this.allowMultiple,
-                        ExternallyOwned = this.externallyOwned,
+                        IsExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
                 case var _:

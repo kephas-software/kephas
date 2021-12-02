@@ -246,6 +246,11 @@ namespace Kephas.Services
             {
                 partBuilder.AddMetadata(appServiceInfo.Metadata);
             }
+
+            if (appServiceInfo.IsExternallyOwned)
+            {
+                partBuilder.ExternallyOwned();
+            }
         }
 
         private (IList<(IAppServiceInfo appServiceInfo, Priority overridePriority)> sortedRegistrations, IList<Type> overriddenTypes) SortRegistrations(IEnumerable<IAppServiceInfo> appServiceInfos, ILogger logger)

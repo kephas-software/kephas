@@ -92,6 +92,11 @@ namespace Kephas.Services.Reflection
         }
 
         /// <summary>
+        /// Gets a value indicating whether the service is externally owned and should not be disposed by the container.
+        /// </summary>
+        bool IsExternallyOwned => false;
+
+        /// <summary>
         /// Gets the service instance factory.
         /// </summary>
         /// <value>
