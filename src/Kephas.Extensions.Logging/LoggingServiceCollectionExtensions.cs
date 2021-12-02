@@ -40,14 +40,13 @@ namespace Kephas.Extensions.Logging
         /// </para>
         /// </remarks>
         /// <param name="ambientServices">The ambientServices to act on.</param>
+        /// <param name="serviceCollection">The service collection.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices ConfigureExtensionsLogging(this IAmbientServices ambientServices)
+        public static IAmbientServices ConfigureExtensionsLogging(this IAmbientServices ambientServices, IServiceCollection serviceCollection)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
 
             serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(ambientServices.LogManager)));
 
