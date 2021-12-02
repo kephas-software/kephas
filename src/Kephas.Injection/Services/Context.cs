@@ -100,7 +100,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The injector.
         /// </newValue>
-        public IInjector Injector { get; private set; } = null!;
+        public virtual IInjector Injector { get; private set; } = null!;
 
         /// <summary>
         /// Gets or sets the authenticated user.

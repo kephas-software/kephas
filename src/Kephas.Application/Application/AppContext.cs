@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System;
 
     using Kephas.Commands;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -64,5 +65,18 @@ namespace Kephas.Application
         /// The application result.
         /// </value>
         public object? AppResult { get; set; }
+
+        /// <summary>
+        /// Gets the injector.
+        /// </summary>
+        /// <remarks>
+        /// Due to the fact that at the time the AppContext is created, the Injector is
+        /// not properly set in the AmbientServices, it is always returned from the AmbientServices
+        /// so that, when it is available, the proper one to be used.
+        /// </remarks>
+        /// <newValue>
+        /// The injector.
+        /// </newValue>
+        public override IInjector Injector => this.AmbientServices.Injector;
     }
 }
