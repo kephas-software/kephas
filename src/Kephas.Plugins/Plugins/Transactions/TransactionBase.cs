@@ -33,7 +33,7 @@ namespace Kephas.Plugins.Transactions
         /// <param name="pluginData">Information describing the plugin.</param>
         public TransactionBase(PluginData pluginData)
         {
-            Requires.NotNull(pluginData, nameof(pluginData));
+            pluginData = pluginData ?? throw new System.ArgumentNullException(nameof(pluginData));
 
             this.pluginData = pluginData;
         }
@@ -91,7 +91,7 @@ namespace Kephas.Plugins.Transactions
         /// </returns>
         public ITransaction AddCommand(UndoCommandBase undoCommand)
         {
-            Requires.NotNull(undoCommand, nameof(undoCommand));
+            undoCommand = undoCommand ?? throw new System.ArgumentNullException(nameof(undoCommand));
 
             var cmdKeyPart = this.GetCommandKeyPart();
             this.pluginData.Data.Add($"{cmdKeyPart}{undoCommand.Index}", undoCommand.ToString());

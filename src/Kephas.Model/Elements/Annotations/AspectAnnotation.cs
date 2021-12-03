@@ -29,7 +29,7 @@ namespace Kephas.Model.Elements.Annotations
         public AspectAnnotation(IModelConstructionContext constructionContext, string name, Func<IClassifier, bool> classifierFilter)
             : base(constructionContext, name)
         {
-            Requires.NotNull(classifierFilter, nameof(classifierFilter));
+            classifierFilter = classifierFilter ?? throw new System.ArgumentNullException(nameof(classifierFilter));
 
             this.IsAspectOf = classifierFilter;
         }

@@ -58,8 +58,8 @@ namespace Kephas.Data.LLBLGen
         public LLBLGenCollectionAdapter(IEntityEntryAware entity, ICollection<TEntityImplementation> collectionImplementation, IRelationPredicateBucket relation)
         {
             entity = entity ?? throw new ArgumentNullException(nameof(entity));
-            Requires.NotNull(collectionImplementation, nameof(collectionImplementation));
-            Requires.NotNull(relation, nameof(relation));
+            collectionImplementation = collectionImplementation ?? throw new System.ArgumentNullException(nameof(collectionImplementation));
+            relation = relation ?? throw new System.ArgumentNullException(nameof(relation));
 
             this.containerEntity = new WeakReference<IEntityEntryAware>(entity);
             this.collectionImplementation = collectionImplementation;
@@ -132,7 +132,7 @@ namespace Kephas.Data.LLBLGen
         /// <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
         void ICollection<TEntity>.CopyTo(TEntity[] array, int arrayIndex)
         {
-            Requires.NotNull(array, nameof(array));
+            array = array ?? throw new System.ArgumentNullException(nameof(array));
             if (arrayIndex < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));

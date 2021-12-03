@@ -52,9 +52,9 @@ namespace Kephas.Messaging
             : base(contextFactory)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
-            Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
+            handlerRegistry = handlerRegistry ?? throw new System.ArgumentNullException(nameof(handlerRegistry));
+            messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
+            behaviorFactories = behaviorFactories ?? throw new System.ArgumentNullException(nameof(behaviorFactories));
 
             this.ContextFactory = contextFactory;
             this.handlerRegistry = handlerRegistry;

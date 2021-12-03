@@ -37,7 +37,7 @@ namespace Kephas.Data.Model.Behaviors
         /// <param name="modelSpaceProvider">The model space provider.</param>
         public EntityValidationBehavior(IModelSpaceProvider modelSpaceProvider)
         {
-            Requires.NotNull(modelSpaceProvider, nameof(modelSpaceProvider));
+            modelSpaceProvider = modelSpaceProvider ?? throw new System.ArgumentNullException(nameof(modelSpaceProvider));
 
             this.modelSpaceProvider = modelSpaceProvider;
         }

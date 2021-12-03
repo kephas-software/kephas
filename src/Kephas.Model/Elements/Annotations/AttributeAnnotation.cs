@@ -33,7 +33,7 @@ namespace Kephas.Model.Elements.Annotations
         public AttributeAnnotation(IModelConstructionContext constructionContext, string name, TAttribute attribute)
             : base(constructionContext, name)
         {
-            Requires.NotNull(attribute, nameof(attribute));
+            attribute = attribute ?? throw new System.ArgumentNullException(nameof(attribute));
 
             this.Attribute = attribute;
         }

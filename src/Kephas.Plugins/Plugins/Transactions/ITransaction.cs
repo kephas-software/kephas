@@ -73,7 +73,7 @@ namespace Kephas.Plugins.Transactions
         public static T MoveFile<T>(this T transaction, string sourceFile, string targetFile)
             where T : class, ITransaction
         {
-            Requires.NotNull(transaction, nameof(transaction));
+            transaction = transaction ?? throw new System.ArgumentNullException(nameof(transaction));
 
             File.Move(sourceFile, targetFile);
 

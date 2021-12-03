@@ -66,7 +66,7 @@ namespace Kephas.Extensions.Hosting
         /// <returns>The provided host builder.</returns>
         public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IEnumerable<string>? args, Action<IAmbientServices> containerBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
         {
-            Requires.NotNull(hostBuilder, nameof(hostBuilder));
+            hostBuilder = hostBuilder ?? throw new System.ArgumentNullException(nameof(hostBuilder));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             hostBuilder

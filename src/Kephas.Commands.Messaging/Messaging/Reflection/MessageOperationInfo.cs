@@ -36,8 +36,8 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <param name="lazyMessageProcessor">The message processor.</param>
         protected internal MessageOperationInfo(IRuntimeTypeRegistry typeRegistry, ITypeInfo messageType, Lazy<IMessageProcessor> lazyMessageProcessor)
         {
-            Requires.NotNull(messageType, nameof(messageType));
-            Requires.NotNull(lazyMessageProcessor, nameof(lazyMessageProcessor));
+            messageType = messageType ?? throw new System.ArgumentNullException(nameof(messageType));
+            lazyMessageProcessor = lazyMessageProcessor ?? throw new System.ArgumentNullException(nameof(lazyMessageProcessor));
             typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
 
             this.MessageType = messageType;

@@ -38,7 +38,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <param name="ownsStream">If set to true, upon disposing the raw stream will also be disposed (optional).</param>
         public DataStream(Stream rawStream, string? name = null, string? mediaType = null, Encoding? encoding = null, bool ownsStream = false)
         {
-            Requires.NotNull(rawStream, nameof(rawStream));
+            rawStream = rawStream ?? throw new System.ArgumentNullException(nameof(rawStream));
 
             this.ownsStream = ownsStream;
             this.RawStream = rawStream;

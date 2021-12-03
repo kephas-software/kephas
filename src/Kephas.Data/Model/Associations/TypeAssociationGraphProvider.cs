@@ -219,8 +219,8 @@ namespace Kephas.Data.Model.Associations
 
         private void EnsureInitialized(IAssociationContext context)
         {
-            Requires.NotNull(context.TypeRegistry, nameof(context.TypeRegistry));
-            var typeRegistry = context.TypeRegistry!;
+            context.TypeRegistry = context.TypeRegistry ?? throw new ArgumentNullException(nameof(context.TypeRegistry));
+            var typeRegistry = context.TypeRegistry;
 
             context.RefTypeInfo ??= typeRegistry.GetTypeInfo(typeof(IRef<>), throwOnNotFound: false);
             context.CollectionTypeInfo ??= typeRegistry.GetTypeInfo(typeof(ICollection<>), throwOnNotFound: false);

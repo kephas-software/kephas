@@ -54,8 +54,8 @@ namespace Kephas.Model.Runtime.ModelRegistries
             : base(logManager)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(typeLoader, nameof(typeLoader));
-            Requires.NotNull(modelAssemblyAttributeProvider, nameof(modelAssemblyAttributeProvider));
+            typeLoader = typeLoader ?? throw new System.ArgumentNullException(nameof(typeLoader));
+            modelAssemblyAttributeProvider = modelAssemblyAttributeProvider ?? throw new System.ArgumentNullException(nameof(modelAssemblyAttributeProvider));
 
             this.ambientServices = ambientServices;
             this.typeLoader = typeLoader;

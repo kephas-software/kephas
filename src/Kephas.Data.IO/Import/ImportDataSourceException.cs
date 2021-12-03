@@ -38,7 +38,7 @@ namespace Kephas.Data.IO.Import
         public ImportDataSourceException(string message, DataStream dataSource)
           : base(message)
         {
-            Requires.NotNull(dataSource, nameof(dataSource));
+            dataSource = dataSource ?? throw new System.ArgumentNullException(nameof(dataSource));
 
             this.DataSource = dataSource;
         }
@@ -63,7 +63,7 @@ namespace Kephas.Data.IO.Import
         public ImportDataSourceException(string message, DataStream dataSource, Exception inner)
           : base(message, inner)
         {
-            Requires.NotNull(dataSource, nameof(dataSource));
+            dataSource = dataSource ?? throw new System.ArgumentNullException(nameof(dataSource));
 
             this.DataSource = dataSource;
         }

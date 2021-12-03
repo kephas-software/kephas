@@ -33,7 +33,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// <param name="binaryExpressionFactory">The binary expression factory.</param>
         protected BinaryExpressionConverterBase(Func<Expression, Expression, BinaryExpression> binaryExpressionFactory)
         {
-            Requires.NotNull(binaryExpressionFactory, nameof(binaryExpressionFactory));
+            binaryExpressionFactory = binaryExpressionFactory ?? throw new System.ArgumentNullException(nameof(binaryExpressionFactory));
 
             this.binaryExpressionFactory = binaryExpressionFactory;
         }

@@ -30,7 +30,7 @@ namespace Kephas.Messaging.HandlerProviders
         /// <param name="messageMatchService">The message match service.</param>
         protected MessageHandlerProviderBase(IMessageMatchService messageMatchService)
         {
-            Requires.NotNull(messageMatchService, nameof(messageMatchService));
+            messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
 
             this.MessageMatchService = messageMatchService;
         }

@@ -44,7 +44,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="dataBehaviorFactories">The data behavior factories.</param>
         public DefaultDataBehaviorProvider(ICollection<IExportFactory<IDataBehavior, DataBehaviorMetadata>> dataBehaviorFactories)
         {
-            Requires.NotNull(dataBehaviorFactories, nameof(dataBehaviorFactories));
+            dataBehaviorFactories = dataBehaviorFactories ?? throw new System.ArgumentNullException(nameof(dataBehaviorFactories));
 
             this.dataBehaviorFactories = dataBehaviorFactories;
         }

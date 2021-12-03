@@ -400,7 +400,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
         {
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            Requires.NotNull(bulkDeleteContext, nameof(bulkDeleteContext));
+            bulkDeleteContext = bulkDeleteContext ?? throw new System.ArgumentNullException(nameof(bulkDeleteContext));
 
             return await BulkDeleteCoreAsync(dataContext, bulkDeleteContext, cancellationToken).PreserveThreadContext();
         }
@@ -482,7 +482,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default)
         {
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            Requires.NotNull(bulkUpdateContext, nameof(bulkUpdateContext));
+            bulkUpdateContext = bulkUpdateContext ?? throw new System.ArgumentNullException(nameof(bulkUpdateContext));
 
             return await BulkUpdateCoreAsync(dataContext, bulkUpdateContext, cancellationToken).PreserveThreadContext();
         }

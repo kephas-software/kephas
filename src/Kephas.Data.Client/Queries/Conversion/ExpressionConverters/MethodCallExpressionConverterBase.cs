@@ -41,7 +41,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// <param name="convertArgs">Optional. <c>true</c> to convert arguments to the parameters' types.</param>
         protected MethodCallExpressionConverterBase(MethodInfo methodInfo, bool convertArgs = false)
         {
-            Requires.NotNull(methodInfo, nameof(methodInfo));
+            methodInfo = methodInfo ?? throw new System.ArgumentNullException(nameof(methodInfo));
 
             this.methodInfo = methodInfo;
             this.ConvertArgs = convertArgs;

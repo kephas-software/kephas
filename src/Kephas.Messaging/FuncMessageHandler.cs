@@ -33,7 +33,7 @@ namespace Kephas.Messaging
         /// <param name="handlerFunction">The handler function.</param>
         public FuncMessageHandler(Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage?>> handlerFunction)
         {
-            Requires.NotNull(handlerFunction, nameof(handlerFunction));
+            handlerFunction = handlerFunction ?? throw new System.ArgumentNullException(nameof(handlerFunction));
 
             this.handlerFunction = handlerFunction;
         }

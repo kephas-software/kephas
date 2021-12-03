@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(@event, nameof(@event));
+            @event = @event ?? throw new System.ArgumentNullException(nameof(@event));
 
             return messageBroker.DispatchAsync(@event.ToEvent()!, ctx => ctx.Merge(optionsConfig), cancellationToken);
         }
@@ -73,8 +73,8 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(@event, nameof(@event));
-            Requires.NotNull(recipient, nameof(recipient));
+            @event = @event ?? throw new System.ArgumentNullException(nameof(@event));
+            recipient = recipient ?? throw new System.ArgumentNullException(nameof(recipient));
 
             return messageBroker.DispatchAsync(@event.ToEvent()!, ctx => ctx.To(recipient).Merge(optionsConfig), cancellationToken);
         }
@@ -101,8 +101,8 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(@event, nameof(@event));
-            Requires.NotNull(recipients, nameof(recipients));
+            @event = @event ?? throw new System.ArgumentNullException(nameof(@event));
+            recipients = recipients ?? throw new System.ArgumentNullException(nameof(recipients));
 
             return messageBroker.DispatchAsync(@event.ToEvent()!, ctx => ctx.To(recipients).Merge(optionsConfig), cancellationToken);
         }
@@ -196,8 +196,8 @@ namespace Kephas.Messaging.Distributed
             IEndpoint recipient,
             Action<IDispatchingContext>? optionsConfig = null)
         {
-            Requires.NotNull(@event, nameof(@event));
-            Requires.NotNull(recipient, nameof(recipient));
+            @event = @event ?? throw new System.ArgumentNullException(nameof(@event));
+            recipient = recipient ?? throw new System.ArgumentNullException(nameof(recipient));
 
             messageBroker.DispatchAsync(@event.ToEvent()!, ctx => ctx.To(recipient).Merge(optionsConfig)).WaitNonLocking();
         }
@@ -257,7 +257,7 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(recipient, nameof(recipient));
+            recipient = recipient ?? throw new System.ArgumentNullException(nameof(recipient));
 
             return messageBroker.DispatchAsync(message, ctx => ctx.To(recipient).Merge(optionsConfig), cancellationToken);
         }
@@ -280,7 +280,7 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(recipients, nameof(recipients));
+            recipients = recipients ?? throw new System.ArgumentNullException(nameof(recipients));
 
             return messageBroker.DispatchAsync(message, ctx => ctx.To(recipients).Merge(optionsConfig), cancellationToken);
         }
@@ -324,7 +324,7 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(recipient, nameof(recipient));
+            recipient = recipient ?? throw new System.ArgumentNullException(nameof(recipient));
 
             return messageBroker.DispatchAsync(message, ctx => ctx.To(recipient).OneWay().Merge(optionsConfig), cancellationToken);
         }
@@ -348,7 +348,7 @@ namespace Kephas.Messaging.Distributed
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(recipients, nameof(recipients));
+            recipients = recipients ?? throw new System.ArgumentNullException(nameof(recipients));
 
             return messageBroker.DispatchAsync(message, ctx => ctx.To(recipients).OneWay().Merge(optionsConfig), cancellationToken);
         }

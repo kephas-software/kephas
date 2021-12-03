@@ -99,7 +99,7 @@ namespace Kephas.Injection.SystemComposition.Builder
             Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
             Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
         {
-            Requires.NotNull(constructorSelector, nameof(constructorSelector));
+            constructorSelector = constructorSelector ?? throw new System.ArgumentNullException(nameof(constructorSelector));
 
             ConstructorInfo NewConstructorSelector(IEnumerable<ConstructorInfo> ctorInfos)
             {

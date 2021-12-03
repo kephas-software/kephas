@@ -30,7 +30,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         public SchedulingJobStoreContext(Func<IContext, IDataContext> dataContextFactory, IInjector injector)
             : base(injector)
         {
-            Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
+            dataContextFactory = dataContextFactory ?? throw new System.ArgumentNullException(nameof(dataContextFactory));
 
             this.DataContextFactory = dataContextFactory;
         }

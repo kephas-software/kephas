@@ -59,7 +59,7 @@ namespace Kephas.Messaging
         public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage?>> handlerFunction)
             where TMessage : class
         {
-            Requires.NotNull(@this, nameof(@this));
+            @this = @this ?? throw new System.ArgumentNullException(nameof(@this));
 
             @this.RegisterHandler(
                 new FuncMessageHandler<TMessage>(handlerFunction),
@@ -80,7 +80,7 @@ namespace Kephas.Messaging
         public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, IMessage?> handlerFunction)
             where TMessage : class
         {
-            Requires.NotNull(@this, nameof(@this));
+            @this = @this ?? throw new System.ArgumentNullException(nameof(@this));
 
             @this.RegisterHandler(
                 new FuncMessageHandler<TMessage>((msg, ctx, token) => Task.FromResult(handlerFunction(msg, ctx))),

@@ -20,7 +20,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Services
     {
         public RelativeRedirectUriValidator(IAbsoluteUrlResolver absoluteUrlResolver)
         {
-            Requires.NotNull(absoluteUrlResolver, nameof(absoluteUrlResolver));
+            absoluteUrlResolver = absoluteUrlResolver ?? throw new System.ArgumentNullException(nameof(absoluteUrlResolver));
 
             AbsoluteUrlResolver = absoluteUrlResolver;
         }

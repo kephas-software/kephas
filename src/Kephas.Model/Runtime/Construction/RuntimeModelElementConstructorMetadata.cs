@@ -44,9 +44,9 @@ namespace Kephas.Model.Runtime.Construction
         public RuntimeModelElementConstructorMetadata(Type modelType, Type modelContractType, Type runtimeType, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            Requires.NotNull(modelType, nameof(modelType));
-            Requires.NotNull(modelContractType, nameof(modelContractType));
-            Requires.NotNull(runtimeType, nameof(runtimeType));
+            modelType = modelType ?? throw new System.ArgumentNullException(nameof(modelType));
+            modelContractType = modelContractType ?? throw new System.ArgumentNullException(nameof(modelContractType));
+            runtimeType = runtimeType ?? throw new System.ArgumentNullException(nameof(runtimeType));
 
             this.ModelType = modelType;
             this.ModelContractType = modelContractType;

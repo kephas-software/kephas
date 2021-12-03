@@ -35,7 +35,7 @@ namespace Kephas.Scheduling.Quartz
         /// <param name="workflowProcessor">The workflow processor.</param>
         public QuartzJob(IWorkflowProcessor workflowProcessor)
         {
-            Requires.NotNull(workflowProcessor, nameof(workflowProcessor));
+            workflowProcessor = workflowProcessor ?? throw new System.ArgumentNullException(nameof(workflowProcessor));
 
             this.workflowProcessor = workflowProcessor;
         }

@@ -50,7 +50,7 @@ namespace Kephas.Data.Setup
             where TContext : class, IDataSetupContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(targets, nameof(targets));
+            targets = targets ?? throw new System.ArgumentNullException(nameof(targets));
 
             context.Targets = targets;
 

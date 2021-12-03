@@ -36,8 +36,8 @@ namespace Kephas.Data.Linq
         /// <param name="nativeQuery">The native query.</param>
         public DataContextQuery(IQueryProvider queryProvider, IQueryable<T> nativeQuery)
         {
-            Requires.NotNull(queryProvider, nameof(queryProvider));
-            Requires.NotNull(nativeQuery, nameof(nativeQuery));
+            queryProvider = queryProvider ?? throw new System.ArgumentNullException(nameof(queryProvider));
+            nativeQuery = nativeQuery ?? throw new System.ArgumentNullException(nameof(nativeQuery));
 
             this.queryProvider = queryProvider;
             this.NativeQuery = nativeQuery;

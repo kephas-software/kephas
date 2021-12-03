@@ -59,8 +59,8 @@ namespace Kephas.Data.InMemory
             : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
-            Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
-            Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
+            dataCommandProvider = dataCommandProvider ?? throw new System.ArgumentNullException(nameof(dataCommandProvider));
+            dataBehaviorProvider = dataBehaviorProvider ?? throw new System.ArgumentNullException(nameof(dataBehaviorProvider));
             serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
 
             this.SerializationService = serializationService;

@@ -53,8 +53,8 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         public virtual INamedElement? TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement)
         {
-            Requires.NotNull(constructionContext, nameof(constructionContext));
-            Requires.NotNull(runtimeElement, nameof(runtimeElement));
+            constructionContext = constructionContext ?? throw new System.ArgumentNullException(nameof(constructionContext));
+            runtimeElement = runtimeElement ?? throw new System.ArgumentNullException(nameof(runtimeElement));
 
             if (!(runtimeElement is TRuntime runtimeInfo))
             {
@@ -86,8 +86,8 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         public string? TryComputeName(object runtimeElement, IModelConstructionContext constructionContext)
         {
-            Requires.NotNull(constructionContext, nameof(constructionContext));
-            Requires.NotNull(runtimeElement, nameof(runtimeElement));
+            constructionContext = constructionContext ?? throw new System.ArgumentNullException(nameof(constructionContext));
+            runtimeElement = runtimeElement ?? throw new System.ArgumentNullException(nameof(runtimeElement));
 
             return this.TryComputeNameCore(runtimeElement, constructionContext);
         }

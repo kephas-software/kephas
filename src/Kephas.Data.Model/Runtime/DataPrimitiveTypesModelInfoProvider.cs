@@ -48,7 +48,7 @@ namespace Kephas.Data.Model.Runtime
         public DataPrimitiveTypesModelInfoProvider(IRuntimeModelElementFactory runtimeModelElementFactory)
             : base(runtimeModelElementFactory)
         {
-            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
+            runtimeModelElementFactory = runtimeModelElementFactory ?? throw new System.ArgumentNullException(nameof(runtimeModelElementFactory));
         }
 
         /// <summary>

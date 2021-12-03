@@ -33,7 +33,7 @@ namespace Kephas.Model.Runtime
         public SystemPrimitiveTypesModelInfoProvider(IRuntimeModelElementFactory runtimeModelElementFactory)
             : base(runtimeModelElementFactory)
         {
-            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
+            runtimeModelElementFactory = runtimeModelElementFactory ?? throw new System.ArgumentNullException(nameof(runtimeModelElementFactory));
         }
 
         /// <summary>

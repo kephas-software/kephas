@@ -49,7 +49,7 @@ namespace Kephas.Model.Runtime
             IRuntimeTypeRegistry typeRegistry)
             : base(runtimeModelElementFactory)
         {
-            Requires.NotNull(modelRegistries, nameof(modelRegistries));
+            modelRegistries = modelRegistries ?? throw new System.ArgumentNullException(nameof(modelRegistries));
 
             this.modelRegistries = modelRegistries.Order().Select(l => l.Value).ToList();
             this.TypeRegistry = typeRegistry;

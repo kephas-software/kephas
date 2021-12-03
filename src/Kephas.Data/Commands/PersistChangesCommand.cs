@@ -42,7 +42,7 @@ namespace Kephas.Data.Commands
         public PersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
+            behaviorProvider = behaviorProvider ?? throw new System.ArgumentNullException(nameof(behaviorProvider));
 
             this.BehaviorProvider = behaviorProvider;
         }

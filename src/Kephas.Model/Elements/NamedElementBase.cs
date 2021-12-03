@@ -48,8 +48,8 @@ namespace Kephas.Model.Elements
         protected NamedElementBase(IModelConstructionContext constructionContext, string name)
             : base(isThreadSafe: true)
         {
-            Requires.NotNull(constructionContext, nameof(constructionContext));
-            Requires.NotNull(name, nameof(name));
+            constructionContext = constructionContext ?? throw new System.ArgumentNullException(nameof(constructionContext));
+            name = name ?? throw new System.ArgumentNullException(nameof(name));
 
             if (constructionContext.ModelSpace == null)
             {
@@ -275,7 +275,7 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         protected virtual void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
-            Requires.NotNull(constructionContext, nameof(constructionContext));
+            constructionContext = constructionContext ?? throw new System.ArgumentNullException(nameof(constructionContext));
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace Kephas.Model.Elements
         /// <param name="member">The member.</param>
         protected virtual void AddMember(INamedElement member)
         {
-            Requires.NotNull(member, nameof(member));
+            member = member ?? throw new System.ArgumentNullException(nameof(member));
         }
 
         /// <summary>

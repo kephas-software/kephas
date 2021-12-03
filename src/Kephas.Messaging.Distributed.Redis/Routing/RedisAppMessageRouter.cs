@@ -49,7 +49,7 @@ namespace Kephas.Messaging.Redis.Routing
         private readonly IEventHub eventHub;
 
         private readonly ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, IMessage? reply)> taskSource,
-            Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new ();
+            Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new();
 
         private ISubscriber? publisher;
         private IConnectionMultiplexer? subConnection;
@@ -366,7 +366,10 @@ namespace Kephas.Messaging.Redis.Routing
 
         private async Task PublishAsync(string serializedMessage, string channelName, bool oneWay)
         {
-            Requires.NotNull(this.publisher, nameof(this.publisher));
+            if (this.publisher == null)
+            {
+                throw new InvalidOperationException("The publisher is not set.");
+            }
 
             if (oneWay)
             {

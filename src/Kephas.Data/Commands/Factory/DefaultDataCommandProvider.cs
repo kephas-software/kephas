@@ -50,7 +50,7 @@ namespace Kephas.Data.Commands.Factory
         public IDataCommand CreateCommand(Type dataContextType, Type commandType)
         {
             dataContextType = dataContextType ?? throw new ArgumentNullException(nameof(dataContextType));
-            Requires.NotNull(commandType, nameof(commandType));
+            commandType = commandType ?? throw new System.ArgumentNullException(nameof(commandType));
 
             var key = new DataCommandFactoryKey(dataContextType, commandType);
             var factory = this.commandFactories.GetOrAdd(key, _ => this.CreateCommandFactory(dataContextType, commandType));

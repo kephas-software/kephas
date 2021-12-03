@@ -30,7 +30,7 @@ namespace Kephas.Orchestration.Diagnostics
         public ProcessStartResult(Process process, Exception? startException = null)
             : base(process)
         {
-            Requires.NotNull(process, nameof(process));
+            process = process ?? throw new System.ArgumentNullException(nameof(process));
 
             this.ErrorData = new StringBuilder();
             this.OutputData = new StringBuilder();

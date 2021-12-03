@@ -71,8 +71,8 @@ namespace Kephas.Messaging
             IMessageMatch messageMatch,
             IMessage message)
         {
-            Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(messageMatch, nameof(messageMatch));
+            messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
+            messageMatch = messageMatch ?? throw new System.ArgumentNullException(nameof(messageMatch));
             message = message ?? throw new ArgumentNullException(nameof(message));
 
             return messageMatchService.IsMatch(

@@ -46,8 +46,8 @@ namespace Kephas.Data.Behaviors
         /// </returns>
         public override IDataValidationResult Validate(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
-            Requires.NotNull(entity as object, nameof(entity));
-            Requires.NotNull(entityEntry, nameof(entityEntry));
+            entity = entity ?? throw new ArgumentNullException(nameof(entity));
+            entityEntry = entityEntry ?? throw new System.ArgumentNullException(nameof(entityEntry));
 
             if (entityEntry.ChangeState == ChangeState.Deleted)
             {

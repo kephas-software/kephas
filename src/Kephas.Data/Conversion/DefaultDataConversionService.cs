@@ -69,8 +69,8 @@ namespace Kephas.Data.Conversion
             : base(injector)
         {
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
-            Requires.NotNull(converterExportFactories, nameof(converterExportFactories));
-            Requires.NotNull(targetResolverFactories, nameof(targetResolverFactories));
+            converterExportFactories = converterExportFactories ?? throw new System.ArgumentNullException(nameof(converterExportFactories));
+            targetResolverFactories = targetResolverFactories ?? throw new System.ArgumentNullException(nameof(targetResolverFactories));
 
             this.Injector = injector;
             this.converterExportFactories = converterExportFactories;
@@ -99,7 +99,7 @@ namespace Kephas.Data.Conversion
         /// </returns>
         public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(conversionContext, nameof(conversionContext));
+            conversionContext = conversionContext ?? throw new System.ArgumentNullException(nameof(conversionContext));
 
             cancellationToken.ThrowIfCancellationRequested();
 

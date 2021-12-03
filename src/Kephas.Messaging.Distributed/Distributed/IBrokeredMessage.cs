@@ -155,7 +155,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static IBrokeredMessage TraceInputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router, string appInstanceId)
         {
-            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+            brokeredMessage = brokeredMessage ?? throw new System.ArgumentNullException(nameof(brokeredMessage));
 
             brokeredMessage.Trace = $"in:{appInstanceId}:{router?.GetType().Name}:{DateTime.UtcNow:O}{Environment.NewLine}{brokeredMessage.Trace}";
 
@@ -173,7 +173,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static IBrokeredMessage TraceOutputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router, string appInstanceId)
         {
-            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+            brokeredMessage = brokeredMessage ?? throw new System.ArgumentNullException(nameof(brokeredMessage));
 
             brokeredMessage.Trace = $"out:{appInstanceId}:{router?.GetType().Name}:{DateTime.UtcNow:O}{Environment.NewLine}{brokeredMessage.Trace}";
 
@@ -191,7 +191,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static IBrokeredMessage TraceReply(this IBrokeredMessage brokeredMessage, string? requestTrace, string? appInstanceId)
         {
-            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+            brokeredMessage = brokeredMessage ?? throw new System.ArgumentNullException(nameof(brokeredMessage));
 
             brokeredMessage.Trace = $"reply:{appInstanceId}:{DateTime.UtcNow:O}{Environment.NewLine}{requestTrace}";
 

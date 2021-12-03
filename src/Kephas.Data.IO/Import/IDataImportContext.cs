@@ -68,7 +68,7 @@ namespace Kephas.Data.IO.Import
             IDataSpace dataSpace)
             where TContext : class, IDataImportContext
         {
-            Requires.NotNull(dataImportContext, nameof(dataImportContext));
+            dataImportContext = dataImportContext ?? throw new System.ArgumentNullException(nameof(dataImportContext));
 
             dataImportContext.DataSpace = dataSpace;
 
@@ -89,7 +89,7 @@ namespace Kephas.Data.IO.Import
             Action<object, IDataConversionContext> optionsConfig)
             where TContext : class, IDataImportContext
         {
-            Requires.NotNull(dataImportContext, nameof(dataImportContext));
+            dataImportContext = dataImportContext ?? throw new System.ArgumentNullException(nameof(dataImportContext));
 
             dataImportContext.DataConversionConfig = optionsConfig;
 
@@ -110,7 +110,7 @@ namespace Kephas.Data.IO.Import
             Action<IPersistChangesContext> optionsConfig)
             where TContext : class, IDataImportContext
         {
-            Requires.NotNull(dataImportContext, nameof(dataImportContext));
+            dataImportContext = dataImportContext ?? throw new System.ArgumentNullException(nameof(dataImportContext));
 
             dataImportContext.PersistChangesConfig = optionsConfig;
 

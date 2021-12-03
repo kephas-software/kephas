@@ -34,7 +34,7 @@ namespace Kephas.Model.Runtime
         /// <param name="runtimeModelElementFactory">  The runtime model information factory. </param>
         protected RuntimeModelInfoProviderBase(IRuntimeModelElementFactory runtimeModelElementFactory)
         {
-            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
+            runtimeModelElementFactory = runtimeModelElementFactory ?? throw new System.ArgumentNullException(nameof(runtimeModelElementFactory));
 
             this.RuntimeModelElementFactory = runtimeModelElementFactory;
         }

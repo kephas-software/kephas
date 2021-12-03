@@ -80,7 +80,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(inputRouter, nameof(inputRouter));
+            inputRouter = inputRouter ?? throw new System.ArgumentNullException(nameof(inputRouter));
 
             context.InputRouter = inputRouter;
 
@@ -101,7 +101,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(sender, nameof(sender));
+            sender = sender ?? throw new System.ArgumentNullException(nameof(sender));
 
             context.BrokeredMessage.Sender = sender;
 
@@ -122,7 +122,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(sender, nameof(sender));
+            sender = sender ?? throw new System.ArgumentNullException(nameof(sender));
 
             context.BrokeredMessage.Sender = sender;
 
@@ -143,7 +143,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(sender, nameof(sender));
+            sender = sender ?? throw new System.ArgumentNullException(nameof(sender));
 
             context.BrokeredMessage.Sender = new Endpoint(sender);
 
@@ -346,7 +346,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(name, nameof(name));
+            name = name ?? throw new System.ArgumentNullException(nameof(name));
 
             context.BrokeredMessage[name] = value;
 

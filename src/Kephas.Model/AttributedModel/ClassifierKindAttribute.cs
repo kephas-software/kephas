@@ -26,7 +26,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="classifierName">Optional. Name of the classifier.</param>
         protected ClassifierKindAttribute(Type classifierType, string? classifierName = null)
         {
-            Requires.NotNull(classifierType, nameof(classifierType));
+            classifierType = classifierType ?? throw new System.ArgumentNullException(nameof(classifierType));
 
             this.ClassifierType = classifierType;
             this.ClassifierName = classifierName;

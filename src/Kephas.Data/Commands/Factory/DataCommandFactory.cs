@@ -38,7 +38,7 @@ namespace Kephas.Data.Commands.Factory
         /// <param name="commandFactories">The command factories.</param>
         public DataCommandFactory(ICollection<IExportFactory<TCommand, DataCommandMetadata>> commandFactories)
         {
-            Requires.NotNull(commandFactories, nameof(commandFactories));
+            commandFactories = commandFactories ?? throw new System.ArgumentNullException(nameof(commandFactories));
 
             this.commandFactories = commandFactories.Order();
         }

@@ -36,8 +36,8 @@ namespace Kephas.Model.Runtime.Configuration
         /// </returns>
         public TConfigurator WithProperty(string propertyName, Action<PropertyConfigurator> propertyConfig)
         {
-            Requires.NotNull(propertyName, nameof(propertyName));
-            Requires.NotNull(propertyConfig, nameof(propertyConfig));
+            propertyName = propertyName ?? throw new System.ArgumentNullException(nameof(propertyName));
+            propertyConfig = propertyConfig ?? throw new System.ArgumentNullException(nameof(propertyConfig));
 
             this.AddConfiguration(
                 (context, element) =>

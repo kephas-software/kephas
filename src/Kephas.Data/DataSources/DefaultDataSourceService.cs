@@ -37,7 +37,7 @@ namespace Kephas.Data.DataSources
         /// <param name="providerFactories">The provider factories.</param>
         public DefaultDataSourceService(ICollection<IExportFactory<IDataSourceProvider, AppServiceMetadata>> providerFactories)
         {
-            Requires.NotNull(providerFactories, nameof(providerFactories));
+            providerFactories = providerFactories ?? throw new System.ArgumentNullException(nameof(providerFactories));
 
             this.providers = providerFactories.Order().GetServices().ToList();
         }

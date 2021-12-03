@@ -326,7 +326,7 @@ namespace Kephas.Scheduling
             ITrigger? trigger = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(scheduler, nameof(scheduler));
+            scheduler = scheduler ?? throw new System.ArgumentNullException(nameof(scheduler));
 
             return scheduler.EnqueueAsync(
                 scheduledJob ?? scheduledJobId,

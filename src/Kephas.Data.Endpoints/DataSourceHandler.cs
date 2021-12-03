@@ -67,10 +67,10 @@ namespace Kephas.Data.Endpoints
             IProjectedTypeResolver projectedTypeResolver,
             IRuntimeTypeRegistry typeRegistry)
         {
-            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
-            Requires.NotNull(dataSourceService, nameof(dataSourceService));
+            dataSpaceFactory = dataSpaceFactory ?? throw new System.ArgumentNullException(nameof(dataSpaceFactory));
+            dataSourceService = dataSourceService ?? throw new System.ArgumentNullException(nameof(dataSourceService));
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
-            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
+            projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
 
             this.dataSpaceFactory = dataSpaceFactory;
             this.dataSourceService = dataSourceService;

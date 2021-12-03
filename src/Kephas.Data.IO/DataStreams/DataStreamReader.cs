@@ -41,7 +41,7 @@ namespace Kephas.Data.IO.DataStreams
             IMediaTypeProvider mediaTypeProvider)
         {
             serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
-            Requires.NotNull(mediaTypeProvider, nameof(mediaTypeProvider));
+            mediaTypeProvider = mediaTypeProvider ?? throw new System.ArgumentNullException(nameof(mediaTypeProvider));
 
             this.serializationService = serializationService;
             this.mediaTypeProvider = mediaTypeProvider;
@@ -68,7 +68,7 @@ namespace Kephas.Data.IO.DataStreams
         /// </returns>
         public virtual async Task<object> ReadAsync(DataStream dataStream, IDataIOContext context, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataStream, nameof(dataStream));
+            dataStream = dataStream ?? throw new System.ArgumentNullException(nameof(dataStream));
 
             cancellationToken.ThrowIfCancellationRequested();
 

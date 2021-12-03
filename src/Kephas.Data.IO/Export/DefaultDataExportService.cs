@@ -51,8 +51,8 @@ namespace Kephas.Data.IO.Export
             IClientQueryProcessor clientQueryExecutor)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(dataStreamWriteService, nameof(dataStreamWriteService));
-            Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
+            dataStreamWriteService = dataStreamWriteService ?? throw new System.ArgumentNullException(nameof(dataStreamWriteService));
+            clientQueryExecutor = clientQueryExecutor ?? throw new System.ArgumentNullException(nameof(clientQueryExecutor));
 
             this.contextFactory = contextFactory;
             this.dataStreamWriteService = dataStreamWriteService;

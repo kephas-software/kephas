@@ -72,7 +72,7 @@ namespace Kephas.Workflow
             Action<IActivityContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(activity, nameof(activity));
+            activity = activity ?? throw new System.ArgumentNullException(nameof(activity));
 
             using var context = this.CreateActivityContext(optionsConfig);
 

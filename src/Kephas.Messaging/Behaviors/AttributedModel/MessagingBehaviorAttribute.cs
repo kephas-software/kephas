@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         /// <param name="messageId">The ID of the handled messages.</param>
         public MessagingBehaviorAttribute(object messageId)
         {
-            Requires.NotNull(messageId, nameof(messageId));
+            messageId = messageId ?? throw new System.ArgumentNullException(nameof(messageId));
 
             this.MessageId = messageId;
             this.MessageIdMatching = MessageIdMatching.Id;

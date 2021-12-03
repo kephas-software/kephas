@@ -32,7 +32,7 @@ namespace Kephas.Model.Elements
             string name)
             : base(constructionContext, name)
         {
-            Requires.NotNull(settingsInfo, nameof(settingsInfo));
+            settingsInfo = settingsInfo ?? throw new System.ArgumentNullException(nameof(settingsInfo));
 
             this.settingsInfo = settingsInfo;
             this.injector = constructionContext.Injector;

@@ -167,7 +167,7 @@ namespace Kephas.Data
         /// </returns>
         public IDataCommand CreateCommand(Type commandType)
         {
-            Requires.NotNull(commandType, nameof(commandType));
+            commandType = commandType ?? throw new System.ArgumentNullException(nameof(commandType));
 
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
@@ -223,7 +223,7 @@ namespace Kephas.Data
         /// </returns>
         public virtual IEntityEntry? Detach(IEntityEntry entityEntry)
         {
-            Requires.NotNull(entityEntry, nameof(entityEntry));
+            entityEntry = entityEntry ?? throw new System.ArgumentNullException(nameof(entityEntry));
 
             return this.DetachCore(entityEntry, detachEntityGraph: true);
         }

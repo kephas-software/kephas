@@ -67,7 +67,7 @@ namespace Kephas.Model.Runtime.Configuration
         /// </returns>
         public virtual TConfigurator AddMember(INamedElement member)
         {
-            Requires.NotNull(member, nameof(member));
+            member = member ?? throw new System.ArgumentNullException(nameof(member));
 
             this.AddConfiguration((context, element) =>
                 {
@@ -93,7 +93,7 @@ namespace Kephas.Model.Runtime.Configuration
         /// </returns>
         public virtual TConfigurator AddMember(object runtimeElement)
         {
-            Requires.NotNull(runtimeElement, nameof(runtimeElement));
+            runtimeElement = runtimeElement ?? throw new System.ArgumentNullException(nameof(runtimeElement));
 
             if (runtimeElement is INamedElement namedElement)
             {

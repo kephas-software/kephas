@@ -30,7 +30,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public static Task SendAsync(this IEmailSenderService senderService, string subject, string body)
         {
-            Requires.NotNull(senderService, nameof(senderService));
+            senderService = senderService ?? throw new System.ArgumentNullException(nameof(senderService));
 
             var messageBuilder = senderService.CreateEmailMessageBuilder();
             var message = messageBuilder.Subject(subject).BodyHtml(body).EmailMessage;
@@ -49,7 +49,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public static Task SendAsync(this IEmailSenderService senderService, string toAddress, string subject, string body)
         {
-            Requires.NotNull(senderService, nameof(senderService));
+            senderService = senderService ?? throw new System.ArgumentNullException(nameof(senderService));
             Requires.NotNullOrEmpty(toAddress, nameof(toAddress));
 
             var messageBuilder = senderService.CreateEmailMessageBuilder();
@@ -69,7 +69,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public static Task SendAsync(this IEmailSenderService senderService, string[] toAddresses, string subject, string body)
         {
-            Requires.NotNull(senderService, nameof(senderService));
+            senderService = senderService ?? throw new System.ArgumentNullException(nameof(senderService));
             Requires.NotNullOrEmpty(toAddresses, nameof(toAddresses));
 
             var messageBuilder = senderService.CreateEmailMessageBuilder();

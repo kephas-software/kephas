@@ -49,7 +49,7 @@ namespace Kephas.Injection.Autofac.Metadata
         /// </returns>
         public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<ServiceRegistration>> registrationAccessor)
         {
-            Requires.NotNull(registrationAccessor, nameof(registrationAccessor));
+            registrationAccessor = registrationAccessor ?? throw new System.ArgumentNullException(nameof(registrationAccessor));
 
             if (!(service is IServiceWithType swt)
                 || swt.ServiceType.IsClosedTypeOf(typeof(IExportFactory<,>))

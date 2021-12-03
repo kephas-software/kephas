@@ -57,7 +57,7 @@ namespace Kephas.Data.IO
         /// <returns>The result, once it is set into the options.</returns>
         public static IOperationResult EnsureResult(this IDataIOContext self, Func<IOperationResult>? resultFactory = null)
         {
-            Requires.NotNull(self, nameof(self));
+            self = self ?? throw new System.ArgumentNullException(nameof(self));
 
             if (!(self[ResultKey] is IOperationResult result))
             {
@@ -75,7 +75,7 @@ namespace Kephas.Data.IO
         /// <returns>The result, once it is set into the options.</returns>
         public static IOperationResult? GetResult(this IDataIOContext self)
         {
-            Requires.NotNull(self, nameof(self));
+            self = self ?? throw new System.ArgumentNullException(nameof(self));
 
             return self[ResultKey] as IOperationResult;
         }
@@ -94,7 +94,7 @@ namespace Kephas.Data.IO
             Action<ISerializationContext> serializationContextConfig)
             where TContext : class, IDataIOContext
         {
-            Requires.NotNull(dataIOContext, nameof(dataIOContext));
+            dataIOContext = dataIOContext ?? throw new System.ArgumentNullException(nameof(dataIOContext));
 
             dataIOContext.SerializationConfig = serializationContextConfig;
 
@@ -115,7 +115,7 @@ namespace Kephas.Data.IO
             Type rootObjectType)
             where TContext : class, IDataIOContext
         {
-            Requires.NotNull(dataIOContext, nameof(dataIOContext));
+            dataIOContext = dataIOContext ?? throw new System.ArgumentNullException(nameof(dataIOContext));
 
             dataIOContext.RootObjectType = rootObjectType;
 

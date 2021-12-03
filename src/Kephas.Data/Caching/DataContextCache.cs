@@ -49,7 +49,7 @@ namespace Kephas.Data.Caching
         protected DataContextCache(IDictionary<object, IEntityEntry> items, IDictionary<object, IEntityEntry> entityEntryMappings)
         {
             items = items ?? throw new ArgumentNullException(nameof(items));
-            Requires.NotNull(entityEntryMappings, nameof(entityEntryMappings));
+            entityEntryMappings = entityEntryMappings ?? throw new System.ArgumentNullException(nameof(entityEntryMappings));
 
             this.items = items;
             this.entityEntryMappings = entityEntryMappings;

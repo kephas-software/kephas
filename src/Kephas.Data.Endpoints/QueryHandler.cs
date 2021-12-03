@@ -37,7 +37,7 @@ namespace Kephas.Data.Endpoints
         public QueryHandler(IContextFactory contextFactory, IClientQueryProcessor clientQueryExecutor)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
+            clientQueryExecutor = clientQueryExecutor ?? throw new System.ArgumentNullException(nameof(clientQueryExecutor));
 
             this.contextFactory = contextFactory;
             this.clientQueryExecutor = clientQueryExecutor;

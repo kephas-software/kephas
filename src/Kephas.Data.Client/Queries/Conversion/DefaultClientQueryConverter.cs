@@ -58,8 +58,8 @@ namespace Kephas.Data.Client.Queries.Conversion
             IRuntimeTypeRegistry typeRegistry)
         {
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
-            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
-            Requires.NotNull(converterFactories, nameof(converterFactories));
+            projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
+            converterFactories = converterFactories ?? throw new System.ArgumentNullException(nameof(converterFactories));
 
             this.typeResolver = typeResolver;
             this.projectedTypeResolver = projectedTypeResolver;

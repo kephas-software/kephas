@@ -53,8 +53,8 @@ namespace Kephas.Application.Console
         public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(console, nameof(console));
-            Requires.NotNull(commandProcessor, nameof(commandProcessor));
+            console = console ?? throw new System.ArgumentNullException(nameof(console));
+            commandProcessor = commandProcessor ?? throw new System.ArgumentNullException(nameof(commandProcessor));
 
             this.Console = console;
             this.commandProcessor = commandProcessor;

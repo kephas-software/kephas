@@ -60,7 +60,7 @@ namespace Kephas.Data
             bool isThreadSafe)
             : base(injector, isThreadSafe)
         {
-            Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
+            dataContextFactory = dataContextFactory ?? throw new System.ArgumentNullException(nameof(dataContextFactory));
             dataStoreProvider = dataStoreProvider ?? throw new ArgumentNullException(nameof(dataStoreProvider));
 
             this.dataContextFactory = dataContextFactory;

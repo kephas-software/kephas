@@ -63,7 +63,7 @@ namespace Kephas.Data.Store
         /// </returns>
         public IDataStore GetDataStore(string dataStoreName, IContext? context = null)
         {
-            Requires.NotNull(dataStoreName, nameof(dataStoreName));
+            dataStoreName = dataStoreName ?? throw new System.ArgumentNullException(nameof(dataStoreName));
 
             return DataStoreMappings.GetOrAdd(
                 dataStoreName,

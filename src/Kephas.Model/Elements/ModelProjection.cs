@@ -29,7 +29,7 @@ namespace Kephas.Model.Elements
         public ModelProjection(IModelConstructionContext constructionContext, string name, string aggregatedProjectionName)
             : base(constructionContext, name)
         {
-            Requires.NotNull(aggregatedProjectionName, nameof(aggregatedProjectionName));
+            aggregatedProjectionName = aggregatedProjectionName ?? throw new System.ArgumentNullException(nameof(aggregatedProjectionName));
 
             this.Annotations = new List<IAnnotation>();
             this.AggregatedProjectionName = aggregatedProjectionName;

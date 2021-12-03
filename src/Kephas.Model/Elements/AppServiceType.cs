@@ -43,7 +43,7 @@ namespace Kephas.Model.Elements
             string name)
             : base(constructionContext, name)
         {
-            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
+            appServiceInfo = appServiceInfo ?? throw new System.ArgumentNullException(nameof(appServiceInfo));
 
             this.appServiceInfo = appServiceInfo;
             this.injector = constructionContext.Injector;

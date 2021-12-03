@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="url">The endpoint URL.</param>
         public Endpoint(Uri url)
         {
-            Requires.NotNull(url, nameof(url));
+            url = url ?? throw new System.ArgumentNullException(nameof(url));
 
             this.Url = url;
             (this.Scheme, this.AppId, this.AppInstanceId, this.EndpointId) = this.ComputeAppEndpoint(url);

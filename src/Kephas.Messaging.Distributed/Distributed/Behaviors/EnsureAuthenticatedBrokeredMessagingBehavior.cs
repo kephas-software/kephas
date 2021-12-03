@@ -41,7 +41,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
         /// <param name="authenticationService">The authentication service.</param>
         public EnsureAuthenticatedBrokeredMessagingBehavior(IAuthenticationService authenticationService)
         {
-            Requires.NotNull(authenticationService, nameof(authenticationService));
+            authenticationService = authenticationService ?? throw new System.ArgumentNullException(nameof(authenticationService));
 
             this.authenticationService = authenticationService;
         }

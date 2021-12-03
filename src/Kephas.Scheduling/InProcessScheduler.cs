@@ -186,7 +186,7 @@ namespace Kephas.Scheduling
             Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(scheduledJob, nameof(scheduledJob));
+            scheduledJob = scheduledJob ?? throw new System.ArgumentNullException(nameof(scheduledJob));
 
             using var schedulingContext = this.CreateSchedulingContext(options);
 
@@ -280,7 +280,7 @@ namespace Kephas.Scheduling
             Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(trigger, nameof(trigger));
+            trigger = trigger ?? throw new System.ArgumentNullException(nameof(trigger));
 
             this.Logger.Info("Cancelling trigger '{trigger}'...", trigger);
 
@@ -313,7 +313,7 @@ namespace Kephas.Scheduling
             Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(scheduledJob, nameof(scheduledJob));
+            scheduledJob = scheduledJob ?? throw new System.ArgumentNullException(nameof(scheduledJob));
 
             if (!(scheduledJob is IJobInfo jobInfo))
             {
@@ -455,7 +455,7 @@ namespace Kephas.Scheduling
             Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(scheduledJob, nameof(scheduledJob));
+            scheduledJob = scheduledJob ?? throw new System.ArgumentNullException(nameof(scheduledJob));
 
             await Task.Yield();
 

@@ -36,9 +36,12 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <param name="runtimeElement">The runtime element.</param>
         protected NamedElementBuilderBase(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
-            Requires.NotNull(constructionContext, nameof(constructionContext));
-            Requires.NotNull(constructionContext.ModelSpace, nameof(constructionContext.ModelSpace));
-            Requires.NotNull(runtimeElement, nameof(runtimeElement));
+            constructionContext = constructionContext ?? throw new System.ArgumentNullException(nameof(constructionContext));
+            runtimeElement = runtimeElement ?? throw new System.ArgumentNullException(nameof(runtimeElement));
+            if (constructionContext.ModelSpace == null)
+            {
+                throw new ArgumentException("The model space is not set in the construction context.", nameof(constructionContext));
+            }
 
             this.ConstructionContext = constructionContext;
 

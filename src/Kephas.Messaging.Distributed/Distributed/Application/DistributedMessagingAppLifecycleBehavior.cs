@@ -39,8 +39,8 @@ namespace Kephas.Messaging.Distributed.Application
         /// <param name="messageBroker">The message broker.</param>
         public DistributedMessagingAppLifecycleBehavior(IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker)
         {
-            Requires.NotNull(messagingConfig, nameof(messagingConfig));
-            Requires.NotNull(messageBroker, nameof(messageBroker));
+            messagingConfig = messagingConfig ?? throw new System.ArgumentNullException(nameof(messagingConfig));
+            messageBroker = messageBroker ?? throw new System.ArgumentNullException(nameof(messageBroker));
 
             this.messagingConfig = messagingConfig;
             this.messageBroker = messageBroker;

@@ -43,7 +43,7 @@ namespace Kephas.Model.Runtime.Construction
             ICollection<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>> modelElementConfigurators,
             IRuntimeTypeRegistry typeRegistry)
         {
-            Requires.NotNull(modelElementConstructors, nameof(modelElementConstructors));
+            modelElementConstructors = modelElementConstructors ?? throw new System.ArgumentNullException(nameof(modelElementConstructors));
 
             this.modelElementConstructors = modelElementConstructors
                     .Order()

@@ -37,7 +37,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <param name="writerFactories">The writer factories.</param>
         public DefaultDataStreamWriteService(ICollection<IExportFactory<IDataStreamWriter, DataStreamWriterMetadata>> writerFactories)
         {
-            Requires.NotNull(writerFactories, nameof(writerFactories));
+            writerFactories = writerFactories ?? throw new System.ArgumentNullException(nameof(writerFactories));
 
             this.writerFactories = writerFactories.Order();
         }
@@ -54,7 +54,7 @@ namespace Kephas.Data.IO.DataStreams
         /// </returns>
         public Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataStream, nameof(dataStream));
+            dataStream = dataStream ?? throw new System.ArgumentNullException(nameof(dataStream));
 
             var writer = this.TryGetWriter(dataStream);
             if (writer == null)

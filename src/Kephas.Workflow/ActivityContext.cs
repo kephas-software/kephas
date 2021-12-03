@@ -43,7 +43,7 @@ namespace Kephas.Workflow
         public ActivityContext(IInjector injector, IWorkflowProcessor workflowProcessor, bool isThreadSafe = false)
             : base(injector, isThreadSafe)
         {
-            Requires.NotNull(workflowProcessor, nameof(workflowProcessor));
+            workflowProcessor = workflowProcessor ?? throw new System.ArgumentNullException(nameof(workflowProcessor));
 
             this.WorkflowProcessor = workflowProcessor;
         }

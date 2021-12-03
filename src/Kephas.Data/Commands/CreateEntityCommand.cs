@@ -38,7 +38,7 @@ namespace Kephas.Data.Commands
         public CreateEntityCommand(IDataBehaviorProvider behaviorProvider, IRuntimeTypeRegistry? typeRegistry = null, ILogManager? logManager = null)
             : base(logManager)
         {
-            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
+            behaviorProvider = behaviorProvider ?? throw new System.ArgumentNullException(nameof(behaviorProvider));
 
             this.BehaviorProvider = behaviorProvider;
             this.typeRegistry = typeRegistry ?? RuntimeTypeRegistry.Instance;

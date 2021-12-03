@@ -78,7 +78,7 @@ namespace Kephas.Data.Conversion
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IDataContext GetDataContext(this IDataConversionContext conversionContext, Type entityType)
         {
-            Requires.NotNull(conversionContext, nameof(conversionContext));
+            conversionContext = conversionContext ?? throw new System.ArgumentNullException(nameof(conversionContext));
 
             return conversionContext.DataSpace[entityType];
         }
@@ -94,7 +94,7 @@ namespace Kephas.Data.Conversion
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IDataContext GetDataContext(this IDataConversionContext conversionContext, object entity)
         {
-            Requires.NotNull(conversionContext, nameof(conversionContext));
+            conversionContext = conversionContext ?? throw new System.ArgumentNullException(nameof(conversionContext));
 
             return conversionContext.DataSpace[entity.GetType()];
         }

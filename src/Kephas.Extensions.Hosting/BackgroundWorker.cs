@@ -33,7 +33,7 @@ namespace Kephas.Extensions.Hosting
         /// <param name="logManager">Optional. The log manager.</param>
         public BackgroundWorker(Func<CancellationToken, Task> executeFunc, ILogManager? logManager = null)
         {
-            Requires.NotNull(executeFunc, nameof(executeFunc));
+            executeFunc = executeFunc ?? throw new System.ArgumentNullException(nameof(executeFunc));
 
             this.executeFunc = executeFunc;
             this.Logger = (logManager ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType());

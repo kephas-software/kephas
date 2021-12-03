@@ -60,9 +60,9 @@ namespace Kephas.Data.IO.Import
             : base(contextFactory)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));
+            dataStreamReadService = dataStreamReadService ?? throw new System.ArgumentNullException(nameof(dataStreamReadService));
             conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
-            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
+            projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
 
             this.contextFactory = contextFactory;
             this.dataStreamReadService = dataStreamReadService;
@@ -97,7 +97,7 @@ namespace Kephas.Data.IO.Import
         {
             var context = this.CreateDataImportContext(optionsConfig);
 
-            Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
+            context.DataSpace = context.DataSpace ?? throw new ArgumentNullException(nameof(context.DataSpace));
 
             var job = new DataSourceImportJob(dataSource, context, this.dataStreamReadService, this.ConversionService, this.projectedTypeResolver, this.behaviorFactories);
             return job.ExecuteAsync(cancellationToken);

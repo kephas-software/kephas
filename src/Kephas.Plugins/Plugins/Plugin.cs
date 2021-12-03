@@ -41,7 +41,7 @@ namespace Kephas.Plugins
         /// <param name="pluginData">Optional. Information describing the plugin.</param>
         internal Plugin(PluginInfo pluginInfo, PluginData? pluginData = null)
         {
-            Requires.NotNull(pluginInfo, nameof(pluginInfo));
+            pluginInfo = pluginInfo ?? throw new System.ArgumentNullException(nameof(pluginInfo));
 
             this.pluginInfo = pluginInfo;
             this.pluginData = pluginData;

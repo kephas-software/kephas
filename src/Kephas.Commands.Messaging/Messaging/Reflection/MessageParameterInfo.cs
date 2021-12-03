@@ -29,7 +29,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <param name="propertyInfo">The property info.</param>
         protected internal MessageParameterInfo(IPropertyInfo propertyInfo)
         {
-            Requires.NotNull(propertyInfo, nameof(propertyInfo));
+            propertyInfo = propertyInfo ?? throw new System.ArgumentNullException(nameof(propertyInfo));
 
             this.propertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;

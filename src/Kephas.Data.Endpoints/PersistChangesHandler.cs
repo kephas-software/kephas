@@ -56,9 +56,9 @@ namespace Kephas.Data.Endpoints
             IProjectedTypeResolver projectedTypeResolver,
             IExportFactory<IDataSpace> dataSpaceFactory)
         {
-            Requires.NotNull(dataConversionService, nameof(dataConversionService));
-            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
-            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
+            dataConversionService = dataConversionService ?? throw new System.ArgumentNullException(nameof(dataConversionService));
+            projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
+            dataSpaceFactory = dataSpaceFactory ?? throw new System.ArgumentNullException(nameof(dataSpaceFactory));
 
             this.dataConversionService = dataConversionService;
             this.projectedTypeResolver = projectedTypeResolver;

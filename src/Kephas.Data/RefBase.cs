@@ -34,8 +34,8 @@ namespace Kephas.Data
         /// <param name="refFieldName">The name of the reference field.</param>
         protected RefBase(object containerEntity, string refFieldName)
         {
-            Requires.NotNull(containerEntity, nameof(containerEntity));
-            Requires.NotNull(refFieldName, nameof(refFieldName));
+            containerEntity = containerEntity ?? throw new System.ArgumentNullException(nameof(containerEntity));
+            refFieldName = refFieldName ?? throw new System.ArgumentNullException(nameof(refFieldName));
 
             this.containerEntityRef = new WeakReference<object>(containerEntity);
             this.RefFieldName = refFieldName;

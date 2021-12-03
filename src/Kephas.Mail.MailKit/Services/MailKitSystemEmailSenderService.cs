@@ -34,7 +34,7 @@ namespace Kephas.Mail.Services
         /// <param name="systemEmailSenderConfig">The system email sender configuration.</param>
         public MailKitSystemEmailSenderService(IConfiguration<SystemSmtpSettings> systemEmailSenderConfig)
         {
-            Requires.NotNull(systemEmailSenderConfig, nameof(systemEmailSenderConfig));
+            systemEmailSenderConfig = systemEmailSenderConfig ?? throw new System.ArgumentNullException(nameof(systemEmailSenderConfig));
 
             this.systemEmailSenderConfig = systemEmailSenderConfig;
         }

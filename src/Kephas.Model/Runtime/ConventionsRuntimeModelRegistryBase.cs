@@ -135,7 +135,7 @@ namespace Kephas.Model.Runtime
         private static IEnumerable<Type> ResolveTypes(IAmbientServices ambientServices, ITypeLoader typeLoader)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            Requires.NotNull(typeLoader, nameof(typeLoader));
+            typeLoader = typeLoader ?? throw new System.ArgumentNullException(nameof(typeLoader));
 
             var assemblies = ambientServices.GetAppAssemblies();
             foreach (var assembly in assemblies)

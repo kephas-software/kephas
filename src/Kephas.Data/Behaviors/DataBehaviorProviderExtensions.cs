@@ -32,7 +32,7 @@ namespace Kephas.Data.Behaviors
             this IDataBehaviorProvider behaviorProvider,
             object obj)
         {
-            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
+            behaviorProvider = behaviorProvider ?? throw new System.ArgumentNullException(nameof(behaviorProvider));
 
             if (obj == null)
             {

@@ -60,8 +60,8 @@ namespace Kephas.Model
             : base(contextFactory)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
-            Requires.NotNull(modelInfoProviders, nameof(modelInfoProviders));
+            runtimeModelElementFactory = runtimeModelElementFactory ?? throw new System.ArgumentNullException(nameof(runtimeModelElementFactory));
+            modelInfoProviders = modelInfoProviders ?? throw new System.ArgumentNullException(nameof(modelInfoProviders));
 
             this.ContextFactory = contextFactory;
             this.ModelInfoProviders = modelInfoProviders;
@@ -166,7 +166,7 @@ namespace Kephas.Model
         /// </returns>
         protected virtual IModelSpace CreateModelSpace(IModelConstructionContext constructionContext)
         {
-            Requires.NotNull(constructionContext, nameof(constructionContext));
+            constructionContext = constructionContext ?? throw new System.ArgumentNullException(nameof(constructionContext));
 
             return new DefaultModelSpace(constructionContext);
         }

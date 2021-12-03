@@ -32,7 +32,7 @@ namespace Kephas.Data.Store
         /// <param name="entityActivator">Optional. The entity activator.</param>
         public DataStore(string name, string kind, Type? dataContextType = null, IDataContextSettings? dataContextSettings = null, IActivator? entityActivator = null)
         {
-            Requires.NotNull(name, nameof(name));
+            name = name ?? throw new System.ArgumentNullException(nameof(name));
             Requires.NotNullOrEmpty(kind, nameof(kind));
 
             this.Name = name;

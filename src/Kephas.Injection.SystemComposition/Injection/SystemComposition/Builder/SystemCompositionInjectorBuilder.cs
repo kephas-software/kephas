@@ -127,7 +127,7 @@ namespace Kephas.Injection.SystemComposition.Builder
         /// </returns>
         public virtual SystemCompositionInjectorBuilder WithExportProvider(IExportProvider exportProvider)
         {
-            Requires.NotNull(exportProvider, nameof(exportProvider));
+            exportProvider = exportProvider ?? throw new System.ArgumentNullException(nameof(exportProvider));
 
             this.ExportProviders.Add(exportProvider);
 

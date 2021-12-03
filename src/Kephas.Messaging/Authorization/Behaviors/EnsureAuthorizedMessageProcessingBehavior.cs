@@ -61,8 +61,8 @@ namespace Kephas.Messaging.Authorization.Behaviors
             IAuthorizationService authorizationService,
             IAuthorizationScopeService authorizationScopeService)
         {
-            Requires.NotNull(authorizationService, nameof(authorizationService));
-            Requires.NotNull(authorizationScopeService, nameof(authorizationScopeService));
+            authorizationService = authorizationService ?? throw new System.ArgumentNullException(nameof(authorizationService));
+            authorizationScopeService = authorizationScopeService ?? throw new System.ArgumentNullException(nameof(authorizationScopeService));
 
             this.authorizationService = authorizationService;
             this.authorizationScopeService = authorizationScopeService;

@@ -29,7 +29,7 @@ namespace Kephas.Injection.SystemComposition.ScopeFactory
         /// <param name="scopedContextFactory">The scoped context factory.</param>
         protected ScopeFactoryBase(ExportFactory<CompositionContext> scopedContextFactory)
         {
-            Requires.NotNull(scopedContextFactory, nameof(scopedContextFactory));
+            scopedContextFactory = scopedContextFactory ?? throw new System.ArgumentNullException(nameof(scopedContextFactory));
 
             this.scopedContextFactory = scopedContextFactory;
         }

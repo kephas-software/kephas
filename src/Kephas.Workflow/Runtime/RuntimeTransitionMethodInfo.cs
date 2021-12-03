@@ -40,7 +40,7 @@ namespace Kephas.Workflow.Runtime
         internal RuntimeTransitionMethodInfo(IRuntimeTypeRegistry typeRegistry, MethodInfo methodInfo)
             : base(typeRegistry)
         {
-            Requires.NotNull(methodInfo, nameof(methodInfo));
+            methodInfo = methodInfo ?? throw new System.ArgumentNullException(nameof(methodInfo));
 
             const string AsyncEnding = "Async";
 

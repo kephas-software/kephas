@@ -40,7 +40,7 @@ namespace Kephas.Data.Adapters
         /// <param name="collectionImplementation">The collection implementation.</param>
         public CollectionAdapter(ICollection<TEntityImplementation> collectionImplementation)
         {
-            Requires.NotNull(collectionImplementation, nameof(collectionImplementation));
+            collectionImplementation = collectionImplementation ?? throw new System.ArgumentNullException(nameof(collectionImplementation));
 
             this.collectionImplementation = collectionImplementation;
         }
@@ -100,7 +100,7 @@ namespace Kephas.Data.Adapters
         /// <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
         public void CopyTo(TEntity[] array, int arrayIndex)
         {
-            Requires.NotNull(array, nameof(array));
+            array = array ?? throw new System.ArgumentNullException(nameof(array));
             if (arrayIndex < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));

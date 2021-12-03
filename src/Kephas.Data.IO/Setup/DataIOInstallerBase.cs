@@ -48,8 +48,8 @@ namespace Kephas.Data.IO.Setup
             : base(contextFactory)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(dataImportService, nameof(dataImportService));
-            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
+            dataImportService = dataImportService ?? throw new System.ArgumentNullException(nameof(dataImportService));
+            dataSpaceFactory = dataSpaceFactory ?? throw new System.ArgumentNullException(nameof(dataSpaceFactory));
 
             this.ContextFactory = contextFactory;
             this.DataImportService = dataImportService;

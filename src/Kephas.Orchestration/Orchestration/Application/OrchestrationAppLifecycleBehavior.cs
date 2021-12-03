@@ -54,10 +54,10 @@ namespace Kephas.Orchestration.Application
             IHostInfoProvider hostInfoProvider)
         {
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(messageHandlerRegistry, nameof(messageHandlerRegistry));
+            messageBroker = messageBroker ?? throw new System.ArgumentNullException(nameof(messageBroker));
+            messageHandlerRegistry = messageHandlerRegistry ?? throw new System.ArgumentNullException(nameof(messageHandlerRegistry));
             eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
-            Requires.NotNull(hostInfoProvider, nameof(hostInfoProvider));
+            hostInfoProvider = hostInfoProvider ?? throw new System.ArgumentNullException(nameof(hostInfoProvider));
 
             this.appRuntime = appRuntime;
             this.messageBroker = messageBroker;

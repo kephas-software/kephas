@@ -82,11 +82,11 @@ namespace Kephas.Orchestration
         {
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
             eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
-            Requires.NotNull(messageBroker, nameof(messageBroker));
+            messageBroker = messageBroker ?? throw new System.ArgumentNullException(nameof(messageBroker));
             messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
-            Requires.NotNull(processStarterFactoryFactory, nameof(processStarterFactoryFactory));
+            processStarterFactoryFactory = processStarterFactoryFactory ?? throw new System.ArgumentNullException(nameof(processStarterFactoryFactory));
             configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            Requires.NotNull(hostInfoProvider, nameof(hostInfoProvider));
+            hostInfoProvider = hostInfoProvider ?? throw new System.ArgumentNullException(nameof(hostInfoProvider));
 
             this.AppRuntime = appRuntime;
             this.EventHub = eventHub;

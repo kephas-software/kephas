@@ -29,7 +29,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="classifierFilter">The classifier filter.</param>
         public AspectAttribute(Func<IClassifier, bool> classifierFilter)
         {
-            Requires.NotNull(classifierFilter, nameof(classifierFilter));
+            classifierFilter = classifierFilter ?? throw new System.ArgumentNullException(nameof(classifierFilter));
 
             this.ClassifierFilter = classifierFilter;
         }

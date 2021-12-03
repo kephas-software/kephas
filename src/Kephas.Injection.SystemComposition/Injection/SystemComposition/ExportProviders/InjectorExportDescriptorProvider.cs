@@ -32,7 +32,7 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
         /// <param name="injectionContainer">The injector.</param>
         public InjectorExportDescriptorProvider(IInjector injectionContainer)
         {
-            Requires.NotNull(injectionContainer, nameof(injectionContainer));
+            injectionContainer = injectionContainer ?? throw new System.ArgumentNullException(nameof(injectionContainer));
             this.injectionContainer = injectionContainer;
         }
 

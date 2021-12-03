@@ -33,7 +33,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// <param name="unaryExpressionFactory">The unary expression factory.</param>
         protected UnaryExpressionConverterBase(Func<Expression, UnaryExpression> unaryExpressionFactory)
         {
-            Requires.NotNull(unaryExpressionFactory, nameof(unaryExpressionFactory));
+            unaryExpressionFactory = unaryExpressionFactory ?? throw new System.ArgumentNullException(nameof(unaryExpressionFactory));
 
             this.unaryExpressionFactory = unaryExpressionFactory;
         }

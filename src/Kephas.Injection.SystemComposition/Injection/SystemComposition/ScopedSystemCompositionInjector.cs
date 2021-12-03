@@ -26,7 +26,7 @@ namespace Kephas.Injection.SystemComposition
         /// <param name="export">The export.</param>
         public ScopedSystemCompositionInjector(Export<CompositionContext> export)
         {
-            Requires.NotNull(export, nameof(export));
+            export = export ?? throw new System.ArgumentNullException(nameof(export));
 
             this.export = export;
             this.Initialize(this.export.Value);

@@ -45,9 +45,9 @@ namespace Kephas.Messaging
             IList<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>> handlerProviderFactories,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
         {
-            Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(handlerProviderFactories, nameof(handlerProviderFactories));
-            Requires.NotNull(handlerFactories, nameof(handlerFactories));
+            messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
+            handlerProviderFactories = handlerProviderFactories ?? throw new System.ArgumentNullException(nameof(handlerProviderFactories));
+            handlerFactories = handlerFactories ?? throw new System.ArgumentNullException(nameof(handlerFactories));
 
             this.handlerProviders = handlerProviderFactories
                 .Order()

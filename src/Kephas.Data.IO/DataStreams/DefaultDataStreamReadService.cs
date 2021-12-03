@@ -36,7 +36,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <param name="readerFactories">The reader factories.</param>
         public DefaultDataStreamReadService(ICollection<IExportFactory<IDataStreamReader, DataStreamReaderMetadata>> readerFactories)
         {
-            Requires.NotNull(readerFactories, nameof(readerFactories));
+            readerFactories = readerFactories ?? throw new System.ArgumentNullException(nameof(readerFactories));
 
             this.readerFactories = readerFactories.Order();
         }
@@ -52,7 +52,7 @@ namespace Kephas.Data.IO.DataStreams
         /// </returns>
         public Task<object> ReadAsync(DataStream dataStream, IDataIOContext context, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(dataStream, nameof(dataStream));
+            dataStream = dataStream ?? throw new System.ArgumentNullException(nameof(dataStream));
 
             var reader = this.TryGetReader(dataStream);
             if (reader == null)

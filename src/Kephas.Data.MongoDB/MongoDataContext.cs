@@ -33,7 +33,7 @@ namespace Kephas.Data.MongoDB
     [SupportedDataStoreKinds(DataStoreKind.MongoDB)]
     public class MongoDataContext : DataContextBase
     {
-        private static readonly ConcurrentDictionary<string, MongoClient> MongoClients = new ();
+        private static readonly ConcurrentDictionary<string, MongoClient> MongoClients = new();
 
         private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly IMongoNamingStrategy namingStrategy;
@@ -55,10 +55,10 @@ namespace Kephas.Data.MongoDB
             : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
-            Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
-            Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
+            dataCommandProvider = dataCommandProvider ?? throw new System.ArgumentNullException(nameof(dataCommandProvider));
+            dataBehaviorProvider = dataBehaviorProvider ?? throw new System.ArgumentNullException(nameof(dataBehaviorProvider));
             typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
-            Requires.NotNull(namingStrategy, nameof(namingStrategy));
+            namingStrategy = namingStrategy ?? throw new System.ArgumentNullException(nameof(namingStrategy));
 
             this.typeRegistry = typeRegistry;
             this.namingStrategy = namingStrategy;
@@ -104,12 +104,15 @@ namespace Kephas.Data.MongoDB
         /// <param name="dataInitializationContext">The data initialization context.</param>
         protected override void Initialize(IDataInitializationContext dataInitializationContext)
         {
-            Requires.NotNull(
-                dataInitializationContext.DataStore,
-                nameof(dataInitializationContext.DataStore));
-            Requires.NotNull(
-                dataInitializationContext.DataStore.DataContextSettings,
-                nameof(dataInitializationContext.DataStore.DataContextSettings));
+            if (dataInitializationContext.DataStore == null)
+            {
+                throw new ArgumentException("The data store is not set in the initialization context.", nameof(dataInitializationContext));
+            }
+
+            if (dataInitializationContext.DataStore.DataContextSettings == null)
+            {
+                throw new ArgumentException("The data context settings are not set in the data store from the initialization context.", nameof(dataInitializationContext));
+            }
 
             base.Initialize(dataInitializationContext);
 

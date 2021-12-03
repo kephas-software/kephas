@@ -231,7 +231,7 @@ namespace Kephas.Plugins
             where TContext : class, IPluginContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNull(transaction, nameof(transaction));
+            transaction = transaction ?? throw new System.ArgumentNullException(nameof(transaction));
 
             context.Transaction = transaction;
             return context;

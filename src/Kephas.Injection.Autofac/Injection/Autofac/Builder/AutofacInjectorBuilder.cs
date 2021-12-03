@@ -51,7 +51,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// </returns>
         public AutofacInjectorBuilder WithConfig(Action<ContainerBuilder> config)
         {
-            Requires.NotNull(config, nameof(config));
+            config = config ?? throw new System.ArgumentNullException(nameof(config));
 
             this.builderConfigs.Add(config);
 

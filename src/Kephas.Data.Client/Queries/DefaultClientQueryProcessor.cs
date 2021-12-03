@@ -61,11 +61,11 @@ namespace Kephas.Data.Client.Queries
             IRuntimeTypeRegistry typeRegistry)
         {
             contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
-            Requires.NotNull(clientQueryConverter, nameof(clientQueryConverter));
+            clientQueryConverter = clientQueryConverter ?? throw new System.ArgumentNullException(nameof(clientQueryConverter));
             conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
-            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
-            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
+            projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
+            dataSpaceFactory = dataSpaceFactory ?? throw new System.ArgumentNullException(nameof(dataSpaceFactory));
 
             this.DataSpaceFactory = dataSpaceFactory;
             this.TypeRegistry = typeRegistry;
