@@ -131,16 +131,10 @@ namespace Kephas.Application.AspNetCore.Hosting
             {
                 if (this.bootstrapTask == null)
                 {
-                    if (!this.IsRunning)
-                    {
-                        throw new ApplicationException("The bootstrap task is not initialized!");
-                    }
-                }
-                else
-                {
-                    await this.bootstrapTask.PreserveThreadContext();
+                    throw new ApplicationException("The bootstrap task is not initialized!");
                 }
 
+                await this.bootstrapTask.PreserveThreadContext();
                 await next.Invoke();
             });
 
@@ -151,18 +145,12 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.IsRunning ? null : this.RunAsync());
+            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.RunAsync());
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
-            appLifetime.ApplicationStopped.Register(() =>
-            {
-                if (!this.IsRunning)
-                {
-                    this.DisposeServicesContainer();
-                }
-            });
+            appLifetime.ApplicationStopped.Register(() => this.DisposeServicesContainer());
         }
 
         /// <summary>
