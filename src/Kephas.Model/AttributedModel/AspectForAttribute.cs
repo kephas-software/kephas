@@ -30,7 +30,7 @@ namespace Kephas.Model.AttributedModel
         public AspectForAttribute(params Type[] runtimeTypes)
             : base(GetRuntimeTypesFilter(runtimeTypes))
         {
-            Requires.NotNullOrEmpty(runtimeTypes, nameof(runtimeTypes));
+            if (runtimeTypes == null || runtimeTypes.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(runtimeTypes));
         }
 
         /// <summary>

@@ -72,7 +72,6 @@
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
         <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
         <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
         <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />

@@ -25,7 +25,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <param name="operator">The operator.</param>
         public OperatorAttribute(string @operator)
         {
-            Requires.NotNullOrEmpty(@operator, nameof(@operator));
+            if (string.IsNullOrEmpty(@operator)) throw new ArgumentException("Value must not be null or empty.", nameof(@operator));
 
             this.Value = @operator;
         }

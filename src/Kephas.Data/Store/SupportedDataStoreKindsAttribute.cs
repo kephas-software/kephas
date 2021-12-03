@@ -28,7 +28,7 @@ namespace Kephas.Data.Store
         /// <param name="dataStoreKinds">A variable-length parameters list containing data store kinds.</param>
         public SupportedDataStoreKindsAttribute(params DataStoreKind[] dataStoreKinds)
         {
-            Requires.NotNullOrEmpty(dataStoreKinds, nameof(dataStoreKinds));
+            if (dataStoreKinds == null || dataStoreKinds.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(dataStoreKinds));
 
             this.Value = dataStoreKinds.Select(k => k.ToString()).ToArray();
         }
@@ -39,7 +39,7 @@ namespace Kephas.Data.Store
         /// <param name="dataStoreKinds">A variable-length parameters list containing data store kinds.</param>
         public SupportedDataStoreKindsAttribute(params string[] dataStoreKinds)
         {
-            Requires.NotNullOrEmpty(dataStoreKinds, nameof(dataStoreKinds));
+            if (dataStoreKinds == null || dataStoreKinds.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(dataStoreKinds));
 
             this.Value = dataStoreKinds;
         }

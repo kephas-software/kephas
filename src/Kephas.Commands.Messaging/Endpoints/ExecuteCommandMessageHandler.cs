@@ -47,7 +47,7 @@ namespace Kephas.Commands.Endpoints
             IMessagingContext context,
             CancellationToken token)
         {
-            Requires.NotNullOrEmpty(message.Command, nameof(message.Command));
+            if (string.IsNullOrEmpty(message.Command)) throw new ArgumentException("The command name must not be null or empty.", nameof(message.Command));
 
             var result = await this.lazyCommandProcessor.Value
                 .ProcessAsync(message.Command!, message.Args, context, token).PreserveThreadContext();

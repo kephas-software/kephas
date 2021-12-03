@@ -66,7 +66,6 @@
         <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
         <ProjectReference Include="..\Kephas.Data.Endpoints.Messages\Kephas.Data.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
 

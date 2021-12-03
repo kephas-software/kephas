@@ -63,7 +63,7 @@ namespace Kephas.Data.Linq
         public DataContextQueryProvider(IQueryOperationContext queryOperationContext, IQueryProvider nativeQueryProvider)
         {
             queryOperationContext = queryOperationContext ?? throw new System.ArgumentNullException(nameof(queryOperationContext));
-            Requires.NotNull(queryOperationContext.DataContext, nameof(queryOperationContext.DataContext));
+            if (queryOperationContext.DataContext == null) throw new System.ArgumentNullException(nameof(queryOperationContext.DataContext));
             nativeQueryProvider = nativeQueryProvider ?? throw new System.ArgumentNullException(nameof(nativeQueryProvider));
 
             this.QueryOperationContext = queryOperationContext;

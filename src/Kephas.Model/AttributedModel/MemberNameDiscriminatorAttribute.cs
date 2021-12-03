@@ -26,7 +26,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="nameDiscriminator">The name discriminator.</param>
         public MemberNameDiscriminatorAttribute(string nameDiscriminator)
         {
-            Requires.NotNullOrEmpty(nameDiscriminator, nameof(nameDiscriminator));
+            if (string.IsNullOrEmpty(nameDiscriminator)) throw new System.ArgumentException("Value must not be null or empty.", nameof(nameDiscriminator));
 
             this.NameDiscriminator = nameDiscriminator;
         }

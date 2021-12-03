@@ -499,7 +499,7 @@ namespace Kephas.Data
         public static async Task<object?> ExecuteAsync(this IDataContext dataContext, string commandText, CancellationToken cancellationToken = default)
         {
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            Requires.NotNullOrEmpty(commandText, nameof(commandText));
+            if (string.IsNullOrEmpty(commandText)) throw new System.ArgumentException("Value must not be null or empty.", nameof(commandText));
 
             var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
             var executeContext = new ExecuteContext(dataContext) { CommandText = commandText };

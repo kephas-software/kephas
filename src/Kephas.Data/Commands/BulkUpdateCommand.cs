@@ -56,10 +56,10 @@ namespace Kephas.Data.Commands
         public override async Task<IBulkDataOperationResult> ExecuteAsync(IBulkUpdateContext operationContext, CancellationToken cancellationToken = default)
         {
             operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
-            Requires.NotNull(operationContext.DataContext, nameof(operationContext.DataContext));
-            Requires.NotNull(operationContext.EntityType, nameof(operationContext.EntityType));
-            Requires.NotNull(operationContext.Criteria, nameof(operationContext.Criteria));
-            Requires.NotNull(operationContext.Values, nameof(operationContext.Values));
+            if (operationContext.DataContext == null) throw new System.ArgumentNullException(nameof(operationContext.DataContext));
+            if (operationContext.EntityType == null) throw new System.ArgumentNullException(nameof(operationContext.EntityType));
+            if (operationContext.Criteria == null) throw new System.ArgumentNullException(nameof(operationContext.Criteria));
+            if (operationContext.Values == null) throw new System.ArgumentNullException(nameof(operationContext.Values));
 
             var opAsync = BulkUpdateAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IBulkDataOperationResult>)opAsync.Call(this, operationContext, cancellationToken);
@@ -81,7 +81,10 @@ namespace Kephas.Data.Commands
             CancellationToken cancellationToken)
             where T : class
         {
-            Requires.NotNull(bulkUpdateContext.Values, "bulkUpdateContext.Values");
+            if (bulkUpdateContext.Values == null)
+            {
+                throw new ArgumentException("Values are not set in the update context", nameof(bulkUpdateContext));
+            }
 
             var dataContext = bulkUpdateContext.DataContext;
             var criteria = this.GetMatchingCriteria<T>(bulkUpdateContext);

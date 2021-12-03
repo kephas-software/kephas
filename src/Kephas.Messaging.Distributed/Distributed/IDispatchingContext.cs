@@ -165,7 +165,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNullOrEmpty(endpointId, nameof(endpointId));
+            if (string.IsNullOrEmpty(endpointId)) throw new System.ArgumentException("Value must not be null or empty.", nameof(endpointId));
 
             context.BrokeredMessage.Sender = context.CreateAppInstanceEndpoint(endpointId, scheme);
 
@@ -436,7 +436,7 @@ namespace Kephas.Messaging.Distributed
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            Requires.NotNullOrEmpty(messageId, nameof(messageId));
+            if (string.IsNullOrEmpty(messageId)) throw new System.ArgumentException("Value must not be null or empty.", nameof(messageId));
 
             context.BrokeredMessage.ReplyToMessageId = messageId;
             context.BrokeredMessage.TraceReply(trace, null);

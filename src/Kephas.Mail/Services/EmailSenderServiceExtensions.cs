@@ -50,7 +50,7 @@ namespace Kephas.Mail.Services
         public static Task SendAsync(this IEmailSenderService senderService, string toAddress, string subject, string body)
         {
             senderService = senderService ?? throw new System.ArgumentNullException(nameof(senderService));
-            Requires.NotNullOrEmpty(toAddress, nameof(toAddress));
+            if (string.IsNullOrEmpty(toAddress)) throw new System.ArgumentException("Value must not be null or empty.", nameof(toAddress));
 
             var messageBuilder = senderService.CreateEmailMessageBuilder();
             var message = messageBuilder.To(toAddress).Subject(subject).BodyHtml(body).EmailMessage;
@@ -70,7 +70,7 @@ namespace Kephas.Mail.Services
         public static Task SendAsync(this IEmailSenderService senderService, string[] toAddresses, string subject, string body)
         {
             senderService = senderService ?? throw new System.ArgumentNullException(nameof(senderService));
-            Requires.NotNullOrEmpty(toAddresses, nameof(toAddresses));
+            if (toAddresses == null || toAddresses.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(toAddresses));
 
             var messageBuilder = senderService.CreateEmailMessageBuilder();
             var message = messageBuilder.To(toAddresses).Subject(subject).BodyHtml(body).EmailMessage;

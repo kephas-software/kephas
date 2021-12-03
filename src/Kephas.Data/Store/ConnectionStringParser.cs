@@ -31,7 +31,7 @@ namespace Kephas.Data.Store
         /// </returns>
         public static IDictionary<string, string> AsDictionary(string connectionString)
         {
-            Requires.NotNullOrEmpty(connectionString, nameof(connectionString));
+            if (string.IsNullOrEmpty(connectionString)) throw new System.ArgumentException("Value must not be null or empty.", nameof(connectionString));
 
             var keyValuePairs = GetConnectionStringSplits(connectionString)
                                     .ToDictionary(
@@ -51,7 +51,7 @@ namespace Kephas.Data.Store
         /// </returns>
         public static IExpandoBase ToExpando(string connectionString)
         {
-            Requires.NotNullOrEmpty(connectionString, nameof(connectionString));
+            if (string.IsNullOrEmpty(connectionString)) throw new System.ArgumentException("Value must not be null or empty.", nameof(connectionString));
 
             var expando = new Expando(GetConnectionStringSplits(connectionString)
                                     .ToDictionary(

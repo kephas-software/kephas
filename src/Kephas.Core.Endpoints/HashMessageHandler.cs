@@ -47,7 +47,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>The response promise.</returns>
         public override async Task<HashResponseMessage> ProcessAsync(HashMessage message, IMessagingContext context, CancellationToken token)
         {
-            Requires.NotNullOrEmpty(message.Value, nameof(message.Value));
+            if (string.IsNullOrEmpty(message.Value)) throw new ArgumentException("Value must not be null or empty.", nameof(message.Value));
 
             await Task.Yield();
 

@@ -71,7 +71,6 @@
         <ProjectReference Include="..\Kephas.Commands.Endpoints.Messages\Kephas.Commands.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Commands\Kephas.Commands.csproj" />
         <ProjectReference Include="..\Kephas.Core.Endpoints.Messages\Kephas.Core.Endpoints.Messages.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
 

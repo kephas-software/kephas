@@ -49,7 +49,7 @@ namespace Kephas.Data.IO.DataStreams
         /// </returns>
         public static DataStream FromJsonFile(string filePath, string? name = null)
         {
-            Requires.NotNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath)) throw new System.ArgumentException("Value must not be null or empty.", nameof(filePath));
 
             var fileStream = File.OpenRead(filePath);
 
@@ -89,7 +89,7 @@ namespace Kephas.Data.IO.DataStreams
         /// </returns>
         public static DataStream FromXmlFile(string filePath, string? name = null)
         {
-            Requires.NotNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath)) throw new System.ArgumentException("Value must not be null or empty.", nameof(filePath));
 
             var fileStream = File.OpenRead(filePath);
 
