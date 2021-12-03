@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -280,33 +280,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Blazor.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Blazor.InteractiveTests.Shared", "Tests\Kephas.AspNetCore.Blazor.InteractiveTests\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj", "{27813CE7-46D1-441C-988F-4B87C870DEA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.DependencyInjection.Tests", "Tests\Kephas.Extensions.DependencyInjection.Tests\Kephas.Extensions.DependencyInjection.Tests.csproj", "{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Extensions.DependencyInjection.Tests", "Tests\Kephas.Extensions.DependencyInjection.Tests\Kephas.Extensions.DependencyInjection.Tests.csproj", "{0F77E699-B4B0-4EEA-98FF-15DC00AAF741}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kephas.AspNetCore.Blazor.InteractiveTests", "Kephas.AspNetCore.Blazor.InteractiveTests", "{DE7786B7-0168-412F-AEBA-1D294E78D640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection", "Kephas.Reflection\Kephas.Reflection.csproj", "{1F0CCF32-E424-4822-94C8-293F16CF425A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Reflection", "Kephas.Reflection\Kephas.Reflection.csproj", "{1F0CCF32-E424-4822-94C8-293F16CF425A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Dynamic", "Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj", "{C3856507-F883-4B23-8023-9284A9143032}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Reflection.Dynamic", "Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj", "{C3856507-F883-4B23-8023-9284A9143032}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Abstractions", "Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj", "{7FB487A1-3BF8-4072-A7A6-84F319420BD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.Abstractions", "Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj", "{7FB487A1-3BF8-4072-A7A6-84F319420BD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Operations", "Kephas.Operations\Kephas.Operations.csproj", "{A67270AC-82C1-4F68-A923-9C13CBCA2480}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Operations", "Kephas.Operations\Kephas.Operations.csproj", "{A67270AC-82C1-4F68-A923-9C13CBCA2480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging", "Kephas.Logging\Kephas.Logging.csproj", "{F9917455-4240-49DB-A756-346D42147205}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging", "Kephas.Logging\Kephas.Logging.csproj", "{F9917455-4240-49DB-A756-346D42147205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Configuration", "Kephas.Configuration\Kephas.Configuration.csproj", "{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration", "Kephas.Configuration\Kephas.Configuration.csproj", "{C6A9C5B8-1683-4964-A61D-90CAB1D4A3EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization", "Kephas.Serialization\Kephas.Serialization.csproj", "{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization", "Kephas.Serialization\Kephas.Serialization.csproj", "{1EA85CF6-E2C1-417D-9F2A-BABF83F001F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Interaction", "Kephas.Interaction\Kephas.Interaction.csproj", "{FB364589-A98D-458B-857D-A834D008A3C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Interaction", "Kephas.Interaction\Kephas.Interaction.csproj", "{FB364589-A98D-458B-857D-A834D008A3C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Commands.Endpoints.Messages", "Kephas.Commands.Endpoints.Messages\Kephas.Commands.Endpoints.Messages.csproj", "{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Commands.Endpoints.Messages", "Kephas.Commands.Endpoints.Messages\Kephas.Commands.Endpoints.Messages.csproj", "{A1CDFAA6-1D86-4CCE-92B9-F378A0A7226C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Security", "Kephas.Security\Kephas.Security.csproj", "{7CC3D05A-21E0-4A1D-9E20-84AB3DD5F182}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Security", "Kephas.Security\Kephas.Security.csproj", "{7CC3D05A-21E0-4A1D-9E20-84AB3DD5F182}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Behaviors", "Kephas.Behaviors\Kephas.Behaviors.csproj", "{2F758309-A0B8-4DED-9521-EEAA0E294A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Behaviors", "Kephas.Behaviors\Kephas.Behaviors.csproj", "{2F758309-A0B8-4DED-9521-EEAA0E294A6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Diagnostics.Contracts", "Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj", "{F00C5674-AECC-4B35-AEFE-140FA1D8A1CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Diagnostics.Contracts", "Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj", "{F00C5674-AECC-4B35-AEFE-140FA1D8A1CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.InteractiveTests6", "Tests\Kephas.AspNetCore.InteractiveTests6\Kephas.AspNetCore.InteractiveTests6.csproj", "{8455F875-C88A-45F1-A523-61551D9B40CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -858,6 +860,10 @@ Global
 		{F00C5674-AECC-4B35-AEFE-140FA1D8A1CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F00C5674-AECC-4B35-AEFE-140FA1D8A1CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F00C5674-AECC-4B35-AEFE-140FA1D8A1CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8455F875-C88A-45F1-A523-61551D9B40CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8455F875-C88A-45F1-A523-61551D9B40CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8455F875-C88A-45F1-A523-61551D9B40CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8455F875-C88A-45F1-A523-61551D9B40CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -916,11 +922,12 @@ Global
 		{D686828B-B03F-44AB-97D0-C56985A8ED8D} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{D55E4277-2A60-4D26-8F59-52A3CCE13CCE} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{803C18D2-F5D5-4546-A7E2-FD6B7969889B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65} = {DE7786B7-0168-412F-AEBA-1D294E78D640}
+		{258B6D61-DA0B-4D11-939D-EBCF65339F9A} = {DE7786B7-0168-412F-AEBA-1D294E78D640}
+		{27813CE7-46D1-441C-988F-4B87C870DEA4} = {DE7786B7-0168-412F-AEBA-1D294E78D640}
 		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{DE7786B7-0168-412F-AEBA-1D294E78D640} = {816692E7-24DC-46B5-97FB-D314B52D815D}
-		{258B6D61-DA0B-4D11-939D-EBCF65339F9A} = {DE7786B7-0168-412F-AEBA-1D294E78D640}
-		{BE7911E6-51C6-49D1-8DBC-5D9ADC3D4A65} = {DE7786B7-0168-412F-AEBA-1D294E78D640}
-		{27813CE7-46D1-441C-988F-4B87C870DEA4} = {DE7786B7-0168-412F-AEBA-1D294E78D640}
+		{8455F875-C88A-45F1-A523-61551D9B40CD} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
