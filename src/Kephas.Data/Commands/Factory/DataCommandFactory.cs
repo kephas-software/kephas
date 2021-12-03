@@ -17,7 +17,6 @@ namespace Kephas.Data.Commands.Factory
     using System.Linq;
     using System.Reflection;
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

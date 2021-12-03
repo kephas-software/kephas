@@ -11,7 +11,6 @@
 namespace Kephas.Data.Validation
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
 
     /// <summary>

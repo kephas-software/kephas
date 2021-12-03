@@ -17,7 +17,6 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     using System.Reflection;
 
     using Kephas.Data.Client.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Base class for MethodCallExpression based converters.

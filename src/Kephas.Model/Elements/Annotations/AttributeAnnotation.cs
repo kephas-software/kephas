@@ -13,7 +13,6 @@ namespace Kephas.Model.Elements.Annotations
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Runtime;
 

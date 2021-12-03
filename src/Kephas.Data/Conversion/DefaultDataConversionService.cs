@@ -22,7 +22,6 @@ namespace Kephas.Data.Conversion
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;

@@ -28,7 +28,6 @@ namespace Kephas.Scheduling.Quartz.JobStore
     using Kephas.Data;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Linq;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Scheduling.Quartz.JobStore.Model;
     using Kephas.Scheduling.Quartz.JobStore.Repositories;
@@ -217,16 +216,16 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// Initializes the service.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        void IInitializable.Initialize(IContext context)
+        void IInitializable.Initialize(IContext? context)
         {
-            if (!(context is ISchedulingJobStoreContext jobStoreContext))
+            if (context is not ISchedulingJobStoreContext jobStoreContext)
             {
                 // TODO localization
                 throw new InvalidOperationException(
                     $"The context provided must be a {typeof(ISchedulingJobStoreContext)}.");
             }
 
-            Requires.NotNull(jobStoreContext.DataContextFactory, nameof(jobStoreContext.DataContextFactory));
+            if (jobStoreContext.DataContextFactory == null) throw new System.ArgumentNullException(nameof(jobStoreContext.DataContextFactory));
 
             this.dataContextFactory = jobStoreContext.DataContextFactory;
         }

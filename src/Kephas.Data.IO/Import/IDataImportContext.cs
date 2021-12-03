@@ -16,7 +16,6 @@ namespace Kephas.Data.IO.Import
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion;
     using Kephas.Data.IO;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
 
     /// <summary>

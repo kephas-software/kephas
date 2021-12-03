@@ -12,7 +12,6 @@ namespace Kephas.Data.Commands
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
 
     /// <summary>

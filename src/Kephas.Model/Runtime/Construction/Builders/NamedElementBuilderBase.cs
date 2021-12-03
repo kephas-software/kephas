@@ -10,7 +10,6 @@
 
 namespace Kephas.Model.Runtime.Construction.Builders
 {
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Reflection;

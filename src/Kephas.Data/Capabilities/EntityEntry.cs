@@ -18,7 +18,6 @@ namespace Kephas.Data.Capabilities
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
 

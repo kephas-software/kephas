@@ -17,7 +17,6 @@ namespace Kephas.Injection.SystemComposition.Builder
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;

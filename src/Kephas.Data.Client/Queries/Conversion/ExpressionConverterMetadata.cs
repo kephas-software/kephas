@@ -13,7 +13,6 @@ namespace Kephas.Data.Client.Queries.Conversion
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -45,7 +44,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         public ExpressionConverterMetadata(string @operator, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            Requires.NotNullOrEmpty(@operator, nameof(@operator));
+            if (string.IsNullOrEmpty(@operator)) throw new ArgumentException("Value must not be null or empty.", nameof(@operator));
 
             this.Operator = @operator;
         }

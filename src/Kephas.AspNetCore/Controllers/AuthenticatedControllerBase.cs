@@ -13,7 +13,6 @@ namespace Kephas.Application.AspNetCore.Controllers
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Security.Authentication;
     using Kephas.Threading.Tasks;

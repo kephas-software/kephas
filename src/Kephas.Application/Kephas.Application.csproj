@@ -82,7 +82,6 @@
         <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
         <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

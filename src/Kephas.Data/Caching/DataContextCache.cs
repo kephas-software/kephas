@@ -16,7 +16,6 @@ namespace Kephas.Data.Caching
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A basic implementation of a data context cache.

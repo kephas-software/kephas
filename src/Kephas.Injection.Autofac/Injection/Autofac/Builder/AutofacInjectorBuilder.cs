@@ -14,7 +14,6 @@ namespace Kephas.Injection.Autofac.Builder
     using System.Collections.Generic;
 
     using global::Autofac;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Autofac.Metadata;
     using Kephas.Injection.Builder;

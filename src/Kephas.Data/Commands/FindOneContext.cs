@@ -13,7 +13,6 @@ namespace Kephas.Data.Commands
     using System;
     using System.Linq.Expressions;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A find one context.

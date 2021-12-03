@@ -16,7 +16,6 @@ namespace Kephas.Injection.SystemComposition
     using System.Composition;
     using System.Linq;
     using System.Reflection;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.SystemComposition.Resources;
     using Kephas.Injection.SystemComposition.ScopeFactory;

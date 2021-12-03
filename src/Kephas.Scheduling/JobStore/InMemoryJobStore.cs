@@ -14,7 +14,6 @@ namespace Kephas.Scheduling.JobStore
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;

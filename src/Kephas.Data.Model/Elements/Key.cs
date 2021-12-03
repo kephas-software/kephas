@@ -16,7 +16,6 @@ namespace Kephas.Data.Model.Elements
 
     using Kephas.Collections;
     using Kephas.Data.Model.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -39,7 +38,7 @@ namespace Kephas.Data.Model.Elements
         public Key(IModelConstructionContext constructionContext, string name, KeyKind kind, string[] keyProperties)
             : base(constructionContext, name)
         {
-            Requires.NotNullOrEmpty(keyProperties, nameof(keyProperties));
+            if (keyProperties == null || keyProperties.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(keyProperties));
 
             this.Kind = kind;
             this.keyPropertyNames = keyProperties;

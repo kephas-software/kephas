@@ -16,7 +16,6 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO;
     using Kephas.Data.IO.DataStreams;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
 
     /// <summary>

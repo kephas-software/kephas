@@ -14,7 +14,6 @@ namespace Kephas.Data.Setup
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

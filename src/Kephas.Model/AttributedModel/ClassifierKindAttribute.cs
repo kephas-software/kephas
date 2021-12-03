@@ -12,7 +12,6 @@ namespace Kephas.Model.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Attribute for classifier kind.

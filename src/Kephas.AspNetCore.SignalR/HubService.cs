@@ -9,7 +9,6 @@ namespace Kephas.AspNetCore.SignalR
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Microsoft.AspNetCore.SignalR;
 

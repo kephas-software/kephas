@@ -12,7 +12,6 @@ namespace Kephas.Data.Behaviors
 {
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IDataBehaviorProvider"/>.

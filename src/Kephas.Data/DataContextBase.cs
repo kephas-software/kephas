@@ -25,7 +25,6 @@ namespace Kephas.Data
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;

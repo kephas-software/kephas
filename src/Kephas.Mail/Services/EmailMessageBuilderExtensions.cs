@@ -13,7 +13,6 @@ namespace Kephas.Mail.Services
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IEmailMessageBuilder"/>.

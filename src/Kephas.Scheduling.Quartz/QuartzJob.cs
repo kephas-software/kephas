@@ -15,7 +15,6 @@ namespace Kephas.Scheduling.Quartz
 
     using global::Quartz;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
     using Kephas.Workflow;

@@ -12,7 +12,6 @@ namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
 
     /// <summary>

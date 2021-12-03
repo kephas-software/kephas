@@ -14,7 +14,6 @@ namespace Kephas.Messaging.Distributed
     using System.Collections.Generic;
 
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;

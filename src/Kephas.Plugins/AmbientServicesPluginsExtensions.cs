@@ -14,7 +14,6 @@ namespace Kephas
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Licensing;
     using Kephas.Plugins.Application;

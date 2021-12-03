@@ -16,7 +16,6 @@ namespace Kephas.Data.DataSources
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
 

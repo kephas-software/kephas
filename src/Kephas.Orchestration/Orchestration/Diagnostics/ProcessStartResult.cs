@@ -14,7 +14,6 @@ namespace Kephas.Orchestration.Diagnostics
     using System.Diagnostics;
     using System.Text;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
 
     /// <summary>

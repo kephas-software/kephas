@@ -19,7 +19,6 @@ namespace Kephas.Messaging.Authorization.Behaviors
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.AttributedModel;

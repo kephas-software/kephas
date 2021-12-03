@@ -14,7 +14,6 @@ namespace Kephas.Data.Commands
     using System.Collections.Generic;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// An operation context for persisting changes.

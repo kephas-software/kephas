@@ -16,7 +16,6 @@ namespace Kephas.Model.Elements
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Reflection;

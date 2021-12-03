@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Distributed.Routing
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Logging;

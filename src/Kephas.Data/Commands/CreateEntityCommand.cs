@@ -15,7 +15,6 @@ namespace Kephas.Data.Commands
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;

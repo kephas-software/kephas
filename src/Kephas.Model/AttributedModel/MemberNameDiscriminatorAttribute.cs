@@ -12,7 +12,6 @@ namespace Kephas.Model.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Attribute for indicating a name discriminator used by the qualified name.
@@ -26,7 +25,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="nameDiscriminator">The name discriminator.</param>
         public MemberNameDiscriminatorAttribute(string nameDiscriminator)
         {
-            Requires.NotNullOrEmpty(nameDiscriminator, nameof(nameDiscriminator));
+            if (string.IsNullOrEmpty(nameDiscriminator)) throw new System.ArgumentException("Value must not be null or empty.", nameof(nameDiscriminator));
 
             this.NameDiscriminator = nameDiscriminator;
         }

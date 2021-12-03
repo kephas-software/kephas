@@ -15,7 +15,6 @@ namespace Kephas.Orchestration.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;

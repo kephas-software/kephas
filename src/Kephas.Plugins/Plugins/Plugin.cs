@@ -17,7 +17,6 @@ namespace Kephas.Plugins
     using Kephas.Application;
     using Kephas.Application.Reflection;
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Plugins.Reflection;
     using Kephas.Reflection;

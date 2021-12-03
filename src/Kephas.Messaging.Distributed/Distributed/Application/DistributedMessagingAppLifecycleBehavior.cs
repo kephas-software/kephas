@@ -16,7 +16,6 @@ namespace Kephas.Messaging.Distributed.Application
 
     using Kephas.Application;
     using Kephas.Configuration;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;

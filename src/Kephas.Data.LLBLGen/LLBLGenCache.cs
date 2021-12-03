@@ -19,7 +19,6 @@ namespace Kephas.Data.LLBLGen
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.LLBLGen.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     using SD.LLBLGen.Pro.ORMSupportClasses;
 

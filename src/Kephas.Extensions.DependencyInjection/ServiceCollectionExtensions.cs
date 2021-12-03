@@ -10,7 +10,6 @@ namespace Kephas
     using System;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Microsoft.Extensions.DependencyInjection;
 

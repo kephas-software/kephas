@@ -23,7 +23,6 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Resources;
     using Kephas.Data.Validation;
     using Kephas.Diagnostics;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Threading.Tasks;

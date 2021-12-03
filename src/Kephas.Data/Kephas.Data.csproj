@@ -94,7 +94,6 @@
 		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
 		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
 		<ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
         <ProjectReference Include="..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj" />

@@ -14,7 +14,6 @@ namespace Kephas.Model.Construction
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;

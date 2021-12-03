@@ -8,7 +8,6 @@
 namespace Kephas.Injection.SystemComposition
 {
     using System.Composition;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The MEF injector.

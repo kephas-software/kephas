@@ -15,7 +15,6 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>

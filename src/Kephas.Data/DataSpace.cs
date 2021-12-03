@@ -17,7 +17,6 @@ namespace Kephas.Data
 
     using Kephas.Collections;
     using Kephas.Data.Store;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Services;

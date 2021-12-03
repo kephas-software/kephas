@@ -22,7 +22,6 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Data.Client.Queries.Conversion.ExpressionConverters;
     using Kephas.Data.Client.Resources;
     using Kephas.Data.Linq.Expressions;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model;
     using Kephas.Reflection;

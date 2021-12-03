@@ -13,7 +13,6 @@ namespace Kephas.Scheduling.Quartz.JobStore
     using System;
 
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Services;
 

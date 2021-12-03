@@ -21,7 +21,6 @@ namespace Kephas.Data
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
     /// <summary>

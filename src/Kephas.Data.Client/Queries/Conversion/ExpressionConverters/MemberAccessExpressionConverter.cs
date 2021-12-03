@@ -18,7 +18,6 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     using System.Linq.Expressions;
 
     using Kephas.Data.Client.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -84,7 +83,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         internal static Expression MakeMemberAccessExpression(object arg, Type clientItemType, ParameterExpression lambdaArg, IRuntimeTypeRegistry typeRegistry)
         {
             var memberName = (string)arg;
-            Requires.NotNullOrEmpty(memberName, nameof(memberName));
+            if (string.IsNullOrEmpty(memberName)) throw new System.ArgumentException("Value must not be null or empty.", nameof(memberName));
 
             if (memberName[0] == MemberOperator)
             {

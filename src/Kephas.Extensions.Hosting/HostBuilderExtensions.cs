@@ -11,7 +11,6 @@ namespace Kephas.Extensions.Hosting
     using System.Collections.Generic;
 
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;

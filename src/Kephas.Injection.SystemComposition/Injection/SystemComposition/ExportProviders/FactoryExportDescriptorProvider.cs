@@ -14,7 +14,6 @@ namespace Kephas.Injection.SystemComposition.ExportProviders
     using System.Collections.Generic;
     using System.Composition.Hosting.Core;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
 
     /// <summary>

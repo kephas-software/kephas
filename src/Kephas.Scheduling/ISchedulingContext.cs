@@ -9,7 +9,6 @@ namespace Kephas.Scheduling
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;

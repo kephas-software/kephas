@@ -24,7 +24,6 @@ namespace Kephas.Data.InMemory
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory.Caching;
     using Kephas.Data.Store;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Serialization;
 

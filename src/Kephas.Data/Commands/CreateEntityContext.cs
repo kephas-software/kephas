@@ -12,7 +12,6 @@ namespace Kephas.Data.Commands
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A create entity context.

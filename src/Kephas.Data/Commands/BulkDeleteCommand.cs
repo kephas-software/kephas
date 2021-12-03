@@ -17,7 +17,6 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
@@ -54,9 +53,9 @@ namespace Kephas.Data.Commands
         public override async Task<IBulkDataOperationResult> ExecuteAsync(IBulkDeleteContext operationContext, CancellationToken cancellationToken = default)
         {
             operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
-            Requires.NotNull(operationContext.DataContext, nameof(operationContext.DataContext));
-            Requires.NotNull(operationContext.EntityType, nameof(operationContext.EntityType));
-            Requires.NotNull(operationContext.Criteria, nameof(operationContext.Criteria));
+            if (operationContext.DataContext == null) throw new System.ArgumentNullException(nameof(operationContext.DataContext));
+            if (operationContext.EntityType == null) throw new System.ArgumentNullException(nameof(operationContext.EntityType));
+            if (operationContext.Criteria == null) throw new System.ArgumentNullException(nameof(operationContext.Criteria));
 
             var opAsync = BulkDeleteAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IBulkDataOperationResult>)opAsync.Call(this, operationContext, cancellationToken);

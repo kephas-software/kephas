@@ -24,7 +24,6 @@ namespace Kephas.Data.MongoDB
     using Kephas.Data.MongoDB.Linq;
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Data.Store;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
     /// <summary>

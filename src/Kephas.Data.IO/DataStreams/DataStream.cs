@@ -16,7 +16,6 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Base implementation of a data stream.

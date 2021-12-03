@@ -11,7 +11,6 @@
 namespace Kephas.Injection.SystemComposition.ScopeFactory
 {
     using System.Composition;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A MEF scope provider.

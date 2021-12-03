@@ -22,7 +22,6 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Operations;

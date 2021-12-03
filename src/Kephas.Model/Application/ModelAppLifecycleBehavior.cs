@@ -14,7 +14,6 @@ namespace Kephas.Model.Application
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

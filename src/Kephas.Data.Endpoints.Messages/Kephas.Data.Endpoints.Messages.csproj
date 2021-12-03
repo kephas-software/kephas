@@ -70,7 +70,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
         <ProjectReference Include="..\Kephas.Messaging.Messages\Kephas.Messaging.Messages.csproj" />
     </ItemGroup>
 

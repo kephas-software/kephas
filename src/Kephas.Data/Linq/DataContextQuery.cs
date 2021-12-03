@@ -16,7 +16,6 @@ namespace Kephas.Data.Linq
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A data context query.

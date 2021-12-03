@@ -8,7 +8,6 @@
 namespace Kephas.Model.Elements
 {
     using Kephas.Configuration.Reflection;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Model.Construction;
 

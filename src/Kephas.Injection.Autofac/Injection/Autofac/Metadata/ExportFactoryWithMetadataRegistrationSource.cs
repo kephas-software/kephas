@@ -18,7 +18,6 @@ namespace Kephas.Injection.Autofac.Metadata
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Reflection;
 

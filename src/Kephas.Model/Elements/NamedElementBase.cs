@@ -15,7 +15,6 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Model.Construction;

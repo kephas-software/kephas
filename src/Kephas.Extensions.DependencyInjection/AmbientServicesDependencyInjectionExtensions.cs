@@ -15,7 +15,6 @@ namespace Kephas
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.DependencyInjection.Hosting;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;

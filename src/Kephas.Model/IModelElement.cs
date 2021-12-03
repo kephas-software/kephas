@@ -14,7 +14,6 @@ namespace Kephas.Model
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Contract providing base information about a model element.

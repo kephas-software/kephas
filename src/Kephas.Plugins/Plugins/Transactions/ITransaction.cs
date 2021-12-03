@@ -14,7 +14,6 @@ namespace Kephas.Plugins.Transactions
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
     using Kephas.Threading.Tasks;
 

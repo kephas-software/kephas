@@ -12,7 +12,6 @@ namespace Kephas.Workflow
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Services;
 

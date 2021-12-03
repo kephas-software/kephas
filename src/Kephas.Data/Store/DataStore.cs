@@ -14,7 +14,6 @@ namespace Kephas.Data.Store
 
     using Kephas.Activation;
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
     /// <summary>
@@ -33,7 +32,7 @@ namespace Kephas.Data.Store
         public DataStore(string name, string kind, Type? dataContextType = null, IDataContextSettings? dataContextSettings = null, IActivator? entityActivator = null)
         {
             name = name ?? throw new System.ArgumentNullException(nameof(name));
-            Requires.NotNullOrEmpty(kind, nameof(kind));
+            if (string.IsNullOrEmpty(kind)) throw new System.ArgumentException("Value must not be null or empty.", nameof(kind));
 
             this.Name = name;
             this.Kind = kind;

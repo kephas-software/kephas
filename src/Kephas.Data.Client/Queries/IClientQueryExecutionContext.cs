@@ -14,7 +14,6 @@ namespace Kephas.Data.Client.Queries
 
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

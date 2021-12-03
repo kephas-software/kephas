@@ -11,7 +11,6 @@ namespace Kephas.Commands.Messaging.Reflection
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
     using Kephas.Runtime.AttributedModel;

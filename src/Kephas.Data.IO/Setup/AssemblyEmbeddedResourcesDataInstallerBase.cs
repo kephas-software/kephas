@@ -19,7 +19,6 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Services;
 

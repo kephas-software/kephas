@@ -19,7 +19,6 @@ namespace Kephas.Data.Linq
     using System.Threading.Tasks;
 
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
     /// <summary>

@@ -16,7 +16,6 @@ namespace Kephas.Workflow.Runtime
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Workflow.AttributedModel;

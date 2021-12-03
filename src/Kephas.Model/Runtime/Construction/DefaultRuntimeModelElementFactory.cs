@@ -16,7 +16,6 @@ namespace Kephas.Model.Runtime.Construction
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Reflection;

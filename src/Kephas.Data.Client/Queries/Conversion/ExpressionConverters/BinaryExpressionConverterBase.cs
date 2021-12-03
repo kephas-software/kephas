@@ -15,7 +15,6 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     using System.Linq.Expressions;
 
     using Kephas.Data.Client.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Base class for binary expression converters.

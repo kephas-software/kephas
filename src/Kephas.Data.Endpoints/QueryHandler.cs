@@ -16,7 +16,6 @@ namespace Kephas.Data.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Data.Client.Queries;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

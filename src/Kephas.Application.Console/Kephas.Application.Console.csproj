@@ -76,7 +76,6 @@
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Commands\Kephas.Commands.csproj" />
-        <ProjectReference Include="..\Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

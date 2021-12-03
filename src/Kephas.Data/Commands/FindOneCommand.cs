@@ -15,7 +15,6 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Operations;
 
@@ -44,7 +43,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override Task<IFindResult> ExecuteAsync(IFindOneContext operationContext, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(operationContext.Criteria, nameof(operationContext.Criteria));
+            if (operationContext.Criteria == null) throw new System.ArgumentNullException(nameof(operationContext.Criteria));
 
             return base.ExecuteAsync(operationContext, cancellationToken);
         }

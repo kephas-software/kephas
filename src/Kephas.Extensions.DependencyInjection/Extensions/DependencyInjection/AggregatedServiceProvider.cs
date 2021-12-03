@@ -14,7 +14,6 @@ namespace Kephas.Extensions.DependencyInjection
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// An aggregated service provider.
@@ -30,7 +29,7 @@ namespace Kephas.Extensions.DependencyInjection
         ///                                     service providers.</param>
         public AggregatedServiceProvider(params IServiceProvider[] innerServiceProviders)
         {
-            Requires.NotNullOrEmpty(innerServiceProviders, nameof(innerServiceProviders));
+            if (innerServiceProviders == null || innerServiceProviders.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(innerServiceProviders));
 
             this.innerServiceProviders = innerServiceProviders.ToList();
         }

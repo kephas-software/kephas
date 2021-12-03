@@ -17,7 +17,6 @@ namespace Kephas.Orchestration.Diagnostics
 
     using Kephas.Application;
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Services;

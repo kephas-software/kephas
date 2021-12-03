@@ -11,7 +11,6 @@
 namespace Kephas.Data.Commands
 {
     using System;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// An operation context for discarding changes.

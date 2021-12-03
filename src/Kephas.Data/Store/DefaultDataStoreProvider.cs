@@ -16,7 +16,6 @@ namespace Kephas.Data.Store
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

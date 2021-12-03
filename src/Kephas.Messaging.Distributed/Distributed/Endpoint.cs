@@ -13,7 +13,6 @@ namespace Kephas.Messaging.Distributed
     using System;
 
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A messaging endpoint.

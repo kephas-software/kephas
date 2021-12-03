@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Distributed
     using System.Linq;
 
     using Kephas.Data;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
@@ -67,7 +66,7 @@ namespace Kephas.Messaging.Distributed
             get => this.id;
             set
             {
-                Requires.NotNullOrEmpty(value, nameof(value));
+                if (string.IsNullOrEmpty(value)) throw new System.ArgumentException("Value must not be null or empty.", nameof(value));
                 this.id = value;
             }
         }

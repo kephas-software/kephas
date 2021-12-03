@@ -16,7 +16,6 @@ namespace Kephas.Data.Validation
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
 
     /// <summary>

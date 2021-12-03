@@ -15,7 +15,6 @@ namespace Kephas.Injection.SystemComposition.Builder
     using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition.ExportProviders;

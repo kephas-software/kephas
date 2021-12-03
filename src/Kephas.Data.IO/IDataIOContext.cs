@@ -12,7 +12,6 @@ namespace Kephas.Data.IO
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
     using Kephas.Serialization;
     using Kephas.Services;

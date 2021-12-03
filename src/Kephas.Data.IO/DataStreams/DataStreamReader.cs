@@ -16,7 +16,6 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Services;

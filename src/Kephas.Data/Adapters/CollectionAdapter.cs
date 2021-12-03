@@ -15,7 +15,6 @@ namespace Kephas.Data.Adapters
     using System.Collections.Generic;
 
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// An entity collection adapter.

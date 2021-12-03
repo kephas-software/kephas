@@ -13,7 +13,6 @@ namespace Kephas.Data.Commands
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A delete entity context.

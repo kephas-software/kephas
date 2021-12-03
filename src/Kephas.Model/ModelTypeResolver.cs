@@ -10,7 +10,6 @@
 
 namespace Kephas.Model
 {
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
 

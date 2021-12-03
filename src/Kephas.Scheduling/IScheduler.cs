@@ -15,7 +15,6 @@ namespace Kephas.Scheduling
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Runtime;

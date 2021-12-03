@@ -13,7 +13,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.AttributedModel;

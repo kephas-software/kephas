@@ -24,7 +24,6 @@ namespace Kephas.Data.IO.Import
     using Kephas.Data.Conversion;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Internal;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model;
     using Kephas.Operations;

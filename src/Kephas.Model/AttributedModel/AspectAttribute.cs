@@ -12,7 +12,6 @@ namespace Kephas.Model.AttributedModel
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Marks a mixin classifier as being an aspect of an other classifiers matching some condition.

@@ -14,7 +14,6 @@ namespace Kephas.Data.IO.Import
 
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Exception for signalling import data source errors.

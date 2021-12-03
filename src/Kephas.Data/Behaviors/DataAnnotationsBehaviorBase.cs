@@ -17,7 +17,6 @@ namespace Kephas.Data.Behaviors
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Validation;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
 

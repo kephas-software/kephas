@@ -12,7 +12,6 @@ namespace Kephas.Extensions.DependencyInjection
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 

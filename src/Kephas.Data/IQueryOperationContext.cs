@@ -13,7 +13,6 @@ namespace Kephas.Data
     using System;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

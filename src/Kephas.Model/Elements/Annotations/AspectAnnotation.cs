@@ -12,7 +12,6 @@ namespace Kephas.Model.Elements.Annotations
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
 
     /// <summary>

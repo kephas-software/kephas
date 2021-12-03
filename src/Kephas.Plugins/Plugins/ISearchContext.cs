@@ -12,7 +12,6 @@ namespace Kephas.Plugins
 {
     using System;
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

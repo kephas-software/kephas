@@ -20,7 +20,6 @@ namespace Kephas.Data.Commands
 
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Reflection;
@@ -59,8 +58,8 @@ namespace Kephas.Data.Commands
         public override async Task<IFindResult> ExecuteAsync(TFindContext operationContext, CancellationToken cancellationToken = default)
         {
             operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
-            Requires.NotNull(operationContext.DataContext, nameof(operationContext.DataContext));
-            Requires.NotNull(operationContext.EntityType, nameof(operationContext.EntityType));
+            if (operationContext.DataContext == null) throw new System.ArgumentNullException(nameof(operationContext.DataContext));
+            if (operationContext.EntityType == null) throw new System.ArgumentNullException(nameof(operationContext.EntityType));
 
             var findAsync = FindAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IFindResult>)findAsync.Call(this, operationContext, cancellationToken);

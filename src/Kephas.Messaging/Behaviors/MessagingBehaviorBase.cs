@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Behaviors
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

@@ -16,7 +16,6 @@ namespace Kephas.Model.Runtime
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Reflection;
     using Kephas.Reflection;

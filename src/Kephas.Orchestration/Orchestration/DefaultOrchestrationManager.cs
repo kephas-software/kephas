@@ -28,7 +28,6 @@ namespace Kephas.Orchestration
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;

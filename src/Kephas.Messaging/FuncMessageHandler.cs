@@ -15,7 +15,6 @@ namespace Kephas.Messaging
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A function message handler.

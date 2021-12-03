@@ -12,7 +12,6 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System.Text;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;

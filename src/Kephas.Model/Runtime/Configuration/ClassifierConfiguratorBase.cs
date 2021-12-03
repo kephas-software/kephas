@@ -13,7 +13,6 @@ namespace Kephas.Model.Runtime.Configuration
     using System;
     using System.Linq;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Resources;
 
     /// <summary>

@@ -13,7 +13,6 @@ namespace Kephas.Model.Runtime.Configuration
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Configuration;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;

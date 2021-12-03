@@ -12,7 +12,6 @@ namespace Kephas.Data.Commands
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The context for the <see cref="IFindCommand"/>.

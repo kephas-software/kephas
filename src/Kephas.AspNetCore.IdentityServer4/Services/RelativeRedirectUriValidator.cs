@@ -14,7 +14,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Services
     using global::IdentityServer4.Models;
     using global::IdentityServer4.Validation;
     using Kephas.AspNetCore.IdentityServer4.Configuration;
-    using Kephas.Diagnostics.Contracts;
 
     internal class RelativeRedirectUriValidator : StrictRedirectUriValidator
     {

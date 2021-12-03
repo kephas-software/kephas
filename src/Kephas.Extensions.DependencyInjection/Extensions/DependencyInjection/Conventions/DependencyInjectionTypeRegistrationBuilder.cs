@@ -11,7 +11,6 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Microsoft.Extensions.DependencyInjection;

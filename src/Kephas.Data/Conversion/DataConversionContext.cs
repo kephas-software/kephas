@@ -12,7 +12,6 @@ namespace Kephas.Data.Conversion
 {
     using System;
 
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>

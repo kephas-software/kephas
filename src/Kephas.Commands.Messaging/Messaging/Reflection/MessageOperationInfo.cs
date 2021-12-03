@@ -13,7 +13,6 @@ namespace Kephas.Commands.Messaging.Reflection
     using System.Threading;
 
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging;
     using Kephas.Operations;

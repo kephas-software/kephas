@@ -18,7 +18,6 @@ namespace Kephas.Data.Endpoints
     using Kephas.Data.Capabilities;
     using Kephas.Data.Client.Capabilities;
     using Kephas.Data.Conversion;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Injection;
     using Kephas.Messaging;
     using Kephas.Model;
