@@ -166,14 +166,14 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// Gets the middleware configurators.
         /// </summary>
         /// <param name="appContext">The application context.</param>
-        /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
+        /// <returns>An enumeration of middleware configurator callbacks.</returns>
         protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(IAspNetAppContext appContext)
         {
             var container = appContext.AmbientServices.Injector;
             var middlewareConfigurators = container
                 .Resolve<IOrderedServiceFactoryCollection<IMiddlewareConfigurator, AppServiceMetadata>>()
                 .GetServices()
-                .Select(s => (Action<IAspNetAppContext>)s.Configure);
+                .Select(this.GetMiddlewareConfiguratorAction);
             return middlewareConfigurators;
         }
 
@@ -181,10 +181,10 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// Gets the services configurators.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
+        /// <returns>An enumeration of services configurator callbacks.</returns>
         protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
             => ambientServices.GetServicesConfigurators()
-                .Select(c => (Action<IServiceCollection, IAmbientServices>)c.ConfigureServices);
+                .Select(this.GetServicesConfiguratorAction);
 
         /// <summary>
         /// Disposes the services container. Replaces the original <see cref="AfterAppManagerFinalize"/>
@@ -222,6 +222,26 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="ambientServices">The ambient services.</param>
         protected override void BuildServicesContainer(IAmbientServices ambientServices)
         {
+        }
+
+        private Action<IServiceCollection, IAmbientServices> GetServicesConfiguratorAction(IServicesConfigurator c)
+        {
+            return (s, a) =>
+            {
+                this.Logger.Debug($"Configuring services by {s.GetType()}...");
+                c.ConfigureServices(s, a);
+                this.Logger.Debug($"Services configured by {s.GetType()}.");
+            };
+        }
+
+        private Action<IAspNetAppContext> GetMiddlewareConfiguratorAction(IMiddlewareConfigurator s)
+        {
+            return c =>
+            {
+                this.Logger.Debug($"Configuring middleware by {s.GetType()}...");
+                s.Configure(c);
+                this.Logger.Debug($"Middleware configured by {s.GetType()}.");
+            };
         }
     }
 }
