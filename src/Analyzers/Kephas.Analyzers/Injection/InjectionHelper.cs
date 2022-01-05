@@ -208,6 +208,13 @@ namespace Kephas.Analyzers.Injection
                 parent = parent?.Parent;
             }
 
+            var fileScopedNamespace = GetFileScopedNamespace(typeSyntax);
+            if (fileScopedNamespace != null)
+            {
+                sb.Insert(0, '.');
+                sb.Insert(0, fileScopedNamespace);
+            }
+
             sb.Append(typeSyntax.Identifier.Text);
 
             if (typeSyntax.TypeParameterList != null)
@@ -222,6 +229,12 @@ namespace Kephas.Analyzers.Injection
             }
 
             return sb.ToString();
+        }
+
+        private static string? GetFileScopedNamespace(TypeDeclarationSyntax typeSyntax)
+        {
+            // TODO fix this
+            return null;
         }
 
         public static bool AppendAppServicesProviderClass(
