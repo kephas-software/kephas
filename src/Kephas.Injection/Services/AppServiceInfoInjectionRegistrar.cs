@@ -124,7 +124,11 @@ namespace Kephas.Services
 
                 if (serviceRegistrations.Count == 0)
                 {
-                    logger.Warn("No service types registered for {contractDeclarationType}.", contractDeclarationType);
+                    if (logger.IsDebugEnabled())
+                    {
+                        logger.Warn("No service types registered for {contractDeclarationType}.", contractDeclarationType);
+                    }
+
                     continue;
                 }
 
