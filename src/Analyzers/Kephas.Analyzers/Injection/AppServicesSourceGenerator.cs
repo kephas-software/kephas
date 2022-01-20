@@ -66,7 +66,7 @@ using Kephas.Services;
 
 ");
 
-            var isProviderGenerated = InjectionHelper.AppendAppServicesProviderClass(serviceTypeProvider, source, context, syntaxReceiver.ContractTypes, syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, InjectionHelper.TryGetAppServiceContract(t, context))).ToList());
+            var isProviderGenerated = InjectionHelper.AppendAppServicesProviderClass(serviceTypeProvider, source, context, syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, InjectionHelper.TryGetAppServiceContract(t, context))).ToList(), syntaxReceiver);
             if (isProviderGenerated)
             {
                 context.AddSource("AppServices.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
@@ -78,10 +78,14 @@ using Kephas.Services;
             return ("Kephas.Injection.Generated", $"AppServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
         }
 
-        private class SyntaxReceiver : ISyntaxContextReceiver
+        private class SyntaxReceiver : ISyntaxContextReceiver, IAppServicesCompilationContext
         {
-            internal IList<TypeDeclarationSyntax> ContractTypes = new List<TypeDeclarationSyntax>();
-            internal IList<ClassDeclarationSyntax> ServiceTypes = new List<ClassDeclarationSyntax>();
+            public IList<TypeDeclarationSyntax> ContractTypes { get; } = new List<TypeDeclarationSyntax>();
+
+            public IList<ClassDeclarationSyntax> ServiceTypes { get; } = new List<ClassDeclarationSyntax>();
+
+            public IDictionary<string, FileScopedNamespaceDeclarationSyntax> FileScopedNamespaces { get; } =
+                new Dictionary<string, FileScopedNamespaceDeclarationSyntax>();
 
             public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {
@@ -97,6 +101,15 @@ using Kephas.Services;
                     && InjectionHelper.CanBeAppService(type))
                 {
                     this.ServiceTypes.Add(type);
+                }
+
+                // store all file scoped namespaces
+                if (context.Node is FileScopedNamespaceDeclarationSyntax fileScopedNamespace)
+                {
+                    if (!string.IsNullOrEmpty(context.Node.SyntaxTree.FilePath))
+                    {
+                        this.FileScopedNamespaces[context.Node.SyntaxTree.FilePath] = fileScopedNamespace;
+                    }
                 }
             }
         }

@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Pipes
         /// <summary>
         /// Gets the channel name.
         /// </summary>
-        public string ChannelName { get; }
+        protected string ChannelName { get; }
 
         /// <summary>
         /// Gets the logger.

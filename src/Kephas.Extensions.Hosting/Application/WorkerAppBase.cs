@@ -16,9 +16,10 @@ namespace Kephas.Extensions.Hosting.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Extensions.DependencyInjection;
-    using Kephas.Extensions.Logging;
+    using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Operations;
+    using Kephas.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
@@ -27,23 +28,30 @@ namespace Kephas.Extensions.Hosting.Application
     /// </summary>
     public abstract class WorkerAppBase : AppBase<AmbientServices>
     {
-        private readonly Action<IAmbientServices> containerBuilder;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="builderOptions">Optional. The host builder options.</param>
+        protected WorkerAppBase(
+            IAmbientServices? ambientServices = null,
+            IAppArgs? appArgs = null,
+            Action<IHostBuilder>? builderOptions = null)
+            : this(ambientServices, CreateBuilder(builderOptions, appArgs), appArgs)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
         /// </summary>
-        /// <param name="containerBuilder">The container builder.</param>
-        /// <param name="ambientServices">Optional. The ambient services.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="builder">The host builder.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
-        protected WorkerAppBase(
-            Action<IAmbientServices> containerBuilder,
-            IAmbientServices? ambientServices = null,
-            IAppArgs? appArgs = null,
-            CancellationTokenSource? appLifetimeTokenSource = null)
-            : base(ambientServices, appArgs, appLifetimeTokenSource)
+        protected WorkerAppBase(IAmbientServices? ambientServices, IHostBuilder builder, IAppArgs? appArgs = null)
+            : base(ambientServices, appArgs)
         {
-            this.containerBuilder = containerBuilder;
+            this.HostBuilder = builder;
         }
 
         /// <summary>
@@ -52,7 +60,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The host builder.
         /// </value>
-        protected IHostBuilder? HostBuilder { get; private set; }
+        protected IHostBuilder HostBuilder { get; }
 
         /// <summary>
         /// Gets the host.
@@ -65,11 +73,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// <summary>
         /// Runs the application asynchronously.
         /// </summary>
-        /// <param name="mainCallback">
-        /// Optional. The callback for the main function.
-        /// If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
-        /// otherwise the application will end.
-        /// </param>
+        /// <param name="mainCallback">Optional. The callback for the main function.
+        /// If not provided, the service implementing <see cref="T:Kephas.Application.IAppMainLoop" /> will be invoked,
+        /// otherwise the application will end.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
@@ -78,117 +84,34 @@ namespace Kephas.Extensions.Hosting.Application
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
-            this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
-
-            this.HostBuilder
-                .UseServiceProviderFactory(new InjectionServiceProviderFactory(this.AmbientServices, this.containerBuilder));
-
-            this.PreConfigureWorker(this.HostBuilder)
-                .ConfigureServices(services =>
-                {
-                    this.AddBackgroundWorker(services);
-
-                    this.AmbientServices
-                        .WithServiceCollection(services)
-                        .ConfigureExtensionsLogging(services);
-                });
-
-            this.ConfigureWorker(this.HostBuilder);
-
-            this.PostConfigureWorker(this.HostBuilder);
-
-            if (this.AppArgs?.RunAsService ?? false)
+            if (this.AppArgs.RunAsService)
             {
                 this.HostBuilder.UseWindowsService();
                 this.HostBuilder.UseSystemd();
             }
 
-            return base.RunAsync(mainCallback, cancellationToken);
+            this.HostBuilder.ConfigureServices(this.AddBackgroundWorker);
+
+            this.BeforeAppManagerInitialize(this.AppArgs);
+
+            this.Host = this.HostBuilder.Build();
+
+            var stoppingTokenSource = new CancellationTokenSource();
+            var eventHub = this.AmbientServices.Injector.Resolve<IEventHub>();
+            eventHub.Subscribe<ShutdownSignal>((_, _) => stoppingTokenSource.Cancel());
+
+            return base.RunAsync(mainCallback ?? (args => RunHostAsync(this.Host, stoppingTokenSource.Token)), cancellationToken);
         }
 
         /// <summary>
-        /// Initializes the application manager asynchronously.
+        /// The building of the services container is the responsibility of the host.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the <see cref="T:Kephas.Application.IAppContext" />.
-        /// </returns>
-        protected override Task<IAppContext> InitializeAppManagerAsync(IAppContext appContext, CancellationToken cancellationToken)
-        {
-            // delay the initialization of the app manager until the host is started.
-            return Task.FromResult(appContext);
-        }
-
-        /// <summary>
-        /// Configures the ambient services asynchronously.
-        /// </summary>
+        /// <remarks>
+        /// Override this method to initialize the startup services, like log manager and configuration manager.
+        /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected sealed override void BuildServicesContainer(IAmbientServices ambientServices)
+        protected override void BuildServicesContainer(IAmbientServices ambientServices)
         {
-            this.Host = this.HostBuilder!.Build();
-        }
-
-        /// <summary>
-        /// Creates the host builder.
-        /// </summary>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <returns>
-        /// The new host builder.
-        /// </returns>
-        protected virtual IHostBuilder CreateHostBuilder(IAppArgs appArgs)
-        {
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(appArgs.ToCommandArgs().ToArray());
-        }
-
-        /// <summary>
-        /// Configures the worker before adding the background worker.
-        ///  Here is the place where logging should be initialized.
-        /// </summary>
-        /// <param name="hostBuilder">The host builder.</param>
-        /// <returns>
-        /// The provided <see cref="IHostBuilder"/>.
-        /// </returns>
-        protected virtual IHostBuilder PreConfigureWorker(IHostBuilder hostBuilder)
-        {
-            return hostBuilder;
-        }
-
-        /// <summary>
-        /// Configures the worker. Here is the place where the Windows service or the Linux daemon
-        /// should be initialized.
-        /// </summary>
-        /// <param name="hostBuilder">The host builder.</param>
-        /// <returns>
-        /// The provided <see cref="IHostBuilder"/>.
-        /// </returns>
-        protected virtual IHostBuilder ConfigureWorker(IHostBuilder hostBuilder)
-        {
-            return hostBuilder;
-        }
-
-        /// <summary>
-        /// Configures the worker after configuring the ambient services.
-        /// Here is the place to do whatever initialization is necessary before actually
-        /// going into the bootstrapping procedure.
-        /// </summary>
-        /// <param name="hostBuilder">The host builder.</param>
-        /// <returns>
-        /// The provided <see cref="IHostBuilder"/>.
-        /// </returns>
-        protected virtual IHostBuilder PostConfigureWorker(IHostBuilder hostBuilder)
-        {
-            return hostBuilder;
-        }
-
-        /// <summary>
-        /// Runs the background task asynchronously.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual Task RunBackgroundTaskAsync(CancellationToken cancellationToken)
-        {
-            return base.InitializeAppManagerAsync(this.AppContext!, cancellationToken);
         }
 
         /// <summary>
@@ -198,6 +121,43 @@ namespace Kephas.Extensions.Hosting.Application
         protected virtual void AddBackgroundWorker(IServiceCollection services)
         {
             services.AddHostedService(svc => new BackgroundWorker(this.RunBackgroundTaskAsync));
+        }
+
+        /// <summary>
+        /// Runs the background task asynchronously.
+        /// </summary>
+        /// <param name="stoppingToken">The cancellation token used for stopping the process.</param>
+        /// <returns>The asynchronous result.</returns>
+        protected virtual async Task RunBackgroundTaskAsync(CancellationToken stoppingToken)
+        {
+            await Task.Yield();
+
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(50, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    this.Log(LogLevel.Warning, ex);
+                }
+            }
+        }
+
+        private static IHostBuilder CreateBuilder(Action<IHostBuilder>? builderOptions, IAppArgs? appArgs)
+        {
+            var builder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(appArgs?.ToCommandArgs().ToArray() ?? Array.Empty<string>());
+            builderOptions?.Invoke(builder);
+            return builder;
+        }
+
+        private static async Task<(IOperationResult result, AppShutdownInstruction instruction)> RunHostAsync(
+            IHost host, CancellationToken stoppingToken)
+        {
+            var opResult = new OperationResult<bool>(true);
+            await host.RunAsync(stoppingToken).PreserveThreadContext();
+            return (opResult.Complete(), AppShutdownInstruction.Shutdown);
         }
     }
 }

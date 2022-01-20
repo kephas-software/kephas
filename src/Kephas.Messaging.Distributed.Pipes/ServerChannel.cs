@@ -39,9 +39,7 @@ namespace Kephas.Messaging.Pipes
             ILogger logger,
             Func<ServerChannel, string, CancellationToken, Task> messageReceived,
             CancellationToken cancellationToken)
-            : base(
-                channelName,
-                logger)
+            : base(channelName, logger)
         {
             this.messageReceived = messageReceived;
             this.cancellationToken = cancellationToken;
@@ -52,12 +50,10 @@ namespace Kephas.Messaging.Pipes
         /// </summary>
         public virtual void Open()
         {
-            this.listenTask = this.StartListeningAsync(this.messageReceived, this.cancellationToken);
+            this.listenTask = this.StartListeningAsync(this.messageReceived);
         }
 
-        private async Task StartListeningAsync(
-            Func<ServerChannel, string, CancellationToken, Task> messageReceived,
-            CancellationToken cancellationToken)
+        private async Task StartListeningAsync(Func<ServerChannel, string, CancellationToken, Task> messageReceived)
         {
             await Task.Yield();
 
@@ -75,16 +71,16 @@ namespace Kephas.Messaging.Pipes
             var connectSuccessful = false;
             try
             {
-                await stream.WaitForConnectionAsync(cancellationToken).PreserveThreadContext();
+                await stream.WaitForConnectionAsync(this.cancellationToken).PreserveThreadContext();
 
                 this.Logger.Debug("Client connected on {channel} (server mode).", channelName);
 
-                cancellationToken.ThrowIfCancellationRequested();
+                this.cancellationToken.ThrowIfCancellationRequested();
 
                 connectSuccessful = true;
             }
             catch (OperationCanceledException)
-                when (cancellationToken.IsCancellationRequested)
+                when (this.cancellationToken.IsCancellationRequested)
             {
                 this.Logger.Warn("Connection cancelled while processing the request from client on {channel}.", channelName);
                 return;
@@ -95,7 +91,7 @@ namespace Kephas.Messaging.Pipes
             }
 
             // client connection is successful, prepare for the next client connection.
-            this.listenTask = this.StartListeningAsync(messageReceived, cancellationToken);
+            this.listenTask = this.StartListeningAsync(messageReceived);
 
             if (!connectSuccessful)
             {
@@ -105,22 +101,22 @@ namespace Kephas.Messaging.Pipes
 
             try
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                this.cancellationToken.ThrowIfCancellationRequested();
 
-                var messageString = await this.ReadAsync(stream, cancellationToken).PreserveThreadContext();
+                var messageString = await this.ReadAsync(stream).PreserveThreadContext();
 
                 if (this.Logger.IsDebugEnabled())
                 {
                     this.Logger.Debug(
                         "Message arrived on {channel} (server mode): '{message}'.",
                         channelName,
-                        messageString.Substring(0, 50) + "...");
+                        messageString[..50] + "...");
                 }
 
-                await messageReceived(this, messageString, cancellationToken).PreserveThreadContext();
+                await messageReceived(this, messageString, this.cancellationToken).PreserveThreadContext();
             }
             catch (OperationCanceledException)
-                when (cancellationToken.IsCancellationRequested)
+                when (this.cancellationToken.IsCancellationRequested)
             {
                 this.Logger.Warn("Read cancelled while processing the request from client on {channel}.", channelName);
             }
@@ -130,21 +126,21 @@ namespace Kephas.Messaging.Pipes
             }
         }
 
-        private async Task<string> ReadAsync(PipeStream stream, CancellationToken cancellationToken)
+        private async Task<string> ReadAsync(PipeStream stream)
         {
             var buffer = new byte[2048];
             using var memStream = new MemoryStream(4096);
             do
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                this.cancellationToken.ThrowIfCancellationRequested();
 
-                var numBytes = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).PreserveThreadContext();
+                var numBytes = await stream.ReadAsync(buffer, 0, buffer.Length, this.cancellationToken).PreserveThreadContext();
                 memStream.Write(buffer, 0, numBytes);
             }
-            while (!cancellationToken.IsCancellationRequested && !stream.IsMessageComplete);
+            while (!this.cancellationToken.IsCancellationRequested && !stream.IsMessageComplete);
 
             memStream.Position = 0;
-            var bytes = memStream.ReadAllBytes();
+            var bytes = await memStream.ReadAllBytesAsync(this.cancellationToken).PreserveThreadContext();
 
             return Encoding.UTF8.GetString(bytes);
         }

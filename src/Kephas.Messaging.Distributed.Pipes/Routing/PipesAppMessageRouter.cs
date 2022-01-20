@@ -43,8 +43,7 @@ namespace Kephas.Messaging.Pipes.Routing
         private readonly IEventHub eventHub;
         private readonly Lazy<IOrchestrationManager> lazyOrchestrationManager;
 
-        private readonly ConcurrentDictionary<string, ClientChannel> outChannels
-            = new ConcurrentDictionary<string, ClientChannel>();
+        private readonly ConcurrentDictionary<string, ClientChannel> outChannels = new ();
 
         private CancellationTokenSource? disposeSource;
         private ServerChannel? inChannel;

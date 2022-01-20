@@ -50,6 +50,7 @@ namespace Kephas.Analyzers.Tests.Injection
                 (typeof(ServiceAndContract), typeof(ServiceAndContract)),
                 (typeof(DerivedService), typeof(ServiceBase)),
                 (typeof(SingletonService), typeof(ISingletonServiceContract)),
+                (typeof(FileScopedNsSingletonService), typeof(IFileScopedNsSingletonServiceContract)),
             };
 
             Assert.IsTrue(
@@ -62,6 +63,7 @@ namespace Kephas.Analyzers.Tests.Injection
                 new[]
                 {
                     typeof(ISingletonServiceContract),
+                    typeof(IFileScopedNsSingletonServiceContract),
                     typeof(ServiceAndContract),
                     typeof(ServiceBase),
                     typeof(IOpenGenericContract<>),

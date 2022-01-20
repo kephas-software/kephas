@@ -185,7 +185,7 @@ namespace Kephas.Analyzers.Injection
                 : fullNameBuilder.ToString();
         }
 
-        public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax)
+        public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax, IAppServicesCompilationContext compilationContext)
         {
             var sb = new StringBuilder();
 
@@ -196,7 +196,7 @@ namespace Kephas.Analyzers.Injection
                 {
                     case TypeDeclarationSyntax parentTypeDeclSyntax:
                         sb.Insert(0, '.');
-                        sb.Insert(0, GetTypeFullName(parentTypeDeclSyntax));
+                        sb.Insert(0, GetTypeFullName(parentTypeDeclSyntax, compilationContext));
                         parent = null;
                         break;
                     case NamespaceDeclarationSyntax namespaceSyntax:
@@ -208,7 +208,7 @@ namespace Kephas.Analyzers.Injection
                 parent = parent?.Parent;
             }
 
-            var fileScopedNamespace = GetFileScopedNamespace(typeSyntax);
+            var fileScopedNamespace = GetFileScopedNamespace(typeSyntax, compilationContext);
             if (fileScopedNamespace != null)
             {
                 sb.Insert(0, '.');
@@ -231,9 +231,13 @@ namespace Kephas.Analyzers.Injection
             return sb.ToString();
         }
 
-        private static string? GetFileScopedNamespace(TypeDeclarationSyntax typeSyntax)
+        private static string? GetFileScopedNamespace(TypeDeclarationSyntax typeSyntax, IAppServicesCompilationContext compilationContext)
         {
-            // TODO fix this
+            if (!string.IsNullOrEmpty(typeSyntax.SyntaxTree.FilePath) && compilationContext.FileScopedNamespaces.TryGetValue(typeSyntax.SyntaxTree.FilePath, out var fileScopedNamespace))
+            {
+                return fileScopedNamespace.Name.ToString();
+            }
+
             return null;
         }
 
@@ -241,8 +245,8 @@ namespace Kephas.Analyzers.Injection
             (string typeNamespace, string typeName) serviceTypeProvider,
             StringBuilder source,
             GeneratorExecutionContext context,
-            IList<TypeDeclarationSyntax> contractTypes,
-            IList<ServiceDeclaration> serviceTypes)
+            IList<ServiceDeclaration> serviceTypes,
+            IAppServicesCompilationContext compilationContext)
         {
             var isProviderEmpty = true;
 
@@ -256,12 +260,13 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
             source.AppendLine($@"       {{");
 
+            var contractTypes = compilationContext.ContractTypes;
             if (contractTypes.Count > 0)
             {
                 var contractTypesBuilder = new StringBuilder();
                 foreach (var typeSyntax in contractTypes)
                 {
-                    var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax);
+                    var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax, compilationContext);
                     source.AppendLine($"            yield return typeof({typeFullName});");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
@@ -293,7 +298,7 @@ namespace Kephas.Analyzers.Injection
                         continue;
                     }
 
-                    var typeFullName = InjectionHelper.GetTypeFullName(serviceDeclaration.ServiceType);
+                    var typeFullName = InjectionHelper.GetTypeFullName(serviceDeclaration.ServiceType, compilationContext);
                     try
                     {
                         source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
