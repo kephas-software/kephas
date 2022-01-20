@@ -212,7 +212,7 @@ namespace Kephas.Data.Linq
         /// <returns>
         /// An IActivator.
         /// </returns>
-        protected internal virtual IActivator TryGetEntityActivator()
+        protected internal virtual IActivator? TryGetEntityActivator()
         {
             return (this.DataContext as DataContextBase)?.EntityActivator;
         }
@@ -247,7 +247,7 @@ namespace Kephas.Data.Linq
         /// <returns>
         /// The new query expression visitor.
         /// </returns>
-        protected virtual ExpressionVisitor CreateQueryExpressionVisitor(Func<Type, IContext, Type> implementationTypeResolver, IActivator activator)
+        protected virtual ExpressionVisitor CreateQueryExpressionVisitor(Func<Type, IContext, Type>? implementationTypeResolver, IActivator? activator)
         {
             return new SubstituteTypeExpressionVisitor(implementationTypeResolver, activator, context: this.QueryOperationContext);
         }
