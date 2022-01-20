@@ -64,5 +64,10 @@ namespace Kephas.Data.Store
         /// An enum constant representing the SharePoint option.
         /// </summary>
         SharePoint,
+
+        /// <summary>
+        /// An enum constant representing the Redis option.
+        /// </summary>
+        Redis,
     }
 }
