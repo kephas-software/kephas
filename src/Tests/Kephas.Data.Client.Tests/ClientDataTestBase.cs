@@ -14,6 +14,7 @@ namespace Kephas.Data.Client.Tests
     using System.Reflection;
 
     using Kephas.Data.Client.Queries;
+    using Kephas.Reflection;
     using Kephas.Testing.Injection;
 
     public abstract class ClientDataTestBase : InjectionTestBase
@@ -22,6 +23,7 @@ namespace Kephas.Data.Client.Tests
         {
             return new List<Assembly>(base.GetAssemblies())
             {
+                typeof(ITypeResolver).Assembly,            // Kephas.Data
                 typeof(IDataSpace).Assembly,            // Kephas.Data
                 typeof(IClientQueryProcessor).Assembly, // Kephas.Data.Client
             };
