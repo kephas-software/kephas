@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Builder;
-
 namespace Kephas.Tests.Orchestration
 {
     using System;
@@ -18,7 +16,9 @@ namespace Kephas.Tests.Orchestration
 
     using Kephas.Application;
     using Kephas.Commands;
+    using Kephas.Configuration;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging;
@@ -33,6 +33,7 @@ namespace Kephas.Tests.Orchestration
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
+                                    typeof(IConfiguration<>).Assembly,
                                     typeof(IMessageBroker).Assembly,
                                     typeof(IMessageProcessor).Assembly,
                                     typeof(IOrchestrationManager).Assembly,
