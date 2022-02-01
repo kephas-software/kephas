@@ -94,5 +94,26 @@ namespace Kephas.IO
             path = path.Replace(RuntimeEnvironment.IsUnix() ? RuntimeEnvironment.WindowsDirectorySeparatorChar : RuntimeEnvironment.UnixDirectorySeparatorChar, Path.DirectorySeparatorChar);
             return Environment.ExpandEnvironmentVariables(path);
         }
+
+        /// <summary>
+        /// Gets the full path of the file or folder. If the name is a relative path, it will be made relative to the application location.
+        /// </summary>
+        /// <param name="path">Relative or absolute path of the file or folder.</param>
+        /// <param name="rootPath">Optional. The root path.</param>
+        /// <returns>
+        /// The full path of the file or folder.
+        /// </returns>
+        public static string GetFullPath(string? path, string? rootPath = null)
+        {
+            string GetRootPath() => rootPath == null ? Directory.GetCurrentDirectory() : NormalizePath(rootPath);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                return GetRootPath();
+            }
+
+            path = NormalizePath(path);
+            return Path.GetFullPath(Path.IsPathRooted(path) ? path : Path.Combine(GetRootPath(), path));
+        }
     }
 }
