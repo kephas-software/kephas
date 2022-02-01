@@ -37,9 +37,10 @@ namespace Kephas.Plugins.NuGet
     using Kephas.Plugins;
     using Kephas.Plugins.Reflection;
     using Kephas.Plugins.Transactions;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
-    
+
     using ISettings = global::NuGet.Configuration.ISettings;
 
     /// <summary>
@@ -236,7 +237,7 @@ namespace Kephas.Plugins.NuGet
             cancellationToken.ThrowIfCancellationRequested();
 
             var result = new OperationResult<IPlugin>();
-            var currentFramework = this.AppRuntime.GetAppFramework();
+            var currentFramework = RuntimeEnvironment.GetAppFrameworkMoniker();
             var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
 
             var (pluginPackageIdentity, pluginPackageReader, packageReaders)

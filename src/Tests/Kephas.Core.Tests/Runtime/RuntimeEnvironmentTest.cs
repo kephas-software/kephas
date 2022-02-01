@@ -22,6 +22,22 @@ namespace Kephas.Core.Tests.Runtime
             Assert.IsFalse(RuntimeEnvironment.IsNetFramework);
         }
 
+        [Test]
+        public void GetAppFramework()
+        {
+            var appFramework = RuntimeEnvironment.GetAppFrameworkMoniker();
+
+#if NETCOREAPP3_1
+            Assert.AreEqual("netcoreapp3.1", appFramework);
+#elif NET5_0
+            Assert.AreEqual("net5.0", appFramework);
+#elif NET6_0
+            Assert.AreEqual("net6.0", appFramework);
+#else
+            Assert.IsTrue(appFramework.StartsWith("net"), "Expected a .NET Core app framework.");
+#endif
+        }
+
 #if NETCOREAPP3_1
         [Test]
         public void IsNetCore()

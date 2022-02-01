@@ -16,13 +16,13 @@ namespace Kephas.Application
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Runtime.Loader;
     using System.Runtime.Versioning;
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -30,6 +30,7 @@ namespace Kephas.Application
     using Kephas.Services;
     using Kephas.Services.Transitions;
     using Kephas.Versioning;
+    using RuntimeEnvironment = Kephas.Runtime.RuntimeEnvironment;
 
     /// <summary>
     /// An application application runtime providing only assemblies loaded by the runtime.
@@ -51,8 +52,8 @@ namespace Kephas.Application
 
         private string? appLocation;
         private string? appFolder;
-        private string[]? configLocations;
-        private string[]? licenseLocations;
+        private ILocations? configLocations;
+        private ILocations? licenseLocations;
         private IEnumerable<string>? configFolders;
         private IEnumerable<string>? licenseFolders;
         private bool isDisposed = false; // To detect redundant calls
@@ -168,29 +169,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the application's underlying .NET framework identifier.
-        /// </summary>
-        /// <returns>
-        /// The application's underlying .NET framework identifier.
-        /// </returns>
-        public virtual string GetAppFramework()
-        {
-            var fwkName = this.GetAppFrameworkName();
-            var fwkId = fwkName.Identifier == ".NETFramework"
-                ? "net"
-                : fwkName.Identifier == ".NETStandard"
-                    ? "netstandard"
-                    : fwkName.Identifier == ".NETCoreApp" && fwkName.Version.Major < 5
-                        ? "netcoreapp"
-                        : "net";
-            var build = fwkName.Version.Build <= 0 ? string.Empty : fwkName.Version.Build.ToString();
-            var fwkVersion = fwkId == "net" && fwkName.Version.Major < 5
-                ? $"{fwkName.Version.Major}{fwkName.Version.Minor}{build}"
-                : $"{fwkName.Version.Major}.{fwkName.Version.Minor}";
-            return fwkId + fwkVersion;
-        }
-
-        /// <summary>
         /// Gets the application location (directory where the application lies).
         /// </summary>
         /// <returns>
@@ -236,7 +214,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application configuration directories.
         /// </returns>
-        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ??= this.ComputeConfigLocations(this.configFolders);
+        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ??= this.ComputeLocations(this.configFolders, IAppRuntime.DefaultConfigFolder);
 
         /// <summary>
         /// Gets the application directories where license files are stored.
@@ -244,7 +222,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application configuration directories.
         /// </returns>
-        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ??= this.ComputeLicenseLocations(this.licenseFolders);
+        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ??= this.ComputeLocations(this.licenseFolders, IAppRuntime.DefaultLicenseFolder);
 
         /// <summary>
         /// Gets the application assemblies.
@@ -425,7 +403,7 @@ namespace Kephas.Application
         /// <returns>
         /// True if assembly match, false if not, <c>null</c> if the assembly matches the name but not the version or public key token.
         /// </returns>
-        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[] publicKeyToken)
+        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[]? publicKeyToken)
         {
             if (assemblyName.Name != name)
             {
@@ -433,12 +411,18 @@ namespace Kephas.Application
             }
 
             // TODO: what if the assembly matches the name, but not the version or the public key token?
-            if (EqualArray(assemblyName.GetPublicKeyToken(), publicKeyToken))
+            var assemblyPublicKeyToken = assemblyName.GetPublicKeyToken();
+            if (assemblyPublicKeyToken == publicKeyToken)
             {
                 return true;
             }
 
-            return null;
+            if (assemblyPublicKeyToken?.Length != publicKeyToken?.Length)
+            {
+                return null;
+            }
+
+            return publicKeyToken!.SequenceEqual(assemblyPublicKeyToken!) ? true : null;
         }
 
         /// <summary>
@@ -451,42 +435,6 @@ namespace Kephas.Application
         protected virtual bool IsCodeAssembly(string? assemblyName)
         {
             return !string.IsNullOrEmpty(assemblyName) && !assemblyName.Contains(".resources,");
-        }
-
-        /// <summary>
-        /// Gets the application's underlying framework name.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <returns>
-        /// The application framework name.
-        /// </returns>
-        protected virtual FrameworkName GetAppFrameworkName()
-        {
-            var fwkVersion = Environment.Version;
-            var fwkDescription = RuntimeInformation.FrameworkDescription;
-            var mnemonics = new (string match, string name)[]
-            {
-                (".NET Native", ".NETNative"),
-                (".NET Framework", ".NETFramework"),
-                (".NET Core", ".NETCoreApp"),
-                (".NET", ".NETCoreApp"),
-            };
-
-            foreach (var (match, name) in mnemonics)
-            {
-                if (fwkDescription.StartsWith(match))
-                {
-                    var version = (Version)SemanticVersion.Parse(fwkDescription[(match.Length + 1)..]);
-                    version = version.Major == 4 && version.Revision != 0
-                        ? match == ".NET Core"
-                            ? new Version(2, 1)
-                            : new Version(version.Major, version.Minor, version.Revision)
-                        : new Version(version.Major, version.Minor);
-                    return new FrameworkName(name, version);
-                }
-            }
-
-            throw new InvalidOperationException($"Could not identify the current framework from {Assembly.GetEntryAssembly()} and {Assembly.GetExecutingAssembly()}.");
         }
 
         /// <summary>
@@ -593,34 +541,6 @@ namespace Kephas.Application
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
         }
 
-        private static bool EqualArray(byte[]? s1, byte[]? s2)
-        {
-            if (s1 == null)
-            {
-                return s2 == null;
-            }
-
-            if (s2 == null)
-            {
-                return false;
-            }
-
-            if (s1.Length != s2.Length)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < s1.Length; i++)
-            {
-                if (s1[i] != s2[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         private IEnumerable<Assembly> GetAppAssembliesRaw()
         {
             // TODO AssemblyLoadContext.Default.Assemblies;
@@ -651,27 +571,15 @@ namespace Kephas.Application
             return assembly.GetLocationDirectory();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private string[] ComputeConfigLocations(IEnumerable<string>? configFolders) =>
-            this.ComputeLocations(configFolders, IAppRuntime.DefaultConfigFolder);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private string[] ComputeLicenseLocations(IEnumerable<string>? licenseFolders) =>
-            this.ComputeLocations(licenseFolders, IAppRuntime.DefaultLicenseFolder);
-
-        private string[] ComputeLocations(IEnumerable<string>? folders, string defaultFolder)
+        private ILocations ComputeLocations(IEnumerable<string>? folders, string defaultFolder)
         {
-            if (folders == null)
+            var foldersArray = folders?.ToArray() ?? new[] { defaultFolder };
+            if (foldersArray.Length == 0)
             {
-                return new[] { this.GetFullPath(defaultFolder) };
+                foldersArray = new[] { defaultFolder };
             }
 
-            var locations = new List<string>();
-            locations.AddRange(folders.Select(this.GetFullPath));
-
-            return locations.Count == 0
-                ? new[] { this.GetFullPath(defaultFolder) }
-                : locations.Distinct().ToArray();
+            return new FolderLocations(defaultFolder, this.GetAppLocation(), foldersArray);
         }
     }
 }

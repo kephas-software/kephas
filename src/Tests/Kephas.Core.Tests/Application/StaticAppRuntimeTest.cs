@@ -126,23 +126,6 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
-        public void GetAppFramework()
-        {
-            var appRuntime = new StaticAppRuntime();
-            var appFramework = appRuntime.GetAppFramework();
-
-#if NETCOREAPP3_1
-            Assert.AreEqual("netcoreapp3.1", appFramework);
-#elif NET5_0
-            Assert.AreEqual("net5.0", appFramework);
-#elif NET6_0
-            Assert.AreEqual("net6.0", appFramework);
-#else
-            Assert.IsTrue(appFramework.StartsWith("net"), "Expected a .NET Core app framework.");
-#endif
-        }
-
-        [Test]
         public void IsRoot_true()
         {
             var appRuntime = new StaticAppRuntime();

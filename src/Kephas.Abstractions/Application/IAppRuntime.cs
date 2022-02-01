@@ -121,14 +121,6 @@ namespace Kephas.Application
         IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool>? assemblyFilter = null);
 
         /// <summary>
-        /// Gets the application's underlying .NET framework identifier.
-        /// </summary>
-        /// <returns>
-        /// The application's underlying .NET framework identifier.
-        /// </returns>
-        string GetAppFramework();
-
-        /// <summary>
         /// Attempts to load an assembly from its given assembly name.
         /// </summary>
         /// <param name="assemblyName">The name of the assembly to be loaded.</param>
@@ -225,14 +217,6 @@ namespace Kephas.Application
         /// The full path of the file or folder.
         /// </returns>
         public static string GetFullPath(this IAppRuntime appRuntime, string? path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                return appRuntime.GetAppLocation();
-            }
-
-            path = FileSystem.NormalizePath(path!);
-            return Path.GetFullPath(Path.IsPathRooted(path) ? path : Path.Combine(appRuntime.GetAppLocation(), path));
-        }
+            => FileSystem.GetFullPath(path, appRuntime.GetAppLocation());
     }
 }

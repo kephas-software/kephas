@@ -11,7 +11,11 @@
 namespace Kephas.Runtime
 {
     using System;
+    using System.Reflection;
     using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+
+    using Kephas.Versioning;
 
     /// <summary>
     /// Helper methods for interacting with the runtime environment.
@@ -147,6 +151,65 @@ namespace Kephas.Runtime
         /// True if the application runs on the Mono runtime, false if not.
         /// </returns>
         public static bool IsMonoRuntime => Type.GetType("Mono.Runtime") != null;
+
+        /// <summary>
+        /// Gets the application's underlying framework moniker.
+        /// </summary>
+        /// <returns>
+        /// The application's underlying framework moniker.
+        /// </returns>
+        public static string GetAppFrameworkMoniker()
+        {
+            var fwkName = GetAppFrameworkName();
+            var fwkId = fwkName.Identifier == ".NETFramework"
+                ? "net"
+                : fwkName.Identifier == ".NETStandard"
+                    ? "netstandard"
+                    : fwkName.Identifier == ".NETCoreApp" && fwkName.Version.Major < 5
+                        ? "netcoreapp"
+                        : "net";
+            var build = fwkName.Version.Build <= 0 ? string.Empty : fwkName.Version.Build.ToString();
+            var fwkVersion = fwkId == "net" && fwkName.Version.Major < 5
+                ? $"{fwkName.Version.Major}{fwkName.Version.Minor}{build}"
+                : $"{fwkName.Version.Major}.{fwkName.Version.Minor}";
+            return fwkId + fwkVersion;
+        }
+
+        /// <summary>
+        /// Gets the application's underlying framework name.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <returns>
+        /// The application framework name.
+        /// </returns>
+        public static FrameworkName GetAppFrameworkName()
+        {
+            var fwkVersion = Environment.Version;
+            var fwkDescription = RuntimeInformation.FrameworkDescription;
+            var mnemonics = new (string match, string name)[]
+            {
+                (".NET Native", ".NETNative"),
+                (".NET Framework", ".NETFramework"),
+                (".NET Core", ".NETCoreApp"),
+                (".NET", ".NETCoreApp"),
+            };
+
+            foreach (var (match, name) in mnemonics)
+            {
+                if (fwkDescription.StartsWith(match))
+                {
+                    var version = (Version)SemanticVersion.Parse(fwkDescription[(match.Length + 1)..]);
+                    version = version.Major == 4 && version.Revision != 0
+                        ? match == ".NET Core"
+                            ? new Version(2, 1)
+                            : new Version(version.Major, version.Minor, version.Revision)
+                        : new Version(version.Major, version.Minor);
+                    return new FrameworkName(name, version);
+                }
+            }
+
+            throw new InvalidOperationException($"Could not identify the current framework from {Assembly.GetEntryAssembly()} and {Assembly.GetExecutingAssembly()}.");
+        }
 
         /// <summary>
         /// Checks whether .NET is running on the Mono Platform by asking Environment.OSVersion.Platform. Can
