@@ -88,6 +88,7 @@ $paths = @(
     "..\Kephas.Serialization.MongoDBBson",
     "..\Kephas.Serialization.NewtonsoftJson",
     "..\Kephas.Templating",
+    "..\Kephas.Tenants",
     "..\Kephas.TextProcessing",
     "..\Kephas.Workflow",
     "..\Kephas.Workflow.Abstractions",

@@ -316,6 +316,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating", "Kephas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating.Tests", "Tests\Kephas.Templating.Tests\Kephas.Templating.Tests.csproj", "{AB6F03FA-0B82-4B12-B996-602FE269491A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Tenants", "Kephas.Tenants\Kephas.Tenants.csproj", "{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -882,6 +884,10 @@ Global
 		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
