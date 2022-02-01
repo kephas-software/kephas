@@ -23,6 +23,14 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
+        public void AppArgs_environment_variable()
+        {
+            Environment.SetEnvironmentVariable("KEPHASAPP_Hello", "John");
+            var args = new AppArgs();
+            Assert.AreEqual("John", args["hello"]);
+        }
+
+        [Test]
         public void LogLevel_empty()
         {
             var args = new AppArgs("");

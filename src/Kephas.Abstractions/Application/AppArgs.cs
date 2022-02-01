@@ -11,6 +11,7 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Kephas.Collections;
     using Kephas.Commands;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -51,12 +52,23 @@ namespace Kephas.Application
         public static readonly string RootArgName = "Root";
 
         /// <summary>
+        /// Gets or sets the name prefix of environment variables which will be read
+        /// to populate the arguments collection. This value should be set before doing anything
+        /// related to application arguments.
+        /// </summary>
+        /// <remarks>
+        /// Set this value with caution, as changing this prefix during application execution time
+        /// can lead to unexpected results.
+        /// </remarks>
+        private static string? environmentAppArgsPrefix = "KEPHASAPP_";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AppArgs"/> class
         /// from the process's command line arguments. To initialize
         /// empty args use <c>new AppArgs(new string[0])</c>.
         /// </summary>
         public AppArgs()
-            : base(ComputeArgs(System.Environment.GetCommandLineArgs()))
+            : base(ComputeAppArgs(ComputeArgs(System.Environment.GetCommandLineArgs())))
         {
         }
 
@@ -65,7 +77,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
         public AppArgs(IEnumerable<string> appArgs)
-            : base(appArgs)
+            : base(ComputeAppArgs(ComputeArgs(appArgs)))
         {
         }
 
@@ -74,7 +86,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="commandLine">The command line.</param>
         public AppArgs(string commandLine)
-            : base(commandLine)
+            : base(ComputeAppArgs(ComputeArgs(commandLine)))
         {
         }
 
@@ -83,7 +95,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="argValues">The argument values.</param>
         public AppArgs(IDictionary<string, object?> argValues)
-            : base(argValues)
+            : base(ComputeAppArgs(argValues))
         {
         }
 
@@ -92,7 +104,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="args">The argument values.</param>
         public AppArgs(IDynamic args)
-            : base(args)
+            : base(ComputeAppArgs(ComputeArgs(args.ToDictionary())))
         {
         }
 
@@ -167,5 +179,45 @@ namespace Kephas.Application
         /// </summary>
         public virtual bool IsDevelopment =>
             string.Equals(EnvironmentName.Development, this[EnvArgName] as string, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Sets the name prefix of environment variables which will be read
+        /// to populate the arguments collection. This value should be set before doing anything
+        /// related to application arguments. A value of <c>null</c> indicates that no environment variables should be
+        /// used.
+        /// </summary>
+        /// <remarks>
+        /// Set this value with caution, as changing this prefix during application execution time
+        /// can lead to unexpected results.
+        /// </remarks>
+        /// <param name="prefix">The prefix to use.</param>
+        public static void SetEnvironmentAppArgsPrefix(string? prefix)
+        {
+            environmentAppArgsPrefix = prefix;
+        }
+
+        /// <summary>
+        /// Computes the application arguments by merging into the provided arguments
+        /// those read from environment variables, if the argument does not already exist.
+        /// </summary>
+        /// <param name="args">The raw arguments.</param>
+        /// <returns>The arguments augumented with environment variables provided ones.</returns>
+        protected static IDictionary<string, object?> ComputeAppArgs(IDictionary<string, object?> args)
+        {
+            if (environmentAppArgsPrefix == null)
+            {
+                return args;
+            }
+
+            var env = System.Environment.GetEnvironmentVariables();
+            env.Keys
+                .OfType<string>()
+                .Where(k => k.StartsWith(environmentAppArgsPrefix, StringComparison.OrdinalIgnoreCase))
+                .ToDictionary(k => k, k => k[environmentAppArgsPrefix.Length..])
+                .Where(kv => !string.IsNullOrEmpty(kv.Value) && !args.ContainsKey(kv.Value))
+                .ForEach(kv => args[kv.Value] = env[kv.Key]);
+
+            return args;
+        }
     }
 }
