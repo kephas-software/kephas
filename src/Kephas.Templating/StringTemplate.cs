@@ -7,10 +7,12 @@
 
 namespace Kephas.Templating;
 
+using Kephas.Dynamic;
+
 /// <summary>
 /// Template constructed from a string.
 /// </summary>
-public class StringTemplate : ITemplate
+public class StringTemplate : Expando, ITemplate
 {
     private readonly string content;
 
@@ -22,9 +24,9 @@ public class StringTemplate : ITemplate
     /// <param name="content">The template content.</param>
     public StringTemplate(string name, string kind, string content)
     {
-        this.content = content;
-        this.Name = name;
-        this.Kind = kind;
+        this.content = content ?? throw new ArgumentNullException(nameof(content));
+        this.Name = name ?? throw new ArgumentNullException(nameof(name));
+        this.Kind = kind ?? throw new ArgumentNullException(nameof(kind));
     }
 
     /// <summary>

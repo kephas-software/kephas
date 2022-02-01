@@ -9,10 +9,12 @@ namespace Kephas.Templating;
 
 using System.Text;
 
+using Kephas.Dynamic;
+
 /// <summary>
 /// Template constructed from a string builder.
 /// </summary>
-public class StringBuilderTemplate : ITemplate
+public class StringBuilderTemplate : Expando, ITemplate
 {
     private readonly StringBuilder content;
 
@@ -24,9 +26,9 @@ public class StringBuilderTemplate : ITemplate
     /// <param name="content">The template content.</param>
     public StringBuilderTemplate(string name, string kind, StringBuilder content)
     {
-        this.content = content;
-        this.Name = name;
-        this.Kind = kind;
+        this.content = content ?? throw new ArgumentNullException(nameof(content));
+        this.Name = name ?? throw new ArgumentNullException(nameof(name));
+        this.Kind = kind ?? throw new ArgumentNullException(nameof(kind));
     }
 
     /// <summary>

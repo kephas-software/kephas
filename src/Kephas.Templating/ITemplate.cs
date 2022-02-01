@@ -7,10 +7,12 @@
 
 namespace Kephas.Templating;
 
+using Kephas.Dynamic;
+
 /// <summary>
 /// Abstraction for describing a template.
 /// </summary>
-public interface ITemplate
+public interface ITemplate : IExpando
 {
     /// <summary>
     /// Gets the template name.
