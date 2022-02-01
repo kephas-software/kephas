@@ -60,6 +60,7 @@ namespace Kephas.Core.Endpoints.Tests
         {
             var settings = new CoreSettings();
             var config = Substitute.For<IConfiguration<CoreSettings>>();
+            config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
             config.UpdateSettingsAsync(Arg.Any<CoreSettings>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                 {
@@ -75,10 +76,10 @@ namespace Kephas.Core.Endpoints.Tests
 
             var settingsString = @"{""task"": {""defaultTimeout"": ""0:5:0""} }";
             var serializationService = Substitute.For<ISerializationService>();
-            serializationService.DeserializeAsync(settingsString, Arg.Any<Action<ISerializationContext>>(),
+            serializationService.JsonDeserializeAsync(settingsString, Arg.Any<Action<ISerializationContext>>(),
                     Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<object?>(
-                    new CoreSettings { Task = new TaskSettings {DefaultTimeout = TimeSpan.FromMinutes(5) } }));
+                    new CoreSettings { Task = new TaskSettings { DefaultTimeout = TimeSpan.FromMinutes(5) } }));
             var handler = new UpdateSettingsHandler(container, typeResolver, serializationService);
             var result = await handler.ProcessAsync(
                 new UpdateSettingsMessage { SettingsType = "core", Settings = settingsString },
