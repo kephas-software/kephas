@@ -22,11 +22,22 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
     using Kephas.Services;
+    using Kephas.Services.Behaviors;
     using Kephas.Testing.Application;
     using NSubstitute;
 
     public class AutofacMessagingTestBase : AutofacApplicationTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(IEnabledServiceBehaviorRule).GetTypeInfo().Assembly,     /* Kephas.Application*/
+                typeof(IContextFactory).GetTypeInfo().Assembly,     /* Kephas.Application*/
+                typeof(IEnabledLazyServiceCollection<,>).GetTypeInfo().Assembly,     /* Kephas.Application*/
+            };
+        }
+
         public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
