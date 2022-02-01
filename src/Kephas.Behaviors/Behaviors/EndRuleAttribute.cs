@@ -21,20 +21,12 @@ namespace Kephas.Behaviors
     public class EndRuleAttribute : Attribute, IMetadataValue<bool>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EndRuleAttribute" /> class.
-        /// </summary>
-        public EndRuleAttribute()
-        {
-            this.Value = true;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the rule is an end rule.
         /// </summary>
         /// <value>
         /// Boolean value indicating whether the rule is an end rule.
         /// </value>
-        public bool Value { get; }
+        public bool Value => true;
 
         /// <summary>
         /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
