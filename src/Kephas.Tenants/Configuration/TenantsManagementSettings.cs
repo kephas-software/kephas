@@ -14,8 +14,14 @@ using Kephas.Security.Permissions.AttributedModel;
 /// Settings for tenant management.
 /// </summary>
 [RequiresPermission(typeof(TenantsAdminPermission))]
+[GlobalSettings]
 public class TenantsManagementSettings : ISettings
 {
+    /// <summary>
+    /// Gets or sets the global admin organization settings.
+    /// </summary>
+    public GlobalAdminSettings GlobalAdmin { get; set; } = new ();
+
     /// <summary>
     /// Gets the list of tenants.
     /// </summary>

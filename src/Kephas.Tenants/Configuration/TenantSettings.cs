@@ -15,10 +15,19 @@ public class TenantSettings : ISettings
     /// <summary>
     /// Gets or sets the tenant ID.
     /// </summary>
-    public string TenantId { get; set; } = string.Empty;
+    public virtual string TenantId { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the display name;
     /// </summary>
     public string DisplayName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the tenant specific domains.
+    /// </summary>
+    /// <remarks>
+    /// Using these domains, an authenticated user can automatically be associated
+    /// to a tenant.
+    /// </remarks>
+    public string[] Domains { get; set; } = Array.Empty<string>();
 }
