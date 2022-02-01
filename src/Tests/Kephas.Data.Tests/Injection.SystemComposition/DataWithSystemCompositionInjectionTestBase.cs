@@ -13,6 +13,7 @@ namespace Kephas.Data.Tests.Injection.SystemComposition
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Serialization;
     using Kephas.Testing.Injection;
 
     public class DataWithSystemCompositionInjectionTestBase : SystemCompositionInjectionTestBase
@@ -21,6 +22,7 @@ namespace Kephas.Data.Tests.Injection.SystemComposition
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
+                                    typeof(DefaultSerializationService).Assembly,      // Kephas.Data
                                     typeof(IDataContext).Assembly,      // Kephas.Data
                                 };
             return assemblies;
