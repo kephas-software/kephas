@@ -86,6 +86,7 @@ $paths = @(
     "Kephas.Serialization",
     "Kephas.Serialization.MongoDBBson",
     "Kephas.Serialization.NewtonsoftJson",
+    "Kephas.Templating",
     "Kephas.TextProcessing",
     "Kephas.Workflow",
     "Kephas.Workflow.Abstractions",

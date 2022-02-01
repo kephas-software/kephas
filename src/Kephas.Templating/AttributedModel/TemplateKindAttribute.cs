@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LanguageAttribute.cs" company="Kephas Software SRL">
+// <copyright file="TemplateKindAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,33 +8,33 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting.AttributedModel;
+namespace Kephas.Templating.AttributedModel;
 
 using System;
 
 using Kephas.Injection;
 
 /// <summary>
-/// Indicates the supported language.
+/// Indicates the supported template kind.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class LanguageAttribute : Attribute, IMetadataValue<string[]>
+public class TemplateKindAttribute : Attribute, IMetadataValue<string[]>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="LanguageAttribute"/> class.
+    /// Initializes a new instance of the <see cref="TemplateKindAttribute"/> class.
     /// </summary>
     /// <param name="value">The value.</param>
-    public LanguageAttribute(string value)
+    public TemplateKindAttribute(string value)
     {
         value = value ?? throw new ArgumentNullException(nameof(value));
         this.Value = new[] { value };
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="LanguageAttribute"/> class.
+    /// Initializes a new instance of the <see cref="TemplateKindAttribute"/> class.
     /// </summary>
     /// <param name="value">The value.</param>
-    public LanguageAttribute(params string[] value)
+    public TemplateKindAttribute(params string[] value)
     {
         this.Value = value ?? throw new ArgumentNullException(nameof(value));
     }

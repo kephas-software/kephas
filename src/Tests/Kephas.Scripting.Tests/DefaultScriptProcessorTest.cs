@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemCompositionDefaultScriptProcessorTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultScriptProcessorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the default scripting engine test class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Scripting.Tests
@@ -18,14 +15,14 @@ namespace Kephas.Scripting.Tests
     public class DefaultScriptProcessorTest : ScriptingTestBase
     {
         [Test]
-        public void DefaultMessageProcessor_Injection_success()
+        public void DefaultScriptProcessor_Injection_success()
         {
             var container = this.CreateInjector();
-            var scriptingEngine = container.Resolve<IScriptProcessor>();
-            Assert.IsInstanceOf<DefaultScriptProcessor>(scriptingEngine);
+            var scriptProcessor = container.Resolve<IScriptProcessor>();
+            Assert.IsInstanceOf<DefaultScriptProcessor>(scriptProcessor);
 
-            var typedScriptingService = (DefaultScriptProcessor)scriptingEngine;
-            Assert.IsNotNull(typedScriptingService.Logger);
+            var typedScriptingProcessor = (DefaultScriptProcessor)scriptProcessor;
+            Assert.IsNotNull(typedScriptingProcessor.Logger);
         }
 
         [Test]

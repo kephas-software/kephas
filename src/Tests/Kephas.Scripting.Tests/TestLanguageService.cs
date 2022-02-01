@@ -20,13 +20,14 @@ namespace Kephas.Scripting.Tests
     [Language("test")]
     public class TestLanguageService : ILanguageService
     {
-        public Task<object?> ExecuteAsync(IScript script,
+        public Task<object?> ExecuteAsync(
+            IScript script,
             IScriptGlobals? scriptGlobals = null,
             IDynamic? args = null,
             IContext? executionContext = null,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<object>("executed " + script.SourceCode);
+            return Task.FromResult<object?>("executed " + script.SourceCode);
         }
     }
 }

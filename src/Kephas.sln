@@ -312,6 +312,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Interacti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Redis", "Kephas.Data.Redis\Kephas.Data.Redis.csproj", "{DE1DB122-4E1D-4412-A823-65FA3F6D8A88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating", "Kephas.Templating\Kephas.Templating.csproj", "{6D618CE1-81C8-40AE-A568-15AC347001F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating.Tests", "Tests\Kephas.Templating.Tests\Kephas.Templating.Tests.csproj", "{AB6F03FA-0B82-4B12-B996-602FE269491A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -870,6 +874,14 @@ Global
 		{DE1DB122-4E1D-4412-A823-65FA3F6D8A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE1DB122-4E1D-4412-A823-65FA3F6D8A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE1DB122-4E1D-4412-A823-65FA3F6D8A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D618CE1-81C8-40AE-A568-15AC347001F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D618CE1-81C8-40AE-A568-15AC347001F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D618CE1-81C8-40AE-A568-15AC347001F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D618CE1-81C8-40AE-A568-15AC347001F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6F03FA-0B82-4B12-B996-602FE269491A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -934,6 +946,7 @@ Global
 		{0F77E699-B4B0-4EEA-98FF-15DC00AAF741} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{DE7786B7-0168-412F-AEBA-1D294E78D640} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{8455F875-C88A-45F1-A523-61551D9B40CD} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{AB6F03FA-0B82-4B12-B996-602FE269491A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
