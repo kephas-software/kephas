@@ -46,7 +46,10 @@ namespace Kephas.Data.Model.AttributedModel
         /// <param name="keyProperties">The key properties.</param>
         protected KeyAttribute(string? name, KeyKind kind, string[] keyProperties)
         {
-            if (keyProperties == null || keyProperties.Length == 0) throw new System.ArgumentException("Value must not be null or empty.", nameof(keyProperties));
+            if (keyProperties == null || keyProperties.Length == 0)
+            {
+                throw new System.ArgumentException("Value must not be null or empty.", nameof(keyProperties));
+            }
 
             this.Kind = kind;
             this.Name = name;

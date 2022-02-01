@@ -31,7 +31,7 @@ namespace Kephas.Data.Model.Tests.AttributedModel
         [Test]
         public void KeyAttribute_invalid_properties()
         {
-            Assert.Throws<ArgumentNullException>(() => new KeyAttribute("key-name", null));
+            Assert.Throws<ArgumentException>(() => new KeyAttribute("key-name", null));
             Assert.Throws<ArgumentException>(() => new KeyAttribute("key-name", new string[0]));
         }
     }
