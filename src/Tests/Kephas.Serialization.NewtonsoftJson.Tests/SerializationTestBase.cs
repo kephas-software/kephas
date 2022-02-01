@@ -28,7 +28,8 @@ namespace Kephas.Serialization.Json.Tests
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
-                                    typeof(JsonSerializer).Assembly,      // Kephas.Serialization.NewtonsoftJson
+                                    typeof(DefaultTypeResolver).Assembly,   // Kephas.Reflection
+                                    typeof(JsonSerializer).Assembly,        // Kephas.Serialization.NewtonsoftJson
                                 };
             return assemblies;
         }

@@ -12,6 +12,7 @@ namespace Kephas.Serialization.Json.Tests.SystemComposition
 {
     using System.Collections.Generic;
     using System.Reflection;
+    using Kephas.Reflection;
     using Kephas.Testing.Injection;
 
     public class SystemCompositionSerializationTestBase : SystemCompositionInjectionTestBase
@@ -20,6 +21,8 @@ namespace Kephas.Serialization.Json.Tests.SystemComposition
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
+                                    typeof(ISerializationService).Assembly,
+                                    typeof(DefaultTypeResolver).Assembly,
                                     typeof(JsonSerializer).Assembly,      // Kephas.Serialization.NewtonsoftJson
                                 };
             return assemblies;

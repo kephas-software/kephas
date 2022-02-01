@@ -17,6 +17,7 @@ namespace Kephas.Plugins.NuGet.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Configuration;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
@@ -31,6 +32,7 @@ namespace Kephas.Plugins.NuGet.Tests
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
             {
+                typeof(IConfiguration<>).Assembly,     // Kephas.Configuration
                 typeof(PluginManagerBase).Assembly,     // Kephas.Plugins
                 typeof(NuGetPluginManager).Assembly,    // Kephas.Plugins.NuGet
             };

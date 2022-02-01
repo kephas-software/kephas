@@ -446,7 +446,8 @@ namespace Kephas.Serialization.Json.Tests
                     b.WithAssemblies(
                         typeof(IInjector).Assembly,
                         typeof(ISerializationService).Assembly,
-                        typeof(JsonSerializer).Assembly));
+                        typeof(JsonSerializer).Assembly,
+                        typeof(DefaultTypeResolver).Assembly));
             var serializers = ambientServices.Injector.ResolveMany<Lazy<ISerializer, SerializerMetadata>>();
             var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.Value;
 
@@ -463,7 +464,8 @@ namespace Kephas.Serialization.Json.Tests
                         b.WithAssemblies(
                             typeof(IInjector).Assembly,
                             typeof(ISerializationService).Assembly,
-                            typeof(JsonSerializer).Assembly));
+                            typeof(JsonSerializer).Assembly,
+                            typeof(DefaultTypeResolver).Assembly));
             var serializers = ambientServices.Injector.ResolveMany<Lazy<ISerializer, SerializerMetadata>>();
             var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.Value;
 
