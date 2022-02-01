@@ -8,17 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.IO.Setup
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Resources;
+    using Kephas.Injection;
     using Kephas.Net.Mime;
     using Kephas.Services;
 
@@ -162,7 +162,7 @@ namespace Kephas.Data.IO.Setup
             var assembly = this.ResourcesAssembly;
             var names = assembly.GetManifestResourceNames()
                 .Where(n => n.StartsWith(resourceNamespace))
-                .OrderBy(n => n)
+                .OrderBy(Path.GetFileNameWithoutExtension)
                 .ToArray();
             return names;
         }
