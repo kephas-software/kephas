@@ -30,7 +30,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="mediaTypes">List of types of the medias.</param>
+        /// <param name="mediaTypes">List of media types.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         public WebAppSettingsProvider(
             IAppRuntime appRuntime,
