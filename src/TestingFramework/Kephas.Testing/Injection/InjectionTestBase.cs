@@ -136,10 +136,10 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).Assembly,          /* Kephas.Injection */
-                           typeof(IEventHub).Assembly,          /* Kephas.Interaction */
+                           typeof(IInjector).Assembly,              /* Kephas.Injection */
+                           typeof(IEventHub).Assembly,              /* Kephas.Interaction */
                            typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
-                           typeof(AmbientServices).Assembly,    /* Kephas.Core*/
+                           typeof(AmbientServices).Assembly,        /* Kephas.Core*/
                        };
         }
 

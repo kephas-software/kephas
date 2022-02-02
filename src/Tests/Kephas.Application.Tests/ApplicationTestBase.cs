@@ -13,7 +13,6 @@ namespace Kephas.Application.Tests
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Testing.Injection;
@@ -26,7 +25,6 @@ namespace Kephas.Application.Tests
             {
                 typeof(ITypeRegistry).Assembly,             // Kephas.Reflection
                 typeof(IOperation).Assembly,                // Kephas.Operations
-                typeof(IEventHub).Assembly,                 // Kephas.Interactions
                 typeof(IAppLifecycleBehavior).Assembly,     // Kephas.Application.Abstractions
                 typeof(AppBase<>).Assembly,                 // Kephas.Application
             };
