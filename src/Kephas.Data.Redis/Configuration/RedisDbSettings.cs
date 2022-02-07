@@ -8,6 +8,7 @@
 namespace Kephas.Data.Redis.Configuration;
 
 using System.ComponentModel.DataAnnotations;
+
 using Kephas.Configuration;
 
 /// <summary>
@@ -16,8 +17,13 @@ using Kephas.Configuration;
 public class RedisDbSettings : ISettings
 {
     /// <summary>
+    /// Indicates the default database (1).
+    /// </summary>
+    public const int DefaultDatabase = 1;
+
+    /// <summary>
     /// Gets or sets the database number.
     /// </summary>
     [Display(Description = "Gets or sets the database number.")]
-    public int? Database { get; set; }
+    public int Database { get; set; } = DefaultDatabase;
 }
