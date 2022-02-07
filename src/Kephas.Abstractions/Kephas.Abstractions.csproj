@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net5.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -96,11 +96,6 @@
                 <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
             </ItemGroup>
         </When>
-		<When Condition="'$(TargetFramework)'=='net5.0'">
-			<ItemGroup>
-				<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-			</ItemGroup>
-		</When>
 		<Otherwise>
             <ItemGroup>
                 <PackageReference Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />

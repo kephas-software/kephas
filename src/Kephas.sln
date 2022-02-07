@@ -128,8 +128,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz.MongoDB", "Kephas.Scheduling.Quartz.MongoDB\Kephas.Scheduling.Quartz.MongoDB.csproj", "{D2AE2964-94D9-4806-B9D1-81365E866930}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.InteractiveTests", "Tests\Kephas.AspNetCore.InteractiveTests\Kephas.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.Serilog", "Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj", "{8D30B571-8190-49C4-9A90-55026E82822F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Tests", "Tests\Kephas.AspNetCore.Tests\Kephas.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
@@ -318,9 +316,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Templating.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Tenants", "Kephas.Tenants\Kephas.Tenants.csproj", "{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Tests", "Tests\Kephas.Reflection.Tests\Kephas.Reflection.Tests.csproj", "{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Reflection.Tests", "Tests\Kephas.Reflection.Tests\Kephas.Reflection.Tests.csproj", "{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Dynamic.Tests", "Tests\Kephas.Reflection.Dynamic.Tests\Kephas.Reflection.Dynamic.Tests.csproj", "{8165A69E-E5A1-44CD-A94B-8F920A790B81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Reflection.Dynamic.Tests", "Tests\Kephas.Reflection.Dynamic.Tests\Kephas.Reflection.Dynamic.Tests.csproj", "{8165A69E-E5A1-44CD-A94B-8F920A790B81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -524,10 +522,6 @@ Global
 		{D2AE2964-94D9-4806-B9D1-81365E866930}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2AE2964-94D9-4806-B9D1-81365E866930}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2AE2964-94D9-4806-B9D1-81365E866930}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8D30B571-8190-49C4-9A90-55026E82822F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D30B571-8190-49C4-9A90-55026E82822F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D30B571-8190-49C4-9A90-55026E82822F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -925,7 +919,6 @@ Global
 		{A159E2DF-4F22-4CFB-837F-07F67D517C6A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{3AD2EBEA-C416-46FD-9B96-6042B17E44DF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669} = {816692E7-24DC-46B5-97FB-D314B52D815D}
-		{92DF9C0F-F886-4066-BAA1-959E6BA804D8} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{A561331E-F0E7-4338-9DB6-5A23AFBDC116} = {816692E7-24DC-46B5-97FB-D314B52D815D}

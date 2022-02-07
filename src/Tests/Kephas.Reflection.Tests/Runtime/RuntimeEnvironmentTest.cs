@@ -29,8 +29,6 @@ namespace Kephas.Core.Tests.Runtime
 
 #if NETCOREAPP3_1
             Assert.AreEqual("netcoreapp3.1", appFramework);
-#elif NET5_0
-            Assert.AreEqual("net5.0", appFramework);
 #elif NET6_0
             Assert.AreEqual("net6.0", appFramework);
 #else
