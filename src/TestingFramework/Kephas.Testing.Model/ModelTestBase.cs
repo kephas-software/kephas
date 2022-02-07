@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Configuration;
+using Kephas.Operations;
+
 namespace Kephas.Testing.Model
 {
     using System;
@@ -18,6 +21,7 @@ namespace Kephas.Testing.Model
     using Kephas.Injection;
     using Kephas.Model;
     using Kephas.Model.Runtime;
+    using Kephas.Runtime;
     using Kephas.Testing.Injection;
     using NSubstitute;
 
@@ -26,6 +30,16 @@ namespace Kephas.Testing.Model
     /// </summary>
     public abstract class ModelTestBase : InjectionTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(IRuntimeTypeInfo).Assembly,  // Kephas.Reflection
+                typeof(IConfiguration<>).Assembly,  // Kephas.Configuration
+                typeof(IOperationResult).Assembly,  // Kephas.Operations
+            };
+        }
+
         public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
         {
             var registry = Substitute.For<IRuntimeModelRegistry>();

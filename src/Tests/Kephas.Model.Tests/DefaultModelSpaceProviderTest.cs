@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+
+    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Runtime.Configuration;
@@ -35,7 +35,7 @@ namespace Kephas.Model.Tests
             var contextFactory = this.CreateContextFactoryMock(() => new ModelConstructionContext(Substitute.For<IInjector>()));
             var provider = new DefaultModelSpaceProvider(
                 contextFactory,
-                new IModelInfoProvider[0],
+                Array.Empty<IModelInfoProvider>(),
                 this.GetRuntimeModelElementFactory());
 
             await provider.InitializeAsync();
