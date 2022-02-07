@@ -9,9 +9,9 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-        <Version>10.2.0</Version>
-        <AssemblyVersion>10.2.0.0</AssemblyVersion>
-        <FileVersion>10.2.0.0</FileVersion>
+        <Version>11.0.0-dev.1</Version>
+        <AssemblyVersion>11.0.0.0</AssemblyVersion>
+        <FileVersion>11.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
