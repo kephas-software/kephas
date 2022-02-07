@@ -85,7 +85,7 @@ namespace Kephas.Core.Tests.Runtime
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
-            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Core.Tests", runtimeTypeInfo.QualifiedFullName);
+            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Reflection.Tests", runtimeTypeInfo.QualifiedFullName);
         }
 
         [Test]

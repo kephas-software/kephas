@@ -25,7 +25,7 @@ namespace Kephas.Core.Tests.Runtime
         {
             var registry = new RuntimeTypeRegistry();
             var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
-            Assert.AreEqual("Kephas.Core.Tests", assemblyInfo.Name);
+            Assert.AreEqual("Kephas.Reflection.Tests", assemblyInfo.Name);
         }
 
         [Test]
