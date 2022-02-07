@@ -2,14 +2,17 @@
     [string]$version = $( Read-Host "Please provide package version" ),
     [string]$build = "Release",
     [string]$CertificateSubjectName = "Kephas Software SRL",
-    [string]$Timestamper = "http://timestamp.digicert.com"
+    [string]$Timestamper = "http://timestamp.digicert.com",
+    [string]$singlePackage = ""
 )
 
 function get-packagename([string]$pathname) {
     return $pathname.Replace("..\", "").Replace("TestingFramework\", "").Replace("Analyzers\", "")
 }
 
-$paths = @(
+$paths =
+If ([string]::IsNullOrEmpty($singlePackage))
+{ @(
     "..\Kephas.Abstractions",
     "..\Kephas.Application",
     "..\Kephas.Application.Abstractions",
@@ -99,7 +102,9 @@ $paths = @(
     "..\TestingFramework\Kephas.Testing.Injection.Autofac",
     "..\TestingFramework\Kephas.Testing.Injection.SystemComposition",
     "..\TestingFramework\Kephas.Testing.Model"
-)
+) }
+Else
+{ @("..\$singlePackage") }
 
 foreach ($path in $paths) {
     $packagename = get-packagename $path
