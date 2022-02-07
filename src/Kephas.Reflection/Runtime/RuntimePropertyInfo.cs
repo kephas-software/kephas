@@ -246,7 +246,7 @@ namespace Kephas.Runtime
                 return null;
             }
 
-            var computeSetter = ComputeSetterMethod.MakeGenericMethod(propType, declType);
+            var computeSetter = ComputeSetterMethod.MakeGenericMethod(declType, propType);
             return (Action<object?, object?>?)computeSetter.Call(this);
         }
 

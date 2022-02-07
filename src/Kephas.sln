@@ -308,15 +308,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Behaviors", "Kephas.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Diagnostics.Contracts", "Kephas.Diagnostics.Contracts\Kephas.Diagnostics.Contracts.csproj", "{F00C5674-AECC-4B35-AEFE-140FA1D8A1CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.InteractiveTests6", "Tests\Kephas.AspNetCore.InteractiveTests6\Kephas.AspNetCore.InteractiveTests6.csproj", "{8455F875-C88A-45F1-A523-61551D9B40CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.InteractiveTests6", "Tests\Kephas.AspNetCore.InteractiveTests6\Kephas.AspNetCore.InteractiveTests6.csproj", "{8455F875-C88A-45F1-A523-61551D9B40CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Redis", "Kephas.Data.Redis\Kephas.Data.Redis.csproj", "{DE1DB122-4E1D-4412-A823-65FA3F6D8A88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Redis", "Kephas.Data.Redis\Kephas.Data.Redis.csproj", "{DE1DB122-4E1D-4412-A823-65FA3F6D8A88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating", "Kephas.Templating\Kephas.Templating.csproj", "{6D618CE1-81C8-40AE-A568-15AC347001F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Templating", "Kephas.Templating\Kephas.Templating.csproj", "{6D618CE1-81C8-40AE-A568-15AC347001F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating.Tests", "Tests\Kephas.Templating.Tests\Kephas.Templating.Tests.csproj", "{AB6F03FA-0B82-4B12-B996-602FE269491A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Templating.Tests", "Tests\Kephas.Templating.Tests\Kephas.Templating.Tests.csproj", "{AB6F03FA-0B82-4B12-B996-602FE269491A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Tenants", "Kephas.Tenants\Kephas.Tenants.csproj", "{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Tenants", "Kephas.Tenants\Kephas.Tenants.csproj", "{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Tests", "Tests\Kephas.Reflection.Tests\Kephas.Reflection.Tests.csproj", "{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Dynamic.Tests", "Tests\Kephas.Reflection.Dynamic.Tests\Kephas.Reflection.Dynamic.Tests.csproj", "{8165A69E-E5A1-44CD-A94B-8F920A790B81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -888,6 +892,14 @@ Global
 		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C118ACF5-F9D0-46B0-BC22-7038A98A3EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -953,6 +965,8 @@ Global
 		{DE7786B7-0168-412F-AEBA-1D294E78D640} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{8455F875-C88A-45F1-A523-61551D9B40CD} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{AB6F03FA-0B82-4B12-B996-602FE269491A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{35B1AD9A-480D-4C7E-B714-AC1A4085DD3C} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{8165A69E-E5A1-44CD-A94B-8F920A790B81} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
