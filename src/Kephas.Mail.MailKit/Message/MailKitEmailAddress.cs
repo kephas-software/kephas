@@ -74,27 +74,6 @@ namespace Kephas.Mail.Message
         /// Initializes a new instance of the <see cref="MailKitEmailAddress" /> class.
         /// </summary>
         /// <remarks>
-        /// Creates a new <see cref="MailKitEmailAddress" /> with the specified address and route.
-        /// </remarks>
-        /// <param name="route">The route of the mailbox.</param>
-        /// <param name="address">The address of the mailbox.</param>
-        /// <exception cref="T:System.ArgumentNullException">
-        /// <para><paramref name="route" /> is <c>null</c>.</para>
-        /// <para>-or-</para>
-        /// <para><paramref name="address" /> is <c>null</c>.</para>
-        /// </exception>
-        /// <exception cref="T:MimeKit.ParseException">
-        /// <paramref name="address" /> is malformed.
-        /// </exception>
-        public MailKitEmailAddress(IEnumerable<string> route, string address)
-            : base(route, address)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MailKitEmailAddress" /> class.
-        /// </summary>
-        /// <remarks>
         /// Creates a new <see cref="MailKitEmailAddress" /> with the specified name and address. The
         /// specified text encoding is used when encoding the name according to the rules of rfc2047.
         /// </remarks>
@@ -134,30 +113,6 @@ namespace Kephas.Mail.Message
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MailKitEmailAddress" /> class.
-        /// </summary>
-        /// <remarks>
-        /// <para>Creates a new <see cref="MailKitEmailAddress" /> with the specified address.</para>
-        /// <note type="note">
-        /// <para>The <paramref name="address" /> must be in the form <c>user@example.com</c>.</para>
-        /// <para>This method cannot be used to parse a free-form email address that includes
-        /// the name or encloses the address in angle brackets.</para>
-        /// <para>To parse a free-form email address, use <see cref="M:MimeKit.MailboxAddress.Parse(System.String)" /> instead.</para>
-        /// </note>
-        /// </remarks>
-        /// <param name="address">The address of the mailbox.</param>
-        /// <exception cref="T:System.ArgumentNullException">
-        /// <paramref name="address" /> is <c>null</c>.
-        /// </exception>
-        /// <exception cref="T:MimeKit.ParseException">
-        /// <paramref name="address" /> is malformed.
-        /// </exception>
-        public MailKitEmailAddress(string address)
-            : base(address)
-        {
-        }
-
-        /// <summary>
         /// Gets the display name of the subject associated to the address.
         /// </summary>
         string IEmailAddress.DisplayName => this.Name;
@@ -176,7 +131,7 @@ namespace Kephas.Mail.Message
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>
-        public object this[string key]
+        public object? this[string key]
         {
             get => new Expando(this)[key];
             set => new Expando(this)[key] = value;

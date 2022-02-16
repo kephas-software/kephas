@@ -56,17 +56,9 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder From(string address, string displayName = null)
+        public IEmailMessageBuilder From(string address, string? displayName = null)
         {
-            if (string.IsNullOrEmpty(displayName))
-            {
-                this.emailMessage.From.Add(new MailKitEmailAddress(address));
-            }
-            else
-            {
-                this.emailMessage.From.Add(new MailKitEmailAddress(address, displayName));
-            }
-
+            this.emailMessage.From.Add(new MailKitEmailAddress(address, displayName ?? address));
             return this;
         }
 
@@ -78,17 +70,9 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder Sender(string address, string displayName = null)
+        public IEmailMessageBuilder Sender(string address, string? displayName = null)
         {
-            if (string.IsNullOrEmpty(displayName))
-            {
-                this.emailMessage.Sender = new MailKitEmailAddress(address);
-            }
-            else
-            {
-                this.emailMessage.Sender = new MailKitEmailAddress(address, displayName);
-            }
-
+            this.emailMessage.Sender = new MailKitEmailAddress(address, displayName ?? address);
             return this;
         }
 
@@ -100,16 +84,9 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder To(string address, string displayName = null)
+        public IEmailMessageBuilder To(string address, string? displayName = null)
         {
-            if (string.IsNullOrEmpty(displayName))
-            {
-                this.emailMessage.To.Add(new MailKitEmailAddress(address));
-            }
-            else
-            {
-                this.emailMessage.To.Add(new MailKitEmailAddress(address, displayName));
-            }
+            this.emailMessage.To.Add(new MailKitEmailAddress(address, displayName ?? address));
 
             return this;
         }
@@ -122,17 +99,9 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder Cc(string address, string displayName = null)
+        public IEmailMessageBuilder Cc(string address, string? displayName = null)
         {
-            if (string.IsNullOrEmpty(displayName))
-            {
-                this.emailMessage.Cc.Add(new MailKitEmailAddress(address));
-            }
-            else
-            {
-                this.emailMessage.Cc.Add(new MailKitEmailAddress(address, displayName));
-            }
-
+            this.emailMessage.Cc.Add(new MailKitEmailAddress(address, displayName ?? address));
             return this;
         }
 
@@ -144,16 +113,9 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder Bcc(string address, string displayName = null)
+        public IEmailMessageBuilder Bcc(string address, string? displayName = null)
         {
-            if (string.IsNullOrEmpty(displayName))
-            {
-                this.emailMessage.Bcc.Add(new MailKitEmailAddress(address));
-            }
-            else
-            {
-                this.emailMessage.Bcc.Add(new MailKitEmailAddress(address, displayName));
-            }
+            this.emailMessage.Bcc.Add(new MailKitEmailAddress(address, displayName ?? address));
 
             return this;
         }
