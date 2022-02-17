@@ -28,11 +28,18 @@ namespace Kephas.Mail
         string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the attachment content.
+        /// Writes the content of the attachment to the specified output stream.
         /// </summary>
-        /// <value>
-        /// The attachment content.
-        /// </value>
-        Stream Content { get; set; }
+        /// <param name="stream">The stream.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        public void WriteContentTo(Stream stream, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Writes the content of the attachment to the specified output stream asynchronously.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        public Task WriteContentToAsync(Stream stream, CancellationToken cancellationToken = default);
     }
 }

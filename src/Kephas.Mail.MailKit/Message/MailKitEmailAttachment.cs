@@ -10,19 +10,18 @@
 
 namespace Kephas.Mail.Message
 {
-    using System;
     using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using MimeKit;
 
     /// <summary>
     /// A mail kit email attachment.
     /// </summary>
-    public class MailKitEmailAttachment : IEmailAttachment
+    public class MailKitEmailAttachment : Expando, IEmailAttachment
     {
-        /// <summary>
-        /// The attachment.
-        /// </summary>
         private readonly MimeEntity attachment;
 
         /// <summary>
@@ -47,35 +46,26 @@ namespace Kephas.Mail.Message
         }
 
         /// <summary>
-        /// Gets or sets the attachment content.
+        /// Writes the content of the attachment to the specified output stream.
         /// </summary>
-        /// <value>
-        /// The attachment content.
-        /// </value>
-        public Stream Content
+        /// <param name="stream">The stream.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        public void WriteContentTo(Stream stream, CancellationToken cancellationToken = default)
         {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
+            this.attachment.WriteTo(stream, true, cancellationToken);
         }
 
         /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
+        /// Writes the content of the attachment to the specified output stream asynchronously.
         /// </summary>
-        /// <value>
-        /// The <see cref="object" /> identified by the key.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The requested property value.</returns>
-        public object this[string key]
+        /// <param name="stream">The stream.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        public Task WriteContentToAsync(Stream stream, CancellationToken cancellationToken = default)
         {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
+            return this.attachment.WriteToAsync(stream, true, cancellationToken);
         }
     }
 }

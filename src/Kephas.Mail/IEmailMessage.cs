@@ -17,7 +17,7 @@ namespace Kephas.Mail
     /// <summary>
     /// Interface for an email message.
     /// </summary>
-    public interface IEmailMessage : IDynamic
+    public interface IEmailMessage : IDynamic, IDisposable
     {
         /// <summary>
         /// Gets the 'on behalf' sender of the email.

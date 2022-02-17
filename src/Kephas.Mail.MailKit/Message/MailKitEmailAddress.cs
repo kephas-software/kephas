@@ -20,7 +20,7 @@ namespace Kephas.Mail.Message
     /// <summary>
     /// A mail kit email address.
     /// </summary>
-    public class MailKitEmailAddress : MailboxAddress, IEmailAddress
+    public class MailKitEmailAddress : MailboxAddress, IEmailAddress, IExpandoMixin
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MailKitEmailAddress" /> class.
@@ -113,28 +113,13 @@ namespace Kephas.Mail.Message
         }
 
         /// <summary>
+        /// Gets the inner dictionary.
+        /// </summary>
+        IDictionary<string, object?> IExpandoMixin.InnerDictionary { get; } = new Dictionary<string, object?>();
+
+        /// <summary>
         /// Gets the display name of the subject associated to the address.
         /// </summary>
         string IEmailAddress.DisplayName => this.Name;
-
-        /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
-        /// </summary>
-        /// <value>
-        /// The <see cref="object" /> identified by the key.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The requested property value.</returns>
-        public object? this[string key]
-        {
-            get => new Expando(this)[key];
-            set => new Expando(this)[key] = value;
-        }
     }
 }
