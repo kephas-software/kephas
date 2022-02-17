@@ -58,7 +58,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public IEmailMessageBuilder From(string address, string? displayName = null)
         {
-            this.emailMessage.From.Add(new MailKitEmailAddress(address, displayName ?? address));
+            this.emailMessage.From.Add(new MailboxAddress(address, displayName ?? address));
             return this;
         }
 
@@ -72,7 +72,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public IEmailMessageBuilder Sender(string address, string? displayName = null)
         {
-            this.emailMessage.Sender = new MailKitEmailAddress(address, displayName ?? address);
+            this.emailMessage.Sender = new MailboxAddress(address, displayName ?? address);
             return this;
         }
 
@@ -86,7 +86,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public IEmailMessageBuilder To(string address, string? displayName = null)
         {
-            this.emailMessage.To.Add(new MailKitEmailAddress(address, displayName ?? address));
+            this.emailMessage.To.Add(new MailboxAddress(address, displayName ?? address));
 
             return this;
         }
@@ -101,7 +101,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public IEmailMessageBuilder Cc(string address, string? displayName = null)
         {
-            this.emailMessage.Cc.Add(new MailKitEmailAddress(address, displayName ?? address));
+            this.emailMessage.Cc.Add(new MailboxAddress(address, displayName ?? address));
             return this;
         }
 
@@ -115,7 +115,7 @@ namespace Kephas.Mail.Services
         /// </returns>
         public IEmailMessageBuilder Bcc(string address, string? displayName = null)
         {
-            this.emailMessage.Bcc.Add(new MailKitEmailAddress(address, displayName ?? address));
+            this.emailMessage.Bcc.Add(new MailboxAddress(address, displayName ?? address));
 
             return this;
         }

@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MailKitEmailAttachment.cs" company="Kephas Software SRL">
+// <copyright file="MailKitMimeEntity.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the mail kit email attachment class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Mail.Message
@@ -20,15 +17,15 @@ namespace Kephas.Mail.Message
     /// <summary>
     /// A mail kit email attachment.
     /// </summary>
-    public class MailKitEmailAttachment : Expando, IEmailAttachment
+    public class MailKitMimeEntity : Expando, IEmailAttachment, IAdapter<MimeEntity>
     {
         private readonly MimeEntity attachment;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MailKitEmailAttachment"/> class.
+        /// Initializes a new instance of the <see cref="MailKitMimeEntity"/> class.
         /// </summary>
         /// <param name="attachment">The attachment.</param>
-        internal MailKitEmailAttachment(MimeEntity attachment)
+        internal MailKitMimeEntity(MimeEntity attachment)
         {
             this.attachment = attachment;
         }
@@ -44,6 +41,14 @@ namespace Kephas.Mail.Message
             get => this.attachment.ContentDisposition.FileName;
             set => this.attachment.ContentDisposition.FileName = value;
         }
+
+        /// <summary>
+        /// Gets the object the current instance adapts.
+        /// </summary>
+        /// <value>
+        /// The object the current instance adapts.
+        /// </value>
+        MimeEntity IAdapter<MimeEntity>.Of => this.attachment;
 
         /// <summary>
         /// Writes the content of the attachment to the specified output stream.

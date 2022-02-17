@@ -30,31 +30,31 @@ namespace Kephas.Mail.Message
         /// <summary>
         /// Gets the 'on behalf' sender of the email.
         /// </summary>
-        IEnumerable<IEmailAddress> IEmailMessage.From => this.From.Select(a => (IEmailAddress)a);
+        IEnumerable<IEmailAddress> IEmailMessage.From => this.From.Select(a => a.ToEmailAddress());
 
         /// <summary>
         /// Gets or sets the sender's address.
         /// </summary>
         IEmailAddress IEmailMessage.Sender
         {
-            get => (IEmailAddress)this.Sender;
-            set => this.Sender = (MailKitEmailAddress)value;
+            get => this.Sender.ToEmailAddress();
+            set => this.Sender = (value as IAdapter<MailboxAddress>)?.Of;
         }
 
         /// <summary>
         /// Gets the addresses of the 'To' recipients.
         /// </summary>
-        IEnumerable<IEmailAddress> IEmailMessage.To => this.To.Select(a => (IEmailAddress)a);
+        IEnumerable<IEmailAddress> IEmailMessage.To => this.To.Select(a => a.ToEmailAddress());
 
         /// <summary>
         /// Gets the addresses of the 'CC' recipients.
         /// </summary>
-        IEnumerable<IEmailAddress> IEmailMessage.Cc => this.Cc.Select(a => (IEmailAddress)a);
+        IEnumerable<IEmailAddress> IEmailMessage.Cc => this.Cc.Select(a => a.ToEmailAddress());
 
         /// <summary>
         /// Gets the addresses of the 'BCC' recipients.
         /// </summary>
-        IEnumerable<IEmailAddress> IEmailMessage.Bcc => this.From.Select(a => (IEmailAddress)a);
+        IEnumerable<IEmailAddress> IEmailMessage.Bcc => this.From.Select(a => a.ToEmailAddress());
 
         /// <summary>
         /// Gets or sets the HTML body of the email.
@@ -77,6 +77,6 @@ namespace Kephas.Mail.Message
         /// <summary>
         /// Gets the attachments of the email.
         /// </summary>
-        IEnumerable<IEmailAttachment> IEmailMessage.Attachments => this.Attachments.Select(a => new MailKitEmailAttachment(a));
+        IEnumerable<IEmailAttachment> IEmailMessage.Attachments => this.Attachments.Select(a => a.ToEmailAttachment());
     }
 }
