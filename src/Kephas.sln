@@ -320,6 +320,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Reflection.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Reflection.Dynamic.Tests", "Tests\Kephas.Reflection.Dynamic.Tests\Kephas.Reflection.Dynamic.Tests.csproj", "{8165A69E-E5A1-44CD-A94B-8F920A790B81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Connectivity", "Kephas.Connectivity\Kephas.Connectivity.csproj", "{82C52F3E-42E7-40D1-90AA-91DCB3194E3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -894,6 +896,10 @@ Global
 		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8165A69E-E5A1-44CD-A94B-8F920A790B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C52F3E-42E7-40D1-90AA-91DCB3194E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C52F3E-42E7-40D1-90AA-91DCB3194E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C52F3E-42E7-40D1-90AA-91DCB3194E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C52F3E-42E7-40D1-90AA-91DCB3194E3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

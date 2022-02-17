@@ -27,6 +27,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Kephas.Commands.Endpoints.Messages",
     "..\Kephas.Commands.Messaging",
     "..\Kephas.Configuration",
+    "..\Kephas.Connectivity",
     "..\Kephas.Core",
     "..\Kephas.Core.Endpoints",
     "..\Kephas.Core.Endpoints.Messages",
