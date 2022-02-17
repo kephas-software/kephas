@@ -38,7 +38,7 @@ namespace Kephas.Core.Endpoints.Tests
                 Substitute.For<IMessagingContext>(),
                 default);
 
-            CollectionAssert.IsSubsetOf(new[] { nameof(CoreSettings), nameof(IdGeneratorSettings) }, result.SettingsTypes.Select(t => t.Name));
+            CollectionAssert.IsSubsetOf(new[] { nameof(CoreSettings) }, result.SettingsTypes.Select(t => t.Name));
         }
     }
 }

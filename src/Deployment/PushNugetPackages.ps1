@@ -31,6 +31,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "Kephas.Core.Endpoints",
     "Kephas.Core.Endpoints.Messages",
     "Kephas.Data",
+    "Kephas.Data.Abstractions",
     "Kephas.Data.Client",
     "Kephas.Data.Endpoints",
     "Kephas.Data.Endpoints.Messages",

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Data
+namespace Kephas.Data.Tests
 {
     using System.Collections.Generic;
     using System.Linq;

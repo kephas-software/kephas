@@ -91,5 +91,9 @@ namespace Kephas.Mail.Tests.Message
         /// Gets the attachments of the email.
         /// </summary>
         IEnumerable<IEmailAttachment> IEmailMessage.Attachments => this.Attachments;
+
+        public void Dispose()
+        {
+        }
     }
 }
