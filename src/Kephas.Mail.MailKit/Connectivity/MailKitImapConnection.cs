@@ -19,9 +19,9 @@ namespace Kephas.Mail.Connectivity;
 /// <seealso cref="IConnection" />
 public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
 {
+    private readonly IEncryptionService encryptionService;
     private ImapClient imapClient;
     private bool disposedValue;
-    private readonly IEncryptionService encryptionService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MailKitImapConnection" /> class.
