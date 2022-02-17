@@ -14,6 +14,14 @@ namespace Kephas.Connectivity;
 public interface IConnection : IDisposable, IAsyncDisposable
 {
     /// <summary>
+    /// Opens the connection asynchronously.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The asynchronous result.</returns>
+    Task OpenAsync(IConnectionContext context, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Disposes connection asynchronously.
     /// </summary>
     /// <returns>The asynchronous result.</returns>
