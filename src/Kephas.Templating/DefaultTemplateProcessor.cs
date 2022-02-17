@@ -25,15 +25,9 @@ namespace Kephas.Templating
     [OverridePriority(Priority.Low)]
     public class DefaultTemplateProcessor : Loggable, ITemplateProcessor
     {
-        /// <summary>
-        /// The language service factories.
-        /// </summary>
         private readonly IDictionary<string, Lazy<ITemplatingEngine, TemplatingEngineMetadata>> engineFactories =
             new Dictionary<string, Lazy<ITemplatingEngine, TemplatingEngineMetadata>>(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>
-        /// The scripting behavior factories.
-        /// </summary>
         private readonly IDictionary<string, IList<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>> behaviorFactories =
             new Dictionary<string, IList<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
 
@@ -96,7 +90,7 @@ namespace Kephas.Templating
         /// <value>
         /// The context factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        protected IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Processes the provided template asynchronously returning the processed output.
@@ -117,13 +111,9 @@ namespace Kephas.Templating
         {
             template = template ?? throw new ArgumentNullException(nameof(template));
 
-            var engineFactory = this.engineFactories.TryGetValue(template.Kind);
-            if (engineFactory == null)
-            {
-                throw new TemplatingException(Strings.DefaultTemplateProcessor_ProcessAsync_MissingEngine.FormatWith(template.Kind, template.Name), template);
-            }
+            using var processingContext = this.CreateTemplateProcessingContext(template, model, optionsConfig);
+            var engineFactory = this.SelectEngineFactory(processingContext);
 
-            var processingContext = this.CreateTemplateProcessingContext(template, model, optionsConfig);
             var behaviors = this.behaviorFactories.TryGetValue(template.Kind)?.Select(f => f.Value).ToList() ?? new List<ITemplateProcessingBehavior>();
 
             foreach (var behavior in behaviors)
@@ -161,13 +151,26 @@ namespace Kephas.Templating
         }
 
         /// <summary>
-        /// Creates the scripting context.
+        /// Selects the engine factory based on the arguments set in the processing context.
+        /// </summary>
+        /// <param name="processingContext">The processing context.</param>
+        /// <returns>The <see cref="ITemplatingEngine"/> together with its metadata, or <c>null</c> if not found.</returns>
+        protected virtual Lazy<ITemplatingEngine, TemplatingEngineMetadata> SelectEngineFactory(ITemplateProcessingContext processingContext)
+        {
+            var template = processingContext.Template!;
+            var engineFactory = this.engineFactories.TryGetValue(template.Kind);
+            return engineFactory
+                ?? throw new TemplatingException(Strings.DefaultTemplateProcessor_ProcessAsync_MissingEngine.FormatWith(template.Kind, template.Name), template);
+        }
+
+        /// <summary>
+        /// Creates the template processing context.
         /// </summary>
         /// <param name="template">The template to be processed.</param>
         /// <param name="model">The model.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
-        /// The new <see cref="TemplateProcessingContext"/>.
+        /// A new instance implementing <see cref="ITemplateProcessingContext"/>.
         /// </returns>
         protected virtual ITemplateProcessingContext CreateTemplateProcessingContext(
             ITemplate template,

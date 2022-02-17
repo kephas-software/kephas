@@ -17,7 +17,7 @@ namespace Kephas.Templating
     using Kephas.Services;
 
     /// <summary>
-    /// The templating engine service metadata.
+    /// The <see cref="ITemplatingEngine"/> service metadata.
     /// </summary>
     public class TemplatingEngineMetadata : AppServiceMetadata
     {
