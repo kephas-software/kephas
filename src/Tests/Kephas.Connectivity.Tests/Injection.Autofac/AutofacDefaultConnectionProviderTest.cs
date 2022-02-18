@@ -35,7 +35,7 @@ public class AutofacDefaultConnectionProviderTest : AutofacConnectivityTestBase
         var actual = provider.CreateConnection(ctx =>
         {
             ctx["connection"] = expected;
-            ctx.Host = new Uri("test://host:port");
+            ctx.Host = new Uri("test://host:121");
         });
 
         Assert.AreEqual(expected, actual);

@@ -82,13 +82,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
-    <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
-    <ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
-  </ItemGroup>
+		<ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
+		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
+		<ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="kephas.logo.stone.png" />
+		<None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>

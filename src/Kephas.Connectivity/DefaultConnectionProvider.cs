@@ -15,7 +15,6 @@ namespace Kephas.Connectivity;
 /// The default connection provider.
 /// </summary>
 /// <seealso cref="IConnectionProvider" />
-[SingletonAppServiceContract]
 public class DefaultConnectionProvider : Loggable, IConnectionProvider
 {
     private readonly IDictionary<string, Lazy<IConnectionFactory, ConnectionFactoryMetadata>> factoryFactories =

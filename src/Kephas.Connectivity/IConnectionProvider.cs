@@ -12,7 +12,7 @@ namespace Kephas.Connectivity;
 /// <summary>
 /// Central service for creating connections.
 /// </summary>
-[SingletonAppServiceContract(AllowMultiple = true)]
+[SingletonAppServiceContract]
 public interface IConnectionProvider
 {
     /// <summary>
