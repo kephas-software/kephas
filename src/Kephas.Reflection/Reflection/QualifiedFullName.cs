@@ -11,11 +11,13 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Diagnostics;
     using System.Reflection;
 
     /// <summary>
     /// A qualified full name.
     /// </summary>
+    [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
     internal class QualifiedFullName
     {
         private const char NamespaceSeparator = '.';
@@ -23,6 +25,9 @@ namespace Kephas.Reflection
         private const char GenericOpeningBracket = '[';
         private const char GenericClosingBracket = ']';
         private const int AssemblyNameIndex = 1;
+
+        private Lazy<QualifiedFullName?>? genericDefinition;
+        private Lazy<IEnumerable<QualifiedFullName>>? genericArguments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QualifiedFullName"/> class.
@@ -41,6 +46,17 @@ namespace Kephas.Reflection
         {
             this.SetTypeName(parts.typeName);
             this.AssemblyName = GetAssemblyName(parts.assemblyName);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QualifiedFullName" /> class.
+        /// </summary>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        protected QualifiedFullName(string typeName, AssemblyName? assemblyName)
+        {
+            this.SetTypeName(typeName);
+            this.AssemblyName = assemblyName;
         }
 
         /// <summary>
@@ -79,6 +95,81 @@ namespace Kephas.Reflection
             return new QualifiedFullName(ParseParts(qualifiedFullName));
         }
 
+        /// <summary>
+        /// Gets the generic type definition.
+        /// </summary>
+        /// <returns>A <see cref="QualifiedFullName"/> containing the generic type definition.</returns>
+        public QualifiedFullName? GetGenericTypeDefinition()
+        {
+            if (this.genericDefinition is null)
+            {
+                this.genericDefinition = new Lazy<QualifiedFullName?>(() =>
+                {
+                    var genericStart = this.TypeName.IndexOf(GenericOpeningBracket);
+                    if (genericStart < 0)
+                    {
+                        return null;
+                    }
+
+                    return new QualifiedFullName(this.TypeName[..genericStart], this.AssemblyName);
+                });
+            }
+
+            return this.genericDefinition.Value;
+        }
+
+        public IEnumerable<QualifiedFullName> GetGenericTypeArguments()
+        {
+            if (this.genericArguments is null)
+            {
+                this.genericArguments = new Lazy<IEnumerable<QualifiedFullName>>(() => ComputeGenericTypeArguments(this.TypeName));
+            }
+
+            return this.genericArguments.Value;
+        }
+
+        private static IEnumerable<QualifiedFullName> ComputeGenericTypeArguments(string typeName)
+        {
+            var genericStart = typeName.IndexOf(GenericOpeningBracket);
+            if (genericStart < 0)
+            {
+                throw new InvalidOperationException($"The type '{typeName}' is not a generic type.");
+            }
+
+            var genericEnd = typeName.LastIndexOf(GenericClosingBracket);
+            if (genericEnd < 0)
+            {
+                throw new ArgumentException($"The type name '{typeName}' is malformed, mismatched opening and closing generic bracket.");
+            }
+
+            var crt = typeName.IndexOf(GenericOpeningBracket, genericStart + 1);
+            var argStart = crt + 1;
+            while (crt >= 0)
+            {
+                crt++;
+                var open = 1;
+                var closed = 0;
+                while (open > closed && crt < genericEnd)
+                {
+                    switch (typeName[crt++])
+                    {
+                        case GenericOpeningBracket: open++; break;
+                        case GenericClosingBracket: closed++; break;
+                    }
+                }
+
+                if (open > closed)
+                {
+                    throw new ArgumentException($"The type name '{typeName}' is malformed, mismatched opening and closing generic bracket.");
+                }
+
+                yield return new QualifiedFullName(typeName[argStart..(crt - 1)]);
+
+                crt = typeName.IndexOf(GenericOpeningBracket, crt);
+                argStart = crt + 1;
+            }
+        }
+
         private static (string typeName, string? assemblyName) ParseParts(string qualifiedFullName)
         {
             qualifiedFullName = qualifiedFullName ?? throw new ArgumentNullException(nameof(qualifiedFullName));
@@ -100,10 +191,10 @@ namespace Kephas.Reflection
                 return (qualifiedFullName, null);
             }
 
-            var typeName = qualifiedFullName.Substring(0, typeNameLength);
+            var typeName = qualifiedFullName[..typeNameLength];
 
             // the trailing parts contain the assembly name, version, and public key token
-            var trailingParts = qualifiedFullName.Substring(typeNameLength)
+            var trailingParts = qualifiedFullName[typeNameLength..]
                 .Split(TypeDefinitionSeparator);
 
             if (trailingParts.Length <= AssemblyNameIndex)
@@ -127,7 +218,7 @@ namespace Kephas.Reflection
             int indexOfDot;
             if (indexOfGeneric >= 0)
             {
-                var typeNameNoGeneric = typeName.Substring(0, indexOfGeneric);
+                var typeNameNoGeneric = typeName[..indexOfGeneric];
                 indexOfDot = typeNameNoGeneric.LastIndexOf(NamespaceSeparator);
             }
             else
@@ -137,14 +228,19 @@ namespace Kephas.Reflection
 
             if (indexOfDot >= 0)
             {
-                this.Namespace = typeName.Substring(0, indexOfDot);
-                this.Name = typeName.Substring(indexOfDot + 1);
+                this.Namespace = typeName[..indexOfDot];
+                this.Name = typeName[(indexOfDot + 1)..];
             }
             else
             {
                 this.Namespace = null;
                 this.Name = typeName;
             }
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return $"{this.TypeName}{(this.AssemblyName is null ? string.Empty : ", " + this.AssemblyName)}";
         }
     }
 }
