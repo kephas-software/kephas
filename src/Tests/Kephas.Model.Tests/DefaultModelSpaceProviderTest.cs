@@ -48,7 +48,7 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_using_injection()
         {
-            var container = this.CreateInjector(typeof(IModelSpace).GetTypeInfo().Assembly);
+            var container = this.CreateInjector(typeof(IModelSpace).Assembly);
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -61,7 +61,7 @@ namespace Kephas.Model.Tests
         public override IEnumerable<Assembly> GetAssemblies()
         {
             var baseAssemblies = base.GetAssemblies().ToList();
-            baseAssemblies.Add(typeof(IModelSpace).GetTypeInfo().Assembly);
+            baseAssemblies.Add(typeof(IModelSpace).Assembly);
             return baseAssemblies;
         }
 

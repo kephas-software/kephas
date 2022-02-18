@@ -45,7 +45,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             IAppRuntime? appRuntime = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly); /* Kephas.Model */
+            assemblyList.Add(typeof(ModelAssemblyRegistry).Assembly); /* Kephas.Model */
             return base.CreateInjector(ambientServices, assemblyList, parts, config);
         }
 

@@ -37,8 +37,8 @@ namespace Kephas.Messaging.Tests
         {
             var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
-                typeof(IMessageBroker).GetTypeInfo().Assembly, /* Kephas.Messaging.Distributed */
-                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+                typeof(IMessageBroker).Assembly, /* Kephas.Messaging.Distributed */
+                typeof(IMessageProcessor).Assembly, /* Kephas.Messaging */
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);

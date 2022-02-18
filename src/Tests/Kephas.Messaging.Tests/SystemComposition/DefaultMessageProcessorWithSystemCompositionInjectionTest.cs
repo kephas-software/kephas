@@ -52,9 +52,9 @@ namespace Kephas.Messaging.Tests.SystemComposition
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
             {
-                typeof(IMessageProcessor).GetTypeInfo().Assembly,       /* Kephas.Messaging */
-                typeof(IAppLifecycleBehavior).GetTypeInfo().Assembly,   /* Kephas.Application.Abstractions */
-                typeof(IAuthorizationService).GetTypeInfo().Assembly,   /* Kephas.Security */
+                typeof(IMessageProcessor).Assembly,       /* Kephas.Messaging */
+                typeof(IAppLifecycleBehavior).Assembly,   /* Kephas.Application.Abstractions */
+                typeof(IAuthorizationService).Assembly,   /* Kephas.Security */
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config);

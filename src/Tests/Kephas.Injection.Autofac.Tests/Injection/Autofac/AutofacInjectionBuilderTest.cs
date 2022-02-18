@@ -81,7 +81,7 @@ namespace Kephas.Tests.Injection.Autofac
             var builder = this.CreateInjectorBuilderWithStringLogger();
             var container = builder
                 .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
-                .WithAssemblies(typeof(AutofacInjectorBuilder).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(AutofacInjectorBuilder).Assembly)
                 .Build();
 
             var logger = container.Resolve<ILogger<AutofacInjectorTest.ExportedClass>>();
@@ -361,7 +361,7 @@ namespace Kephas.Tests.Injection.Autofac
             var mockAppRuntime = ambientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).Assembly, typeof(AutofacInjector).Assembly });
 
             var container = factory.Build();
 
@@ -382,7 +382,7 @@ namespace Kephas.Tests.Injection.Autofac
             var mockPlatformManager = ambientServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacInjector).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).Assembly, typeof(AutofacInjector).Assembly });
 
             var container = factory.Build();
 

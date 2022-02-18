@@ -117,8 +117,8 @@ namespace Kephas.Testing.Injection
         {
             var configuration = WithEmptyConfiguration().WithParts(types);
             return WithInjectorBuilder(containerConfiguration: configuration)
-                .WithAssemblies(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssemblies(typeof(IContextFactory).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly)
+                .WithAssemblies(typeof(IContextFactory).Assembly)
                 .Build();
         }
 
@@ -126,8 +126,8 @@ namespace Kephas.Testing.Injection
         {
             var configuration = WithEmptyConfiguration().WithParts(types);
             return WithInjectorBuilder(ambientServices, containerConfiguration: configuration)
-                .WithAssemblies(typeof(IInjector).GetTypeInfo().Assembly)
-                .WithAssemblies(typeof(IContextFactory).GetTypeInfo().Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly)
+                .WithAssemblies(typeof(IContextFactory).Assembly)
                 .Build();
         }
 

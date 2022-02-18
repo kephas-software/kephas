@@ -39,7 +39,7 @@ namespace Kephas.Testing.Application
         {
             return new List<Assembly>(base.GetAssemblies())
                        {
-                           typeof(IAppManager).GetTypeInfo().Assembly,     /* Kephas.Application*/
+                           typeof(IAppManager).Assembly,     /* Kephas.Application*/
                        };
         }
     }

@@ -51,8 +51,8 @@ namespace Kephas.Data.MongoDB.Tests
         {
             return new List<Assembly>(base.GetAssemblies())
             {
-                typeof(IDataContext).GetTypeInfo().Assembly, /* Kephas.Data */
-                typeof(MongoDataContext).GetTypeInfo().Assembly, /* Kephas.Data.MongoDB */
+                typeof(IDataContext).Assembly, /* Kephas.Data */
+                typeof(MongoDataContext).Assembly, /* Kephas.Data.MongoDB */
             };
         }
 
