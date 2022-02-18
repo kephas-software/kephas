@@ -21,7 +21,7 @@
             Provides abstractions for managing data: retrieval, persistence, query.
             Typically used areas and classes/interfaces/services:
             - IDataSpace, IDataContext.
-            - Capabilities: CghangeState, IEntityEntry, EntityEntry.
+            - Capabilities: IEntityEntry, EntityEntry.
             - Conversion: IDataConversionService, IDataConverter, DataConverterBase.
             - DataSources: IDataSourceService, IDataSourceProvider.
             - Behaviors: IDataBehavior, DataBehaviorBase, QueryBehaviorBase.
@@ -92,9 +92,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
-		<ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
 		<ProjectReference Include="..\Kephas.Data.Abstractions\Kephas.Data.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
 		<ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />

@@ -8,22 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data
-{
-    using Kephas.Services;
+using Kephas.Services;
 
+namespace Kephas.Data;
+
+/// <summary>
+/// Contract for a shared application service generating ID values.
+/// </summary>
+[SingletonAppServiceContract]
+public interface IIdGenerator
+{
     /// <summary>
-    /// Contract for a shared application service generating ID values.
+    /// Generates a unique identifier.
     /// </summary>
-    [SingletonAppServiceContract]
-    public interface IIdGenerator
-    {
-        /// <summary>
-        /// Generates a unique identifier.
-        /// </summary>
-        /// <returns>
-        /// The unique identifier.
-        /// </returns>
-        long GenerateId();
-    }
+    /// <returns>
+    /// The unique identifier.
+    /// </returns>
+    long GenerateId();
 }
