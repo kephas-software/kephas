@@ -55,12 +55,12 @@ namespace Kephas.Core.Endpoints.Tests
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
-                new GetServicesMessage { ContractType = typeof(IIdGenerator).Name },
+                new GetServicesMessage { ContractType = typeof(IMessageProcessor).Name },
                 Substitute.For<IMessagingContext>(),
                 default);
 
             Assert.AreEqual(1, result.Services.Length);
-            Assert.AreEqual(typeof(DefaultIdGenerator), result.Services[0].ServiceType);
+            Assert.AreEqual(typeof(DefaultMessageProcessor), result.Services[0].ServiceType);
         }
 
         [Test]

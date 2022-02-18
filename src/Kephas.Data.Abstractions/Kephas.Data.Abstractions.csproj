@@ -89,12 +89,13 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
+		<ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
 		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
 		<ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="kephas.logo.stone.png" />
+		<None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
