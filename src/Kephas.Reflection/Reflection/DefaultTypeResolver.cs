@@ -28,7 +28,7 @@ namespace Kephas.Reflection
     public class DefaultTypeResolver : Loggable, ITypeResolver
     {
         private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
-        private readonly ConcurrentDictionary<string, Type?> typeCache = new ();
+        private readonly ConcurrentDictionary<string, Type?> typeCache = new();
         private readonly ITypeLoader typeLoader;
 
         /// <summary>
@@ -68,13 +68,25 @@ namespace Kephas.Reflection
         /// <param name="typeName">Name of the type.</param>
         /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found.</param>
         /// <returns>
-        /// A Type.
+        /// The resolved type or <c>null</c>.
         /// </returns>
         public Type? ResolveType(string typeName, bool throwOnNotFound = true)
+            => this.ResolveType(typeName, null, throwOnNotFound: throwOnNotFound);
+
+        /// <summary>
+        /// Resolves a type based on the provided type name.
+        /// </summary>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="appAssemblies">The application assemblies. If <c>null</c>, they will be computed at the proper time.</param>
+        /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found.</param>
+        /// <returns>
+        /// The resolved type or <c>null</c>.
+        /// </returns>
+        protected virtual Type? ResolveType(string typeName, IEnumerable<Assembly>? appAssemblies, bool throwOnNotFound = true)
         {
             typeName = typeName ?? throw new ArgumentNullException(nameof(typeName));
 
-            var type = this.typeCache.GetOrAdd(typeName, _ => this.ResolveTypeCore(typeName));
+            var type = this.typeCache.GetOrAdd(typeName, _ => this.ResolveTypeCore(typeName, appAssemblies));
             if (type == null && throwOnNotFound)
             {
                 throw new TypeLoadException(string.Format(ReflectionStrings.DefaultTypeResolver_ResolveType_NotFound_Exception, typeName));
@@ -87,10 +99,11 @@ namespace Kephas.Reflection
         /// Core implementation of the <see cref="ResolveType"/> operation.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
+        /// <param name="appAssemblies">Optional. The application assemblies.</param>
         /// <returns>
         /// A Type.
         /// </returns>
-        protected virtual Type? ResolveTypeCore(string typeName)
+        protected virtual Type? ResolveTypeCore(string typeName, IEnumerable<Assembly>? appAssemblies)
         {
             try
             {
@@ -101,42 +114,77 @@ namespace Kephas.Reflection
                 }
 
                 var qualifiedName = new QualifiedFullName(typeName);
-                var appAssemblies = this.getAppAssemblies();
-                if (qualifiedName.AssemblyName == null)
-                {
-                    type = appAssemblies
-                        .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
-                        .FirstOrDefault(t => t != null);
-
-                    if (type == null && qualifiedName.Namespace == null)
-                    {
-                        type = this.ResolveTypeByNameOnly(qualifiedName.Name, appAssemblies);
-                    }
-
-                    return type;
-                }
-
-                var assemblyName = qualifiedName.AssemblyName.Name;
-                var assembly = appAssemblies
-                    .FirstOrDefault(a => a.GetName().Name == assemblyName);
-                if (assembly == null)
-                {
-                    throw new TypeLoadException($"Assembly '{assemblyName}' not found.");
-                }
-
-                type = assembly.GetType(qualifiedName.TypeName, throwOnError: false);
-                if (type == null && qualifiedName.Namespace == null)
-                {
-                    type = this.ResolveTypeByNameOnly(qualifiedName.Name, new[] { assembly });
-                }
-
-                return type;
+                return this.ResolveTypeCore(qualifiedName, appAssemblies);
             }
             catch (Exception ex)
             {
                 this.Logger.Warn(ex, ReflectionStrings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName);
                 return null;
             }
+        }
+
+        private Type? ResolveTypeCore(QualifiedFullName qualifiedName, IEnumerable<Assembly>? appAssemblies)
+        {
+            var type = ResolveGenericTypeCore(qualifiedName, appAssemblies);
+            if (type != null)
+            {
+                return type;
+            }
+
+            appAssemblies ??= this.getAppAssemblies();
+            if (qualifiedName.AssemblyName == null)
+            {
+                type = appAssemblies
+                    .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
+                    .FirstOrDefault(t => t != null);
+
+                if (type == null && qualifiedName.Namespace == null)
+                {
+                    type = this.ResolveTypeByNameOnly(qualifiedName.Name, appAssemblies);
+                }
+
+                return type;
+            }
+
+            var assemblyName = qualifiedName.AssemblyName.Name;
+            var assembly = appAssemblies
+                            .FirstOrDefault(a => a.GetName().Name == assemblyName);
+            if (assembly == null)
+            {
+                throw new TypeLoadException($"Assembly '{assemblyName}' not found.");
+            }
+
+            type = assembly.GetType(qualifiedName.TypeName, throwOnError: false);
+            if (type == null && qualifiedName.Namespace == null)
+            {
+                type = this.ResolveTypeByNameOnly(qualifiedName.Name, new[] { assembly });
+            }
+
+            return type;
+        }
+
+        private Type? ResolveGenericTypeCore(QualifiedFullName qualifiedName, IEnumerable<Assembly>? appAssemblies)
+        {
+            var genericDefinitionTypeName = qualifiedName.GetGenericTypeDefinition();
+            if (genericDefinitionTypeName == null)
+            {
+                return null;
+            }
+
+            var genericDefinitionType = this.ResolveType(genericDefinitionTypeName.ToString(), appAssemblies, throwOnNotFound: false);
+            if (genericDefinitionType == null)
+            {
+                return null;
+            }
+
+            var genericArgs = qualifiedName.GetGenericTypeArguments();
+            var typeArgs = genericArgs
+                .Select(t => this.ResolveType(t.ToString(), appAssemblies, throwOnNotFound: false))
+                .ToArray();
+
+            return typeArgs.Any(t => t is null)
+                ? null
+                : genericDefinitionType.MakeGenericType(typeArgs!);
         }
 
         private Type? ResolveTypeByNameOnly(string name, IEnumerable<Assembly> assemblies)

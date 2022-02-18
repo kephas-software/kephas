@@ -27,7 +27,7 @@ namespace Kephas.Reflection
         /// <param name="typeName">Name of the type.</param>
         /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found.</param>
         /// <returns>
-        /// A Type.
+        /// The resolved type or <c>null</c>.
         /// </returns>
         Type? ResolveType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] string typeName, bool throwOnNotFound = true);
     }

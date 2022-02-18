@@ -101,31 +101,40 @@ namespace Kephas.Reflection
         /// <returns>A <see cref="QualifiedFullName"/> containing the generic type definition.</returns>
         public QualifiedFullName? GetGenericTypeDefinition()
         {
-            if (this.genericDefinition is null)
+            this.genericDefinition ??= new Lazy<QualifiedFullName?>(() =>
             {
-                this.genericDefinition = new Lazy<QualifiedFullName?>(() =>
-                {
-                    var genericStart = this.TypeName.IndexOf(GenericOpeningBracket);
-                    if (genericStart < 0)
-                    {
-                        return null;
-                    }
-
-                    return new QualifiedFullName(this.TypeName[..genericStart], this.AssemblyName);
-                });
-            }
+                var genericStart = this.TypeName.IndexOf(GenericOpeningBracket);
+                return genericStart < 0
+                    ? null
+                    : new QualifiedFullName(this.TypeName[..genericStart], this.AssemblyName);
+            });
 
             return this.genericDefinition.Value;
         }
 
+        /// <summary>
+        /// Gets the generic type arguments if the type is a constructed generic.
+        /// </summary>
+        /// <returns>the generic type arguments</returns>
         public IEnumerable<QualifiedFullName> GetGenericTypeArguments()
         {
-            if (this.genericArguments is null)
-            {
-                this.genericArguments = new Lazy<IEnumerable<QualifiedFullName>>(() => ComputeGenericTypeArguments(this.TypeName));
-            }
+            this.genericArguments ??= new Lazy<IEnumerable<QualifiedFullName>>(
+                () => ComputeGenericTypeArguments(this.TypeName));
 
             return this.genericArguments.Value;
+        }
+
+        /// <summary>
+        /// Converts to string.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.AssemblyName is null
+                ? this.TypeName
+                : $"{this.TypeName}, {this.AssemblyName}";
         }
 
         private static IEnumerable<QualifiedFullName> ComputeGenericTypeArguments(string typeName)
@@ -240,7 +249,7 @@ namespace Kephas.Reflection
 
         private string GetDebuggerDisplay()
         {
-            return $"{this.TypeName}{(this.AssemblyName is null ? string.Empty : ", " + this.AssemblyName)}";
+            return $"{this} ({this.GetType()})";
         }
     }
 }

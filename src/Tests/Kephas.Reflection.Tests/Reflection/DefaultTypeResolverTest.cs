@@ -17,7 +17,7 @@ namespace Kephas.Core.Tests.Reflection
 
     using Kephas.Logging;
     using Kephas.Reflection;
-
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -91,8 +91,8 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("Kephas.Interaction.ISignal");
-            Assert.AreEqual("Kephas.Interaction.ISignal", type.FullName);
+            var type = resolver.ResolveType("Kephas.IAdapter");
+            Assert.AreEqual("Kephas.IAdapter", type.FullName);
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("ISignal");
-            Assert.AreEqual("Kephas.Interaction.ISignal", type.FullName);
+            var type = resolver.ResolveType("IAdapter");
+            Assert.AreEqual("Kephas.IAdapter", type.FullName);
         }
 
         [Test]
@@ -115,11 +115,16 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_other_assembly_generic_without_assembly_name()
         {
-            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.GetName().Name?.StartsWith("Kephas") ?? false)
+                .ToList();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`2[[Kephas.Interaction.ISignal],[Kephas.Services.AppServiceMetadata]]");
+            var adapterFullName = typeof(IAdapter).FullName;
+            var appServiceMetadataFullName = typeof(AppServiceMetadata).FullName;
+            var type = resolver.ResolveType($"Kephas.Services.Behaviors.IServiceBehaviorContext`2[[{adapterFullName}],[{appServiceMetadataFullName}]]");
+
             Assert.AreEqual("IServiceBehaviorContext`2", type.Name);
-            Assert.AreEqual("ISignal", type.GenericTypeArguments[0].Name);
+            Assert.AreEqual("IAdapter", type.GenericTypeArguments[0].Name);
             Assert.AreEqual("AppServiceMetadata", type.GenericTypeArguments[1].Name);
         }
 
