@@ -7,7 +7,7 @@
 
 namespace Kephas.Templating.Razor
 {
-    public class Template<T> : RazorPage<T>
+    public class Template<T> // : RazorPage<T>
     {
     }
 }
