@@ -16,8 +16,6 @@ namespace Kephas.Data.MongoDB.Application
     using global::MongoDB.Bson;
     using Kephas.Application;
     using Kephas.Operations;
-    using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A MongoDB application lifecycle behavior.
