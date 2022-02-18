@@ -17,12 +17,13 @@ namespace Kephas.Messaging.Tests
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
+    using Kephas.Interaction;
     using Kephas.Logging;
-    using Kephas.Testing.Application;
+    using Kephas.Security.Authorization;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class MessagingTestBase : ApplicationTestBase
+    public class MessagingTestBase : InjectionTestBase
     {
         public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
@@ -34,7 +35,10 @@ namespace Kephas.Messaging.Tests
         {
             var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
-                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+                typeof(IMessageProcessor).GetTypeInfo().Assembly,       /* Kephas.Messaging */
+                typeof(IAppLifecycleBehavior).GetTypeInfo().Assembly,   /* Kephas.Application.Abstractions */
+                typeof(IAuthorizationService).GetTypeInfo().Assembly,   /* Kephas.Security */
+                typeof(IEventHub).GetTypeInfo().Assembly,               /* Kephas.Interaction */
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);

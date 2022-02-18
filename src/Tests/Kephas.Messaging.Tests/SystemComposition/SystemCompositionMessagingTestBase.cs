@@ -17,12 +17,13 @@ namespace Kephas.Messaging.Tests.SystemComposition
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.SystemComposition.Builder;
+    using Kephas.Interaction;
     using Kephas.Logging;
-    using Kephas.Testing.Application;
+    using Kephas.Security.Authorization;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class MessagingWithSystemCompositionInjectionTestBase : ApplicationWithSystemCompositionInjectionTestBase
+    public class SystemCompositionMessagingTestBase : SystemCompositionInjectionTestBase
     {
         public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
@@ -32,9 +33,12 @@ namespace Kephas.Messaging.Tests.SystemComposition
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
+            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
             {
-                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+                typeof(IMessageProcessor).GetTypeInfo().Assembly,       /* Kephas.Messaging */
+                typeof(IAppLifecycleBehavior).GetTypeInfo().Assembly,   /* Kephas.Application.Abstractions */
+                typeof(IAuthorizationService).GetTypeInfo().Assembly,   /* Kephas.Security */
+                typeof(IEventHub).GetTypeInfo().Assembly,               /* Kephas.Interaction */
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);

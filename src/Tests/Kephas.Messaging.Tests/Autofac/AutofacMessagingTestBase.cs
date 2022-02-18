@@ -16,13 +16,14 @@ namespace Kephas.Messaging.Tests.Autofac
 
     using Kephas.Application;
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Builder;
+    using Kephas.Interaction;
     using Kephas.Logging;
-    using Kephas.Testing.Application;
+    using Kephas.Security.Authorization;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class AutofacMessagingTestBase : AutofacApplicationTestBase
+    public class AutofacMessagingTestBase : AutofacInjectionTestBase
     {
         public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
@@ -34,7 +35,10 @@ namespace Kephas.Messaging.Tests.Autofac
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
             {
-                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+                typeof(IMessageProcessor).GetTypeInfo().Assembly,       /* Kephas.Messaging */
+                typeof(IAppLifecycleBehavior).GetTypeInfo().Assembly,   /* Kephas.Application.Abstractions */
+                typeof(IAuthorizationService).GetTypeInfo().Assembly,   /* Kephas.Security */
+                typeof(IEventHub).GetTypeInfo().Assembly,               /* Kephas.Interaction */
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);

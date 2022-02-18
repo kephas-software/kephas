@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.Builder;
-
 namespace Kephas.Messaging.Tests.Autofac
 {
     using System;
@@ -23,20 +21,20 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Injection;
-    using Kephas.Injection.Autofac.Builder;
+    using Kephas.Injection.Builder;
     using Kephas.Injection.SystemComposition;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;
+    using Kephas.Security.Authorization;
     using Kephas.Services;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
-
-    using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
 
     /// <summary>
     /// Test class for <see cref="DefaultMessageProcessor"/>.
@@ -55,7 +53,10 @@ namespace Kephas.Messaging.Tests.Autofac
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
             {
-                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+                typeof(IMessageProcessor).GetTypeInfo().Assembly,       /* Kephas.Messaging */
+                typeof(IAppLifecycleBehavior).GetTypeInfo().Assembly,   /* Kephas.Application.Abstractions */
+                typeof(IAuthorizationService).GetTypeInfo().Assembly,   /* Kephas.Security */
+                typeof(IEventHub).GetTypeInfo().Assembly,               /* Kephas.Interaction */
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
