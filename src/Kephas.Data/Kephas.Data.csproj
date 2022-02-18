@@ -96,6 +96,8 @@
 		<ProjectReference Include="..\Kephas.Data.Abstractions\Kephas.Data.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
 		<ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
+		<ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
+		<ProjectReference Include="..\Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj" />
         <ProjectReference Include="..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj" />
         <ProjectReference Include="..\Kephas.Serialization\Kephas.Serialization.csproj" />
     </ItemGroup>
