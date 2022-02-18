@@ -93,6 +93,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Kephas.Serialization.MongoDBBson",
     "..\Kephas.Serialization.NewtonsoftJson",
     "..\Kephas.Templating",
+    "..\Kephas.Templating.Razor",
     "..\Kephas.Tenants",
     "..\Kephas.TextProcessing",
     "..\Kephas.Workflow",
