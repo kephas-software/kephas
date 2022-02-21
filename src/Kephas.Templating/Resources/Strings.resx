@@ -123,4 +123,7 @@
   <data name="DefaultTemplateProcessor_ProcessAsync_MissingEngine" xml:space="preserve">
     <value>The template kind '{0}' of '{1}' does not have an associated processing engine.</value>
   </data>
+  <data name="InterpolationTemplatingEngine_ProcessAsync_TextWriterNotNull" xml:space="preserve">
+    <value>The TextWriter must not be null.</value>
+  </data>
 </root>

@@ -8,6 +8,7 @@
 namespace Kephas.Templating.Razor.Tests;
 
 using System.Reflection;
+using System.Text;
 using Kephas.Operations;
 using Kephas.Services;
 using NUnit.Framework;
@@ -21,12 +22,17 @@ public class RazorTemplatingEngineIntegrationTest : RazorTemplatingTestBase
     {
         var injector = this.CreateInjector();
         var engine = injector.Resolve<ITemplatingEngine>("Razor");
+
+        using var writer = new StringWriter();
+
         var contextFactory = injector.Resolve<IContextFactory>();
         using var context = contextFactory.CreateContext<TemplateProcessingContext>();
-        var result = await engine.ProcessAsync(this.GetTemplate(templatePath), model, context);
+        context.TextWriter = writer;
+
+        var result = await engine.ProcessAsync(this.GetTemplate(templatePath), model, writer, context);
 
         Assert.IsFalse(result.HasErrors(), "No rendering errors expected!");
-        Assert.AreEqual(expected, result.Value);
+        Assert.AreEqual(expected, writer.GetStringBuilder().ToString());
     }
 
     private ITemplate GetTemplate(string templatePath)

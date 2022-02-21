@@ -120,7 +120,7 @@ public static class RazorProjectEngineContextExtensions
     /// <param name="configure">The configure action.</param>
     /// <returns>The provided context.</returns>
     [return: NotNull]
-    public static T ConfigureEngine<T>(this T context, Action<RazorProjectEngineBuilder>? configure)
+    public static T ConfigureEngine<T>([DisallowNull] this T context, Action<RazorProjectEngineBuilder>? configure)
         where T : ITemplateProcessingContext
     {
         context = context ?? throw new ArgumentNullException(nameof(context));

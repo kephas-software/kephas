@@ -27,6 +27,7 @@ public interface ITemplatingEngine
     /// <typeparam name="T">The type of the bound model.</typeparam>
     /// <param name="template">The template to be interpreted/executed.</param>
     /// <param name="model">Optional. The template model.</param>
+    /// <param name="textWriter">The text writer for the output.</param>
     /// <param name="processingContext">The processing context.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>
@@ -35,6 +36,7 @@ public interface ITemplatingEngine
     Task<IOperationResult> ProcessAsync<T>(
         ITemplate template,
         T? model,
+        TextWriter textWriter,
         ITemplateProcessingContext processingContext,
         CancellationToken cancellationToken = default);
 
@@ -44,12 +46,17 @@ public interface ITemplatingEngine
     /// <typeparam name="T">The type of the bound model.</typeparam>
     /// <param name="template">The template to be interpreted/executed.</param>
     /// <param name="model">Optional. The template model.</param>
+    /// <param name="textWriter">The text writer for the output.</param>
     /// <param name="processingContext">The processing context.</param>
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    IOperationResult Process<T>(ITemplate template, T? model, ITemplateProcessingContext processingContext)
+    IOperationResult Process<T>(
+        ITemplate template,
+        T? model,
+        TextWriter textWriter,
+        ITemplateProcessingContext processingContext)
     {
-        return this.ProcessAsync(template, model, processingContext).GetResultNonLocking()!;
+        return this.ProcessAsync(template, model, textWriter, processingContext).GetResultNonLocking()!;
     }
 }

@@ -5,11 +5,28 @@
 The templating area in Kephas handles the text generation out of various templates.
 The entry point is the ```ITemplateProcessor``` singleton service, which through the ```ProcessAsync``` method, provided a template and a model, returns a processed result, typically in form of a ```string```.
 
-## The default implementation of the ```ITemplateProcessor```
+## Usage
+
+```C#
+var processor = injector.Resolve<ITemplateProcessor>();
+var result = processor.Process(new StringTemplate("hi {name}!", "interpolate"), new { name = "Johnny" }));
+Assert.Equals("hi Johnny!", result);
+
+// this is a simpler alternative for interpolation using the Interpolate extension method.
+var result = processor.Interpolate("hi {name}!", new { name = "Johnny" }));
+Assert.Equals("hi Johnny!", result);
+```
+
+## The ```ITemplateProcessor``` service
+This service is the central piece providing the ```ProcessAsync``` method through which a template is processed.
+Typically, the output is written to the ```ITemplateProcessingContext.TextWriter```, but, if this is not set by the user,
+it is the duty of the template processor to prepare the ```TextWriter``` and to return in the operation result
+the result returned by the processing engine.
+
 ```DefaultTemplateProcessor``` is the default implementation of the ```ITemplateProcessor```.
 Just like the other default implementations provided by the Kephas framework, it declares a low override priority, so that it can be easily overridden.
 By default, it delegates the template processing to a specific ```ITemplatingEngine``` handling the provided template.
-It identifies the engine based on the template's kind, which the engine declares using the ```[TemplateKind(...)]``` attribute. 
+It identifies the engine based on the template's kind, which the engine declares using the ```[TemplateKind(...)]``` attribute.
 
 ## Template engines
 These services implement the ```ITemplatingEngine``` contract and handle specific template kinds.

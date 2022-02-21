@@ -7,10 +7,9 @@
 
 namespace Kephas.Templating.Interpolation;
 
-using System.Text;
 using System.Text.RegularExpressions;
-using Kephas.Dynamic;
 using Kephas.Operations;
+using Kephas.Services;
 using Kephas.Templating.AttributedModel;
 using Kephas.Threading.Tasks;
 
@@ -18,6 +17,7 @@ using Kephas.Threading.Tasks;
 /// Templating engine for string interpolation.
 /// </summary>
 [TemplateKind(Interpolation)]
+[ServiceName(Interpolation)]
 public class InterpolationTemplatingEngine : ITemplatingEngine
 {
     /// <summary>
@@ -31,20 +31,24 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
     /// <typeparam name="T">The type of the bound model.</typeparam>
     /// <param name="template">The template to be interpreted/executed.</param>
     /// <param name="model">Optional. The template model.</param>
+    /// <param name="textWriter">The text writer for the output.</param>
     /// <param name="processingContext">The processing context.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    public async Task<IOperationResult> ProcessAsync<T>(ITemplate template,
+    public async Task<IOperationResult> ProcessAsync<T>(
+        ITemplate template,
         T? model,
+        TextWriter textWriter,
         ITemplateProcessingContext processingContext,
         CancellationToken cancellationToken = default)
     {
+        textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
+
         var opResult = new OperationResult<object?>();
         var content = await template.GetContentAsync(cancellationToken).PreserveThreadContext();
 
-        var result = new StringBuilder(); 
         var expandoModel = model?.ToExpando();
         var crtIndex = 0;
         var matches = Regex.Matches(content, "{([^{}]*)");
@@ -52,23 +56,23 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
         {
             if (match.Index > crtIndex)
             {
-                result.Append(content[crtIndex..match.Index]);
+                textWriter.Write(content[crtIndex..match.Index]);
             }
 
             var value = expandoModel?[match.Groups[1].Value];
             if (value is not null)
             {
-                result.Append(value);
+                textWriter.Write(value);
             }
-            
+
             crtIndex = match.Index + match.Length + 1;
         }
 
         if (content.Length > crtIndex)
         {
-            result.Append(content[crtIndex..]);
+            textWriter.Write(content[crtIndex..]);
         }
-        
-        return opResult.Value(result.ToString()).Complete();
+
+        return opResult.Complete();
     }
 }

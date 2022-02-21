@@ -39,6 +39,20 @@ namespace Kephas.Templating.Tests
         }
 
         [Test]
+        public async Task ProcessAsync_Injection_success_with_writer()
+        {
+            var container = this.CreateInjector(parts: new[] { typeof(TestTemplatingEngine) });
+            var templateProcessor = container.Resolve<ITemplateProcessor>();
+            using var writer = new StringWriter();
+
+            var template = new StringTemplate("dummy", "test", "test-template");
+            var result = await templateProcessor.ProcessAsync<object>(template, optionsConfig: ctx => ctx.TextWriter = writer);
+
+            Assert.AreEqual("processed test-template", writer.GetStringBuilder().ToString());
+            Assert.IsNull(result);
+        }
+
+        [Test]
         public async Task ProcessAsync_Injection_failure_missing_handler()
         {
             var container = this.CreateInjector();

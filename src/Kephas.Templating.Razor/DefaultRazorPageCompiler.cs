@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RazorPageCompiler.cs" company="Kephas Software SRL">
+// <copyright file="DefaultRazorPageCompiler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,7 +7,6 @@
 
 namespace Kephas.Templating.Razor;
 
-using System.Reflection;
 using Kephas.Application;
 using Kephas.Collections;
 using Kephas.ExceptionHandling;
@@ -21,7 +20,7 @@ using Microsoft.CodeAnalysis.CSharp;
 /// The default implementation of the <see cref="IRazorPageCompiler"/> service.
 /// </summary>
 [OverridePriority(Priority.Low)]
-public class RazorPageCompiler : IRazorPageCompiler
+public class DefaultRazorPageCompiler : IRazorPageCompiler
 {
     private readonly IRazorProjectFileSystemProvider projectProvider;
     private readonly IRazorProjectEngineFactory engineFactory;
@@ -30,14 +29,14 @@ public class RazorPageCompiler : IRazorPageCompiler
     private readonly IAppRuntime appRuntime;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="RazorPageCompiler"/> class.
+    /// Initializes a new instance of the <see cref="DefaultRazorPageCompiler"/> class.
     /// </summary>
     /// <param name="projectProvider">The project provider.</param>
     /// <param name="engineFactory">The engine factory.</param>
     /// <param name="pageGenerator">The page generator.</param>
     /// <param name="metadataReferenceManager">The metadata reference manager.</param>
     /// <param name="appRuntime">The application runtime.</param>
-    public RazorPageCompiler(
+    public DefaultRazorPageCompiler(
         IRazorProjectFileSystemProvider projectProvider,
         IRazorProjectEngineFactory engineFactory,
         IRazorPageGenerator pageGenerator,

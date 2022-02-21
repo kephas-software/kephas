@@ -4,7 +4,13 @@
 This package provides the implementation of templating using Razor syntax and *.cshtml files.
 The ```cshtml``` template kind is handled by the ```RazorTemplatingEngine```.
 
+## Usage
+Typically, the
+
+
 ## Additional services
+All the enumerated services provide a default implementation which can be overridden if required.
+However, this should be rarely needed, instead configure the template generation
 
 ### ```IMetadataReferenceManager```
 This internal service is used to provide ```MetadataReference```s out of a list of assemblies.
@@ -16,3 +22,9 @@ The default implementation ```SimpleRazorProjectFileSystemProvider``` uses a sim
 
 ### ```IRazorProjectEngineFactory```
 Creates the Razor project engine for the provided file system and with the given context.
+
+### ```IRazorPageGenerator```
+Generates the C# code based on the provided project engine and item.
+
+### ```IRazorPageCompiler```
+Compiles the template with model type ```T``` and returns a ```ICompiledRazorPage<T>``` wrapped into an operation result.

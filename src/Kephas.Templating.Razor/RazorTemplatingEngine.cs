@@ -44,13 +44,21 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     /// <typeparam name="T">The type of the bound model.</typeparam>
     /// <param name="template">The template to be interpreted/executed.</param>
     /// <param name="model">Optional. The template model.</param>
+    /// <param name="textWriter">The text writer for the output.</param>
     /// <param name="processingContext">The processing context.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    public async Task<IOperationResult> ProcessAsync<T>(ITemplate template, T? model, ITemplateProcessingContext processingContext, CancellationToken cancellationToken = default)
+    public async Task<IOperationResult> ProcessAsync<T>(
+        ITemplate template,
+        T? model,
+        TextWriter textWriter,
+        ITemplateProcessingContext processingContext,
+        CancellationToken cancellationToken = default)
     {
+        textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
+
         var result = new OperationResult();
         var compiledPageResult = await this.pageCompiler
             .CompileTemplateAsync<T>(template, processingContext, cancellationToken).PreserveThreadContext();
@@ -62,20 +70,7 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 
         var compiledPage = compiledPageResult.Value;
 
-        var ownsWriter = processingContext.TextWriter is null;
-        if (ownsWriter)
-        {
-            var sb = new StringBuilder();
-            processingContext.TextWriter = new StringWriter(sb);
-        }
-
-        await compiledPage.RenderAsync(model, processingContext.TextWriter!, cancellationToken).PreserveThreadContext();
-
-        if (ownsWriter)
-        {
-            using var writer = processingContext.TextWriter!;
-            result.Value(((StringWriter)writer).GetStringBuilder().ToString());
-        }
+        await compiledPage.RenderAsync(model, textWriter, cancellationToken).PreserveThreadContext();
 
         return result.Complete();
     }

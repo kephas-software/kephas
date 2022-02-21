@@ -7,6 +7,7 @@
 
 namespace Kephas.Templating.Tests.Interpolation;
 
+using Kephas.Injection;
 using Kephas.Templating.Interpolation;
 using NSubstitute;
 using NUnit.Framework;
@@ -18,18 +19,20 @@ public class InterpolationTemplatingEngineTest
     public async Task ProcessAsync_success(string template, object? model, string result)
     {
         var engine = new InterpolationTemplatingEngine();
-        var opResult = await engine.ProcessAsync(new StringTemplate(template), model, Substitute.For<ITemplateProcessingContext>());
+        using var sbWriter = new StringWriter();
+        var opResult = await engine.ProcessAsync(new StringTemplate(template), model, sbWriter, CreateProcessingContext());
 
-        Assert.AreEqual(result, opResult.Value);
+        Assert.AreEqual(result, sbWriter.GetStringBuilder().ToString());
     }
 
     [Test]
     public async Task ProcessAsync_null_model()
     {
         var engine = new InterpolationTemplatingEngine();
-        var opResult = await engine.ProcessAsync<object?>(new StringTemplate("hello {boy}!"), null, Substitute.For<ITemplateProcessingContext>());
+        using var sbWriter = new StringWriter();
+        var opResult = await engine.ProcessAsync<object?>(new StringTemplate("hello {boy}!"), null, sbWriter, CreateProcessingContext());
 
-        Assert.AreEqual("hello !", opResult.Value);
+        Assert.AreEqual("hello !", sbWriter.GetStringBuilder().ToString());
     }
 
     public static object[] GetInterpolationCases()
@@ -39,5 +42,10 @@ public class InterpolationTemplatingEngineTest
             new object[] { "{hello} there", new { hello = "hi" }, "hi there" },
             new object[] { "hello {there}", new { there = 12 }, "hello 12" },
         };
+    }
+
+    private static ITemplateProcessingContext CreateProcessingContext()
+    {
+        return Substitute.For<ITemplateProcessingContext>();
     }
 }

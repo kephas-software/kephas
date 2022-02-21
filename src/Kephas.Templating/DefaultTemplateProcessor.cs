@@ -10,9 +10,9 @@ namespace Kephas.Templating
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Collections;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -28,8 +28,11 @@ namespace Kephas.Templating
         private readonly IDictionary<string, Lazy<ITemplatingEngine, TemplatingEngineMetadata>> engineFactories =
             new Dictionary<string, Lazy<ITemplatingEngine, TemplatingEngineMetadata>>(StringComparer.OrdinalIgnoreCase);
 
-        private readonly IDictionary<string, IList<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>> behaviorFactories =
-            new Dictionary<string, IList<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
+        private readonly
+            IDictionary<string, IList<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>>
+            behaviorFactories =
+                new Dictionary<string, IList<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>>(
+                    StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTemplateProcessor"/> class.
@@ -52,36 +55,37 @@ namespace Kephas.Templating
             engineFactories
                 .Order()
                 .ForEach(f =>
-                    {
-                        f.Metadata.TemplateKind.ForEach(
-                            l =>
-                                {
-                                    if (!this.engineFactories.ContainsKey(l))
-                                    {
-                                        this.engineFactories.Add(l, f);
-                                    }
-                                });
-                    });
+                {
+                    f.Metadata.TemplateKind.ForEach(
+                        l =>
+                        {
+                            if (!this.engineFactories.ContainsKey(l))
+                            {
+                                this.engineFactories.Add(l, f);
+                            }
+                        });
+                });
 
             engineFactories
                 .Where(f => f.Metadata.TemplateKind != null)
                 .SelectMany(f => f.Metadata.TemplateKind)
                 .Distinct()
-                .ForEach(l => this.behaviorFactories.Add(l, new List<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>()));
+                .ForEach(l => this.behaviorFactories.Add(l,
+                    new List<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>()));
 
             behaviorFactories
                 .Order()
                 .ForEach(f =>
+                {
+                    if (f.Metadata.TemplateKind == null || f.Metadata.TemplateKind.Length == 0)
                     {
-                        if (f.Metadata.TemplateKind == null || f.Metadata.TemplateKind.Length == 0)
-                        {
-                            this.behaviorFactories.Values.ForEach(list => list.Add(f));
-                        }
-                        else
-                        {
-                            f.Metadata.TemplateKind.ForEach(l => this.behaviorFactories.TryGetValue(l)?.Add(f));
-                        }
-                    });
+                        this.behaviorFactories.Values.ForEach(list => list.Add(f));
+                    }
+                    else
+                    {
+                        f.Metadata.TemplateKind.ForEach(l => this.behaviorFactories.TryGetValue(l)?.Add(f));
+                    }
+                });
         }
 
         /// <summary>
@@ -114,37 +118,70 @@ namespace Kephas.Templating
             using var processingContext = this.CreateTemplateProcessingContext(template, model, optionsConfig);
             var engineFactory = this.SelectEngineFactory(processingContext);
 
-            var behaviors = this.behaviorFactories.TryGetValue(template.Kind)?.Select(f => f.Value).ToList() ?? new List<ITemplateProcessingBehavior>();
+            var behaviors = this.behaviorFactories.TryGetValue(template.Kind)?.Select(f => f.Value).ToList() ??
+                            new List<ITemplateProcessingBehavior>();
 
             foreach (var behavior in behaviors)
             {
                 await behavior.BeforeProcessAsync(processingContext, cancellationToken).PreserveThreadContext();
             }
 
+            StringWriter? ownTextWriter = null;
             try
             {
-                var result = await engineFactory.Value
-                    .ProcessAsync(template, model, processingContext, cancellationToken)
-                    .PreserveThreadContext();
-                processingContext.Result = result;
-            }
-            catch (Exception ex)
-            {
-                processingContext.Exception = ex;
-            }
+                try
+                {
+                    var ownsWriter = processingContext.TextWriter is null;
+                    if (ownsWriter)
+                    {
+                        processingContext.TextWriter = ownTextWriter = new StringWriter();
+                    }
 
-            behaviors.Reverse();
+                    var result = await engineFactory.Value
+                        .ProcessAsync(template, model, processingContext.TextWriter!, processingContext, cancellationToken)
+                        .PreserveThreadContext();
 
-            foreach (var behavior in behaviors)
+                    if (ownsWriter)
+                    {
+                        if (result.Value is null)
+                        {
+                            result.Value(ownTextWriter!.GetStringBuilder().ToString());
+                        }
+                    }
+
+                    processingContext.Result = result;
+                }
+                catch (Exception ex)
+                {
+                    processingContext.Exception = ex;
+                }
+
+                behaviors.Reverse();
+
+                foreach (var behavior in behaviors)
+                {
+                    await behavior.AfterProcessAsync(processingContext, cancellationToken).PreserveThreadContext();
+                }
+            }
+            finally
             {
-                await behavior.AfterProcessAsync(processingContext, cancellationToken).PreserveThreadContext();
+                // make sure to dispose the own writer only after invoking all the behaviors
+                // to allow them to write to the output if necessary.
+                if (ownTextWriter != null)
+                {
+                    using var writer = ownTextWriter;
+                }
             }
 
             if (processingContext.Exception != null || (processingContext.Result?.HasErrors() ?? false))
             {
                 var innerException = processingContext.Exception
                                      ?? new AggregateException(processingContext.Result!.Exceptions);
-                throw new TemplatingException(Strings.DefaultTemplateProcessor_ProcessAsync_Exception.FormatWith(template.Name), innerException, template, processingContext.Result);
+                throw new TemplatingException(
+                    Strings.DefaultTemplateProcessor_ProcessAsync_Exception.FormatWith(template.Name),
+                    innerException,
+                    template,
+                    processingContext.Result);
             }
 
             return processingContext.Result?.Value;
@@ -155,12 +192,15 @@ namespace Kephas.Templating
         /// </summary>
         /// <param name="processingContext">The processing context.</param>
         /// <returns>The <see cref="ITemplatingEngine"/> together with its metadata, or <c>null</c> if not found.</returns>
-        protected virtual Lazy<ITemplatingEngine, TemplatingEngineMetadata> SelectEngineFactory(ITemplateProcessingContext processingContext)
+        protected virtual Lazy<ITemplatingEngine, TemplatingEngineMetadata> SelectEngineFactory(
+            ITemplateProcessingContext processingContext)
         {
             var template = processingContext.Template!;
             var engineFactory = this.engineFactories.TryGetValue(template.Kind);
             return engineFactory
-                ?? throw new TemplatingException(Strings.DefaultTemplateProcessor_ProcessAsync_MissingEngine.FormatWith(template.Kind, template.Name), template);
+                   ?? throw new TemplatingException(
+                       Strings.DefaultTemplateProcessor_ProcessAsync_MissingEngine.FormatWith(template.Kind,
+                           template.Name), template);
         }
 
         /// <summary>

@@ -77,5 +77,14 @@ namespace Kephas.Templating {
                 return ResourceManager.GetString("DefaultTemplateProcessor_ProcessAsync_MissingEngine", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TextWriter must not be null..
+        /// </summary>
+        public static string InterpolationTemplatingEngine_ProcessAsync_TextWriterNotNull {
+            get {
+                return ResourceManager.GetString("InterpolationTemplatingEngine_ProcessAsync_TextWriterNotNull", resourceCulture);
+            }
+        }
     }
 }
