@@ -5,18 +5,42 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+namespace Kephas.Templating.Razor;
+
+using Kephas.Logging;
 using Kephas.Operations;
 using Kephas.Templating.AttributedModel;
-
-namespace Kephas.Templating.Razor;
 
 /// <summary>
 /// Templating engine using the cshtml format.
 /// </summary>
 /// <seealso cref="Kephas.Templating.ITemplatingEngine" />
 [TemplateKind("cshtml")]
-public class RazorTemplatingEngine : ITemplatingEngine
+public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 {
+    private readonly IMetadataReferenceManager metadataReferenceManager;
+    private readonly IRazorProjectFileSystemProvider projectProvider;
+    private readonly IRazorProjectEngineFactory projectEngineFactory;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RazorTemplatingEngine" /> class.
+    /// </summary>
+    /// <param name="metadataReferenceManager">The metadata reference manager.</param>
+    /// <param name="projectProvider">The project provider.</param>
+    /// <param name="projectEngineFactory">The project engine factory.</param>
+    /// <param name="logManager">The log manager.</param>
+    public RazorTemplatingEngine(
+        IMetadataReferenceManager metadataReferenceManager,
+        IRazorProjectFileSystemProvider projectProvider,
+        IRazorProjectEngineFactory projectEngineFactory,
+        ILogManager? logManager = null)
+        : base(logManager)
+    {
+        this.metadataReferenceManager = metadataReferenceManager ?? throw new ArgumentNullException(nameof(metadataReferenceManager));
+        this.projectProvider = projectProvider ?? throw new ArgumentNullException(nameof(projectProvider));
+        this.projectEngineFactory = projectEngineFactory ?? throw new ArgumentNullException(nameof(projectEngineFactory));
+    }
+
     /// <summary>
     /// Processes the provided template asynchronously returning the processed output.
     /// </summary>

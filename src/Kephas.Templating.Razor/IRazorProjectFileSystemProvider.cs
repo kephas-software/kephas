@@ -7,11 +7,13 @@
 
 namespace Kephas.Templating.Razor;
 
+using Kephas.Services;
 using Microsoft.AspNetCore.Razor.Language;
 
 /// <summary>
 /// Provider of a <see cref="GetRazorProjectFileSystemAsync"/> out of a template.
 /// </summary>
+[SingletonAppServiceContract]
 public interface IRazorProjectFileSystemProvider
 {
     /// <summary>
