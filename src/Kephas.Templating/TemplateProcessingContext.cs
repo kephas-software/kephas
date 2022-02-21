@@ -53,6 +53,11 @@ namespace Kephas.Templating
         public object? Model { get; set; }
 
         /// <summary>
+        /// Gets or sets the TextWriter used to write the output.
+        /// </summary>
+        public TextWriter? TextWriter { get; set; }
+
+        /// <summary>
         /// Gets or sets the result.
         /// </summary>
         /// <value>

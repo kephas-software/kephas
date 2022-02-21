@@ -35,6 +35,11 @@ public interface ITemplateProcessingContext : IContext
     object? Model { get; }
 
     /// <summary>
+    /// Gets the TextWriter used to write the output.
+    /// </summary>
+    TextWriter? TextWriter { get; }
+
+    /// <summary>
     /// Gets or sets the result.
     /// </summary>
     /// <value>
