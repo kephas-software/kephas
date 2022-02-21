@@ -8,6 +8,7 @@
 namespace Kephas.Templating.Razor;
 
 using Kephas.Services;
+using Microsoft.AspNetCore.Mvc.Razor.Extensions;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 
@@ -49,8 +50,7 @@ public class DefaultRazorProjectEngineFactory : IRazorProjectEngineFactory
                 FunctionsDirective.Register(builder);
                 InheritsDirective.Register(builder);
                 SectionDirective.Register(builder);
-                // InjectDirective.Register(builder);
-                // ModelDirective.Register(builder);
+                ModelDirective.Register(builder);
 
                 builder.Features.Add(new SuppressChecksumOptionsFeature());
                 builder.Features.Add(new SuppressMetadataAttributesFeature());

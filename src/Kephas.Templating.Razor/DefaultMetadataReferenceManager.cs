@@ -107,6 +107,11 @@ public class DefaultMetadataReferenceManager : IMetadataReferenceManager
         }
 
         var location = assembly.Location;
+        if (string.IsNullOrEmpty(location))
+        {
+            return null;
+        }
+
         var uri = new UriBuilder(location);
         return Uri.UnescapeDataString(uri.Path);
     }

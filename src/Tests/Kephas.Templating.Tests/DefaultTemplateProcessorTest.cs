@@ -45,7 +45,7 @@ namespace Kephas.Templating.Tests
             var templateProcessor = container.Resolve<ITemplateProcessor>();
 
             var template = new StringBuilderTemplate(new StringBuilder("dummy"), "test", "test-template");
-            Assert.ThrowsAsync<Exception>(() => templateProcessor.ProcessAsync<object>(template));
+            Assert.ThrowsAsync<TemplatingException>(() => templateProcessor.ProcessAsync<object>(template));
         }
     }
 }
