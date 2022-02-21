@@ -13,13 +13,12 @@ using Kephas.Templating.AttributedModel;
 [TemplateKind("test")]
 public class TestTemplatingEngine : ITemplatingEngine
 {
-    public Task<IOperationResult<object?>> ProcessAsync<T>(
-        ITemplate template,
+    public Task<IOperationResult> ProcessAsync<T>(ITemplate template,
         T? model,
         ITemplateProcessingContext processingContext,
         CancellationToken cancellationToken = default)
     {
-        return Task.FromResult<IOperationResult<object?>>(
+        return Task.FromResult<IOperationResult>(
             new OperationResult<object?>("processed " + template.Name).Complete());
     }
 }

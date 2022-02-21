@@ -18,25 +18,25 @@ using Kephas.Services;
 public interface ITemplateProcessingContext : IContext
 {
     /// <summary>
-    /// Gets the template to process.
+    /// Gets or sets the template to process.
     /// </summary>
     /// <value>
     /// The template to process.
     /// </value>
-    ITemplate? Template { get; }
+    ITemplate? Template { get; set; }
 
     /// <summary>
-    /// Gets the bound model.
+    /// Gets or sets the bound model.
     /// </summary>
     /// <value>
     /// The bound model.
     /// </value>
-    object? Model { get; }
+    object? Model { get; set; }
 
     /// <summary>
-    /// Gets the TextWriter used to write the output.
+    /// Gets or sets the TextWriter used to write the output.
     /// </summary>
-    TextWriter? TextWriter { get; }
+    TextWriter? TextWriter { get; set; }
 
     /// <summary>
     /// Gets or sets the result.
@@ -44,7 +44,7 @@ public interface ITemplateProcessingContext : IContext
     /// <value>
     /// The result.
     /// </value>
-    IOperationResult<object?>? Result { get; set; }
+    IOperationResult? Result { get; set; }
 
     /// <summary>
     /// Gets or sets the exception.

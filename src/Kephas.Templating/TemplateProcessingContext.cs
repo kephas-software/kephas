@@ -63,7 +63,7 @@ namespace Kephas.Templating
         /// <value>
         /// The result.
         /// </value>
-        public IOperationResult<object?>? Result { get; set; }
+        public IOperationResult? Result { get; set; }
 
         /// <summary>
         /// Gets or sets the exception.

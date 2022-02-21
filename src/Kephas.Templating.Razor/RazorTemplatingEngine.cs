@@ -7,43 +7,34 @@
 
 namespace Kephas.Templating.Razor;
 
+using System.Text;
 using Kephas.Logging;
 using Kephas.Operations;
 using Kephas.Services;
 using Kephas.Templating.AttributedModel;
+using Kephas.Threading.Tasks;
 
 /// <summary>
 /// Templating engine using the cshtml format.
 /// </summary>
 /// <seealso cref="Kephas.Templating.ITemplatingEngine" />
 [TemplateKind("cshtml")]
+[ProcessingPriority(Priority.Low)]
 public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 {
-    private readonly IMetadataReferenceManager metadataReferenceManager;
-    private readonly IRazorProjectFileSystemProvider projectProvider;
-    private readonly IRazorProjectEngineFactory projectEngineFactory;
-    private readonly IContextFactory contextFactory;
+    private readonly IRazorPageCompiler pageCompiler;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RazorTemplatingEngine" /> class.
     /// </summary>
-    /// <param name="metadataReferenceManager">The metadata reference manager.</param>
-    /// <param name="projectProvider">The project provider.</param>
-    /// <param name="projectEngineFactory">The project engine factory.</param>
-    /// <param name="contextFactory">The context factory.</param>
+    /// <param name="pageCompiler">The page compiler.</param>
     /// <param name="logManager">The log manager.</param>
     public RazorTemplatingEngine(
-        IMetadataReferenceManager metadataReferenceManager,
-        IRazorProjectFileSystemProvider projectProvider,
-        IRazorProjectEngineFactory projectEngineFactory,
-        IContextFactory contextFactory,
+        IRazorPageCompiler pageCompiler,
         ILogManager? logManager = null)
         : base(logManager)
     {
-        this.metadataReferenceManager = metadataReferenceManager ?? throw new ArgumentNullException(nameof(metadataReferenceManager));
-        this.projectProvider = projectProvider ?? throw new ArgumentNullException(nameof(projectProvider));
-        this.projectEngineFactory = projectEngineFactory ?? throw new ArgumentNullException(nameof(projectEngineFactory));
-        this.contextFactory = contextFactory;
+        this.pageCompiler = pageCompiler ?? throw new ArgumentNullException(nameof(pageCompiler));
     }
 
     /// <summary>
@@ -57,10 +48,34 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    public Task<IOperationResult<object?>> ProcessAsync<T>(ITemplate template, T? model, ITemplateProcessingContext processingContext, CancellationToken cancellationToken = default)
+    public async Task<IOperationResult> ProcessAsync<T>(ITemplate template, T? model, ITemplateProcessingContext processingContext, CancellationToken cancellationToken = default)
     {
         var result = new OperationResult();
+        var compiledPageResult = await this.pageCompiler
+            .CompileTemplateAsync<T>(template, processingContext, cancellationToken).PreserveThreadContext();
+        result.MergeMessages(compiledPageResult);
+        if (result.HasErrors())
+        {
+            return result.Fail(new TemplatingException("Errors occurred during page compilation."));
+        }
 
-        throw new NotImplementedException();
+        var compiledPage = compiledPageResult.Value;
+
+        var ownsWriter = processingContext.TextWriter is null;
+        if (ownsWriter)
+        {
+            var sb = new StringBuilder();
+            processingContext.TextWriter = new StringWriter(sb);
+        }
+
+        await compiledPage.RenderAsync(model, processingContext.TextWriter!, cancellationToken).PreserveThreadContext();
+
+        if (ownsWriter)
+        {
+            using var writer = processingContext.TextWriter!;
+            result.Value(((StringWriter)writer).GetStringBuilder().ToString());
+        }
+
+        return result.Complete();
     }
 }

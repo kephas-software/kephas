@@ -36,8 +36,7 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    public async Task<IOperationResult<object?>> ProcessAsync<T>(
-        ITemplate template,
+    public async Task<IOperationResult> ProcessAsync<T>(ITemplate template,
         T? model,
         ITemplateProcessingContext processingContext,
         CancellationToken cancellationToken = default)

@@ -124,7 +124,7 @@ namespace Kephas.Templating.Razor
                 }
             }
 
-            private class NullTempDataDictionary : Dictionary<string, object>, ITempDataDictionary
+            private class NullTempDataDictionary : Dictionary<string, object?>, ITempDataDictionary
             {
                 public void Keep()
                 {

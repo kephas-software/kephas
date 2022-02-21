@@ -32,7 +32,7 @@ public interface ITemplatingEngine
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    Task<IOperationResult<object?>> ProcessAsync<T>(
+    Task<IOperationResult> ProcessAsync<T>(
         ITemplate template,
         T? model,
         ITemplateProcessingContext processingContext,
@@ -48,10 +48,7 @@ public interface ITemplatingEngine
     /// <returns>
     /// A promise of the execution result.
     /// </returns>
-    IOperationResult<object?> Process<T>(
-        ITemplate template,
-        T? model,
-        ITemplateProcessingContext processingContext)
+    IOperationResult Process<T>(ITemplate template, T? model, ITemplateProcessingContext processingContext)
     {
         return this.ProcessAsync(template, model, processingContext).GetResultNonLocking()!;
     }

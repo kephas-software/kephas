@@ -14,6 +14,7 @@ using System.Reflection;
 /// </summary>
 public class CompiledRazorPage : ICompiledRazorPage
 {
+    private readonly bool ownsStream;
     private readonly Lazy<Assembly> lazyAssembly;
 
     /// <summary>
@@ -21,12 +22,23 @@ public class CompiledRazorPage : ICompiledRazorPage
     /// </summary>
     /// <param name="template">The template.</param>
     /// <param name="assemblyByteCode">The assembly byte code.</param>
-    public CompiledRazorPage(ITemplate template, MemoryStream assemblyByteCode)
+    /// <param name="ownsStream">Indicates whether the template owns the stream or not.</param>
+    public CompiledRazorPage(ITemplate template, MemoryStream assemblyByteCode, bool ownsStream)
     {
         assemblyByteCode = assemblyByteCode ?? throw new ArgumentNullException(nameof(assemblyByteCode));
         this.Template = template ?? throw new ArgumentNullException(nameof(template));
 
-        this.lazyAssembly = new Lazy<Assembly>(() => Assembly.Load(assemblyByteCode.ToArray()));
+        this.lazyAssembly = new Lazy<Assembly>(() =>
+        {
+            var assembly = Assembly.Load(assemblyByteCode.ToArray());
+            if (this.ownsStream)
+            {
+                assemblyByteCode.Dispose();
+            }
+
+            return assembly;
+        });
+        this.ownsStream = ownsStream;
     }
 
     /// <summary>
@@ -49,7 +61,8 @@ public class CompiledRazorPage : ICompiledRazorPage
             typeof(ITemplatePage<T>).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
         if (templatePageType == null)
         {
-            throw new TemplatingException(Razor.Resources.Strings.CompiledRazorPage_RenderAsync_Exception.FormatWith(this.Template.Name, typeof(ITemplatePage<T>)));
+            throw new TemplatingException(
+                Razor.Resources.Strings.CompiledRazorPage_RenderAsync_Exception.FormatWith(this.Template.Name, typeof(ITemplatePage<T>)));
         }
 
         var page = (ITemplatePage<T>)Activator.CreateInstance(templatePageType)!;

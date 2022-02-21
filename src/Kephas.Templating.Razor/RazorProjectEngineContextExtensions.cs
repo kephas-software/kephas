@@ -35,6 +35,7 @@ public static class RazorProjectEngineContextExtensions
     /// <param name="context">The context.</param>
     /// <param name="rootNamespace">The root namespace.</param>
     /// <returns>The provided context.</returns>
+    [return: NotNull]
     public static T? RootNamespace<T>([DisallowNull] this T context, string? rootNamespace)
         where T : ITemplateProcessingContext
     {
@@ -62,6 +63,7 @@ public static class RazorProjectEngineContextExtensions
     /// <param name="context">The context.</param>
     /// <param name="baseTypeName">Type of the model.</param>
     /// <returns>The provided context.</returns>
+    [return: NotNull]
     public static T ModelType<T>([DisallowNull] this T context, Type? baseTypeName)
         where T : ITemplateProcessingContext
     {
@@ -89,6 +91,7 @@ public static class RazorProjectEngineContextExtensions
     /// <param name="context">The context.</param>
     /// <param name="baseTypeName">The template page's base type name.</param>
     /// <returns>The provided context.</returns>
+    [return: NotNull]
     public static T BaseTypeName<T>([DisallowNull] this T context, string? baseTypeName)
         where T : ITemplateProcessingContext
     {
@@ -116,6 +119,7 @@ public static class RazorProjectEngineContextExtensions
     /// <param name="context">The context.</param>
     /// <param name="configure">The configure action.</param>
     /// <returns>The provided context.</returns>
+    [return: NotNull]
     public static T ConfigureEngine<T>(this T context, Action<RazorProjectEngineBuilder>? configure)
         where T : ITemplateProcessingContext
     {
