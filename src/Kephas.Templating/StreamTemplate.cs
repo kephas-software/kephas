@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringTemplate.cs" company="Kephas Software SRL">
+// <copyright file="StreamTemplate.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,27 +8,34 @@
 namespace Kephas.Templating;
 
 using Kephas.Dynamic;
+using Kephas.IO;
 using Kephas.Templating.Interpolation;
 
 /// <summary>
-/// Template constructed from a string.
+/// Template constructed from a stream.
 /// </summary>
-public class StringTemplate : Expando, ITemplate
+public class StreamTemplate : Expando, ITemplate
 {
-    private readonly string content;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="StringTemplate"/> class.
+    /// Initializes a new instance of the <see cref="StreamTemplate"/> class.
     /// </summary>
     /// <param name="content">The template content.</param>
     /// <param name="kind">Optional. The template kind. If not specified, <see cref="InterpolationTemplatingEngine.Interpolation"/> is used.</param>
     /// <param name="name">Optional. The template name.</param>
-    public StringTemplate(string content, string? kind = null, string? name = null)
+    public StreamTemplate(Stream content, string? kind = null, string? name = null)
     {
-        this.content = content ?? throw new ArgumentNullException(nameof(content));
-        this.Name = name ?? nameof(StringTemplate);
+        this.Stream = content ?? throw new ArgumentNullException(nameof(content));
+        this.Name = name ?? nameof(StreamTemplate);
         this.Kind = kind ?? InterpolationTemplatingEngine.Interpolation;
     }
+
+    /// <summary>
+    /// Gets the stream.
+    /// </summary>
+    /// <value>
+    /// The stream.
+    /// </value>
+    public Stream Stream { get; }
 
     /// <summary>
     /// Gets the template name.
@@ -48,5 +55,5 @@ public class StringTemplate : Expando, ITemplate
     /// </summary>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>The template content.</returns>
-    public Task<string> GetContentAsync(CancellationToken cancellationToken = default) => Task.FromResult(this.content);
+    public Task<string> GetContentAsync(CancellationToken cancellationToken = default) => this.Stream.ReadAllStringAsync();
 }

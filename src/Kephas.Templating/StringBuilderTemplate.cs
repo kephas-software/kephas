@@ -10,6 +10,7 @@ namespace Kephas.Templating;
 using System.Text;
 
 using Kephas.Dynamic;
+using Kephas.Templating.Interpolation;
 
 /// <summary>
 /// Template constructed from a string builder.
@@ -21,14 +22,14 @@ public class StringBuilderTemplate : Expando, ITemplate
     /// <summary>
     /// Initializes a new instance of the <see cref="StringBuilderTemplate"/> class.
     /// </summary>
-    /// <param name="name">The template name.</param>
-    /// <param name="kind">The template kind.</param>
     /// <param name="content">The template content.</param>
-    public StringBuilderTemplate(string name, string kind, StringBuilder content)
+    /// <param name="kind">Optional. The template kind. If not specified, <see cref="InterpolationTemplatingEngine.Interpolation"/> is used.</param>
+    /// <param name="name">Optional. The template name.</param>
+    public StringBuilderTemplate(StringBuilder content, string? kind = null, string? name = null)
     {
         this.content = content ?? throw new ArgumentNullException(nameof(content));
-        this.Name = name ?? throw new ArgumentNullException(nameof(name));
-        this.Kind = kind ?? throw new ArgumentNullException(nameof(kind));
+        this.Name = name ?? nameof(StringBuilderTemplate);
+        this.Kind = kind ?? InterpolationTemplatingEngine.Interpolation;
     }
 
     /// <summary>

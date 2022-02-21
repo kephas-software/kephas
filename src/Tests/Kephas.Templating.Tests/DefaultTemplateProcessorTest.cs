@@ -7,6 +7,7 @@
 
 namespace Kephas.Templating.Tests
 {
+    using System.Text;
     using System.Threading.Tasks;
 
     using NUnit.Framework;
@@ -31,10 +32,20 @@ namespace Kephas.Templating.Tests
             var container = this.CreateInjector(parts: new[] { typeof(TestTemplatingEngine) });
             var templateProcessor = container.Resolve<ITemplateProcessor>();
 
-            var template = new StringTemplate("test-template", "test", "dummy");
+            var template = new StringTemplate("dummy", "test", "test-template");
             var result = await templateProcessor.ProcessAsync<object>(template);
 
             Assert.AreEqual("processed test-template", result);
+        }
+
+        [Test]
+        public async Task ProcessAsync_Injection_failure_missing_handler()
+        {
+            var container = this.CreateInjector();
+            var templateProcessor = container.Resolve<ITemplateProcessor>();
+
+            var template = new StringBuilderTemplate(new StringBuilder("dummy"), "test", "test-template");
+            Assert.ThrowsAsync<Exception>(() => templateProcessor.ProcessAsync<object>(template));
         }
     }
 }

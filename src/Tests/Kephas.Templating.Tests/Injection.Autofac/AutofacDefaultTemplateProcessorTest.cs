@@ -31,7 +31,7 @@ namespace Kephas.Templating.Tests.Injection.Autofac
             var container = this.CreateInjector(parts: new[] { typeof(TestTemplatingEngine) });
             var templateProcessor = container.Resolve<ITemplateProcessor>();
 
-            var template = new StringTemplate("test-template", "test", "dummy");
+            var template = new StringTemplate("dummy", "test", "test-template");
             var result = await templateProcessor.ProcessAsync<object>(template);
 
             Assert.AreEqual("processed test-template", result);

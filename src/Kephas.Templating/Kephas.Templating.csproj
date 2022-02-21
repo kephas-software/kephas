@@ -87,6 +87,7 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="ReadMe.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
