@@ -10,6 +10,9 @@ namespace Kephas.Injection
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+    using Kephas.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// Public interface for the injector.
@@ -44,6 +47,54 @@ namespace Kephas.Injection
         T Resolve<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
             where T : class
             => (T)this.Resolve(typeof(T));
+
+        /// <summary>
+        /// Tries to resolve the service with the provided name.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <returns>
+        /// The named service.
+        /// </returns>
+        public T? TryResolve<T>(string serviceName)
+        {
+            var exportFactories = this
+                .ResolveMany<Lazy<T, AppServiceMetadata>>()
+                .Order()
+                .Where(f => f.Metadata.ServiceName == serviceName)
+                .ToList();
+            if (exportFactories.Count == 0)
+            {
+                return default;
+            }
+
+            if (exportFactories.Count > 1)
+            {
+                throw new AmbiguousMatchException(string.Format(AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(T)));
+            }
+
+            return exportFactories[0].Value;
+        }
+
+        /// <summary>
+        /// Resolves the service with the provided name.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <returns>
+        /// The named service.
+        /// </returns>
+        [return: NotNull]
+        public T Resolve<T>(string serviceName)
+        {
+            var service = this.TryResolve<T>(serviceName);
+            if (service is null)
+            {
+                throw new ServiceException(string.Format(AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception, serviceName, typeof(T)));
+            }
+
+            return service;
+        }
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.

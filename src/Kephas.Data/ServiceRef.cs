@@ -11,7 +11,7 @@
 namespace Kephas.Data
 {
     using System;
-
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -66,8 +66,8 @@ namespace Kephas.Data
                 return default;
             }
 
-            var namedServiceProvider = this.GetNamedServiceProvider();
-            return namedServiceProvider.GetNamedService<TContract>(serviceName!);
+            var injector = this.GetInjector();
+            return injector.Resolve<TContract>(serviceName!);
         }
 
         /// <summary>
@@ -79,16 +79,15 @@ namespace Kephas.Data
         object? IServiceRef.GetService() => this.GetService();
 
         /// <summary>
-        /// Gets the named service provider.
+        /// Gets the injector.
         /// </summary>
         /// <returns>
-        /// The named service provider.
+        /// The injector.
         /// </returns>
-        protected virtual INamedServiceResolver GetNamedServiceProvider()
+        protected virtual IInjector GetInjector()
         {
             var dataContext = this.GetDataContext(this.GetContainerEntityEntry());
-            var injector = dataContext.Injector;
-            return injector.Resolve<INamedServiceResolver>();
+            return dataContext.Injector;
         }
     }
 }
