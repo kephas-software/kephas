@@ -9,6 +9,7 @@ namespace Kephas.Templating.Razor;
 
 using Kephas.Logging;
 using Kephas.Operations;
+using Kephas.Services;
 using Kephas.Templating.AttributedModel;
 
 /// <summary>
@@ -21,6 +22,7 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     private readonly IMetadataReferenceManager metadataReferenceManager;
     private readonly IRazorProjectFileSystemProvider projectProvider;
     private readonly IRazorProjectEngineFactory projectEngineFactory;
+    private readonly IContextFactory contextFactory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RazorTemplatingEngine" /> class.
@@ -28,17 +30,20 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     /// <param name="metadataReferenceManager">The metadata reference manager.</param>
     /// <param name="projectProvider">The project provider.</param>
     /// <param name="projectEngineFactory">The project engine factory.</param>
+    /// <param name="contextFactory">The context factory.</param>
     /// <param name="logManager">The log manager.</param>
     public RazorTemplatingEngine(
         IMetadataReferenceManager metadataReferenceManager,
         IRazorProjectFileSystemProvider projectProvider,
         IRazorProjectEngineFactory projectEngineFactory,
+        IContextFactory contextFactory,
         ILogManager? logManager = null)
         : base(logManager)
     {
         this.metadataReferenceManager = metadataReferenceManager ?? throw new ArgumentNullException(nameof(metadataReferenceManager));
         this.projectProvider = projectProvider ?? throw new ArgumentNullException(nameof(projectProvider));
         this.projectEngineFactory = projectEngineFactory ?? throw new ArgumentNullException(nameof(projectEngineFactory));
+        this.contextFactory = contextFactory;
     }
 
     /// <summary>
@@ -54,6 +59,8 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     /// </returns>
     public Task<IOperationResult<object?>> ProcessAsync<T>(ITemplate template, T? model, ITemplateProcessingContext processingContext, CancellationToken cancellationToken = default)
     {
+        var result = new OperationResult();
+
         throw new NotImplementedException();
     }
 }

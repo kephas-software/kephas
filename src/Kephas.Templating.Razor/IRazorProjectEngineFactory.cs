@@ -20,7 +20,9 @@ public interface IRazorProjectEngineFactory
     /// Creates the project engine for the provided file system and with the given context.
     /// </summary>
     /// <param name="fileSystem">The file system.</param>
-    /// <param name="razorEngineContext">The razor engine context.</param>
+    /// <param name="processingContext">The processing context.</param>
     /// <returns>The Razor project engine.</returns>
-    RazorProjectEngine CreateProjectEngine(RazorProjectFileSystem fileSystem, IRazorProjectEngineContext razorEngineContext);
+    RazorProjectEngine CreateProjectEngine(
+        RazorProjectFileSystem fileSystem,
+        ITemplateProcessingContext processingContext);
 }

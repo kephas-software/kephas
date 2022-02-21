@@ -22,13 +22,13 @@ public class DefaultRazorProjectEngineFactory : IRazorProjectEngineFactory
     /// Creates the project engine for the provided file system and with the given context.
     /// </summary>
     /// <param name="fileSystem">The file system.</param>
-    /// <param name="razorEngineContext">The razor engine context.</param>
+    /// <param name="processingContext">The processing context.</param>
     /// <returns>
     /// The Razor project engine.
     /// </returns>
     public RazorProjectEngine CreateProjectEngine(
         RazorProjectFileSystem fileSystem,
-        IRazorProjectEngineContext razorEngineContext)
+        ITemplateProcessingContext processingContext)
     {
         var projectEngine = RazorProjectEngine.Create(
             RazorConfiguration.Default,
@@ -36,11 +36,11 @@ public class DefaultRazorProjectEngineFactory : IRazorProjectEngineFactory
             builder =>
             {
                 builder
-                    .SetNamespace(razorEngineContext.RootNamespace ?? $"Generated_{Guid.NewGuid():N}")
-                    .SetBaseType($"Kephas.Templating.Razor.TemplatePage<{razorEngineContext.ModelType?.FullName ?? "object"}>")
+                    .SetNamespace(GetTemplateRootNamespace(processingContext))
+                    .SetBaseType(GetTemplateBaseTypeName(processingContext))
                     .ConfigureClass((document, @class) =>
                     {
-                        @class.ClassName = Path.GetFileNameWithoutExtension(document.Source.FilePath);
+                        @class.ClassName = GetTemplateClassName(processingContext, document);
                         @class.Modifiers.Clear();
                         @class.Modifiers.Add("public");
                     });
@@ -55,7 +55,7 @@ public class DefaultRazorProjectEngineFactory : IRazorProjectEngineFactory
                 builder.Features.Add(new SuppressChecksumOptionsFeature());
                 builder.Features.Add(new SuppressMetadataAttributesFeature());
 
-                razorEngineContext.Configure?.Invoke(builder);
+                processingContext.ConfigureEngine()?.Invoke(builder);
 
                 builder.AddDefaultImports(@"
 @using System
@@ -63,6 +63,22 @@ public class DefaultRazorProjectEngineFactory : IRazorProjectEngineFactory
 ");
             });
         return projectEngine;
+    }
+
+    private static string GetTemplateClassName(ITemplateProcessingContext processingContext, RazorCodeDocument document)
+    {
+        return Path.GetFileNameWithoutExtension(document.Source.FilePath);
+    }
+
+    private static string GetTemplateBaseTypeName(ITemplateProcessingContext processingContext)
+    {
+        var baseTypeName = processingContext.BaseTypeName() ?? "Kephas.Templating.Razor.TemplatePage<{0}>";
+        return string.Format(baseTypeName, processingContext.ModelType()?.FullName ?? "object");
+    }
+
+    private static string GetTemplateRootNamespace(ITemplateProcessingContext processingContext)
+    {
+        return processingContext.RootNamespace() ?? $"Generated_{Guid.NewGuid():N}";
     }
 
     private class SuppressChecksumOptionsFeature : RazorEngineFeatureBase, IConfigureRazorCodeGenerationOptionsFeature
