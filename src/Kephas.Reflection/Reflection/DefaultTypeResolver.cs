@@ -96,7 +96,7 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
-        /// Core implementation of the <see cref="ResolveType"/> operation.
+        /// Core implementation of the <see cref="ResolveType(string,bool)"/> operation.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
         /// <param name="appAssemblies">Optional. The application assemblies.</param>
@@ -125,7 +125,7 @@ namespace Kephas.Reflection
 
         private Type? ResolveTypeCore(QualifiedFullName qualifiedName, IEnumerable<Assembly>? appAssemblies)
         {
-            var type = ResolveGenericTypeCore(qualifiedName, appAssemblies);
+            var type = this.ResolveGenericTypeCore(qualifiedName, appAssemblies);
             if (type != null)
             {
                 return type;
