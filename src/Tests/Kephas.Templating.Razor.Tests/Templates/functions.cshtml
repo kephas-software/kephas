@@ -1,0 +1,8 @@
+﻿@model string
+<div>@Process(Model)</div>
+@functions {
+    private string Process(string str)
+    {
+        return $"@{str}@";
+    }
+}

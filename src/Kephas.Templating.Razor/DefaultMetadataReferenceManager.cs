@@ -37,13 +37,16 @@ public class DefaultMetadataReferenceManager : IMetadataReferenceManager
     {
         var libraryPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var context = new HashSet<string>();
-        var x = assemblies
+        var refAssemblies = assemblies
             .SelectMany(assembly =>
                 GetReferencedAssemblies(assembly, this.ExcludedAssemblies, context)
                     .Union(new[] { assembly }))
             .Distinct()
             .ToArray();
-        IEnumerable<string> references = x.Select(this.GetAssemblyDirectory).ToList();
+        IEnumerable<string> references = refAssemblies
+            .Select(this.GetAssemblyDirectory)
+            .Where(d => !string.IsNullOrEmpty(d))
+            .ToList()!;
 
         var metadataReferences = new List<MetadataReference>();
 
@@ -69,7 +72,7 @@ public class DefaultMetadataReferenceManager : IMetadataReferenceManager
         ISet<string> excludedAssemblies,
         HashSet<string>? visitedAssemblies = null)
     {
-        visitedAssemblies = visitedAssemblies ?? new HashSet<string>();
+        visitedAssemblies ??= new HashSet<string>();
         if (!visitedAssemblies.Add(a.GetName().EscapedCodeBase!))
         {
             yield break;
@@ -96,8 +99,13 @@ public class DefaultMetadataReferenceManager : IMetadataReferenceManager
         }
     }
 
-    private string GetAssemblyDirectory(Assembly assembly)
+    private string? GetAssemblyDirectory(Assembly assembly)
     {
+        if (assembly.IsDynamic)
+        {
+            return null;
+        }
+
         var location = assembly.Location;
         var uri = new UriBuilder(location);
         return Uri.UnescapeDataString(uri.Path);

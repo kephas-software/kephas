@@ -20,6 +20,7 @@ using Kephas.Threading.Tasks;
 /// <seealso cref="Kephas.Templating.ITemplatingEngine" />
 [TemplateKind("cshtml")]
 [ProcessingPriority(Priority.Low)]
+[ServiceName("Razor")]
 public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 {
     private readonly IRazorPageCompiler pageCompiler;

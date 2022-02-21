@@ -16,10 +16,17 @@
 
 	<ItemGroup>
 		<None Remove="stylecop.json" />
+		<None Remove="Templates\functions.cshtml" />
+		<None Remove="Templates\simple.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<AdditionalFiles Include="stylecop.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Templates\functions.cshtml" />
+	  <EmbeddedResource Include="Templates\simple.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
