@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Razor.Language;
 /// <summary>
 /// Provider of a <see cref="GetRazorProjectFileSystemAsync"/> out of a template.
 /// </summary>
-[SingletonAppServiceContract]
+[AppServiceContract]
 public interface IRazorProjectFileSystemProvider
 {
     /// <summary>

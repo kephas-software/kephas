@@ -61,20 +61,11 @@ namespace Kephas.Templating.Razor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while processing template {0}..
+        ///   Looks up a localized string similar to Cannot render template &apos;{0}&apos;: no instantiable class implementing &apos;{1}&apos; was found in the compiled template..
         /// </summary>
-        public static string DefaultTemplateProcessor_ProcessAsync_Exception {
+        public static string CompiledRazorPage_RenderAsync_Exception {
             get {
-                return ResourceManager.GetString("DefaultTemplateProcessor_ProcessAsync_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The template kind &apos;{0}&apos; of &apos;{1}&apos; does not have an associated processing engine..
-        /// </summary>
-        public static string DefaultTemplateProcessor_ProcessAsync_MissingEngine {
-            get {
-                return ResourceManager.GetString("DefaultTemplateProcessor_ProcessAsync_MissingEngine", resourceCulture);
+                return ResourceManager.GetString("CompiledRazorPage_RenderAsync_Exception", resourceCulture);
             }
         }
     }

@@ -117,10 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultTemplateProcessor_ProcessAsync_Exception" xml:space="preserve">
-    <value>An error occurred while processing template {0}.</value>
-  </data>
-  <data name="DefaultTemplateProcessor_ProcessAsync_MissingEngine" xml:space="preserve">
-    <value>The template kind '{0}' of '{1}' does not have an associated processing engine.</value>
+  <data name="CompiledRazorPage_RenderAsync_Exception" xml:space="preserve">
+    <value>Cannot render template '{0}': no instantiable class implementing '{1}' was found in the compiled template.</value>
   </data>
 </root>
