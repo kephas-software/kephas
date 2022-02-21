@@ -18,11 +18,16 @@ using Kephas.Threading.Tasks;
 /// Templating engine using the cshtml format.
 /// </summary>
 /// <seealso cref="Kephas.Templating.ITemplatingEngine" />
-[TemplateKind("cshtml")]
+[TemplateKind(Cshtml)]
 [ProcessingPriority(Priority.Low)]
 [ServiceName("Razor")]
 public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 {
+    /// <summary>
+    /// The cshtml template kind.
+    /// </summary>
+    public const string Cshtml = "cshtml";
+
     private readonly IRazorPageCompiler pageCompiler;
 
     /// <summary>

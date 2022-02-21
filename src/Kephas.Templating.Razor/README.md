@@ -5,8 +5,46 @@ This package provides the implementation of templating using Razor syntax and *.
 The ```cshtml``` template kind is handled by the ```RazorTemplatingEngine```.
 
 ## Usage
-Typically, the
 
+This is the content of the ```template.cshtml``` file.
+```html
+@model TemplateModel
+<div>Hi @Process(Model.Name)!</div>
+@functions {
+    private string Process(string str)
+    {
+        return $"@{str}@";
+    }
+}
+```
+
+```C#
+record TemplateModel(string Name);
+
+// normally you would get the processor injected into the service constructor.
+var processor = injector.Resolve<ITemplateProcessor>();
+
+var result = processor.Process(new FileTemplate("C:\\Path\\To\\template.cshtml"), new TemplateModel("Johnny"));
+Assert.Equals("<div>Hi @Johnny@!</div>\r\n", result);
+
+// this is a simpler alternative for Razor file templates.
+var result = processor.ProcessWithFile("C:\\Path\\To\\template.cshtml", new TemplateModel("Johnny"));
+Assert.Equals("<div>Hi @Johnny@!</div>\r\n", result);
+
+// it is also possible to use string templates.
+var template = @"
+@model TemplateModel
+<div>Hi @Process(Model.Name)!</div>
+@functions {
+    private string Process(string str)
+    {
+        return $""@{str}@"";
+    }
+}
+";
+var result = processor.ProcessWithRazor(template, new TemplateModel("Johnny"));
+Assert.Equals("<div>Hi @Johnny@!</div>\r\n", result);
+```
 
 ## Additional services
 All the enumerated services provide a default implementation which can be overridden if required.

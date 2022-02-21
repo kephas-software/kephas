@@ -53,6 +53,10 @@
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<RootNamespace>Kephas.Templating</RootNamespace>
+	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
@@ -107,6 +111,10 @@
 		<EmbeddedResource Update="Resources\Strings.resx">
 			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
 			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Razor\Resources\Strings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Strings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 

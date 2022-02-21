@@ -8,7 +8,9 @@ The entry point is the ```ITemplateProcessor``` singleton service, which through
 ## Usage
 
 ```C#
+// normally you would get the processor injected into the service constructor.
 var processor = injector.Resolve<ITemplateProcessor>();
+
 var result = processor.Process(new StringTemplate("hi {name}!", "interpolate"), new { name = "Johnny" }));
 Assert.Equals("hi Johnny!", result);
 
