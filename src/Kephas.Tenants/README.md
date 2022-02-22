@@ -9,7 +9,7 @@ How it works:
 * The tenant is available in code through ```IAppArgs.Tenant()``` extension method or the ```IContext.Tenant()``` extension method.
   * Note that ```IAppArgs``` are available through dependency injection and ```IContext``` instances through the parameter received in context dependent invocations. 
 * When setting up the ```IAmbientServices``` during application bootstrapping, make sure to invoke the ```ambientServices.WithTenantSupoport()```.
-  * Do this only after setting up the application runtime (for example ```WithStaticAppRuntime```, ```WithDynamicAppRuntime```, or ```WithPluginsAppRuntime```). 
+  * Do this typically **before** setting up the application runtime (for example ```WithStaticAppRuntime```, ```WithDynamicAppRuntime```, or ```WithPluginsAppRuntime```), to make sure the runtime accesses the correct locations. 
 
 What is the immediate effect:
 * Tenant administrative mode
@@ -30,10 +30,10 @@ public static IAmbientServices SetupAmbientServices(
 {
     return ambientServices
         .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
-        .WithDynamicAppRuntime()
         // Do not forget setting up the tenant support right *after* setting up the application runtime.
         .WithTenantSupport(appArgs)
         //
+        .WithDynamicAppRuntime()
         .WithSerilogManager(configuration);
 }
 ```
