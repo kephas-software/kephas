@@ -181,7 +181,8 @@ namespace Kephas.Plugins.Application
                 yield break;
             }
 
-            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation)
+                .Where(l => !l.IsHiddenLocation());
 
             foreach (var pluginDirectory in pluginsDirectories)
             {
@@ -201,15 +202,11 @@ namespace Kephas.Plugins.Application
         {
             if (!Directory.Exists(this.PluginsLocation))
             {
-                yield break;
+                return Enumerable.Empty<string>();
             }
 
-            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation)
+            return Directory.EnumerateDirectories(this.PluginsLocation)
                 .Where(l => !l.IsHiddenLocation());
-            foreach (var pluginDirectory in pluginsDirectories)
-            {
-                yield return pluginDirectory;
-            }
         }
 
         /// <summary>
