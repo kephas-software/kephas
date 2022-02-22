@@ -8,41 +8,40 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Npgsql.Logging
-{
-    using Kephas.Logging;
+namespace Kephas.Npgsql.Logging;
 
-    using global::Npgsql.Logging;
+using Kephas.Logging;
+
+using global::Npgsql.Logging;
+
+/// <summary>
+/// A NpgSql logging provider adapter.
+/// </summary>
+public class NpgsqlLoggingProviderAdapter : INpgsqlLoggingProvider
+{
+    /// <summary>
+    /// The log manager.
+    /// </summary>
+    private readonly ILogManager logManager;
 
     /// <summary>
-    /// A NpgSql logging provider adapter.
+    /// Initializes a new instance of the <see cref="NpgsqlLoggingProviderAdapter"/> class.
     /// </summary>
-    public class NpgsqlLoggingProviderAdapter : INpgsqlLoggingProvider
+    /// <param name="logManager">The log manager.</param>
+    public NpgsqlLoggingProviderAdapter(ILogManager logManager)
     {
-        /// <summary>
-        /// The log manager.
-        /// </summary>
-        private readonly ILogManager logManager;
+        this.logManager = logManager;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NpgsqlLoggingProviderAdapter"/> class.
-        /// </summary>
-        /// <param name="logManager">The log manager.</param>
-        public NpgsqlLoggingProviderAdapter(ILogManager logManager)
-        {
-            this.logManager = logManager;
-        }
-
-        /// <summary>
-        /// Creates a new INpgsqlLogger instance of the given name.
-        /// </summary>
-        /// <param name="name">The logger name.</param>
-        /// <returns>
-        /// The new logger.
-        /// </returns>
-        public NpgsqlLogger CreateLogger(string name)
-        {
-            return new NpgsqlLoggerAdapter(this.logManager.GetLogger(name));
-        }
+    /// <summary>
+    /// Creates a new INpgsqlLogger instance of the given name.
+    /// </summary>
+    /// <param name="name">The logger name.</param>
+    /// <returns>
+    /// The new logger.
+    /// </returns>
+    public NpgsqlLogger CreateLogger(string name)
+    {
+        return new NpgsqlLoggerAdapter(this.logManager.GetLogger(name));
     }
 }

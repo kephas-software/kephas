@@ -8,39 +8,36 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Npgsql.Application
+namespace Kephas.Npgsql.Application;
+
+using System.Threading;
+using System.Threading.Tasks;
+
+using global::Npgsql.Logging;
+using Kephas.Application;
+using Kephas.Logging;
+using Kephas.Npgsql.Logging;
+using Kephas.Operations;
+
+/// <summary>
+/// The Npgsql application lifecycle behavior.
+/// </summary>
+public class NpgsqlAppLifecycleBehavior : IAppLifecycleBehavior
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using global::Npgsql.Logging;
-    using Kephas.Application;
-    using Kephas.Logging;
-    using Kephas.Npgsql.Logging;
-    using Kephas.Operations;
-    using Kephas.Services;
-    using Kephas.Threading.Tasks;
-
     /// <summary>
-    /// The Npgsql application lifecycle behavior.
+    /// Interceptor called before the application starts its asynchronous initialization.
     /// </summary>
-    public class NpgsqlAppLifecycleBehavior : IAppLifecycleBehavior
+    /// <param name="appContext">Context for the application.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// The asynchronous result.
+    /// </returns>
+    public Task<IOperationResult> BeforeAppInitializeAsync(
+        IAppContext appContext,
+        CancellationToken cancellationToken = default)
     {
-        /// <summary>
-        /// Interceptor called before the application starts its asynchronous initialization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.Injector.Resolve<ILogManager>());
+        NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.Injector.Resolve<ILogManager>());
 
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
+        return Task.FromResult((IOperationResult)true.ToOperationResult());
     }
 }
