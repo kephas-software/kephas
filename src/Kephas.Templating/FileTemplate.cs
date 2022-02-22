@@ -17,14 +17,14 @@ public class FileTemplate : Expando, ITemplate
     /// <summary>
     /// Initializes a new instance of the <see cref="FileTemplate"/> class.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="filePath">The file path.</param>
     /// <param name="kind">Optional. The template kind. If not specified, the file extension is considered.</param>
     /// <param name="name">Optional. The template name. If not specified, the file name without the extension is considered.</param>
-    public FileTemplate(string path, string? kind = null, string? name = null)
+    public FileTemplate(string filePath, string? kind = null, string? name = null)
     {
-        this.Path = path ?? throw new ArgumentNullException(nameof(path));
-        this.Kind = kind ?? System.IO.Path.GetExtension(path);
-        this.Name = name ?? System.IO.Path.GetFileNameWithoutExtension(path);
+        this.FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+        this.Kind = kind ?? Path.GetExtension(filePath);
+        this.Name = name ?? Path.GetFileNameWithoutExtension(filePath);
     }
 
     /// <summary>
@@ -41,19 +41,19 @@ public class FileTemplate : Expando, ITemplate
     public string Kind { get; }
 
     /// <summary>
-    /// Gets the template path.
+    /// Gets the template file path.
     /// </summary>
     /// <value>
-    /// The template path.
+    /// The template file path.
     /// </value>
-    public string Path { get; }
+    public string FilePath { get; }
 
     /// <summary>
     /// Gets the template content.
     /// </summary>
     /// <returns>The template content.</returns>
     public string GetContent()
-        => File.ReadAllText(this.Path);
+        => File.ReadAllText(this.FilePath);
 
     /// <summary>
     /// Gets the template content asynchronously.
@@ -63,5 +63,5 @@ public class FileTemplate : Expando, ITemplate
     /// The template content.
     /// </returns>
     public Task<string> GetContentAsync(CancellationToken cancellationToken = default)
-        => File.ReadAllTextAsync(this.Path, cancellationToken);
+        => File.ReadAllTextAsync(this.FilePath, cancellationToken);
 }
