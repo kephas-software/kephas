@@ -7,6 +7,11 @@
 
 namespace Kephas;
 
+using System.Diagnostics.CodeAnalysis;
+
+using Kephas.Application;
+using Kephas.IO;
+
 /// <summary>
 /// Tenant related <see cref="IAmbientServices"/> extensions.
 /// </summary>
@@ -16,14 +21,23 @@ public static class AmbientServicesTenantExtensions
     /// Adds multi-tenant support to <see cref="IAmbientServices"/>.
     /// </summary>
     /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="appArgs">The application arguments.</param>
     /// <typeparam name="T">The ambient services type.</typeparam>
     /// <returns>The provided <see cref="IAmbientServices"/>.</returns>
-    public static T WithTenantSupport<T>(this T ambientServices)
+    [return: NotNull]
+    public static T WithTenantSupport<T>([DisallowNull] this T ambientServices, IAppArgs appArgs)
         where T : IAmbientServices
     {
         // TODO - add tenant related probing folders for configuration and licenses.
         // TODO maybe a generic FolderManager service would be helpful, for example also
         // TODO to get from there the python probing folders. Other cases?
+        var tenant = appArgs.Tenant();
+        if (string.IsNullOrEmpty(tenant))
+        {
+            return ambientServices;
+        }
+
+        ambientServices.Register<ILocationsManager>(new TenantFolderLocationsManager(tenant));
         return ambientServices;
     }
 }
