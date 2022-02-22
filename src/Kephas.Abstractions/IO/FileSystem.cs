@@ -21,6 +21,11 @@ namespace Kephas.IO
     public static class FileSystem
     {
         /// <summary>
+        /// Prefix character for marking a hidden location.
+        /// </summary>
+        public const char HiddenLocationPrefixChar = '.';
+        
+        /// <summary>
         /// Copies the directory.
         /// </summary>
         /// <exception cref="DirectoryNotFoundException">Thrown when the requested directory is not
@@ -64,6 +69,22 @@ namespace Kephas.IO
                 }
             }
         }
+
+        /// <summary>
+        /// Indicates whether a location is hidden.
+        /// </summary>
+        /// <param name="location">The location to check.</param>
+        /// <returns><c>true</c> if the location is hidden (starts with dot), <c>false</c> otherwise.</returns>
+        public static bool IsHiddenLocation(this string location)
+            => location.StartsWith(HiddenLocationPrefixChar);
+
+        /// <summary>
+        /// Makes the provided location (relative path) a hidden location.
+        /// </summary>
+        /// <param name="location">The raw location.</param>
+        /// <returns>A location transformed to be hidden.</returns>
+        public static string MakeHiddenLocation(this string location)
+            => IsHiddenLocation(location) ? location : $"{HiddenLocationPrefixChar}{location}";
 
         /// <summary>
         /// Deletes the directory recursively, ensuring that the directory exists.

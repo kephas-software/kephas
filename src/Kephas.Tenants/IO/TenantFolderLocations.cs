@@ -26,5 +26,5 @@ public class TenantFolderLocations : FolderLocations
     }
 
     private static IEnumerable<string> GetRelativePaths(string tenant, IEnumerable<string> relativePaths)
-        => relativePaths.Select(p => Path.Combine(p, tenant));
+        => relativePaths.Select(p => Path.Combine(p, tenant.MakeHiddenLocation()));
 }
