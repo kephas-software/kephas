@@ -55,7 +55,6 @@ namespace Kephas.Application
         private ILocations? licenseLocations;
         private IEnumerable<string>? configFolders;
         private IEnumerable<string>? licenseFolders;
-        private readonly Func<string, string, IEnumerable<string>, ILocations> getLocations;
         private bool isDisposed = false; // To detect redundant calls
         private IEnumerable<Assembly>? appAssemblies;
 
@@ -105,8 +104,8 @@ namespace Kephas.Application
             this.appFolder = appFolder;
             this.configFolders = configFolders;
             this.licenseFolders = licenseFolders;
-            this.getLocations = getLocations ?? ((name, basePath, relativePaths) =>
-                new FolderLocations(name, basePath, relativePaths));
+            this.GetLocations = getLocations 
+                ?? ((name, basePath, relativePaths) => new FolderLocations(name, basePath, relativePaths));
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(
@@ -141,6 +140,11 @@ namespace Kephas.Application
         /// A function delegate that yields an ILicenseCheckResult.
         /// </value>
         protected Func<AppIdentity, IContext?, ILicenseCheckResult> CheckLicense { get; }
+
+        /// <summary>
+        /// Gets a function for getting application locations.
+        /// </summary>
+        protected Func<string, string, IEnumerable<string>, ILocations> GetLocations { get; }
 
         /// <summary>
         /// Gets the assembly filter.
@@ -596,7 +600,7 @@ namespace Kephas.Application
                 foldersArray = new[] { defaultFolder };
             }
 
-            return this.getLocations(defaultFolder, this.GetAppLocation(), foldersArray);
+            return this.GetLocations(defaultFolder, this.GetAppLocation(), foldersArray);
         }
     }
 }

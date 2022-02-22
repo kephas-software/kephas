@@ -42,6 +42,7 @@ namespace Kephas.Application
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="getLocations">Optional. Function for getting application locations.</param>
         public StaticAppRuntime(
             Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
