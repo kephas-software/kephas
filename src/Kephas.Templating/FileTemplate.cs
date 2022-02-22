@@ -49,6 +49,13 @@ public class FileTemplate : Expando, ITemplate
     public string Path { get; }
 
     /// <summary>
+    /// Gets the template content.
+    /// </summary>
+    /// <returns>The template content.</returns>
+    public string GetContent()
+        => File.ReadAllText(this.Path);
+
+    /// <summary>
     /// Gets the template content asynchronously.
     /// </summary>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>

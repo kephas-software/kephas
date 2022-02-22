@@ -25,7 +25,7 @@ public class StreamTemplate : Expando, ITemplate
     public StreamTemplate(Stream content, string? kind = null, string? name = null)
     {
         this.Stream = content ?? throw new ArgumentNullException(nameof(content));
-        this.Name = name ?? nameof(StreamTemplate);
+        this.Name = name ?? $"{nameof(StreamTemplate)}_{Guid.NewGuid():N}";
         this.Kind = kind ?? InterpolationTemplatingEngine.Interpolation;
     }
 
@@ -49,6 +49,12 @@ public class StreamTemplate : Expando, ITemplate
     /// Typically, the template kind is provided by the file extension: .razor, .t4, etc.
     /// </remarks>
     public string Kind { get; }
+
+    /// <summary>
+    /// Gets the template content.
+    /// </summary>
+    /// <returns>The template content.</returns>
+    public string GetContent() => this.Stream.ReadAllString();
 
     /// <summary>
     /// Gets the template content asynchronously.

@@ -28,7 +28,7 @@ public class StringBuilderTemplate : Expando, ITemplate
     public StringBuilderTemplate(StringBuilder content, string? kind = null, string? name = null)
     {
         this.content = content ?? throw new ArgumentNullException(nameof(content));
-        this.Name = name ?? nameof(StringBuilderTemplate);
+        this.Name = name ?? $"{nameof(StringBuilderTemplate)}_{Guid.NewGuid():N}";
         this.Kind = kind ?? InterpolationTemplatingEngine.Interpolation;
     }
 
@@ -46,10 +46,8 @@ public class StringBuilderTemplate : Expando, ITemplate
     public string Kind { get; }
 
     /// <summary>
-    /// Gets the template content asynchronously.
+    /// Gets the template content.
     /// </summary>
-    /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>The template content.</returns>
-    public Task<string> GetContentAsync(CancellationToken cancellationToken = default) => Task.FromResult(this.content.ToString());
-
+    public string GetContent() => this.content.ToString();
 }

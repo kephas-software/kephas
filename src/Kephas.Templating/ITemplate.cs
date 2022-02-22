@@ -28,9 +28,16 @@ public interface ITemplate : IExpando
     string Kind { get; }
 
     /// <summary>
+    /// Gets the template content.
+    /// </summary>
+    /// <returns>The template content.</returns>
+    string GetContent();
+
+    /// <summary>
     /// Gets the template content asynchronously.
     /// </summary>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>The template content.</returns>
-    Task<string> GetContentAsync(CancellationToken cancellationToken = default);
+    Task<string> GetContentAsync(CancellationToken cancellationToken = default)
+        => Task.FromResult(this.GetContent());
 }

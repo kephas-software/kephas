@@ -3,7 +3,7 @@
 ## Introduction
 
 The templating area in Kephas handles the text generation out of various templates.
-The entry point is the ```ITemplateProcessor``` singleton service, which through the ```ProcessAsync``` method, provided a template and a model, returns a processed result, typically in form of a ```string```.
+The entry point is the ```ITemplateProcessor``` singleton service, which returns a processed result, typically in form of a ```string```, through the ```ProcessAsync``` method provided with a template and a model.
 
 ## Usage
 
