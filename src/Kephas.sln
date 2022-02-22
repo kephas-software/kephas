@@ -330,6 +330,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Connectivity.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Templating.Razor.Tests", "Tests\Kephas.Templating.Razor.Tests\Kephas.Templating.Razor.Tests.csproj", "{746B82BB-4077-49F0-B831-9E6493BC47E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Tenants.Tests", "Tests\Kephas.Tenants.Tests\Kephas.Tenants.Tests.csproj", "{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -924,6 +926,10 @@ Global
 		{746B82BB-4077-49F0-B831-9E6493BC47E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{746B82BB-4077-49F0-B831-9E6493BC47E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{746B82BB-4077-49F0-B831-9E6493BC47E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -992,6 +998,7 @@ Global
 		{8165A69E-E5A1-44CD-A94B-8F920A790B81} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{6B952F6A-808D-4FED-8B48-5E26C4143A8B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{746B82BB-4077-49F0-B831-9E6493BC47E2} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
