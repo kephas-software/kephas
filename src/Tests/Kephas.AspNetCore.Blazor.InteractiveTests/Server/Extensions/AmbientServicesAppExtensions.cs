@@ -17,12 +17,12 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions
 
     public static class AmbientServicesAppExtensions
     {
-        public static void SetupAmbientServices(
+        public static IAmbientServices SetupAmbientServices(
             this IAmbientServices ambientServices,
             Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
             IConfiguration? configuration)
         {
-            ambientServices
+            return ambientServices
                 .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
                 .WithDynamicAppRuntime()
                 .WithSerilogManager(configuration);

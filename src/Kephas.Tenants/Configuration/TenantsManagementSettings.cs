@@ -13,7 +13,7 @@ using Kephas.Security.Permissions.AttributedModel;
 /// <summary>
 /// Settings for tenant management.
 /// </summary>
-[RequiresPermission(typeof(TenantsAdminPermission))]
+[RequiresPermission(typeof(TenantsManagementPermission))]
 [GlobalSettings]
 public class TenantsManagementSettings : ISettings
 {

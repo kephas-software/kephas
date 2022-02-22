@@ -97,8 +97,4 @@
         <ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Tenants" />
-    </ItemGroup>
-
 </Project>

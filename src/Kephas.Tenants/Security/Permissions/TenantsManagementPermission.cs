@@ -11,17 +11,17 @@ using Kephas.Security.Authorization;
 using Kephas.Security.Permissions.AttributedModel;
 
 /// <summary>
-/// Defines the global tenants administration permission.
+/// Defines the global tenants management permission.
 /// </summary>
 [PermissionInfo(TokenName, Scoping.Global)]
-public sealed class TenantsAdminPermission
+public sealed class TenantsManagementPermission
 {
     /// <summary>
-    /// The name of the TenantsAdmin permission.
+    /// The name of the permission required for global tenants management.
     /// </summary>
-    public const string TokenName = "tenantsadmin";
+    public const string TokenName = "tenantsmanagement";
 
-    private TenantsAdminPermission()
+    private TenantsManagementPermission()
     {
     }
 }
