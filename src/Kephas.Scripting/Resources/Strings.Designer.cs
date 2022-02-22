@@ -77,14 +77,5 @@ namespace Kephas.Scripting.Resources {
                 return ResourceManager.GetString("DefaultScriptProcessor_ExecuteAsync_MissingLanguageService", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source code type {0} not supported. Please provide one of: {0}..
-        /// </summary>
-        public static string SourceCodeTypeNotSupported_Exception {
-            get {
-                return ResourceManager.GetString("SourceCodeTypeNotSupported_Exception", resourceCulture);
-            }
-        }
     }
 }

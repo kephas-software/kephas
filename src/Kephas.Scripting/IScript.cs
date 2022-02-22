@@ -18,6 +18,11 @@ namespace Kephas.Scripting
     public interface IScript : IExpando
     {
         /// <summary>
+        /// Gets the script name.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Gets the script language.
         /// </summary>
         /// <value>
@@ -26,14 +31,17 @@ namespace Kephas.Scripting
         string Language { get; }
 
         /// <summary>
-        /// Gets the source code.
+        /// Gets the script source code.
         /// </summary>
-        /// <remarks>
-        /// This can be typically a string or a stream.
-        /// </remarks>
-        /// <value>
-        /// The source code.
-        /// </value>
-        object SourceCode { get; }
+        /// <returns>The source code.</returns>
+        string GetSourceCode();
+
+        /// <summary>
+        /// Gets the script source code asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The source code.</returns>
+        Task<string> GetSourceCodeAsync(CancellationToken cancellationToken = default)
+            => Task.FromResult(this.GetSourceCode());
     }
 }

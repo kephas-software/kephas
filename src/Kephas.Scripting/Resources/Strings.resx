@@ -123,7 +123,4 @@
   <data name="DefaultScriptProcessor_ExecuteAsync_MissingLanguageService" xml:space="preserve">
     <value>The script language '{0}' does not have an associated language service.</value>
   </data>
-  <data name="SourceCodeTypeNotSupported_Exception" xml:space="preserve">
-    <value>Source code type {0} not supported. Please provide one of: {0}.</value>
-  </data>
 </root>
