@@ -8,7 +8,7 @@
 namespace Kephas
 {
     using System;
-
+    using System.Diagnostics.CodeAnalysis;
     using Kephas.Resources;
 
     /// <summary>
@@ -67,6 +67,7 @@ namespace Kephas
         /// A service object of type <typeparamref name="TContract"/>.-or- <c>null</c> if there is no
         /// service object of type <typeparamref name="TContract"/>.
         /// </returns>
+        [return: NotNull]
         public static TContract GetRequiredService<TContract>(this IServiceProvider serviceProvider)
             where TContract : class =>
             (TContract)GetRequiredService(serviceProvider, typeof(TContract));

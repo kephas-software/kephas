@@ -20,7 +20,6 @@ namespace Kephas.Licensing
     using Kephas.Cryptography;
     using Kephas.Operations;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
     using Kephas.Versioning;
 
     /// <summary>
