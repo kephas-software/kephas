@@ -18,6 +18,7 @@ namespace Kephas.Plugins.Application
 
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Plugins.Resources;
@@ -43,6 +44,8 @@ namespace Kephas.Plugins.Application
         /// </summary>
         public const string DefaultPluginsFolder = "plugins";
 
+        private readonly Lazy<string> lazyPluginsLocation;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
@@ -62,6 +65,7 @@ namespace Kephas.Plugins.Application
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
+        /// <param name="getLocations">Optional. Function for getting application locations.</param>
         public PluginsAppRuntime(
             Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
@@ -77,11 +81,12 @@ namespace Kephas.Plugins.Application
             IDynamic? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
-            IPluginRepository? pluginRepository = null)
-            : base(getLogger, checkLicense, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
+            IPluginRepository? pluginRepository = null,
+            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
+            : base(getLogger, checkLicense, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
-            this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
+            this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));
             this.PluginRepository = pluginRepository ??
                                     new PluginRepository(appIdentity =>
                                         this.GetAppLocation(appIdentity, throwOnNotFound: false));
@@ -93,7 +98,7 @@ namespace Kephas.Plugins.Application
         /// <value>
         /// The pathname of the plugins folder.
         /// </value>
-        public string PluginsLocation { get; }
+        public string PluginsLocation => this.lazyPluginsLocation.Value;
 
         /// <summary>
         /// Gets a value indicating whether the plugins are enabled.
@@ -199,7 +204,8 @@ namespace Kephas.Plugins.Application
                 yield break;
             }
 
-            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation)
+                .Where(l => !l.IsHiddenLocation());
             foreach (var pluginDirectory in pluginsDirectories)
             {
                 yield return pluginDirectory;
@@ -229,7 +235,16 @@ namespace Kephas.Plugins.Application
         /// </returns>
         protected virtual string ComputePluginsLocation(string? rawPluginsFolder, IDynamic? appArgs)
         {
-            var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginsFolderArgName] as string ?? DefaultPluginsFolder);
+            var locations = this.GetLocations(
+                DefaultPluginsFolder,
+                this.GetAppLocation(),
+                new[] { rawPluginsFolder ?? appArgs?[PluginsFolderArgName] as string ?? DefaultPluginsFolder });
+            var pluginsFolder = locations.FirstOrDefault();
+            if (string.IsNullOrEmpty(pluginsFolder))
+            {
+                throw new InvalidOperationException("Computing the plugins location yielded an empty value.");
+            }
+
             return Path.GetFullPath(pluginsFolder);
         }
 
