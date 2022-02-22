@@ -15,6 +15,7 @@ namespace Kephas.Application
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Services;
@@ -53,8 +54,9 @@ namespace Kephas.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IDynamic? appArgs = null)
-            : base(getLogger, checkLicense, appAssemblies, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
+            IDynamic? appArgs = null,
+            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
+            : base(getLogger, checkLicense, appAssemblies, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
         {
         }
     }

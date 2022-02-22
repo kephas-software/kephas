@@ -20,6 +20,7 @@ namespace Kephas
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Lite.Internal;
+    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -82,7 +83,8 @@ namespace Kephas
                     .Register<IConfigurationStore, DefaultConfigurationStore>()
                     .Register<ILogManager, NullLogManager>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
-                    .Register<ILicensingManager, NullLicensingManager>();
+                    .Register<ILicensingManager, NullLicensingManager>()
+                    .Register<ILocationsManager, FolderLocationsManager>();
             }
 
             this.registry
@@ -127,7 +129,7 @@ namespace Kephas
 
             // exclude the injector from the list as it is the responsibility
             // of each injector implementation to register itself in the DI container.
-            foreach (ContractDeclaration s in this.registry.GetAppServiceContracts(context))
+            foreach (var s in this.registry.GetAppServiceContracts(context))
             {
                 if (ReferenceEquals(s.ContractDeclarationType, typeof(IInjector)))
                 {

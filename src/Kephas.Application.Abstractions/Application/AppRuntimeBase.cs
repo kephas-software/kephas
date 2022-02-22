@@ -19,7 +19,6 @@ namespace Kephas.Application
     using System.Runtime.InteropServices;
     using System.Runtime.Loader;
     using System.Runtime.Versioning;
-
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.IO;
@@ -48,7 +47,7 @@ namespace Kephas.Application
         protected static readonly string AssemblyFileExtension = ".dll";
 
         private readonly Func<string, ILogger> getLogger;
-        private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache = new ();
+        private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache = new();
 
         private string? appLocation;
         private string? appFolder;
@@ -56,6 +55,7 @@ namespace Kephas.Application
         private ILocations? licenseLocations;
         private IEnumerable<string>? configFolders;
         private IEnumerable<string>? licenseFolders;
+        private readonly Func<string, string, IEnumerable<string>, ILocations> getLocations;
         private bool isDisposed = false; // To detect redundant calls
         private IEnumerable<Assembly>? appAssemblies;
 
@@ -78,6 +78,7 @@ namespace Kephas.Application
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="getLocations">Optional. Function for getting application locations.</param>
         protected AppRuntimeBase(
             Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
@@ -90,7 +91,8 @@ namespace Kephas.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IDynamic? appArgs = null)
+            IDynamic? appArgs = null,
+            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
             : base(isThreadSafe: true)
         {
             this.AppArgs = appArgs == null
@@ -103,6 +105,8 @@ namespace Kephas.Application
             this.appFolder = appFolder;
             this.configFolders = configFolders;
             this.licenseFolders = licenseFolders;
+            this.getLocations = getLocations ?? ((name, basePath, relativePaths) =>
+                new FolderLocations(name, basePath, relativePaths));
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(
@@ -113,7 +117,8 @@ namespace Kephas.Application
                 appVersion,
                 this.AppArgs.Environment);
 
-            this[IAppRuntime.AppIdentityKey] = new AppIdentity((string)this[IAppRuntime.AppIdKey]!, this[IAppRuntime.AppVersionKey] as string);
+            this[IAppRuntime.AppIdentityKey] = new AppIdentity((string)this[IAppRuntime.AppIdKey]!,
+                this[IAppRuntime.AppVersionKey] as string);
         }
 
         /// <summary>
@@ -214,7 +219,8 @@ namespace Kephas.Application
         /// <returns>
         /// The application configuration directories.
         /// </returns>
-        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ??= this.ComputeLocations(this.configFolders, IAppRuntime.DefaultConfigFolder);
+        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ??=
+            this.ComputeLocations(this.configFolders, IAppRuntime.DefaultConfigFolder);
 
         /// <summary>
         /// Gets the application directories where license files are stored.
@@ -222,7 +228,8 @@ namespace Kephas.Application
         /// <returns>
         /// The application configuration directories.
         /// </returns>
-        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ??= this.ComputeLocations(this.licenseFolders, IAppRuntime.DefaultLicenseFolder);
+        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ??=
+            this.ComputeLocations(this.licenseFolders, IAppRuntime.DefaultLicenseFolder);
 
         /// <summary>
         /// Gets the application assemblies.
@@ -329,11 +336,13 @@ namespace Kephas.Application
             this[IAppRuntime.IsRootKey] = isRoot ??= string.IsNullOrEmpty(appId);
             this[IAppRuntime.AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
             this[IAppRuntime.AppInstanceIdKey] = appInstanceId = string.IsNullOrEmpty(appInstanceId)
-                                                        ? isRoot.Value
-                                                            ? appId
-                                                            : $"{appId}-{Guid.NewGuid():N}"
-                                                        : appInstanceId;
-            this[IAppRuntime.AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName()?.Version?.ToString() ?? "0.0.0.0") : appVersion;
+                ? isRoot.Value
+                    ? appId
+                    : $"{appId}-{Guid.NewGuid():N}"
+                : appInstanceId;
+            this[IAppRuntime.AppVersionKey] = string.IsNullOrEmpty(appVersion)
+                ? (entryAssembly?.GetName()?.Version?.ToString() ?? "0.0.0.0")
+                : appVersion;
             this[IAppRuntime.EnvKey] = environment;
         }
 
@@ -361,7 +370,10 @@ namespace Kephas.Application
                 var version = assemblyName.Version;
                 var publicKeyToken = assemblyName.GetPublicKeyToken();
                 bool? match;
-                (assembly, match) = appAssemblies.Select(a => (assembly: a, match: this.IsAssemblyMatch(a.GetName(), name!, version!, publicKeyToken!))).FirstOrDefault(m => m.match != false);
+                (assembly, match) = appAssemblies
+                    .Select(a => (assembly: a,
+                        match: this.IsAssemblyMatch(a.GetName(), name!, version!, publicKeyToken!)))
+                    .FirstOrDefault(m => m.match != false);
 
                 if (assembly == null)
                 {
@@ -380,14 +392,18 @@ namespace Kephas.Application
                 else if (match == null)
                 {
                     // a match only by name is not accepted.
-                    this.Logger.Warn("The best match for assembly '{assembly}' is '{resolvedAssembly}' from '{assemblyLocation}', which is not acceptable.", assemblyFullName, assembly, assembly.Location);
+                    this.Logger.Warn(
+                        "The best match for assembly '{assembly}' is '{resolvedAssembly}' from '{assemblyLocation}', which is not acceptable.",
+                        assemblyFullName, assembly, assembly.Location);
                     assembly = null;
                 }
             }
 
             if (assembly != null)
             {
-                this.Logger.Debug("Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.", assemblyFullName, assembly, assembly.Location);
+                this.Logger.Debug(
+                    "Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.",
+                    assemblyFullName, assembly, assembly.Location);
             }
 
             return assembly;
@@ -403,7 +419,8 @@ namespace Kephas.Application
         /// <returns>
         /// True if assembly match, false if not, <c>null</c> if the assembly matches the name but not the version or public key token.
         /// </returns>
-        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[]? publicKeyToken)
+        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version,
+            byte[]? publicKeyToken)
         {
             if (assemblyName.Name != name)
             {
@@ -508,9 +525,9 @@ namespace Kephas.Application
             {
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var referencesToLoad in assembliesToCheck
-                    .Select(assembly => this.GetReferencedAssemblies(assembly)
-                    .Where(a => !loadedAssemblyRefs.Contains(a.Name!) && assemblyFilter(a))
-                    .ToList()))
+                             .Select(assembly => this.GetReferencedAssemblies(assembly)
+                                 .Where(a => !loadedAssemblyRefs.Contains(a.Name!) && assemblyFilter(a))
+                                 .ToList()))
                 {
                     loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name!));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
@@ -579,7 +596,7 @@ namespace Kephas.Application
                 foldersArray = new[] { defaultFolder };
             }
 
-            return new FolderLocations(defaultFolder, this.GetAppLocation(), foldersArray);
+            return this.getLocations(defaultFolder, this.GetAppLocation(), foldersArray);
         }
     }
 }

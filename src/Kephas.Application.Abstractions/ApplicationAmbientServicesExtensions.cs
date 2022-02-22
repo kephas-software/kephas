@@ -13,6 +13,7 @@ namespace Kephas
 
     using Kephas.Application;
     using Kephas.Cryptography;
+    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -62,6 +63,14 @@ namespace Kephas
             (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<ILicensingManager>();
 
         /// <summary>
+        /// Gets the locations manager.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>The locations manager.</returns>
+        public static ILocationsManager GetLocationsManager(this IAmbientServices ambientServices) =>
+            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<ILocationsManager>();
+
+        /// <summary>
         /// Adds the dynamic application runtime to the ambient services.
         /// </summary>
         /// <remarks>
@@ -107,7 +116,8 @@ namespace Kephas
                 isRoot,
                 appId,
                 appInstanceId,
-                appVersion);
+                appVersion,
+                getLocations: (name, basePath, relativePaths) => ambientServices.GetLocationsManager().GetLocations(name, basePath, relativePaths));
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }
@@ -158,7 +168,8 @@ namespace Kephas
                 isRoot,
                 appId,
                 appInstanceId,
-                appVersion);
+                appVersion,
+                getLocations: (name, basePath, relativePaths) => ambientServices.GetLocationsManager().GetLocations(name, basePath, relativePaths));
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }
