@@ -176,20 +176,10 @@ namespace Kephas.Plugins.Application
         /// </returns>
         public virtual IEnumerable<PluginData> GetInstalledPlugins()
         {
-            if (!Directory.Exists(this.PluginsLocation))
-            {
-                yield break;
-            }
-
-            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation)
-                .Where(l => !l.IsHiddenLocation());
-
-            foreach (var pluginDirectory in pluginsDirectories)
-            {
-                var pluginId = Path.GetFileName(pluginDirectory);
-                var pluginData = this.PluginRepository.GetPluginData(new AppIdentity(pluginId), throwOnInvalid: false);
-                yield return pluginData;
-            }
+            return this.GetPluginsInstallationLocations()
+                .Select(pluginDirectory => this.PluginRepository.GetPluginData(
+                    new AppIdentity(Path.GetFileName(pluginDirectory)),
+                    throwOnInvalid: false));
         }
 
         /// <summary>
