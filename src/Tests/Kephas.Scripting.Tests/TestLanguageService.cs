@@ -27,7 +27,7 @@ namespace Kephas.Scripting.Tests
             IContext? executionContext = null,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<object?>("executed " + script.SourceCode);
+            return Task.FromResult<object?>("executed " + script.GetSourceCode());
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Kephas.Scripting.Tests
             var container = this.CreateInjector(parts: new[] { typeof(TestLanguageService) });
             var scriptingEngine = container.Resolve<IScriptProcessor>();
 
-            var script = new Script("test", "dummy");
+            var script = new StringScript("dummy", "test");
             var result = await scriptingEngine.ExecuteAsync(script);
 
             Assert.AreEqual("executed dummy", result);
