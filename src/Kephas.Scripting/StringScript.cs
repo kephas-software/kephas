@@ -15,7 +15,7 @@ namespace Kephas.Scripting
     using Kephas.Dynamic;
 
     /// <summary>
-    /// A script.
+    /// Script based on a string.
     /// </summary>
     public class StringScript : Expando, IScript
     {
