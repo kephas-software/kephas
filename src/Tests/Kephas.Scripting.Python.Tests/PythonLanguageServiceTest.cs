@@ -11,10 +11,16 @@
 namespace Kephas.Scripting.Python.Tests
 {
     using System;
+    using System.Collections;
+    using System.Reflection;
     using System.Threading.Tasks;
-
+    using Kephas.Commands;
+    using Kephas.Configuration;
     using Kephas.Dynamic;
-
+    using Kephas.IO;
+    using Kephas.Reflection;
+    using Kephas.Services;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -148,6 +154,22 @@ namespace Kephas.Scripting.Python.Tests
             var result = langService.Execute(script, new ScriptGlobals(args, false));
 
             Assert.AreEqual(4, result);
+        }
+
+        [TestCase(6, new[] { 1, 1, 2, 3, 5 })]
+        [TestCase(15, new[] { 1, 1, 2, 3, 5, 8, 13 })]
+        public void Execute_load_globals(int n, int[] expected)
+        {
+            var locationsManager = new FolderLocationsManager(Assembly.GetExecutingAssembly().GetLocationDirectory());
+            var configuration = Substitute.For<IConfiguration<PythonSettings>>();
+            configuration.GetSettings(Arg.Any<IContext>())
+                .Returns(new PythonSettings { SearchPaths = new[] { "GlobalScripts" }, PreloadGlobalModules = true });
+            var langService = new PythonLanguageService(configuration, locationsManager: locationsManager);
+            var script = new PythonStringScript("fibo.fib(n)");
+            var args = new { n };
+            var result = langService.Execute(script, new ScriptGlobals(args.ToDynamic())) as IEnumerable;
+
+            CollectionAssert.AreEqual(expected, result?.OfType<int>().ToArray());
         }
     }
 }

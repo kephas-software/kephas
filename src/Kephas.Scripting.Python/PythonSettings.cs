@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting.Python
+namespace Kephas.Scripting
 {
     using Kephas.Configuration;
 
@@ -20,8 +20,8 @@ namespace Kephas.Scripting.Python
         public string[]? SearchPaths { get; set; }
 
         /// <summary>
-        /// Gets or sets the global modules loaded by default
+        /// Gets or sets a value indicating whether to preload the global modules (<c>true</c>) or load them only when needed (<c>false</c>).
         /// </summary>
-        public string[]? GlobalModules { get; set; }
+        public bool PreloadGlobalModules { get; set; } = true;
     }
 }

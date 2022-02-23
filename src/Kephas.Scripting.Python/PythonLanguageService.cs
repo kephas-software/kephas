@@ -8,18 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting.Python
+namespace Kephas.Scripting
 {
     using System;
     using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using IronPython.Hosting;
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Configuration.Interaction;
     using Kephas.Dynamic;
+    using Kephas.Interaction;
+    using Kephas.IO;
     using Kephas.Logging;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
@@ -31,7 +33,7 @@ namespace Kephas.Scripting.Python
     /// A Python language service.
     /// </summary>
     [Language(Language, LanguageAlt)]
-    public class PythonLanguageService : Loggable, ILanguageService, IInitializable
+    public class PythonLanguageService : Loggable, ILanguageService, IInitializable, IDisposable
     {
         /// <summary>
         /// The language identifier.
@@ -47,24 +49,38 @@ namespace Kephas.Scripting.Python
 
         private readonly IConfiguration<PythonSettings>? pythonConfiguration;
         private readonly IAppRuntime? appRuntime;
-        private readonly ScriptEngine engine;
+        private readonly ILocationsManager locationsManager;
+        private readonly IEventSubscription? subscription;
+        private readonly object engineSync = new ();
+
+        private ScriptEngine? engine;
+        private ICollection<string> globalModules = Array.Empty<string>();
         private bool isInitialized = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PythonLanguageService"/> class.
         /// </summary>
         /// <param name="pythonConfiguration">The Python engine configuration.</param>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <param name="locationsManager">Optional. The locations manager.</param>
+        /// <param name="eventHub">Optional. The event hub used for configuration change notifications.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public PythonLanguageService(
             IConfiguration<PythonSettings>? pythonConfiguration = null,
             IAppRuntime? appRuntime = null,
+            ILocationsManager? locationsManager = null,
+            IEventHub? eventHub = null,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.pythonConfiguration = pythonConfiguration;
             this.appRuntime = appRuntime;
-            this.engine = IronPython.Hosting.Python.CreateEngine();
+            this.locationsManager = locationsManager ?? new FolderLocationsManager();
+            this.subscription = eventHub?.Subscribe<ConfigurationChangedSignal>((s, ctx) =>
+            {
+                if (s.SettingsType != typeof(PythonSettings).FullName) return;
+                this.isInitialized = false;
+            });
         }
 
         /// <summary>
@@ -90,7 +106,7 @@ namespace Kephas.Scripting.Python
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals(args);
 
-            var scope = this.CreateGlobalScope(scriptGlobals);
+            var scope = this.CreateScriptScope(scriptGlobals, this.pythonConfiguration?.GetSettings(executionContext));
             var source = this.GetScriptSource(script);
 
             var result = source.Execute(scope);
@@ -123,7 +139,7 @@ namespace Kephas.Scripting.Python
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals(args);
 
-            var scope = this.CreateGlobalScope(scriptGlobals);
+            var scope = this.CreateScriptScope(scriptGlobals, this.pythonConfiguration?.GetSettings(executionContext));
             var source = await this.GetScriptSourceAsync(script, cancellationToken).PreserveThreadContext();
 
             await Task.Yield();
@@ -144,18 +160,41 @@ namespace Kephas.Scripting.Python
                 return;
             }
 
-            lock (this.engine)
+            lock (this.engineSync)
             {
                 if (this.isInitialized)
                 {
                     return;
                 }
 
+                this.engine = IronPython.Hosting.Python.CreateEngine();
                 var settings = this.pythonConfiguration?.GetSettings(context);
                 this.SetSearchPaths(settings);
                 this.SetGlobalModules(settings);
 
                 this.isInitialized = true;
+            }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.isInitialized = false;
+                this.subscription?.Dispose();
             }
         }
 
@@ -167,33 +206,52 @@ namespace Kephas.Scripting.Python
                 : settings?.SearchPaths;
             if (searchPaths != null)
             {
-                this.engine.SetSearchPaths(searchPaths);
+                var fullSearchPaths = this.locationsManager.GetLocations(searchPaths, basePath, "pythonSearchPaths");
+                this.engine!.SetSearchPaths(fullSearchPaths.ToList());
             }
         }
 
         private void SetGlobalModules(PythonSettings? settings)
         {
-            var globalScope = this.engine.CreateScope();
+            var globalScope = this.engine!.CreateScope();
             this.engine.Runtime.Globals = globalScope;
 
             globalScope.ImportModule("clr");
             this.engine.Execute("import clr", globalScope);
 
-            var globalModules = settings?.GlobalModules;
-            if (globalModules == null)
-            {
-                return;
-            }
+            this.globalModules = this.GetGlobalModules().ToList();
+            this.Logger.Info("Python global modules: {globalModules}.", globalModules);
 
-            foreach (var globalModule in globalModules)
+            if (this.ShouldPreloadGlobalModules(settings))
+            {
+                this.PreloadGlobalModules(globalScope);
+            }
+        }
+
+        private void PreloadGlobalModules(ScriptScope scope)
+        {
+            foreach (var globalModule in this.globalModules)
             {
                 try
                 {
-                    globalScope.ImportModule(globalModule);
+                    scope.ImportModule(globalModule);
+                    this.engine!.Execute($"import {globalModule}", scope);
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Could not import global module '{module}' from '{modules}'.", globalModule, globalModules);
+                    this.Logger.Error(ex, "Could not import global module '{module}' from '{modules}'.", globalModule, this.globalModules);
+                }
+            }
+        }
+
+        private IEnumerable<string> GetGlobalModules()
+        {
+            var searchPaths = this.engine!.GetSearchPaths();
+            foreach (var searchPath in searchPaths)
+            {
+                foreach (var moduleFile in Directory.EnumerateFiles(searchPath, "*.py"))
+                {
+                    yield return Path.GetFileNameWithoutExtension(moduleFile);
                 }
             }
         }
@@ -202,9 +260,9 @@ namespace Kephas.Scripting.Python
         {
             var source = script switch
             {
-                IStreamScript streamScript => this.engine.CreateScriptSource(
+                IStreamScript streamScript => this.engine!.CreateScriptSource(
                     new BasicStreamContentProvider(streamScript.GetSourceCodeStream()), $"dynamicCode.py"),
-                _ => this.engine.CreateScriptSourceFromString(script.GetSourceCode(), SourceCodeKind.AutoDetect),
+                _ => this.engine!.CreateScriptSourceFromString(script.GetSourceCode(), SourceCodeKind.AutoDetect),
             };
             return source;
         }
@@ -213,22 +271,30 @@ namespace Kephas.Scripting.Python
         {
             var source = script switch
             {
-                IStreamScript streamScript => this.engine.CreateScriptSource(
+                IStreamScript streamScript => this.engine!.CreateScriptSource(
                     new BasicStreamContentProvider(streamScript.GetSourceCodeStream()), $"dynamicCode.py"),
-                _ => this.engine.CreateScriptSourceFromString(
+                _ => this.engine!.CreateScriptSourceFromString(
                     await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext(),
                     SourceCodeKind.AutoDetect),
             };
             return source;
         }
 
-        private ScriptScope CreateGlobalScope(IScriptGlobals scriptGlobals)
+        private bool ShouldPreloadGlobalModules(PythonSettings? settings)
+            => settings?.PreloadGlobalModules ?? false;
+
+        private ScriptScope CreateScriptScope(IScriptGlobals scriptGlobals, PythonSettings? settings)
         {
-            var scope = this.engine.CreateScope();
+            var scope = this.engine!.CreateScope();
 
             foreach (var (key, value) in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
             {
                 scope.SetVariable(key, value);
+            }
+
+            if (this.ShouldPreloadGlobalModules(settings))
+            {
+                this.PreloadGlobalModules(scope);
             }
 
             return scope;

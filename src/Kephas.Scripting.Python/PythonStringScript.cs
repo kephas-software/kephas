@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting.Python;
+namespace Kephas.Scripting;
 
 /// <summary>
 /// Python script based on a string.
