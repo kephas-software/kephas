@@ -10,6 +10,7 @@
 
 namespace Kephas.Scripting
 {
+    using Kephas.Collections;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -18,11 +19,44 @@ namespace Kephas.Scripting
     public class ScriptGlobals : Expando, IScriptGlobals
     {
         /// <summary>
-        /// Gets or sets the global arguments.
+        /// Initializes a new instance of the <see cref="ScriptGlobals"/> class.
+        /// </summary>
+        public ScriptGlobals()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptGlobals"/> class.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="deconstruct"><c>true</c> to deconstruct the arguments, <c>false</c> otherwise.</param>
+        public ScriptGlobals(IDynamic args, bool deconstruct = true)
+        {
+            this.SetArgs(args, deconstruct);
+        }
+
+        /// <summary>
+        /// Gets the global arguments.
         /// </summary>
         /// <value>
         /// The global arguments.
         /// </value>
-        public IDynamic Args { get; set; } = new Expando();
+        public IDynamic? Args { get; private set; }
+
+        /// <summary>
+        /// Sets the arguments, optionally deconstructing them.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="deconstruct"><c>true</c> to deconstruct the arguments, <c>false</c> otherwise.</param>
+        public void SetArgs(IDynamic args, bool deconstruct = true)
+        {
+            args = args ?? throw new ArgumentNullException(nameof(args));
+            if (deconstruct)
+            {
+                args.ToDictionary().ForEach(kv => this[kv.Key] = kv.Value);
+            }
+
+            this.Args = args;
+        }
     }
 }

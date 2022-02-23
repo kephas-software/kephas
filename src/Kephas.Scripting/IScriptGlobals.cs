@@ -23,6 +23,6 @@ namespace Kephas.Scripting
         /// <value>
         /// The global arguments.
         /// </value>
-        IDynamic Args { get; }
+        IDynamic? Args { get; }
     }
 }
