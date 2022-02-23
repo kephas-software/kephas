@@ -14,7 +14,6 @@ namespace Kephas.Scripting.Python.Tests
     using System.Collections;
     using System.Reflection;
     using System.Threading.Tasks;
-    using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.IO;
@@ -24,8 +23,17 @@ namespace Kephas.Scripting.Python.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class PythonLanguageServiceTest
+    public class PythonLanguageServiceTest : PythonScriptingTestBase
     {
+        [Test]
+        public void Injection()
+        {
+            var injector = this.CreateInjector();
+            var engine = injector.Resolve<ILanguageService>(PythonLanguageService.Language);
+            
+            Assert.IsInstanceOf<PythonLanguageService>(engine);
+        }
+        
         [Test]
         public async Task ExecuteAsync_simple()
         {

@@ -33,6 +33,7 @@ namespace Kephas.Scripting
     /// A Python language service.
     /// </summary>
     [Language(Language, LanguageAlt)]
+    [ServiceName(Language)]
     public class PythonLanguageService : Loggable, ILanguageService, IInitializable, IDisposable
     {
         /// <summary>
@@ -204,11 +205,10 @@ namespace Kephas.Scripting
             var searchPaths = basePath != null
                 ? settings?.SearchPaths?.Select(p => Path.Combine(basePath, p)).ToArray()
                 : settings?.SearchPaths;
-            if (searchPaths != null)
-            {
-                var fullSearchPaths = this.locationsManager.GetLocations(searchPaths, basePath, "pythonSearchPaths");
-                this.engine!.SetSearchPaths(fullSearchPaths.ToList());
-            }
+            var fullSearchPaths = searchPaths != null
+                ? this.locationsManager.GetLocations(searchPaths, basePath, "pythonSearchPaths").ToArray()
+                : Array.Empty<string>();
+            this.engine!.SetSearchPaths(fullSearchPaths);
         }
 
         private void SetGlobalModules(PythonSettings? settings)
@@ -249,6 +249,11 @@ namespace Kephas.Scripting
             var searchPaths = this.engine!.GetSearchPaths();
             foreach (var searchPath in searchPaths)
             {
+                if (!Directory.Exists(searchPath))
+                {
+                    continue;
+                }
+                
                 foreach (var moduleFile in Directory.EnumerateFiles(searchPath, "*.py"))
                 {
                     yield return Path.GetFileNameWithoutExtension(moduleFile);

@@ -31,6 +31,7 @@ namespace Kephas.Scripting
     /// A C# language service.
     /// </summary>
     [Language(Language, LanguageAlt, LanguageShort, LanguageScript)]
+    [ServiceName(Language)]
     public class CSharpLanguageService : ILanguageService
     {
         /// <summary>

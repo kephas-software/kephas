@@ -23,6 +23,7 @@ namespace Kephas.Scripting.Lua
     /// A LUA language service.
     /// </summary>
     [Language(Language)]
+    [ServiceName(Language)]
     public class LuaLanguageService : ILanguageService
     {
         /// <summary>
