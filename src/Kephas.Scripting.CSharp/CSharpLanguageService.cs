@@ -8,24 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting.CSharp
+namespace Kephas.Scripting
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Collections;
     using Kephas.Dynamic;
-    using Kephas.IO;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
-
     using Microsoft.CodeAnalysis.CSharp.Scripting;
     using Microsoft.CodeAnalysis.Scripting;
 
@@ -64,21 +60,12 @@ namespace Kephas.Scripting.CSharp
             CancellationToken cancellationToken = default)
         {
             script = script ?? throw new ArgumentNullException(nameof(script));
-            if (script.SourceCode == null)
-            {
-                throw new ArgumentException($"{nameof(script.SourceCode)} must nut be null.", nameof(script));
-            }
-
             args ??= new Expando();
-            scriptGlobals ??= new ScriptGlobals { Args = args };
+            scriptGlobals ??= new ScriptGlobals(args);
 
             var (globalsScript, assemblies) = this.GetGlobalsScript(scriptGlobals);
 
-            var source = script.SourceCode is string codeText
-                ? codeText
-                : script.SourceCode is Stream codeStream
-                    ? codeStream.ReadAllString()
-                    : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
+            var source = await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext();
 
             var state = await CSharpScript.RunAsync(
                 globalsScript + source,
