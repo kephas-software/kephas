@@ -19,7 +19,7 @@ public class LuaStringScript : StringScript
     /// <param name="sourceCode">The source code.</param>
     /// <param name="name">The name.</param>
     public LuaStringScript(string sourceCode, string? name = null)
-        : base(LuaLanguageService.Language, sourceCode, name)
+        : base(sourceCode, LuaLanguageService.Language, name)
     {
     }
 }

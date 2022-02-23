@@ -18,7 +18,7 @@ public class LuaStreamScript : StreamScript
     /// <param name="sourceCode">The source code.</param>
     /// <param name="name">The name.</param>
     public LuaStreamScript(Stream sourceCode, string? name = null)
-        : base(LuaLanguageService.Language, sourceCode, name)
+        : base(sourceCode, LuaLanguageService.Language, name)
     {
     }
 }
