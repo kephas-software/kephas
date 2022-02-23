@@ -42,7 +42,7 @@ Just like all the other context instances, it is a dynamic expandable object (``
 Through the ```Result``` and ```Exception``` properties, the behaviors (see below) can control the processing output.
 
 ### The processing behaviors
-The ```DefaultTemplateProcessor``` uses also ```ITemplateProcessing``` behavior services to further control the processing. Just like the ```ITemplateEngine``` services, they declare the template kinds they handle,
+The ```DefaultTemplateProcessor``` uses also ```ITemplateProcessingBehavior``` services to further control the processing. Just like the ```ITemplateEngine``` services, they declare the template kinds they handle,
 and are invoked before and after the selected engine processes the template. They can cover various purposes: authorization, pre-processing/post-processing, audit, and whatever other functionality may be required.
 
 ## The templates
