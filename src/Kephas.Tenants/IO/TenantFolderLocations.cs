@@ -7,6 +7,8 @@
 
 namespace Kephas.IO;
 
+using Kephas.Tenants.Resources;
+
 /// <summary>
 /// Folder locations for a tenant.
 /// </summary>
@@ -17,12 +19,16 @@ public class TenantFolderLocations : FolderLocations
     /// Initializes a new instance of the <see cref="TenantFolderLocations"/> class.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
-    /// <param name="name">The name.</param>
-    /// <param name="rootPath">The root path.</param>
     /// <param name="relativePaths">The relative paths.</param>
-    public TenantFolderLocations(string tenant, string name, string rootPath, IEnumerable<string> relativePaths)
-        : base(name, rootPath, GetRelativePaths(tenant, relativePaths))
+    /// <param name="basePath">Optional. The base path. If not provided, the application directory is considered.</param>
+    /// <param name="name">Optional. The location name. If not provided, a name will be generated.</param>
+    public TenantFolderLocations(string tenant, IEnumerable<string> relativePaths, string? basePath, string? name)
+        : base(GetRelativePaths(tenant, relativePaths), basePath, name)
     {
+        if (string.IsNullOrEmpty(tenant))
+        {
+            throw new ArgumentException(Strings.TenantFolderLocations_tenant_not_set, nameof(tenant));
+        }
     }
 
     private static IEnumerable<string> GetRelativePaths(string tenant, IEnumerable<string> relativePaths)

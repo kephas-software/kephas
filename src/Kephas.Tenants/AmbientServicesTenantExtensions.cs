@@ -28,9 +28,6 @@ public static class AmbientServicesTenantExtensions
     public static T WithTenantSupport<T>([DisallowNull] this T ambientServices, IAppArgs appArgs)
         where T : IAmbientServices
     {
-        // TODO - add tenant related probing folders for configuration and licenses.
-        // TODO maybe a generic FolderManager service would be helpful, for example also
-        // TODO to get from there the python probing folders. Other cases?
         var tenant = appArgs.Tenant();
         if (string.IsNullOrEmpty(tenant))
         {

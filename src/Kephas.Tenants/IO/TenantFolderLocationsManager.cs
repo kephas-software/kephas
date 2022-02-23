@@ -7,32 +7,41 @@
 
 namespace Kephas.IO;
 
+using Kephas.Tenants.Resources;
+
 /// <summary>
 /// Locations manager with tenant support.
 /// </summary>
 /// <seealso cref="ILocationsManager" />
-public class TenantFolderLocationsManager : ILocationsManager
+public class TenantFolderLocationsManager : FolderLocationsManager
 {
     private readonly string tenant;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TenantFolderLocationsManager"/> class.
+    /// Initializes a new instance of the <see cref="TenantFolderLocationsManager" /> class.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
-    public TenantFolderLocationsManager(string tenant)
+    /// <param name="defaultBasePath">The default base path.</param>
+    public TenantFolderLocationsManager(string tenant, string? defaultBasePath = null)
+        : base(defaultBasePath)
     {
+        if (string.IsNullOrEmpty(tenant))
+        {
+            throw new ArgumentException(Strings.TenantFolderLocations_tenant_not_set, nameof(tenant));
+        }
+
         this.tenant = tenant;
     }
 
     /// <summary>
     /// Gets the locations.
     /// </summary>
-    /// <param name="name">The logical locations name.</param>
-    /// <param name="basePath">The base path.</param>
     /// <param name="relativePaths">The relative paths.</param>
+    /// <param name="basePath">Optional. The base path. If not provided, the application directory is considered.</param>
+    /// <param name="name">Optional. The location name. If not provided, a name will be generated.</param>
     /// <returns>
     /// An instance implementing <see cref="T:Kephas.IO.ILocations" />.
     /// </returns>
-    public ILocations GetLocations(string name, string basePath, IEnumerable<string> relativePaths)
-        => new TenantFolderLocations(this.tenant, name, basePath, relativePaths);
+    public override ILocations GetLocations(IEnumerable<string> relativePaths, string? basePath = null, string? name = null)
+        => new TenantFolderLocations(this.tenant, relativePaths, basePath ?? this.DefaultBasePath, name);
 }
