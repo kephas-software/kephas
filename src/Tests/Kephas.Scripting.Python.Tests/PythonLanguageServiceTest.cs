@@ -24,7 +24,7 @@ namespace Kephas.Scripting.Python.Tests
         public async Task ExecuteAsync_simple()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(PythonLanguageService.Language, "(1 + 2) * 3");
+            var script = new PythonStringScript("(1 + 2) * 3");
             var result = await langService.ExecuteAsync(script);
 
             Assert.AreEqual(9, result);
@@ -34,7 +34,7 @@ namespace Kephas.Scripting.Python.Tests
         public void Execute_simple()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(PythonLanguageService.Language, "(1 + 2) * 3");
+            var script = new PythonStringScript("(1 + 2) * 3");
             var result = langService.Execute(script);
 
             Assert.AreEqual(9, result);
@@ -44,7 +44,7 @@ namespace Kephas.Scripting.Python.Tests
         public async Task ExecuteAsync_DateTime()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(PythonLanguageService.Language, "from System import DateTime\nDateTime(2000, 12, 25)");
+            var script = new PythonStringScript("from System import DateTime\nDateTime(2000, 12, 25)");
             var result = await langService.ExecuteAsync(script);
 
             Assert.AreEqual(new DateTime(2000, 12, 25), result);
@@ -54,7 +54,7 @@ namespace Kephas.Scripting.Python.Tests
         public void Execute_DateTime()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(PythonLanguageService.Language, "from System import DateTime\nDateTime(2000, 12, 25)");
+            var script = new PythonStringScript("from System import DateTime\nDateTime(2000, 12, 25)");
             var result = langService.Execute(script);
 
             Assert.AreEqual(new DateTime(2000, 12, 25), result);
@@ -64,8 +64,7 @@ namespace Kephas.Scripting.Python.Tests
         public async Task ExecuteAsync_function()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(
-                PythonLanguageService.Language,
+            var script = new PythonStringScript(
                 "def Power(a):" + Environment.NewLine +
                 "  return a * a" + Environment.NewLine +
                 "Power(2) + 3");
@@ -78,8 +77,7 @@ namespace Kephas.Scripting.Python.Tests
         public void Execute_function()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(
-                PythonLanguageService.Language,
+            var script = new PythonStringScript(
                 "def Power(a):" + Environment.NewLine +
                 "  return a * a" + Environment.NewLine +
                 "Power(2) + 3");
@@ -92,8 +90,7 @@ namespace Kephas.Scripting.Python.Tests
         public async Task ExecuteAsync_lambda()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(
-                PythonLanguageService.Language,
+            var script = new PythonStringScript(
                 "power(2) + 3");
             var globals = new ScriptGlobals
             {
@@ -108,8 +105,7 @@ namespace Kephas.Scripting.Python.Tests
         public void Execute_lambda()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(
-                PythonLanguageService.Language,
+            var script = new PythonStringScript(
                 "power(2) + 3");
             var globals = new ScriptGlobals
             {
@@ -124,8 +120,7 @@ namespace Kephas.Scripting.Python.Tests
         public async Task ExecuteAsync_args()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(
-                PythonLanguageService.Language,
+            var script = new PythonStringScript(
                 "def Power(a):" + Environment.NewLine +
                 "  return a * a" + Environment.NewLine +
                 "returnValue = Power(int(args.a))");
@@ -133,7 +128,7 @@ namespace Kephas.Scripting.Python.Tests
                            {
                                ["a"] = 2,
                            };
-            var result = await langService.ExecuteAsync(script, new ScriptGlobals { Args = args });
+            var result = await langService.ExecuteAsync(script, new ScriptGlobals(args, false));
 
             Assert.AreEqual(4, result);
         }
@@ -142,8 +137,7 @@ namespace Kephas.Scripting.Python.Tests
         public void Execute_args()
         {
             var langService = new PythonLanguageService();
-            var script = new Script(
-                PythonLanguageService.Language,
+            var script = new PythonStringScript(
                 "def Power(a):" + Environment.NewLine +
                 "  return a * a" + Environment.NewLine +
                 "returnValue = Power(int(args.a))");
@@ -151,7 +145,7 @@ namespace Kephas.Scripting.Python.Tests
             {
                 ["a"] = 2,
             };
-            var result = langService.Execute(script, new ScriptGlobals { Args = args });
+            var result = langService.Execute(script, new ScriptGlobals(args, false));
 
             Assert.AreEqual(4, result);
         }

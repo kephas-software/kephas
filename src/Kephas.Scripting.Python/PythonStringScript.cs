@@ -18,7 +18,7 @@ public class PythonStringScript : StringScript
     /// <param name="sourceCode">The source code.</param>
     /// <param name="name">The name.</param>
     public PythonStringScript(string sourceCode, string? name = null)
-        : base(PythonLanguageService.Language, sourceCode, name)
+        : base(sourceCode, PythonLanguageService.Language, name)
     {
     }
 }
