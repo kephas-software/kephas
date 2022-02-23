@@ -19,7 +19,7 @@ public class CSharpStreamScript : StreamScript
     /// <param name="sourceCode">The source code.</param>
     /// <param name="name">The name.</param>
     public CSharpStreamScript(Stream sourceCode, string? name = null)
-        : base(CSharpLanguageService.Language, sourceCode, name)
+        : base(sourceCode, CSharpLanguageService.Language, name)
     {
     }
 }

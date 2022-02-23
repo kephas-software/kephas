@@ -13,11 +13,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Scripts\Complex.csx" />
+      <None Remove="Scripts\PointDistance.csx" />
+      <None Remove="Scripts\Power.csx" />
       <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
       <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Scripts\PointDistance.csx" />
+      <EmbeddedResource Include="Scripts\Power.csx" />
     </ItemGroup>
 
     <ItemGroup>

@@ -12,11 +12,13 @@ namespace Kephas.Scripting
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Scripting.AttributedModel;
@@ -28,7 +30,7 @@ namespace Kephas.Scripting
     /// <summary>
     /// A C# language service.
     /// </summary>
-    [Language(Language, LanguageAlt)]
+    [Language(Language, LanguageAlt, LanguageShort, LanguageScript)]
     public class CSharpLanguageService : ILanguageService
     {
         /// <summary>
@@ -40,6 +42,16 @@ namespace Kephas.Scripting
         /// The alternate language identifier.
         /// </summary>
         public const string LanguageAlt = "csharp";
+
+        /// <summary>
+        /// The short language identifier.
+        /// </summary>
+        public const string LanguageShort = "cs";
+
+        /// <summary>
+        /// The script language identifier.
+        /// </summary>
+        public const string LanguageScript = "csx";
 
         /// <summary>
         /// Executes the script asynchronously.
@@ -63,12 +75,12 @@ namespace Kephas.Scripting
             args ??= new Expando();
             scriptGlobals ??= new ScriptGlobals(args);
 
-            var (globalsScript, assemblies) = this.GetGlobalsScript(scriptGlobals);
+            var (globalsSection, refSection, assemblies) = this.GetGlobalsScript(scriptGlobals);
 
             var source = await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext();
 
             var state = await CSharpScript.RunAsync(
-                globalsScript + source,
+                MergeSections(globalsSection, refSection, source),
                 options: this.GetScriptOptions(assemblies),
                 globals: new Globals { __g = scriptGlobals },
                 cancellationToken: cancellationToken)
@@ -76,30 +88,56 @@ namespace Kephas.Scripting
             return state.ReturnValue;
         }
 
+        private static string MergeSections(string globalsSection, string refSection, string source)
+        {
+            if (string.IsNullOrEmpty(globalsSection))
+            {
+                return refSection + source;
+            }
+
+            // insert the globals section after all preprocessor directives
+            using var lineReader = new StringReader(source);
+            var sb = new StringBuilder(refSection);
+            var line = lineReader.ReadLine();
+            while (line is not null && (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")))
+            {
+                sb.AppendLine(line);
+                line = lineReader.ReadLine();
+            }
+            
+            sb.Append(globalsSection);
+
+            if (line is not null)
+            {
+                sb.AppendLine(line);
+                sb.Append(lineReader.ReadToEnd());
+            }
+            
+            return sb.ToString();
+        }
+
         private ScriptOptions GetScriptOptions(IEnumerable<Assembly> assemblies)
         {
             return ScriptOptions.Default.WithReferences(assemblies.ToArray());
         }
 
-        private (string globalsScript, IEnumerable<Assembly> assemblies) GetGlobalsScript(IScriptGlobals scriptGlobals)
+        private (string globalsScriptSection, string refScriptSection, IEnumerable<Assembly> assemblies) GetGlobalsScript(IScriptGlobals scriptGlobals)
         {
-            // TODO workaround for CSharp not supporting dynamic
-            var sb = new StringBuilder("var globals = new {").AppendLine();
-            var assemblies = new HashSet<Assembly>();
-            foreach (var kv in scriptGlobals.ToDictionary())
+            var sb = new StringBuilder();
+            var assemblies = new HashSet<Assembly> { typeof(IDynamicMetaObjectProvider).Assembly };
+            foreach (var (key, value) in scriptGlobals.ToDictionary())
             {
-                var typeName = this.GetValueType(kv.Value, assemblies);
-                sb.AppendLine($"{kv.Key} = ({typeName})__g[\"{kv.Key}\"],");
+                var typeName = this.GetValueType(value, assemblies);
+                sb.AppendLine($"var {key} = ({typeName})__g[\"{key}\"];");
             }
 
-            sb.AppendLine("};");
+            var sbRef = new StringBuilder();
+            assemblies.ForEach(a => sbRef.AppendLine($"#r \"{a.Location}\""));
 
-            assemblies.ForEach(a => sb.Insert(0, $"#r \"{a.Location}\"" + Environment.NewLine));
-
-            return (sb.ToString(), assemblies);
+            return (sb.ToString(), sbRef.ToString(), assemblies);
         }
 
-        private string GetValueType(object value, HashSet<Assembly> assemblies)
+        private string GetValueType(object? value, HashSet<Assembly> assemblies)
         {
             if (value == null)
             {
@@ -116,7 +154,7 @@ namespace Kephas.Scripting
 
             if (!valueType.IsGenericType)
             {
-                return valueType.FullName;
+                return valueType.FullName!;
             }
 
             var typeDef = valueType.GetGenericTypeDefinition();
@@ -124,7 +162,7 @@ namespace Kephas.Scripting
                 .Select(t => this.GetTypeName(t, assemblies)));
             var genericMarkerIndex = typeDef.Name.IndexOf('`');
 
-            return $"{typeDef.Namespace}.{typeDef.Name.Substring(0, genericMarkerIndex)}<{args}>";
+            return $"{typeDef.Namespace}.{typeDef.Name[..genericMarkerIndex]}<{args}>";
         }
 
         public class Globals
