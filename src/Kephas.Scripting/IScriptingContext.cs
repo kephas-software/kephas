@@ -11,7 +11,6 @@
 namespace Kephas.Scripting
 {
     using System;
-
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -37,6 +36,13 @@ namespace Kephas.Scripting
         IDynamic Args { get; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="Args"/> should be deconstructed.
+        /// If <c>true</c>, the values in <see cref="Args"/> are globally available by their name,
+        /// otherwise the arguments are available through the global Args value.
+        /// </summary>
+        bool DeconstructArgs { get; set; }
+
+        /// <summary>
         /// Gets the script globals.
         /// </summary>
         /// <value>
@@ -45,12 +51,12 @@ namespace Kephas.Scripting
         IScriptGlobals ScriptGlobals { get; }
 
         /// <summary>
-        /// Gets a context for the execution.
+        /// Gets or sets a context for the execution.
         /// </summary>
         /// <value>
         /// The execution context.
         /// </value>
-        IContext? ExecutionContext { get; }
+        IContext? ExecutionContext { get; set; }
 
         /// <summary>
         /// Gets or sets the result.

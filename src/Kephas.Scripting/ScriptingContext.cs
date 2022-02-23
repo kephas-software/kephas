@@ -86,5 +86,12 @@ namespace Kephas.Scripting
         /// The exception.
         /// </value>
         public Exception? Exception { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="Args"/> should be deconstructed.
+        /// If <c>true</c>, the values in <see cref="Args"/> are globally available by their name,
+        /// otherwise the arguments are available through the global Args value.
+        /// </summary>
+        public bool DeconstructArgs { get; set; } = true;
     }
 }
