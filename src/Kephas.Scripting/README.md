@@ -49,10 +49,9 @@ var result = await processor.ExecuteAsync(script, new { a = 2 }, ctx => ctx.Deco
 These services implement the ```ILanguageService``` contract and handle specific languages.
 By default, the framework does not provide any language service in the ```Kephas.Scripting``` package due to the heavy overhead it brings.
 However, there are several language services provided in separate packages:
-* ```Kephas.Scripting.CSharp```
-* ```Kephas.Scripting.Python```
-* ```Kephas.Scripting.Lua```
-
+* [Kephas.Scripting.CSharp](https://www.nuget.org/packages/Kephas.Scripting.CSharp)
+* [Kephas.Scripting.Python](https://www.nuget.org/packages/Kephas.Scripting.Python)
+* [Kephas.Scripting.Lua](https://www.nuget.org/packages/Kephas.Scripting.Lua)
 ## Controlling the script execution
 
 ### The scripting context
