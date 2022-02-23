@@ -23,6 +23,7 @@ namespace Kephas.Scripting.Python
     using Kephas.Logging;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
     using Microsoft.Scripting;
     using Microsoft.Scripting.Hosting;
 
@@ -87,9 +88,10 @@ namespace Kephas.Scripting.Python
             this.Initialize();
 
             args ??= new Expando();
-            scriptGlobals ??= new ScriptGlobals { Args = args };
+            scriptGlobals ??= new ScriptGlobals(args);
 
-            var (scope, source) = this.PrepareScope(script, scriptGlobals);
+            var scope = this.CreateGlobalScope(scriptGlobals);
+            var source = this.GetScriptSource(script);
 
             var result = source.Execute(scope);
             var returnValue = this.GetReturnValue(result, scope);
@@ -119,9 +121,10 @@ namespace Kephas.Scripting.Python
             this.Initialize();
 
             args ??= new Expando();
-            scriptGlobals ??= new ScriptGlobals { Args = args };
+            scriptGlobals ??= new ScriptGlobals(args);
 
-            var (scope, source) = this.PrepareScope(script, scriptGlobals);
+            var scope = this.CreateGlobalScope(scriptGlobals);
+            var source = await this.GetScriptSourceAsync(script, cancellationToken).PreserveThreadContext();
 
             await Task.Yield();
 
@@ -195,23 +198,40 @@ namespace Kephas.Scripting.Python
             }
         }
 
-        private (ScriptScope scope, ScriptSource source) PrepareScope(IScript script, IScriptGlobals scriptGlobals)
+        private ScriptSource GetScriptSource(IScript script)
+        {
+            var source = script switch
+            {
+                IStreamScript streamScript => this.engine.CreateScriptSource(
+                    new BasicStreamContentProvider(streamScript.GetSourceCodeStream()), $"dynamicCode.py"),
+                _ => this.engine.CreateScriptSourceFromString(script.GetSourceCode(), SourceCodeKind.AutoDetect),
+            };
+            return source;
+        }
+
+        private async Task<ScriptSource> GetScriptSourceAsync(IScript script, CancellationToken cancellationToken)
+        {
+            var source = script switch
+            {
+                IStreamScript streamScript => this.engine.CreateScriptSource(
+                    new BasicStreamContentProvider(streamScript.GetSourceCodeStream()), $"dynamicCode.py"),
+                _ => this.engine.CreateScriptSourceFromString(
+                    await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext(),
+                    SourceCodeKind.AutoDetect),
+            };
+            return source;
+        }
+
+        private ScriptScope CreateGlobalScope(IScriptGlobals scriptGlobals)
         {
             var scope = this.engine.CreateScope();
 
-            foreach (var kv in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
+            foreach (var (key, value) in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
             {
-                scope.SetVariable(kv.Key, kv.Value);
+                scope.SetVariable(key, value);
             }
 
-            var source = script.SourceCode switch
-            {
-                string codeText => this.engine.CreateScriptSourceFromString(codeText, SourceCodeKind.AutoDetect),
-                Stream codeStream => this.engine.CreateScriptSource(new BasicStreamContentProvider(codeStream), $"dynamicCode.py"),
-                _ => throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream))
-            };
-
-            return (scope, source);
+            return scope;
         }
 
         private object GetReturnValue(dynamic result, ScriptScope scope)
