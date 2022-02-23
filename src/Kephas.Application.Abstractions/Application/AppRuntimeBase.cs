@@ -105,7 +105,7 @@ namespace Kephas.Application
             this.configFolders = configFolders;
             this.licenseFolders = licenseFolders;
             this.GetLocations = getLocations 
-                ?? ((name, basePath, relativePaths) => new FolderLocations(name, basePath, relativePaths));
+                ?? ((name, basePath, relativePaths) => new FolderLocations(relativePaths, basePath, name));
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(
@@ -581,11 +581,11 @@ namespace Kephas.Application
             }
         }
 
-        private string ComputeAppLocation(string? appFolder)
+        private string ComputeAppLocation(string? basePath)
         {
-            if (!string.IsNullOrEmpty(appFolder))
+            if (!string.IsNullOrEmpty(basePath))
             {
-                return Path.GetFullPath(appFolder);
+                return Path.GetFullPath(basePath);
             }
 
             var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();

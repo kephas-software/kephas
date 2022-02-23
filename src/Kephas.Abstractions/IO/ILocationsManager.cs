@@ -15,9 +15,9 @@ public interface ILocationsManager
     /// <summary>
     /// Gets the locations.
     /// </summary>
-    /// <param name="name">The logical locations name.</param>
-    /// <param name="basePath">The base path.</param>
     /// <param name="relativePaths">The relative paths.</param>
+    /// <param name="basePath">Optional. The base path. If not provided, the application directory is considered.</param>
+    /// <param name="name">Optional. The location name. If not provided, a name will be generated.</param>
     /// <returns>An instance implementing <see cref="ILocations"/>.</returns>
-    ILocations GetLocations(string name, string basePath, IEnumerable<string> relativePaths);
+    ILocations GetLocations(IEnumerable<string> relativePaths, string? basePath = null, string? name = null);
 }

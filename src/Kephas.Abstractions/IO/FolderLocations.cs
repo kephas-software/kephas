@@ -8,27 +8,29 @@
 namespace Kephas.IO;
 
 using System.Collections;
+using System.Reflection;
+using Kephas.Reflection;
 
 /// <summary>
 /// A named enumeration of locations based on physical folders.
 /// </summary>
 public class FolderLocations : ILocations
 {
-    private readonly string rootPath;
+    private readonly string basePath;
     private readonly IEnumerable<string> relativePaths;
     private List<string>? fullPaths;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FolderLocations"/> class.
     /// </summary>
-    /// <param name="name">The location name.</param>
-    /// <param name="rootPath">The root path.</param>
     /// <param name="relativePaths">An enumeration of relative paths.</param>
-    public FolderLocations(string name, string rootPath, IEnumerable<string> relativePaths)
+    /// <param name="basePath">Optional. The base path. If not provided, the application directory is considered.</param>
+    /// <param name="name">Optional. The location name. If not provided, a name will be generated.</param>
+    public FolderLocations(IEnumerable<string> relativePaths, string? basePath, string? name)
     {
-        this.Name = name ?? throw new ArgumentNullException(nameof(name));
-        this.rootPath = rootPath ?? throw new ArgumentNullException(nameof(rootPath));
         this.relativePaths = relativePaths ?? throw new ArgumentNullException(nameof(relativePaths));
+        this.basePath = basePath ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetLocationDirectory();
+        this.Name = name ?? $"location-{Guid.NewGuid():N}";
     }
 
     /// <summary>
@@ -41,7 +43,7 @@ public class FolderLocations : ILocations
     public IEnumerator<string> GetEnumerator()
     {
         return (this.fullPaths ??= this.relativePaths
-            .Select(p => FileSystem.GetFullPath(p, this.rootPath))
+            .Select(p => FileSystem.GetFullPath(p, this.basePath))
             .Distinct()
             .ToList()).GetEnumerator();
     }

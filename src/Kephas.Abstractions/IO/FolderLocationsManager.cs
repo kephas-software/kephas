@@ -7,6 +7,9 @@
 
 namespace Kephas.IO;
 
+using System.Reflection;
+using Kephas.Reflection;
+
 /// <summary>
 /// Service implementation for <see cref="ILocationsManager"/> resolving folder locations.
 /// </summary>
@@ -14,14 +17,31 @@ namespace Kephas.IO;
 public class FolderLocationsManager : ILocationsManager
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="FolderLocationsManager"/> class.
+    /// </summary>
+    /// <param name="defaultBasePath">The default base path.</param>
+    public FolderLocationsManager(string? defaultBasePath = null)
+    {
+        this.DefaultBasePath = defaultBasePath ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetLocationDirectory();
+    }
+
+    /// <summary>
+    /// Gets the default base path.
+    /// </summary>
+    /// <value>
+    /// The default base path.
+    /// </value>
+    public string DefaultBasePath { get; }
+
+    /// <summary>
     /// Gets the folder locations.
     /// </summary>
-    /// <param name="name">The logical locations name.</param>
-    /// <param name="basePath">The base path.</param>
     /// <param name="relativePaths">The relative paths.</param>
+    /// <param name="basePath">Optional. The base path. If not provided, the application directory is considered.</param>
+    /// <param name="name">Optional. The location name. If not provided, a name will be generated.</param>
     /// <returns>
     /// An instance implementing <see cref="ILocations" />.
     /// </returns>
-    public ILocations GetLocations(string name, string basePath, IEnumerable<string> relativePaths)
-        => new FolderLocations(name, basePath, relativePaths);
+    public virtual ILocations GetLocations(IEnumerable<string> relativePaths, string? basePath = null, string? name = null)
+        => new FolderLocations(relativePaths, basePath ?? this.DefaultBasePath, name);
 }
