@@ -19,7 +19,7 @@ public class CSharpStringScript : StringScript
     /// <param name="sourceCode">The source code.</param>
     /// <param name="name">The name.</param>
     public CSharpStringScript(string sourceCode, string? name = null)
-        : base(CSharpLanguageService.Language, sourceCode, name)
+        : base(sourceCode, CSharpLanguageService.Language, name)
     {
     }
 }

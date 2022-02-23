@@ -20,9 +20,9 @@ public class StreamScript : Expando, IStreamScript
     /// Initializes a new instance of the <see cref="StreamScript"/> class.
     /// </summary>
     /// <param name="sourceCode">The source code.</param>
-    /// <param name="name">Optional. The template name.</param>
     /// <param name="language">The script language.</param>
-    public StreamScript(string language, Stream sourceCode, string? name = null)
+    /// <param name="name">Optional. The template name.</param>
+    public StreamScript(Stream sourceCode, string language, string? name = null)
     {
         this.sourceCode = sourceCode ?? throw new ArgumentNullException(nameof(sourceCode));
         this.Name = name ?? $"{nameof(StreamScript)}_{Guid.NewGuid():N}";

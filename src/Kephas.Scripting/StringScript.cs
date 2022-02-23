@@ -24,10 +24,10 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="StringScript"/> class.
         /// </summary>
-        /// <param name="language">The script language.</param>
         /// <param name="sourceCode">The source code.</param>
+        /// <param name="language">The script language.</param>
         /// <param name="name">Optional. The script name.</param>
-        public StringScript(string language, string sourceCode, string? name = null)
+        public StringScript(string sourceCode, string language, string? name = null)
         {
             this.Language = language ?? throw new ArgumentNullException(nameof(language));
             this.Name = name ?? $"{nameof(StringScript)}_{Guid.NewGuid():N}";
