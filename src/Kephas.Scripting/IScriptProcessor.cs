@@ -28,7 +28,6 @@ namespace Kephas.Scripting
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
         /// <param name="args">Optional. The execution arguments.</param>
-        /// <param name="executionContext">Optional. The execution context.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
@@ -36,8 +35,7 @@ namespace Kephas.Scripting
         /// </returns>
         Task<object?> ExecuteAsync(
             IScript script,
-            IDynamic? args = null,
-            IContext? executionContext = null,
+            object? args = null,
             Action<IScriptingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
     }

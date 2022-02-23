@@ -109,7 +109,6 @@ namespace Kephas.Scripting
         /// <exception cref="ScriptingException">Thrown when a Scripting error condition occurs.</exception>
         /// <param name="script">The script to be interpreted/executed.</param>
         /// <param name="args">Optional. The arguments.</param>
-        /// <param name="executionContext">Optional. The execution context.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
@@ -117,8 +116,7 @@ namespace Kephas.Scripting
         /// </returns>
         public async Task<object?> ExecuteAsync(
             IScript script,
-            IDynamic? args = null,
-            IContext? executionContext = null,
+            object? args = null,
             Action<IScriptingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
@@ -130,8 +128,8 @@ namespace Kephas.Scripting
                 throw new ScriptingException(Strings.DefaultScriptProcessor_ExecuteAsync_MissingLanguageService.FormatWith(script.Language));
             }
 
-            args ??= new Expando();
-            var scriptingContext = this.CreateScriptingContext(script, args, executionContext, optionsConfig);
+            var scriptArgs = args?.ToDynamic() ?? new Expando();
+            var scriptingContext = this.CreateScriptingContext(script, scriptArgs, optionsConfig);
             var behaviors = this.scriptingBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.Value).ToList() ?? new List<IScriptingBehavior>();
 
             foreach (var behavior in behaviors)
@@ -142,7 +140,7 @@ namespace Kephas.Scripting
             try
             {
                 var result = await languageServiceFactory.Value
-                                 .ExecuteAsync(script, scriptingContext.ScriptGlobals, args, executionContext, cancellationToken)
+                                 .ExecuteAsync(script, scriptingContext.ScriptGlobals, scriptArgs, scriptingContext.ExecutionContext, cancellationToken)
                                  .PreserveThreadContext();
                 scriptingContext.Result = result;
             }
@@ -171,7 +169,6 @@ namespace Kephas.Scripting
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
         /// <param name="args">The arguments.</param>
-        /// <param name="executionContext">The execution context.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The new scripting context.
@@ -179,17 +176,20 @@ namespace Kephas.Scripting
         protected virtual IScriptingContext CreateScriptingContext(
             IScript script,
             IDynamic args,
-            IContext? executionContext,
             Action<IScriptingContext>? optionsConfig = null)
         {
             var scriptingContext = this.ContextFactory.CreateContext<ScriptingContext>();
-            scriptingContext.Impersonate(executionContext);
             scriptingContext.Script = script;
             scriptingContext.Args = args;
-            scriptingContext.ExecutionContext = executionContext;
-            scriptingContext.ScriptGlobals = new ScriptGlobals { Args = args };
+            var scriptGlobals = new ScriptGlobals();
+            scriptingContext.ScriptGlobals = scriptGlobals;
 
             optionsConfig?.Invoke(scriptingContext);
+            
+            // do the deconstruction after the configuration is invoked, to allow changing the Args
+            // and the DeconstructArgs flags.
+            scriptGlobals.SetArgs(scriptingContext.Args, scriptingContext.DeconstructArgs);
+            
             return scriptingContext;
         }
     }
