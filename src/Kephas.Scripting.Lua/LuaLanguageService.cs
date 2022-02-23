@@ -10,15 +10,13 @@
 
 namespace Kephas.Scripting.Lua
 {
-    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.IO;
-    using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
     using Neo.IronLua;
 
     /// <summary>
@@ -59,9 +57,10 @@ namespace Kephas.Scripting.Lua
             IContext? executionContext = null)
         {
             args ??= new Expando();
-            scriptGlobals ??= new ScriptGlobals { Args = args };
+            scriptGlobals ??= new ScriptGlobals(args);
 
-            var (scope, source) = this.PrepareScope(script, scriptGlobals);
+            var scope = this.CreateGlobalScope(scriptGlobals);
+            var source = script.GetSourceCode();
 
             var chunk = this.engine.CompileChunk(source, "dynamicCode", new LuaCompileOptions());
             var result = chunk.Run(scope);
@@ -88,9 +87,10 @@ namespace Kephas.Scripting.Lua
             CancellationToken cancellationToken = default)
         {
             args ??= new Expando();
-            scriptGlobals ??= new ScriptGlobals { Args = args };
+            scriptGlobals ??= new ScriptGlobals(args);
 
-            var (scope, source) = this.PrepareScope(script, scriptGlobals);
+            var scope = this.CreateGlobalScope(scriptGlobals);
+            var source = await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext();
 
             await Task.Yield();
 
@@ -100,21 +100,15 @@ namespace Kephas.Scripting.Lua
             return returnValue;
         }
 
-        private (LuaGlobal scope, string source) PrepareScope(IScript script, IScriptGlobals scriptGlobals)
+        private LuaGlobal CreateGlobalScope(IScriptGlobals scriptGlobals)
         {
             var scope = this.engine.CreateEnvironment();
-            foreach (var kv in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
+            foreach (var (key, value) in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
             {
-                scope[kv.Key] = kv.Value;
+                scope[key] = value;
             }
 
-            var source = script.SourceCode is string codeText
-                ? codeText
-                : script.SourceCode is Stream codeStream
-                    ? codeStream.ReadAllString()
-                    : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
-
-            return (scope, source);
+            return scope;
         }
 
         private object? GetReturnValue(LuaResult result, LuaGlobal scope)
