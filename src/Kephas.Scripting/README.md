@@ -5,6 +5,12 @@
 The scripting area in Kephas handles dynamic code execution.
 The entry point is the ```IScriptProcessor``` singleton service, which returns a result through the ```ExecuteAsync``` method, provided with a script, execution arguments, and globals.
 
+Check the following packages for more information:
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Scripting.CSharp](https://www.nuget.org/packages/Kephas.Scripting.CSharp)
+* [Kephas.Scripting.Python](https://www.nuget.org/packages/Kephas.Scripting.Python)
+* [Kephas.Scripting.Lua](https://www.nuget.org/packages/Kephas.Scripting.Lua)
+
 ## Usage
 
 ```C#
@@ -52,6 +58,7 @@ However, there are several language services provided in separate packages:
 * [Kephas.Scripting.CSharp](https://www.nuget.org/packages/Kephas.Scripting.CSharp)
 * [Kephas.Scripting.Python](https://www.nuget.org/packages/Kephas.Scripting.Python)
 * [Kephas.Scripting.Lua](https://www.nuget.org/packages/Kephas.Scripting.Lua)
+
 ## Controlling the script execution
 
 ### The scripting context
@@ -65,7 +72,7 @@ and are invoked before and after the selected language service executes the scri
 
 ## The scripts
 A script implements ```IScript```, basically providing a ```Language``` (string), a ```Name``` (string), and source code (```GetSourceCodeAsync()```, ```GetSourceCode()```).
-By default, the framework supports these script:
+By default, the framework supports these script sources:
 * ```StringScript```: constructed using a string.
 * ```StreamScript```: constructed using a ```Stream```.
 * ```FileScript```: constructed using a file path. If not provided, the ```Language```  is considered to be the file extension.
