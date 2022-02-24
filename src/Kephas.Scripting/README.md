@@ -4,7 +4,7 @@
 
 The scripting area in Kephas handles dynamic code execution.
 The entry point is the ```IScriptProcessor``` singleton service, which returns a result through the ```ExecuteAsync``` method, provided with a script, execution arguments, and globals.
-~~~~
+
 ## Usage
 
 ```C#
