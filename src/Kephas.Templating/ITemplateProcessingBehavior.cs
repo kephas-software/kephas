@@ -13,32 +13,31 @@ using System.Threading.Tasks;
 using Kephas.Services;
 
 /// <summary>
-/// Singleton application service contract responsible for adding behavior to script execution for a specified language.
+/// Contract for application services responsible for adding behavior to template processing for a specified template kind.
 /// </summary>
-[SingletonAppServiceContract(AllowMultiple = true)]
+[AppServiceContract(AllowMultiple = true)]
 public interface ITemplateProcessingBehavior
 {
     /// <summary>
-    /// Interception called before invoking the language service to execute the script.
+    /// Interception invoked before the template is processed.
     /// </summary>
-    /// <param name="processingContext">Information describing the execution.</param>
+    /// <param name="processingContext">Information describing the processing.</param>
     /// <param name="token">The cancellation token.</param>
     /// <returns>
-    /// A task.
+    /// The asynchronous result.
     /// </returns>
-    Task BeforeProcessAsync(ITemplateProcessingContext processingContext, CancellationToken token);
+    Task BeforeProcessAsync(ITemplateProcessingContext processingContext, CancellationToken token) => Task.CompletedTask;
 
     /// <summary>
-    /// Interception called after invoking the language service to execute the script.
+    /// Interception invoked after the template is processed.
     /// </summary>
     /// <remarks>
-    /// The execution data contains the execution result. 
     /// The interceptor may change the result or even replace it with another one.
     /// </remarks>
-    /// <param name="processingContext">Information describing the execution.</param>
+    /// <param name="processingContext">Information describing the processing.</param>
     /// <param name="token">The cancellation token.</param>
     /// <returns>
-    /// A task.
+    /// The asynchronous result.
     /// </returns>
-    Task AfterProcessAsync(ITemplateProcessingContext processingContext, CancellationToken token);
+    Task AfterProcessAsync(ITemplateProcessingContext processingContext, CancellationToken token) => Task.CompletedTask;
 }
