@@ -16,8 +16,6 @@ Check the following packages for more information:
 ```C#
 // normally you would get the processor injected into the service constructor.
 var processor = injector.Resolve<IScriptProcessor>();
-
-// the next line uses Python scripting, so you will need also to reference Kephas.Scripting.Python.
 var result = await processor.ExecuteAsync(new PythonStringScript("name[..4] + str(age)"), new Expando { ["name"] = "Johnny", ["age"] = 42 })).PreserveThreadContext();
 Assert.Equals("John42", result);
 ```
