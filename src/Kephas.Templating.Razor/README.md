@@ -98,7 +98,8 @@ Assert.Equals("<div>Hi @Johnny@!</div>\r\n", result);
 ### Example with a template processing behavior
 
 ```C#
-public class TestTemplateProcessingBehavior : ITemplateProcessingBehavior
+[TemplateKind(RazorTemplatingEngine.Cshtml)]
+public class AddPageTemplateProcessingBehavior : ITemplateProcessingBehavior
 {
     /// <summary>
     /// Interception invoked before the template is processed.

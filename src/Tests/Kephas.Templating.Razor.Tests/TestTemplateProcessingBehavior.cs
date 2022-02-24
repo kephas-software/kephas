@@ -1,7 +1,9 @@
 ﻿namespace Kephas.Templating.Razor.Tests;
 
+using Kephas.Templating.AttributedModel;
 using Microsoft.AspNetCore.Mvc.Razor.Extensions;
 
+[TemplateKind(RazorTemplatingEngine.Cshtml)]
 public class TestTemplateProcessingBehavior : ITemplateProcessingBehavior
 {
     /// <summary>
