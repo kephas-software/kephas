@@ -19,6 +19,12 @@ What is the immediate effect:
   * The tenant identifier is passed to the running application.
   * The folder locations (config, licenses, plugins) are found in the ```{tenant}``` subdirectory of the original folder locations.
 
+Check the following packages for more information:
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Configuration](https://www.nuget.org/packages/Kephas.Configuration)
+* [Kephas.Application.Abstractions](https://www.nuget.org/packages/Kephas.Application.Abstractions)
+* [Kephas.Application](https://www.nuget.org/packages/Kephas.Application)
+
 ### Example
 
 ```c#
@@ -88,3 +94,12 @@ await config.UpdateSettingsAsync(settings, context).PreserveThreadingContext();
 The ```TenantsManagementSettings``` are available through the injectable ```IConfiguration<TenantsManagementSettings>``` service. It provides:
 * _GlobalAdmin_ (GlobalAdminSettings): settings for the global tenants administrator.
 * _Tenants_ (TenantSettings[]): list of settings for the application tenants.
+
+## IO
+By default, the AmbientServices registers the ```FolderLocationsManager``` implementation for the service ```ILocationsManager```.
+This normalizes the paths and resolves them relative to the application location. Instead, by using ```IAmbientServices.WithTenantSupport()```,
+this global service is replaced with ```TenantFolderLocationsManager``` which appends the tenant identifier prefixed by dot (.) to each of the folders.
+This has the following effects:
+* The configuration, licenses, plugins, and other locations dependent on the ```ILocationsManager``` service will return different locations for different tenants.
+* By prefixing the tenant path element with dot (.), this location is considered hidden by other services and, therefore ignored (checked with ```location.IsHiddenLocation()``` extension method).
+* 
