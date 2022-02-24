@@ -44,6 +44,7 @@ namespace Kephas.Injection
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
+        [return: NotNull]
         T Resolve<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
             where T : class
             => (T)this.Resolve(typeof(T));
