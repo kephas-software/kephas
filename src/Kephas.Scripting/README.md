@@ -39,7 +39,7 @@ It identifies the language service based on the script's language, which the ser
 ### Passing arguments
 
 The arguments passed to the execution can be referenced in the scripts directly by their name.
-However, if the ```DeconstructArgs``` scripting context options is set to false, the arguments can be accessed through the ```Args``` global variable.
+However, if the ```DeconstructArgs``` scripting context options is set to ```false```, the arguments can be accessed through the ```Args``` global variable.
 
 #### Example
 
