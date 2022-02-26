@@ -15,9 +15,14 @@ namespace Kephas.Mail.Connectivity;
 /// Connection factory for <see cref="MailKitImapConnection"/>.
 /// </summary>
 /// <seealso cref="IConnectionFactory" />
-[ConnectionKind("imap")]
+[ConnectionKind(ConnectionKind)]
 public class MailKitImapConnectionFactory : IConnectionFactory
 {
+    /// <summary>
+    /// The 'imap' connection kind.
+    /// </summary>
+    public const string ConnectionKind = "imap";
+
     private readonly IEncryptionService encryptionService;
 
     /// <summary>
