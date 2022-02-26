@@ -16,11 +16,13 @@ namespace Kephas.Messaging.Tests.Autofac
 
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Cryptography;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
+    using Kephas.Serialization.Json;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using Kephas.Testing.Application;
@@ -32,9 +34,11 @@ namespace Kephas.Messaging.Tests.Autofac
         {
             return new List<Assembly>(base.GetAssemblies())
             {
-                typeof(IEnabledServiceBehaviorRule).Assembly,     /* Kephas.Application*/
-                typeof(IContextFactory).Assembly,     /* Kephas.Application*/
-                typeof(IEnabledLazyServiceCollection<,>).Assembly,     /* Kephas.Application*/
+                typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
+                typeof(IEncryptionService).Assembly,            // Kephas.Security
+                typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
+                typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
+                typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
         }
 

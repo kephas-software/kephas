@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-using Kephas.Services;
-
 namespace Kephas.Messaging.Pipes.Tests.Routing
 {
     using System;
@@ -23,6 +20,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     using Kephas.Commands;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
+    using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
@@ -31,6 +29,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
     using Kephas.Orchestration.Interaction;
+    using Kephas.Services;
     using NUnit.Framework;
 
     using AppContext = Kephas.Application.AppContext;

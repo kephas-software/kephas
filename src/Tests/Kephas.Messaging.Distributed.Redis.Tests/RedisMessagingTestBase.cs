@@ -15,9 +15,13 @@ namespace Kephas.Messaging.Redis.Tests
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Configuration;
+    using Kephas.Connectivity;
+    using Kephas.Cryptography;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Redis.Routing;
@@ -32,11 +36,15 @@ namespace Kephas.Messaging.Redis.Tests
         {
             return new List<Assembly>(base.GetAssemblies())
             {
+                typeof(IAppLifecycleBehavior).Assembly,         // Kephas.Application.Abstractions
                 typeof(IAppManager).Assembly,                   // Kephas.Application
+                typeof(IConnectionFactory).Assembly,            // Kephas.Connectivity
+                typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
+                typeof(IEncryptionService).Assembly,            // Kephas.Security
                 typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(RedisConnectionFactory).Assembly,        // Kephas.Redis
-                typeof(RedisAppMessageRouter).Assembly,         // Kephas.Messaging.Redis
+                typeof(RedisAppMessageRouter).Assembly,         // Kephas.Messaging.Distributed.Redis
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
         }

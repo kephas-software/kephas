@@ -16,11 +16,13 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Cryptography;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
+    using Kephas.Serialization.Json;
     using Kephas.Services;
     using Kephas.Testing.Application;
     using NSubstitute;
@@ -37,8 +39,11 @@ namespace Kephas.Messaging.Tests
         {
             var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
-                typeof(IMessageBroker).Assembly, /* Kephas.Messaging.Distributed */
-                typeof(IMessageProcessor).Assembly, /* Kephas.Messaging */
+                typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
+                typeof(IEncryptionService).Assembly,            // Kephas.Security
+                typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
+                typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
+                typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
 
             return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);

@@ -10,14 +10,15 @@
 
 namespace Kephas.Messaging.Tests.Distributed
 {
+    using System;
+    using System.Collections.Generic;
+
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
-    using System;
-    using System.Collections.Generic;
 
     [TestFixture]
     public class BrokeredMessageTest

@@ -17,6 +17,8 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas;
     using Kephas.Application;
     using Kephas.Commands;
+    using Kephas.Configuration;
+    using Kephas.Cryptography;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
@@ -33,7 +35,10 @@ namespace Kephas.Messaging.Pipes.Tests
         {
             return new List<Assembly>(base.GetAssemblies())
             {
+                typeof(IAppLifecycleBehavior).Assembly,         // Kephas.Application.Abstractions
                 typeof(IAppManager).Assembly,                   // Kephas.Application
+                typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
+                typeof(IEncryptionService).Assembly,            // Kephas.Security
                 typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(PipesAppMessageRouter).Assembly,         // Kephas.Messaging.Pipes

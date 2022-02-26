@@ -22,7 +22,8 @@ namespace Kephas.Testing.Application
         {
             return new List<Assembly>(base.GetAssemblies())
                        {
-                           typeof(IAppManager).Assembly,     /* Kephas.Application*/
+                           typeof(IAppLifecycleBehavior).Assembly,      // Kephas.Application.Abstractions
+                           typeof(IAppManager).Assembly,                // Kephas.Application
                        };
         }
     }
