@@ -25,7 +25,6 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Redis.Configuration;
     using Kephas.Messaging.Redis.Routing;
-    using Kephas.Redis.Configuration;
     using Kephas.Services;
     using NUnit.Framework;
 
