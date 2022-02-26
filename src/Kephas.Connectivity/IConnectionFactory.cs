@@ -5,9 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Connectivity;
+
+using Kephas.Services;
 
 /// <summary>
 /// Factory for connections of a certain kind.
