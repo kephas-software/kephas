@@ -38,6 +38,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>kephas redis</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -59,13 +60,6 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -85,6 +79,7 @@
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
+        <ProjectReference Include="..\Kephas.Connectivity\Kephas.Connectivity.csproj" />
         <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
     </ItemGroup>
 
@@ -98,6 +93,7 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

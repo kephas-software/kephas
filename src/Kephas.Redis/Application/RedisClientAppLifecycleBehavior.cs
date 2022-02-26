@@ -14,7 +14,10 @@ namespace Kephas.Redis.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Connectivity;
+    using Kephas.Injection;
     using Kephas.Operations;
+    using Kephas.Redis.Connectivity;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -24,15 +27,15 @@ namespace Kephas.Redis.Application
     [ProcessingPriority(Priority.High)]
     public class RedisClientAppLifecycleBehavior : IAppLifecycleBehavior
     {
-        private readonly IRedisConnectionManager redisClient;
+        private readonly IConnectionFactory? redisConnectionFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisClientAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="connectionFactory">The Redis connection factory.</param>
-        public RedisClientAppLifecycleBehavior(IRedisConnectionManager connectionFactory)
+        /// <param name="injector">The injector.</param>
+        public RedisClientAppLifecycleBehavior(IInjector injector)
         {
-            this.redisClient = connectionFactory;
+            this.redisConnectionFactory = injector.TryResolve<IConnectionFactory>(RedisConnectionFactory.ConnectionKind);
         }
 
         /// <summary>
@@ -47,7 +50,11 @@ namespace Kephas.Redis.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.redisClient, appContext, cancellationToken).PreserveThreadContext();
+            if (this.redisConnectionFactory != null)
+            {
+                await ServiceHelper.InitializeAsync(this.redisConnectionFactory, appContext, cancellationToken).PreserveThreadContext();
+            }
+
             return true.ToOperationResult();
         }
 
@@ -63,7 +70,11 @@ namespace Kephas.Redis.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.redisClient, appContext, cancellationToken).PreserveThreadContext();
+            if (this.redisConnectionFactory != null)
+            {
+                await ServiceHelper.FinalizeAsync(this.redisConnectionFactory, appContext, cancellationToken).PreserveThreadContext();
+            }
+
             return true.ToOperationResult();
         }
     }

@@ -8,24 +8,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Redis.Interaction
-{
-    using Kephas.ExceptionHandling;
-    using Kephas.Interaction;
+namespace Kephas.Redis.Interaction;
 
+using Kephas.ExceptionHandling;
+using Kephas.Interaction;
+
+/// <summary>
+/// The Redis connection manager started signal. Issued after the manager completed initialization.
+/// </summary>
+public class ConnectionManagerStartedSignal : SignalBase
+{
     /// <summary>
-    /// The Redis connection manager started signal. Issued after the manager completed initialization.
+    /// Initializes a new instance of the <see cref="ConnectionManagerStartedSignal"/> class.
     /// </summary>
-    public class ConnectionManagerStartedSignal : SignalBase
+    /// <param name="message">Optional. The message.</param>
+    /// <param name="severity">Optional. The severity.</param>
+    public ConnectionManagerStartedSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+        : base(message ?? "The Redis connection manager is started.", severity)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionManagerStartedSignal"/> class.
-        /// </summary>
-        /// <param name="message">Optional. The message.</param>
-        /// <param name="severity">Optional. The severity.</param>
-        public ConnectionManagerStartedSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
-            : base(message ?? "The Redis connection manager is started.", severity)
-        {
-        }
     }
 }

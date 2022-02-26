@@ -8,24 +8,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Redis.Interaction
-{
-    using Kephas.ExceptionHandling;
-    using Kephas.Interaction;
+namespace Kephas.Redis.Interaction;
 
+using Kephas.ExceptionHandling;
+using Kephas.Interaction;
+
+/// <summary>
+/// The Redis connection manager stopping signal. Issued before the manager starts finalization/disposal.
+/// </summary>
+public class ConnectionManagerStoppingSignal : SignalBase
+{
     /// <summary>
-    /// The Redis connection manager stopping signal. Issued before the manager starts finalization/disposal.
+    /// Initializes a new instance of the <see cref="ConnectionManagerStoppingSignal"/> class.
     /// </summary>
-    public class ConnectionManagerStoppingSignal : SignalBase
+    /// <param name="message">Optional. The message.</param>
+    /// <param name="severity">Optional. The severity.</param>
+    public ConnectionManagerStoppingSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+        : base(message ?? "The Redis connection manager is stopping.", severity)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionManagerStoppingSignal"/> class.
-        /// </summary>
-        /// <param name="message">Optional. The message.</param>
-        /// <param name="severity">Optional. The severity.</param>
-        public ConnectionManagerStoppingSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
-            : base(message ?? "The Redis connection manager is stopping.", severity)
-        {
-        }
     }
 }

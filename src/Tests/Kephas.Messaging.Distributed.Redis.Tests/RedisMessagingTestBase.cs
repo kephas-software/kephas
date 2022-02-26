@@ -22,6 +22,7 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Redis.Routing;
     using Kephas.Redis;
+    using Kephas.Redis.Connectivity;
     using Kephas.Serialization.Json;
     using Kephas.Testing.Injection;
 
@@ -34,7 +35,7 @@ namespace Kephas.Messaging.Redis.Tests
                 typeof(IAppManager).Assembly,                   // Kephas.Application
                 typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
-                typeof(IRedisConnectionManager).Assembly,       // Kephas.Redis
+                typeof(RedisConnectionFactory).Assembly,        // Kephas.Redis
                 typeof(RedisAppMessageRouter).Assembly,         // Kephas.Messaging.Redis
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };

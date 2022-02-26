@@ -23,6 +23,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
+    using Kephas.Messaging.Redis.Configuration;
     using Kephas.Messaging.Redis.Routing;
     using Kephas.Redis.Configuration;
     using Kephas.Services;
@@ -228,12 +229,12 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         {
             public object? GetSettings(Type settingsType, IContext? context)
             {
-                if (settingsType == typeof(RedisClientSettings))
+                if (settingsType == typeof(RedisRoutingSettings))
                 {
-                    return new RedisClientSettings
+                    return new RedisRoutingSettings
                     {
                         Namespace = "unit-test",
-                        ConnectionString = "localhost",
+                        ConnectionUri = "redis://localhost",
                     };
                 }
 
