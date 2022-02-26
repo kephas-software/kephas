@@ -38,6 +38,6 @@ public class MailKitImapConnectionFactory : IConnectionFactory
     /// </returns>
     public IConnection CreateConnection(IConnectionContext context)
     {
-        return new MailKitImapConnection(this.encryptionService);
+        return new MailKitImapConnection(context, this.encryptionService);
     }
 }

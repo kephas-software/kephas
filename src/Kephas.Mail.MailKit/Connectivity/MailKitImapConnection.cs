@@ -19,17 +19,20 @@ namespace Kephas.Mail.Connectivity;
 /// <seealso cref="IConnection" />
 public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
 {
+    private readonly IConnectionContext connectionContext;
     private readonly IEncryptionService encryptionService;
-    private ImapClient imapClient;
+    private readonly ImapClient imapClient;
     private bool disposedValue;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MailKitImapConnection" /> class.
     /// </summary>
+    /// <param name="connectionContext">The connection context.</param>
     /// <param name="encryptionService">The encryption service.</param>
     /// <exception cref="System.ArgumentNullException">encryptionService</exception>
-    public MailKitImapConnection(IEncryptionService encryptionService)
+    public MailKitImapConnection(IConnectionContext connectionContext, IEncryptionService encryptionService)
     {
+        this.connectionContext = connectionContext;
         this.encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
         this.imapClient = new ImapClient
         {
@@ -48,13 +51,13 @@ public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
     /// <summary>
     /// Opens the connection asynchronously.
     /// </summary>
-    /// <param name="context">The context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>
     /// The asynchronous result.
     /// </returns>
-    public virtual async Task OpenAsync(IConnectionContext context, CancellationToken cancellationToken = default)
+    public virtual async Task OpenAsync(CancellationToken cancellationToken = default)
     {
+        var context = this.connectionContext;
         if (context.Host is null)
         {
             throw new ArgumentException($"The host is not provided. Please provide a host URI as: imap://serverName:port.", nameof(context.Host));
