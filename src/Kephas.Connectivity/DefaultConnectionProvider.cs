@@ -5,11 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+namespace Kephas.Connectivity;
+
 using Kephas.Collections;
 using Kephas.Logging;
+using Kephas.Security.Authentication;
 using Kephas.Services;
-
-namespace Kephas.Connectivity;
 
 /// <summary>
 /// The default connection provider.
@@ -61,15 +62,16 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// <summary>
     /// Creates the connection configured through the connection options.
     /// </summary>
-    /// <param name="options">The options for connection configuration.</param>
+    /// <param name="host">The host URI.</param>
+    /// <param name="credentials">Optional. The credentials. Although typically required, not all connections need credentials.</param>
+    /// <param name="kind">Optional. The connection kind. If not provided, the host scheme is used.</param>
+    /// <param name="options">Optional. Other options for connection configuration.</param>
     /// <returns>
     /// The newly created connection.
     /// </returns>
-    public IConnection CreateConnection(Action<IConnectionContext> options)
+    public IConnection CreateConnection(Uri host, ICredentials? credentials = null, string? kind = null, Action<IConnectionContext>? options = null)
     {
-        options = options ?? throw new ArgumentNullException(nameof(options));
-
-        var context = this.CreateConnectionContext(options);
+        var context = this.CreateConnectionContext(host, credentials, kind, options);
         var factory = this.SelectConnectionFactory(context);
 
         return factory.Value.CreateConnection(context);
@@ -93,13 +95,20 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// <summary>
     /// Creates the scripting context.
     /// </summary>
+    /// <param name="host">The host.</param>
+    /// <param name="credentials">The credentials.</param>
+    /// <param name="kind">The kind.</param>
     /// <param name="optionsConfig">Optional. The options configuration.</param>
     /// <returns>
-    /// A new instance implementing <see cref="IConnectionContext"/>.
+    /// A new instance implementing <see cref="IConnectionContext" />.
     /// </returns>
-    protected virtual IConnectionContext CreateConnectionContext(Action<IConnectionContext>? optionsConfig = null)
+    protected virtual IConnectionContext CreateConnectionContext(Uri host, ICredentials? credentials = null, string? kind = null, Action<IConnectionContext>? optionsConfig = null)
     {
         var context = this.ContextFactory.CreateContext<ConnectionContext>();
+
+        context.Host = host;
+        context.Credentials = credentials;
+        context.Kind = kind ?? host.Scheme;
 
         optionsConfig?.Invoke(context);
         return context;

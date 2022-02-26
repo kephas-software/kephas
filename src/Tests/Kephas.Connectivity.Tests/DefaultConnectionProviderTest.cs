@@ -32,11 +32,9 @@ public class DefaultConnectionProviderTest : ConnectivityTestBase
         var provider = container.Resolve<IConnectionProvider>();
 
         var expected = Substitute.For<IConnection>();
-        var actual = provider.CreateConnection(ctx =>
-        {
-            ctx["connection"] = expected;
-            ctx.Host = new Uri("test://host:121");
-        });
+        var actual = provider.CreateConnection(
+            "test://host:121",
+            options: ctx => { ctx["connection"] = expected; });
 
         Assert.AreEqual(expected, actual);
     }
@@ -48,10 +46,8 @@ public class DefaultConnectionProviderTest : ConnectivityTestBase
         var provider = container.Resolve<IConnectionProvider>();
 
         var expected = Substitute.For<IConnection>();
-        Assert.Throws<ConnectivityException>(() => provider.CreateConnection(ctx =>
-        {
-            ctx["connection"] = expected;
-            ctx.Host = new Uri("test://host:121");
-        }));
+        Assert.Throws<ConnectivityException>(() => provider.CreateConnection(
+            "test://host:121",
+            options: ctx => { ctx["connection"] = expected; }));
     }
 }

@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Connectivity;
+
+using Kephas.Security.Authentication;
+using Kephas.Services;
 
 /// <summary>
 /// Central service for creating connections.
@@ -18,9 +19,25 @@ public interface IConnectionProvider
     /// <summary>
     /// Creates the connection configured through the connection options.
     /// </summary>
-    /// <param name="options">The options for connection configuration.</param>
+    /// <param name="host">The host URI.</param>
+    /// <param name="credentials">Optional. The credentials. Although typically required, not all connections need credentials.</param>
+    /// <param name="kind">Optional. The connection kind. If not provided, the host scheme is used.</param>
+    /// <param name="options">Optional. Other options for connection configuration.</param>
     /// <returns>
     /// The newly created connection.
     /// </returns>
-    IConnection CreateConnection(Action<IConnectionContext> options);
+    IConnection CreateConnection(Uri host, ICredentials? credentials = null, string? kind = null, Action<IConnectionContext>? options = null);
+
+    /// <summary>
+    /// Creates the connection configured through the connection options.
+    /// </summary>
+    /// <param name="host">The host URI as string.</param>
+    /// <param name="credentials">Optional. The credentials. Although typically required, not all connections need credentials.</param>
+    /// <param name="kind">Optional. The connection kind. If not provided, the host scheme is used.</param>
+    /// <param name="options">Optional. Other options for connection configuration.</param>
+    /// <returns>
+    /// The newly created connection.
+    /// </returns>
+    IConnection CreateConnection(string host, ICredentials? credentials = null, string? kind = null, Action<IConnectionContext>? options = null)
+        => this.CreateConnection(new Uri(host ?? throw new ArgumentNullException(nameof(host))), credentials, kind, options);
 }
