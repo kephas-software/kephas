@@ -7,6 +7,8 @@ The entry point is the ```IScriptProcessor``` singleton service, which returns a
 
 Check the following packages for more information:
 * [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+
+Packages providing scripting implementations:
 * [Kephas.Scripting.CSharp](https://www.nuget.org/packages/Kephas.Scripting.CSharp)
 * [Kephas.Scripting.Python](https://www.nuget.org/packages/Kephas.Scripting.Python)
 * [Kephas.Scripting.Lua](https://www.nuget.org/packages/Kephas.Scripting.Lua)

@@ -12,7 +12,7 @@ Check the following packages for more information:
 
 * String based script execution
 
-```C#
+```c#
 // normally you would get the processor injected into the service constructor.
 var processor = injector.Resolve<IScriptProcessor>();
 
