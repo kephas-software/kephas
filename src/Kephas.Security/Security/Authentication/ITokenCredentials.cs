@@ -1,31 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TokenCredentials.cs" company="Kephas Software SRL">
+// <copyright file="ITokenCredentials.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the token authentication context class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Security.Authentication
 {
-    using Kephas.Dynamic;
-
     /// <summary>
-    /// Token based credentials.
+    /// Credentials for a token.
     /// </summary>
-    public class TokenCredentials : Expando, ICredentials
+    /// <seealso cref="ICredentials" />
+    public interface ITokenCredentials : ICredentials
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenCredentials"/> class.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        public TokenCredentials(string token)
-        {
-            this.Token = token ?? throw new ArgumentNullException(nameof(token));
-        }
-
         /// <summary>
         /// Gets the token.
         /// </summary>

@@ -8,40 +8,39 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security.Authentication
+namespace Kephas.Security.Authentication;
+
+using Kephas.Dynamic;
+
+/// <summary>
+/// User and encrypted password based credentials.
+/// </summary>
+public class UserPasswordCredentials : Expando, IUserPasswordCredentials
 {
-    using Kephas.Dynamic;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserPasswordCredentials"/> class.
+    /// </summary>
+    /// <param name="userName">Name of the user.</param>
+    /// <param name="password">The user encrypted password.</param>
+    public UserPasswordCredentials(string userName, string password)
+    {
+        this.UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+        this.Password = password ?? throw new ArgumentNullException(nameof(password));
+    }
 
     /// <summary>
-    /// User and password based credentials.
+    /// Gets the name of the user.
     /// </summary>
-    public class UserPasswordCredentials : Expando, ICredentials
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserPasswordCredentials"/> class.
-        /// </summary>
-        /// <param name="userName">Name of the user.</param>
-        /// <param name="password">The user password.</param>
-        public UserPasswordCredentials(string userName, string password)
-        {
-            this.UserName = userName;
-            this.Password = password;
-        }
+    /// <value>
+    /// The name of the user.
+    /// </value>
+    public string UserName { get; }
 
-        /// <summary>
-        /// Gets the name of the user.
-        /// </summary>
-        /// <value>
-        /// The name of the user.
-        /// </value>
-        public string UserName { get; }
-
-        /// <summary>
-        /// Gets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
-        /// </value>
-        public string Password { get; }
-    }
+    /// <summary>
+    /// Gets the encrypted password.
+    /// </summary>
+    /// <value>
+    /// The encrypted password.
+    /// </value>
+    public string Password { get; }
 }

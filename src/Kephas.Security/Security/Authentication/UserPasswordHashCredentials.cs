@@ -17,7 +17,7 @@ namespace Kephas.Security.Authentication
     /// <summary>
     /// User and password hash based credentials.
     /// </summary>
-    public class UserPasswordHashCredentials : Expando, ICredentials
+    public class UserPasswordHashCredentials : Expando, IUserPasswordHashCredentials
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserPasswordHashCredentials"/> class.
@@ -26,7 +26,8 @@ namespace Kephas.Security.Authentication
         /// <param name="passwordHash">The hashed user password, encoded as a Base64 string.</param>
         public UserPasswordHashCredentials(string userName, string passwordHash)
         {
-            this.UserName = userName;
+            passwordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
+            this.UserName = userName ?? throw new ArgumentNullException(nameof(userName));
             this.PasswordHash = Convert.FromBase64String(passwordHash);
         }
 
@@ -37,8 +38,8 @@ namespace Kephas.Security.Authentication
         /// <param name="passwordHash">The hashed user password.</param>
         public UserPasswordHashCredentials(string userName, byte[] passwordHash)
         {
-            this.UserName = userName;
-            this.PasswordHash = passwordHash;
+            this.UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+            this.PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
         }
 
         /// <summary>
