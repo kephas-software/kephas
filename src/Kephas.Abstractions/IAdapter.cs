@@ -25,7 +25,7 @@ public interface IAdapter
 /// Provides the <see cref="Of"/>property returning the adapted object.
 /// </summary>
 /// <typeparam name="T">The type of the adapted object.</typeparam>
-public interface IAdapter<T> : IAdapter
+public interface IAdapter<out T> : IAdapter
     where T : notnull
 {
     /// <summary>
