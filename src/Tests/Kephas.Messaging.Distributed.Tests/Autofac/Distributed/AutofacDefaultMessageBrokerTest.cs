@@ -24,6 +24,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Queues;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
@@ -327,12 +328,12 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
 
         [ProcessingPriority(Priority.High)]
         [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
-        public class CanDisableMessageRouter : InProcessAppMessageRouter
+        public class CanDisableMessageRouter : DefaultAppMessageRouter
         {
             private object sync = new object();
 
             public CanDisableMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-                : base(contextFactory, appRuntime, messageProcessor)
+                : base(contextFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(contextFactory))
             {
             }
 

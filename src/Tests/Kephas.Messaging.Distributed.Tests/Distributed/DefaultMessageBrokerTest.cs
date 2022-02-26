@@ -24,6 +24,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Queues;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
@@ -254,7 +255,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task ProcessAsync_Ping_over_serialization_success()
         {
-            var container = this.CreateInjector(assemblies: new[] { typeof(IJsonSerializerSettingsProvider).Assembly }, parts: new[] { typeof(RemoteMessageBroker) });
+            var container = this.CreateInjector(parts: new[] { typeof(RemoteMessageBroker) });
             var appRuntime = container.Resolve<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
@@ -425,12 +426,12 @@ namespace Kephas.Messaging.Tests.Distributed
 
         [ProcessingPriority(Priority.High)]
         [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
-        public class CanDisableMessageRouter : InProcessAppMessageRouter
+        public class CanDisableMessageRouter : DefaultAppMessageRouter
         {
             private object sync = new object();
 
             public CanDisableMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-                : base(contextFactory, appRuntime, messageProcessor)
+                : base(contextFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(contextFactory))
             {
             }
 
@@ -462,10 +463,10 @@ namespace Kephas.Messaging.Tests.Distributed
 
         [MessageRouter(IsOptional = true)]
         [Override]
-        public class OverrideMessageRouter : InProcessAppMessageRouter
+        public class OverrideMessageRouter : DefaultAppMessageRouter
         {
             public OverrideMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-                : base(contextFactory, appRuntime, messageProcessor)
+                : base(contextFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(contextFactory))
             {
             }
         }

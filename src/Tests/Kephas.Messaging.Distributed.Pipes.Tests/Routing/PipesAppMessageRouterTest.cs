@@ -11,18 +11,19 @@
 namespace Kephas.Messaging.Pipes.Tests.Routing
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Commands;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Queues;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Pipes.Configuration;
@@ -37,6 +38,15 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     [TestFixture]
     public class PipesAppMessageRouterTest : PipesMessagingTestBase
     {
+        public override IEnumerable<Type> GetDefaultParts()
+        {
+            return new List<Type>(base.GetDefaultParts())
+            {
+                typeof(PipesSettingsProvider),
+                typeof(InProcessStaticMessageQueueStore),
+            };
+        }
+
         [Test]
         public void Injection()
         {
@@ -53,7 +63,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices(),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
                     appId: masterId,
@@ -66,7 +75,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .RegisterAppArgs(slaveArgs),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -102,7 +110,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbMaster),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
                     appId: masterId,
@@ -118,7 +125,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbSlave)
                     .RegisterAppArgs(slaveArgs),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -157,7 +163,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices(),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
                     appId: masterId,
@@ -170,7 +175,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .RegisterAppArgs(slaveArgs),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -204,7 +208,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices(),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
                     appId: masterId,
@@ -217,7 +220,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .RegisterAppArgs(slaveArgs),
-                parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -290,6 +292,29 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             public async Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
             {
                 await Task.Yield();
+            }
+        }
+
+        [OverridePriority(Priority.High)]
+        public class InProcessStaticMessageQueueStore : InProcessMessageQueueStore
+        {
+            private static readonly ConcurrentDictionary<string, IMessageQueue> Channels = new ();
+
+            public InProcessStaticMessageQueueStore(IContextFactory contextFactory)
+                : base(contextFactory)
+            {
+            }
+
+            /// <summary>
+            /// Gets the message queue with the provided name.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            /// <returns>
+            /// The message queue.
+            /// </returns>
+            public override IMessageQueue GetMessageQueue(string name)
+            {
+                return Channels.GetOrAdd(name, _ => this.CreateMessageQueue(name));
             }
         }
     }

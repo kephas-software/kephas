@@ -11,6 +11,7 @@
 namespace Kephas.Messaging.Redis.Tests.Routing
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -21,6 +22,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Queues;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Redis.Configuration;
@@ -33,6 +35,15 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     [TestFixture]
     public class RedisAppMessageRouterTest : RedisMessagingTestBase
     {
+        public override IEnumerable<Type> GetDefaultParts()
+        {
+            return new List<Type>(base.GetDefaultParts())
+            {
+                typeof(RedisSettingsProvider),
+                typeof(InProcessStaticMessageQueueStore),
+            };
+        }
+
         [Test]
         public void Injection()
         {
@@ -49,16 +60,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -90,8 +99,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbMaster)
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var sbSlave = new StringBuilder();
@@ -100,8 +108,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbSlave)
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -135,16 +142,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -174,16 +179,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -243,6 +246,29 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             public async Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
             {
                 await Task.Yield();
+            }
+        }
+
+        [OverridePriority(Priority.High)]
+        public class InProcessStaticMessageQueueStore : InProcessMessageQueueStore
+        {
+            private static readonly ConcurrentDictionary<string, IMessageQueue> Channels = new ();
+
+            public InProcessStaticMessageQueueStore(IContextFactory contextFactory)
+                : base(contextFactory)
+            {
+            }
+
+            /// <summary>
+            /// Gets the message queue with the provided name.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            /// <returns>
+            /// The message queue.
+            /// </returns>
+            public override IMessageQueue GetMessageQueue(string name)
+            {
+                return Channels.GetOrAdd(name, _ => this.CreateMessageQueue(name));
             }
         }
     }

@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Tests.Autofac
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Behaviors;
     using Kephas.Configuration;
     using Kephas.Cryptography;
     using Kephas.Injection;
@@ -36,6 +37,7 @@ namespace Kephas.Messaging.Tests.Autofac
             {
                 typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
                 typeof(IEncryptionService).Assembly,            // Kephas.Security
+                typeof(IBehaviorRule<>).Assembly,               // Kephas.Behaviors
                 typeof(IMessageBroker).Assembly,                // Kephas.Messaging.Distributed
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
