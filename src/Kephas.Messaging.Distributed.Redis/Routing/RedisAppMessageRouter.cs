@@ -19,7 +19,6 @@ namespace Kephas.Messaging.Redis.Routing
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Connectivity;
-    using Kephas.ExceptionHandling;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
@@ -28,8 +27,6 @@ namespace Kephas.Messaging.Redis.Routing
     using Kephas.Messaging.Redis.Configuration;
     using Kephas.Model.AttributedModel;
     using Kephas.Operations;
-    using Kephas.Redis;
-    using Kephas.Redis.Configuration;
     using Kephas.Redis.Connectivity;
     using Kephas.Redis.Interaction;
     using Kephas.Serialization;
