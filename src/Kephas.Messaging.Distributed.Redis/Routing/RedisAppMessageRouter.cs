@@ -18,16 +18,19 @@ namespace Kephas.Messaging.Redis.Routing
 
     using Kephas.Application;
     using Kephas.Configuration;
+    using Kephas.Connectivity;
     using Kephas.ExceptionHandling;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
+    using Kephas.Messaging.Redis.Configuration;
     using Kephas.Model.AttributedModel;
     using Kephas.Operations;
     using Kephas.Redis;
     using Kephas.Redis.Configuration;
+    using Kephas.Redis.Connectivity;
     using Kephas.Redis.Interaction;
     using Kephas.Serialization;
     using Kephas.Services;
@@ -42,19 +45,19 @@ namespace Kephas.Messaging.Redis.Routing
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class RedisAppMessageRouter : InProcessAppMessageRouter
     {
-        private readonly IRedisConnectionManager redisConnectionManager;
+        private readonly IConnectionProvider connectionProvider;
         private readonly ISerializationService serializationService;
-        private readonly IConfiguration<RedisClientSettings> redisConfiguration;
+        private readonly IConfiguration<RedisRoutingSettings> redisConfiguration;
         private readonly IEventHub eventHub;
 
         private readonly ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, IMessage? reply)> taskSource,
             Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new();
 
         private ISubscriber? publisher;
-        private IConnectionMultiplexer? subConnection;
+        private IRedisConnection? subConnection;
         private ISubscriber? subscriber;
-        private string redisRootChannelName;
-        private IConnectionMultiplexer? pubConnection;
+        private string? redisRootChannelName;
+        private IRedisConnection? pubConnection;
         private OperationState redisChannelInitializationState = OperationState.NotStarted;
         private IEventSubscription? redisClientStartedSubscription;
         private IEventSubscription? redisClientStoppingSubscription;
@@ -65,7 +68,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="redisConnectionManager">The Redis connection manager.</param>
+        /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
@@ -73,13 +76,13 @@ namespace Kephas.Messaging.Redis.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
-            IRedisConnectionManager redisConnectionManager,
+            IConnectionProvider connectionProvider,
             ISerializationService serializationService,
-            IConfiguration<RedisClientSettings> redisConfiguration,
+            IConfiguration<RedisRoutingSettings> redisConfiguration,
             IEventHub eventHub)
             : base(contextFactory, appRuntime, messageProcessor)
         {
-            this.redisConnectionManager = redisConnectionManager;
+            this.connectionProvider = connectionProvider;
             this.serializationService = serializationService;
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
@@ -97,52 +100,52 @@ namespace Kephas.Messaging.Redis.Routing
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 
-            if (!this.redisConnectionManager.IsInitialized)
-            {
-                this.Logger.Info($"Redis client not initialized, postponing initialization of the Redis channel.");
-
-                this.redisClientStartedSubscription = this.eventHub.Subscribe<ConnectionManagerStartedSignal>((e, ctx, ct) => this.InitializeRedisChannelAsync(e, ct));
-
-                return;
-            }
-
-            await this.InitializeRedisChannelAsync(new ConnectionManagerStartedSignal(), cancellationToken).PreserveThreadContext();
+            await this.InitializeRedisChannelAsync(cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
         /// Initializes the Redis channel asynchronously.
         /// </summary>
-        /// <param name="signal">The Redis client started signal.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        protected virtual async Task InitializeRedisChannelAsync(ConnectionManagerStartedSignal signal, CancellationToken cancellationToken)
+        protected virtual async Task InitializeRedisChannelAsync(CancellationToken cancellationToken)
         {
             this.redisClientStartedSubscription?.Dispose();
             this.redisClientStartedSubscription = null;
 
             this.redisClientStoppingSubscription = this.eventHub.Subscribe<ConnectionManagerStoppingSignal>((e, ctx) => this.DisposeRedisChannel(e));
 
-            if (signal.Severity.IsError())
-            {
-                this.redisChannelInitializationState = OperationState.Failed;
-                this.Logger.Info("Redis client initialization failed, cancelling initialization of the Redis channel. The routing will fallback to the base type '{routerBaseType}'.", typeof(RedisAppMessageRouter).BaseType);
-                return;
-            }
-
             try
             {
                 this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
 
-                var redisNamespace = this.redisConfiguration.GetSettings(this.AppContext).Namespace;
+                var redisSettings = this.redisConfiguration.GetSettings(this.AppContext);
+                var redisNamespace = redisSettings.Namespace;
                 this.redisRootChannelName = string.IsNullOrEmpty(redisNamespace) ? ChannelType : $"{redisNamespace}:{ChannelType}";
 
-                this.pubConnection = this.redisConnectionManager.CreateConnection();
-                this.publisher = this.pubConnection.GetSubscriber();
+                var connectionUri = redisSettings.ConnectionUri;
+                if (string.IsNullOrEmpty(connectionUri))
+                {
+                    throw new RoutingException($"The connection URI is not set in '{typeof(RedisRoutingSettings)}'.");
+                }
 
-                this.subConnection = this.redisConnectionManager.CreateConnection();
-                this.subscriber = this.subConnection.GetSubscriber();
+                var connection = this.connectionProvider.CreateConnection(connectionUri, options: ctx => ctx.Impersonate(this.AppContext));
+                this.pubConnection = connection as IRedisConnection;
+                if (this.pubConnection is null)
+                {
+                    throw new RoutingException($"Expected a {typeof(IRedisConnection)}, but received a {connection?.GetType()}.");
+                }
+                this.publisher = this.pubConnection.Of.GetSubscriber();
+
+                connection = this.connectionProvider.CreateConnection(connectionUri, options: ctx => ctx.Impersonate(this.AppContext));
+                this.subConnection = connection as IRedisConnection;
+                if (this.subConnection is null)
+                {
+                    throw new RoutingException($"Expected a {typeof(IRedisConnection)}, but received a {connection?.GetType()}.");
+                }
+                this.subscriber = this.subConnection.Of.GetSubscriber();
 
                 await this.subscriber.SubscribeAsync(this.redisRootChannelName, this.HandleOnMessage).PreserveThreadContext();
                 await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}", this.HandleOnMessage).PreserveThreadContext();
@@ -246,7 +249,7 @@ namespace Kephas.Messaging.Redis.Routing
                     var serializedMessage = await this.serializationService
                         .SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
                         .PreserveThreadContext();
-                    await this.PublishAsync(serializedMessage, this.redisRootChannelName, brokeredMessage.IsOneWay)
+                    await this.PublishAsync(serializedMessage, this.redisRootChannelName!, brokeredMessage.IsOneWay)
                         .PreserveThreadContext();
                 }
 
@@ -287,7 +290,7 @@ namespace Kephas.Messaging.Redis.Routing
 
             return string.IsNullOrEmpty(recipient.AppInstanceId)
                         ? string.IsNullOrEmpty(recipient.AppId)
-                            ? this.redisRootChannelName
+                            ? this.redisRootChannelName!
                             : $"{this.redisRootChannelName}:{recipient.AppId}"
                         : $"{this.redisRootChannelName}:{recipient.AppInstanceId}";
         }
@@ -324,7 +327,7 @@ namespace Kephas.Messaging.Redis.Routing
 
             if (this.redisChannelInitializationState == OperationState.Completed)
             {
-                this.redisConnectionManager.DisposeConnection(this.pubConnection!);
+                this.pubConnection?.Dispose();
                 this.pubConnection = null;
 
                 try
@@ -340,7 +343,7 @@ namespace Kephas.Messaging.Redis.Routing
                     this.Logger.Error(ex, $"Errors occured during Redis subscription cancellation.");
                 }
 
-                this.redisConnectionManager.DisposeConnection(this.subConnection!);
+                this.subConnection?.Dispose();
                 this.subConnection = null;
 
                 this.redisChannelInitializationState = OperationState.NotStarted;
