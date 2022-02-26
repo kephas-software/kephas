@@ -47,8 +47,8 @@ namespace Kephas.Messaging.Distributed.Routing
             this.AppRuntime = appRuntime;
             this.MessageProcessor = messageProcessor;
 
-            this.InitializationMonitor = new InitializationMonitor<InProcessAppMessageRouter>(this.GetType());
-            this.FinalizationMonitor = new FinalizationMonitor<InProcessAppMessageRouter>(this.GetType());
+            this.InitializationMonitor = new InitializationMonitor<IMessageRouter>(this.GetType());
+            this.FinalizationMonitor = new FinalizationMonitor<IMessageRouter>(this.GetType());
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <value>
         /// The initialization monitor.
         /// </value>
-        protected InitializationMonitor<InProcessAppMessageRouter> InitializationMonitor { get; }
+        protected InitializationMonitor<IMessageRouter> InitializationMonitor { get; }
 
         /// <summary>
         /// Gets the finalization monitor.
@@ -102,7 +102,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <value>
         /// The finalization monitor.
         /// </value>
-        protected FinalizationMonitor<InProcessAppMessageRouter> FinalizationMonitor { get; }
+        protected FinalizationMonitor<IMessageRouter> FinalizationMonitor { get; }
 
         /// <summary>
         /// Initializes the service asynchronously.
