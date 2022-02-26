@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 
 using Kephas.Configuration;
+using Kephas.Connectivity;
 using Kephas.Data;
 using Kephas.Data.Capabilities;
 using Kephas.Data.Commands.Factory;
@@ -19,7 +20,9 @@ using Kephas.Data.Redis.Configuration;
 using Kephas.Data.Store;
 using Kephas.Injection;
 using Kephas.Redis;
+using Kephas.Redis.Connectivity;
 using Kephas.Serialization;
+using Kephas.Services;
 using StackExchange.Redis;
 
 /// <summary>
@@ -28,30 +31,30 @@ using StackExchange.Redis;
 [SupportedDataStoreKinds(DataStoreKind.Redis)]
 public class RedisDataContext : DataContextBase
 {
-    private readonly IRedisConnectionManager connectionManager;
+    private readonly IConnectionProvider connectionProvider;
     private readonly ISerializationService serializationService;
     private readonly IConfiguration<RedisDbSettings> dbConfiguration;
 
     private IDatabase? database;
-    private IConnectionMultiplexer? dbConnection;
+    private IRedisConnection? dbConnection;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RedisDataContext"/> class.
     /// </summary>
-    /// <param name="connectionManager">The redis connection manager.</param>
+    /// <param name="connectionProvider">The connection provider.</param>
     /// <param name="injector">The injector.</param>
     /// <param name="dataCommandProvider">The data command provider.</param>
     /// <param name="serializationService">The serialization service.</param>
     /// <param name="dbConfiguration">The Redis database settings.</param>
     public RedisDataContext(
-        IRedisConnectionManager connectionManager,
+        IConnectionProvider connectionProvider,
         IInjector injector,
         IDataCommandProvider dataCommandProvider,
         ISerializationService serializationService,
         IConfiguration<RedisDbSettings> dbConfiguration)
         : base(injector, dataCommandProvider)
     {
-        this.connectionManager = connectionManager ?? throw new ArgumentNullException(nameof(connectionManager));
+        this.connectionProvider = connectionProvider ?? throw new ArgumentNullException(nameof(connectionProvider));
         this.serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
         this.dbConfiguration = dbConfiguration;
     }
@@ -92,24 +95,14 @@ public class RedisDataContext : DataContextBase
         base.Initialize(dataInitializationContext);
 
         var settings = this.dbConfiguration.GetSettings(dataInitializationContext);
-        this.dbConnection = this.connectionManager.CreateConnection();
-        this.database = this.dbConnection.GetDatabase(settings?.Database ?? RedisDbSettings.DefaultDatabase);
-    }
-
-    /// <summary>
-    /// Releases the unmanaged resources used by the Kephas.Services.Context and optionally releases
-    /// the managed resources.
-    /// </summary>
-    /// <param name="disposing">True to release both managed and unmanaged resources; false to
-    ///                         release only unmanaged resources.</param>
-    protected override void Dispose(bool disposing)
-    {
-        if (this.dbConnection != null)
+        var connection = this.connectionProvider.CreateConnection(settings.ConnectionUri!, options: ctx => ctx.Impersonate(dataInitializationContext));
+        this.dbConnection = connection as IRedisConnection;
+        if (this.dbConnection is null)
         {
-            this.connectionManager.DisposeConnection(this.dbConnection);
+            throw new DataException($"Expected a {typeof(IRedisConnection)}, instead received a {connection?.GetType()}.");
         }
 
-        base.Dispose(disposing);
+        this.database = this.dbConnection.Of.GetDatabase(settings?.Database ?? RedisDbSettings.DefaultDatabase);
     }
 
     /// <summary>

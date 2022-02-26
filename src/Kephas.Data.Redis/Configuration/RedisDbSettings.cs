@@ -22,6 +22,11 @@ public class RedisDbSettings : ISettings
     public const int DefaultDatabase = 1;
 
     /// <summary>
+    /// Gets or sets the connection URI. 
+    /// </summary>
+    public string? ConnectionUri { get; set; }
+
+    /// <summary>
     /// Gets or sets the database number.
     /// </summary>
     [Display(Description = "Gets or sets the database number.")]
