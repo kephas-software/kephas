@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Pipes.Routing
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Queues;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Pipes.Configuration;
     using Kephas.Messaging.Pipes.Endpoints;
@@ -36,7 +37,7 @@ namespace Kephas.Messaging.Pipes.Routing
     [Override]
     [ProcessingPriority(Priority.Low + 1000)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
-    public class PipesAppMessageRouter : InProcessAppMessageRouter
+    public class PipesAppMessageRouter : DefaultAppMessageRouter
     {
         private readonly IConfiguration<PipesSettings> pipesConfiguration;
         private readonly ISerializationService serializationService;
@@ -58,6 +59,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
+        /// <param name="queueStore">The message queue store.</param>
         /// <param name="pipesConfiguration">The configuration for pipes.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="eventHub">The event hub.</param>
@@ -66,11 +68,12 @@ namespace Kephas.Messaging.Pipes.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
+            IMessageQueueStore queueStore,
             IConfiguration<PipesSettings> pipesConfiguration,
             ISerializationService serializationService,
             IEventHub eventHub,
             Lazy<IOrchestrationManager> lazyOrchestrationManager)
-            : base(contextFactory, appRuntime, messageProcessor)
+            : base(contextFactory, appRuntime, messageProcessor, queueStore)
         {
             this.pipesConfiguration = pipesConfiguration;
             this.serializationService = serializationService;

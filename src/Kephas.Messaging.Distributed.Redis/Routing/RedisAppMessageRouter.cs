@@ -23,6 +23,7 @@ namespace Kephas.Messaging.Redis.Routing
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Queues;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Redis.Configuration;
     using Kephas.Model.AttributedModel;
@@ -40,7 +41,7 @@ namespace Kephas.Messaging.Redis.Routing
     [Override]
     [ProcessingPriority(Priority.Low)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
-    public class RedisAppMessageRouter : InProcessAppMessageRouter
+    public class RedisAppMessageRouter : DefaultAppMessageRouter
     {
         private readonly IConnectionProvider connectionProvider;
         private readonly ISerializationService serializationService;
@@ -65,6 +66,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
+        /// <param name="queueStore">The message queue store.</param>
         /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
@@ -73,11 +75,12 @@ namespace Kephas.Messaging.Redis.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
+            IMessageQueueStore queueStore,
             IConnectionProvider connectionProvider,
             ISerializationService serializationService,
             IConfiguration<RedisRoutingSettings> redisConfiguration,
             IEventHub eventHub)
-            : base(contextFactory, appRuntime, messageProcessor)
+            : base(contextFactory, appRuntime, messageProcessor, queueStore)
         {
             this.connectionProvider = connectionProvider;
             this.serializationService = serializationService;
