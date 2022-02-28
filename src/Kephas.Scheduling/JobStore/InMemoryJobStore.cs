@@ -14,6 +14,7 @@ namespace Kephas.Scheduling.JobStore
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Linq;
     using Kephas.Logging;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
@@ -227,27 +228,27 @@ namespace Kephas.Scheduling.JobStore
         /// Gets the scheduled jobs.
         /// </summary>
         /// <returns>A query over the scheduled jobs.</returns>
-        public IQueryable<IJobInfo> GetScheduledJobs()
+        public IDisposableQueryable<IJobInfo> GetScheduledJobs()
         {
-            return this.scheduledJobs.Values.ToArray().AsQueryable();
+            return new DisposableQueryable<IJobInfo>(this.scheduledJobs.Values.ToArray().AsQueryable());
         }
 
         /// <summary>
         /// Gets the completed jobs.
         /// </summary>
         /// <returns>A query over the completed jobs.</returns>
-        public IQueryable<IJobResult> GetCompletedJobs()
+        public IDisposableQueryable<IJobResult> GetCompletedJobs()
         {
-            return this.completedJobs.ToArray().AsQueryable();
+            return new DisposableQueryable<IJobResult>(this.completedJobs.ToArray().AsQueryable());
         }
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
         /// <returns>A query over the running jobs.</returns>
-        public IQueryable<IJobResult> GetRunningJobs()
+        public IDisposableQueryable<IJobResult> GetRunningJobs()
         {
-            return this.runningJobs.Values.ToArray().AsQueryable();
+            return new DisposableQueryable<IJobResult>(this.runningJobs.Values.ToArray().AsQueryable());
         }
     }
 }

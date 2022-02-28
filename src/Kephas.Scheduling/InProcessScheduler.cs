@@ -19,6 +19,7 @@ namespace Kephas.Scheduling
 
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.Linq;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Jobs;
@@ -136,21 +137,21 @@ namespace Kephas.Scheduling
         /// </summary>
         /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the scheduled jobs.</returns>
-        public IQueryable<IJobInfo> GetScheduledJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetScheduledJobs();
+        public IDisposableQueryable<IJobInfo> GetScheduledJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetScheduledJobs();
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
         /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the running jobs.</returns>
-        public IQueryable<IJobResult> GetRunningJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetRunningJobs();
+        public IDisposableQueryable<IJobResult> GetRunningJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetRunningJobs();
 
         /// <summary>
         /// Gets the completed jobs.
         /// </summary>
         /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the completed jobs.</returns>
-        public IQueryable<IJobResult> GetCompletedJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetCompletedJobs();
+        public IDisposableQueryable<IJobResult> GetCompletedJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetCompletedJobs();
 
         /// <summary>
         /// Disables all the triggers of the scheduled job asynchronously.
