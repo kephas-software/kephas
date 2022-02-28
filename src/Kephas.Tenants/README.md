@@ -102,4 +102,3 @@ this global service is replaced with ```TenantFolderLocationsManager``` which ap
 This has the following effects:
 * The configuration, licenses, plugins, and other locations dependent on the ```ILocationsManager``` service will return different locations for different tenants.
 * By prefixing the tenant path element with dot (.), this location is considered hidden by other services and, therefore ignored (checked with ```location.IsHiddenLocation()``` extension method).
-* 
