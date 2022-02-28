@@ -46,18 +46,18 @@ public class RedisFindCommand : FindCommand
     protected override async Task<IFindResult> FindAsync<T>(IFindContext findContext, CancellationToken cancellationToken)
     {
         var dataContext = (RedisDataContext)findContext.DataContext;
-        var criteria = this.GetFindCriteria<T>(findContext);
 
         var localCacheQuery = this.TryGetLocalCacheQuery<T>(findContext);
         if (localCacheQuery != null)
         {
             var result = localCacheQuery
-                .Where(criteria.Compile())
+                .OfType<IIdentifiable>()
+                .Where(e => e.Id?.Equals(findContext.Id) ?? false)
                 .Take(2)
                 .ToList();
             if (result.Count > 0)
             {
-                return this.GetFindResult(findContext, result, criteria);
+                return this.GetFindResult(findContext, result, e => e.Id.Equals(findContext.Id));
             }
         }
 
@@ -66,11 +66,11 @@ public class RedisFindCommand : FindCommand
 
         if (!entityHash.TryGetValue(id, out var entityString))
         {
-            return this.GetFindResult(findContext, Array.Empty<T>(), criteria);
+            return this.GetFindResult(findContext, Array.Empty<T>(), e => ((IIdentifiable)e).Id.Equals(findContext.Id));
         }
 
         var entity = await this.serializationService.JsonDeserializeAsync<T>(entityString, cancellationToken: cancellationToken).PreserveThreadContext();
         var entityInfo = dataContext.Attach(entity);
-        return this.GetFindResult(findContext, new T[] { entity }, criteria);
+        return this.GetFindResult(findContext, new T[] { entity }, e => ((IIdentifiable)e).Id.Equals(findContext.Id));
     }
 }

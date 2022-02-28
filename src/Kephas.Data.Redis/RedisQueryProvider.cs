@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 
 using Kephas.Data;
+using Kephas.Data.Capabilities;
 using Kephas.Data.Linq;
 
 /// <summary>
@@ -33,7 +34,7 @@ public class RedisQueryProvider : DataContextQueryProvider
     /// <returns>True if the entity is attachable, false if not.</returns>
     protected override bool IsAttachable(object entity)
     {
-        return entity is EntityBase;
+        return entity is IEntityEntryAware;
     }
 
     /// <summary>Indicates whether an entity type is attachable.</summary>
@@ -41,6 +42,6 @@ public class RedisQueryProvider : DataContextQueryProvider
     /// <returns>True if the entity type is attachable, false if not.</returns>
     protected override bool IsAttachableType(Type entityType)
     {
-        return typeof(EntityBase).IsAssignableFrom(entityType);
+        return typeof(IEntityEntryAware).IsAssignableFrom(entityType);
     }
 }
