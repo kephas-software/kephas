@@ -39,7 +39,7 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="IOperationResult"/>.
+        /// A promise of a <see cref="IFindResult"/>.
         /// </returns>
         public override Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default)
         {
