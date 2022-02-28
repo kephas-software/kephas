@@ -41,9 +41,9 @@ namespace Kephas.Scheduling
         private readonly IJobStore jobStore;
         private readonly IAppRuntime appRuntime;
 
-        private readonly ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)>
-            activeTriggers = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)>();
+        private readonly ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)> activeTriggers = new ();
 
+        private readonly InitializationMonitor<IScheduler> initializationMonitor;
         private readonly FinalizationMonitor<IScheduler> finalizationMonitor;
 
         /// <summary>
@@ -66,6 +66,7 @@ namespace Kephas.Scheduling
             this.workflowProcessor = workflowProcessor;
             this.jobStore = jobStore;
             this.appRuntime = appRuntime;
+            this.initializationMonitor = new InitializationMonitor<IScheduler>(this.GetType());
             this.finalizationMonitor = new FinalizationMonitor<IScheduler>(this.GetType());
         }
 
@@ -77,9 +78,13 @@ namespace Kephas.Scheduling
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            this.initializationMonitor.Start();
+
+            await ServiceHelper.InitializeAsync(this.jobStore, context, cancellationToken).PreserveThreadContext();
+
+            this.initializationMonitor.Complete();
         }
 
         /// <summary>
@@ -97,10 +102,10 @@ namespace Kephas.Scheduling
             // cancel triggers
             while (this.activeTriggers.Count > 0)
             {
-                var kv = this.activeTriggers.FirstOrDefault();
-                if (kv.Key != null)
+                var (triggerKey, _) = this.activeTriggers.FirstOrDefault();
+                if (triggerKey != null)
                 {
-                    await this.CancelTriggerAsync(kv.Key, ctx => ctx.Impersonate(context), cancellationToken).PreserveThreadContext();
+                    await this.CancelTriggerAsync(triggerKey, ctx => ctx.Impersonate(context), cancellationToken).PreserveThreadContext();
                 }
             }
 
@@ -120,6 +125,8 @@ namespace Kephas.Scheduling
             {
                 await this.CancelScheduledJobAsync(scheduledJob, ctx => ctx.Impersonate(context), cancellationToken).PreserveThreadContext();
             }
+
+            await ServiceHelper.FinalizeAsync(this.jobStore, context, cancellationToken).PreserveThreadContext();
 
             this.finalizationMonitor.Complete();
         }
