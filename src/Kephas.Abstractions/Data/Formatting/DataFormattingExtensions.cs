@@ -22,15 +22,13 @@ namespace Kephas.Data.Formatting
         /// <param name="obj">The object to format.</param>
         /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        public static object? ToData(this object? obj, object? context = null)
-        {
-            return obj == null
-                ? null
-                : obj is IDataFormattable formattable
-                    ? formattable.ToData(context)
-                    : obj is Exception ex
-                        ? (object)new ExceptionData(ex)
-                        : obj.ToString();
-        }
+        public static object? ToData(this object? obj, object? context = null) =>
+            obj switch
+            {
+                null => null,
+                IDataFormattable formattable => formattable.ToData(context),
+                Exception ex => (object)new ExceptionData(ex),
+                _ => obj.ToString(),
+            };
     }
 }
