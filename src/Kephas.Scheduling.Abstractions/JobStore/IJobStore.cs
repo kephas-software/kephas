@@ -19,7 +19,7 @@ namespace Kephas.Scheduling.JobStore
     /// <summary>
     /// Singleton application service contract for working with the job store.
     /// </summary>
-    [SingletonAppServiceContract]
+    [AppServiceContract]
     public interface IJobStore
     {
         /// <summary>

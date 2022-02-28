@@ -314,7 +314,7 @@ namespace Kephas.Scheduling
         {
             scheduledJob = scheduledJob ?? throw new System.ArgumentNullException(nameof(scheduledJob));
 
-            if (!(scheduledJob is IJobInfo jobInfo))
+            if (scheduledJob is not IJobInfo jobInfo)
             {
                 throw new ArgumentException($"The '{nameof(scheduledJob)}' must be of type '{typeof(IJobInfo)}'.");
             }

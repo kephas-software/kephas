@@ -5,15 +5,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Dynamic;
-using Kephas.Injection;
-using Kephas.Workflow;
-
 namespace Kephas.Scheduling
 {
+    using System;
+
+    using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
+    using Kephas.Workflow;
 
     /// <summary>
     /// Provides scheduling contextual information.
@@ -62,6 +62,6 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Gets or sets the activity options.
         /// </summary>
-        public Action<IActivityContext> ActivityOptions { get; set; }
+        public Action<IActivityContext>? ActivityOptions { get; set; }
     }
 }

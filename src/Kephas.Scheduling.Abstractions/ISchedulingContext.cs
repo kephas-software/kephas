@@ -8,6 +8,7 @@
 namespace Kephas.Scheduling
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Dynamic;
     using Kephas.Scheduling.Reflection;
@@ -60,7 +61,8 @@ namespace Kephas.Scheduling
         /// <param name="scheduledJobId">The scheduled job identifier.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext ScheduledJobId<TContext>(this TContext context, object scheduledJobId)
+        [return: NotNull]
+        public static TContext ScheduledJobId<TContext>([DisallowNull] this TContext context, object? scheduledJobId)
             where TContext : class, ISchedulingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -77,7 +79,8 @@ namespace Kephas.Scheduling
         /// <param name="scheduledJob">The scheduled job.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext ScheduledJob<TContext>(this TContext context, IJobInfo scheduledJob)
+        [return: NotNull]
+        public static TContext ScheduledJob<TContext>([DisallowNull] this TContext context, IJobInfo? scheduledJob)
             where TContext : class, ISchedulingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -94,7 +97,8 @@ namespace Kephas.Scheduling
         /// <param name="target">The activity target.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext ActivityTarget<TContext>(this TContext context, object? target)
+        [return: NotNull]
+        public static TContext ActivityTarget<TContext>([DisallowNull] this TContext context, object? target)
             where TContext : class, ISchedulingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -111,7 +115,8 @@ namespace Kephas.Scheduling
         /// <param name="arguments">The activity arguments.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext ActivityArguments<TContext>(this TContext context, IDynamic? arguments)
+        [return: NotNull]
+        public static TContext ActivityArguments<TContext>([DisallowNull] this TContext context, IDynamic? arguments)
             where TContext : class, ISchedulingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -130,7 +135,8 @@ namespace Kephas.Scheduling
         /// <param name="options">Optional. The activity options.</param>
         /// <typeparam name="TContext">The scheduling context type.</typeparam>
         /// <returns>This scheduling context.</returns>
-        public static TContext Activity<TContext>(this TContext context, object? target, IDynamic? arguments = null, Action<IActivityContext>? options = null)
+        [return: NotNull]
+        public static TContext Activity<TContext>([DisallowNull] this TContext context, object? target, IDynamic? arguments = null, Action<IActivityContext>? options = null)
             where TContext : class, ISchedulingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -151,7 +157,8 @@ namespace Kephas.Scheduling
         /// <returns>
         /// A TContext.
         /// </returns>
-        public static TContext Trigger<TContext>(this TContext context, ITrigger? trigger)
+        [return: NotNull]
+        public static TContext Trigger<TContext>([DisallowNull] this TContext context, ITrigger? trigger)
             where TContext : ISchedulingContext
         {
             context[TriggerKey] = trigger;
@@ -167,7 +174,7 @@ namespace Kephas.Scheduling
         /// <returns>
         /// A trigger or <c>null</c>.
         /// </returns>
-        public static ITrigger? Trigger<TContext>(this TContext context)
+        public static ITrigger? Trigger<TContext>([DisallowNull] this TContext context)
             where TContext : ISchedulingContext
         {
             return context[TriggerKey] as ITrigger;

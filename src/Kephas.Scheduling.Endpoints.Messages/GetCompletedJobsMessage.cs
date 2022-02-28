@@ -16,7 +16,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message for getting the completed jobs.
     /// </summary>
-    [DisplayInfo(Description = "Gets the running jobs.")]
+    [DisplayInfo(Description = "Gets the completed jobs.")]
     public class GetCompletedJobsMessage : IMessage
     {
         /// <summary>

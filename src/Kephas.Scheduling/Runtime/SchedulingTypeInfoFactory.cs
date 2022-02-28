@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-
 namespace Kephas.Scheduling.Runtime
 {
     using System;
 
+    using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Runtime.Factories;
     using Kephas.Scheduling.Jobs;

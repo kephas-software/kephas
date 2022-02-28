@@ -26,17 +26,13 @@ namespace Kephas.Scheduling.JobStore
     [OverridePriority(Priority.Low)]
     public class InMemoryJobStore : Loggable, IJobStore
     {
-        private readonly ConcurrentQueue<IJobResult> completedJobs =
-            new ConcurrentQueue<IJobResult>();
+        private readonly ConcurrentQueue<IJobResult> completedJobs = new ();
 
-        private readonly ConcurrentDictionary<object, IJobInfo> scheduledJobs =
-            new ConcurrentDictionary<object, IJobInfo>();
+        private readonly ConcurrentDictionary<object, IJobInfo> scheduledJobs = new ();
 
-        private readonly ConcurrentDictionary<object, IJobResult> runningJobs =
-            new ConcurrentDictionary<object, IJobResult>();
+        private readonly ConcurrentDictionary<object, IJobResult> runningJobs = new ();
 
-        private readonly ConcurrentDictionary<object, (ITrigger trigger, IJobInfo scheduledJob)>
-            activeTriggers = new ConcurrentDictionary<object, (ITrigger trigger, IJobInfo scheduledJob)>();
+        private readonly ConcurrentDictionary<object, (ITrigger trigger, IJobInfo scheduledJob)> activeTriggers = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryJobStore"/> class.
@@ -56,7 +52,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>An asynchronous result yielding the scheduled job.</returns>
         public Task<IJobInfo?> GetScheduledJobAsync(object jobId, bool throwOnNotFound = true, CancellationToken cancellationToken = default)
         {
-            jobId = jobId ?? throw new System.ArgumentNullException(nameof(jobId));
+            jobId = jobId ?? throw new ArgumentNullException(nameof(jobId));
 
             if (!this.scheduledJobs.TryGetValue(jobId, out var jobInfo) && throwOnNotFound)
             {
@@ -74,7 +70,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>An asynchronous result yielding a value indicating whether the job was removed or not.</returns>
         public Task<bool> RemoveScheduledJobAsync(object jobId, CancellationToken cancellationToken = default)
         {
-            jobId = jobId ?? throw new System.ArgumentNullException(nameof(jobId));
+            jobId = jobId ?? throw new ArgumentNullException(nameof(jobId));
 
             return Task.FromResult(this.scheduledJobs.TryRemove(jobId, out _));
         }
@@ -88,7 +84,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>The asynchronous result yielding a value indicating whether the job was added.</returns>
         public Task<bool> AddScheduledJobAsync(IJobInfo job, CancellationToken cancellationToken = default)
         {
-            job = job ?? throw new System.ArgumentNullException(nameof(job));
+            job = job ?? throw new ArgumentNullException(nameof(job));
 
             if (!this.scheduledJobs.TryAdd(job.Id, job))
             {
@@ -109,7 +105,7 @@ namespace Kephas.Scheduling.JobStore
             IJobResult completedJob,
             CancellationToken cancellationToken = default)
         {
-            completedJob = completedJob ?? throw new System.ArgumentNullException(nameof(completedJob));
+            completedJob = completedJob ?? throw new ArgumentNullException(nameof(completedJob));
 
             this.completedJobs.Enqueue(completedJob);
             return Task.FromResult(true);
@@ -124,7 +120,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>An asynchronous result yielding the scheduled job.</returns>
         public Task<IJobResult?> GetRunningJobAsync(object runningJobId, bool throwOnNotFound = true, CancellationToken cancellationToken = default)
         {
-            runningJobId = runningJobId ?? throw new System.ArgumentNullException(nameof(runningJobId));
+            runningJobId = runningJobId ?? throw new ArgumentNullException(nameof(runningJobId));
 
             if (!this.runningJobs.TryGetValue(runningJobId, out var jobResult) && throwOnNotFound)
             {
@@ -142,7 +138,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>The asynchronous result.</returns>
         public Task AddRunningJobAsync(IJobResult runningJob, CancellationToken cancellationToken = default)
         {
-            runningJob = runningJob ?? throw new System.ArgumentNullException(nameof(runningJob));
+            runningJob = runningJob ?? throw new ArgumentNullException(nameof(runningJob));
 
             if (!this.runningJobs.TryAdd(runningJob.RunningJobId!, runningJob))
             {
@@ -160,7 +156,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>The asynchronous result.</returns>
         public Task RemoveRunningJobAsync(object runningJobId, CancellationToken cancellationToken = default)
         {
-            runningJobId = runningJobId ?? throw new System.ArgumentNullException(nameof(runningJobId));
+            runningJobId = runningJobId ?? throw new ArgumentNullException(nameof(runningJobId));
 
             return Task.FromResult(this.runningJobs.TryRemove(runningJobId, out _));
         }
@@ -174,8 +170,8 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>The asynchronous result.</returns>
         public Task AddTriggerAsync(ITrigger trigger, IJobInfo scheduledJob, CancellationToken cancellationToken = default)
         {
-            trigger = trigger ?? throw new System.ArgumentNullException(nameof(trigger));
-            scheduledJob = scheduledJob ?? throw new System.ArgumentNullException(nameof(scheduledJob));
+            trigger = trigger ?? throw new ArgumentNullException(nameof(trigger));
+            scheduledJob = scheduledJob ?? throw new ArgumentNullException(nameof(scheduledJob));
 
             if (!this.activeTriggers.TryAdd(trigger.Id, (trigger, scheduledJob)))
             {
@@ -198,7 +194,7 @@ namespace Kephas.Scheduling.JobStore
         /// <returns>The asynchronous result.</returns>
         public Task RemoveTriggerAsync(object triggerId, CancellationToken cancellationToken = default)
         {
-            triggerId = triggerId ?? throw new System.ArgumentNullException(nameof(triggerId));
+            triggerId = triggerId ?? throw new ArgumentNullException(nameof(triggerId));
 
             if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
             {
