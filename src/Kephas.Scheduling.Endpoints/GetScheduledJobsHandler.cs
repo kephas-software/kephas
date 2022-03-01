@@ -41,9 +41,11 @@ namespace Kephas.Scheduling.Endpoints
         {
             await Task.Yield();
 
+            var scheduledJobsQuery = this.scheduler.GetScheduledJobs(ctx => ctx.Impersonate(context));
+
             return new GetScheduledJobsResponseMessage
             {
-                Jobs = this.scheduler.GetScheduledJobs(ctx => ctx.Impersonate(context))
+                Jobs = scheduledJobsQuery
                     .Select(jobInfo => new ScheduledJobData
                     {
                         ScheduledJobId = jobInfo.Id,
