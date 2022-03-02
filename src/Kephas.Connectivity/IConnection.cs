@@ -26,6 +26,6 @@ public interface IConnection : IDisposable, IAsyncDisposable
     /// <returns>The asynchronous result.</returns>
     ValueTask IAsyncDisposable.DisposeAsync()
     {
-        return new ValueTask(Task.Factory.StartNew(() => this.Dispose()));
+        return new ValueTask(Task.Factory.StartNew(this.Dispose));
     }
 }
