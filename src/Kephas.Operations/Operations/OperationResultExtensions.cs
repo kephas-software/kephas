@@ -9,6 +9,7 @@ namespace Kephas.Operations
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -30,7 +31,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult Value<TResult>(this TResult result, object? value)
+        [return: NotNull]
+        public static TResult Value<TResult>([DisallowNull] this TResult result, object? value)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -50,7 +52,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult Value<TResult, TValue>(this TResult result, TValue value)
+        [return: NotNull]
+        public static TResult Value<TResult, TValue>([DisallowNull] this TResult result, TValue value)
             where TResult : class, IOperationResult<TValue>
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -70,7 +73,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult Complete<TResult>(this TResult result, TimeSpan? elapsed = null, OperationState? operationState = null)
+        [return: NotNull]
+        public static TResult Complete<TResult>([DisallowNull] this TResult result, TimeSpan? elapsed = null, OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -93,7 +97,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult Fail<TResult>(this TResult result, Exception exception, TimeSpan? elapsed = null, OperationState? operationState = null)
+        [return: NotNull]
+        public static TResult Fail<TResult>([DisallowNull] this TResult result, Exception exception, TimeSpan? elapsed = null, OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -115,7 +120,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult OperationState<TResult>(this TResult result, OperationState state)
+        [return: NotNull]
+        public static TResult OperationState<TResult>([DisallowNull] this TResult result, OperationState state)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -134,7 +140,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeException<TResult>(this TResult result, Exception ex)
+        [return: NotNull]
+        public static TResult MergeException<TResult>([DisallowNull] this TResult result, Exception ex)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -154,7 +161,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessage<TResult>(this TResult result, string message)
+        [return: NotNull]
+        public static TResult MergeMessage<TResult>([DisallowNull] this TResult result, string message)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -174,7 +182,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessage<TResult>(this TResult result, IOperationMessage message)
+        [return: NotNull]
+        public static TResult MergeMessage<TResult>([DisallowNull] this TResult result, IOperationMessage message)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -194,7 +203,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessages<TResult>(this TResult result, IOperationResult? resultToMerge)
+        [return: NotNull]
+        public static TResult MergeMessages<TResult>([DisallowNull] this TResult result, IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -219,7 +229,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessages<TResult>(this TResult result, Task<IOperationResult> asyncResult)
+        [return: NotNull]
+        public static TResult MergeMessages<TResult>([DisallowNull] this TResult result, Task<IOperationResult> asyncResult)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -244,7 +255,8 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeAll<TResult>(this TResult result, IOperationResult? resultToMerge)
+        [return: NotNull]
+        public static TResult MergeAll<TResult>([DisallowNull] this TResult result, IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
