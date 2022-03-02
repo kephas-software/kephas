@@ -5,13 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+namespace Kephas.Mail.Connectivity;
+
 using Kephas.Connectivity;
 using Kephas.Cryptography;
 using Kephas.Security.Authentication;
 using Kephas.Threading.Tasks;
 using MailKit.Net.Imap;
-
-namespace Kephas.Mail.Connectivity;
 
 /// <summary>
 /// Provides an IMAP connection to a mail server.
@@ -29,7 +29,6 @@ public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
     /// </summary>
     /// <param name="connectionContext">The connection context.</param>
     /// <param name="encryptionService">The encryption service.</param>
-    /// <exception cref="System.ArgumentNullException">encryptionService</exception>
     public MailKitImapConnection(IConnectionContext connectionContext, IEncryptionService encryptionService)
     {
         this.connectionContext = connectionContext;
@@ -63,17 +62,18 @@ public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
             throw new ArgumentException($"The host is not provided. Please provide a host URI as: imap://serverName:port.", nameof(context.Host));
         }
 
-        var credentials = context.Credentials as UserPasswordCredentials;
-        if (credentials is null)
+        var clearTextCredentials = context.Credentials switch
         {
-            throw new ArgumentException($"The credentials are not provided or are not of type '{typeof(UserPasswordCredentials)}'.", nameof(context.Credentials));
-        }
+            IUserClearTextPasswordCredentials credentials => credentials,
+            IUserPasswordCredentials credentials => new UserClearTextPasswordCredentials(credentials.UserName, this.encryptionService.Decrypt(credentials.Password)),
+            _ => throw new ArgumentException($"The credentials are not provided or are not of any of the types: '{typeof(UserPasswordCredentials)}', '{typeof(UserClearTextPasswordCredentials)}'.", nameof(context.Credentials)),
+        };
 
         var port = context.Host.IsDefaultPort ? 993 : context.Host.Port;
         var serverName = context.Host.Host;
 
         await this.imapClient.ConnectAsync(serverName, port, useSsl: true, cancellationToken).PreserveThreadContext();
-        await this.imapClient.AuthenticateAsync(credentials.UserName, this.encryptionService.Decrypt(credentials.Password), cancellationToken);
+        await this.imapClient.AuthenticateAsync(clearTextCredentials.UserName, clearTextCredentials.ClearTextPassword, cancellationToken);
     }
 
     /// <summary>
@@ -92,14 +92,16 @@ public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
-        if (!this.disposedValue)
+        if (this.disposedValue)
         {
-            if (disposing)
-            {
-                this.imapClient.Dispose();
-            }
-
-            this.disposedValue = true;
+            return;
         }
+
+        if (disposing)
+        {
+            this.imapClient.Dispose();
+        }
+
+        this.disposedValue = true;
     }
 }
