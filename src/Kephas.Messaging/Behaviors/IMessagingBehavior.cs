@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Behaviors
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task.</returns>
-        Task BeforeProcessAsync(IMessagingContext context, CancellationToken token);
+        Task BeforeProcessAsync(IMessagingContext context, CancellationToken token) => Task.CompletedTask;
 
         /// <summary>
         /// Interception called after invoking the handler to process the message.
@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Behaviors
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        Task AfterProcessAsync(IMessagingContext context, CancellationToken token);
+        Task AfterProcessAsync(IMessagingContext context, CancellationToken token) => Task.CompletedTask;
     }
 
     /// <summary>
