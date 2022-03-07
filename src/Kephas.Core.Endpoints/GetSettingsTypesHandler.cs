@@ -13,7 +13,10 @@ namespace Kephas.Core.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Collections;
     using Kephas.Configuration;
+    using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
@@ -55,12 +58,32 @@ namespace Kephas.Core.Endpoints
                         .Where(t => typeof(ISettings).IsAssignableFrom(t) && !t.IsAbstract))
                 .ToList();
 
+            var dynTypeRegistry = new DynamicTypeRegistry();
+            settingsTypes.ForEach(t => dynTypeRegistry.Types.Add(GetDynamicTypeInfo(t)));
             return new GetSettingsTypesResponseMessage
             {
-                SettingsTypes = settingsTypes
-                    .Select(t => (ITypeInfo)new DynamicTypeInfo { Name = t.Name, Namespace = t.Namespace, FullName = t.FullName ?? t.Name })
-                    .ToArray(),
+                SettingsTypes = dynTypeRegistry.Types.ToArray(),
             };
+        }
+
+        private static DynamicTypeInfo GetDynamicTypeInfo(Type t)
+        {
+            var dti = new DynamicTypeInfo
+            {
+                Name = t.Name,
+                Namespace = t.Namespace,
+                FullName = t.FullName ?? t.Name,
+            };
+
+            dti.Annotations.AddRange(t.GetCustomAttributes(inherit: true)
+                .OfType<IMetadataProvider>()
+                .Select(a =>
+                {
+                    var e = new Expando();
+                    a.GetMetadata().ForEach(m => e[m.name] = m.value);
+                    return (object)e;
+                }));
+            return dti;
         }
     }
 }
