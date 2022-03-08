@@ -59,15 +59,15 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
     /// <param name="appRuntime">The application runtime.</param>
     /// <param name="eventHub">The event hub.</param>
     /// <param name="encryptionService">The encryption service.</param>
-    /// <param name="logManager">The log manager.</param>
+    /// <param name="logManager">Optional. The log manager.</param>
     public RedisConnectionFactory(
         IAppRuntime appRuntime,
         IEventHub eventHub,
         IEncryptionService encryptionService,
-        ILogManager logManager)
+        ILogManager? logManager = null)
         : base(logManager)
     {
-        this.logManager = logManager;
+        this.logManager = logManager ?? LoggingHelper.DefaultLogManager;
         this.appRuntime = appRuntime;
         this.eventHub = eventHub;
         this.encryptionService = encryptionService;
@@ -250,31 +250,13 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
     /// <returns>
     /// The configuration options.
     /// </returns>
-    protected virtual (string connectionKey, ConfigurationOptions) GetConfigurationOptions(
+    protected virtual (string connectionKey, ConfigurationOptions options) GetConfigurationOptions(
         Uri host,
         ICredentials? credentials = null)
     {
-        var connectionBuilder = new StringBuilder();
-        connectionBuilder.Append(host.Authority);
-        if (!string.IsNullOrWhiteSpace(host.Query))
-        {
-            var queryArgs = HttpUtility.ParseQueryString(host.Query);
-            foreach (string key in queryArgs)
-            {
-                var values = queryArgs.GetValues(key);
-                if (values == null)
-                {
-                    connectionBuilder.Append(',').Append(key);
-                }
-                else
-                {
-                    // last value wins.
-                    connectionBuilder.Append(',').Append(key).Append(values[^1]);
-                }
-            }
-        }
+        var connectionString = this.GetConnectionString(host);
 
-        var (connectionKey, options) = this.GetConfigurationOptions(connectionBuilder.ToString());
+        var (connectionKey, options) = this.GetConfigurationOptions(connectionString);
 
         switch (credentials)
         {
@@ -297,6 +279,38 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
         }
 
         return (connectionKey, options);
+    }
+
+    /// <summary>
+    /// Gets the connection string out of the host URI.
+    /// </summary>
+    /// <param name="host">The host URI.</param>
+    /// <returns>The connection string.</returns>
+    protected virtual string GetConnectionString(Uri host)
+    {
+        var connectionBuilder = new StringBuilder();
+        connectionBuilder.Append(host.Authority);
+        if (string.IsNullOrWhiteSpace(host.Query))
+        {
+            return connectionBuilder.ToString();
+        }
+
+        var queryArgs = HttpUtility.ParseQueryString(host.Query);
+        foreach (string key in queryArgs)
+        {
+            var values = queryArgs.GetValues(key);
+            if (values == null)
+            {
+                connectionBuilder.Append(',').Append(key);
+            }
+            else
+            {
+                // last value wins.
+                connectionBuilder.Append(',').Append(key).Append('=').Append(values[^1]);
+            }
+        }
+
+        return connectionBuilder.ToString();
     }
 
     /// <summary>
