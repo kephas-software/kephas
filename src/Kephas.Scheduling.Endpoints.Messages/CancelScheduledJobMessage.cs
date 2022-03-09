@@ -7,6 +7,7 @@
 
 namespace Kephas.Scheduling.Endpoints
 {
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
@@ -15,11 +16,13 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message for cancelling a scheduled job.
     /// </summary>
+    [DisplayInfo(Description = "Cancels the scheduled job with the given ID.")]
     public class CancelScheduledJobMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the identifier of the scheduled job.
         /// </summary>
+        [DisplayInfo(Description = "The ID of the scheduled job.")]
         public object? ScheduledJobId { get; set; }
 
         /// <summary>

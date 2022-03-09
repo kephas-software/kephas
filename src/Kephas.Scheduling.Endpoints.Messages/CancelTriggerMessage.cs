@@ -7,20 +7,22 @@
 
 namespace Kephas.Scheduling.Endpoints
 {
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
-    using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
 
     /// <summary>
     /// Message for canceling a trigger.
     /// </summary>
+    [DisplayInfo(Description = "Cancels the trigger with the given ID.")]
     public class CancelTriggerMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the identifier of the trigger to be canceled.
         /// </summary>
+        [DisplayInfo(Description = "The ID of the trigger to be canceled.")]
         public object? TriggerId { get; set; }
 
         /// <summary>
