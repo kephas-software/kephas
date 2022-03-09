@@ -41,7 +41,7 @@ namespace Kephas.Orchestration
     bool IsRoot { get; }
 
     /// <summary>
-    /// Gets the aupported app features.
+    /// Gets the supported app features.
     /// </summary>
     /// <value>
     /// The supported app features.
@@ -55,6 +55,16 @@ namespace Kephas.Orchestration
     /// The identifier of the process.
     /// </value>
     int ProcessId { get; }
+
+    /// <summary>
+    /// Gets the size of the private memory.
+    /// </summary>
+    long PrivateMemorySize { get; }
+
+    /// <summary>
+    /// Gets the size of the paged memory.
+    /// </summary>
+    long PagedMemorySize { get; }
 
     /// <summary>
     /// Gets the name of the host where the application process runs.

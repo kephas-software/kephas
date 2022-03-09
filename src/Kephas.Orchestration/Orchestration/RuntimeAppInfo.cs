@@ -73,6 +73,16 @@ namespace Kephas.Orchestration
         public string HostAddress { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the private memory.
+        /// </summary>
+        public long PrivateMemorySize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the paged memory.
+        /// </summary>
+        public long PagedMemorySize { get; set; }
+
+        /// <summary>
         /// Gets or sets the application properties.
         /// </summary>
         /// <value>

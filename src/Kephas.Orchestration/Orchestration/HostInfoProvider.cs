@@ -63,16 +63,19 @@ namespace Kephas.Orchestration
         /// </returns>
         public virtual IRuntimeAppInfo GetRuntimeAppInfo()
         {
+            var process = Process.GetCurrentProcess();
             return new RuntimeAppInfo
             {
-                AppId = this.appRuntime.GetAppId(),
-                AppInstanceId = this.appRuntime.GetAppInstanceId(),
+                AppId = this.appRuntime.GetAppId()!,
+                AppInstanceId = this.appRuntime.GetAppInstanceId()!,
                 IsRoot = this.appRuntime.IsRoot(),
 #if NETSTANDARD2_1
-                ProcessId = Process.GetCurrentProcess().Id,
+                ProcessId = process.Id,
 #else
                 ProcessId = System.Environment.ProcessId,
 #endif
+                PrivateMemorySize = process.PrivateMemorySize64,
+                PagedMemorySize = process.PagedMemorySize64,
                 Features = this.appRuntime.GetFeatures().Select(f => f.Name).ToArray(),
                 HostName = this.GetHostName(),
                 HostAddress = this.GetHostAddress().ToString(),
