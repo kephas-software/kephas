@@ -67,6 +67,11 @@ namespace Kephas.Orchestration
     long PagedMemorySize { get; }
 
     /// <summary>
+    /// Gets the size of the virtual memory.
+    /// </summary>
+    long VirtualMemorySize { get; }
+
+    /// <summary>
     /// Gets the name of the host where the application process runs.
     /// </summary>
     /// <value>

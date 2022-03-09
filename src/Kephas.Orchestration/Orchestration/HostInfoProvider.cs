@@ -76,6 +76,7 @@ namespace Kephas.Orchestration
 #endif
                 PrivateMemorySize = process.PrivateMemorySize64,
                 PagedMemorySize = process.PagedMemorySize64,
+                VirtualMemorySize = process.VirtualMemorySize64,
                 Features = this.appRuntime.GetFeatures().Select(f => f.Name).ToArray(),
                 HostName = this.GetHostName(),
                 HostAddress = this.GetHostAddress().ToString(),

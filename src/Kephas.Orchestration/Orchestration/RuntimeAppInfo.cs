@@ -83,6 +83,11 @@ namespace Kephas.Orchestration
         public long PagedMemorySize { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the virtual memory.
+        /// </summary>
+        public long VirtualMemorySize { get; set; }
+
+        /// <summary>
         /// Gets or sets the application properties.
         /// </summary>
         /// <value>
