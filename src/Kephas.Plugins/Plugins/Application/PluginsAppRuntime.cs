@@ -209,7 +209,7 @@ namespace Kephas.Plugins.Application
         /// </returns>
         protected virtual bool ComputeEnablePlugins(bool? enablePlugins, IDynamic? appArgs)
         {
-            return enablePlugins ?? (bool?)appArgs?[EnablePluginsArgName] ?? true;
+            return enablePlugins ?? appArgs?.GetLaxValue(EnablePluginsArgName, true) ?? true;
         }
 
         /// <summary>

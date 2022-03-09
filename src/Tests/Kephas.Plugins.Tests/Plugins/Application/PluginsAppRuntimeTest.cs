@@ -48,6 +48,13 @@ namespace Kephas.Tests.Plugins.Application
         }
 
         [Test]
+        public void EnablePlugins_appArgs_string()
+        {
+            var appRuntime = new PluginsAppRuntime(appArgs: new Expando { [nameof(PluginsAppRuntime.EnablePlugins)] = "false" });
+            Assert.IsFalse(appRuntime.EnablePlugins);
+        }
+
+        [Test]
         public void PluginsLocation_default()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
