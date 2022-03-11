@@ -58,7 +58,7 @@ namespace Kephas.Application
         public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata> context)
         {
             var featureInfo = context.Metadata?.FeatureInfo;
-            if (featureInfo == null)
+            if (featureInfo is null)
             {
                 // TODO localization
                 throw new InvalidOperationException($"Cannot identify the feature info from metadata {context.Metadata}.");
@@ -71,7 +71,7 @@ namespace Kephas.Application
             }
 
             var appSettings = this.appConfiguration.GetSettings(this.appContext);
-            if (appSettings == null)
+            if (appSettings is null)
             {
                 // TODO localization
                 this.Logger.Warn("Cannot identify the application information for '{app}', therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
@@ -93,7 +93,7 @@ namespace Kephas.Application
             var featureKey = featureInfo.Name.ToLower();
             var enabledFeature =
                 enabledFeatures.FirstOrDefault(f => (this.featuresOrderedSet.Compare(f, featureKey) ?? -1) >= 0);
-            if (enabledFeature != null)
+            if (enabledFeature is not null)
             {
                 // TODO localization
                 this.Logger.Info($"Enabling feature '{{feature}}' for '{{app}}', as it is required by the '{{enabledFeature}}'.", featureInfo.Name, this.appRuntime.GetAppId(), enabledFeature);
