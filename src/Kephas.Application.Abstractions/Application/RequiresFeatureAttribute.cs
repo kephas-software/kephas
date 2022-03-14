@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequiredFeatureAttribute.cs" company="Kephas Software SRL">
+// <copyright file="RequiresFeatureAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,19 +11,20 @@
 namespace Kephas.Application
 {
     using System;
+
     using Kephas.Injection;
 
     /// <summary>
-    /// Attribute declaring a required feature for the annotated entity.
+    /// Attribute declaring that the annotated entity requires a specific feature.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-    public class RequiredFeatureAttribute : Attribute, IMetadataValue<string>
+    public class RequiresFeatureAttribute : Attribute, IMetadataValue<string>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RequiredFeatureAttribute"/> class.
+        /// Initializes a new instance of the <see cref="RequiresFeatureAttribute"/> class.
         /// </summary>
         /// <param name="value">The name of the required feature.</param>
-        public RequiredFeatureAttribute(string value)
+        public RequiresFeatureAttribute(string value)
         {
             this.Value = value;
         }
