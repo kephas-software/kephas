@@ -7,6 +7,7 @@
 
 namespace Kephas.Application;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Kephas.Application.Reflection;
 
@@ -15,10 +16,7 @@ using Kephas.Application.Reflection;
 /// </summary>
 public static class ApplicationAppRuntimeExtensions
 {
-    /// <summary>
-    /// The features key.
-    /// </summary>
-    public const string FeaturesKey = "Features";
+    internal const string FeaturesKey = "Features";
 
     /// <summary>
     /// Gets the application features.
@@ -50,5 +48,24 @@ public static class ApplicationAppRuntimeExtensions
         }
 
         return appRuntime.GetFeatures().Any(f => string.Equals(f.Name, featureName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// Gets the application features.
+    /// </summary>
+    /// <typeparam name="T">The application runtime type.</typeparam>
+    /// <param name="appRuntime">The app runtime to act on.</param>
+    /// <param name="features">The features.</param>
+    /// <returns>
+    /// The application runtime.
+    /// </returns>
+    [return: NotNull]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static T SetFeatures<T>([DisallowNull] this T appRuntime, IEnumerable<IFeatureInfo> features)
+        where T : IAppRuntime
+    {
+        appRuntime[FeaturesKey] = features;
+
+        return appRuntime;
     }
 }

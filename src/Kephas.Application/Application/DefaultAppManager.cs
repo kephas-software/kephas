@@ -587,7 +587,7 @@ namespace Kephas.Application
         /// <param name="features">The features.</param>
         protected virtual void SetAppRuntimeFeatures(IList<FeatureInfo> features)
         {
-            this.AppRuntime[ApplicationAppRuntimeExtensions.FeaturesKey] = features;
+            this.AppRuntime.SetFeatures(features);
         }
 
         /// <summary>
