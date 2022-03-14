@@ -11,11 +11,6 @@ using Kephas.Application;
 using Kephas.Application.Reflection;
 using Kephas.Injection;
 using Kephas.Messaging.Application.Behaviors;
-using Kephas.Messaging.Authorization.Behaviors;
-using Kephas.Messaging.Tests.Behaviors;
-using Kephas.Security.Authorization;
-using Kephas.Security.Permissions.AttributedModel;
-using Kephas.Services;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -44,7 +39,7 @@ public class EnsureRequiredFeatureMessageProcessingBehaviorTest
         Assert.ThrowsAsync<MessagingException>(() => behavior.BeforeProcessAsync(
             message,
             new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
-            default), "Should be called with gigi!");
+            default), "Should be called with test!");
     }
 
     [Test]
