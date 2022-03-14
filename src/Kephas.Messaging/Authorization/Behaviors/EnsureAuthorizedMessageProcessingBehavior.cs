@@ -34,21 +34,9 @@ namespace Kephas.Messaging.Authorization.Behaviors
     [ProcessingPriority(Priority.Highest + 10)]
     public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage>
     {
-        /// <summary>
-        /// The authorization service.
-        /// </summary>
         private readonly IAuthorizationService authorizationService;
-
-        /// <summary>
-        /// The authorization scope service.
-        /// </summary>
         private readonly IAuthorizationScopeService authorizationScopeService;
-
-        /// <summary>
-        /// The permissions map.
-        /// </summary>
-        private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>>
-            permissionsMap = new ConcurrentDictionary<Type, IReadOnlyList<Type>>();
+        private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>> permissionsMap = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnsureAuthorizedMessageProcessingBehavior"/>
@@ -60,8 +48,8 @@ namespace Kephas.Messaging.Authorization.Behaviors
             IAuthorizationService authorizationService,
             IAuthorizationScopeService authorizationScopeService)
         {
-            authorizationService = authorizationService ?? throw new System.ArgumentNullException(nameof(authorizationService));
-            authorizationScopeService = authorizationScopeService ?? throw new System.ArgumentNullException(nameof(authorizationScopeService));
+            authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
+            authorizationScopeService = authorizationScopeService ?? throw new ArgumentNullException(nameof(authorizationScopeService));
 
             this.authorizationService = authorizationService;
             this.authorizationScopeService = authorizationScopeService;
@@ -87,7 +75,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
         }
 
         /// <summary>
-        /// Gets the required permissions in this collection.
+        /// Gets the required permissions.
         /// </summary>
         /// <param name="messageType">Type of the message.</param>
         /// <returns>

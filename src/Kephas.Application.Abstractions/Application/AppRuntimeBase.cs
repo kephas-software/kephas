@@ -16,9 +16,8 @@ namespace Kephas.Application
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.InteropServices;
     using System.Runtime.Loader;
-    using System.Runtime.Versioning;
+
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.IO;
@@ -28,8 +27,6 @@ namespace Kephas.Application
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Transitions;
-    using Kephas.Versioning;
-    using RuntimeEnvironment = Kephas.Runtime.RuntimeEnvironment;
 
     /// <summary>
     /// An application application runtime providing only assemblies loaded by the runtime.
@@ -49,14 +46,15 @@ namespace Kephas.Application
         private readonly Func<string, ILogger> getLogger;
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache = new();
 
+        private readonly string? appFolder;
+        private readonly IEnumerable<string>? configFolders;
+        private readonly IEnumerable<string>? licenseFolders;
+        private readonly IEnumerable<Assembly>? appAssemblies;
+
         private string? appLocation;
-        private string? appFolder;
         private ILocations? configLocations;
         private ILocations? licenseLocations;
-        private IEnumerable<string>? configFolders;
-        private IEnumerable<string>? licenseFolders;
         private bool isDisposed = false; // To detect redundant calls
-        private IEnumerable<Assembly>? appAssemblies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
