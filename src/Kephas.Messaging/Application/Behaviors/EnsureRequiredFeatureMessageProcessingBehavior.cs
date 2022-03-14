@@ -10,12 +10,15 @@ namespace Kephas.Messaging.Application.Behaviors;
 using System.Collections.Concurrent;
 using System.Reflection;
 using Kephas.Application;
-using Kephas.Collections;
 using Kephas.Messaging.Behaviors;
+using Kephas.Messaging.Behaviors.AttributedModel;
+using Kephas.Services;
 
 /// <summary>
 /// Behavior ensuring that the required features of the message being processed are enabled.
 /// </summary>
+[MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
+[ProcessingPriority(Priority.Highest + 15)]
 public class EnsureRequiredFeatureMessageProcessingBehavior : MessagingBehaviorBase<IMessage>
 {
     private readonly IAppRuntime appRuntime;
