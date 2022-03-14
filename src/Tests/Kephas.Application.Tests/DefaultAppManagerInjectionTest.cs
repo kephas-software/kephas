@@ -20,6 +20,7 @@ namespace Kephas.Application.Tests
     using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Services.Behaviors;
+    using Kephas.Versioning;
     using NUnit.Framework;
 
     [TestFixture]
@@ -65,7 +66,7 @@ namespace Kephas.Application.Tests
             var testFeatureInfo = factoryMetadata[0].FeatureInfo;
             Assert.IsNotNull(testFeatureInfo);
             Assert.AreEqual("Test", testFeatureInfo.Name);
-            Assert.AreEqual(new Version(0, 0, 0, 0), testFeatureInfo.Version);
+            Assert.AreEqual(new SemanticVersion(0, 0, 0), testFeatureInfo.Version);
         }
 
         [Test]
@@ -92,7 +93,7 @@ namespace Kephas.Application.Tests
             var testFeatureInfo = factoryMetadata[0].FeatureInfo;
             Assert.IsNotNull(testFeatureInfo);
             Assert.AreEqual("Annotated test", testFeatureInfo.Name);
-            Assert.AreEqual(new Version(1, 2, 3, 4), testFeatureInfo.Version);
+            Assert.AreEqual(new SemanticVersion(1, 2, 3, "dev-2"), testFeatureInfo.Version);
             Assert.AreEqual(1, testFeatureInfo.Dependencies.Length);
             Assert.AreEqual("Test", testFeatureInfo.Dependencies[0]);
         }
@@ -115,7 +116,7 @@ namespace Kephas.Application.Tests
         {
         }
 
-        [FeatureInfo("Annotated test", "1.2.3.4", dependencies: new[] { "Test" })]
+        [FeatureInfo("Annotated test", "1.2.3-dev.2", dependencies: new[] { "Test" })]
         public class AnnotatedTestFeatureManager : FeatureManagerBase
         {
         }

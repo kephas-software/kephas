@@ -18,13 +18,14 @@ namespace Kephas.Application.Reflection
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Versioning;
 
     /// <summary>
     /// Provides information about an application feature.
     /// </summary>
     public class FeatureInfo : Expando, IFeatureInfo
     {
-        private static readonly System.Version VersionZero = System.Version.Parse("0.0.0.0");
+        private static readonly SemanticVersion VersionZero = SemanticVersion.Parse("0.0.0");
 
         /// <summary>
         /// The empty annotations collection.
@@ -45,7 +46,7 @@ namespace Kephas.Application.Reflection
             bool isRequired = false,
             string[]? dependencies = null,
             string[]? targetApps = null)
-            : this(name, version == null ? null : new Version(version), isRequired, dependencies, targetApps)
+            : this(name, version == null ? null : SemanticVersion.Parse(version), isRequired, dependencies, targetApps)
         {
         }
 
@@ -59,14 +60,14 @@ namespace Kephas.Application.Reflection
         /// <param name="targetApps">Optional. The target applications where the feature will be loaded.</param>
         public FeatureInfo(
             string name,
-            Version? version = null,
+            SemanticVersion? version = null,
             bool isRequired = false,
             string[]? dependencies = null,
             string[]? targetApps = null)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
             this.IsRequired = isRequired;
-            this.Version = version ?? new Version(0, 0);
+            this.Version = version ?? new SemanticVersion(0, 0, 0);
             this.Dependencies = dependencies ?? Array.Empty<string>();
             this.TargetApps = targetApps;
         }
@@ -98,7 +99,7 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The feature version.
         /// </value>
-        public Version Version { get; }
+        public SemanticVersion Version { get; }
 
         /// <summary>
         /// Gets a value indicating whether this feature is required.
@@ -174,7 +175,7 @@ namespace Kephas.Application.Reflection
         /// </returns>
         public override string ToString()
         {
-            var deps = string.Join(", ", this.Dependencies ?? new string[0]);
+            var deps = string.Join(", ", this.Dependencies ?? Array.Empty<string>());
             return $"{this.Name}({deps})";
         }
 
@@ -185,7 +186,7 @@ namespace Kephas.Application.Reflection
         /// <returns>
         /// The attribute of the provided type.
         /// </returns>
-        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => new TAttribute[0];
+        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => Array.Empty<TAttribute>();
 
         /// <summary>
         /// Gets the display information.

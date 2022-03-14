@@ -14,6 +14,7 @@ namespace Kephas.Application
 
     using Kephas.Application.Reflection;
     using Kephas.Dynamic;
+    using Kephas.Versioning;
 
     /// <summary>
     /// A feature reference.
@@ -28,7 +29,7 @@ namespace Kephas.Application
         public FeatureRef(string name, string? version)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
-            this.Version = string.IsNullOrEmpty(version) ? null : Version.Parse(version);
+            this.Version = string.IsNullOrEmpty(version) ? null : SemanticVersion.Parse(version);
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Kephas.Application
         /// <value>
         /// The feature version.
         /// </value>
-        public Version? Version { get; }
+        public SemanticVersion? Version { get; }
 
         /// <summary>
         /// Returns a value indicating whether the provided feature is a match for this feature reference.
@@ -56,7 +57,7 @@ namespace Kephas.Application
         /// </returns>
         public bool IsMatch(FeatureInfo featureInfo)
         {
-            if (featureInfo == null)
+            if (featureInfo is null)
             {
                 return false;
             }
