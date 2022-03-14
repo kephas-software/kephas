@@ -10,9 +10,8 @@
 
 namespace Kephas.Application.Reflection
 {
-    using System;
-
     using Kephas.Reflection;
+    using Kephas.Versioning;
 
     /// <summary>
     /// Contract providing information about an application feature.
@@ -33,7 +32,7 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The feature version.
         /// </value>
-        Version Version { get; }
+        SemanticVersion Version { get; }
 
         /// <summary>
         /// Gets a value indicating whether this feature is required.
