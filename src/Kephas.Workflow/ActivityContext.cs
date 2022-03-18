@@ -12,6 +12,7 @@ namespace Kephas.Workflow
 {
     using System;
 
+    using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Services;
 
@@ -31,6 +32,7 @@ namespace Kephas.Workflow
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
 
             this.WorkflowProcessor = parentContext.WorkflowProcessor;
+            this.Scope.Merge(parentContext.Scope);
         }
 
         /// <summary>
@@ -86,5 +88,10 @@ namespace Kephas.Workflow
         /// The execution timeout.
         /// </value>
         public TimeSpan? Timeout { get; set; }
+
+        /// <summary>
+        /// Gets or sets the activity scope. Typically it holds working variables.
+        /// </summary>
+        public IDynamic Scope { get; set; } = new Expando();
     }
 }

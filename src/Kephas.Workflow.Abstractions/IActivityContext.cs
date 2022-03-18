@@ -13,6 +13,7 @@ namespace Kephas.Workflow
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
@@ -66,6 +67,11 @@ namespace Kephas.Workflow
         /// The execution timeout.
         /// </value>
         TimeSpan? Timeout { get; set; }
+
+        /// <summary>
+        /// Gets the activity scope. Typically it holds working variables.
+        /// </summary>
+        IDynamic Scope { get; }
     }
 
     /// <summary>
