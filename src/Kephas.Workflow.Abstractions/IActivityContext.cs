@@ -11,7 +11,7 @@
 namespace Kephas.Workflow
 {
     using System;
-
+    using System.Diagnostics.CodeAnalysis;
     using Kephas.Services;
 
     /// <summary>
@@ -81,7 +81,8 @@ namespace Kephas.Workflow
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Activity<TContext>(this TContext context, IActivity activity)
+        [return: NotNull]
+        public static TContext Activity<TContext>([DisallowNull] this TContext context, IActivity activity)
             where TContext : class, IActivityContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -100,7 +101,8 @@ namespace Kephas.Workflow
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Result<TContext>(this TContext context, object? result)
+        [return: NotNull]
+        public static TContext Result<TContext>([DisallowNull] this TContext context, object? result)
             where TContext : class, IActivityContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -119,7 +121,8 @@ namespace Kephas.Workflow
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Result<TContext>(this TContext context, Exception exception)
+        [return: NotNull]
+        public static TContext Result<TContext>([DisallowNull] this TContext context, Exception exception)
             where TContext : class, IActivityContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -138,7 +141,8 @@ namespace Kephas.Workflow
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Timeout<TContext>(this TContext context, TimeSpan? timeout)
+        [return: NotNull]
+        public static TContext Timeout<TContext>([DisallowNull] this TContext context, TimeSpan? timeout)
             where TContext : class, IActivityContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
