@@ -12,6 +12,7 @@ namespace Kephas.Workflow
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Services;
 
     /// <summary>
