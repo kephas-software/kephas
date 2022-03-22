@@ -20,13 +20,13 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
 
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            var clientApp = new ClientApp<App>(
+            IApp clientApp = new ClientApp<App>(
                 ConfigureAmbientServices,
                 new AppArgs(args));
 
-            await clientApp.RunAsync();
+            return await clientApp.RunAsync(1);
         }
 
         private static LoggerConfiguration GetLoggerConfiguration()
