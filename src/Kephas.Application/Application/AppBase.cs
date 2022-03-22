@@ -63,12 +63,17 @@ namespace Kephas.Application
         /// <value>
         /// The application context.
         /// </value>
-        public IAppContext? AppContext { get; private set; }
+        public virtual IAppContext? AppContext { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether the application is running.
+        /// Gets or sets a value indicating whether the application is running.
         /// </summary>
-        public bool IsRunning { get; private set; }
+        public virtual bool IsRunning { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the application is shutting down.
+        /// </summary>
+        public virtual bool IsShuttingDown { get; protected set; }
 
         /// <summary>
         /// Gets the application arguments.
@@ -104,6 +109,11 @@ namespace Kephas.Application
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
+            if (this.IsRunning)
+            {
+                throw new InvalidOperationException("The application is already running.");
+            }
+
             this.Log(LogLevel.Info, null, Strings.App_RunAsync_Bootstrapping_Message);
 
             this.IsRunning = true;
@@ -155,6 +165,13 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, "Entering the shutdown procedure...");
 
+                if (this.IsShuttingDown)
+                {
+                    throw new InvalidOperationException("The application is shutting down.");
+                }
+
+                this.IsShuttingDown = true;
+
                 this.BeforeAppManagerFinalize();
 
                 var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
@@ -179,12 +196,23 @@ namespace Kephas.Application
                     Debug.Assert(false, "Should not fail in finalizing prerequisites.");
 #endif
                 }
+
+                this.IsShuttingDown = false;
+                this.IsRunning = false;
             }
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.</summary>
         /// <returns>A task that represents the asynchronous dispose operation.</returns>
-        async ValueTask IAsyncDisposable.DisposeAsync() => await this.ShutdownAsync();
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            if (this.IsRunning is false)
+            {
+                return;
+            }
+
+            await this.ShutdownAsync();
+        }
 
         /// <summary>
         /// The <see cref="BeforeAppManagerFinalize"/> is called before the application manager starts finalization.

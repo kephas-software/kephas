@@ -36,6 +36,11 @@ public interface IApp : IAsyncDisposable
     bool IsRunning { get; }
 
     /// <summary>
+    /// Gets a value indicating whether the application is shutting down.
+    /// </summary>
+    bool IsShuttingDown { get; }
+
+    /// <summary>
     /// Runs the application asynchronously.
     /// </summary>
     /// <param name="mainCallback">
@@ -48,4 +53,13 @@ public interface IApp : IAsyncDisposable
     Task<AppRunResult> RunAsync(
         Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Shuts down the application asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    Task ShutdownAsync(CancellationToken cancellationToken = default);
 }
