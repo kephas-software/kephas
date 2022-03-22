@@ -8,6 +8,7 @@
 namespace Kephas.Application;
 
 using Kephas.Operations;
+using Kephas.Threading.Tasks;
 
 /// <summary>
 /// Abstraction for an app.
@@ -39,6 +40,25 @@ public interface IApp : IAsyncDisposable
     /// Gets a value indicating whether the application is shutting down.
     /// </summary>
     bool IsShuttingDown { get; }
+
+    /// <summary>
+    /// Bootstraps the application asynchronously.
+    /// </summary>
+    /// <param name="errorCode">The error code to return if the running fails.</param>
+    /// <returns>An async result.</returns>
+    public async Task<int> RunAsync(int errorCode)
+    {
+        try
+        {
+            await this.RunAsync(null, default).PreserveThreadContext();
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return errorCode;
+        }
+    }
 
     /// <summary>
     /// Runs the application asynchronously.
