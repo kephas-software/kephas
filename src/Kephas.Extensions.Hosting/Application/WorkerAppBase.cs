@@ -74,13 +74,13 @@ namespace Kephas.Extensions.Hosting.Application
         /// Runs the application asynchronously.
         /// </summary>
         /// <param name="mainCallback">Optional. The callback for the main function.
-        /// If not provided, the service implementing <see cref="T:Kephas.Application.IAppMainLoop" /> will be invoked,
-        /// otherwise the application will end.</param>
+        ///     If not provided, the service implementing <see cref="T:Kephas.Application.IAppMainLoop" /> will be invoked,
+        ///     otherwise the application will end.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(
+        public override Task<AppRunResult> RunAsync(
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {

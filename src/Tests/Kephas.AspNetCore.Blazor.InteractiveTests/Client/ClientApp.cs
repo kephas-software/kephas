@@ -74,7 +74,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(
+        public override Task<AppRunResult> RunAsync(
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {

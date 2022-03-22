@@ -92,15 +92,15 @@ namespace Kephas.Application
         /// Runs the application asynchronously.
         /// </summary>
         /// <param name="mainCallback">
-        /// Optional. The callback for the main function.
-        /// If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
-        /// otherwise the application will end.
+        ///     Optional. The callback for the main function.
+        ///     If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
+        ///     otherwise the application will end.
         /// </param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(
+        public virtual async Task<AppRunResult> RunAsync(
             Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
             CancellationToken cancellationToken = default)
         {
@@ -121,7 +121,7 @@ namespace Kephas.Application
 
             if (instruction != AppShutdownInstruction.Shutdown)
             {
-                return (this.AppContext, instruction);
+                return new AppRunResult(this.AppContext, instruction);
             }
 
             try
@@ -132,14 +132,14 @@ namespace Kephas.Application
             {
                 this.Logger.Fatal(ex, "Abnormal application termination.");
                 this.AppContext.Exception = ex;
-                return (null, instruction);
+                return new AppRunResult(null, instruction);
             }
             finally
             {
                 this.IsRunning = false;
             }
 
-            return (this.AppContext, instruction);
+            return new AppRunResult(this.AppContext, instruction);
         }
 
         /// <summary>
