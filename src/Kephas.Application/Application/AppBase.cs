@@ -27,7 +27,7 @@ namespace Kephas.Application
     /// <remarks>
     /// You should inherit this class and override at least the <see cref="BuildServicesContainer"/> method.
     /// </remarks>
-    public abstract class AppBase<TAmbientServices>
+    public abstract class AppBase<TAmbientServices> : IApp
         where TAmbientServices : IAmbientServices, new()
     {
         private readonly Action<IAmbientServices>? builder;
@@ -181,6 +181,10 @@ namespace Kephas.Application
                 }
             }
         }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.</summary>
+        /// <returns>A task that represents the asynchronous dispose operation.</returns>
+        async ValueTask IAsyncDisposable.DisposeAsync() => await this.ShutdownAsync();
 
         /// <summary>
         /// The <see cref="BeforeAppManagerFinalize"/> is called before the application manager starts finalization.
