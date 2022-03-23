@@ -36,6 +36,11 @@ namespace Kephas.Orchestration
     string AppInstanceId { get; }
 
     /// <summary>
+    /// Gets the application version.
+    /// </summary>
+    string? AppVersion { get; }
+
+    /// <summary>
     /// Gets a value indicating whether the application is the root.
     /// </summary>
     bool IsRoot { get; }
