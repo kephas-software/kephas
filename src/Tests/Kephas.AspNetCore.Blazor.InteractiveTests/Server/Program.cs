@@ -9,7 +9,6 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
 {
     using System;
     using System.Threading.Tasks;
-
     using Kephas.Application;
     using Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions;
     using Kephas.Cryptography;
@@ -30,9 +29,10 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
             return Host.CreateDefaultBuilder(args)
                 .ConfigureAmbientServices(
                     ambientServices,
-                    args,
+                    appArgs,
                     ambient => ambient.BuildWithAutofac(),
-                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, services.TryGetStartupService<IConfiguration>()))
+                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService,
+                        services.TryGetStartupService<IConfiguration>()))
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder
                         .UseKestrel()
@@ -50,4 +50,5 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
             {
             }
         }
-    }}
+    }
+}

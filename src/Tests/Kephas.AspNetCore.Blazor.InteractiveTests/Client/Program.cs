@@ -22,7 +22,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     {
         public static async Task<int> Main(string[] args)
         {
-            IApp clientApp = new ClientApp<App>(
+            var clientApp = new ClientApp<App>(
                 ConfigureAmbientServices,
                 new AppArgs(args));
 
