@@ -145,13 +145,23 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.RunAsync());
+            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.RunServiceAsync());
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
             appLifetime.ApplicationStopped.Register(() => this.DisposeServicesContainer());
         }
+
+        /// <summary>
+        /// Runs the application asynchronously in service mode.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result that yields the <see cref="IAppContext"/>.
+        /// </returns>
+        protected virtual Task<AppRunResult> RunServiceAsync(CancellationToken cancellationToken = default)
+            => this.RunAsync(null, cancellationToken);
 
         /// <summary>
         /// Avoid disposing of services too soon, in the application stopping event.

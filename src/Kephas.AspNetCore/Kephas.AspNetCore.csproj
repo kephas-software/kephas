@@ -65,18 +65,7 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Properties\" />
     </ItemGroup>
 
     <ItemGroup>

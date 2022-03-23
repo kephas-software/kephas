@@ -7,7 +7,7 @@
 
 #if NET6_0_OR_GREATER
 
-namespace Kephas.AspNetCore
+namespace Kephas.Application.AspNetCore
 {
     using System;
     using System.Linq;
@@ -51,12 +51,14 @@ namespace Kephas.AspNetCore
         /// <summary>
         /// Runs the application asynchronously.
         /// </summary>
-        /// <param name="mainCallback">Not used. Preseved only to hide the base method.</param>
+        /// <param name="mainCallback">Not used. Preserved only to hide the base method.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public new async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> RunAsync(Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null, CancellationToken cancellationToken = default)
+        public override async Task<AppRunResult> RunAsync(
+            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
+            CancellationToken cancellationToken = default)
         {
             this.ConfigureServices(this.builder.Services);
 
@@ -67,8 +69,18 @@ namespace Kephas.AspNetCore
             this.Configure(app, app.Lifetime);
 
             await app.RunAsync().PreserveThreadContext();
-            return (this.AppContext, AppShutdownInstruction.Shutdown);
+            return new AppRunResult(this.AppContext, AppShutdownInstruction.Shutdown);
         }
+
+        /// <summary>
+        /// Runs the application asynchronously in service mode.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result that yields the <see cref="IAppContext"/>.
+        /// </returns>
+        protected override Task<AppRunResult> RunServiceAsync(CancellationToken cancellationToken = default)
+            => base.RunAsync(null, cancellationToken);
 
         private static WebApplicationBuilder CreateBuilder(Action<WebApplicationBuilder>? builderOptions, IAppArgs appArgs)
         {
