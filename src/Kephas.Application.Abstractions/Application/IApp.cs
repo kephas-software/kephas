@@ -42,25 +42,6 @@ public interface IApp : IAsyncDisposable
     bool IsShuttingDown { get; }
 
     /// <summary>
-    /// Bootstraps the application asynchronously.
-    /// </summary>
-    /// <param name="errorCode">The error code to return if the running fails.</param>
-    /// <returns>An async result.</returns>
-    public async Task<int> RunAsync(int errorCode)
-    {
-        try
-        {
-            await this.RunAsync(null, default).PreserveThreadContext();
-            return 0;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return errorCode;
-        }
-    }
-
-    /// <summary>
     /// Runs the application asynchronously.
     /// </summary>
     /// <param name="mainCallback">
@@ -82,4 +63,30 @@ public interface IApp : IAsyncDisposable
     /// An asynchronous result.
     /// </returns>
     Task ShutdownAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// Extension methods for <see cref="IApp"/>.
+/// </summary>
+public static class AppExtensions
+{
+    /// <summary>
+    /// Bootstraps the application asynchronously.
+    /// </summary>
+    /// <param name="app">The application.</param>
+    /// <param name="errorCode">The error code to return if the running fails.</param>
+    /// <returns>An async result.</returns>
+    public static async Task<int> RunAsync(this IApp app, int errorCode)
+    {
+        try
+        {
+            await app.RunAsync(null, default).PreserveThreadContext();
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return errorCode;
+        }
+    }
 }
