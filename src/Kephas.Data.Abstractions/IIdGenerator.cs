@@ -13,7 +13,7 @@ using Kephas.Services;
 namespace Kephas.Data;
 
 /// <summary>
-/// Contract for a shared application service generating ID values.
+/// Contract for a singleton application service generating ID values.
 /// </summary>
 [SingletonAppServiceContract]
 public interface IIdGenerator

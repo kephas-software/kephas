@@ -18,7 +18,7 @@ namespace Kephas.Scripting
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// A shared application service contract responsible for interpreting/executing scripts
+    /// A singleton application service contract responsible for interpreting/executing scripts
     /// for a specified language.
     /// </summary>
     [SingletonAppServiceContract(AllowMultiple = true)]

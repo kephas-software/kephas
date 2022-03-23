@@ -13,7 +13,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
     using Kephas.Services;
 
     /// <summary>
-    /// Contract for a shared application service factory creating trigger instances out of Quartz triggers.
+    /// Contract for a singleton application service factory creating trigger instances out of Quartz triggers.
     /// </summary>
     [SingletonAppServiceContract]
     public interface ITriggerFactory
