@@ -11,6 +11,7 @@
 namespace Kephas.Orchestration.Application
 {
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
 
     /// <summary>
@@ -27,10 +28,13 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         public static IRuntimeAppInfo GetRuntimeAppInfo(this IAppInfo appInfo)
         {
+            var appSettings = appInfo[nameof(AppSettings)] as AppSettings;
             return new RuntimeAppInfo
             {
                 AppId = appInfo.Identity.Id,
-                AppInstanceId = appInfo[IAppRuntime.AppInstanceIdKey] as string,
+                AppInstanceId = (appInfo[IAppRuntime.AppInstanceIdKey] as string)!,
+                AppVersion = appInfo.Identity.Version?.ToString(),
+                Features = appSettings?.EnabledFeatures ?? Array.Empty<string>(),
                 IsRoot = false,
             };
         }
