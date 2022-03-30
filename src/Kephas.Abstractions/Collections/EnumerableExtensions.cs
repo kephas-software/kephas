@@ -64,6 +64,7 @@ namespace Kephas.Collections
         {
             foreach (var value in values)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 await action(value, cancellationToken).PreserveThreadContext();
             }
         }
