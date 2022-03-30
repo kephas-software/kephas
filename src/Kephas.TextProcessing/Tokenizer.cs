@@ -53,18 +53,23 @@ namespace Kephas.TextProcessing
             var settings = this.tokenizerConfig?.GetSettings(context) ?? new TokenizerSettings();
 
             var sb = new StringBuilder(text);
-            foreach (var separator in settings.WordSeparators ?? new string[0])
+            var wordBlockSeparators = settings.WordBlockSeparators ?? Array.Empty<string>();
+            foreach (var separator in wordBlockSeparators)
             {
                 sb.Replace(separator, " ");
             }
 
-            IEnumerable<string> tokens = sb.ToString()
-                .Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(t => !settings.Languages.Any(l =>
-                {
-                    var culture = CultureInfo.GetCultureInfo(l.Name);
-                    return l.NoiseWords.Any(w => string.Compare(w, t, true, culture) == 0);
-                }));
+            var wordMinLength = settings.WordMinLength;
+            var wordSeparators = settings.WordSeparators ?? " \t\r\n";
+            var tokens = sb.ToString()
+                .Split(wordSeparators.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                .Where(t =>
+                    t.Length >= wordMinLength
+                    && !settings.Languages.Any(l =>
+                    {
+                        var culture = CultureInfo.GetCultureInfo(l.Name);
+                        return l.NoiseWords.Any(w => string.Compare(w, t, true, culture) == 0);
+                    }));
 
             if (context.Transformation != null)
             {

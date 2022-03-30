@@ -23,39 +23,21 @@ namespace Kephas.TextProcessing
         /// <value>
         /// The word separators.
         /// </value>
-        public string[] WordSeparators { get; set; } = new[]
-            {
-                "\"",
-                "'",
-                "[",
-                "]",
-                "?",
-                ",",
-                ";",
-                ":",
-                "/",
-                "\\",
-                "+",
-                "=",
-                "(",
-                ")",
-                "&",
-                "*",
-                "$",
-                "%",
-                "!",
-                "|",
-                "{",
-                "}",
-                "~",
-                "`",
-                "#",
-                "^",
-                ">",
-                "<",
-                " -",
-                "- ",
-            };
+        public string WordSeparators { get; set; } = " \t\r\n\"'[]?,;:/\\+=()&*$%!|{}~`#^><";
+
+        /// <summary>
+        /// Gets or sets the word block separators.
+        /// </summary>
+        /// <remarks>They are blocks of characters which count only as a block when considering the word separation.</remarks>
+        /// <value>
+        /// The word block separators.
+        /// </value>
+        public string[] WordBlockSeparators { get; set; } = { " -", "- " };
+
+        /// <summary>
+        /// Gets or sets the minimum length of a word.
+        /// </summary>
+        public int WordMinLength { get; set; } = 3;
 
         /// <summary>
         /// Gets or sets the list of language settings.

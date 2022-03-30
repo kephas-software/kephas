@@ -26,9 +26,9 @@ namespace Kephas.TextProcessing.Tests
             Assert.IsInstanceOf<Tokenizer>(tokenizer);
         }
 
-        [TestCase("hi there", new[] { "hi" })]
+        [TestCase("hello there", new[] { "hello" })]
         [TestCase("Please, come home quickly!", new[] { "Please", "come", "home", "quickly" })]
-        [TestCase("The \"stereotype\" is 'key'!", new[] { "stereotype", "is", "key" })]
+        [TestCase("The \"stereotype\" is 'key'!", new[] { "stereotype", "key" })]
         public void Tokenize_simple(string text, string[] expectedTokens)
         {
             var container = this.CreateInjector();
