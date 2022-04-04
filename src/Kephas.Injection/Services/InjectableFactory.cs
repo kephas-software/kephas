@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ContextFactory.cs" company="Kephas Software SRL">
+// <copyright file="InjectableFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the context factory class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Services
@@ -27,8 +24,7 @@ namespace Kephas.Services
     /// A context factory.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    [Obsolete("This type is deprecated in favor of InjectableFactory.")]
-    public class ContextFactory : IContextFactory
+    public class InjectableFactory : IInjectableFactory
     {
         private const int AmbientServicesIndex = -1;
         private const int InjectorIndex = -2;
@@ -43,12 +39,12 @@ namespace Kephas.Services
         private readonly IList<ContractDeclaration> appServiceInfos;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContextFactory"/> class.
+        /// Initializes a new instance of the <see cref="InjectableFactory"/> class.
         /// </summary>
         /// <param name="injector">The injector.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logManager">Manager for log.</param>
-        public ContextFactory(IInjector injector, IAmbientServices ambientServices, ILogManager logManager)
+        public InjectableFactory(IInjector injector, IAmbientServices ambientServices, ILogManager logManager)
         {
             this.injector = injector;
             this.ambientServices = ambientServices;
@@ -65,21 +61,19 @@ namespace Kephas.Services
         public ILogManager LogManager { get; }
 
         /// <summary>
-        /// Creates a typed context.
+        /// Creates an injectable instance.
         /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="type">Type of the injectable.</param>
         /// <param name="args">A variable-length parameters list containing arguments.</param>
         /// <returns>
-        /// The new context.
+        /// The new injectable instance.
         /// </returns>
-        [return: NotNull]
-        public TContext CreateContext<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContext>(params object?[] args)
-            where TContext : class
+        public object Create([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, params object?[] args)
         {
-            var contextType = typeof(TContext);
-            if (!contextType.IsClass || contextType.IsAbstract)
+            var injectableType = type ?? throw new ArgumentNullException(nameof(type));
+            if (!injectableType.IsClass || injectableType.IsAbstract)
             {
-                throw new ArgumentException(AbstractionStrings.InjectableFactory_Create_InjectableTypeMustBeInstantiable.FormatWith(contextType));
+                throw new ArgumentException(AbstractionStrings.InjectableFactory_Create_InjectableTypeMustBeInstantiable.FormatWith(injectableType));
             }
 
             // if (args.Any(a => a == null))
@@ -88,9 +82,9 @@ namespace Kephas.Services
             // }
 
             var signature = new Signature(args.Select(a => a?.GetType())!);
-            var typeSignCache = this.signatureCache.GetOrAdd(contextType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
-            var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(contextType, signature));
-            return (TContext)creatorFunc(args);
+            var typeSignCache = this.signatureCache.GetOrAdd(injectableType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
+            var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(injectableType, signature));
+            return creatorFunc(args);
         }
 
         private Func<object?[], object> GetCreatorFunc(Type contextType, Signature signature)
@@ -171,23 +165,23 @@ namespace Kephas.Services
             {
                 return AmbientServicesIndex;
             }
-            else if (paramType == typeof(IInjector))
+
+            if (paramType == typeof(IInjector))
             {
                 return InjectorIndex;
             }
-            else if (paramType == typeof(ILogManager))
+
+            if (paramType == typeof(ILogManager))
             {
                 return LogManagerIndex;
             }
-            else
+
+            for (var j = 0; j < signature.Count; j++)
             {
-                for (var j = 0; j < signature.Count; j++)
+                var argType = signature[j];
+                if (argType is not null && paramType.IsAssignableFrom(argType))
                 {
-                    var argType = signature[j];
-                    if (argType != null && paramType.IsAssignableFrom(argType))
-                    {
-                        return j;
-                    }
+                    return j;
                 }
             }
 

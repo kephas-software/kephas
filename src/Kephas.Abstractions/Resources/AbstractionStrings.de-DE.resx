@@ -204,13 +204,13 @@
   <data name="Context_CannotChangeIdentity_Exception" xml:space="preserve">
     <value>Die Identität im Kontext kann nicht geändert werden, sobald sie festgelegt wurde.</value>
   </data>
-  <data name="ContextFactory_CreateContext_ContextTypeMustBeInstatiable" xml:space="preserve">
+  <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
     <value>Der Kontexttyp '{0}' muss eine instanziierbare Klasse sein.</value>
   </data>
-  <data name="ContextFactory_CreateContext_NonNullArguments" xml:space="preserve">
+  <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
     <value>Argumente dürfen nicht null sein, wenn ein Kontext vom Typ '{0}' instanziiert wird.</value>
   </data>
-  <data name="ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
+  <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
     <value>Es kann kein passender Konstruktor für die Signatur {0} vom Typ '{1}' gefunden werden.</value>
   </data>
   <data name="UnhandledException_InProcess_Message" xml:space="preserve">

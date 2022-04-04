@@ -16,6 +16,7 @@ namespace Kephas.Services
     /// Interface for context factory.
     /// </summary>
     [SingletonAppServiceContract]
+    [Obsolete("This type is deprecated in favor of IInjectableFactory.")]
     public interface IContextFactory
     {
         /// <summary>
@@ -27,6 +28,7 @@ namespace Kephas.Services
         /// The new context.
         /// </returns>
         [return: NotNull]
+        [Obsolete("This method is deprecated in favor of IInjectableFactory.Create.")]
         TContext CreateContext<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContext>(params object?[] args)
             where TContext : class;
     }

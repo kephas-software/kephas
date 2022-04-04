@@ -356,15 +356,15 @@
     <value>The stored settings type '{0}' differs from the requested settings type '{1}'.</value>
     <comment>The stored settings type '{0}' differs from the requested settings type '{1}'.</comment>
   </data>
-  <data name="ContextFactory_CreateContext_ContextTypeMustBeInstatiable" xml:space="preserve">
-    <value>The context type '{0}' must be an instatiable class.</value>
-    <comment>The context type '{0}' must be an instatiable class.</comment>
+  <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
+    <value>The injectable type '{0}' must be an instantiable class.</value>
+    <comment>The injectable type '{0}' must be an instantiable class.</comment>
   </data>
-  <data name="ContextFactory_CreateContext_NonNullArguments" xml:space="preserve">
-    <value>Arguments may not be null when instatiating context of type '{0}'.</value>
-    <comment>Arguments may not be null when instatiating context of type '{0}'.</comment>
+  <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
+    <value>Arguments may not be null when instantiating injectable of type '{0}'.</value>
+    <comment>Arguments may not be null when instantiating injectable of type '{0}'.</comment>
   </data>
-  <data name="ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
+  <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
     <value>Cannot find a matching constructor for signature {0} in type '{1}'.</value>
     <comment>Cannot find a matching constructor for signature {0} in type '{1}'.</comment>
   </data>

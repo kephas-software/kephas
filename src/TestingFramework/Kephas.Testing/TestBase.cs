@@ -87,6 +87,63 @@ namespace Kephas.Testing
         }
 
         /// <summary>
+        /// Creates an injectable factory mock.
+        /// </summary>
+        /// <typeparam name="T">Type of the injectable.</typeparam>
+        /// <param name="ctor">The constructor for the created injectable.</param>
+        /// <returns>
+        /// The new injectable factory.
+        /// </returns>
+        protected IInjectableFactory CreateInjectableFactoryMock<T>(Func<T> ctor)
+            where T : class
+        {
+            var factory = Substitute.For<IInjectableFactory>();
+            factory.Create<T>(Arg.Any<object[]>())
+                .Returns(ci => ctor());
+            factory.Create(typeof(T), Arg.Any<object[]>())
+                .Returns(ci => ctor());
+            return factory;
+        }
+
+        /// <summary>
+        /// Creates an injectable factory mock.
+        /// </summary>
+        /// <typeparam name="T">Type of the injectable.</typeparam>
+        /// <param name="ctor">The constructor for the created injectable.</param>
+        /// <returns>
+        /// The new injectable factory.
+        /// </returns>
+        protected IInjectableFactory CreateInjectableFactoryMock<T>(Func<object[], T> ctor)
+            where T : class
+        {
+            var factory = Substitute.For<IInjectableFactory>();
+            factory.Create<T>(Arg.Any<object[]>())
+                .Returns(ci => ctor(ci.Arg<object[]>()));
+            factory.Create(typeof(T), Arg.Any<object[]>())
+                .Returns(ci => ctor(ci.Arg<object[]>()));
+            return factory;
+        }
+
+        /// <summary>
+        /// Creates an injectable factory mock.
+        /// </summary>
+        /// <typeparam name="T">Type of the injectable.</typeparam>
+        /// <param name="ctor">The constructor for the created injectable.</param>
+        /// <returns>
+        /// The new injectable factory.
+        /// </returns>
+        protected IInjectableFactory CreateInjectableFactoryMock<T>(Func<CallInfo, object[], T> ctor)
+            where T : class
+        {
+            var factory = Substitute.For<IInjectableFactory>();
+            factory.Create<T>(Arg.Any<object[]>())
+                .Returns(ci => ctor(ci, ci.Arg<object[]>()));
+            factory.Create(typeof(T), Arg.Any<object[]>())
+                .Returns(ci => ctor(ci, ci.Arg<object[]>()));
+            return factory;
+        }
+
+        /// <summary>
         /// Creates a context factory mock.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
@@ -94,6 +151,7 @@ namespace Kephas.Testing
         /// <returns>
         /// The new context factory.
         /// </returns>
+        [Obsolete("This method is deprecated in favor of CreateInjectableFactoryMock.")]
         protected IContextFactory CreateContextFactoryMock<TContext>(Func<TContext> ctor)
             where TContext : class
         {
@@ -111,6 +169,7 @@ namespace Kephas.Testing
         /// <returns>
         /// The new context factory.
         /// </returns>
+        [Obsolete("This method is deprecated in favor of CreateInjectableFactoryMock.")]
         protected IContextFactory CreateContextFactoryMock<TContext>(Func<object[], TContext> ctor)
             where TContext : class
         {
@@ -128,11 +187,10 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock()
         {
-            var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
-            var contextFactoryMock = Substitute.For<IContextFactory>();
-            ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
-            contextFactoryMock.CreateContext<SerializationContext>(Arg.Any<object[]>())
-                .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
+            var serializationService = Substitute.For<ISerializationService, IInjectableFactoryAware>(/*Behavior.Strict*/);
+            var factoryMock = this.CreateInjectableFactoryMock(
+                () => new SerializationContext(Substitute.For<IInjector>(), serializationService));
+            ((IInjectableFactoryAware)serializationService).InjectableFactory.Returns(factoryMock);
             return serializationService;
         }
 
@@ -147,9 +205,9 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>()));
+            var factoryMock = this.CreateInjectableFactoryMock(() => new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>()));
             var serializationService = new DefaultSerializationService(
-                contextFactoryMock,
+                factoryMock,
                 new List<IExportFactory<ISerializer, SerializerMetadata>>
                 {
                     new ExportFactory<ISerializer, SerializerMetadata>(() => serializer, new SerializerMetadata(typeof(TMediaType))),
@@ -264,6 +322,6 @@ namespace Kephas.Testing
             outputStream.Write(outputArray, 0, outputArray.Length);
         }
 
-        public interface IContextFactoryAware { IContextFactory ContextFactory { get; } }
+        public interface IInjectableFactoryAware { IInjectableFactory InjectableFactory { get; } }
     }
 }
