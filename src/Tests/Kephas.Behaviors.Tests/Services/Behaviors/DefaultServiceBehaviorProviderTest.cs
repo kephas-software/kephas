@@ -15,15 +15,15 @@ namespace Kephas.Core.Tests.Services.Behaviors
     using System.Linq;
 
     using Kephas.Behaviors;
-    using Kephas.Commands;
     using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
+    using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultServiceBehaviorProviderTest
+    public class DefaultServiceBehaviorProviderTest : TestBase
     {
         [Test]
         public void WhereEnabled_no_behaviors()
@@ -110,15 +110,13 @@ namespace Kephas.Core.Tests.Services.Behaviors
             injector.Resolve(typeof(ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>))
                 .Returns(ruleFactories);
 
-            var contextFactory = Substitute.For<IContextFactory>();
-            contextFactory.CreateContext<ServiceBehaviorContext<ITestService, AppServiceMetadata>>(Arg.Any<object?[]>())
-                .Returns(ci => new ServiceBehaviorContext<ITestService, AppServiceMetadata>(
-                    injector,
-                    ci.Arg<object?[]>()[0] as Func<ITestService>,
-                    ci.Arg<object?[]>()[1] as AppServiceMetadata));
+            var contextFactory = this.CreateInjectableFactoryMock((ci, _) => new ServiceBehaviorContext<ITestService, AppServiceMetadata>(
+                injector,
+                ci.Arg<object?[]>()[0] as Func<ITestService>,
+                ci.Arg<object?[]>()[1] as AppServiceMetadata));
 
-            injector.Resolve(typeof(IContextFactory)).Returns(contextFactory);
-            injector.Resolve<IContextFactory>().Returns(contextFactory);
+            injector.Resolve(typeof(IInjectableFactory)).Returns(contextFactory);
+            injector.Resolve<IInjectableFactory>().Returns(contextFactory);
 
             return injector;
         }
