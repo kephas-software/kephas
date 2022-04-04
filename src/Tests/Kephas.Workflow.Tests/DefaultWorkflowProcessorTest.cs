@@ -40,7 +40,7 @@ namespace Kephas.Workflow.Tests
         [Test]
         public async Task ExecuteAsync_basic_flow()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<IInjector>(), Substitute.For<IWorkflowProcessor>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ActivityContext(Substitute.For<IInjector>(), Substitute.For<IWorkflowProcessor>()));
             var processor = new DefaultWorkflowProcessor(ctxFactory, new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>(), new RuntimeTypeRegistry());
 
             var activityInfo = Substitute.For<IActivityInfo>();
