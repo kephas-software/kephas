@@ -45,7 +45,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(PingMessage) });
 
-            var contextFactory = this.CreateContextFactoryMock(() =>
+            var contextFactory = this.CreateInjectableFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(ExcludedMessage) });
 
-            var contextFactory = this.CreateContextFactoryMock(() =>
+            var contextFactory = this.CreateInjectableFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);

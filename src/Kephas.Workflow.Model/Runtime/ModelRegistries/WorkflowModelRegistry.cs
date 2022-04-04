@@ -24,17 +24,17 @@ namespace Kephas.Workflow.Model.Runtime.ModelRegistries
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowModelRegistry"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="typeLoader">The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public WorkflowModelRegistry(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IAmbientServices ambientServices,
             ITypeLoader typeLoader,
             ILogManager? logManager = null)
             : base(
-                contextFactory,
+                injectableFactory,
                 ambientServices,
                 typeLoader,
                 context =>

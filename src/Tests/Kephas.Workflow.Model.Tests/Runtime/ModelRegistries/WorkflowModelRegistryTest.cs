@@ -40,7 +40,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(IStateMachine), typeof(IStateMachineType), typeof(ActivityBase), typeof(string), typeof(TestActivity), typeof(TestStateMachine) });
 
-            var contextFactory = this.CreateContextFactoryMock(() =>
+            var contextFactory = this.CreateInjectableFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
@@ -61,7 +61,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(ActivityBase), typeof(string), typeof(ExcludedActivity) });
 
-            var contextFactory = this.CreateContextFactoryMock(() =>
+            var contextFactory = this.CreateInjectableFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
