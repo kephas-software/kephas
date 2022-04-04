@@ -191,7 +191,7 @@ namespace Kephas.Plugins.NuGet
             var packagesFolder = context[PackagesFolderContextKey] as string ?? this.GetPackagesFolder();
             var repositories = context[RepositoriesContextKey] as IList<SourceRepository> ?? this.GetSourceRepositories();
             var ownsCacheContext = false;
-            if (!(context[SourceCacheContextKey] is SourceCacheContext cacheContext))
+            if (context[SourceCacheContextKey] is not SourceCacheContext cacheContext)
             {
                 cacheContext = new SourceCacheContext();
                 ownsCacheContext = true;
