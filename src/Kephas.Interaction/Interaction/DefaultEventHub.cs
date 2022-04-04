@@ -15,6 +15,7 @@ namespace Kephas.Interaction
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Logging;
@@ -29,18 +30,18 @@ namespace Kephas.Interaction
     [OverridePriority(Priority.Low)]
     public class DefaultEventHub : Loggable, IEventHub, IDisposable
     {
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly IList<EventSubscription> subscriptions = new List<EventSubscription>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public DefaultEventHub(IContextFactory contextFactory, ILogManager? logManager = null)
+        public DefaultEventHub(IInjectableFactory injectableFactory, ILogManager? logManager = null)
             : base(logManager)
         {
-            this.contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace Kephas.Interaction
         public Task<IOperationResult<IEnumerable<object?>>> PublishAsync<TContext>(object @event, Action<TContext> options, CancellationToken cancellationToken = default)
             where TContext : class, IContext
         {
-            var context = this.contextFactory.CreateContext<TContext>().Merge(options);
+            var context = this.injectableFactory.Create<TContext>().Merge(options);
             return this.PublishAsync(@event, context, cancellationToken);
         }
 

@@ -30,12 +30,16 @@ namespace Kephas.Messaging.Events
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingEventHub"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="messageMatchService">The message match service.</param>
         /// <param name="handlerRegistry">The handler registry.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public MessagingEventHub(IContextFactory contextFactory, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, ILogManager? logManager = null)
-            : base(contextFactory, logManager)
+        public MessagingEventHub(
+            IInjectableFactory injectableFactory,
+            IMessageMatchService messageMatchService,
+            IMessageHandlerRegistry handlerRegistry,
+            ILogManager? logManager = null)
+            : base(injectableFactory, logManager)
         {
             this.messageMatchService = messageMatchService ?? throw new ArgumentNullException(nameof(messageMatchService));
             handlerRegistry = handlerRegistry ?? throw new ArgumentNullException(nameof(handlerRegistry));

@@ -149,7 +149,7 @@ namespace Kephas.Tests.Orchestration.Application
 
         private IEventHub CreateEventHub(IContextFactory? contextFactory = null)
         {
-            return new DefaultEventHub(Substitute.For<IContextFactory>());
+            return new DefaultEventHub(Substitute.For<IInjectableFactory>());
         }
     }
 }
