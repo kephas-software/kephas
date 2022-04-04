@@ -8,40 +8,38 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+namespace Kephas.Cryptography;
 
-namespace Kephas.Cryptography
+using Kephas.Injection;
+using Kephas.Services;
+
+/// <summary>
+/// An encryption context.
+/// </summary>
+public class EncryptionContext : Context, IEncryptionContext
 {
-    using Kephas.Services;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
+    /// </summary>
+    /// <param name="injector">The injector.</param>
+    public EncryptionContext(IInjector injector)
+        : base(injector)
+    {
+    }
 
     /// <summary>
-    /// An encryption context.
+    /// Gets or sets the key for encryption/decryption.
     /// </summary>
-    public class EncryptionContext : Context, IEncryptionContext
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
-        /// </summary>
-        /// <param name="injector">The injector.</param>
-        public EncryptionContext(IInjector injector)
-            : base(injector)
-        {
-        }
+    /// <value>
+    /// The key.
+    /// </value>
+    public byte[]? Key { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key for encryption/decryption.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        public byte[]? Key { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the key.
-        /// </summary>
-        /// <value>
-        /// The size of the key.
-        /// </value>
-        public int? KeySize { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the size of the key.
+    /// </summary>
+    /// <value>
+    /// The size of the key.
+    /// </value>
+    public int? KeySize { get; set; }
 }
