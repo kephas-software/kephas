@@ -22,9 +22,6 @@
 
     <ItemGroup>
       <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
       <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -42,7 +39,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Behaviors\Kephas.Behaviors.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
