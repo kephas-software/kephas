@@ -45,20 +45,20 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultScriptProcessor"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="languageServiceFactories">The language service factories.</param>
         /// <param name="scriptingBehaviorFactories">The scripting behavior factories.</param>
         public DefaultScriptProcessor(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             ICollection<Lazy<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
             ICollection<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             languageServiceFactories = languageServiceFactories ?? throw new ArgumentNullException(nameof(languageServiceFactories));
             scriptingBehaviorFactories = scriptingBehaviorFactories ?? throw new ArgumentNullException(nameof(scriptingBehaviorFactories));
 
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
 
             languageServiceFactories
                 .Order()
@@ -101,7 +101,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The context factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        public IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Executes the expression asynchronously.
@@ -178,18 +178,18 @@ namespace Kephas.Scripting
             IDynamic args,
             Action<IScriptingContext>? optionsConfig = null)
         {
-            var scriptingContext = this.ContextFactory.CreateContext<ScriptingContext>();
+            var scriptingContext = this.InjectableFactory.Create<ScriptingContext>();
             scriptingContext.Script = script;
             scriptingContext.Args = args;
             var scriptGlobals = new ScriptGlobals();
             scriptingContext.ScriptGlobals = scriptGlobals;
 
             optionsConfig?.Invoke(scriptingContext);
-            
+
             // do the deconstruction after the configuration is invoked, to allow changing the Args
             // and the DeconstructArgs flags.
             scriptGlobals.SetArgs(scriptingContext.Args, scriptingContext.DeconstructArgs);
-            
+
             return scriptingContext;
         }
     }

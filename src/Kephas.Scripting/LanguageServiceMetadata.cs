@@ -33,7 +33,7 @@ namespace Kephas.Scripting
                 return;
             }
 
-            this.Language = (string[])metadata.TryGetValue(nameof(this.Language));
+            this.Language = (string[])metadata.TryGetValue(nameof(this.Language)) ?? Array.Empty<string>();
         }
 
         /// <summary>

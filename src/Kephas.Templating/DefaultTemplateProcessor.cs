@@ -37,20 +37,20 @@ namespace Kephas.Templating
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTemplateProcessor"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="engineFactories">The templating engine factories.</param>
         /// <param name="behaviorFactories">The template processing behavior factories.</param>
         public DefaultTemplateProcessor(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             ICollection<Lazy<ITemplatingEngine, TemplatingEngineMetadata>> engineFactories,
             ICollection<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>> behaviorFactories)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             engineFactories = engineFactories ?? throw new ArgumentNullException(nameof(engineFactories));
             behaviorFactories = behaviorFactories ?? throw new ArgumentNullException(nameof(behaviorFactories));
 
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
 
             engineFactories
                 .Order()
@@ -94,7 +94,7 @@ namespace Kephas.Templating
         /// <value>
         /// The context factory.
         /// </value>
-        protected IContextFactory ContextFactory { get; }
+        protected IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Processes the provided template asynchronously returning the processed output.
@@ -217,7 +217,7 @@ namespace Kephas.Templating
             object? model,
             Action<ITemplateProcessingContext>? optionsConfig = null)
         {
-            var processingContext = this.ContextFactory.CreateContext<TemplateProcessingContext>();
+            var processingContext = this.InjectableFactory.Create<TemplateProcessingContext>();
             processingContext.Template = template;
             processingContext.Model = model;
 
