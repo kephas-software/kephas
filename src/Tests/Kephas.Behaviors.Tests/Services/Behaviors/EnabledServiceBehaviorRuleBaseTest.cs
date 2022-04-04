@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services.Behaviors
+namespace Kephas.Behaviors.Tests.Services.Behaviors
 {
     using Kephas.Behaviors;
     using Kephas.Injection;

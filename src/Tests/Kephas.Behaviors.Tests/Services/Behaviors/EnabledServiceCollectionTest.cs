@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services.Behaviors
+namespace Kephas.Behaviors.Tests.Services.Behaviors
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Kephas.Behaviors;
     using Kephas.Injection;
     using Kephas.Services;
@@ -23,7 +22,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultServiceBehaviorProviderTest : TestBase
+    public class EnabledServiceCollectionTest : TestBase
     {
         [Test]
         public void WhereEnabled_no_behaviors()
