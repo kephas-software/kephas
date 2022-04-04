@@ -38,7 +38,7 @@ namespace Kephas.Tests.Services
             var attr = new AppServicesAttribute(typeof(AppServicesProvider));
 
             var serviceInfos = attr.GetAppServiceContracts();
-            CollectionAssert.AreEqual(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.ContractDeclarationType));
+            CollectionAssert.AreEqual(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.ContractDeclarationType).ToArray());
             CollectionAssert.IsEmpty(attr.GetAppServices());
         }
 
@@ -59,7 +59,7 @@ namespace Kephas.Tests.Services
             /// <returns>
             /// The contract declaration types.
             /// </returns>
-            public IEnumerable<Type>? GetContractDeclarationTypes(dynamic? context = null)
+            IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)
             {
                 yield return typeof(IService);
             }

@@ -8,13 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services
+namespace Kephas.Tests.Services
 {
-    using System;
-    using System.Linq;
-
     using Kephas.Services;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -23,5 +19,11 @@ namespace Kephas.Core.Tests.Services
     [TestFixture]
     public class AppServiceContractAttributeTest
     {
+        [Test]
+        public void Constructor()
+        {
+            var attr = new AppServiceContractAttribute();
+            Assert.AreEqual(AppServiceLifetime.Transient,  attr.Lifetime);
+        }
     }
 }

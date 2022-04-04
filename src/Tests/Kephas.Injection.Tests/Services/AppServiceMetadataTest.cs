@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services
+namespace Kephas.Tests.Services
 {
     using System.Collections.Generic;
-
     using Kephas.Services;
     using NUnit.Framework;
 

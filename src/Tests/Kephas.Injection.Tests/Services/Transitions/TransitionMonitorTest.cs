@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services.Transitions
+namespace Kephas.Tests.Services.Transitions
 {
     using System;
-
     using Kephas.Services.Transitions;
     using NUnit.Framework;
 

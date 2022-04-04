@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services
+namespace Kephas.Tests.Services
 {
     using System;
     using System.Security;
     using System.Security.Principal;
-
     using Kephas.Injection;
     using Kephas.Services;
     using NSubstitute;
