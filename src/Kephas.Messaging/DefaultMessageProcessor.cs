@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Messaging
 {
     using System;
@@ -18,6 +16,8 @@ namespace Kephas.Messaging
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Services;
@@ -32,42 +32,40 @@ namespace Kephas.Messaging
         private readonly IMessageHandlerRegistry handlerRegistry;
         private readonly IMessageMatchService messageMatchService;
         private readonly IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories;
-        private readonly
-            ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors)> behaviorFactoriesDictionary =
-                new ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior>, IEnumerable<IMessagingBehavior>)>();
+        private readonly ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors)> behaviorFactoriesDictionary = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="handlerRegistry">The handler registry.</param>
         /// <param name="messageMatchService">The message match service.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultMessageProcessor(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             handlerRegistry = handlerRegistry ?? throw new System.ArgumentNullException(nameof(handlerRegistry));
             messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
             behaviorFactories = behaviorFactories ?? throw new System.ArgumentNullException(nameof(behaviorFactories));
 
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
             this.handlerRegistry = handlerRegistry;
             this.messageMatchService = messageMatchService;
             this.behaviorFactories = behaviorFactories.Order().ToList();
         }
 
         /// <summary>
-        /// Gets the context factory.
+        /// Gets the injectable factory.
         /// </summary>
         /// <value>
-        /// The context factory.
+        /// The injectable factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        public IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Processes the specified message asynchronously.
@@ -176,7 +174,7 @@ namespace Kephas.Messaging
             IMessage message,
             Action<IMessagingContext>? optionsConfig)
         {
-            var context = this.ContextFactory.CreateContext<MessagingContext>(this);
+            var context = this.InjectableFactory.Create<MessagingContext>(this);
             optionsConfig?.Invoke(context);
             context.Message = message;
             return context;

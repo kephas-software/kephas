@@ -604,14 +604,16 @@ namespace Kephas.Messaging.Tests
                                                   // new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata()),
                                               };
 
-            var contextFactory = Substitute.For<IContextFactory>();
+            var contextFactory = Substitute.For<IInjectableFactory>();
             var processor = new TestMessageProcessor(
                 contextFactory,
                 mms,
                 new DefaultMessageHandlerRegistry(mms, handlerProviderFactories, handlerFactories),
                 behaviorFactories);
 
-            contextFactory.CreateContext<MessagingContext>(Arg.Any<object[]>())
+            contextFactory.Create<MessagingContext>(Arg.Any<object[]>())
+                .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
+            contextFactory.Create(typeof(MessagingContext), Arg.Any<object[]>())
                 .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
 
             return processor;
@@ -651,8 +653,10 @@ namespace Kephas.Messaging.Tests
     {
         public Func<IMessage, Action<IMessagingContext>, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
-        public TestMessageProcessor(IContextFactory contextFactory, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-            : base(contextFactory, handlerRegistry, messageMatchService, behaviorFactories)
+        public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageMatchService messageMatchService,
+            IMessageHandlerRegistry handlerRegistry,
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
+            : base(injectableFactory, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }
 

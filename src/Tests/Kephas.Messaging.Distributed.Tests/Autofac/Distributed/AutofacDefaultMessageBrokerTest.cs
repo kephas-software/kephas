@@ -424,8 +424,10 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         [OverridePriority(Priority.High)]
         public class TestMessageProcessor : DefaultMessageProcessor
         {
-            public TestMessageProcessor(IContextFactory contextFactory, IMessageHandlerRegistry handlerRegistry, IMessageMatchService messageMatchService, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-                : base(contextFactory, handlerRegistry, messageMatchService, behaviorFactories)
+            public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageHandlerRegistry handlerRegistry,
+                IMessageMatchService messageMatchService,
+                IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
+                : base(injectableFactory, handlerRegistry, messageMatchService, behaviorFactories)
             {
             }
 

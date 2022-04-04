@@ -587,9 +587,9 @@ namespace Kephas.Messaging.Tests.Autofac
         }
 
         private TestMessageProcessor CreateMessageProcessor(
-            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories = null,
-            IList<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>> handlerProviderFactories = null,
-            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>>? behaviorFactories = null,
+            IList<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>>? handlerProviderFactories = null,
+            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>>? handlerFactories = null)
         {
             var mms = new DefaultMessageMatchService();
             behaviorFactories = behaviorFactories
@@ -606,14 +606,16 @@ namespace Kephas.Messaging.Tests.Autofac
                                                   // new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata()),
                                               };
 
-            var contextFactory = Substitute.For<IContextFactory>();
+            var injectableFactory = Substitute.For<IInjectableFactory>();
             var processor = new TestMessageProcessor(
-                contextFactory,
+                injectableFactory,
                 mms,
                 new DefaultMessageHandlerRegistry(mms, handlerProviderFactories, handlerFactories),
                 behaviorFactories);
 
-            contextFactory.CreateContext<MessagingContext>(Arg.Any<object[]>())
+            injectableFactory.Create<MessagingContext>(Arg.Any<object[]>())
+                .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
+            injectableFactory.Create(typeof(MessagingContext), Arg.Any<object[]>())
                 .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
 
             return processor;
@@ -653,8 +655,12 @@ namespace Kephas.Messaging.Tests.Autofac
     {
         public Func<IMessage, Action<IMessagingContext>, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
-        public TestMessageProcessor(IContextFactory contextFactory, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-            : base(contextFactory, handlerRegistry, messageMatchService, behaviorFactories)
+        public TestMessageProcessor(
+            IInjectableFactory injectableFactory,
+            IMessageMatchService messageMatchService,
+            IMessageHandlerRegistry handlerRegistry,
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
+            : base(injectableFactory, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }
 
