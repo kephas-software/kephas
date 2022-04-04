@@ -93,7 +93,7 @@ namespace Kephas.Application.Tests
             var testFeatureInfo = factoryMetadata[0].FeatureInfo;
             Assert.IsNotNull(testFeatureInfo);
             Assert.AreEqual("Annotated test", testFeatureInfo.Name);
-            Assert.AreEqual(new SemanticVersion(1, 2, 3, "dev-2"), testFeatureInfo.Version);
+            Assert.AreEqual(new SemanticVersion(1, 2, 3, "dev.2"), testFeatureInfo.Version);
             Assert.AreEqual(1, testFeatureInfo.Dependencies.Length);
             Assert.AreEqual("Test", testFeatureInfo.Dependencies[0]);
         }

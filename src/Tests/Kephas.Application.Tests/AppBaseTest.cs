@@ -11,11 +11,13 @@
 namespace Kephas.Application.Tests
 {
     using System;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
     using Kephas.Application;
+    using Kephas.Configuration;
     using Kephas.Injection;
     using Kephas.Operations;
     using Kephas.Runtime;
@@ -26,6 +28,14 @@ namespace Kephas.Application.Tests
     [TestFixture]
     public class AppBaseTest : ApplicationTestBase
     {
+        public override IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(IConfiguration<>).Assembly,  // Kephas.Configuration.
+            };
+        }
+
         [Test]
         public async Task ConfigureAmbientServicesAsync_ambient_services_static_instance_set()
         {
