@@ -20,9 +20,7 @@ namespace Kephas.Testing.Injection
     using Kephas.Injection.Lite.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
-    using Kephas.Runtime;
     using Kephas.Serialization;
-    using Kephas.Services;
     using Kephas.Testing;
 
     /// <summary>

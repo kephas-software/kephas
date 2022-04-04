@@ -15,6 +15,7 @@ namespace Kephas.Testing.Injection
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Text;
+
     using Autofac;
     using Kephas.Application;
     using Kephas.Diagnostics.Logging;
@@ -23,9 +24,9 @@ namespace Kephas.Testing.Injection
     using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Autofac.Metadata;
     using Kephas.Injection.Builder;
+    using Kephas.Interaction;
     using Kephas.Logging;
-    using Kephas.Runtime;
-    using Kephas.Services;
+    using Kephas.Serialization;
 
     /// <summary>
     /// Base class for tests using composition.
@@ -138,7 +139,10 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).Assembly,            /* Kephas.Injection */
+                           typeof(IInjector).Assembly,              /* Kephas.Injection */
+                           typeof(IEventHub).Assembly,              /* Kephas.Interaction */
+                           typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
+                           typeof(AmbientServices).Assembly,        /* Kephas.Core*/
                            typeof(AutofacInjector).Assembly,      /* Kephas.Injection.Autofac */
                        };
         }
