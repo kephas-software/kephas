@@ -60,6 +60,15 @@ namespace Kephas.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
+        /// <param name="injectableFactory">The injectable factory.</param>
+        protected Loggable(IInjectableFactory injectableFactory)
+            : this(() => injectableFactory?.GetLogManager())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="logTarget">Optional. The log target type. Defaults to this type.</param>
         protected Loggable(ILogManager? logManager, Type? logTarget = null)
