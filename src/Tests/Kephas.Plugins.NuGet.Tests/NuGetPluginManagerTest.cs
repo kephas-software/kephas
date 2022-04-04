@@ -68,10 +68,10 @@ namespace Kephas.Plugins.NuGet.Tests
                     appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
                 var manager = container.Resolve<IPluginManager>();
 
-                var result = await manager.InstallPluginAsync(new AppIdentity("Kephas.Core", "9.0.0-dev.0"));
+                var result = await manager.InstallPluginAsync(new AppIdentity("Kephas.Core", "11.0.0"));
 
                 var pluginData = result.Value;
-                Assert.AreEqual(new AppIdentity("Kephas.Core", "9.0.0-dev.0"), pluginData.Identity);
+                Assert.AreEqual(new AppIdentity("Kephas.Core", "11.0.0"), pluginData.Identity);
 
                 var pluginLocation = Path.Combine(pluginsFolder, "Kephas.Core");
                 Assert.AreEqual(pluginLocation, pluginData.Location);
