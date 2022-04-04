@@ -38,9 +38,9 @@ namespace Kephas.Core.Tests.Serialization
         [TestCase(typeof(JsonMediaType))]
         public void GetSerializer_not_found(Type mediaType)
         {
-            var contextFactory = Substitute.For<IContextFactory>();
+            var contextFactory = Substitute.For<IInjectableFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, new List<IExportFactory<ISerializer, SerializerMetadata>>());
-            contextFactory.CreateContext<SerializationContext>(serializationService)
+            contextFactory.Create<SerializationContext>(serializationService)
                 .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
             Assert.Throws<KeyNotFoundException>(() => serializationService.Deserialize("123", ctx => ctx.MediaType = mediaType));
         }
@@ -50,9 +50,9 @@ namespace Kephas.Core.Tests.Serialization
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType)));
-            var contextFactory = Substitute.For<IContextFactory>();
+            var contextFactory = Substitute.For<IInjectableFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
-            contextFactory.CreateContext<SerializationContext>(serializationService)
+            contextFactory.Create<SerializationContext>(serializationService)
                 .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
 
             ISerializationContext context = null;
@@ -69,9 +69,9 @@ namespace Kephas.Core.Tests.Serialization
             var newSerializer = Substitute.For<ISerializer>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), oldSerializer, Priority.Normal));
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), newSerializer, Priority.AboveNormal));
-            var contextFactory = Substitute.For<IContextFactory>();
+            var contextFactory = Substitute.For<IInjectableFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
-            contextFactory.CreateContext<SerializationContext>(serializationService)
+            contextFactory.Create<SerializationContext>(serializationService)
                 .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
 
             serializationService.Deserialize("123");
@@ -313,9 +313,9 @@ namespace Kephas.Core.Tests.Serialization
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), serializer));
-            var contextFactory = Substitute.For<IContextFactory>();
+            var contextFactory = Substitute.For<IInjectableFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
-            contextFactory.CreateContext<SerializationContext>(serializationService)
+            contextFactory.Create<SerializationContext>(serializationService)
                 .Returns(ci => new SerializationContext(Substitute.For<IInjector>(), serializationService));
 
             return serializationService;

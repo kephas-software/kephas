@@ -30,20 +30,20 @@ namespace Kephas.Serialization
     public class DefaultSerializationService : ISerializationService
     {
         private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories;
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
-        public DefaultSerializationService(IContextFactory contextFactory, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        public DefaultSerializationService(IInjectableFactory injectableFactory, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             serializerFactories = serializerFactories ?? throw new ArgumentNullException(nameof(serializerFactories));
 
             this.serializerFactories = serializerFactories.OrderAsDictionary(f => f.Metadata.MediaType!);
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
         }
 
         /// <summary>
@@ -56,7 +56,8 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task SerializeAsync(object? obj,
+        public async Task SerializeAsync(
+            object? obj,
             TextWriter textWriter,
             Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
@@ -80,7 +81,8 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        public async Task<string> SerializeAsync(object? obj,
+        public async Task<string> SerializeAsync(
+            object? obj,
             Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
@@ -95,7 +97,8 @@ namespace Kephas.Serialization
         /// <param name="obj">The object to be serialized.</param>
         /// <param name="textWriter">The text writer where the serialized object should be written.</param>
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
-        public void Serialize(object? obj,
+        public void Serialize(
+            object? obj,
             TextWriter textWriter,
             Action<ISerializationContext>? optionsConfig = null)
         {
@@ -133,7 +136,8 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public async Task<object?> DeserializeAsync(TextReader textReader,
+        public async Task<object?> DeserializeAsync(
+            TextReader textReader,
             Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
@@ -151,11 +155,12 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public async Task<object?> DeserializeAsync(string serializedObj,
+        public async Task<object?> DeserializeAsync(
+            string serializedObj,
             Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            if (serializedObj == null)
+            if (serializedObj is null)
             {
                 return null;
             }
@@ -208,7 +213,7 @@ namespace Kephas.Serialization
         /// </returns>
         protected virtual ISerializationContext CreateSerializationContext(Action<ISerializationContext>? optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<SerializationContext>(this);
+            var context = this.injectableFactory.Create<SerializationContext>(this);
             optionsConfig?.Invoke(context);
             if (context.MediaType == null)
             {
