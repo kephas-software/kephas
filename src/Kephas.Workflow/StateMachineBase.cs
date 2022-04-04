@@ -32,6 +32,7 @@ namespace Kephas.Workflow
     /// <typeparam name="TState">Type of the state.</typeparam>
     public abstract class StateMachineBase<TTarget, TState> : Expando, IStateMachine<TTarget, TState>
         where TTarget : class
+        where TState : notnull
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
 
@@ -63,22 +64,6 @@ namespace Kephas.Workflow
         /// The current state of the target.
         /// </value>
         public virtual TState CurrentState => (TState)this.GetTypeInfo().TargetStateProperty.GetValue(this.Target)!;
-
-        /// <summary>
-        /// Gets the target controlled by the state machine.
-        /// </summary>
-        /// <value>
-        /// The target.
-        /// </value>
-        object IStateMachine.Target => this.Target;
-
-        /// <summary>
-        /// Gets the current state of the target.
-        /// </summary>
-        /// <value>
-        /// The current state of the target.
-        /// </value>
-        object IStateMachine.CurrentState => this.CurrentState!;
 
         /// <summary>
         /// Gets type information.

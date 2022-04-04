@@ -10,6 +10,7 @@
 
 namespace Kephas.Workflow
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -64,8 +65,9 @@ namespace Kephas.Workflow
     /// </remarks>
     /// <typeparam name="TTarget">Type of the target.</typeparam>
     /// <typeparam name="TState">Type of the state.</typeparam>
-    public interface IStateMachine<TTarget, TState> : IStateMachine
+    public interface IStateMachine<out TTarget, out TState> : IStateMachine
         where TTarget : class
+        where TState : notnull
     {
         /// <summary>
         /// Gets the target controlled by the state machine.
@@ -78,7 +80,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The target.
         /// </value>
-        new TTarget Target { get; }
+        new TTarget Target { [return: NotNull] get; }
 
         /// <summary>
         /// Gets the current state of the target.
@@ -86,6 +88,27 @@ namespace Kephas.Workflow
         /// <value>
         /// The current state of the target.
         /// </value>
-        new TState CurrentState { get; }
+        new TState CurrentState { [return: NotNull] get; }
+
+        /// <summary>
+        /// Gets the target controlled by the state machine.
+        /// </summary>
+        /// <remarks>
+        /// The target is typically the state machine's container instance.
+        /// For example, a document entity may contain state machine controlling the document state,
+        /// in which case the target is the document.
+        /// </remarks>
+        /// <value>
+        /// The target.
+        /// </value>
+        object IStateMachine.Target => this.Target;
+
+        /// <summary>
+        /// Gets the current state of the target.
+        /// </summary>
+        /// <value>
+        /// The current state of the target.
+        /// </value>
+        object IStateMachine.CurrentState => this.CurrentState;
     }
 }
