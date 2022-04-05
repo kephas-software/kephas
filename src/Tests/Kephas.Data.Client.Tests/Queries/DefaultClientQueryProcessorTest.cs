@@ -42,7 +42,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -78,7 +78,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync_skip_conversion_for_same_type()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -117,7 +117,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync_context_config()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -170,7 +170,7 @@ namespace Kephas.Data.Client.Tests.Queries
         public class TestDefaultClientQueryExecutor : DefaultClientQueryProcessor
         {
             public TestDefaultClientQueryExecutor(
-                IContextFactory contextFactory,
+                IInjectableFactory injectableFactory,
                 IClientQueryConverter clientQueryConverter,
                 IDataConversionService conversionService,
                 ITypeResolver typeResolver,
@@ -178,7 +178,7 @@ namespace Kephas.Data.Client.Tests.Queries
                 Func<IDataContext> dataContextCreator = null,
                 Func<IDataContext> clientDataContextCreator = null)
                 : base(
-                    contextFactory,
+                    injectableFactory,
                     clientQueryConverter,
                     conversionService,
                     typeResolver,

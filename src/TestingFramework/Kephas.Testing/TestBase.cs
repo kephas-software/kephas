@@ -36,7 +36,7 @@ namespace Kephas.Testing
     /// <content>
     /// It includes:
     /// * Creating mocks for:
-    ///   * <see cref="IContextFactory"/>.
+    ///   * <see cref="Kephas.Services.IInjectableFactory"/>.
     ///   * <see cref="ISerializationService"/>.
     /// </content>
     public class TestBase
@@ -144,43 +144,7 @@ namespace Kephas.Testing
         }
 
         /// <summary>
-        /// Creates a context factory mock.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="ctor">The constructor for the created context.</param>
-        /// <returns>
-        /// The new context factory.
-        /// </returns>
-        [Obsolete("This method is deprecated in favor of CreateInjectableFactoryMock.")]
-        protected IContextFactory CreateContextFactoryMock<TContext>(Func<TContext> ctor)
-            where TContext : class
-        {
-            var contextFactory = Substitute.For<IContextFactory>();
-            contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
-                .Returns(ci => ctor());
-            return contextFactory;
-        }
-
-        /// <summary>
-        /// Creates a context factory mock.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="ctor">The constructor for the created context.</param>
-        /// <returns>
-        /// The new context factory.
-        /// </returns>
-        [Obsolete("This method is deprecated in favor of CreateInjectableFactoryMock.")]
-        protected IContextFactory CreateContextFactoryMock<TContext>(Func<object[], TContext> ctor)
-            where TContext : class
-        {
-            var contextFactory = Substitute.For<IContextFactory>();
-            contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
-                .Returns(ci => ctor(ci.Arg<object[]>()));
-            return contextFactory;
-        }
-
-        /// <summary>
-        /// Creates a serialization service mock, aware of <see cref="IContextFactory"/>.
+        /// Creates a serialization service mock, aware of <see cref="Kephas.Services.IInjectableFactory"/>.
         /// </summary>
         /// <returns>
         /// The new serialization service mock.
@@ -195,7 +159,7 @@ namespace Kephas.Testing
         }
 
         /// <summary>
-        /// Creates a serialization service mock, aware of <see cref="IContextFactory"/>,
+        /// Creates a serialization service mock, aware of <see cref="Kephas.Services.IInjectableFactory"/>,
         /// and with a handler for the provided media type.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>

@@ -35,25 +35,25 @@ namespace Kephas.Data.IO.Export
     public class DefaultDataExportService : IDataExportService
     {
         private readonly IClientQueryProcessor clientQueryExecutor;
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly IDataStreamWriteService dataStreamWriteService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataExportService"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataStreamWriteService">The data source write service.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public DefaultDataExportService(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IDataStreamWriteService dataStreamWriteService,
             IClientQueryProcessor clientQueryExecutor)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             dataStreamWriteService = dataStreamWriteService ?? throw new System.ArgumentNullException(nameof(dataStreamWriteService));
             clientQueryExecutor = clientQueryExecutor ?? throw new System.ArgumentNullException(nameof(clientQueryExecutor));
 
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
             this.dataStreamWriteService = dataStreamWriteService;
             this.clientQueryExecutor = clientQueryExecutor;
         }
@@ -83,7 +83,7 @@ namespace Kephas.Data.IO.Export
         /// </returns>
         protected virtual IDataExportContext CreateDataExportContext(Action<IDataExportContext>? optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<DataExportContext>();
+            var context = this.injectableFactory.Create<DataExportContext>();
             optionsConfig?.Invoke(context);
             return context;
         }

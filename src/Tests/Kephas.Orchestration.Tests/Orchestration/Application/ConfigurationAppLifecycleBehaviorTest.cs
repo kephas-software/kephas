@@ -147,7 +147,7 @@ namespace Kephas.Tests.Orchestration.Application
             return instanceIds.Select(iid => new RuntimeAppInfo { AppInstanceId = iid });
         }
 
-        private IEventHub CreateEventHub(IContextFactory? contextFactory = null)
+        private IEventHub CreateEventHub(IInjectableFactory? contextFactory = null)
         {
             return new DefaultEventHub(Substitute.For<IInjectableFactory>());
         }

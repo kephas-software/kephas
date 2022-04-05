@@ -42,15 +42,15 @@ namespace Kephas.Plugins
         /// Initializes a new instance of the <see cref="PluginManagerBase"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         protected PluginManagerBase(
             IAppRuntime appRuntime,
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IEventHub eventHub,
             ILogManager? logManager = null)
-            : this(appRuntime, contextFactory, eventHub, appRuntime.GetPluginRepository(), logManager)
+            : this(appRuntime, injectableFactory, eventHub, appRuntime.GetPluginRepository(), logManager)
         {
         }
 
@@ -58,20 +58,20 @@ namespace Kephas.Plugins
         /// Initializes a new instance of the <see cref="PluginManagerBase"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="pluginRepository">The plugin data store.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         protected PluginManagerBase(
             IAppRuntime appRuntime,
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IEventHub eventHub,
             IPluginRepository pluginRepository,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
             this.EventHub = eventHub;
             this.PluginRepository = pluginRepository;
         }
@@ -90,7 +90,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The context factory.
         /// </value>
-        protected IContextFactory ContextFactory { get; }
+        protected IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets the event hub.
@@ -296,7 +296,7 @@ namespace Kephas.Plugins
                             .PluginData(pluginData);
 
                     var uninitializeComplete = false;
-                    using var uninstallContext = this.ContextFactory.CreateContext<PluginContext>()
+                    using var uninstallContext = this.InjectableFactory.Create<PluginContext>()
                         .Merge(uninstallOptions)
                         .Plugin(plugin)
                         .PluginData(pluginData)
@@ -987,7 +987,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual IPluginContext CreatePluginContext(Action<IPluginContext>? options)
         {
-            return this.ContextFactory.CreateContext<PluginContext>().Merge(options);
+            return this.InjectableFactory.Create<PluginContext>().Merge(options);
         }
 
         /// <summary>
@@ -999,7 +999,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual ISearchContext CreateSearchContext(Action<ISearchContext>? filter)
         {
-            return this.ContextFactory.CreateContext<SearchContext>().Merge(filter);
+            return this.InjectableFactory.Create<SearchContext>().Merge(filter);
         }
 
         /// <summary>

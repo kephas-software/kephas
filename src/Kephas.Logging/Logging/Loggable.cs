@@ -51,15 +51,6 @@ namespace Kephas.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
-        protected Loggable(IContextFactory contextFactory)
-            : this(() => contextFactory?.GetLogManager())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Loggable"/> class.
-        /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
         protected Loggable(IInjectableFactory injectableFactory)
             : this(() => injectableFactory?.GetLogManager())

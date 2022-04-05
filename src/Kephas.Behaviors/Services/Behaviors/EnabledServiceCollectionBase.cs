@@ -19,19 +19,19 @@ namespace Kephas.Services.Behaviors
     public abstract class EnabledServiceCollectionBase<TContract, TMetadata>
         where TContract : class
     {
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly ICollection<IEnabledServiceBehaviorRule> behaviorFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceCollectionBase{TContract, TMetadata}"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         protected EnabledServiceCollectionBase(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories = null)
         {
-            this.contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             this.behaviorFactories = this.ComputeEnabledServiceBehaviorRules(behaviorFactories);
         }
 
@@ -71,7 +71,7 @@ namespace Kephas.Services.Behaviors
         protected IServiceBehaviorContext<TContract, TMetadata> CreateServiceBehaviorContext(
             Func<TContract> serviceFactory,
             TMetadata metadata) =>
-            this.contextFactory.CreateContext<ServiceBehaviorContext<TContract, TMetadata>>(serviceFactory, metadata);
+            this.injectableFactory.Create<ServiceBehaviorContext<TContract, TMetadata>>(serviceFactory, metadata);
 
         private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules(ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories)
         {

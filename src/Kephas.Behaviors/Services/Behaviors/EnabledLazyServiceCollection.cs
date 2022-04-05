@@ -27,13 +27,13 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="EnabledLazyServiceCollection{TContract, TMetadata}"/> class.
         /// </summary>
         /// <param name="services">The services to filter.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public EnabledLazyServiceCollection(
             ICollection<Lazy<TContract, TMetadata>> services,
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories = null)
-            : base(contextFactory, behaviorFactories)
+            : base(injectableFactory, behaviorFactories)
         {
             this.services = services;
         }

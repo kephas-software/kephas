@@ -63,7 +63,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisAppMessageRouter"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="queueStore">The message queue store.</param>
@@ -72,7 +72,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
         public RedisAppMessageRouter(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
             IMessageQueueStore queueStore,
@@ -80,7 +80,7 @@ namespace Kephas.Messaging.Redis.Routing
             ISerializationService serializationService,
             IConfiguration<RedisRoutingSettings> redisConfiguration,
             IEventHub eventHub)
-            : base(contextFactory, appRuntime, messageProcessor, queueStore)
+            : base(injectableFactory, appRuntime, messageProcessor, queueStore)
         {
             this.connectionProvider = connectionProvider;
             this.serializationService = serializationService;

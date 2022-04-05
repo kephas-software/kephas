@@ -39,7 +39,7 @@ namespace Kephas.Services
         private readonly IList<ContractDeclaration> appServiceInfos;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectableFactory"/> class.
+        /// Initializes a new instance of the <see cref="Kephas.Services.InjectableFactory"/> class.
         /// </summary>
         /// <param name="injector">The injector.</param>
         /// <param name="ambientServices">The ambient services.</param>

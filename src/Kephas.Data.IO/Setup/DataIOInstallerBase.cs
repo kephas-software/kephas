@@ -37,20 +37,20 @@ namespace Kephas.Data.IO.Setup
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOInstallerBase"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         protected DataIOInstallerBase(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             dataImportService = dataImportService ?? throw new System.ArgumentNullException(nameof(dataImportService));
             dataSpaceFactory = dataSpaceFactory ?? throw new System.ArgumentNullException(nameof(dataSpaceFactory));
 
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
             this.DataImportService = dataImportService;
             this.DataSpaceFactory = dataSpaceFactory;
         }
@@ -61,7 +61,7 @@ namespace Kephas.Data.IO.Setup
         /// <value>
         /// The context factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        public IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets the data import service.
@@ -154,7 +154,7 @@ namespace Kephas.Data.IO.Setup
         /// </returns>
         protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext>? optionsConfig = null)
         {
-            return this.ContextFactory.CreateContext<DataSetupContext>().Merge(optionsConfig);
+            return this.InjectableFactory.Create<DataSetupContext>().Merge(optionsConfig);
         }
 
         /// <summary>

@@ -35,24 +35,24 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
     public class CommandController : AuthenticatedControllerBase
     {
         private readonly ICommandProcessor commandProcessor;
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandController"/> class.
         /// </summary>
         /// <param name="commandProcessor">The command processor.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         public CommandController(
             ICommandProcessor commandProcessor,
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IAuthenticationService authenticationService,
             ILogManager? logManager = null)
             : base(authenticationService, logManager)
         {
             this.commandProcessor = commandProcessor;
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Controllers
                 }
 
                 var identity = await this.GetSessionIdentityAsync(cancellationToken).PreserveThreadContext();
-                using var context = this.contextFactory.CreateContext<Context>()
+                using var context = this.injectableFactory.Create<Context>()
                                         .Impersonate(identity);
                 var response = await this.commandProcessor.ProcessAsync(
                     command,

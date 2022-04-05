@@ -44,7 +44,7 @@ namespace Kephas.Messaging.Distributed
             ConcurrentDictionary<string, (CancellationTokenSource? cancellationTokenSource,
                 TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary = new ();
 
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<RouterEntry>? routerMap;
@@ -52,17 +52,17 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="routerFactories">The enabled router factories.</param>
         public DefaultMessageBroker(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IAppRuntime appRuntime,
             IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
             this.routerFactories = routerFactories.Order();
             this.Id = $"{appRuntime.GetAppId()}/{appRuntime.GetAppInstanceId()}";
         }
@@ -222,7 +222,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext>? optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<DispatchingContext>(message).Merge(optionsConfig);
+            var context = this.injectableFactory.Create<DispatchingContext>(message).Merge(optionsConfig);
             return context;
         }
 
@@ -353,7 +353,7 @@ namespace Kephas.Messaging.Distributed
                 throw new InvalidOperationException(Strings.DefaultMessageBroker_BadReceiverMatchProviderType_Exception.FormatWith(receiverMatchProviderType, typeof(IReceiverMatchProvider)));
             }
 
-            var provider = (IReceiverMatchProvider)this.contextFactory.CreateContext(receiverMatchProviderType);
+            var provider = (IReceiverMatchProvider)this.injectableFactory.Create(receiverMatchProviderType);
             var receiverMatch = provider.GetReceiverMatch(context);
             return this.GetReceiverMatch(receiverMatch, context);
         }

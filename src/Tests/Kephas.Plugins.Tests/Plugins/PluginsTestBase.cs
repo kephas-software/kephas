@@ -46,7 +46,7 @@ namespace Kephas.Tests.Plugins
             return new TestPluginManager(
                 context,
                 appRuntime,
-                this.CreateContextFactoryMock(() => new PluginContext(Substitute.For<IInjector>())),
+                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IInjector>())),
                 this.CreateEventHubMock(),
                 pluginsDataStore,
                 onInstall: onInstall,
@@ -99,7 +99,7 @@ namespace Kephas.Tests.Plugins
             public TestPluginManager(
                 PluginsTestContext ctx,
                 IAppRuntime appRuntime,
-                IContextFactory contextFactory,
+                IInjectableFactory injectableFactory,
                 IEventHub eventHub,
                 IPluginRepository pluginRepository,
                 ILogManager? logManager = null,
@@ -110,7 +110,7 @@ namespace Kephas.Tests.Plugins
                 Func<PluginData, IPluginContext, bool>? canUninitialize = null,
                 Func<PluginData, IPluginContext, bool>? canEnable = null,
                 Func<PluginData, IPluginContext, bool>? canDisable = null)
-                : base(appRuntime, contextFactory, eventHub, pluginRepository, logManager)
+                : base(appRuntime, injectableFactory, eventHub, pluginRepository, logManager)
             {
                 this.ctx = ctx;
                 this.onInstall = onInstall;

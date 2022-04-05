@@ -23,12 +23,12 @@ namespace Kephas.Data.Model.Security.Permissions
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="associationGraphProvider">The association graph provider.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         public EntityModelPermissionScopeResolver(
             IModelSpace typeRegistry,
             ITypeAssociationGraphProvider associationGraphProvider,
-            IContextFactory contextFactory)
-            : base(typeRegistry, associationGraphProvider, contextFactory)
+            IInjectableFactory injectableFactory)
+            : base(typeRegistry, associationGraphProvider, injectableFactory)
         {
         }
     }

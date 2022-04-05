@@ -37,7 +37,7 @@ namespace Kephas.Scheduling
     [OverridePriority(Priority.Low)]
     public class InProcessScheduler : Loggable, IScheduler
     {
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly IWorkflowProcessor workflowProcessor;
         private readonly IJobStore jobStore;
         private readonly IAppRuntime appRuntime;
@@ -50,20 +50,20 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessScheduler"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="jobStore">The job store.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="logManager">The log manager.</param>
         public InProcessScheduler(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IWorkflowProcessor workflowProcessor,
             IJobStore jobStore,
             IAppRuntime appRuntime,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
             this.workflowProcessor = workflowProcessor;
             this.jobStore = jobStore;
             this.appRuntime = appRuntime;
@@ -531,7 +531,7 @@ namespace Kephas.Scheduling
         /// </returns>
         protected virtual ISchedulingContext CreateSchedulingContext(Action<ISchedulingContext>? options = null)
         {
-            return this.contextFactory.CreateContext<SchedulingContext>().Merge(options);
+            return this.injectableFactory.Create<SchedulingContext>().Merge(options);
         }
     }
 }

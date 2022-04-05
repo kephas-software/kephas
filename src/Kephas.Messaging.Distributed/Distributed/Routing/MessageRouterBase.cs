@@ -34,16 +34,16 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRouterBase"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         protected MessageRouterBase(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
             this.AppRuntime = appRuntime;
             this.MessageProcessor = messageProcessor;
 
@@ -62,7 +62,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <value>
         /// The context factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        public IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -314,7 +314,7 @@ namespace Kephas.Messaging.Distributed.Routing
                     var remoteMessage = !localRecipients.Any()
                         ? brokeredMessage
                         : brokeredMessage.Clone(remoteRecipients);
-                    using var redirectContext = this.ContextFactory.CreateContext<DispatchingContext>(remoteMessage);
+                    using var redirectContext = this.InjectableFactory.Create<DispatchingContext>(remoteMessage);
                     redirectContext.Impersonate(context);
 
                     remoteMessage.TraceOutputRoute(this, appInstanceId);
@@ -356,7 +356,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
                         // after processing requests expecting an answer, redirect the reply
                         // through the same infrastructure back to caller.
-                        using var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply);
+                        using var replyContext = this.InjectableFactory.Create<DispatchingContext>(reply);
                         replyContext.Impersonate(context).ReplyTo(brokeredMessage);
 
                         replyContext.BrokeredMessage.TraceOutputRoute(this, appInstanceId);

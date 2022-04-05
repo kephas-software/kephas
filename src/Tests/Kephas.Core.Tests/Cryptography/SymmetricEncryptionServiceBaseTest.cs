@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public void GenerateKey_ensure_disposed()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
             var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
@@ -41,7 +41,7 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public void Encrypt_ensure_disposed()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
             var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public async Task EncryptAsync_ensure_disposed()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
             var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
@@ -63,7 +63,7 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public void Decrypt_ensure_disposed()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
             var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
@@ -74,7 +74,7 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public async Task DecryptAsync_ensure_disposed()
         {
-            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
             var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
@@ -86,8 +86,8 @@ namespace Kephas.Core.Tests.Cryptography
         {
             private readonly Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor;
 
-            public TestEncryptionService(IContextFactory contextFactory, Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
-                : base(() => contextFactory.CreateContext<EncryptionContext>(), algorithmCtor)
+            public TestEncryptionService(IInjectableFactory injectableFactory, Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
+                : base(() => injectableFactory.Create<EncryptionContext>(), algorithmCtor)
             {
                 this.algorithmCtor = algorithmCtor;
             }

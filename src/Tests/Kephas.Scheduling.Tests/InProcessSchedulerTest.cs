@@ -51,8 +51,8 @@ namespace Kephas.Scheduling.Tests
         public async Task EnqueueAsync_extension()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -60,7 +60,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 trigger: new TimerTrigger
@@ -86,9 +86,9 @@ namespace Kephas.Scheduling.Tests
         public async Task EnqueueAsync()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
             var appRuntime = new StaticAppRuntime(appId: "test", appInstanceId: "test-1");
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), appRuntime);
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), appRuntime);
 
             await scheduler.InitializeAsync();
 
@@ -96,7 +96,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 ctx => ctx
@@ -122,8 +122,8 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelTriggerAsync_triggerId()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -132,7 +132,7 @@ namespace Kephas.Scheduling.Tests
 
             var triggerId = 1;
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 ctx => ctx.Trigger(new TimerTrigger(triggerId)
@@ -163,8 +163,8 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelTriggerAsync_trigger()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -174,7 +174,7 @@ namespace Kephas.Scheduling.Tests
             var triggerId = 1;
             var trigger = new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) };
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 null,
@@ -203,8 +203,8 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelScheduledJobAsync_jobInfo()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -213,7 +213,7 @@ namespace Kephas.Scheduling.Tests
 
             var triggerId = 1;
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 null,
@@ -243,8 +243,8 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelScheduledJobAsync_jobInfoId()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -253,7 +253,7 @@ namespace Kephas.Scheduling.Tests
 
             var triggerId = 1;
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 null,
@@ -283,8 +283,8 @@ namespace Kephas.Scheduling.Tests
         public async Task FinalizeAsync_disposes_all_triggers_and_scheduled_jobs()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -292,7 +292,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 ctx => ctx.Trigger(new TimerTrigger
@@ -317,8 +317,8 @@ namespace Kephas.Scheduling.Tests
         public async Task FinalizeAsync_disposes_all_triggers()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -326,7 +326,7 @@ namespace Kephas.Scheduling.Tests
             var jobInfo = new RuntimeFuncJobInfo(this.typeRegistry, () => execution++);
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IDynamic>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, injectableFactory.Create<ActivityContext>(), ci.Arg<CancellationToken>()));
             await scheduler.EnqueueAsync(
                 jobInfo,
                 null,

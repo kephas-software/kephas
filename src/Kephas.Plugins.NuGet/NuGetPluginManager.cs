@@ -80,17 +80,17 @@ namespace Kephas.Plugins.NuGet
         /// Initializes a new instance of the <see cref="NuGetPluginManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="pluginsConfig">The plugins configuration.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         public NuGetPluginManager(
             IAppRuntime appRuntime,
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IEventHub eventHub,
             IConfiguration<NuGetSettings> pluginsConfig,
             ILogManager? logManager = null)
-            : base(appRuntime, contextFactory, eventHub, logManager)
+            : base(appRuntime, injectableFactory, eventHub, logManager)
         {
             this.nativeLogger = new NuGetLogger(this.Logger);
             this.nuGetSettings = pluginsConfig.GetSettings();

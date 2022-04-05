@@ -24,17 +24,17 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultConnectionProvider"/> class.
     /// </summary>
-    /// <param name="contextFactory">The context factory.</param>
+    /// <param name="injectableFactory">The injectable factory.</param>
     /// <param name="factoryFactories">The factory factories.</param>
     public DefaultConnectionProvider(
-        IContextFactory contextFactory,
+        IInjectableFactory injectableFactory,
         ICollection<Lazy<IConnectionFactory, ConnectionFactoryMetadata>> factoryFactories)
-        : base(contextFactory)
+        : base(injectableFactory)
     {
-        contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+        injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
         factoryFactories = factoryFactories ?? throw new ArgumentNullException(nameof(factoryFactories));
 
-        this.ContextFactory = contextFactory;
+        this.InjectableFactory = injectableFactory;
 
         factoryFactories
             .Order()
@@ -57,7 +57,7 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// <value>
     /// The context factory.
     /// </value>
-    protected IContextFactory ContextFactory { get; }
+    protected IInjectableFactory InjectableFactory { get; }
 
     /// <summary>
     /// Creates the connection configured through the connection options.
@@ -104,7 +104,7 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// </returns>
     protected virtual IConnectionContext CreateConnectionContext(Uri host, ICredentials? credentials = null, string? kind = null, Action<IConnectionContext>? optionsConfig = null)
     {
-        var context = this.ContextFactory.CreateContext<ConnectionContext>();
+        var context = this.InjectableFactory.Create<ConnectionContext>();
 
         context.Host = host;
         context.Credentials = credentials;

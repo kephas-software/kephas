@@ -39,31 +39,31 @@ namespace Kephas.Data.IO.Import
     {
         private readonly IProjectedTypeResolver projectedTypeResolver;
         private readonly ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories;
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly IDataStreamReadService dataStreamReadService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataImportService"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataStreamReadService">The data source read service.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
         /// <param name="behaviorFactories">Optional. The behavior factories (optional).</param>
         public DefaultDataImportService(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
             IProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>>? behaviorFactories = null)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             dataStreamReadService = dataStreamReadService ?? throw new System.ArgumentNullException(nameof(dataStreamReadService));
             conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
             projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
 
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
             this.dataStreamReadService = dataStreamReadService;
             this.projectedTypeResolver = projectedTypeResolver;
             this.behaviorFactories = (behaviorFactories ?? new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>>())
@@ -111,7 +111,7 @@ namespace Kephas.Data.IO.Import
         /// </returns>
         protected virtual IDataImportContext CreateDataImportContext(Action<IDataImportContext>? optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<DataImportContext>();
+            var context = this.injectableFactory.Create<DataImportContext>();
             optionsConfig?.Invoke(context);
             return context;
         }

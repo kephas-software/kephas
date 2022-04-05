@@ -23,9 +23,9 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="Sha256HashingService"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
-        public Sha256HashingService(IContextFactory contextFactory)
-            : base(contextFactory)
+        /// <param name="injectableFactory">The injectable factory.</param>
+        public Sha256HashingService(IInjectableFactory injectableFactory)
+            : base(injectableFactory)
         {
         }
 

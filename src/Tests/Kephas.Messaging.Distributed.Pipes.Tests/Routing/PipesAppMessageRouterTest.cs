@@ -300,8 +300,8 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             private static readonly ConcurrentDictionary<string, IMessageQueue> Channels = new ();
 
-            public InProcessStaticMessageQueueStore(IContextFactory contextFactory)
-                : base(contextFactory)
+            public InProcessStaticMessageQueueStore(IInjectableFactory injectableFactory)
+                : base(injectableFactory)
             {
             }
 

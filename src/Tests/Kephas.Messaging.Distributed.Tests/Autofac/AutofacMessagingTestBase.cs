@@ -65,21 +65,21 @@ namespace Kephas.Messaging.Tests.Autofac
                     Substitute.For<IAuthenticationService>(),
                     args.Length > 0 ? args[0] : null);
 
-            container.Resolve(typeof(IExportFactory<IContextFactory>))
+            container.Resolve(typeof(IExportFactory<IInjectableFactory>))
                 .Returns(ci =>
-                        new ExportFactory<IContextFactory>(
-                            () => this.CreateContextFactoryMock(ctxCreator)));
+                        new ExportFactory<IInjectableFactory>(
+                            () => this.CreateInjectableFactoryMock(ctxCreator)));
 
-            container.Resolve(typeof(Lazy<IContextFactory>))
+            container.Resolve(typeof(Lazy<IInjectableFactory>))
                 .Returns(ci =>
-                    new Lazy<IContextFactory>(
-                        () => this.CreateContextFactoryMock(ctxCreator)));
+                    new Lazy<IInjectableFactory>(
+                        () => this.CreateInjectableFactoryMock(ctxCreator)));
 
-            container.Resolve(typeof(IContextFactory))
-                .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
+            container.Resolve(typeof(IInjectableFactory))
+                .Returns(ci => this.CreateInjectableFactoryMock(ctxCreator));
 
-            container.Resolve<IContextFactory>()
-                .Returns(ci => this.CreateContextFactoryMock(ctxCreator));
+            container.Resolve<IInjectableFactory>()
+                .Returns(ci => this.CreateInjectableFactoryMock(ctxCreator));
 
             return container;
         }

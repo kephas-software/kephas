@@ -30,7 +30,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void CreateDataSource_missing_file()
         {
-            var contextFactory = this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
             var handler = new DataInstaller(contextFactory);
             Assert.Throws<IOException>(() => handler.CreateDataSource("dummy file which does not exist"));
         }
@@ -42,13 +42,13 @@ namespace Kephas.Data.IO.Tests.Setup
             private readonly IEnumerable<string> uninstallFilePaths;
 
             public DataInstaller(
-                IContextFactory contextFactory,
+                IInjectableFactory injectableFactory,
                 IDataImportService dataImportService = null,
                 IDataSpace dataSpace = null,
                 IEnumerable<string> installFilePaths = null,
                 IEnumerable<string> uninstallFilePaths = null)
                 : base(
-                    contextFactory,
+                    injectableFactory,
                     dataImportService ?? Substitute.For<IDataImportService>(),
                     new ExportFactory<IDataSpace>(() => dataSpace ?? Substitute.For<IDataSpace>()))
             {

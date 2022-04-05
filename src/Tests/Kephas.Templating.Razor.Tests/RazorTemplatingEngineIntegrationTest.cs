@@ -25,8 +25,8 @@ public class RazorTemplatingEngineIntegrationTest : RazorTemplatingTestBase
 
         using var writer = new StringWriter();
 
-        var contextFactory = injector.Resolve<IContextFactory>();
-        using var context = contextFactory.CreateContext<TemplateProcessingContext>();
+        var injectableFactory = injector.Resolve<IInjectableFactory>();
+        using var context = injectableFactory.Create<TemplateProcessingContext>();
         context.TextWriter = writer;
 
         var result = await engine.ProcessAsync(this.GetTemplate(templatePath), model, writer, context);

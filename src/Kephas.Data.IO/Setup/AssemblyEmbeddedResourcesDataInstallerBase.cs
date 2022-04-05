@@ -31,7 +31,7 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the
         /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <remarks>
@@ -39,10 +39,10 @@ namespace Kephas.Data.IO.Setup
         /// declared.
         /// </remarks>
         protected AssemblyEmbeddedResourcesDataInstallerBase(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
-            : base(contextFactory, dataImportService, dataSpaceFactory)
+            : base(injectableFactory, dataImportService, dataSpaceFactory)
         {
             this.ResourcesAssembly = this.GetType().Assembly;
         }
@@ -51,16 +51,16 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the
         /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <param name="assembly">The assembly containing the resources.</param>
         protected AssemblyEmbeddedResourcesDataInstallerBase(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory,
             Assembly assembly)
-            : base(contextFactory, dataImportService, dataSpaceFactory)
+            : base(injectableFactory, dataImportService, dataSpaceFactory)
         {
             assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 

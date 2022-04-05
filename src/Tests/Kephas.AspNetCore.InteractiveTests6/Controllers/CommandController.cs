@@ -30,19 +30,19 @@ namespace Kephas.AspNetCore.InteractiveTests.Controllers
     public class CommandController : ControllerBase
     {
         private readonly ICommandProcessor commandProcessor;
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandController"/> class.
         /// </summary>
         /// <param name="commandProcessor">The command processor.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         public CommandController(
             ICommandProcessor commandProcessor,
-            IContextFactory contextFactory)
+            IInjectableFactory injectableFactory)
         {
             this.commandProcessor = commandProcessor;
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Kephas.AspNetCore.InteractiveTests.Controllers
                                                  + $"Possible cause: an application component is not properly installed (missing plugin?).");
                 }
 
-                using var context = this.contextFactory.CreateContext<Context>();
+                using var context = this.injectableFactory.Create<Context>();
                 var response = await this.commandProcessor.ProcessAsync(
                     command,
                     args,

@@ -29,7 +29,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     [Test]
     public async Task DispatchAsync_calls_RouteOutputAsync()
     {
-        var router = new TestMessageRouter(this.CreateMessagingContextFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
+        var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
         var message = Substitute.For<IBrokeredMessage>();
         IBrokeredMessage receivedReply = null;
         router.ReplyReceived += (s, e) => receivedReply = e.Message;
@@ -44,7 +44,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     [Test]
     public async Task Receive_reply_raises_ReplyReceived_event()
     {
-        var router = new TestMessageRouter(this.CreateMessagingContextFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
+        var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
         var message = Substitute.For<IBrokeredMessage>();
         message.ReplyToMessageId.Returns("some-id");
 
@@ -59,7 +59,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     public async Task Receive_request_sends_response()
     {
         var messageProcessor = Substitute.For<IMessageProcessor>();
-        var router = new TestMessageRouter(this.CreateMessagingContextFactory(), new TestAppRuntime(), messageProcessor);
+        var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), messageProcessor);
 
         var message = Substitute.For<IBrokeredMessage>();
         message.ReplyToMessageId.Returns((string)null);
@@ -84,9 +84,9 @@ public class MessageRouterBaseTest : MessagingTestBase
         Assert.IsNull(receivedReply);
     }
 
-    private IContextFactory CreateMessagingContextFactory()
+    private IInjectableFactory CreateMessagingInjectableFactory()
     {
-        return this.CreateContextFactoryMock(
+        return this.CreateInjectableFactoryMock(
             args => new DispatchingContext(
                 Substitute.For<IInjector>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
@@ -98,8 +98,8 @@ public class MessageRouterBaseTest : MessagingTestBase
 
     public class TestMessageRouter : MessageRouterBase
     {
-        public TestMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-            : base(contextFactory, appRuntime, messageProcessor)
+        public TestMessageRouter(IInjectableFactory injectableFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+            : base(injectableFactory, appRuntime, messageProcessor)
         {
         }
 

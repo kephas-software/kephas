@@ -28,20 +28,20 @@ namespace Kephas.Data.Setup
     [OverridePriority(Priority.Low)]
     public class DefaultDataSetupManager : IDataSetupManager
     {
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
         private readonly ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataSetupManager"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataInstallerFactories">The data installer factories.</param>
-        public DefaultDataSetupManager(IContextFactory contextFactory, ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories)
+        public DefaultDataSetupManager(IInjectableFactory injectableFactory, ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             dataInstallerFactories = dataInstallerFactories ?? throw new System.ArgumentNullException(nameof(dataInstallerFactories));
 
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
             this.dataInstallerFactories = dataInstallerFactories;
         }
 
@@ -116,7 +116,7 @@ namespace Kephas.Data.Setup
         /// </returns>
         protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext>? optionsConfig = null)
         {
-            return this.contextFactory.CreateContext<DataSetupContext>().Merge(optionsConfig);
+            return this.injectableFactory.Create<DataSetupContext>().Merge(optionsConfig);
         }
 
         /// <summary>

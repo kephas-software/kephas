@@ -27,7 +27,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("other", "2SmKENGwc1g33EvYXaxkGw887yekfl1TpU8vP1svz/o=")]
         public void Hash(string value, string hash)
         {
-            var hashingService = new Sha256HashingService(Substitute.For<IContextFactory>());
+            var hashingService = new Sha256HashingService(Substitute.For<IInjectableFactory>());
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var hashBytes = hashingService.Hash(valueBytes);
             var hashString = Convert.ToBase64String(hashBytes);
@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("other", "salt", "pBbAk+s59J5HOdOZfsuULq8hEgjkBKChn/vhh++mCwE=")]
         public void Hash_with_salt(string value, string salt, string hash)
         {
-            var contextFactory = this.CreateContextFactoryMock(() => new HashingContext(Substitute.For<IInjector>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new HashingContext(Substitute.For<IInjector>()));
             IHashingService hashingService = new Sha256HashingService(contextFactory);
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var saltBytes = Encoding.UTF8.GetBytes(salt);

@@ -56,7 +56,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="PipesAppMessageRouter"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="queueStore">The message queue store.</param>
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <param name="eventHub">The event hub.</param>
         /// <param name="lazyOrchestrationManager">The lazy orchestration manager.</param>
         public PipesAppMessageRouter(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
             IMessageQueueStore queueStore,
@@ -73,7 +73,7 @@ namespace Kephas.Messaging.Pipes.Routing
             ISerializationService serializationService,
             IEventHub eventHub,
             Lazy<IOrchestrationManager> lazyOrchestrationManager)
-            : base(contextFactory, appRuntime, messageProcessor, queueStore)
+            : base(injectableFactory, appRuntime, messageProcessor, queueStore)
         {
             this.pipesConfiguration = pipesConfiguration;
             this.serializationService = serializationService;

@@ -31,7 +31,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetInstallDataFilePaths_explicit_file_names()
         {
-            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetContextFactory(), installFileNames: new[] { "my-embedded-data.json" });
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetInjectableFactory(), installFileNames: new[] { "my-embedded-data.json" });
             var filePaths = handler.GetInstallDataFilePaths().ToList();
             Assert.AreEqual(1, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Install.my-embedded-data.json", filePaths[0]);
@@ -40,7 +40,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetInstallDataFilePaths_implicit_all_file_names()
         {
-            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetContextFactory());
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetInjectableFactory());
             var filePaths = handler.GetInstallDataFilePaths().ToList();
             Assert.AreEqual(2, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Install.my-embedded-data.json", filePaths[0]);
@@ -50,7 +50,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetUninstallDataFilePaths_explicit_file_names()
         {
-            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetContextFactory(), uninstallFileNames: new[] { "my-u-embedded-data.json" });
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetInjectableFactory(), uninstallFileNames: new[] { "my-u-embedded-data.json" });
             var filePaths = handler.GetUninstallDataFilePaths().ToList();
             Assert.AreEqual(1, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Uninstall.my-u-embedded-data.json", filePaths[0]);
@@ -59,7 +59,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetUninstallDataFilePaths_implicit_all_file_names()
         {
-            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetContextFactory());
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetInjectableFactory());
             var filePaths = handler.GetUninstallDataFilePaths().ToList();
             Assert.AreEqual(2, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Uninstall.my-u-embedded-data.json", filePaths[0]);
@@ -69,13 +69,13 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void CreateDataSource_missing_resource()
         {
-            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetContextFactory());
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(this.GetInjectableFactory());
             Assert.Throws<ArgumentException>(() => handler.CreateDataSource("Kephas.Data.IO.Tests.Data.my-data.json"));
         }
 
-        private IContextFactory GetContextFactory()
+        private IInjectableFactory GetInjectableFactory()
         {
-            return this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            return this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
         }
 
         public class TestAssemblyEmbeddedResourcesDataInstaller : AssemblyEmbeddedResourcesDataInstallerBase
@@ -85,13 +85,13 @@ namespace Kephas.Data.IO.Tests.Setup
             private readonly IEnumerable<string> uninstallFileNames;
 
             public TestAssemblyEmbeddedResourcesDataInstaller(
-                IContextFactory contextFactory,
+                IInjectableFactory injectableFactory,
                 IDataImportService dataImportService = null,
                 IDataSpace dataSpace = null,
                 IEnumerable<string> installFileNames = null,
                 IEnumerable<string> uninstallFileNames = null)
                 : base(
-                    contextFactory,
+                    injectableFactory,
                     dataImportService ?? Substitute.For<IDataImportService>(),
                     new ExportFactory<IDataSpace>(() => dataSpace ?? GetDataSpace()))
             {

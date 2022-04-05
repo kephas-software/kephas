@@ -28,26 +28,26 @@ namespace Kephas.Commands
     {
         private readonly ICommandResolver resolver;
         private readonly ICommandIdentityResolver identityResolver;
-        private readonly IContextFactory contextFactory;
+        private readonly IInjectableFactory injectableFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCommandProcessor"/> class.
         /// </summary>
         /// <param name="resolver">The command resolver.</param>
         /// <param name="identityResolver">The identity resolver.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         public DefaultCommandProcessor(
             ICommandResolver resolver,
             ICommandIdentityResolver identityResolver,
-            IContextFactory contextFactory)
+            IInjectableFactory injectableFactory)
         {
             resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
             identityResolver = identityResolver ?? throw new ArgumentNullException(nameof(identityResolver));
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
 
             this.resolver = resolver;
             this.identityResolver = identityResolver;
-            this.contextFactory = contextFactory;
+            this.injectableFactory = injectableFactory;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Kephas.Commands
             var ownsContext = context == null;
             if (ownsContext)
             {
-                context = this.contextFactory.CreateContext<Context>();
+                context = this.injectableFactory.Create<Context>();
             }
 
             if (context!.Identity == null)

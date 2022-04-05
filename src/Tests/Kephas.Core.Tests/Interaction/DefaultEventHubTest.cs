@@ -260,9 +260,9 @@ namespace Kephas.Core.Tests.Interaction
             }
         }
 
-        private DefaultEventHub CreateEventHub(IContextFactory? contextFactory = null)
+        private DefaultEventHub CreateEventHub(IInjectableFactory? injectableFactory = null)
         {
-            return new DefaultEventHub(Substitute.For<IInjectableFactory>());
+            return new DefaultEventHub(injectableFactory ?? Substitute.For<IInjectableFactory>());
         }
     }
 }

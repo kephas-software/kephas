@@ -19,16 +19,16 @@ using Kephas.Services;
 public class InProcessMessageQueueStore : IMessageQueueStore
 {
     private readonly ConcurrentDictionary<string, IMessageQueue> channels = new ();
-    private readonly IContextFactory contextFactory;
+    private readonly IInjectableFactory injectableFactory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InProcessMessageQueueStore"/> class.
     /// </summary>
-    /// <param name="contextFactory">The context factory.</param>
+    /// <param name="injectableFactory">The injectable factory.</param>
     /// <exception cref="System.ArgumentNullException">contextFactory</exception>
-    public InProcessMessageQueueStore(IContextFactory contextFactory)
+    public InProcessMessageQueueStore(IInjectableFactory injectableFactory)
     {
-        this.contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+        this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
     }
 
     /// <summary>
@@ -50,15 +50,15 @@ public class InProcessMessageQueueStore : IMessageQueueStore
     /// <returns>The newly created message queue.</returns>
     protected IMessageQueue CreateMessageQueue(string name)
     {
-        return new InProcessMessageQueue(this.contextFactory, name);
+        return new InProcessMessageQueue(this.injectableFactory, name);
     }
 
     private class InProcessMessageQueue : Loggable, IMessageQueue
     {
         private readonly ConcurrentQueue<IBrokeredMessage> internalQueue = new ();
 
-        public InProcessMessageQueue(IContextFactory contextFactory, string channel)
-            : base(contextFactory)
+        public InProcessMessageQueue(IInjectableFactory injectableFactory, string channel)
+            : base(injectableFactory)
         {
             this.Channel = channel;
         }

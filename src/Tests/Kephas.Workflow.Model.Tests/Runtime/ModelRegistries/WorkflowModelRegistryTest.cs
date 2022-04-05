@@ -40,10 +40,10 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(IStateMachine), typeof(IStateMachineType), typeof(ActivityBase), typeof(string), typeof(TestActivity), typeof(TestStateMachine) });
 
-            var contextFactory = this.CreateInjectableFactoryMock(() =>
+            var injectableFactory = this.CreateInjectableFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<IInjector>()));
 
-            var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
+            var registry = new WorkflowModelRegistry(injectableFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
             Assert.AreEqual(2, result.Count);
             Assert.AreSame(typeof(TestActivity), result[0]);
@@ -61,10 +61,10 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(ActivityBase), typeof(string), typeof(ExcludedActivity) });
 
-            var contextFactory = this.CreateInjectableFactoryMock(() =>
+            var injectableFactory = this.CreateInjectableFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<IInjector>()));
 
-            var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
+            var registry = new WorkflowModelRegistry(injectableFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
             Assert.AreEqual(0, result.Count);
         }

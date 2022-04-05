@@ -43,7 +43,7 @@ namespace Kephas.Data.Client.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultClientQueryProcessor"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="clientQueryConverter">The client query converter.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="typeResolver">The type resolver.</param>
@@ -51,7 +51,7 @@ namespace Kephas.Data.Client.Queries
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <param name="typeRegistry">The type registry.</param>
         public DefaultClientQueryProcessor(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             IClientQueryConverter clientQueryConverter,
             IDataConversionService conversionService,
             ITypeResolver typeResolver,
@@ -59,7 +59,7 @@ namespace Kephas.Data.Client.Queries
             IExportFactory<IDataSpace> dataSpaceFactory,
             IRuntimeTypeRegistry typeRegistry)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             clientQueryConverter = clientQueryConverter ?? throw new System.ArgumentNullException(nameof(clientQueryConverter));
             conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
@@ -68,7 +68,7 @@ namespace Kephas.Data.Client.Queries
 
             this.DataSpaceFactory = dataSpaceFactory;
             this.TypeRegistry = typeRegistry;
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
             this.ClientQueryConverter = clientQueryConverter;
             this.ConversionService = conversionService;
             this.TypeResolver = typeResolver;
@@ -91,7 +91,7 @@ namespace Kephas.Data.Client.Queries
         /// <value>
         /// The context factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        public IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets the client query converter.
@@ -162,7 +162,7 @@ namespace Kephas.Data.Client.Queries
         /// </returns>
         protected virtual IClientQueryExecutionContext CreateExecutionContext(Action<IClientQueryExecutionContext> optionsConfig = null)
         {
-            var context = this.ContextFactory.CreateContext<ClientQueryExecutionContext>();
+            var context = this.InjectableFactory.Create<ClientQueryExecutionContext>();
             optionsConfig?.Invoke(context);
             return context;
         }

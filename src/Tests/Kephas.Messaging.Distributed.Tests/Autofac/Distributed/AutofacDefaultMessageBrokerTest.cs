@@ -332,8 +332,8 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         {
             private object sync = new object();
 
-            public CanDisableMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-                : base(contextFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(contextFactory))
+            public CanDisableMessageRouter(IInjectableFactory injectableFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+                : base(injectableFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(injectableFactory))
             {
             }
 
@@ -380,11 +380,11 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             private readonly ISerializationService serializationService;
 
             public RemoteMessageBroker(
-                IContextFactory contextFactory,
+                IInjectableFactory injectableFactory,
                 IAppRuntime appRuntime,
                 IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories,
                 ISerializationService serializationService)
-                : base(contextFactory, appRuntime, routerFactories)
+                : base(injectableFactory, appRuntime, routerFactories)
             {
                 this.serializationService = serializationService;
             }
@@ -408,10 +408,10 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         public class LoggableMessageBroker : DefaultMessageBroker
         {
             public LoggableMessageBroker(
-                IContextFactory contextFactory,
+                IInjectableFactory injectableFactory,
                 IAppRuntime appRuntime,
                 IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
-                : base(contextFactory, appRuntime, routerFactories)
+                : base(injectableFactory, appRuntime, routerFactories)
             {
             }
 

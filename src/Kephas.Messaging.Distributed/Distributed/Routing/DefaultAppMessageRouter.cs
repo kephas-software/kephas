@@ -41,16 +41,16 @@ public class DefaultAppMessageRouter : MessageRouterBase
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultAppMessageRouter"/> class.
     /// </summary>
-    /// <param name="contextFactory">The context factory.</param>
+    /// <param name="injectableFactory">The injectable factory.</param>
     /// <param name="appRuntime">The application runtime.</param>
     /// <param name="messageProcessor">The message processor.</param>
     /// <param name="queueStore">The message queue store.</param>
     public DefaultAppMessageRouter(
-        IContextFactory contextFactory,
+        IInjectableFactory injectableFactory,
         IAppRuntime appRuntime,
         IMessageProcessor messageProcessor,
         IMessageQueueStore queueStore)
-        : base(contextFactory, appRuntime, messageProcessor)
+        : base(injectableFactory, appRuntime, messageProcessor)
     {
         this.queueStore = queueStore;
     }

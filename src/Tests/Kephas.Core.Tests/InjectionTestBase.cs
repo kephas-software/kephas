@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests
         public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
         {
             var builder = this.WithInjectorBuilder()
-                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly);
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IInjectableFactory).Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
@@ -77,7 +77,7 @@ namespace Kephas.Core.Tests
         public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             return this.WithInjectorBuilder(ambientServices)
-                .WithAssemblies(typeof(IInjector).Assembly, typeof(IContextFactory).Assembly)
+                .WithAssemblies(typeof(IInjector).Assembly, typeof(IInjectableFactory).Assembly)
                 .WithParts(types)
                 .Build();
         }

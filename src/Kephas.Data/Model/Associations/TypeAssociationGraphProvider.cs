@@ -29,16 +29,16 @@ namespace Kephas.Data.Model.Associations
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeAssociationGraphProvider"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
-        public TypeAssociationGraphProvider(IContextFactory contextFactory)
+        /// <param name="injectableFactory">The injectable factory.</param>
+        public TypeAssociationGraphProvider(IInjectableFactory injectableFactory)
         {
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
         }
 
         /// <summary>
         /// Gets the context factory.
         /// </summary>
-        protected IContextFactory ContextFactory { get; }
+        protected IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets an operation result yielding a graph of <see cref="ITypeInfo"/>.
@@ -104,7 +104,7 @@ namespace Kephas.Data.Model.Associations
         /// <returns>A new instance implementing <see cref="IAssociationContext"/>.</returns>
         protected virtual IAssociationContext CreateAssociationContext(Action<IAssociationContext>? options)
         {
-            return this.ContextFactory.CreateContext<AssociationContext>().Merge(options);
+            return this.InjectableFactory.Create<AssociationContext>().Merge(options);
         }
 
         /// <summary>

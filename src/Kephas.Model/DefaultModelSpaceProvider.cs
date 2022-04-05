@@ -49,20 +49,20 @@ namespace Kephas.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="modelInfoProviders">The model information providers.</param>
         /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
         public DefaultModelSpaceProvider(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             ICollection<IModelInfoProvider> modelInfoProviders,
             IRuntimeModelElementFactory runtimeModelElementFactory)
-            : base(contextFactory)
+            : base(injectableFactory)
         {
-            contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             runtimeModelElementFactory = runtimeModelElementFactory ?? throw new System.ArgumentNullException(nameof(runtimeModelElementFactory));
             modelInfoProviders = modelInfoProviders ?? throw new System.ArgumentNullException(nameof(modelInfoProviders));
 
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
             this.ModelInfoProviders = modelInfoProviders;
             this.runtimeModelElementFactory = runtimeModelElementFactory;
         }
@@ -73,7 +73,7 @@ namespace Kephas.Model
         /// <value>
         /// The context factory.
         /// </value>
-        public IContextFactory ContextFactory { get; }
+        public IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets the model information providers.
@@ -145,7 +145,7 @@ namespace Kephas.Model
         /// </returns>
         protected virtual ModelConstructionContext CreateModelConstructionContext(IContext? parentContext)
         {
-            var constructionContext = this.ContextFactory.CreateContext<ModelConstructionContext>(parentContext);
+            var constructionContext = this.InjectableFactory.Create<ModelConstructionContext>(parentContext);
             constructionContext.RuntimeModelElementFactory = this.runtimeModelElementFactory;
 
             constructionContext.TryGetModelElementInfo =

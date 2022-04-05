@@ -36,7 +36,7 @@ namespace Kephas.Core.Tests.Configuration
             return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IEventHub).Assembly,         // Kephas.Interaction
-                typeof(IContextFactory).Assembly,   // Kephas.Injection
+                typeof(IInjectableFactory).Assembly,   // Kephas.Injection
                 typeof(IConfiguration<>).Assembly,  // Kephas.Configuration
                 typeof(ISerializationService).Assembly,  // Kephas.Serialization
             };

@@ -44,15 +44,15 @@ namespace Kephas.Data.Security.Permissions
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="associationGraphProvider">The association graph provider.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         protected EntityPermissionScopeResolverBase(
             ITypeRegistry typeRegistry,
             ITypeAssociationGraphProvider associationGraphProvider,
-            IContextFactory contextFactory)
+            IInjectableFactory injectableFactory)
         {
             this.TypeRegistry = typeRegistry;
             this.AssociationGraphProvider = associationGraphProvider;
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Kephas.Data.Security.Permissions
         /// <summary>
         /// Gets the context factory.
         /// </summary>
-        protected IContextFactory ContextFactory { get; }
+        protected IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Tries to resolve the permission scope name of the provided type information,

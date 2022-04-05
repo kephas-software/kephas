@@ -33,14 +33,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
         /// Initializes a new instance of the <see cref="IdentityAuthenticationService"/> class.
         /// </summary>
         /// <param name="injector">The injector.</param>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="lazyUserStore">The lazy user store.</param>
         public IdentityAuthenticationService(
             IInjector injector,
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             Lazy<IUserStoreService<IdentityUser>> lazyUserStore)
             : base(
-                contextFactory,
+                injectableFactory,
                 new Lazy<IPasswordHasher<IdentityUser>>(() => injector.Resolve<IPasswordHasher<IdentityUser>>()),
                 lazyUserStore)
         {
@@ -60,23 +60,23 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityAuthenticationService{TUser}"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="lazyPasswordHasher">The lazy password hasher.</param>
         /// <param name="lazyUserStore">The lazy user store.</param>
         protected IdentityAuthenticationService(
-            IContextFactory contextFactory,
+            IInjectableFactory injectableFactory,
             Lazy<IPasswordHasher<TUser>> lazyPasswordHasher,
             Lazy<IUserStoreService<TUser>> lazyUserStore)
         {
             this.lazyPasswordHasher = lazyPasswordHasher;
             this.lazyUserStore = lazyUserStore;
-            this.ContextFactory = contextFactory;
+            this.InjectableFactory = injectableFactory;
         }
 
         /// <summary>
         /// Gets the context factory.
         /// </summary>
-        protected IContextFactory ContextFactory { get; }
+        protected IInjectableFactory InjectableFactory { get; }
 
         /// <summary>
         /// Gets the password hasher.
@@ -120,7 +120,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
                     throw new AuthenticationException($"Credentials type '{credentials?.GetType()}' not supported. Use one of '{typeof(UserPasswordHashCredentials)}' or '{typeof(UserPasswordCredentials)}' instead.");
             }
 
-            using var context = this.ContextFactory.CreateContext<AuthenticationContext>().Merge(authConfig);
+            using var context = this.InjectableFactory.Create<AuthenticationContext>().Merge(authConfig);
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, userName),
@@ -166,7 +166,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
             Action<IAuthenticationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            using var context = this.ContextFactory.CreateContext<AuthenticationContext>().Merge(optionsConfig);
+            using var context = this.InjectableFactory.Create<AuthenticationContext>().Merge(optionsConfig);
 
             var userId = this.ParseId(
                 token is ClaimsPrincipal appUserPrincipal

@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_Dimensions()
         {
-            var contextFactory = this.CreateContextFactoryMock(() => new ModelConstructionContext(Substitute.For<IInjector>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new ModelConstructionContext(Substitute.For<IInjector>()));
             var provider = new DefaultModelSpaceProvider(
                 contextFactory,
                 Array.Empty<IModelInfoProvider>(),
