@@ -15,7 +15,6 @@ namespace Kephas.Serialization.Json
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -43,13 +42,15 @@ namespace Kephas.Serialization.Json
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="logManager">Manager for log.</param>
         /// <param name="jsonConverters">Optional. The JSON converters.</param>
         public DefaultJsonSerializerSettingsProvider(
             ITypeResolver typeResolver,
             IRuntimeTypeRegistry typeRegistry,
-            ILogManager? logManager,
-            ICollection<IExportFactory<IJsonConverter, AppServiceMetadata>>? jsonConverters = null)
+            IInjectableFactory? injectableFactory,
+            ILogManager? logManager = null,
+            ICollection<Lazy<IJsonConverter, AppServiceMetadata>>? jsonConverters = null)
             : base(logManager)
         {
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
@@ -57,6 +58,7 @@ namespace Kephas.Serialization.Json
 
             this.TypeResolver = typeResolver;
             this.TypeRegistry = typeRegistry;
+            this.InjectableFactory = injectableFactory ?? new ActivatorInjectableFactory();
             this.logManager = logManager;
             this.lazyJsonConverters = new Lazy<ICollection<JsonConverter>>(() => this.ComputeJsonConverters(jsonConverters));
             this.lazyCamelCaseResolver = new Lazy<IContractResolver>(() => new CamelCaseContractResolver(this.lazyJsonConverters.Value));
@@ -84,6 +86,8 @@ namespace Kephas.Serialization.Json
         /// </summary>
         protected IRuntimeTypeRegistry TypeRegistry { get; }
 
+        public IInjectableFactory InjectableFactory { get; }
+
         /// <summary>
         /// Configures the provided json serializer settings.
         /// </summary>
@@ -104,8 +108,9 @@ namespace Kephas.Serialization.Json
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
+        /// <param name="injectableFactory">The injectable factory.</param>
         /// <returns>The default JSON converters.</returns>
-        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver, IRuntimeTypeRegistry typeRegistry)
+        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver, IRuntimeTypeRegistry typeRegistry, IInjectableFactory injectableFactory)
         {
             // The order in this list is important, as generic collections should be processed last.
             return new List<JsonConverter>
@@ -114,11 +119,12 @@ namespace Kephas.Serialization.Json
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
-                new DynamicTypeRegistryJsonConverter(typeRegistry, typeResolver),
-                new AppServiceMetadataJsonConverter(typeRegistry, typeResolver),
+                new DynamicTypeRegistryJsonConverter(typeRegistry, typeResolver, injectableFactory),
+                new AppServiceMetadataJsonConverter(typeRegistry, typeResolver, injectableFactory),
                 new AppServiceInfoJsonConverter(typeRegistry, typeResolver),
-                new ExpandoJsonConverter(typeRegistry, typeResolver),
+                new ExpandoJsonConverter(typeRegistry, typeResolver, injectableFactory),
                 new DictionaryJsonConverter(typeRegistry, typeResolver),
+                new InjectableConverter(typeRegistry, typeResolver, injectableFactory),
                 new AnonymousClassJsonConverter(typeRegistry),
                 new ArrayJsonConverter(),
                 new CollectionJsonConverter(typeRegistry),
@@ -202,17 +208,17 @@ namespace Kephas.Serialization.Json
         /// </summary>
         /// <param name="jsonConverters">The JSON converter export factories.</param>
         /// <returns>A collection of JSON converters.</returns>
-        protected virtual ICollection<JsonConverter> ComputeJsonConverters(ICollection<IExportFactory<IJsonConverter, AppServiceMetadata>>? jsonConverters)
+        protected virtual ICollection<JsonConverter> ComputeJsonConverters(ICollection<Lazy<IJsonConverter, AppServiceMetadata>>? jsonConverters)
         {
             var converters = jsonConverters?
                                  .Order()
-                                 .Select(f => f.CreateExportedValue())
+                                 .Select(f => f.Value)
                                  .OfType<JsonConverter>()
                                  .ToList()
                              ?? new List<JsonConverter>();
             if (converters.Count == 0)
             {
-                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver, this.TypeRegistry));
+                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver, this.TypeRegistry, this.InjectableFactory));
             }
 
             return converters;
@@ -227,9 +233,17 @@ namespace Kephas.Serialization.Json
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), RuntimeTypeRegistry.Instance, LoggingHelper.DefaultLogManager);
+                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), RuntimeTypeRegistry.Instance, new ActivatorInjectableFactory(), LoggingHelper.DefaultLogManager);
 
             return defaultInstance;
+        }
+
+        private class ActivatorInjectableFactory : IInjectableFactory
+        {
+            public object Create(Type type, params object?[] args)
+            {
+                return Activator.CreateInstance(type, args)!;
+            }
         }
     }
 }

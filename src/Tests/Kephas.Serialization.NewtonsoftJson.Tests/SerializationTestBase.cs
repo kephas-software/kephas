@@ -19,6 +19,7 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Services;
     using Kephas.Testing.Injection;
     using NSubstitute;
 
@@ -42,15 +43,18 @@ namespace Kephas.Serialization.Json.Tests
             {
                 RootObjectType = rootObjectType,
             };
-            
+
             options?.Invoke(context);
             return context;
         }
 
-        protected static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
+        protected static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider(IInjectableFactory? injectableFactory = null)
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(
-                new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), new RuntimeTypeRegistry(), Substitute.For<ILogManager>());
+                new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()),
+                new RuntimeTypeRegistry(),
+                injectableFactory,
+                Substitute.For<ILogManager>());
             return settingsProvider;
         }
 

@@ -27,8 +27,9 @@ namespace Kephas.Serialization.Json.Converters
         /// </summary>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        public DynamicTypeRegistryJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
-            : base(typeRegistry, typeResolver, typeof(DynamicTypeRegistry), typeof(DynamicTypeRegistry))
+        /// <param name="injectableFactory">The injectable factory.</param>
+        public DynamicTypeRegistryJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
+            : base(typeRegistry, typeResolver, injectableFactory, typeof(DynamicTypeRegistry), typeof(DynamicTypeRegistry))
         {
         }
 

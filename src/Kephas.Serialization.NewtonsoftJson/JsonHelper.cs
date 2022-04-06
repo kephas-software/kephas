@@ -17,6 +17,7 @@ namespace Kephas.Serialization.Json
     using Kephas.Runtime;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// A JSON helper.
@@ -153,5 +154,18 @@ namespace Kephas.Serialization.Json
 
             return valueTypeInfo;
         }
+
+        /// <summary>
+        /// Gets the properties of a <see cref="JsonContract"/>.
+        /// </summary>
+        /// <param name="jsonContract">The <see cref="JsonContract"/>.</param>
+        /// <returns>The contract properties.</returns>
+        internal static JsonPropertyCollection? GetProperties(this JsonContract jsonContract)
+            => jsonContract switch
+            {
+                JsonDynamicContract dynamicContract => dynamicContract.Properties,
+                JsonObjectContract objectContract => objectContract.Properties,
+                _ => null,
+            };
     }
 }

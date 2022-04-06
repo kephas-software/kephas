@@ -26,8 +26,9 @@ namespace Kephas.Serialization.Json.Converters
         /// </summary>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        public AppServiceMetadataJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
-            : base(typeRegistry, typeResolver, typeof(AppServiceMetadata), typeof(AppServiceMetadata))
+        /// <param name="injectableFactory">The injectable factory.</param>
+        public AppServiceMetadataJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
+            : base(typeRegistry, typeResolver, injectableFactory, typeof(AppServiceMetadata), typeof(AppServiceMetadata))
         {
         }
 
@@ -51,7 +52,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="propInfo">The property information.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>A value indicating whether the property can be written.</returns>
-        protected override bool CanWriteProperty(IRuntimePropertyInfo propInfo, object? existingValue)
+        protected override bool CanWriteProperty(IRuntimePropertyInfo? propInfo, object? existingValue)
         {
             return existingValue == null || base.CanWriteProperty(propInfo, existingValue);
         }

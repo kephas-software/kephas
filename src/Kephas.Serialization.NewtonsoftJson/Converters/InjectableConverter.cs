@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExpandoJsonConverter.cs" company="Kephas Software SRL">
+// <copyright file="InjectableConverter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,10 +7,8 @@
 
 namespace Kephas.Serialization.Json.Converters;
 
-using System;
-
 using Kephas.Collections;
-using Kephas.Dynamic;
+using Kephas.Injection;
 using Kephas.Reflection;
 using Kephas.Runtime;
 using Kephas.Serialization.Json.ContractResolvers;
@@ -19,56 +17,23 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 /// <summary>
-/// JSON converter for <see cref="IExpandoBase"/> based instances.
+/// Converter for instances implementing
 /// </summary>
-public class ExpandoJsonConverter : JsonConverterBase
+[ProcessingPriority(Priority.Low)]
+public class InjectableConverter : JsonConverterBase
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ExpandoJsonConverter"/> class.
+    /// Initializes a new instance of the <see cref="InjectableConverter"/> class.
     /// </summary>
     /// <param name="typeRegistry">The runtime type registry.</param>
     /// <param name="typeResolver">The type resolver.</param>
     /// <param name="injectableFactory">The injectable factory.</param>
-    public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
-        : this(typeRegistry, typeResolver, injectableFactory, typeof(IExpandoBase), typeof(Expando))
+    public InjectableConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
     {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ExpandoJsonConverter"/> class.
-    /// </summary>
-    /// <param name="typeRegistry">The runtime type registry.</param>
-    /// <param name="typeResolver">The type resolver.</param>
-    /// <param name="injectableFactory">The injectable factory.</param>
-    /// <param name="expandoBaseType">The expando base type.</param>
-    /// <param name="defaultImplementationType">The expando default implementation type.</param>
-    protected ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory, Type expandoBaseType, Type defaultImplementationType)
-    {
-        expandoBaseType = expandoBaseType ?? throw new ArgumentNullException(nameof(expandoBaseType));
-        defaultImplementationType = defaultImplementationType ?? throw new ArgumentNullException(nameof(defaultImplementationType));
-
         this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
         this.TypeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
         this.TypeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
-
-        if (!typeof(IExpandoBase).IsAssignableFrom(expandoBaseType))
-        {
-            throw new SerializationException($"The expando base type {expandoBaseType} must be convertible to {typeof(IExpandoBase)}.");
-        }
-
-        this.ExpandoBaseType = expandoBaseType;
-        this.DefaultImplementationType = defaultImplementationType;
     }
-
-    /// <summary>
-    /// Gets the expando base type.
-    /// </summary>
-    protected Type ExpandoBaseType { get; }
-
-    /// <summary>
-    /// Gets the expando default implementation type.
-    /// </summary>
-    protected Type DefaultImplementationType { get; }
 
     /// <summary>
     /// Gets the injectable factory.
@@ -93,7 +58,7 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
     /// </returns>
     public override bool CanConvert(Type objectType) =>
-        this.ExpandoBaseType.IsAssignableFrom(objectType);
+        objectType.IsInjectable();
 
     /// <summary>Reads the JSON representation of the object.</summary>
     /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
@@ -109,10 +74,6 @@ public class ExpandoJsonConverter : JsonConverterBase
         }
 
         var valueTypeInfo = this.TypeRegistry.GetTypeInfo(existingValue?.GetType() ?? objectType);
-        if (valueTypeInfo.Type == this.ExpandoBaseType || valueTypeInfo.Type.IsInterface)
-        {
-            valueTypeInfo = this.TypeRegistry.GetTypeInfo(this.DefaultImplementationType);
-        }
 
         if (reader.TokenType != JsonToken.StartObject)
         {
@@ -125,12 +86,12 @@ public class ExpandoJsonConverter : JsonConverterBase
         reader.Read();
         valueTypeInfo = JsonHelper.EnsureProperValueType(reader, this.TypeResolver, this.TypeRegistry, valueTypeInfo, ref createInstance);
 
-        if (!this.ExpandoBaseType.IsAssignableFrom(valueTypeInfo.Type))
+        if (!valueTypeInfo.Type.IsInjectable())
         {
             throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Path: {reader.Path}.");
         }
 
-        var expandoCollector = this.CreateExpandoCollector(valueTypeInfo, existingValue);
+        var injectable = this.CreateInjectable(valueTypeInfo, existingValue);
 
         // then other properties
         var casingResolver = serializer.ContractResolver as ICasingContractResolver;
@@ -153,12 +114,17 @@ public class ExpandoJsonConverter : JsonConverterBase
             reader.Read();
 
             var propInfo = typeProperties.TryGetValue(propName);
-            if (this.CanWriteProperty(propInfo, existingValue))
+            if (propInfo == null)
+            {
+                // TODO - do not ignore if instructed to throw
+                // property not found, ignore at this time.
+            }
+            else if (this.CanWriteProperty(propInfo, existingValue))
             {
                 var propValue = serializer.Deserialize(reader, propInfo?.ValueType.Type ?? typeof(object));
                 propValue = propValue is JToken jtoken ? jtoken.Unwrap() : propValue;
 
-                expandoCollector[propName] = propValue;
+                propInfo!.SetValue(injectable, propValue);
             }
             else
             {
@@ -168,7 +134,7 @@ public class ExpandoJsonConverter : JsonConverterBase
                     continue;
                 }
 
-                var propValue = expandoCollector[propName];
+                var propValue = propInfo.GetValue(injectable);
                 if (propValue != null && !propInfo.ValueType.Type.IsValueType)
                 {
                     serializer.Populate(reader, propValue);
@@ -178,7 +144,7 @@ public class ExpandoJsonConverter : JsonConverterBase
             reader.Read();
         }
 
-        return this.GetReadReturnValue(valueTypeInfo, expandoCollector, existingValue);
+        return injectable;
     }
 
     /// <summary>Writes the JSON representation of the object.</summary>
@@ -194,7 +160,7 @@ public class ExpandoJsonConverter : JsonConverterBase
         }
 
         var valueTypeInfo = this.TypeRegistry.GetTypeInfo(value.GetType());
-        if (!this.ExpandoBaseType.IsAssignableFrom(valueTypeInfo.Type))
+        if (!valueTypeInfo.Type.IsInjectable())
         {
             throw new SerializationException($"Cannot write values of type {valueTypeInfo}. Path: {writer.Path}.");
         }
@@ -202,9 +168,8 @@ public class ExpandoJsonConverter : JsonConverterBase
         writer.WriteStartObject();
 
         // write type information.
-        if (valueTypeInfo.Type != this.DefaultImplementationType
-            && (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
-                || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto)))
+        if (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
+            || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto))
         {
             var typeName = serializer.TypeNameAssemblyFormatHandling == TypeNameAssemblyFormatHandling.Simple
                 ? valueTypeInfo.FullName
@@ -218,24 +183,23 @@ public class ExpandoJsonConverter : JsonConverterBase
         var typeProperties = valueTypeInfo.Properties;
         var typeContractProperties = serializer.ContractResolver.ResolveContract(valueTypeInfo.Type).GetProperties()!;
 
-        var valueDictionary = value.ToDictionary();
-        foreach (var (key, propValue) in valueDictionary)
+        foreach (var (key, typeProperty) in typeProperties)
         {
-            if (propValue == null && serializer.NullValueHandling == NullValueHandling.Ignore)
-            {
-                continue;
-            }
-
-            var isClassProperty = typeProperties.TryGetValue(key, out var typeProperty);
-            var propName = casingResolver != null && isClassProperty
+            var propName = casingResolver != null
                 ? casingResolver.GetSerializedPropertyName(key)
                 : key;
 
-            if (isClassProperty &&
-                ((typeContractProperties != null && !typeContractProperties.Contains(propName))
-                 || typeProperty.ExcludeFromSerialization()))
+            if ((typeContractProperties != null && !typeContractProperties.Contains(propName))
+                 || typeProperty.ExcludeFromSerialization())
             {
                 // ignore property if the serializer ignored it or if explicitly removed from serialization.
+                continue;
+            }
+
+            var propValue = typeProperty.GetValue(value);
+
+            if (propValue == null && serializer.NullValueHandling == NullValueHandling.Ignore)
+            {
                 continue;
             }
 
@@ -247,33 +211,16 @@ public class ExpandoJsonConverter : JsonConverterBase
     }
 
     /// <summary>
-    /// Gets the return value of the <see cref="ReadJson"/> operation.
+    /// Creates the injectable value which should collect the JSON values.
     /// </summary>
-    /// <param name="expandoTypeInfo">The return value type information.</param>
-    /// <param name="expandoCollector">The expando value collecting the properties.</param>
+    /// <param name="injectableTypeInfo">The type information of the target injectable value.</param>
     /// <param name="existingValue">The existing value.</param>
-    /// <returns>The read operation's return value.</returns>
-    protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpandoBase expandoCollector, object? existingValue)
-    {
-        return expandoCollector;
-    }
-
-    /// <summary>
-    /// Creates the expando value which should collect the JSON values.
-    /// </summary>
-    /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
-    /// <param name="existingValue">The existing value.</param>
-    /// <returns>The newly created expando collector.</returns>
-    protected virtual IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+    /// <returns>The newly created injectable.</returns>
+    protected virtual IInjectable CreateInjectable(IRuntimeTypeInfo injectableTypeInfo, object? existingValue)
     {
         var createInstance = existingValue == null;
-        var expando = (IExpandoBase)(
-            createInstance
-                ? expandoTypeInfo.Type.IsInjectable()
-                    ? this.InjectableFactory.Create(expandoTypeInfo.Type)
-                    : expandoTypeInfo.CreateInstance()
-                : existingValue)!;
-        return expando;
+        var injectable = (IInjectable)(createInstance ? this.InjectableFactory.Create(injectableTypeInfo.Type) : existingValue)!;
+        return injectable;
     }
 
     /// <summary>
@@ -282,8 +229,8 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// <param name="propInfo">The property information.</param>
     /// <param name="existingValue">The existing value.</param>
     /// <returns>A value indicating whether the property can be written.</returns>
-    protected virtual bool CanWriteProperty(IRuntimePropertyInfo? propInfo, object? existingValue)
+    protected virtual bool CanWriteProperty(IRuntimePropertyInfo propInfo, object? existingValue)
     {
-        return propInfo?.CanWrite ?? true;
+        return propInfo.CanWrite;
     }
 }
