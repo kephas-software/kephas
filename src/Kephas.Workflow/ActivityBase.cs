@@ -15,6 +15,7 @@ namespace Kephas.Workflow
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Serialization;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -49,6 +50,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution context.
         /// </value>
+        [ExcludeFromSerialization]
         public IActivityContext? Context { get; set; }
 
         /// <summary>

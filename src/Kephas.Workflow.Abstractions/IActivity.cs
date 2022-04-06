@@ -12,6 +12,7 @@ namespace Kephas.Workflow
 {
     using Kephas.Data;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Operations;
     using Kephas.Workflow.Reflection;
 
@@ -25,7 +26,7 @@ namespace Kephas.Workflow
     /// and also debuggers may be attached to provide development support.
     /// The state provide the flags during the execution.
     /// </remarks>
-    public interface IActivity : IOperationResult, IInstance<IActivityInfo>, IIdentifiable
+    public interface IActivity : IOperationResult, IInstance<IActivityInfo>, IIdentifiable, IInjectable
     {
         /// <summary>
         /// Gets or sets the target against which the activity is executed.
