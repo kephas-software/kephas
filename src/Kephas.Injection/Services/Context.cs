@@ -18,7 +18,7 @@ namespace Kephas.Services
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Logging;
-    using Kephas.Resources;
+    using Kephas.Serialization;
 
     /// <summary>
     /// A base implementation for contexts.
@@ -92,6 +92,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The ambient services.
         /// </newValue>
+        [ExcludeFromSerialization]
         public IAmbientServices AmbientServices { get; private set; } = null!;
 
         /// <summary>
@@ -100,6 +101,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The injector.
         /// </newValue>
+        [ExcludeFromSerialization]
         public virtual IInjector Injector { get; private set; } = null!;
 
         /// <summary>
@@ -127,6 +129,7 @@ namespace Kephas.Services
         /// <value>
         /// The context logger.
         /// </value>
+        [ExcludeFromSerialization]
         public ILogger? Logger { get; set; }
 
         /// <summary>
