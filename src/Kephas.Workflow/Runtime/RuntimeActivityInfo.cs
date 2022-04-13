@@ -33,9 +33,6 @@ namespace Kephas.Workflow.Runtime
     /// </summary>
     public class RuntimeActivityInfo : RuntimeTypeInfo, IActivityInfo
     {
-        private static readonly MethodInfo ExecuteAsyncMethodInfo =
-            ReflectionHelper.GetMethodOf(_ => ((RuntimeActivityInfo)null).ExecuteAsync(null, null, null, null, default));
-
         private static readonly IDictionary<string, PropertyInfo> ActivityProperties =
             typeof(ActivityBase).GetProperties().ToDictionary(p => p.Name, p => p);
 
@@ -111,9 +108,9 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         object? IOperationInfo.Invoke(object? activity, IEnumerable<object?> args)
         {
-            if (!(activity is IActivity))
+            if (activity is not IActivity workflowActivity)
             {
-                throw new WorkflowException($"Expected activity '{activity}' to invoke, instead received {activity?.GetType()}.");
+                throw new WorkflowException($"Expected activity implementing '{typeof(IActivity)}' to invoke, instead received {activity?.GetType()}.");
             }
 
             var argsList = new List<object?> { activity };
@@ -123,7 +120,7 @@ namespace Kephas.Workflow.Runtime
             var context = (IActivityContext?)argsList[2];
             var cancellationToken = (CancellationToken)argsList[3];
 
-            return ExecuteAsyncMethodInfo.Call(this, argsList.ToArray());
+            return this.ExecuteAsync(workflowActivity, target, arguments, context, cancellationToken);
         }
 
         /// <summary>
