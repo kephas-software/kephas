@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+namespace Kephas.Connectivity;
+
 using Kephas.Injection;
 using Kephas.Security.Authentication;
 using Kephas.Services;
-
-namespace Kephas.Connectivity;
 
 /// <summary>
 /// A context for creating connections.
@@ -50,4 +50,14 @@ public class ConnectionContext : Context, IConnectionContext
     /// The host to connect to.
     /// </value>
     public Uri? Host { get; set; }
+
+    /// <summary>
+    /// Gets or sets the connection.
+    /// </summary>
+    public IConnection? Connection { get; set; }
+
+    /// <summary>
+    /// Gets or sets the exception during connection creation.
+    /// </summary>
+    public Exception? Exception { get; set; }
 }
