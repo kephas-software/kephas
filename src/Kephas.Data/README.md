@@ -6,7 +6,7 @@ Data is one of the most important parts of an application. To leverage working w
 ## The general architecture
 All data operations are performed through a _data context_. The data context is responsible for holding and managing a local cache of data and for instantiating [[commands|Data-commands]]. The commands are actually the performers of data operations, integrate data behaviors, and are tightly coupled to the data context that created them.
 
-Data contexts are created by a _data context factory_, which is a [[singleton application service|Application-services]], by providing a data store name. The factory uses configured data store information and associated services to get it and to initialize the data context.
+Data contexts are created by a _data context factory_, which is a singleton application service, by providing a data store name. The factory uses configured data store information and associated services to get it and to initialize the data context.
 
 ### The _data context_
 
