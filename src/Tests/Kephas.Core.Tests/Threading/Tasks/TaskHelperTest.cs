@@ -101,13 +101,13 @@ namespace Kephas.Core.Tests.Threading.Tasks
         }
 
         [Test]
-        public void WaitNonLocking_success()
+        public void TryWaitNonLocking_success()
         {
             var task = new Task(() => Thread.Sleep(50));
             task.Start();
-            task.WaitNonLocking(TimeSpan.FromMilliseconds(1000), throwOnTimeout: false);
+            var completed = task.TryWaitNonLocking(TimeSpan.FromMilliseconds(1000));
 
-            if (!task.IsCompleted)
+            if (completed is false)
             {
                 Assert.Inconclusive("Normally, waiting for 1 sec. for tasks scheduled for 50 ms should not fail, but in a test environment this can be inconclusive.");
             }
@@ -136,22 +136,22 @@ namespace Kephas.Core.Tests.Threading.Tasks
         }
 
         [Test]
-        public void GetResultNonLocking_timeout_silent_fail()
+        public void TryGetResultNonLocking_timeout_silent_fail()
         {
             var task = new Task<int>(() => { Thread.Sleep(1000); return 500; });
             task.Start();
-            var result = task.GetResultNonLocking(TimeSpan.FromMilliseconds(50), throwOnTimeout: false);
+            var result = task.TryGetResultNonLocking(TimeSpan.FromMilliseconds(50));
 
             Assert.AreEqual(0, result);
             Assert.IsFalse(task.IsCompleted);
         }
 
         [Test]
-        public void GetResultNonLocking_timeout_silent_fail_nullable_type()
+        public void TryGetResultNonLocking_timeout_silent_fail_nullable_type()
         {
             var task = new Task<string>(() => { Thread.Sleep(1000); return "test"; });
             task.Start();
-            var result = task.GetResultNonLocking(TimeSpan.FromMilliseconds(50), throwOnTimeout: false);
+            var result = task.TryGetResultNonLocking(TimeSpan.FromMilliseconds(50));
 
             Assert.IsNull(result);
             Assert.IsFalse(task.IsCompleted);
