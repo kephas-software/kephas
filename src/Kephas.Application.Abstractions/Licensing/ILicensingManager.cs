@@ -54,7 +54,7 @@ namespace Kephas.Licensing
         /// </returns>
         ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null)
         {
-            return this.CheckLicenseAsync(appIdentity, context).GetResultNonLocking()!;
+            return this.CheckLicenseAsync(appIdentity, context).GetResultNonLocking();
         }
 
         /// <summary>
