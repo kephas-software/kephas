@@ -21,7 +21,7 @@ namespace Kephas.Data.MongoDB
         /// Initializes a new instance of the <see cref="MongoDataException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public MongoDataException(string message) 
+        public MongoDataException(string message)
             : base(message)
         {
         }
@@ -32,7 +32,7 @@ namespace Kephas.Data.MongoDB
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public MongoDataException(string message, Exception inner) 
+        public MongoDataException(string message, Exception inner)
             : base(message, inner)
         {
         }

@@ -20,10 +20,11 @@ namespace Kephas.Data.MongoDB
     using global::MongoDB.Driver;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Commands.Factory;
-    using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Linq;
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Data.Store;
+    using Kephas.MongoDB;
+    using Kephas.MongoDB.Diagnostics;
     using Kephas.Runtime;
 
     /// <summary>
@@ -36,6 +37,7 @@ namespace Kephas.Data.MongoDB
 
         private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly IMongoNamingStrategy namingStrategy;
+        private readonly IMongoClientSettingsProvider mongoClientSettingsProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
@@ -45,22 +47,22 @@ namespace Kephas.Data.MongoDB
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="namingStrategy">The naming strategy.</param>
+        /// <param name="mongoClientSettingsProvider">The MongoDB client settings provider.</param>
         public MongoDataContext(
             IInjector injector,
             IDataCommandProvider dataCommandProvider,
             IDataBehaviorProvider dataBehaviorProvider,
             IRuntimeTypeRegistry typeRegistry,
-            IMongoNamingStrategy namingStrategy)
+            IMongoNamingStrategy namingStrategy,
+            IMongoClientSettingsProvider mongoClientSettingsProvider)
             : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
-            dataCommandProvider = dataCommandProvider ?? throw new System.ArgumentNullException(nameof(dataCommandProvider));
-            dataBehaviorProvider = dataBehaviorProvider ?? throw new System.ArgumentNullException(nameof(dataBehaviorProvider));
             typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
             namingStrategy = namingStrategy ?? throw new System.ArgumentNullException(nameof(namingStrategy));
 
             this.typeRegistry = typeRegistry;
             this.namingStrategy = namingStrategy;
+            this.mongoClientSettingsProvider = mongoClientSettingsProvider;
         }
 
         /// <summary>
@@ -90,7 +92,7 @@ namespace Kephas.Data.MongoDB
         protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
         {
             var nativeQuery = this.Database.GetCollection<T>(
-                this.namingStrategy.GetCollectionName(this, typeof(T)))
+                this.namingStrategy.GetCollectionName(typeof(T)))
                 .AsQueryable();
             var provider = new MongoQueryProvider(queryOperationContext, nativeQuery.Provider, this.typeRegistry);
             var query = new MongoQuery<T>(provider, nativeQuery, this.typeRegistry);
@@ -148,37 +150,7 @@ namespace Kephas.Data.MongoDB
             //  pool that is not being reused by your application."
             return MongoClients.GetOrAdd(
                 mongoUrl.ToString(),
-                _ => new MongoClient(this.GetClientSettings(mongoUrl)));
-        }
-
-        /// <summary>
-        /// Gets the client settings for the provided MongoDB URL.
-        /// </summary>
-        /// <param name="mongoUrl">The URL.</param>
-        /// <returns>The MongoDB settings.</returns>
-        protected virtual MongoClientSettings GetClientSettings(MongoUrl mongoUrl)
-        {
-            var settings = MongoClientSettings.FromUrl(mongoUrl);
-
-            // see http://docs.mongolab.com/connecting/#known-issues
-            // "The most effective workaround we’ve found in working with Azure and our customers
-            //  has been to set the max connection idle time below four minutes. The idea is to make
-            //  the driver recycle idle connections before the firewall forces the issue.
-            //  For example, one customer, who is using the C# driver, set MongoDefaults.MaxConnectionIdleTime
-            //  to one minute and it cleared up the issue."
-            settings.MaxConnectionIdleTime = TimeSpan.FromMinutes(1);
-            settings.MaxConnectionPoolSize = 1000;
-            settings.ClusterConfigurator = b =>
-            {
-                b.ConfigureConnectionPool(s => s.With());
-                b.Subscribe(new MongoDataContextLogEventSubscriber(this.Injector));
-            };
-            settings.SslSettings = new SslSettings
-            {
-                EnabledSslProtocols = SslProtocols.Tls12,
-            };
-
-            return settings;
+                _ => new MongoClient(this.mongoClientSettingsProvider.GetClientSettings(mongoUrl)));
         }
     }
 }

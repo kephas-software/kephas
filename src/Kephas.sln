@@ -336,6 +336,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Redis.Tests", "Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Behaviors.Tests", "Tests\Kephas.Behaviors.Tests\Kephas.Behaviors.Tests.csproj", "{7A9CDD9D-3884-4E5E-B8CF-FCBC745BD3EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.MongoDB", "Kephas.MongoDB\Kephas.MongoDB.csproj", "{19CC4AFE-C239-4E6C-971C-9D99BF7C0B1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -942,6 +944,10 @@ Global
 		{7A9CDD9D-3884-4E5E-B8CF-FCBC745BD3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A9CDD9D-3884-4E5E-B8CF-FCBC745BD3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A9CDD9D-3884-4E5E-B8CF-FCBC745BD3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19CC4AFE-C239-4E6C-971C-9D99BF7C0B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19CC4AFE-C239-4E6C-971C-9D99BF7C0B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19CC4AFE-C239-4E6C-971C-9D99BF7C0B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19CC4AFE-C239-4E6C-971C-9D99BF7C0B1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

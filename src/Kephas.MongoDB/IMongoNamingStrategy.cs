@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.MongoDB
+namespace Kephas.MongoDB
 {
     using System;
 
@@ -20,12 +20,11 @@ namespace Kephas.Data.MongoDB
         /// <summary>
         /// Gets the collection name for the provided entity type.
         /// </summary>
-        /// <param name="dataContext">The data context.</param>
         /// <param name="entityType">Type of the entity.</param>
         /// <returns>
         /// The collection name.
         /// </returns>
-        string GetCollectionName(IDataContext dataContext, Type entityType)
+        string GetCollectionName(Type entityType)
         {
             return entityType.Name;
         }

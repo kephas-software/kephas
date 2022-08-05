@@ -15,6 +15,7 @@ namespace Kephas.Data.MongoDB.Tests
     using Kephas.Application;
     using Kephas.Data.MongoDB.Application;
     using Kephas.Data.Store;
+    using Kephas.MongoDB;
     using Kephas.Services;
     using Kephas.Testing.Injection;
     using Kephas.Threading.Tasks;
@@ -58,7 +59,7 @@ namespace Kephas.Data.MongoDB.Tests
 
         public class TestMongoNamingStrategy : IMongoNamingStrategy
         {
-            public string GetCollectionName(IDataContext dataContext, Type entityType)
+            public string GetCollectionName(Type entityType)
             {
                 var name = entityType.Name;
                 if (name.EndsWith("MongoEntity"))

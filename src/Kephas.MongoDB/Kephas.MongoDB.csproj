@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
@@ -18,9 +18,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides the MongoDB implementation for data context and associated commands.
+            Provides the MongoDB integration with Kephas.
             Typically used areas and classes/interfaces/services:
-            - MongoDataContext.
+            - IMongoClientProvider.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -37,7 +37,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas data mongo mongodb</PackageTags>
+        <PackageTags>kephas mongo mongodb</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -57,8 +57,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="stylecop.json" />
-      <AdditionalFiles Include="stylecop.json" />
+        <None Remove="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -67,12 +67,12 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="MongoDB.Bson.signed" Version="2.14.1" />
         <PackageReference Include="MongoDB.Driver.Core.signed" Version="2.14.1" />
@@ -81,28 +81,29 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
-        <ProjectReference Include="..\Kephas.MongoDB\Kephas.MongoDB.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
+        <ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
+        <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
