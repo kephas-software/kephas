@@ -24,7 +24,6 @@ namespace Kephas.Services
     /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
     [OverridePriority(Priority.Low)]
     public class OrderedServiceFactoryCollection<TTargetContract, TMetadata> : IOrderedServiceFactoryCollection<TTargetContract, TMetadata>
-        where TMetadata : AppServiceMetadata
     {
         private readonly ICollection<IExportFactory<TTargetContract, TMetadata>> serviceFactories;
 
@@ -97,14 +96,14 @@ namespace Kephas.Services
             }
 
             var orderedFactories = serviceFactories
-                       .OrderBy(f => f.Metadata.OverridePriority)
-                       .ThenBy(f => f.Metadata.ProcessingPriority)
+                       .OrderBy(f => (f.Metadata as IHasOverridePriority)?.OverridePriority ?? Priority.Normal)
+                       .ThenBy(f => (f.Metadata as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
                        .ToList();
 
             // get the overridden services which should be eliminated
             var overriddenTypes = orderedFactories
-                .Where(f => f.Metadata.IsOverride && f.Metadata.ServiceType?.BaseType != null)
-                .Select(f => f.Metadata.ServiceType?.BaseType)
+                .Where(f => f.Metadata is IAppServiceMetadata { IsOverride: true, ServiceType.BaseType: { } })
+                .Select(f => (f.Metadata as IAppServiceMetadata)?.ServiceType?.BaseType)
                 .ToList();
             if (overriddenTypes.Count == 0)
             {
@@ -113,7 +112,7 @@ namespace Kephas.Services
 
             // eliminate the overridden services
             orderedFactories = orderedFactories
-                .Where(f => !overriddenTypes.Contains(f.Metadata.ServiceType))
+                .Where(f => !overriddenTypes.Contains((f.Metadata as IAppServiceMetadata)?.ServiceType))
                 .ToList();
 
             return orderedFactories;

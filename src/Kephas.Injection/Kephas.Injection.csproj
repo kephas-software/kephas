@@ -106,11 +106,23 @@
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>ILLink.Descriptors.xml</LogicalName>
         </EmbeddedResource>
+        <EmbeddedResource Update="Injection\Resources\Strings.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Injection\Resources\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
