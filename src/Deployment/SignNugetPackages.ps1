@@ -65,6 +65,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Kephas.Messaging.Messages",
     "..\Kephas.Messaging.Model",
     "..\Kephas.Model",
+    "..\Kephas.MongoDB",
     "..\Kephas.Npgsql",
     "..\Kephas.Operations",
     "..\Kephas.Orchestration",
