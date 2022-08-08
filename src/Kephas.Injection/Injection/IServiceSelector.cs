@@ -10,7 +10,14 @@ namespace Kephas.Injection;
 using Kephas.Services;
 
 [AppServiceContract(AsOpenGeneric = true)]
-public interface IServiceSelector<T>
+public interface IServiceSelector<out TService, out TMetadata>
+    where TService : class
 {
-    
+    TService? TryGetService(Func<TMetadata, bool> selector);
+
+    TService GetService(Func<TMetadata, bool> selector)
+    {
+        var service = this.TryGetService(selector);
+        return service ?? throw new ArgumentException(DependencyInjectionStrings.ServiceSelectorServiceNotFound, nameof(selector));
+    }
 }
