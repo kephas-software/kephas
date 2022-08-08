@@ -194,6 +194,11 @@ namespace Kephas.Services.Reflection
                 sb.Append(", instanceFactory: '(function)'");
             }
 
+            if (appServiceInfo.MetadataType != null)
+            {
+                sb.Append($", metadataType: '{appServiceInfo.MetadataType}'");
+            }
+
             if (appServiceInfo.Metadata is { Count: > 0 })
             {
                 sb.Append(", metadata: { ");
