@@ -33,9 +33,8 @@ namespace Kephas.Data.MongoDB
     [SupportedDataStoreKinds(DataStoreKind.MongoDB)]
     public class MongoDataContext : DataContextBase
     {
-        private static readonly ConcurrentDictionary<string, MongoClient> MongoClients = new();
-
         private readonly IRuntimeTypeRegistry typeRegistry;
+        private readonly IMongoClientProvider clientProvider;
         private readonly IMongoNamingStrategy namingStrategy;
         private readonly IMongoClientSettingsProvider mongoClientSettingsProvider;
 
@@ -46,6 +45,7 @@ namespace Kephas.Data.MongoDB
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="clientProvider">The client provider.</param>
         /// <param name="namingStrategy">The naming strategy.</param>
         /// <param name="mongoClientSettingsProvider">The MongoDB client settings provider.</param>
         public MongoDataContext(
@@ -53,15 +53,14 @@ namespace Kephas.Data.MongoDB
             IDataCommandProvider dataCommandProvider,
             IDataBehaviorProvider dataBehaviorProvider,
             IRuntimeTypeRegistry typeRegistry,
+            IMongoClientProvider clientProvider,
             IMongoNamingStrategy namingStrategy,
             IMongoClientSettingsProvider mongoClientSettingsProvider)
             : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
-            typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
-            namingStrategy = namingStrategy ?? throw new System.ArgumentNullException(nameof(namingStrategy));
-
-            this.typeRegistry = typeRegistry;
-            this.namingStrategy = namingStrategy;
+            this.typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
+            this.clientProvider = clientProvider ?? throw new ArgumentNullException(nameof(clientProvider));
+            this.namingStrategy = namingStrategy ?? throw new ArgumentNullException(nameof(namingStrategy));
             this.mongoClientSettingsProvider = mongoClientSettingsProvider;
         }
 
@@ -125,32 +124,8 @@ namespace Kephas.Data.MongoDB
                 throw new MongoDataException(Strings.Initialize_DatabaseNameEmpty_Exception);
             }
 
-            this.Client = this.GetOrCreateMongoClient(mongoUrl);
+            this.Client = this.clientProvider.GetMongoClient(new MongoContext(this.Injector) { ConnectionString = config.ConnectionString });
             this.Database = this.Client.GetDatabase(databaseName);
-        }
-
-        /// <summary>
-        /// Gets the mongo client, if one is available for the provided URL, otherwise creates one and caches it.
-        /// </summary>
-        /// <param name="mongoUrl">The Mongo URL.</param>
-        /// <returns>A mongo client.</returns>
-        protected virtual MongoClient GetOrCreateMongoClient(MongoUrl mongoUrl)
-        {
-            // see https://www.mongodb.com/blog/post/introducing-20-net-driver
-            // "The typical pattern is for an application to *create a single MongoClient instance*,
-            //  call GetDatabase to get a IMongoDatabase instance, and finally call GetCollection
-            //  on the database object to get a IMongoCollection instance."
-            //
-            // see also http://blog.mongolab.com/2013/11/deep-dive-into-connection-pooling/
-            // "Here the mongoClient object holds your connection pool, and will give your app connections as needed.
-            //  You should strive to create this object once as your application initializes and re-use this object
-            //  throughout your application to talk to your database. The most common connection pooling problem we see
-            //  results from applications that create a MongoClient object way too often, sometimes on each database request.
-            //  If you do this you will not be using your connection pool as each MongoClient object maintains a separate
-            //  pool that is not being reused by your application."
-            return MongoClients.GetOrAdd(
-                mongoUrl.ToString(),
-                _ => new MongoClient(this.mongoClientSettingsProvider.GetClientSettings(mongoUrl)));
         }
     }
 }

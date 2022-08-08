@@ -27,8 +27,8 @@ public class MongoClientProvider : Loggable, IMongoClientProvider
     private static bool isDriverInitialized = false;
 
     private readonly IMongoClientSettingsProvider clientSettingsProvider;
-    private readonly IOrderedLazyServiceCollection<IMongoSerializer, MongoSerializerMetadata> serializers;
-    private readonly IOrderedLazyServiceCollection<IMongoConventionsProvider, AppServiceMetadata> conventionsProviders;
+    private readonly ICollection<Lazy<IMongoSerializer, MongoSerializerMetadata>> serializers;
+    private readonly ICollection<Lazy<IMongoConventionsProvider, AppServiceMetadata>> conventionsProviders;
     private readonly IConfiguration<MongoSettings>? mongoConfiguration;
     private readonly ConcurrentDictionary<MongoUrl, IMongoClient> mongoClients = new ();
 
@@ -42,8 +42,8 @@ public class MongoClientProvider : Loggable, IMongoClientProvider
     /// <param name="logManager">Optional. The log manager.</param>
     public MongoClientProvider(
         IMongoClientSettingsProvider clientSettingsProvider,
-        IOrderedLazyServiceCollection<IMongoSerializer, MongoSerializerMetadata> serializers,
-        IOrderedLazyServiceCollection<IMongoConventionsProvider, AppServiceMetadata> conventionsProviders,
+        ICollection<Lazy<IMongoSerializer, MongoSerializerMetadata>> serializers,
+        ICollection<Lazy<IMongoConventionsProvider, AppServiceMetadata>> conventionsProviders,
         IConfiguration<MongoSettings>? mongoConfiguration = null,
         ILogManager? logManager = null)
         : base(logManager)
@@ -72,6 +72,18 @@ public class MongoClientProvider : Loggable, IMongoClientProvider
 
         this.EnsureDriverInitialized();
 
+        // see https://www.mongodb.com/blog/post/introducing-20-net-driver
+        // "The typical pattern is for an application to *create a single MongoClient instance*,
+        //  call GetDatabase to get a IMongoDatabase instance, and finally call GetCollection
+        //  on the database object to get a IMongoCollection instance."
+        //
+        // see also http://blog.mongolab.com/2013/11/deep-dive-into-connection-pooling/
+        // "Here the mongoClient object holds your connection pool, and will give your app connections as needed.
+        //  You should strive to create this object once as your application initializes and re-use this object
+        //  throughout your application to talk to your database. The most common connection pooling problem we see
+        //  results from applications that create a MongoClient object way too often, sometimes on each database request.
+        //  If you do this you will not be using your connection pool as each MongoClient object maintains a separate
+        //  pool that is not being reused by your application."
         var mongoUrl = new MongoUrl(connectionString);
         return this.mongoClients.GetOrAdd(
             mongoUrl,
@@ -96,16 +108,14 @@ public class MongoClientProvider : Loggable, IMongoClientProvider
                 return;
             }
 
-            foreach (var conventionProvider in this.conventionsProviders
-                         .OrderBy(p => p.Metadata.ProcessingPriority)
-                         .Select(p => p.Value))
+            foreach (var conventionProvider in this.conventionsProviders.Order().Select(p => p.Value))
             {
                 var (name, pack, filter) = conventionProvider.GetConventions();
                 this.Logger?.Info("Registering {conventions}.", name);
                 ConventionRegistry.Register(name, pack, filter);
             }
 
-            foreach (var serializer in this.serializers.GetServiceFactories())
+            foreach (var serializer in this.serializers.Order())
             {
                 this.Logger?.Info("Registering {serializer}.", serializer.Value);
                 BsonSerializer.RegisterSerializer(serializer.Metadata.ValueType, serializer.Value);
