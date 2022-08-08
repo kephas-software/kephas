@@ -6,7 +6,7 @@ using Kephas.Services;
 /// <summary>
 /// Base interface for serializer services.
 /// </summary>
-public interface IMongoSerializer
+public interface IMongoSerializer : IBsonSerializer
 {
 }
 
