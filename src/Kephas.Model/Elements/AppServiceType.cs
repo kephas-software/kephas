@@ -47,6 +47,7 @@ namespace Kephas.Model.Elements
             this.appServiceInfo = appServiceInfo;
             this.injector = constructionContext.Injector;
             this.ContractType = this.appServiceInfo.ContractType;
+            this.MetadataType = this.appServiceInfo.MetadataType;
         }
 
         /// <summary>
@@ -72,6 +73,14 @@ namespace Kephas.Model.Elements
         /// The type of the contract.
         /// </value>
         public Type? ContractType { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the supported metadata type.
+        /// </summary>
+        /// <value>
+        /// The supported metadata type.
+        /// </value>
+        public Type? MetadataType { get; set; }
 
         /// <summary>
         /// Gets the instancing strategy: factory, type, or instance.

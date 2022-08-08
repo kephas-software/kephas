@@ -65,6 +65,8 @@ namespace Kephas.Injection.Lite.Internal
 
         public Type? ContractType { get; }
 
+        public Type? MetadataType { get; set; }
+
         public object? InstancingStrategy => null;
 
         public void Add(ServiceInfo serviceInfo)

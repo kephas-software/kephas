@@ -301,7 +301,7 @@ namespace Kephas.Services
                 logger.Debug("Entering {operation}...", nameof(this.BuildServiceMap));
             }
 
-            foreach (var (contractDeclarationType, appServiceInfo) in appServiceInfoList)
+            foreach (var (contractDeclarationType, appServiceInfo, _) in appServiceInfoList)
             {
                 if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
                 {

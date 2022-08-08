@@ -94,6 +94,8 @@ namespace Kephas.Injection.Lite.Internal
 
         public Type? ContractType { get; }
 
+        public Type? MetadataType { get; set; }
+
         public object? InstancingStrategy { get; }
 
         /// <summary>

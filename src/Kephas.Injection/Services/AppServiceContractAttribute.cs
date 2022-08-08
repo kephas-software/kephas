@@ -75,6 +75,14 @@ namespace Kephas.Services
         public Type? ContractType { get; set; }
 
         /// <summary>
+        /// Gets or sets the supported metadata type.
+        /// </summary>
+        /// <value>
+        /// The supported metadata type.
+        /// </value>
+        public Type? MetadataType { get; set; }
+
+        /// <summary>
         /// Gets the instancing strategy: factory, type, or instance.
         /// </summary>
         public object? InstancingStrategy => null;

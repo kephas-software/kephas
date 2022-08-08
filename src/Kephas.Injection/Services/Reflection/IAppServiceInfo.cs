@@ -67,6 +67,19 @@ namespace Kephas.Services.Reflection
         }
 
         /// <summary>
+        /// Gets or sets the supported metadata type.
+        /// </summary>
+        /// <value>
+        /// The supported metadata type.
+        /// </value>
+        Type? MetadataType
+        {
+            [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the instancing strategy: factory, type, or instance.
         /// </summary>
         object? InstancingStrategy { get; }
@@ -136,7 +149,7 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <param name="metadata">The metadata to add.</param>
         /// <returns>This <see cref="IAppServiceInfo"/>.</returns>
-        public IAppServiceInfo AddMetadata(IDictionary<string, object?> metadata)
+        public IAppServiceInfo AddMetadata(IDictionary<string, object?>? metadata)
         {
             if (metadata == null)
             {

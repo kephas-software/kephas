@@ -22,9 +22,11 @@ namespace Kephas.Services
     /// </summary>
     /// <param name="ContractDeclarationType">The contract declaration type.</param>
     /// <param name="AppServiceInfo">The <see cref="IAppServiceInfo"/> attached to the contract declaration type.</param>
+    /// <param name="MetadataType">Optional. The type of the metadata supported by the contract.</param>
     public record ContractDeclaration(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ContractDeclarationType,
-        IAppServiceInfo AppServiceInfo);
+        IAppServiceInfo AppServiceInfo,
+        Type? MetadataType = null);
 
     /// <summary>
     /// Service implementation declaration record.
