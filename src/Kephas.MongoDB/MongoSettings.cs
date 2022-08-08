@@ -24,4 +24,9 @@ public class MongoSettings : Expando, ISettings
     /// Gets or sets the database name.
     /// </summary>
     public string? DatabaseName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the namespace conventions for the entities.
+    /// </summary>
+    public string?[]? EntityNamespaceConventions { get; set; }
 }
