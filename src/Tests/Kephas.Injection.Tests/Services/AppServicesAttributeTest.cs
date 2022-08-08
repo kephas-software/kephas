@@ -59,9 +59,9 @@ namespace Kephas.Tests.Services
             /// <returns>
             /// The contract declaration types.
             /// </returns>
-            IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)
+            IEnumerable<ContractInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)
             {
-                yield return typeof(IService);
+                yield return new ContractInfo(typeof(IService), null);
             }
 
             [AppServiceContract]

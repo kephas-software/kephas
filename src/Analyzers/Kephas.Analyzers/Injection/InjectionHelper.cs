@@ -257,7 +257,7 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"#endif");
             source.AppendLine($@"   internal partial class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
-            source.AppendLine($@"       IEnumerable<Type>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
+            source.AppendLine($@"       IEnumerable<ContractInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
             source.AppendLine($@"       {{");
 
             var contractTypes = compilationContext.ContractTypes;
@@ -267,7 +267,7 @@ namespace Kephas.Analyzers.Injection
                 foreach (var typeSyntax in contractTypes)
                 {
                     var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax, compilationContext);
-                    source.AppendLine($"            yield return typeof({typeFullName});");
+                    source.AppendLine($"            yield return new ContractInfo(typeof({typeFullName}), null);");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
 
