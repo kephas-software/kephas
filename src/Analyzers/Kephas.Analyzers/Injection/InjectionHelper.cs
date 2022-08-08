@@ -132,6 +132,21 @@ namespace Kephas.Analyzers.Injection
                 && type.Modifiers.All(m => m.ValueText != "abstract");
         }
 
+        public static bool CanBeMetadataType(ClassDeclarationSyntax type)
+        {
+            var attrLists = type.AttributeLists;
+            var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
+            if (attrs.Any(a => ContainsAttribute(a, ExcludedAttrs)))
+            {
+                return false;
+            }
+
+            return type.Modifiers.Any(m => m.ValueText == "public")
+                   && type.Modifiers.All(m => m.ValueText != "static")
+                   && type.Modifiers.All(m => m.ValueText != "abstract")
+                   && type.Identifier.Text.EndsWith("Metadata");
+        }
+
         public static string GetTypeFullName(INamedTypeSymbol typeSymbol)
         {
             var fullNameBuilder = new StringBuilder(typeSymbol.Name);
@@ -261,13 +276,16 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"       {{");
 
             var contractTypes = compilationContext.ContractTypes;
+            var metadataTypes = compilationContext.MetadataTypes;
             if (contractTypes.Count > 0)
             {
                 var contractTypesBuilder = new StringBuilder();
                 foreach (var typeSyntax in contractTypes)
                 {
                     var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax, compilationContext);
-                    source.AppendLine($"            yield return new ContractInfo(typeof({typeFullName}), null);");
+                    var metadataTypeSyntax = metadataTypes.FirstOrDefault(t => t.Identifier.Text == $"{typeSyntax.Identifier.Text}Metadata");
+                    var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({InjectionHelper.GetTypeFullName(metadataTypeSyntax, compilationContext)})";
+                    source.AppendLine($"            yield return new ContractInfo(typeof({typeFullName}), {metadataTypeFullName});");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
 

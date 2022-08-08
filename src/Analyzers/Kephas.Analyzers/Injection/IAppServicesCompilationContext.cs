@@ -13,6 +13,8 @@ public interface IAppServicesCompilationContext
 {
     public IList<TypeDeclarationSyntax> ContractTypes { get; }
 
+    public IList<ClassDeclarationSyntax> MetadataTypes { get; }
+
     public IList<ClassDeclarationSyntax> ServiceTypes { get; }
 
     public IDictionary<string, FileScopedNamespaceDeclarationSyntax> FileScopedNamespaces { get; }

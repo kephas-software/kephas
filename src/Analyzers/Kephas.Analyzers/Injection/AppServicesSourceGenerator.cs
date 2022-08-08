@@ -66,7 +66,12 @@ using Kephas.Services;
 
 ");
 
-            var isProviderGenerated = InjectionHelper.AppendAppServicesProviderClass(serviceTypeProvider, source, context, syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, InjectionHelper.TryGetAppServiceContract(t, context))).ToList(), syntaxReceiver);
+            var isProviderGenerated = InjectionHelper.AppendAppServicesProviderClass(
+                serviceTypeProvider,
+                source,
+                context,
+                syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, InjectionHelper.TryGetAppServiceContract(t, context))).ToList(),
+                syntaxReceiver);
             if (isProviderGenerated)
             {
                 context.AddSource("AppServices.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
@@ -84,6 +89,8 @@ using Kephas.Services;
 
             public IList<ClassDeclarationSyntax> ServiceTypes { get; } = new List<ClassDeclarationSyntax>();
 
+            public IList<ClassDeclarationSyntax> MetadataTypes { get; } = new List<ClassDeclarationSyntax>();
+
             public IDictionary<string, FileScopedNamespaceDeclarationSyntax> FileScopedNamespaces { get; } =
                 new Dictionary<string, FileScopedNamespaceDeclarationSyntax>();
 
@@ -97,10 +104,16 @@ using Kephas.Services;
                 }
 
                 // find all classes which are potentially application services.
-                if (context.Node is ClassDeclarationSyntax type
-                    && InjectionHelper.CanBeAppService(type))
+                if (context.Node is ClassDeclarationSyntax type)
                 {
-                    this.ServiceTypes.Add(type);
+                    if (InjectionHelper.CanBeAppService(type))
+                    {
+                        this.ServiceTypes.Add(type);
+                    }
+                    else if (InjectionHelper.CanBeMetadataType(type))
+                    {
+                        this.MetadataTypes.Add(type);
+                    }
                 }
 
                 // store all file scoped namespaces
