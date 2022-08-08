@@ -52,4 +52,29 @@ public class MongoClientProvider : Loggable, IMongoClientProvider
         var clientSettings = this.clientSettingsProvider.GetClientSettings(mongoUrl);
         return new MongoClient(clientSettings);
     }
+        private void EnsureDriverInitialized()
+        {
+            if (isDriverInitialized)
+            {
+                return;
+            }
+
+            foreach (var conventionProvider in this.conventionsProviders
+                         .OrderBy(p => p.Metadata.Priority)
+                         .Select(p => p.Value))
+            {
+                var (name, pack, filter) = conventionProvider.GetConventions();
+                this.logger?.LogInformation("Registering {conventions}.", name);
+                ConventionRegistry.Register(name, pack, filter);
+            }
+
+            foreach (var serializer in this.serializers
+                         .OrderBy(p => p.Metadata.Priority))
+            {
+                this.logger?.LogInformation("Registering {serializer}.", serializer.Value);
+                BsonSerializer.RegisterSerializer(serializer.Metadata.ValueType, serializer.Value);
+            }
+
+            isDriverInitialized = true;
+        }
 }
