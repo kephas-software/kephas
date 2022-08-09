@@ -62,13 +62,14 @@ namespace Kephas.Analyzers.Tests.Injection
             CollectionAssert.AreEquivalent(
                 new[]
                 {
-                    new ContractInfo(typeof(ISingletonServiceContract), null),
-                    new ContractInfo(typeof(IFileScopedNsSingletonServiceContract), null),
-                    new ContractInfo(typeof(ServiceAndContract), null),
-                    new ContractInfo(typeof(ServiceBase), null),
-                    new ContractInfo(typeof(IOpenGenericContract<>), null),
-                    new ContractInfo(typeof(IGenericContract<>), null),
-                    new ContractInfo(typeof(IGenericContractDeclaration<,>), null),
+                    new ContractDeclarationInfo(typeof(ISingletonServiceContract), null),
+                    new ContractDeclarationInfo(typeof(IFileScopedNsSingletonServiceContract), null),
+                    new ContractDeclarationInfo(typeof(ServiceAndContract), null),
+                    new ContractDeclarationInfo(typeof(ServiceBase), null),
+                    new ContractDeclarationInfo(typeof(IOpenGenericContract<>), null),
+                    new ContractDeclarationInfo(typeof(IGenericContract<>), null),
+                    new ContractDeclarationInfo(typeof(IGenericContractDeclaration<,>), null),
+                    new ContractDeclarationInfo(typeof(IMetaService), typeof(MetaServiceMetadata)),
                 },
                 contractsProvider.GetContractDeclarationTypes());
         }

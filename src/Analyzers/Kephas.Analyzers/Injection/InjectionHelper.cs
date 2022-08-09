@@ -11,6 +11,7 @@ namespace Kephas.Analyzers.Injection
 {
     using System;
     using System.Collections.Generic;
+using System.Diagnostics;
     using System.Linq;
     using System.Text;
 
@@ -272,7 +273,7 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"#endif");
             source.AppendLine($@"   internal partial class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
-            source.AppendLine($@"       IEnumerable<ContractInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
+            source.AppendLine($@"       IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
             source.AppendLine($@"       {{");
 
             var contractTypes = compilationContext.ContractTypes;
@@ -283,9 +284,9 @@ namespace Kephas.Analyzers.Injection
                 foreach (var typeSyntax in contractTypes)
                 {
                     var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax, compilationContext);
-                    var metadataTypeSyntax = metadataTypes.FirstOrDefault(t => t.Identifier.Text == $"{typeSyntax.Identifier.Text}Metadata");
+                    var metadataTypeSyntax = InjectionHelper.TryGetMetadataType(typeSyntax, metadataTypes);
                     var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({InjectionHelper.GetTypeFullName(metadataTypeSyntax, compilationContext)})";
-                    source.AppendLine($"            yield return new ContractInfo(typeof({typeFullName}), {metadataTypeFullName});");
+                    source.AppendLine($"            yield return new ContractDeclarationInfo(typeof({typeFullName}), {metadataTypeFullName});");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
 
@@ -348,6 +349,18 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"}}");
 
             return !isProviderEmpty;
+        }
+
+        private static ClassDeclarationSyntax? TryGetMetadataType(
+            TypeDeclarationSyntax contractType,
+            IEnumerable<ClassDeclarationSyntax> metadataTypes)
+        {
+            var metadataTypeName =
+                contractType is InterfaceDeclarationSyntax && contractType.Identifier.Text.StartsWith("I")
+                    ? contractType.Identifier.Text.Substring(1)
+                    : contractType.Identifier.Text;
+            metadataTypeName = $"{metadataTypeName}Metadata";
+            return metadataTypes.FirstOrDefault(t => t.Identifier.Text == metadataTypeName);
         }
 
         private static bool ContainsAttribute(AttributeSyntax attributeSyntax, IEnumerable<string> attrs)

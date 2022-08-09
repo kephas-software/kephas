@@ -22,7 +22,7 @@ namespace Kephas.Services
     /// </summary>
     /// <param name="ContractDeclarationType">The contract declaration type.</param>
     /// <param name="MetadataType">The metadata type associated to the contract type.</param>
-    public record ContractInfo(
+    public record ContractDeclarationInfo(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ContractDeclarationType,
         Type? MetadataType = null);
 
@@ -97,7 +97,7 @@ namespace Kephas.Services
         /// </returns>
         protected internal static IEnumerable<ContractDeclaration> GetAppServiceContractDeclarations(IAppServiceInfosProvider provider, dynamic? context = null)
         {
-            IEnumerable<ContractInfo>? contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
+            IEnumerable<ContractDeclarationInfo>? contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
             if (contractDeclarationTypes == null)
             {
                 yield break;
@@ -108,6 +108,15 @@ namespace Kephas.Services
                 var appServiceInfo = provider.TryGetAppServiceInfo(contractType);
                 if (appServiceInfo != null)
                 {
+                    if (appServiceInfo.MetadataType is null)
+                    {
+                        appServiceInfo.MetadataType = metadataType;
+                    }
+                    else if (appServiceInfo.MetadataType != metadataType)
+                    {
+                        // TODO notify about the metadata type difference
+                    }
+
                     yield return new ContractDeclaration(contractType, appServiceInfo);
                 }
             }
@@ -120,6 +129,6 @@ namespace Kephas.Services
         /// <returns>
         /// The contract declaration types.
         /// </returns>
-        protected internal IEnumerable<ContractInfo>? GetContractDeclarationTypes(IContext? context = null) => null;
+        protected internal IEnumerable<ContractDeclarationInfo>? GetContractDeclarationTypes(IContext? context = null) => null;
     }
 }

@@ -110,7 +110,8 @@ using Kephas.Services;
                     {
                         this.ServiceTypes.Add(type);
                     }
-                    else if (InjectionHelper.CanBeMetadataType(type))
+
+                    if (InjectionHelper.CanBeMetadataType(type))
                     {
                         this.MetadataTypes.Add(type);
                     }
