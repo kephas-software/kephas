@@ -260,7 +260,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
         var behaviors = this.behaviorFactories
             .Where(f => f.Metadata.ActivityType == null || activityInfo == this.typeRegistry.GetTypeInfo(f.Metadata.ActivityType))
             .Order()
-            .GetServices()
+            .SelectServices()
             .ToList();
         return (behaviors, ((IEnumerable<IActivityBehavior>)behaviors).Reverse().ToList());
     }

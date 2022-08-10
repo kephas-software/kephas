@@ -19,7 +19,7 @@ namespace Kephas.Core.Tests.Services
     using NUnit.Framework;
 
     [TestFixture]
-    public class OrderedServiceCollectionExtensionsTest
+    public class ServiceEnumerableExtensionsTest
     {
         [Test]
         public void OrderAsDictionary_empty()

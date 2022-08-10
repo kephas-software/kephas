@@ -38,7 +38,7 @@ namespace Kephas.Data.DataSources
         {
             providerFactories = providerFactories ?? throw new System.ArgumentNullException(nameof(providerFactories));
 
-            this.providers = providerFactories.Order().GetServices().ToList();
+            this.providers = providerFactories.Order().SelectServices().ToList();
         }
 
         /// <summary>

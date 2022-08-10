@@ -36,7 +36,7 @@ namespace Kephas.Security.Authorization
         public DefaultAuthorizationScopeService(
             ICollection<IExportFactory<IAuthorizationScopeProvider, AppServiceMetadata>> providerFactories)
         {
-            this.providers = providerFactories.Order().GetServices().ToList();
+            this.providers = providerFactories.Order().SelectServices().ToList();
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// The reader factories.
         /// </summary>
-        private readonly IOrderedServiceFactoryCollection<IDataStreamReader, DataStreamReaderMetadata> readerFactories;
+        private readonly IFactoryEnumerable<IDataStreamReader, DataStreamReaderMetadata> readerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataStreamReadService"/> class.

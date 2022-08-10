@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrderedServiceCollectionExtensions.cs" company="Kephas Software SRL">
+// <copyright file="ServiceEnumerableExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -22,7 +22,7 @@ namespace Kephas.Services
     /// <summary>
     /// An ordered service collection extensions.
     /// </summary>
-    public static class OrderedServiceCollectionExtensions
+    public static class ServiceEnumerableExtensions
     {
         /// <summary>
         /// Orders the given factory service collection.
@@ -33,10 +33,10 @@ namespace Kephas.Services
         /// <returns>
         /// A list of ordered services.
         /// </returns>
-        public static IOrderedServiceFactoryCollection<T, TMetadata> Order<T, TMetadata>(
+        public static IFactoryEnumerable<T, TMetadata> Order<T, TMetadata>(
             this IEnumerable<IExportFactory<T, TMetadata>> factories)
         {
-            return new OrderedServiceFactoryCollection<T, TMetadata>(factories);
+            return new FactoryEnumerable<T, TMetadata>(factories);
         }
 
         /// <summary>
@@ -48,10 +48,10 @@ namespace Kephas.Services
         /// <returns>
         /// A list of ordered services.
         /// </returns>
-        public static IOrderedLazyServiceCollection<T, TMetadata> Order<T, TMetadata>(
+        public static ILazyEnumerable<T, TMetadata> Order<T, TMetadata>(
             this IEnumerable<Lazy<T, TMetadata>> factories)
         {
-            return new OrderedLazyServiceCollection<T, TMetadata>(factories);
+            return new LazyEnumerable<T, TMetadata>(factories);
         }
 
         /// <summary>

@@ -45,7 +45,7 @@ namespace Kephas.Messaging.Distributed
                 TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary = new ();
 
         private readonly IInjectableFactory injectableFactory;
-        private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
+        private readonly ILazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<RouterEntry>? routerMap;
 

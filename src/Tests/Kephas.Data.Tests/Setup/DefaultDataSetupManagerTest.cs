@@ -80,7 +80,7 @@ namespace Kephas.Data.Tests.Setup
             Assert.AreEqual("u-2", list[0]);
         }
 
-        private List<IExportFactory<IDataInstaller, DataInstallerMetadata>> GetInstallerFactories(List<string> list)
+        private IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> GetInstallerFactories(List<string> list)
         {
             var installer1 = Substitute.For<IDataInstaller>();
             installer1.InstallDataAsync(Arg.Any<Action<IDataSetupContext>>(), Arg.Any<CancellationToken>()).Returns(
@@ -119,7 +119,7 @@ namespace Kephas.Data.Tests.Setup
                                                  () => installer2,
                                                  new DataInstallerMetadata("2", processingPriority: (Priority)1))
                                          };
-            return installerFactories;
+            return new FactoryEnumerable<IDataInstaller, DataInstallerMetadata>(installerFactories);
         }
     }
 }

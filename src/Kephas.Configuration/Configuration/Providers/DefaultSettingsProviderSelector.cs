@@ -26,7 +26,7 @@ namespace Kephas.Configuration.Providers
     [OverridePriority(Priority.Low)]
     public class DefaultSettingsProviderSelector : Loggable, ISettingsProviderSelector
     {
-        private readonly IOrderedServiceFactoryCollection<ISettingsProvider, SettingsProviderMetadata> providerFactories;
+        private readonly IFactoryEnumerable<ISettingsProvider, SettingsProviderMetadata> providerFactories;
         private readonly ConcurrentDictionary<Type, IEnumerable<ISettingsProvider>> providersMap = new ConcurrentDictionary<Type, IEnumerable<ISettingsProvider>>();
 
         /// <summary>
