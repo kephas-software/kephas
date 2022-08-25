@@ -39,10 +39,7 @@
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log.
-            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-        </PackageReleaseNotes>
+        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>kephas core abstractions</PackageTags>
 
@@ -107,6 +104,7 @@
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>

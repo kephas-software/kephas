@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppId_and_version()
         {
-            var appEnv = new DynamicAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
+            IAppRuntime appEnv = new DynamicAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
 
             Assert.AreEqual("hello-app", appEnv.GetAppId());
             Assert.AreEqual("1.0.0-beta", appEnv.GetAppVersion());

@@ -64,7 +64,7 @@ namespace Kephas.Tests.Orchestration.Application
         [Test]
         public async Task BeforeAppInitializeAsync_from_this_appinstance_only()
         {
-            var appRuntime = new StaticAppRuntime();
+            IAppRuntime appRuntime = new StaticAppRuntime();
             var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();
@@ -97,7 +97,7 @@ namespace Kephas.Tests.Orchestration.Application
         [Test]
         public async Task BeforeAppInitializeAsync_from_this_appinstance()
         {
-            var appRuntime = new StaticAppRuntime();
+            IAppRuntime appRuntime = new StaticAppRuntime();
             var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();

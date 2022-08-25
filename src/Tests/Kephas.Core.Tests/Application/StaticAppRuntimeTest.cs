@@ -25,7 +25,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void Constructor_set_app_id_and_instance_id()
         {
-            var appRuntime = new StaticAppRuntime(
+            IAppRuntime appRuntime = new StaticAppRuntime(
                 appArgs: new Expando
                 {
                     [IAppRuntime.AppIdKey] = "test",
@@ -61,7 +61,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppId_and_version()
         {
-            var appRuntime = new StaticAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
+            IAppRuntime appRuntime = new StaticAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
 
             Assert.AreEqual("hello-app", appRuntime.GetAppId());
             Assert.AreEqual("1.0.0-beta", appRuntime.GetAppVersion());
@@ -129,21 +129,21 @@ namespace Kephas.Core.Tests.Application
         public void IsRoot_true()
         {
             var appRuntime = new StaticAppRuntime();
-            Assert.IsTrue(appRuntime.IsRoot());
+            Assert.IsTrue(appRuntime.IsRoot);
         }
 
         [Test]
         public void IsRoot_true_with_appID()
         {
             var appRuntime = new StaticAppRuntime(isRoot: true, appId: "root");
-            Assert.IsTrue(appRuntime.IsRoot());
+            Assert.IsTrue(appRuntime.IsRoot);
         }
 
         [Test]
         public void IsRoot_false()
         {
             var appRuntime = new StaticAppRuntime(isRoot: false);
-            Assert.IsFalse(appRuntime.IsRoot());
+            Assert.IsFalse(appRuntime.IsRoot);
         }
     }
 }

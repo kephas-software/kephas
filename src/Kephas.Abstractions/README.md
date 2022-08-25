@@ -181,3 +181,10 @@ Expandos can be successfully used where a dynamic context is useful. Examples:
 * Context objects, used to provide information about the current execution context, passed along the execution flow.
 * Metadata objects, used to provide meta information about entities and other artifacts.
 * Configuration settings.
+
+## Other resources
+
+* [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
+
+
+    Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

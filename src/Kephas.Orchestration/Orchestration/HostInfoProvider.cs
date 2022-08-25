@@ -69,7 +69,7 @@ namespace Kephas.Orchestration
                 AppId = this.appRuntime.GetAppId()!,
                 AppInstanceId = this.appRuntime.GetAppInstanceId()!,
                 AppVersion = this.appRuntime.GetAppVersion(),
-                IsRoot = this.appRuntime.IsRoot(),
+                IsRoot = this.appRuntime.IsRoot,
 #if NETSTANDARD2_1
                 ProcessId = process.Id,
 #else

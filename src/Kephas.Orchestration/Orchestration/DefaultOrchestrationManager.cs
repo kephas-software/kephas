@@ -607,7 +607,7 @@ namespace Kephas.Orchestration
         {
             this.EnsureInitialized();
 
-            if (this.AppRuntime.IsRoot())
+            if (this.AppRuntime.IsRoot)
             {
                 return this.AppRuntime.GetAppInstanceId()!;
             }

@@ -124,6 +124,14 @@ namespace Kephas.Application
         public IAppArgs AppArgs { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the application is the root of an application hierarchy.
+        /// </summary>
+        /// <returns>
+        /// A value indicating whether the application is the root of an application hierarchy.
+        /// </returns>
+        public bool IsRoot { get; private set; }
+
+        /// <summary>
         /// Gets the logger.
         /// </summary>
         /// <value>
@@ -193,7 +201,8 @@ namespace Kephas.Application
         /// </returns>
         public virtual string? GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true)
         {
-            if (appIdentity == null || appIdentity.Equals(this.GetAppIdentity()))
+            IAppRuntime appRuntime = this;
+            if (appIdentity == null || appIdentity.Equals(appRuntime.GetAppIdentity()))
             {
                 return this.GetAppLocation();
             }
@@ -285,7 +294,8 @@ namespace Kephas.Application
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"{this.GetAppIdentity()}/{this.GetAppInstanceId()} ({this.GetType().Name})";
+            IAppRuntime appRuntime = this;
+            return $"{appRuntime.GetAppIdentity()}/{appRuntime.GetAppInstanceId()} ({this.GetType().Name})";
         }
 
         /// <summary>
@@ -335,7 +345,7 @@ namespace Kephas.Application
             string? appVersion,
             string? environment)
         {
-            this[IAppRuntime.IsRootKey] = isRoot ??= string.IsNullOrEmpty(appId);
+            this.IsRoot = isRoot ??= string.IsNullOrEmpty(appId);
             this[IAppRuntime.AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
             this[IAppRuntime.AppInstanceIdKey] = appInstanceId = string.IsNullOrEmpty(appInstanceId)
                 ? isRoot.Value
