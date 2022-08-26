@@ -19,7 +19,7 @@ namespace Kephas.Commands
     /// <summary>
     /// Arguments used in command line execution.
     /// </summary>
-    public class Args : Expando, IArgs
+    public class Args : Expando<object?>, IArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Args"/> class.

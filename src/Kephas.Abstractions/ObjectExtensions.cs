@@ -33,7 +33,7 @@ namespace Kephas
             return obj switch
             {
                 IDynamicMetaObjectProvider => obj,
-                _ => new Expando(obj)
+                _ => obj.ToExpando()
             };
         }
 
@@ -49,7 +49,8 @@ namespace Kephas
             return obj switch
             {
                 IExpandoBase expando => expando,
-                _ => new Expando(obj)
+                IDictionary<string, object?> objectDictionary => new Expando<object?>(objectDictionary),
+                _ => new Expando<object?>(obj)
             };
         }
 
@@ -66,7 +67,7 @@ namespace Kephas
             {
                 IDictionary<string, object?> dictionary => dictionary,
                 IExpandoBase expando => expando.ToDictionary(),
-                _ => new Expando(obj).ToDictionary()
+                _ => obj.ToExpando().ToDictionary()
             };
         }
 
@@ -82,7 +83,7 @@ namespace Kephas
             return obj switch
             {
                 IDynamic dyn => dyn,
-                _ => new Expando(obj)
+                _ => obj.ToExpando()
             };
         }
     }

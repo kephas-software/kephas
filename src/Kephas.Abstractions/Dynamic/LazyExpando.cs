@@ -18,7 +18,7 @@ namespace Kephas.Dynamic
     /// <summary>
     /// Expando class for evaluating the internal values on demand.
     /// </summary>
-    public class LazyExpando : Expando
+    public class LazyExpando : Expando<object?>
     {
         /// <summary>
         /// The lock dictionary.

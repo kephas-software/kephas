@@ -69,7 +69,7 @@ namespace Kephas.Extensions.Configuration
                     return;
                 }
 
-                var flattenedValue = new Expando(value).ToDictionary();
+                var flattenedValue = value.ToExpando().ToDictionary();
                 foreach (var keyValue in flattenedValue)
                 {
                     this.SetFlattenedValue($"{key}:{keyValue.Key}", keyValue.Value);

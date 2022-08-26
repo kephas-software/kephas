@@ -51,7 +51,7 @@ namespace Kephas.Data.LLBLGen
                 originalValues[prop.Name] = prop.GetValue(this.Entity);
             }
 
-            var original = new Expando(originalValues);
+            var original = originalValues.ToExpando();
             return original;
         }
     }

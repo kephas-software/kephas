@@ -28,7 +28,7 @@ namespace Kephas.Configuration
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         public DefaultConfigurationStore(IRuntimeTypeRegistry typeRegistry)
-            : base(new Expando(new ConcurrentDictionary<string, object?>(StringComparer.OrdinalIgnoreCase)), typeRegistry)
+            : base(new ConcurrentDictionary<string, object?>(StringComparer.OrdinalIgnoreCase).ToExpando(), typeRegistry)
         {
         }
     }

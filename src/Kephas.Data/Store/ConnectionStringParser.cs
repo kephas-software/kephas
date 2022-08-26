@@ -50,13 +50,16 @@ namespace Kephas.Data.Store
         /// </returns>
         public static IExpandoBase ToExpando(string connectionString)
         {
-            if (string.IsNullOrEmpty(connectionString)) throw new System.ArgumentException("Value must not be null or empty.", nameof(connectionString));
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentException("Value must not be null or empty.", nameof(connectionString));
+            }
 
-            var expando = new Expando(GetConnectionStringSplits(connectionString)
+            var expando = GetConnectionStringSplits(connectionString)
                                     .ToDictionary(
                                         kvp => kvp[0].Trim(),
                                         kvp => (object?)kvp[1].Trim(),
-                                        StringComparer.OrdinalIgnoreCase));
+                                        StringComparer.OrdinalIgnoreCase).ToExpando();
 
             return expando;
         }

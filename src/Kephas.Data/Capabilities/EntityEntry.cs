@@ -191,7 +191,7 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// Gets a wrapper expando object over the entity, to access dynamic values from it.
         /// </summary>
-        protected IExpandoBase ExpandoEntity => this.expandoEntity ??= this.Entity as IExpandoBase ?? new Expando(this.Entity);
+        protected IExpandoBase ExpandoEntity => this.expandoEntity ??= this.Entity.ToExpando();
 
         /// <summary>
         /// Gets the root of the entity graph.
@@ -416,7 +416,7 @@ namespace Kephas.Data.Capabilities
                 originalValues.Add(prop.Name, prop.GetValue(this.Entity));
             }
 
-            var original = new Expando(originalValues);
+            var original = originalValues.ToExpando();
             return original;
         }
 

@@ -17,7 +17,7 @@ namespace Kephas.Injection
     /// <summary>
     /// Base class for export metadata.
     /// </summary>
-    public abstract class InjectionMetadataBase : Expando
+    public abstract class InjectionMetadataBase : Expando<object?>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionMetadataBase"/> class.
