@@ -11,6 +11,7 @@
 namespace Kephas.Security.Authorization
 {
     using System;
+
     using Kephas.Services;
 
     /// <summary>

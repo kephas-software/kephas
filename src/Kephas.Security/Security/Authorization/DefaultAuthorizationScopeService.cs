@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Security.Authorization
 {
     using System;
@@ -17,7 +15,9 @@ namespace Kephas.Security.Authorization
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

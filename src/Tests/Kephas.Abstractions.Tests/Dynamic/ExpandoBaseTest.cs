@@ -227,7 +227,7 @@ namespace Kephas.Core.Tests.Dynamic
         }
     }
 
-    public class TestExpandoWithConstants : ExpandoBase
+    public class TestExpandoWithConstants : ExpandoBase<object?>
     {
         public const string Constant = "gigi";
 
@@ -239,7 +239,7 @@ namespace Kephas.Core.Tests.Dynamic
         public string Name { get; set; }
     }
 
-    public class TestExpando : ExpandoBase
+    public class TestExpando : ExpandoBase<object?>
     {
         public TestExpando(object inner, IDictionary<string, object?>? innerDictionary = null, ExpandoMemberBinderKind? binders = null)
             : base(inner, innerDictionary)
@@ -255,7 +255,7 @@ namespace Kephas.Core.Tests.Dynamic
         public IDictionary<string, object?> GetInnerDictionary() => this.InnerDictionary;
     }
 
-    public class TestExpandoNonConflicting : ExpandoBase
+    public class TestExpandoNonConflicting : ExpandoBase<object?>
     {
         public TestExpandoNonConflicting(object inner, IDictionary<string, object?>? innerDictionary = null)
             : base(inner, innerDictionary)

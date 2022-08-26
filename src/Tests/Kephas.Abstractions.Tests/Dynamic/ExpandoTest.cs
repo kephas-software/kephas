@@ -38,14 +38,14 @@ namespace Kephas.Core.Tests.Dynamic
         public void Constructor_instance()
         {
             var instance = new TestClass();
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
         }
 
         [Test]
         public void Constructor_dictionary()
         {
-            var dict = new Dictionary<string, object>();
-            dynamic expando = new Expando(dict);
+            var dict = new Dictionary<string, object?>();
+            dynamic expando = new Expando<object?>(dict);
 
             expando.Hi = "there";
 
@@ -56,7 +56,29 @@ namespace Kephas.Core.Tests.Dynamic
         public void Constructor_dictionary_as_object()
         {
             var dict = new Dictionary<string, object>();
-            dynamic expando = new Expando((object)dict);
+            dynamic expando = new Expando<object>((object)dict);
+
+            expando.Hi = "there";
+
+            Assert.AreEqual("there", dict["Hi"]);
+        }
+
+        [Test]
+        public void Constructor_typed_dictionary()
+        {
+            var dict = new Dictionary<string, string>();
+            dynamic expando = new Expando<string>(dict);
+
+            expando.Hi = "there";
+
+            Assert.AreEqual("there", dict["Hi"]);
+        }
+
+        [Test]
+        public void Constructor_typed_dictionary_as_object()
+        {
+            var dict = new Dictionary<string, string>();
+            dynamic expando = new Expando<string>((object)dict);
 
             expando.Hi = "there";
 
@@ -76,7 +98,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void PublicProperty_instance()
         {
             var instance = new TestClass();
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
 
             expando.Name = "John";
             Assert.AreEqual("John", expando.Name);
@@ -99,7 +121,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void ReadOnlyProperty_instance_getter()
         {
             var instance = new TestClass();
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
 
             expando.Name = "John";
             Assert.AreEqual(" John", expando.ReadOnlyFullName);
@@ -111,7 +133,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void ReadOnlyProperty_instance_setter()
         {
             var instance = new TestClass();
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
 
             Assert.Throws<MemberAccessException>(() => expando.ReadOnlyFullName = "John Doe");
         }
@@ -120,7 +142,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void PrivateProperty_instance_getter()
         {
             var instance = new TestClass();
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
             var value = expando.PrivateAge;
             instance.SetPrivateAge(10);
             var objValue = instance.GetPrivateAge();
@@ -133,7 +155,7 @@ namespace Kephas.Core.Tests.Dynamic
         public void PrivateProperty_instance_setter()
         {
             var instance = new TestClass();
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
             var value = expando.PrivateAge;
             expando.PrivateAge = 10;
             var objValue = instance.GetPrivateAge();
@@ -156,7 +178,7 @@ namespace Kephas.Core.Tests.Dynamic
         [Test]
         public void TryInvokeMember_Func_property_with_instance()
         {
-            dynamic instance = new Expando(new TestClass());
+            dynamic instance = new Expando<object?>(new TestClass());
             instance.GetName = (Func<int, string>)(age => $"John Doe: {age}");
 
             var name = instance.GetName(30);
@@ -190,7 +212,7 @@ namespace Kephas.Core.Tests.Dynamic
             var tasks = new List<Task>();
             for (var j = 0; j < 200; j++)
             {
-                tasks.Add(Task.Factory.StartNew(accessor));    
+                tasks.Add(Task.Factory.StartNew(accessor));
             }
 
             await Task.WhenAll(tasks);
@@ -244,14 +266,14 @@ namespace Kephas.Core.Tests.Dynamic
         [Test]
         public void HasDynamicMember_Property_existing_in_object()
         {
-            var expando = new Expando(Substitute.For<IIdentifiable>());
+            var expando = new Expando<object?>(Substitute.For<IIdentifiable>());
             Assert.IsTrue(expando.HasDynamicMember(nameof(IIdentifiable.Id)));
         }
 
         [Test]
         public void HasDynamicMember_Property_existing_in_dictionary_not_object()
         {
-            var expando = new Expando(Substitute.For<IIdentifiable>());
+            var expando = new Expando<object?>(Substitute.For<IIdentifiable>());
             expando["Age"] = 12;
             Assert.IsTrue(expando.HasDynamicMember("Age"));
         }
@@ -266,7 +288,7 @@ namespace Kephas.Core.Tests.Dynamic
         [Test]
         public void HasDynamicMember_Property_non_existing_in_object()
         {
-            var expando = new Expando(Substitute.For<IIdentifiable>());
+            var expando = new Expando<object?>(Substitute.For<IIdentifiable>());
             Assert.IsFalse(expando.HasDynamicMember("Age"));
         }
 
@@ -277,7 +299,7 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var instance = new DerivedExpando();
             instance.Age = age;
-            dynamic expando = new Expando(instance);
+            dynamic expando = new Expando<object?>(instance);
 
             var isOld = expando.IsOld();
             return isOld;
@@ -349,7 +371,7 @@ namespace Kephas.Core.Tests.Dynamic
             }
         }
 
-        public class WrapperExpando : Expando
+        public class WrapperExpando : Expando<object?>
         {
             public WrapperExpando()
             {
