@@ -342,6 +342,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Abstractions.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Operations.Tests", "Tests\Kephas.Operations.Tests\Kephas.Operations.Tests.csproj", "{390B1DE0-3260-4982-88FF-A2EE51A38E12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Interaction.Tests", "Tests\Kephas.Interaction.Tests\Kephas.Interaction.Tests.csproj", "{E2DCCC6B-F3E8-436C-9209-E029B4C5C13F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Tests", "Tests\Kephas.Logging.Tests\Kephas.Logging.Tests.csproj", "{80D76FE3-6242-4635-A1AC-FDF235D42409}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Tests", "Tests\Kephas.Serialization.Tests\Kephas.Serialization.Tests.csproj", "{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Abstractions.Tests", "Tests\Kephas.Application.Abstractions.Tests\Kephas.Application.Abstractions.Tests.csproj", "{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -960,6 +968,22 @@ Global
 		{390B1DE0-3260-4982-88FF-A2EE51A38E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{390B1DE0-3260-4982-88FF-A2EE51A38E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{390B1DE0-3260-4982-88FF-A2EE51A38E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2DCCC6B-F3E8-436C-9209-E029B4C5C13F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2DCCC6B-F3E8-436C-9209-E029B4C5C13F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2DCCC6B-F3E8-436C-9209-E029B4C5C13F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2DCCC6B-F3E8-436C-9209-E029B4C5C13F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80D76FE3-6242-4635-A1AC-FDF235D42409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80D76FE3-6242-4635-A1AC-FDF235D42409}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80D76FE3-6242-4635-A1AC-FDF235D42409}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80D76FE3-6242-4635-A1AC-FDF235D42409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1033,6 +1057,10 @@ Global
 		{7A9CDD9D-3884-4E5E-B8CF-FCBC745BD3EE} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{B7DF3BF0-D34B-4F0F-B4E1-8457C9836BA3} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{390B1DE0-3260-4982-88FF-A2EE51A38E12} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{E2DCCC6B-F3E8-436C-9209-E029B4C5C13F} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{80D76FE3-6242-4635-A1AC-FDF235D42409} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

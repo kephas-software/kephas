@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests
+namespace Kephas.Tests
 {
     using System;
     using System.Collections.Generic;

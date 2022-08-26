@@ -5,13 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Threading
+namespace Kephas.Tests.Threading
 {
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Threading;
     using NUnit.Framework;
 

@@ -5,10 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Collections
+namespace Kephas.Tests.Collections
 {
     using System.Collections.Generic;
-
     using Kephas.Collections;
     using NUnit.Framework;
 

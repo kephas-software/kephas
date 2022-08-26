@@ -5,10 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Dynamic
+namespace Kephas.Tests.Dynamic
 {
     using System.Collections.Generic;
-
     using Kephas.Dynamic;
     using NUnit.Framework;
 

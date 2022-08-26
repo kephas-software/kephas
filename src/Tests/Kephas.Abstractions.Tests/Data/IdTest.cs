@@ -8,13 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Data
+namespace Kephas.Tests.Data
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
     using Kephas.Data;
-
     using NUnit.Framework;
 
     /// <summary>

@@ -8,13 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Dynamic
+namespace Kephas.Tests.Dynamic
 {
     using System;
-
     using Kephas.Dynamic;
     using Kephas.Reflection;
-
     using NUnit.Framework;
 
     [TestFixture]

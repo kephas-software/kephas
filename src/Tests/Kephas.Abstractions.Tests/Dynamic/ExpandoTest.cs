@@ -8,18 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Dynamic
+namespace Kephas.Tests.Dynamic
 {
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Data;
     using Kephas.Dynamic;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>

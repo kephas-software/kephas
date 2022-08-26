@@ -8,11 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Versioning
+namespace Kephas.Tests.Versioning
 {
-    using System;
     using System.Linq;
-
     using Kephas.Versioning;
     using NUnit.Framework;
 

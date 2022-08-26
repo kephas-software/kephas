@@ -8,15 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Threading.Tasks
+namespace Kephas.Tests.Threading.Tasks
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Services;
     using Kephas.Threading.Tasks;
-
     using NUnit.Framework;
 
     [TestFixture]

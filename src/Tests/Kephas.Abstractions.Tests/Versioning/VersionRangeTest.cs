@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Versioning
+namespace Kephas.Tests.Versioning
 {
     using Kephas.Versioning;
     using NUnit.Framework;

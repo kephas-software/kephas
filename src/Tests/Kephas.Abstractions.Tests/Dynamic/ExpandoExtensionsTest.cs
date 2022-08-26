@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Dynamic
+namespace Kephas.Tests.Dynamic
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Kephas.Dynamic;
     using NUnit.Framework;
 
