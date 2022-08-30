@@ -9,6 +9,14 @@ This package is the foundation for all the other Kephas packages. It consists of
 Check the following packages for more information:
 * [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 
+Typically used areas and classes/interfaces/services:
+* Commands: ```CommandInfo```, ```IArgs```, ```Args```.
+* Logging: ```ILogManager```, ```ILogger```.
+* Reflection: ```IPrototype```.
+* Serialization: ```ExcludeFromSerializationAttribute```.
+* Threading.Tasks: ```PreserveThreadContext``` extension method.
+* Versioning: ```SemanticVersion```.
+
 ## Logging
 The logging abstractions provide implementation agnostic logging contracts.
 The loggers are available through [Injection](https://www.nuget.org/packages/Kephas.Injection).
