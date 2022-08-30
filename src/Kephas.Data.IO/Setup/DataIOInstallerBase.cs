@@ -227,7 +227,7 @@ namespace Kephas.Data.IO.Setup
                     .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken);
                 try
                 {
-                    await importResult;
+                    await importResult.AsTask();
                 }
                 catch (Exception innerEx)
                 {
