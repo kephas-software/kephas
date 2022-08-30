@@ -29,7 +29,7 @@
             exportFactory = exportFactory ?? throw new ArgumentNullException(nameof(exportFactory));
             context = context ?? throw new ArgumentNullException(nameof(context));
 
-            var export = exportFactory.CreateExport().Value;
+            var export = exportFactory.CreateExportedValue();
             ServiceHelper.Initialize(export, context);
             return export;
         }
@@ -53,7 +53,7 @@
             exportFactory = exportFactory ?? throw new ArgumentNullException(nameof(exportFactory));
             context = context ?? throw new ArgumentNullException(nameof(context));
 
-            var export = exportFactory.CreateExport().Value;
+            var export = exportFactory.CreateExportedValue();
             await ServiceHelper.InitializeAsync(export, context, cancellationToken).PreserveThreadContext();
             return export;
         }
