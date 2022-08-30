@@ -61,17 +61,6 @@
                     "files": [
                         "*.csproj"
                     ],
-                    "cwd": "./Kephas.Injection.SystemComposition",
-                    "exclude": [
-                        "**/obj/**",
-                        "**/bin/**",
-                        "_site/**"
-                    ]
-                },
-                {
-                    "files": [
-                        "*.csproj"
-                    ],
                     "cwd": "./Kephas.Core",
                     "exclude": [
                         "**/obj/**",

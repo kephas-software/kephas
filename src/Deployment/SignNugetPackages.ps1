@@ -50,7 +50,6 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Kephas.Injection",
     "..\Kephas.Injection.Autofac",
     "..\Kephas.Injection.Lite",
-    "..\Kephas.Injection.SystemComposition",
     "..\Kephas.Interaction",
     "..\Kephas.Logging",
     "..\Kephas.Logging.Log4Net",
@@ -104,7 +103,6 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\TestingFramework\Kephas.Testing",
     "..\TestingFramework\Kephas.Testing.Application",
     "..\TestingFramework\Kephas.Testing.Injection.Autofac",
-    "..\TestingFramework\Kephas.Testing.Injection.SystemComposition",
     "..\TestingFramework\Kephas.Testing.Model"
 ) }
 Else

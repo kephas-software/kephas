@@ -9,7 +9,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class KeyInheritanceWithSystemCompositionInjectionTest : DataModelWithSystemCompositionInjectionTestBase
+    public class KeyInheritanceWithAutofacInjectionTest : DataModelWithAutofacInjectionTestBase
     {
         [Test]
         public async Task InitializeAsync_key_inheritance()

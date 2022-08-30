@@ -46,7 +46,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                await service.ExportDataAsync(ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream));
+                await service.ExportDataAsync(ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream)).AsTask();
             }
 
             writer.Received(1)
@@ -68,7 +68,7 @@ namespace Kephas.Data.IO.Tests.Export
             {
                 Assert.ThrowsAsync<NotFoundDataException>(async () =>
                     await service.ExportDataAsync(
-                        ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream).ThrowOnNotFound(true)));
+                        ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream).ThrowOnNotFound(true)).AsTask());
             }
         }
 
@@ -87,7 +87,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                await service.ExportDataAsync(ctx => ctx.Data(entities).Output(dataStream));
+                await service.ExportDataAsync(ctx => ctx.Data(entities).Output(dataStream)).AsTask();
             }
 
             writer.Received(1)
@@ -109,7 +109,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                await service.ExportDataAsync(ctx => ctx.Data(entities).Output(dataStream));
+                await service.ExportDataAsync(ctx => ctx.Data(entities).Output(dataStream)).AsTask();
             }
 
             writer.Received(1)
@@ -126,7 +126,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                Assert.ThrowsAsync<NotFoundDataException>(async () => await service.ExportDataAsync(ctx => ctx.Data(new object[0]).Output(dataStream).ThrowOnNotFound(true)));
+                Assert.ThrowsAsync<NotFoundDataException>(async () => await service.ExportDataAsync(ctx => ctx.Data(new object[0]).Output(dataStream).ThrowOnNotFound(true)).AsTask());
             }
         }
     }

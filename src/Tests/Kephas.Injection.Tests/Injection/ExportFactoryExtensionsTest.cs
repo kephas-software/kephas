@@ -38,10 +38,8 @@ namespace Kephas.Tests.Injection
         public void CreateInitializedValue_context_Initializable()
         {
             var initializable = Substitute.For<IInitializable>();
-            var export = Substitute.For<IExport<IInitializable>>();
-            export.Value.Returns(initializable);
             var factory = Substitute.For<IExportFactory<IInitializable>>();
-            factory.CreateExport().Returns(export);
+            factory.CreateExportedValue().Returns(initializable);
 
             var context = Substitute.For<IContext>();
             var initializableValue = factory.CreateInitializedValue(context);
@@ -54,10 +52,8 @@ namespace Kephas.Tests.Injection
         public async Task CreateInitializedValueAsync_context_AsyncInitializable()
         {
             var initializable = Substitute.For<IAsyncInitializable>();
-            var export = Substitute.For<IExport<IAsyncInitializable>>();
-            export.Value.Returns(initializable);
             var factory = Substitute.For<IExportFactory<IAsyncInitializable>>();
-            factory.CreateExport().Returns(export);
+            factory.CreateExportedValue().Returns(initializable);
 
             var context = Substitute.For<IContext>();
             var initializableValue = await factory.CreateInitializedValueAsync(context);
@@ -70,10 +66,8 @@ namespace Kephas.Tests.Injection
         public void CreateInitializedValue_context_AsyncInitializable()
         {
             var initializable = Substitute.For<IAsyncInitializable>();
-            var export = Substitute.For<IExport<IAsyncInitializable>>();
-            export.Value.Returns(initializable);
             var factory = Substitute.For<IExportFactory<IAsyncInitializable>>();
-            factory.CreateExport().Returns(export);
+            factory.CreateExportedValue().Returns(initializable);
 
             var context = Substitute.For<IContext>();
             var initializableValue = factory.CreateInitializedValue(context);
@@ -86,10 +80,8 @@ namespace Kephas.Tests.Injection
         public async Task CreateInitializedValueAsync_context_Initializable()
         {
             var initializable = Substitute.For<IInitializable>();
-            var export = Substitute.For<IExport<IInitializable>>();
-            export.Value.Returns(initializable);
             var factory = Substitute.For<IExportFactory<IInitializable>>();
-            factory.CreateExport().Returns(export);
+            factory.CreateExportedValue().Returns(initializable);
 
             var context = Substitute.For<IContext>();
             var initializableValue = await factory.CreateInitializedValueAsync(context);

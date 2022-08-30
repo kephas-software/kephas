@@ -22,7 +22,6 @@ namespace Kephas.Messaging.Tests
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.SystemComposition;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Events;
@@ -522,8 +521,8 @@ namespace Kephas.Messaging.Tests
             behavior.AfterProcessAsync(Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => afterFunc(ci.Arg<IMessagingContext>(), ci.Arg<CancellationToken>()));
             var factory =
-                new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
-                    () => Tuple.Create(behavior, (Action)(() => { })),
+                new ExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>(
+                    () => behavior,
                     new MessagingBehaviorMetadata(messageType, messageTypeMatching: messageTypeMatching, messageId: messageId, messageIdMatching: messageIdMatching, processingPriority: processingPriority, overridePriority: overridePriority));
             return factory;
         }
@@ -537,8 +536,8 @@ namespace Kephas.Messaging.Tests
             messageType = messageType ?? typeof(IMessage);
             var behavior = new TestBehavior();
             var factory =
-                new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
-                    () => Tuple.Create((IMessagingBehavior)behavior, (Action)(() => { })),
+                new ExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>(
+                    () => behavior,
                     new MessagingBehaviorMetadata(messageType, messageId: messageId, processingPriority: processingPriority, overridePriority: overridePriority));
             return factory;
         }
