@@ -33,15 +33,6 @@ namespace Kephas.Injection
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactory{TService}"/> class.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        public ExportFactory(Func<Tuple<TContract, Action>> factory)
-        {
-            this.factory = factory;
-        }
-
-        /// <summary>
         /// Create an instance of the exported part.
         /// </summary>
         /// <returns>
