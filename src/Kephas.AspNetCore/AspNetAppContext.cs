@@ -48,7 +48,7 @@ namespace Kephas.Application.AspNetCore
         /// <value>
         /// The application builder.
         /// </value>
-        public IApplicationBuilder AppBuilder => this.AmbientServices.GetService<IApplicationBuilder>();
+        public IApplicationBuilder AppBuilder => this.AmbientServices.GetRequiredService<IApplicationBuilder>();
 
         /// <summary>
         /// Gets the hosting environment.

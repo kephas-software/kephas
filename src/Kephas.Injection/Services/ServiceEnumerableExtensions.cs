@@ -235,7 +235,7 @@ namespace Kephas.Services
                     var g1meta = group[1].meta;
                     if (HasSamePriority(g0meta, g1meta))
                     {
-                        throw new DuplicateKeyException("Key", string.Format(AbstractionStrings.CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception, typeof(T), g0meta, g1meta));
+                        throw new DuplicateKeyException("Key", string.Format(AbstractionStrings.ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception, typeof(T), g0meta, g1meta));
                     }
 
                     dictionary.Add(key, valueFunc(group[0].factory));
