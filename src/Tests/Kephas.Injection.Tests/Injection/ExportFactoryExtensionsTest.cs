@@ -24,9 +24,7 @@ namespace Kephas.Tests.Injection
         public void GetExportedValue_Initializable()
         {
             var initializable = Substitute.For<IInitializable>();
-            var export = Substitute.For<IExport<IInitializable>>();
-            export.Value.Returns(initializable);
-            IExportFactory<IInitializable> factory = new ExportFactory<IInitializable>(() => export.Value);
+            IExportFactory<IInitializable> factory = new ExportFactory<IInitializable>(() => initializable);
 
             var initializableValue = factory.CreateExportedValue();
 
