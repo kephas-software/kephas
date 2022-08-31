@@ -96,6 +96,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Kephas.Templating.Razor",
     "..\Kephas.Tenants",
     "..\Kephas.TextProcessing",
+    "..\Kephas.Validation",
     "..\Kephas.Workflow",
     "..\Kephas.Workflow.Abstractions",
     "..\Kephas.Workflow.Model",

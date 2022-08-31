@@ -344,6 +344,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Abstractions.Tests", "Tests\Kephas.Application.Abstractions.Tests\Kephas.Application.Abstractions.Tests.csproj", "{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Validation", "Kephas.Validation\Kephas.Validation.csproj", "{20A030B6-4BFE-4FB8-BA92-3750E347144E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -966,6 +968,10 @@ Global
 		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

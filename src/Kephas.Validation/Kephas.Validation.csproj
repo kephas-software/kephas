@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
@@ -8,6 +8,7 @@
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
 
         <Version>12.0.0-dev.1</Version>
         <AssemblyVersion>12.0.0.0</AssemblyVersion>
@@ -17,7 +18,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides abstractions for managing data: retrieval, persistence, query.</Description>
+        <Description>Provides infrastructure for validation.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -29,7 +30,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas data</PackageTags>
+        <PackageTags>kephas validation</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -44,6 +45,10 @@
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <RootNamespace>Kephas</RootNamespace>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
     </PropertyGroup>
@@ -53,12 +58,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="stylecop.json" />
-      <AdditionalFiles Include="stylecop.json" />
-      <None Update="release-notes.md">
-        <Pack>true</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
+        <None Remove="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -67,46 +68,52 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-        <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
-		<ProjectReference Include="..\Kephas.Data.Abstractions\Kephas.Data.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
-		<ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
-		<ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
-		<ProjectReference Include="..\Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj" />
-        <ProjectReference Include="..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj" />
-        <ProjectReference Include="..\Kephas.Serialization\Kephas.Serialization.csproj" />
-        <ProjectReference Include="..\Kephas.Validation\Kephas.Validation.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='netstandard2.1'">
+            <ItemGroup>
+                <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\ValidationStrings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ValidationStrings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\ValidationStrings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ValidationStrings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
