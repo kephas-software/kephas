@@ -6,3 +6,5 @@
 # 12.0.0
 
 * NEW: Added ```README.md``` and ```release-notes.md```.
+* Breaking change: ```DefaultAppManager``` works now with lazy feature managers and behaviors.
+  * Behavior change: the behaviors at both application and feature level can now store state between calls.
