@@ -61,24 +61,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot get the implementation type for the provided abstract type info &apos;{0}&apos;..
-        /// </summary>
-        public static string ActivatorBase_CannotGetImplementationType_Exception {
-            get {
-                return ResourceManager.GetString("ActivatorBase_CannotGetImplementationType_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot instantiate the type &apos;{0}&apos; because it could not be resolved to an implementation type..
-        /// </summary>
-        public static string ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception {
-            get {
-                return ResourceManager.GetString("ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; has at least two constructors with the same length which can be resolved through composition: ({1}) and ({2})..
         /// </summary>
         public static string AmbientServices_AmbiguousConstructors_Exception {
@@ -187,16 +169,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application service contracts exported as open generics do not support metadata attributes and they will be ignored (&apos;{contractType}&apos;). Instead, try to pass metadata through generic parameter types..
-        /// </summary>
-        public static string AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning {
-            get {
-                return ResourceManager.GetString("AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_" +
-                        "Warning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service implementation &apos;{1}&apos; with contract &apos;{2}&apos;..
         /// </summary>
         public static string AppServiceMultipleInjectConstructors {
@@ -206,47 +178,11 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
-        /// </summary>
-        public static string CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception {
-            get {
-                return ResourceManager.GetString("CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not add the item {0} to the concurrent collection..
         /// </summary>
         public static string ConcurrentCollection_CannotAddItem_Exception {
             get {
                 return ResourceManager.GetString("ConcurrentCollection_CannotAddItem_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Setting a value is not supported by the default implementation of the configuration. Override this in a derived class to provide an implementation..
-        /// </summary>
-        public static string ConfigurationBase_SettingValueNotSupported_Exception {
-            get {
-                return ResourceManager.GetString("ConfigurationBase_SettingValueNotSupported_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The stored settings type &apos;{0}&apos; differs from the requested settings type &apos;{1}&apos;..
-        /// </summary>
-        public static string ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception {
-            get {
-                return ResourceManager.GetString("ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot change the identity in the context once it has been set..
-        /// </summary>
-        public static string Context_CannotChangeIdentity_Exception {
-            get {
-                return ResourceManager.GetString("Context_CannotChangeIdentity_Exception", resourceCulture);
             }
         }
         
@@ -395,33 +331,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate type with full name &apos;{0}&apos; in &apos;{1}&apos;..
-        /// </summary>
-        public static string DynamicAssemblyInfo_AddType_Duplicate_Exception {
-            get {
-                return ResourceManager.GetString("DynamicAssemblyInfo_AddType_Duplicate_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The type &apos;{0}&apos; cannot be a base of itself..
-        /// </summary>
-        public static string DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception {
-            get {
-                return ResourceManager.GetString("DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duplicate member with name &apos;{0}&apos; in &apos;{1}&apos;..
-        /// </summary>
-        public static string DynamicTypeInfo_AddMember_Duplicate_Exception {
-            get {
-                return ResourceManager.GetString("DynamicTypeInfo_AddMember_Duplicate_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot invoke non-delegate value of {0}; it has a type of {1}..
         /// </summary>
         public static string ExpandoBase_CannotInvokeNonDelegate_Exception {
@@ -485,15 +394,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot identify the constructed service type of {0} from {1}..
-        /// </summary>
-        public static string LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception {
-            get {
-                return ResourceManager.GetString("LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to One of {0} or {1} must be set in service registration..
         /// </summary>
         public static string LiteRegistrationBuilder_InvalidRegistration_Exception {
@@ -526,15 +426,6 @@ namespace Kephas.Resources {
         public static string NullServiceExceptionMessage {
             get {
                 return ResourceManager.GetString("NullServiceExceptionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot merge the task result, the task is not completed..
-        /// </summary>
-        public static string OperationResult_Merge_TaskNotCompleteException {
-            get {
-                return ResourceManager.GetString("OperationResult_Merge_TaskNotCompleteException", resourceCulture);
             }
         }
         
@@ -643,6 +534,15 @@ namespace Kephas.Resources {
         public static string SerializationExtensions_GetContextFactory_CannotGetContextFactory {
             get {
                 return ResourceManager.GetString("SerializationExtensions_GetContextFactory_CannotGetContextFactory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
+        /// </summary>
+        public static string ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception {
+            get {
+                return ResourceManager.GetString("ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
             }
         }
         
