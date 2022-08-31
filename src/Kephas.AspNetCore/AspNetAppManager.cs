@@ -37,9 +37,9 @@ namespace Kephas.Application.AspNetCore
         public AspNetAppManager(
             IAppRuntime appRuntime,
             IInjector injector,
-            IEnabledServiceFactoryCollection<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
-            IEnabledServiceFactoryCollection<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
-            IEnabledServiceFactoryCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
+            IEnabledLazyServiceCollection<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
+            IEnabledLazyServiceCollection<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
+            IEnabledLazyServiceCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
             : base(
                 appRuntime,
                 injector,
@@ -57,7 +57,7 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task InitializeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
         {
             if (appContext is not IAspNetAppContext)
             {
@@ -75,7 +75,7 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task FinalizeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
         {
             if (appContext is not IAspNetAppContext)
             {

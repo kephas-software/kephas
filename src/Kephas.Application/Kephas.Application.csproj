@@ -18,17 +18,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>
-            Provides an abstract infrastructure for applications based on Kephas Framework.
-            Typically used areas and classes/interfaces/services:
-            - AppBase, IAppContext.
-            - IAppManager, DefaultAppManager.
-            - IFeatureManager, FeatureManagerBase.
-            - Interaction: FeatureStartedEvent, FeatureStartingEvent, FeatureStoppedEvent, FeatureStoppingEvent.
-            - Configuration: SystemSettings, AppSettings, HostSettings.
-
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+        <Description>Provides an abstract infrastructure for applications based on Kephas Framework.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -69,9 +59,6 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -123,6 +110,8 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
