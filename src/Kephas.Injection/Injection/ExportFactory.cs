@@ -21,7 +21,7 @@ namespace Kephas.Injection
         /// <summary>
         /// The factory.
         /// </summary>
-        private readonly Func<Tuple<TContract, Action>> factory;
+        private readonly Func<TContract> factory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportFactory{TContract}"/> class.
@@ -29,19 +29,16 @@ namespace Kephas.Injection
         /// <param name="factory">The factory.</param>
         public ExportFactory(Func<TContract> factory)
         {
-            this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         /// <summary>
-        /// Create an instance of the exported part.
+        /// Convenience method that creates the exported value.
         /// </summary>
         /// <returns>
-        /// A handle allowing the created part to be accessed then released.
+        /// The exported value.
         /// </returns>
-        public IExport<TContract> CreateExport()
-        {
-            return new Export<TContract>(this.factory);
-        }
+        public TContract CreateExportedValue() => this.factory();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -60,21 +57,16 @@ namespace Kephas.Injection
     /// </summary>
     /// <typeparam name="TContract">Type of the service contract.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-    public class ExportFactory<TContract, TMetadata> : IExportFactory<TContract, TMetadata>
+    public class ExportFactory<TContract, TMetadata> : ExportFactory<TContract>, IExportFactory<TContract, TMetadata>
     {
-        /// <summary>
-        /// The factory.
-        /// </summary>
-        private readonly Func<Tuple<TContract, Action>> factory;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportFactory{TContract, TMetadata}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="metadata">The metadata.</param>
         public ExportFactory(Func<TContract> factory, TMetadata metadata)
+            : base(factory)
         {
-            this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
             this.Metadata = metadata;
         }
 
@@ -85,17 +77,6 @@ namespace Kephas.Injection
         /// The metadata associated with the export.
         /// </value>
         public TMetadata Metadata { get; set; }
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>
-        /// A handle allowing the created part to be accessed then released.
-        /// </returns>
-        public IExport<TContract, TMetadata> CreateExport()
-        {
-            return new Export<TContract, TMetadata>(this.factory, this.Metadata);
-        }
 
         /// <summary>
         /// Returns a string that represents the current object.

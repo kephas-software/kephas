@@ -242,7 +242,7 @@ namespace Kephas.Serialization
                 throw new KeyNotFoundException(string.Format(AbstractionStrings.DefaultSerializationService_SerializerNotFound_Exception, mediaType));
             }
 
-            return serializer.CreateExport().Value;
+            return serializer.CreateExportedValue();
         }
     }
 }

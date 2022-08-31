@@ -78,7 +78,7 @@ namespace Kephas.Data.Commands.Factory
                 }
             }
 
-            return () => commandFactory.CreateExport().Value;
+            return () => commandFactory.CreateExportedValue();
         }
     }
 }

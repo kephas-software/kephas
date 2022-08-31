@@ -84,7 +84,7 @@ namespace Kephas.Data.Behaviors
                                      entityType.IsAssignableFrom(type)
                                      && behaviorType.IsAssignableFrom(serviceType)
                                  orderby f.Metadata.ProcessingPriority
-                                 select f.CreateExport().Value)
+                                 select f.CreateExportedValue())
                              .Cast<TBehavior>()
                              .ToList();
             return behaviors;

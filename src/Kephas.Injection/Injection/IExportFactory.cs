@@ -19,18 +19,12 @@ namespace Kephas.Injection
     public interface IExportFactory<out T>
     {
         /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport<T> CreateExport();
-
-        /// <summary>
-        /// Convenience method that creates the exported value.
+        /// Creates the exported value.
         /// </summary>
         /// <returns>
-        /// The exported value.
+        /// A new instance of the exported value.
         /// </returns>
-        public T CreateExportedValue() => this.CreateExport().Value;
+        public T CreateExportedValue();
     }
 
     /// <summary>
@@ -47,17 +41,5 @@ namespace Kephas.Injection
         /// The metadata associated with the export.
         /// </value>
         TMetadata Metadata { get; }
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        new IExport<T, TMetadata> CreateExport();
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport<T> IExportFactory<T>.CreateExport() => this.CreateExport();
     }
 }
