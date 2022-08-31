@@ -19,6 +19,18 @@ namespace Kephas
     public static class ServiceCollectionExtensions
     {
         /// <summary>
+        /// Adds the infrastructure around the <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <param name="serviceCollection">The service collection.</param>
+        /// <returns>The provided service collection.</returns>
+        public static IServiceCollection AddInjectionExtensions(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddTransient(typeof(ICollection<>), typeof(List<>));
+
+            return serviceCollection;
+        }
+
+        /// <summary>
         /// Adds the ambient services to the service collection.
         /// </summary>
         /// <param name="serviceCollection">The service collection.</param>

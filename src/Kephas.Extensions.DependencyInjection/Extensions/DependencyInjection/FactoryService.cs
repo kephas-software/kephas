@@ -10,6 +10,11 @@ namespace Kephas.Extensions.DependencyInjection;
 using Kephas.Injection;
 using Kephas.Services;
 
+/// <summary>
+/// Service returning a <see cref="T"/> service based on the <see cref="TImplementation"/>.
+/// </summary>
+/// <typeparam name="T">The service contract type.</typeparam>
+/// <typeparam name="TImplementation">The service implementation type.</typeparam>
 public class FactoryService<T, TImplementation> : IExportFactory<T>
     where TImplementation : class, T
 {
@@ -34,17 +39,23 @@ public class FactoryService<T, TImplementation> : IExportFactory<T>
     }
 
     /// <summary>
-    /// Create an instance of the exported part.
+    /// Creates the exported value.
     /// </summary>
-    /// <returns>A handle allowing the created part to be accessed then released.</returns>
-    public IExport<T> CreateExport() => new Export<T>(() => Tuple.Create<T, Action>(this.factory(), () => { }));
+    /// <returns>
+    /// The exported value.
+    /// </returns>
+    public T CreateExportedValue() => this.factory();
 }
 
-public class FactoryService<T, TImplementation, TMetadata> : IExportFactory<T, TMetadata>
+/// <summary>
+/// Service returning a <see cref="T"/> service based on the <see cref="TImplementation"/> with associated <see cref="TMetadata"/>.
+/// </summary>
+/// <typeparam name="T">The service contract type.</typeparam>
+/// <typeparam name="TImplementation">The service implementation type.</typeparam>
+/// <typeparam name="TMetadata">The metadata type.</typeparam>
+public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, TImplementation>, IExportFactory<T, TMetadata>
     where TImplementation : class, T
 {
-    private readonly Func<T> factory;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="FactoryService{T, TImplementation, TMetadata}"/> class.
     /// </summary>
@@ -60,8 +71,8 @@ public class FactoryService<T, TImplementation, TMetadata> : IExportFactory<T, T
     /// <param name="factory">The service factory.</param>
     /// <param name="metadata">The metadata.</param>
     protected internal FactoryService(Func<T> factory, TMetadata metadata)
+        : base(factory)
     {
-        this.factory = factory;
         this.Metadata = metadata;
     }
 
@@ -72,10 +83,4 @@ public class FactoryService<T, TImplementation, TMetadata> : IExportFactory<T, T
     /// The metadata associated with the export.
     /// </value>
     public TMetadata Metadata { get; }
-
-    /// <summary>
-    /// Create an instance of the exported part.
-    /// </summary>
-    /// <returns>A handle allowing the created part to be accessed then released.</returns>
-    public IExport<T, TMetadata> CreateExport() => new Export<T, TMetadata>(() => Tuple.Create<T, Action>(this.factory(), () => { }), this.Metadata);
 }
