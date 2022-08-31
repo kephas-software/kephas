@@ -195,4 +195,4 @@ Expandos can be successfully used where a dynamic context is useful. Examples:
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 
 
-    Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+> Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

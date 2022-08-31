@@ -16,4 +16,4 @@ Typically used areas and classes/interfaces/services:
 * [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 
 
-    Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+> Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

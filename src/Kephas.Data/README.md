@@ -1,7 +1,19 @@
 ﻿# Data
 
 ## Introduction
+Provides abstractions for managing data: retrieval, persistence, query.
+
 Data is one of the most important parts of an application. To leverage working with it, Kephas provides an abstract data infrastructure which allows data manipulation (CRUD), validation and support for various behaviors.
+
+Typically used areas and classes/interfaces/services:
+* ```IDataSpace```, ```IDataContext```.
+* Capabilities: ```IEntityEntry```, ```EntityEntry```.
+* Conversion: ```IDataConversionService```, ```IDataConverter```, ```DataConverterBase```.
+* DataSources: ```IDataSourceService```, ```IDataSourceProvider```.
+* Behaviors: ```IDataBehavior```, ```DataBehaviorBase```, ```QueryBehaviorBase```.
+* Analysis: ```IRefPropertiesProvider```.
+* Setup: ```IDataSetupManager```, ```IDataInstaller```.
+* Validation: ```IOnValidateBehavior```.
 
 ## The general architecture
 All data operations are performed through a _data context_. The data context is responsible for holding and managing a local cache of data and for instantiating [[commands|Data-commands]]. The commands are actually the performers of data operations, integrate data behaviors, and are tightly coupled to the data context that created them.
@@ -250,6 +262,7 @@ Entity types may be secured by decorating them with the [SupportsPermission] att
 
 Example:
 
+```csharp
     /// <summary>
     /// The customer entity type.
     /// </summary>
@@ -257,5 +270,14 @@ Example:
     public interface ICustomer : ...
     {
     }
-
+```
 > Note: If a mixin declares supported permission types, all entity types inheriting that mixin will support those permissions, too.
+
+
+## Other resources
+
+* [Kephas.Application.Abstractions](https://www.nuget.org/packages/Kephas.Application.Abstractions)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+
+
+> Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
