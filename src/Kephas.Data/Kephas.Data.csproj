@@ -55,10 +55,6 @@
     <ItemGroup>
       <None Remove="stylecop.json" />
       <AdditionalFiles Include="stylecop.json" />
-      <None Update="release-notes.md">
-        <Pack>true</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -107,6 +103,7 @@
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

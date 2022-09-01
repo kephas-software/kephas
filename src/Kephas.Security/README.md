@@ -8,6 +8,12 @@ This package provides abstractions and base building blocks for authentication, 
 Packages providing advanced cryptography:
 * [Kephas.Security.Cryptography](https://www.nuget.org/packages/Kephas.Security.Cryptography)
 
+Typically used areas and classes/interfaces/services:
+* Authentication: ```IAuthenticationService```.
+* Authorization: ```IAuthorizationService```.
+* Cryptography: ```IEncryptionService```, ```IHashingService```.
+* Permissions: ```IPermissionInfo```.
+
 ## Cryptography
 
 ### The encryption service
