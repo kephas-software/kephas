@@ -1,18 +1,7 @@
 ﻿# 12.0.0
 
-* Moved ```ActivationException``` and ```ImplementationForAttribute``` to [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection).
-* Added ```release-notes.md```.
-* The following methods in ```IAppRuntime``` are methods with default implementation instead of extension methods:
-  * ```IsRoot```. Breaking change: This method was transformed to a property.
-  * ```GetAppId```.
-  * ```GetAppVersion```.
-  * ```GetAppIdentity```.
-  * ```GetEnvironment```.
-  * ```IsDevelopment```. Breaking change: Named changed to ```IsDevelopmentEnvironment```.
-  * ```GetAppInstanceId```.
-  * ```GetFullPath```.
-* Breaking change: ```ExpandoBase<T>``` is now generic, introducing the possibility of supporting ```IDictionary<string, T>```.
-* Breaking change: ```Expando``` does not offer anymore the possibility of providing a dictionary or object in the constructor. Instead, use the ```object.ToExpando()``` extension method or specialize ```ExpandoBase<T>``` with your own implementation.
+* NEW: Created ```Kephas.Versioning``` package - split from ```Kephas.Abstractions```. ```ActivationException``` and ```ImplementationForAttribute``` to [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection).
+* Breaking change: ```VersionComparer.GetHashCode(version)``` uses now ```System.HashCode``` to compute the version hash code.
 
 # Other resources
 Please check https://github.com/kephas-software/kephas/releases for the change log.
