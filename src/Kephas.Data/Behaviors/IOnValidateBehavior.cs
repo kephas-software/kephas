@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Validation
+namespace Kephas.Data.Behaviors
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
     using Kephas.Data.Capabilities;
+    using Kephas.Validation;
 
     /// <summary>
     /// Contract for the behavior invoked upon entity validation.
@@ -28,8 +26,8 @@ namespace Kephas.Data.Validation
         /// <param name="operationContext">Context for the validation operation.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="IDataValidationResult"/>.
+        /// A promise of a <see cref="IValidationResult"/>.
         /// </returns>
-        Task<IDataValidationResult> ValidateAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
+        Task<IValidationResult> ValidateAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

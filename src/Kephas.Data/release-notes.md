@@ -6,4 +6,5 @@
 # 12.0.0
 
 * NEW: Added ```README.md``` and ```release-notes.md```.
-* Breaking change: moved the ```Validation``` namespace to [Kephas.Validation]() 
+* Breaking change: moved the ```Validation``` namespace to [Kephas.Validation](https://www.nuget.org/packages/Kephas.Validation).
+* Breaking change: moved ```IOnValidateBehavior``` to ```Kephas.Data.Behaviors``` namespace.

@@ -21,11 +21,11 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Resources;
-    using Kephas.Data.Validation;
     using Kephas.Diagnostics;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Threading.Tasks;
+    using Kephas.Validation;
 
     /// <summary>
     /// Base class for commands which persist dataContext changes.
@@ -329,7 +329,7 @@ namespace Kephas.Data.Commands
                         var validationErrors = await this.ValidateEntityAsync(entityPart, entityPartInfo, operationContext, cancellationToken).PreserveThreadContext();
                         if (validationErrors.HasErrors())
                         {
-                            throw new DataValidationException(entityPart, validationErrors);
+                            throw new ValidationException(entityPart, validationErrors);
                         }
                     }
                 }
@@ -346,14 +346,14 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A <see cref="Task{IDataValidationResult}"/>.
         /// </returns>
-        protected virtual async Task<IDataValidationResult> ValidateEntityAsync(
+        protected virtual async Task<IValidationResult> ValidateEntityAsync(
             object entityPart,
             IEntityEntry entityPartEntry,
             IPersistChangesContext operationContext,
             CancellationToken cancellationToken)
         {
             var validators = this.BehaviorProvider.GetDataBehaviors<IOnValidateBehavior>(entityPart);
-            var result = new DataValidationResult();
+            var result = new ValidationResult();
             foreach (var validator in validators)
             {
                 var validatorResult = await validator.ValidateAsync(entityPart, entityPartEntry, operationContext, cancellationToken).PreserveThreadContext();

@@ -14,9 +14,9 @@ namespace Kephas.Data.Behaviors
     using System.Threading.Tasks;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Data.Validation;
     using Kephas.Logging;
     using Kephas.Threading.Tasks;
+    using Kephas.Validation;
 
     /// <summary>
     /// An entity behavior base.
@@ -61,11 +61,11 @@ namespace Kephas.Data.Behaviors
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// An <see cref="IDataValidationResult"/>.
+        /// An <see cref="IValidationResult"/>.
         /// </returns>
-        public virtual IDataValidationResult Validate(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
+        public virtual IValidationResult Validate(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
-            return DataValidationResult.Success;
+            return ValidationResult.Success;
         }
 
         /// <summary>
@@ -172,9 +172,9 @@ namespace Kephas.Data.Behaviors
         /// <param name="operationContext">Context for the validation operation.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of a <see cref="IDataValidationResult"/>.
+        /// A promise of a <see cref="IValidationResult"/>.
         /// </returns>
-        Task<IDataValidationResult> IOnValidateBehavior.ValidateAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken)
+        Task<IValidationResult> IOnValidateBehavior.ValidateAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             return this.ValidateAsync((TEntity)entity, entityEntry, operationContext, cancellationToken);
         }
@@ -187,9 +187,9 @@ namespace Kephas.Data.Behaviors
         /// <param name="operationContext">Context for the validation operation.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of a <see cref="IDataValidationResult"/>.
+        /// A promise of a <see cref="IValidationResult"/>.
         /// </returns>
-        public virtual Task<IDataValidationResult> ValidateAsync(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken)
+        public virtual Task<IValidationResult> ValidateAsync(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(this.Validate(entity, entityEntry, operationContext));
         }
