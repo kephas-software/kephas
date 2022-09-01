@@ -43,17 +43,17 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets an <see cref="IExpandoBase"/> object out of the provided instance.
+        /// Gets an <see cref="IDynamic"/> object out of the provided instance.
         /// </summary>
         /// <param name="obj">The object to convert.</param>
-        /// <returns>The provided instance, if it is an <see cref="IExpandoBase"/>, or a dynamic wrapper over it.</returns>
-        public static IExpandoBase ToExpando(this object obj)
+        /// <returns>The provided instance, if it is an <see cref="IDynamic"/>, or a dynamic wrapper over it.</returns>
+        public static IDynamic ToExpando(this object obj)
         {
             obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             return obj switch
             {
-                IExpandoBase expando => expando,
+                IDynamic expando => expando,
                 IDictionary<string, object?> objectDictionary => new DictionaryExpando<object?>(objectDictionary),
                 _ => ToExpandoCore(obj)
             };
@@ -71,7 +71,7 @@ namespace Kephas
             return obj switch
             {
                 IDictionary<string, object?> dictionary => dictionary,
-                IExpandoBase expando => expando.ToDictionary(),
+                IDynamic expando => expando.ToDictionary(),
                 _ => obj.ToExpando().ToDictionary()
             };
         }
@@ -92,7 +92,7 @@ namespace Kephas
             };
         }
 
-        private static IExpandoBase ToExpandoCore(object obj)
+        private static IDynamic ToExpandoCore(object obj)
         {
             var keyItemTypePair = obj.GetType().TryGetDictionaryKeyItemType();
             if (keyItemTypePair is null || keyItemTypePair.Value.keyType != typeof(string))
@@ -101,10 +101,10 @@ namespace Kephas
             }
 
             var toTypedExpando = ToTypedExpandoMethod.MakeGenericMethod(keyItemTypePair.Value.itemType);
-            return (IExpandoBase)toTypedExpando.Call(null, obj)!;
+            return (IDynamic)toTypedExpando.Call(null, obj)!;
         }
 
-        private static IExpandoBase ToTypedExpando<T>(IDictionary<string, T> dictionary) =>
+        private static IDynamic ToTypedExpando<T>(IDictionary<string, T> dictionary) =>
             new DictionaryExpando<T>(dictionary);
     }
 }

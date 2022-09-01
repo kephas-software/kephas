@@ -40,7 +40,7 @@ namespace Kephas.Commands.Tests
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
                 .Returns(ci => ((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!");
             var resolver = Substitute.For<ICommandResolver>();
-            resolver.ResolveCommand("help", Arg.Any<IExpandoBase>(), throwOnNotFound: true)
+            resolver.ResolveCommand("help", Arg.Any<IDynamic>(), throwOnNotFound: true)
                 .Returns(cmdInfo);
             var processor = new DefaultCommandProcessor(resolver, Substitute.For<ICommandIdentityResolver>(), contextFactory);
 
@@ -57,7 +57,7 @@ namespace Kephas.Commands.Tests
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
                 .Returns(ci => Task.FromResult<object?>(((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!"));
             var resolver = Substitute.For<ICommandResolver>();
-            resolver.ResolveCommand("help", Arg.Any<IExpandoBase>(), throwOnNotFound: true)
+            resolver.ResolveCommand("help", Arg.Any<IDynamic>(), throwOnNotFound: true)
                 .Returns(cmdInfo);
             var processor = new DefaultCommandProcessor(resolver, Substitute.For<ICommandIdentityResolver>(), contextFactory);
 

@@ -1,4 +1,6 @@
-﻿# 12.0.0
+﻿# Release notes
+
+# 12.0.0
 
 * Moved ```ActivationException``` and ```ImplementationForAttribute``` to [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection).
 * Added ```release-notes.md```.
@@ -13,6 +15,7 @@
   * ```GetFullPath```.
 * Breaking change: ```ExpandoBase<T>``` is now generic, introducing the possibility of supporting ```IDictionary<string, T>```.
 * Breaking change: ```Expando``` does not offer anymore the possibility of providing a dictionary or object in the constructor. Instead, use the ```object.ToExpando()``` extension method or specialize ```ExpandoBase<T>``` with your own implementation.
+* Breaking change: ```IExpandoBase``` interface was removed, ```HasDynamicMember``` and ```ToDictionary``` methods were merged into ```IDynamic``` with default implementation.
 * Breaking change: Moved ```Versioning``` namespace to ```Kephas.Versioning``` package. 
 
 # Other resources

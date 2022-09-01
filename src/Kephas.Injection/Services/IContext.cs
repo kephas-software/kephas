@@ -20,7 +20,7 @@ namespace Kephas.Services
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IExpandoBase, ILoggable, IDisposable, IInjectable
+    public interface IContext : IDynamic, ILoggable, IDisposable, IInjectable
     {
         /// <summary>
         /// Gets a context for the dependency injection/composition.

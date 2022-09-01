@@ -41,7 +41,7 @@ namespace Kephas.Data.LLBLGen
         /// Creates the original entity as a stamp of the current entity.
         /// </summary>
         /// <returns>The new original entity.</returns>
-        protected override IExpandoBase CreateOriginalEntity()
+        protected override IDynamic CreateOriginalEntity()
         {
             var runtimeTypeInfo = this.Entity.GetTypeInfo();
             var typeInfo = this.modelTypeResolver.ResolveModelType(runtimeTypeInfo, throwOnNotFound: false) ?? runtimeTypeInfo;

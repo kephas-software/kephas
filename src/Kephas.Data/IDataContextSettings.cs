@@ -15,7 +15,7 @@ namespace Kephas.Data
     /// <summary>
     /// Interface for data context settings.
     /// </summary>
-    public interface IDataContextSettings : IExpandoBase
+    public interface IDataContextSettings : IDynamic
     {
         /// <summary>
         /// Gets the connection string.

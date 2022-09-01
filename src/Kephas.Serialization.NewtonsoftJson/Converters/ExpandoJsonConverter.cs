@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 /// <summary>
-/// JSON converter for <see cref="IExpandoBase"/> based instances.
+/// JSON converter for <see cref="IDynamic"/> based instances.
 /// </summary>
 public class ExpandoJsonConverter : JsonConverterBase
 {
@@ -30,7 +30,7 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// <param name="typeResolver">The type resolver.</param>
     /// <param name="injectableFactory">The injectable factory.</param>
     public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
-        : this(typeRegistry, typeResolver, injectableFactory, typeof(IExpandoBase), typeof(Expando))
+        : this(typeRegistry, typeResolver, injectableFactory, typeof(IDynamic), typeof(Expando))
     {
     }
 
@@ -51,9 +51,9 @@ public class ExpandoJsonConverter : JsonConverterBase
         this.TypeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
         this.TypeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
 
-        if (!typeof(IExpandoBase).IsAssignableFrom(expandoBaseType))
+        if (!typeof(IDynamic).IsAssignableFrom(expandoBaseType))
         {
-            throw new SerializationException($"The expando base type {expandoBaseType} must be convertible to {typeof(IExpandoBase)}.");
+            throw new SerializationException($"The expando base type {expandoBaseType} must be convertible to {typeof(IDynamic)}.");
         }
 
         this.ExpandoBaseType = expandoBaseType;
@@ -253,7 +253,7 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// <param name="expandoCollector">The expando value collecting the properties.</param>
     /// <param name="existingValue">The existing value.</param>
     /// <returns>The read operation's return value.</returns>
-    protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpandoBase expandoCollector, object? existingValue)
+    protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IDynamic expandoCollector, object? existingValue)
     {
         return expandoCollector;
     }
@@ -264,10 +264,10 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
     /// <param name="existingValue">The existing value.</param>
     /// <returns>The newly created expando collector.</returns>
-    protected virtual IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+    protected virtual IDynamic CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
     {
         var createInstance = existingValue == null;
-        var expando = (IExpandoBase)(
+        var expando = (IDynamic)(
             createInstance
                 ? expandoTypeInfo.Type.IsInjectable()
                     ? this.InjectableFactory.Create(expandoTypeInfo.Type)

@@ -18,7 +18,7 @@ namespace Kephas.Dynamic
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
-    public interface IExpando : IDynamicMetaObjectProvider, IExpandoBase
+    public interface IExpando : IDynamicMetaObjectProvider, IDynamic
     {
     }
 }

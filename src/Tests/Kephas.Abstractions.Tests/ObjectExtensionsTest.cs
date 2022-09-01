@@ -87,7 +87,7 @@ namespace Kephas.Tests
         [Test]
         public void ToExpando_expando_base()
         {
-            var expando = Substitute.For<IExpandoBase>();
+            var expando = Substitute.For<IDynamic>();
             Assert.AreSame(expando, expando.ToExpando());
         }
 
