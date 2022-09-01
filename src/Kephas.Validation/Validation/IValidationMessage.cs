@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataValidationResultItem.cs" company="Kephas Software SRL">
+// <copyright file="IValidationMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,22 +8,39 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Validation
+namespace Kephas.Validation
 {
+    using Kephas.ExceptionHandling;
     using Kephas.Operations;
 
     /// <summary>
     /// Interface for validation result item.
     /// </summary>
-    public interface IDataValidationResultItem : IOperationMessage
+    public interface IValidationMessage : IOperationMessage, ISeverityQualifiedNotification
     {
         /// <summary>
-        /// Gets the validation result severity.
+        /// Gets the message.
         /// </summary>
         /// <value>
-        /// The severity.
+        /// The message.
         /// </value>
-        DataValidationSeverity Severity { get; }
+        new string Message { get; }
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        /// <value>
+        /// The message.
+        /// </value>
+        string IOperationMessage.Message => this.Message;
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        /// <value>
+        /// The message.
+        /// </value>
+        string ISeverityQualifiedNotification.Message => this.Message;
 
         /// <summary>
         /// Gets the name of the member.

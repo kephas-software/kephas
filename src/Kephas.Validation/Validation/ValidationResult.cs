@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataValidationResult.cs" company="Kephas Software SRL">
+// <copyright file="ValidationResult.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,39 +8,37 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Validation
+namespace Kephas.Validation
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using Kephas.Collections;
+    using Kephas.ExceptionHandling;
     using Kephas.Operations;
 
     /// <summary>
     /// Encapsulates the result of a data validation.
     /// </summary>
-    public class DataValidationResult : OperationResult, IDataValidationResult
+    public class ValidationResult : OperationResult, IValidationResult
     {
         /// <summary>
         /// The validation result indicating that the validation succeeded without any issues.
         /// </summary>
-        public static readonly DataValidationResult Success = new DataValidationResult();
+        public static readonly ValidationResult Success = new ValidationResult();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataValidationResult"/> class.
+        /// Initializes a new instance of the <see cref="ValidationResult"/> class.
         /// </summary>
-        public DataValidationResult()
+        public ValidationResult()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataValidationResult"/>
+        /// Initializes a new instance of the <see cref="ValidationResult"/>
         /// class by adding the items to the result.
         /// </summary>
         /// <param name="items">The items to add.</param>
-        public DataValidationResult(params IDataValidationResultItem[] items)
+        public ValidationResult(params IValidationMessage[] items)
         {
             items = items ?? throw new ArgumentNullException(nameof(items));
 
@@ -48,13 +46,13 @@ namespace Kephas.Data.Validation
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataValidationResult"/> class
+        /// Initializes a new instance of the <see cref="ValidationResult"/> class
         /// by adding a new item with the provided parameters.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="memberName">The name of the member.</param>
         /// <param name="severity">The severity.</param>
-        public DataValidationResult(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public ValidationResult(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
@@ -62,13 +60,13 @@ namespace Kephas.Data.Validation
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataValidationResult"/> class
+        /// Initializes a new instance of the <see cref="ValidationResult"/> class
         /// by adding a new item with the provided parameters.
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <param name="memberName">The name of the member.</param>
         /// <param name="severity">The severity.</param>
-        public DataValidationResult(Exception exception, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public ValidationResult(Exception exception, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
@@ -82,9 +80,9 @@ namespace Kephas.Data.Validation
         /// <returns>
         /// The enumerator.
         /// </returns>
-        public IEnumerator<IDataValidationResultItem> GetEnumerator()
+        public IEnumerator<IValidationMessage> GetEnumerator()
         {
-            return this.Messages.OfType<IDataValidationResultItem>().GetEnumerator();
+            return this.Messages.OfType<IValidationMessage>().GetEnumerator();
         }
 
         /// <summary>
@@ -95,7 +93,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.Messages.OfType<IDataValidationResultItem>().GetEnumerator();
+            return this.Messages.OfType<IValidationMessage>().GetEnumerator();
         }
 
         /// <summary>
@@ -103,9 +101,9 @@ namespace Kephas.Data.Validation
         /// </summary>
         /// <param name="items">The items to add.</param>
         /// <returns>
-        /// This <see cref="DataValidationResult"/>.
+        /// This <see cref="ValidationResult"/>.
         /// </returns>
-        public DataValidationResult Add(params IDataValidationResultItem[] items)
+        public ValidationResult Add(params IValidationMessage[] items)
         {
             items = items ?? throw new ArgumentNullException(nameof(items));
 
@@ -120,13 +118,13 @@ namespace Kephas.Data.Validation
         /// <param name="memberName">Name of the member (optional).</param>
         /// <param name="severity">The severity (optional). Default value is <see cref="DataValidationSeverity.Error"/></param>
         /// <returns>
-        /// This <see cref="DataValidationResult"/>.
+        /// This <see cref="ValidationResult"/>.
         /// </returns>
-        public DataValidationResult Add(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public ValidationResult Add(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
-            this.MergeMessage(new DataValidationResultItem(message, memberName, severity));
+            this.MergeMessage(new ValidationMessage(message, memberName, severity));
             return this;
         }
     }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataValidationResultItem.cs" company="Kephas Software SRL">
+// <copyright file="ValidationMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,23 +8,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Validation
+namespace Kephas.Validation
 {
-    using System;
+    using Kephas.ExceptionHandling;
     using Kephas.Operations;
 
     /// <summary>
     /// A data validation result item.
     /// </summary>
-    public class DataValidationResultItem : OperationMessage, IDataValidationResultItem
+    public class ValidationMessage : OperationMessage, IValidationMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataValidationResultItem"/> class.
+        /// Initializes a new instance of the <see cref="ValidationMessage"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="memberName">Optional. the member name.</param>
         /// <param name="severity">Optional. the severity.</param>
-        public DataValidationResultItem(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public ValidationMessage(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
             : base(message)
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
@@ -34,12 +34,12 @@ namespace Kephas.Data.Validation
         }
 
         /// <summary>
-        /// Gets the validation result severity.
+        /// Gets the severity.
         /// </summary>
         /// <value>
         /// The severity.
         /// </value>
-        public DataValidationSeverity Severity { get; }
+        public SeverityLevel Severity { get; }
 
         /// <summary>
         /// Gets the name of the member.
