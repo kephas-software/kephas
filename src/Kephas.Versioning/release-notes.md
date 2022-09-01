@@ -13,7 +13,6 @@
   * ```GetFullPath```.
 * Breaking change: ```ExpandoBase<T>``` is now generic, introducing the possibility of supporting ```IDictionary<string, T>```.
 * Breaking change: ```Expando``` does not offer anymore the possibility of providing a dictionary or object in the constructor. Instead, use the ```object.ToExpando()``` extension method or specialize ```ExpandoBase<T>``` with your own implementation.
-* Breaking change: Moved ```Versioning``` namespace to ```Kephas.Versioning``` package. 
 
 # Other resources
 Please check https://github.com/kephas-software/kephas/releases for the change log.

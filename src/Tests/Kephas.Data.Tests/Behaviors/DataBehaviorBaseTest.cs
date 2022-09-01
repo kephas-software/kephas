@@ -16,6 +16,7 @@ namespace Kephas.Data.Tests.Behaviors
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
+    using Kephas.Operations;
     using Kephas.Validation;
     using NUnit.Framework;
 

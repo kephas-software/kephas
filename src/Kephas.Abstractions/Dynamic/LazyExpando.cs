@@ -16,18 +16,11 @@ namespace Kephas.Dynamic
     using Kephas.Reflection;
 
     /// <summary>
-    /// Expando class for evaluating the internal values on demand.
+    /// Expando class for evaluating the internal values on demand, based on a value resolver function.
     /// </summary>
-    public class LazyExpando : Expando<object?>
+    public class LazyExpando : ExpandoBase<object?>
     {
-        /// <summary>
-        /// The lock dictionary.
-        /// </summary>
         private readonly IDictionary<string, object> lockDictionary = new Dictionary<string, object>();
-
-        /// <summary>
-        /// The inner dictionary.
-        /// </summary>
         private readonly IDictionary<string, object?> innerDictionary;
 
         /// <summary>
@@ -45,10 +38,8 @@ namespace Kephas.Dynamic
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="valueResolver">The value resolver (optional).</param>
         public LazyExpando(IDictionary<string, object?> dictionary, Func<string, object?>? valueResolver = null)
-            : base(dictionary)
+            : base(dictionary ?? throw new ArgumentNullException(nameof(dictionary)))
         {
-            dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
-
             this.innerDictionary = dictionary;
             this.ValueResolver = valueResolver;
         }

@@ -7,6 +7,8 @@
 
 namespace Kephas.Dynamic;
 
+using System.Collections.Concurrent;
+
 /// <summary>
 /// <para>
 /// Class that provides extensible properties and methods. This
@@ -33,14 +35,14 @@ namespace Kephas.Dynamic;
 /// </list>
 /// </para>
 /// </summary>
-public class Expando : Expando<object?>
+public class Expando : ExpandoBase<object?>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Expando"/> class. This constructor just works
     /// off the internal dictionary and any public properties of this object.
     /// </summary>
     public Expando()
-        : base(isThreadSafe: false)
+        : this(false)
     {
     }
 
@@ -50,7 +52,7 @@ public class Expando : Expando<object?>
     /// </summary>
     /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
     public Expando(bool isThreadSafe)
-        : base(isThreadSafe)
+        : base(isThreadSafe ? new ConcurrentDictionary<string, object?>() : new Dictionary<string, object?>())
     {
     }
 }

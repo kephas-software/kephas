@@ -14,6 +14,8 @@ namespace Kephas.Tests
     using System.Collections.Generic;
     using System.Dynamic;
 
+    using Kephas.Dynamic;
+    using NSubstitute;
     using NUnit.Framework;
 
     /// <summary>
@@ -23,7 +25,7 @@ namespace Kephas.Tests
     public class ObjectExtensionsTest
     {
         [Test]
-        public void ToDynamic_dynamic()
+        public void ToDynamicObject_dynamic()
         {
             var obj = new ExpandoObject();
             var dyn = obj.ToDynamicObject();
@@ -31,7 +33,7 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void ToDynamic_non_dynamic_method()
+        public void ToDynamicObject_non_dynamic_method()
         {
             var obj = new List<string>();
             var dyn = obj.ToDynamicObject();
@@ -43,7 +45,7 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void ToDynamic_non_dynamic_property()
+        public void ToDynamicObject_non_dynamic_property()
         {
             var obj = new List<string> { "one", "two" };
             var dyn = obj.ToDynamicObject();
@@ -53,9 +55,62 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void ToDynamic_null_exception()
+        public void ToDynamicObject_null_exception()
         {
             Assert.Throws<ArgumentNullException>(() => ((object)null).ToDynamicObject());
+        }
+
+        [Test]
+        public void ToExpando_null_exception()
+        {
+            Assert.Throws<ArgumentNullException>(() => ((object)null).ToExpando());
+        }
+
+        [Test]
+        public void ToExpando_object()
+        {
+            var obj = new { Name = "John", FamilyName = "Doe" };
+            var expando = obj.ToExpando();
+
+            Assert.AreNotSame(obj, expando);
+            Assert.AreEqual("John", expando["Name"]);
+            Assert.AreEqual("Doe", expando["FamilyName"]);
+        }
+
+        [Test]
+        public void ToExpando_expando()
+        {
+            var expando = new Expando();
+            Assert.AreSame(expando, expando.ToExpando());
+        }
+
+        [Test]
+        public void ToExpando_expando_base()
+        {
+            var expando = Substitute.For<IExpandoBase>();
+            Assert.AreSame(expando, expando.ToExpando());
+        }
+
+        [Test]
+        public void ToExpando_dictionary_string_object()
+        {
+            var dictionary = new Dictionary<string, object?>();
+            var expando = dictionary.ToExpando();
+
+            expando["hi"] = "there";
+
+            Assert.AreEqual("there", dictionary["hi"]);
+        }
+
+        [Test]
+        public void ToExpando_dictionary_string_string()
+        {
+            var dictionary = new Dictionary<string, string>();
+            var expando = dictionary.ToExpando();
+
+            expando["hi"] = "there";
+
+            Assert.AreEqual("there", dictionary["hi"]);
         }
     }
 }

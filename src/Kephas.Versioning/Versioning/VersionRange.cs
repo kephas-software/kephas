@@ -21,7 +21,7 @@ namespace Kephas.Versioning
         public static readonly string Separator = ":";
 
         /// <summary>
-        /// The wildcard used for 
+        /// The wildcard used for specifying versions in ranges.
         /// </summary>
         public static readonly string Wildcard = "*";
 

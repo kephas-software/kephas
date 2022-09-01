@@ -6,6 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 #pragma warning disable CS1591
+#pragma warning disable SA1602
+#pragma warning disable SA1600
+
 #if NETSTANDARD2_1
 
 namespace Kephas
@@ -63,7 +66,7 @@ namespace Kephas
         /// <param name="memberTypes">The types of members dynamically accessed.</param>
         public DynamicallyAccessedMembersAttribute(DynamicallyAccessedMemberTypes memberTypes)
         {
-            MemberTypes = memberTypes;
+            this.MemberTypes = memberTypes;
         }
 
         /// <summary>

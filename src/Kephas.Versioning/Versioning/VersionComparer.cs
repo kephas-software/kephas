@@ -116,13 +116,13 @@ namespace Kephas.Versioning
                 return 0;
             }
 
-            var hashCodeGenerator = new HashCodeGenerator();
-            hashCodeGenerator.Combine(version.Major);
-            hashCodeGenerator.Combine(version.Minor);
-            hashCodeGenerator.Combine(version.Patch);
+            var hashCode = new HashCode();
+            hashCode.Add(version.Major);
+            hashCode.Add(version.Minor);
+            hashCode.Add(version.Patch);
             if (version.Hotfix.HasValue)
             {
-                hashCodeGenerator.Combine(version.Hotfix.Value);
+                hashCode.Add(version.Hotfix.Value);
             }
 
             if (this.mode == VersionComparison.Default || this.mode == VersionComparison.VersionRelease ||
@@ -132,19 +132,19 @@ namespace Kephas.Versioning
                 if (releaseLabelsOrNull != null)
                 {
                     var ordinalIgnoreCase = StringComparer.OrdinalIgnoreCase;
-                    foreach (string o in releaseLabelsOrNull)
+                    foreach (var o in releaseLabelsOrNull)
                     {
-                        hashCodeGenerator.Combine(o, ordinalIgnoreCase);
+                        hashCode.Add(o, ordinalIgnoreCase);
                     }
                 }
             }
 
             if (this.mode == VersionComparison.VersionReleaseMetadata && version.HasMetadata)
             {
-                hashCodeGenerator.Combine(version.Metadata, StringComparer.OrdinalIgnoreCase);
+                hashCode.Add(version.Metadata, StringComparer.OrdinalIgnoreCase);
             }
 
-            return hashCodeGenerator.GeneratedHash;
+            return hashCode.ToHashCode();
         }
 
         /// <summary>Compare versions.</summary>
@@ -298,7 +298,6 @@ namespace Kephas.Versioning
                 : null;
         }
 
-        /// <summary>Compare release labels</summary>
         private static bool AreReleaseLabelsEqual(SemanticVersion version1, SemanticVersion version2)
         {
             var releaseLabelsOrNull1 = GetReleaseLabelsOrNull(version1);

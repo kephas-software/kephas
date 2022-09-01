@@ -19,22 +19,6 @@ namespace Kephas.Validation
     public interface IValidationResult : IOperationResult, IEnumerable<IValidationMessage>
     {
         /// <summary>
-        /// Gets a value indicating whether the validation result has errors.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the validation result contains errors, <c>false</c> if not.
-        /// </returns>
-        new bool HasErrors() => this.Any(i => i.Severity == SeverityLevel.Error);
-
-        /// <summary>
-        /// Indicates whether the result has errors.
-        /// </summary>
-        /// <returns>
-        /// A TResult.
-        /// </returns>
-        bool IOperationResult.HasErrors() => this.HasErrors();
-
-        /// <summary>
         /// Gets only the errors items from this validation result.
         /// </summary>
         /// <returns>

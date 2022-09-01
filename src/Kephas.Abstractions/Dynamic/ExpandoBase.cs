@@ -84,25 +84,10 @@ namespace Kephas.Dynamic
         /// Optional. The inner dictionary for holding dynamic values.
         /// If not provided, a new dictionary will be created.
         /// </param>
-        protected ExpandoBase(object? innerObject, IDictionary<string, T>? innerDictionary = null)
+        protected ExpandoBase(object innerObject, IDictionary<string, T>? innerDictionary = null)
         {
-            innerObject = innerObject ?? throw new ArgumentNullException(nameof(innerObject));
-
-            if (innerObject is IDictionary<string, T> innerObjectDictionary)
-            {
-                if (innerDictionary == null)
-                {
-                    innerDictionary = innerObjectDictionary;
-                    innerObject = null;
-                }
-                else if (innerDictionary == innerObjectDictionary)
-                {
-                    innerObject = null;
-                }
-            }
-
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.InitializeExpando(innerObject, innerDictionary);
+            this.InitializeExpando(innerObject ?? throw new ArgumentNullException(nameof(innerObject)), innerDictionary);
         }
 
         /// <summary>
@@ -150,7 +135,7 @@ namespace Kephas.Dynamic
         /// <returns>The <see cref="object" />.</returns>
         public object? this[string key]
         {
-            get => this.TryGetValue(key, out var value) ? value : value;
+            get => this.TryGetValue(key, out var value) ? value : null;
             set => this.TrySetValue(key, value);
         }
 
@@ -473,7 +458,6 @@ namespace Kephas.Dynamic
             {
                 this.dictionary = dictionary;
             }
-
 
             public int Count => this.dictionary.Count;
 

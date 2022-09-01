@@ -24,7 +24,7 @@ namespace Kephas.Validation
         /// <summary>
         /// The validation result indicating that the validation succeeded without any issues.
         /// </summary>
-        public static readonly ValidationResult Success = new ValidationResult();
+        public static readonly ValidationResult Success = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationResult"/> class.
@@ -70,8 +70,7 @@ namespace Kephas.Validation
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
-            this.Add(exception.Message, memberName, severity);
-            this.MergeException(exception);
+            this.Add(exception, memberName, severity);
         }
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace Kephas.Validation
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="memberName">Name of the member (optional).</param>
-        /// <param name="severity">The severity (optional). Default value is <see cref="DataValidationSeverity.Error"/></param>
+        /// <param name="severity">The severity (optional). Default value is <see cref="SeverityLevel.Error"/>.</param>
         /// <returns>
         /// This <see cref="ValidationResult"/>.
         /// </returns>
@@ -125,6 +124,23 @@ namespace Kephas.Validation
             message = message ?? throw new ArgumentNullException(nameof(message));
 
             this.MergeMessage(new ValidationMessage(message, memberName, severity));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a result item to the validation result.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="memberName">Name of the member (optional).</param>
+        /// <param name="severity">The severity (optional). Default value is <see cref="SeverityLevel.Error"/>.</param>
+        /// <returns>
+        /// This <see cref="ValidationResult"/>.
+        /// </returns>
+        public ValidationResult Add(Exception exception, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        {
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
+
+            this.MergeMessage(new ValidationMessage(exception, memberName, severity));
             return this;
         }
     }

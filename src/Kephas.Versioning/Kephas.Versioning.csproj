@@ -18,7 +18,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides abstractions for the most basic infrastructure.</Description>
+        <Description>Provides infrastructure for semantic versioning.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -30,7 +30,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas core abstractions</PackageTags>
+        <PackageTags>kephas versioning</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -77,19 +77,6 @@
         </PackageReference>
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='netstandard2.1'">
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-            </ItemGroup>
-        </When>
-		<Otherwise>
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>    
-
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
@@ -97,27 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml" />
-        <EmbeddedResource Include="LinkerConfig.xml">
-            <LogicalName>ILLink.Descriptors.xml</LogicalName>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources\AbstractionStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>AbstractionStrings.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Update="Resources\AbstractionStrings.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>AbstractionStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Versioning\Kephas.Versioning.csproj" />
     </ItemGroup>
 
 </Project>

@@ -129,7 +129,7 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
-        /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
+        /// Gets a value indicating whether the type implements <see cref="IDictionary{TKey,TValue}"/>.
         /// </summary>
         /// <param name="type">The type to check.</param>
         /// <returns>

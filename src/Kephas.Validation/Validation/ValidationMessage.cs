@@ -21,14 +21,25 @@ namespace Kephas.Validation
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationMessage"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
+        /// <param name="message">The exception.</param>
         /// <param name="memberName">Optional. the member name.</param>
         /// <param name="severity">Optional. the severity.</param>
         public ValidationMessage(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
-            : base(message)
+            : base(message ?? throw new ArgumentNullException(nameof(message)))
         {
-            message = message ?? throw new ArgumentNullException(nameof(message));
+            this.MemberName = memberName;
+            this.Severity = severity;
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationMessage"/> class.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="memberName">Optional. the member name.</param>
+        /// <param name="severity">Optional. the severity.</param>
+        public ValidationMessage(Exception exception, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+            : base(exception ?? throw new ArgumentNullException(nameof(exception)))
+        {
             this.MemberName = memberName;
             this.Severity = severity;
         }

@@ -346,6 +346,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Abstract
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Validation", "Kephas.Validation\Kephas.Validation.csproj", "{20A030B6-4BFE-4FB8-BA92-3750E347144E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Versioning", "Kephas.Versioning\Kephas.Versioning.csproj", "{8DFA3160-88B7-4332-B75F-F3628E6FE3D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Versioning.Tests", "Tests\Kephas.Versioning.Tests\Kephas.Versioning.Tests.csproj", "{A4270090-AA0C-43E5-81FC-8C38C3A864DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -972,6 +976,14 @@ Global
 		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20A030B6-4BFE-4FB8-BA92-3750E347144E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DFA3160-88B7-4332-B75F-F3628E6FE3D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DFA3160-88B7-4332-B75F-F3628E6FE3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DFA3160-88B7-4332-B75F-F3628E6FE3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DFA3160-88B7-4332-B75F-F3628E6FE3D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4270090-AA0C-43E5-81FC-8C38C3A864DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4270090-AA0C-43E5-81FC-8C38C3A864DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4270090-AA0C-43E5-81FC-8C38C3A864DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4270090-AA0C-43E5-81FC-8C38C3A864DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1047,6 +1059,7 @@ Global
 		{80D76FE3-6242-4635-A1AC-FDF235D42409} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{A4270090-AA0C-43E5-81FC-8C38C3A864DD} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

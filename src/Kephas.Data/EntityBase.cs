@@ -21,7 +21,7 @@ namespace Kephas.Data
     /// <summary>
     /// An entity base.
     /// </summary>
-    public abstract class EntityBase : Expando<object?>, IEntity, IChangeStateTrackable, IEntityEntryAware
+    public abstract class EntityBase : ExpandoBase<object?>, IEntity, IChangeStateTrackable, IEntityEntryAware
     {
         /// <summary>
         /// Information describing the type.

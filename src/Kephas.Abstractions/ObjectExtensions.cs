@@ -13,14 +13,19 @@ namespace Kephas
     using System;
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Dynamic extension methods for objects.
     /// </summary>
     public static class ObjectExtensions
     {
+        private static readonly MethodInfo ToTypedExpandoMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ToTypedExpando<string>(null!));
+
         /// <summary>
         /// Gets a dynamic object out of the provided instance.
         /// </summary>
@@ -49,8 +54,8 @@ namespace Kephas
             return obj switch
             {
                 IExpandoBase expando => expando,
-                IDictionary<string, object?> objectDictionary => new Expando<object?>(objectDictionary),
-                _ => new Expando<object?>(obj)
+                IDictionary<string, object?> objectDictionary => new DictionaryExpando<object?>(objectDictionary),
+                _ => ToExpandoCore(obj)
             };
         }
 
@@ -86,5 +91,20 @@ namespace Kephas
                 _ => obj.ToExpando()
             };
         }
+
+        private static IExpandoBase ToExpandoCore(object obj)
+        {
+            var keyItemTypePair = obj.GetType().TryGetDictionaryKeyItemType();
+            if (keyItemTypePair is null || keyItemTypePair.Value.keyType != typeof(string))
+            {
+                return new ObjectExpando(obj);
+            }
+
+            var toTypedExpando = ToTypedExpandoMethod.MakeGenericMethod(keyItemTypePair.Value.itemType);
+            return (IExpandoBase)toTypedExpando.Call(null, obj)!;
+        }
+
+        private static IExpandoBase ToTypedExpando<T>(IDictionary<string, T> dictionary) =>
+            new DictionaryExpando<T>(dictionary);
     }
 }

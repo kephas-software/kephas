@@ -279,7 +279,7 @@ namespace Kephas.Operations
         /// <returns>
         /// <c>true</c> if the result contains errors, <c>false</c> otherwise.
         /// </returns>
-        public static bool HasErrors(this IOperationResult result) => result.Messages.Any(m => m.IsError());
+        public static bool HasErrors(this IOperationResult result) => result?.Messages.Any(m => m.IsError()) is true;
 
         /// <summary>
         /// Indicates whether the result has warnings.
@@ -288,7 +288,7 @@ namespace Kephas.Operations
         /// <returns>
         /// <c>true</c> if the result contains warnings, <c>false</c> otherwise.
         /// </returns>
-        public static bool HasWarnings(this IOperationResult result) => result.Messages.Any(m => m.IsWarning());
+        public static bool HasWarnings(this IOperationResult result) => result?.Messages.Any(m => m.IsWarning()) is true;
 
         /// <summary>
         /// Gets an enumeration of errors.

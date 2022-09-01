@@ -311,7 +311,7 @@ namespace Kephas.Versioning
             if (!TryParse(value, out var version))
             {
                 throw new ArgumentException(
-                    "Invalid version provided: {0}".FormatWith(value),
+                    $"Invalid version provided: {value}",
                     nameof(value));
             }
 

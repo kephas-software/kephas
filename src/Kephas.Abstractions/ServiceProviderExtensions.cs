@@ -9,6 +9,7 @@ namespace Kephas
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Resources;
 
     /// <summary>
