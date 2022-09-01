@@ -841,7 +841,7 @@ namespace Kephas.Plugins
                     return instResult.Value;
                 }).PreserveThreadContext();
 
-            this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
+            this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.\n{messages}", pluginIdentity, opResult.Elapsed, result.Messages);
 
             return result
                 .MergeAll(opResult)

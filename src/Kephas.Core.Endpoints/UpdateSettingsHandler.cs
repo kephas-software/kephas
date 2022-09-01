@@ -110,7 +110,7 @@ namespace Kephas.Core.Endpoints
             return new ResponseMessage
             {
                 Message = result.HasErrors()
-                    ? result.Exceptions.First().Message
+                    ? result.Errors().First().Message
                     : result.Value
                         ? "Update successful"
                         : (result.Messages.FirstOrDefault()?.Message ?? "Update did not complete successfully."),

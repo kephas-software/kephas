@@ -173,10 +173,10 @@ namespace Kephas.Templating
                 }
             }
 
-            if (processingContext.Exception != null || (processingContext.Result?.HasErrors() ?? false))
+            if (processingContext.Exception is not null || processingContext.Result?.HasErrors() is true)
             {
                 var innerException = processingContext.Exception
-                                     ?? new AggregateException(processingContext.Result!.Exceptions);
+                                     ?? processingContext.Result?.TryGetException()!;
                 throw new TemplatingException(
                     Strings.DefaultTemplateProcessor_ProcessAsync_Exception.FormatWith(template.Name),
                     innerException,

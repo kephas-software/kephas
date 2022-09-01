@@ -94,7 +94,7 @@ namespace Kephas.Configuration.Providers
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
-                this.Logger.Info(result.Exceptions.First().Message);
+                this.Logger.Info(result.Errors().First().Message);
                 return null;
             }
 
@@ -122,7 +122,7 @@ namespace Kephas.Configuration.Providers
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
-                this.Logger.Warn(result.Exceptions.First().Message);
+                this.Logger.Warn(result.Errors().First().Message);
                 return;
             }
 

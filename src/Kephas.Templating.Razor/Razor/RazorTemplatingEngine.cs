@@ -64,7 +64,7 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     {
         textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
 
-        var result = new OperationResult();
+        IOperationResult result = new OperationResult();
         var compiledPageResult = await this.pageCompiler
             .CompileTemplateAsync<T>(template, processingContext, cancellationToken).PreserveThreadContext();
         result.MergeMessages(compiledPageResult);

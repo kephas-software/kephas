@@ -73,14 +73,6 @@ namespace Kephas.Operations
         ICollection<IOperationMessage> Messages { get; }
 
         /// <summary>
-        /// Gets the exceptions.
-        /// </summary>
-        /// <value>
-        /// The exceptions.
-        /// </value>
-        ICollection<Exception> Exceptions { get; }
-
-        /// <summary>
         /// Converts this object to a task.
         /// </summary>
         /// <returns>

@@ -147,7 +147,7 @@ namespace Kephas.Operations
             result = result ?? throw new ArgumentNullException(nameof(result));
             ex = ex ?? throw new ArgumentNullException(nameof(ex));
 
-            result.Exceptions.Add(ex);
+            result.Messages.Add(new OperationMessage(ex));
 
             return result;
         }
@@ -215,7 +215,6 @@ namespace Kephas.Operations
             }
 
             result.Messages.AddRange(resultToMerge.Messages);
-            result.Exceptions.AddRange(resultToMerge.Exceptions);
 
             return result;
         }
@@ -267,7 +266,6 @@ namespace Kephas.Operations
             }
 
             result.Messages.AddRange(resultToMerge.Messages);
-            result.Exceptions.AddRange(resultToMerge.Exceptions);
             result.Value = resultToMerge.Value;
             result.Elapsed += resultToMerge.Elapsed;
 
@@ -279,46 +277,78 @@ namespace Kephas.Operations
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>
-        /// A TResult.
+        /// <c>true</c> if the result contains errors, <c>false</c> otherwise.
         /// </returns>
-        public static bool HasErrors(this IOperationResult result)
-        {
-            result = result ?? throw new ArgumentNullException(nameof(result));
-
-            return result.Exceptions.Any(
-                e => (e is ISeverityQualifiedNotification qex
-                      && (qex.Severity == SeverityLevel.Error || qex.Severity == SeverityLevel.Fatal))
-                     || !(e is ISeverityQualifiedNotification));
-        }
+        public static bool HasErrors(this IOperationResult result) => result.Messages.Any(m => m.IsError());
 
         /// <summary>
         /// Indicates whether the result has warnings.
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>
-        /// A TResult.
+        /// <c>true</c> if the result contains warnings, <c>false</c> otherwise.
         /// </returns>
-        public static bool HasWarnings(this IOperationResult result)
-        {
-            result = result ?? throw new ArgumentNullException(nameof(result));
-
-            return result.Exceptions.Any(
-                e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
-        }
+        public static bool HasWarnings(this IOperationResult result) => result.Messages.Any(m => m.IsWarning());
 
         /// <summary>
-        /// Marks the result as completed and computes the operation state.
+        /// Gets an enumeration of errors.
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>
-        /// A TResult.
+        /// An enumeration of errors.
         /// </returns>
-        public static IEnumerable<Exception> Warnings(this IOperationResult result)
+        public static IEnumerable<IOperationMessage> Errors(this IOperationResult result)
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
 
-            return result.Exceptions.Where(
-                e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
+            return result.Messages.Where(m => m.IsError());
+        }
+
+        /// <summary>
+        /// Gets an enumeration of warnings.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        /// An enumeration of warnings.
+        /// </returns>
+        public static IEnumerable<IOperationMessage> Warnings(this IOperationResult result)
+        {
+            result = result ?? throw new ArgumentNullException(nameof(result));
+
+            return result.Messages.Where(m => m.IsWarning());
+        }
+
+        /// <summary>
+        /// Gets an enumeration of information messages.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        /// An enumeration of information messages.
+        /// </returns>
+        public static IEnumerable<IOperationMessage> Infos(this IOperationResult result)
+        {
+            result = result ?? throw new ArgumentNullException(nameof(result));
+
+            return result.Messages.Where(m => !m.IsWarning() && !m.IsError());
+        }
+
+        /// <summary>
+        /// Tries to get an exception from the result, if the result has errors.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>An exception or <c>null</c>.</returns>
+        public static Exception? TryGetException(this IOperationResult result)
+        {
+            result = result ?? throw new ArgumentNullException(nameof(result));
+
+            var errors = result.Messages.Where(m => m.IsError()).ToList();
+
+            return errors.Count switch
+            {
+                0 => null,
+                1 => ToException(errors[0]),
+                _ => new AggregateException(errors.Select(ToException))
+            };
         }
 
         /// <summary>
@@ -327,25 +357,12 @@ namespace Kephas.Operations
         /// <param name="result">The operation result.</param>
         public static void ThrowIfHasErrors(this IOperationResult result)
         {
-            result = result ?? throw new ArgumentNullException(nameof(result));
+            var exception = TryGetException(result);
 
-            var exceptions = result.Exceptions.Where(
-                e => (e is ISeverityQualifiedNotification qex
-                      && (qex.Severity == SeverityLevel.Error || qex.Severity == SeverityLevel.Fatal))
-                     || !(e is ISeverityQualifiedNotification))
-                .ToList();
-
-            if (exceptions.Count == 0)
+            if (exception is not null)
             {
-                return;
+                throw exception;
             }
-
-            if (exceptions.Count == 1)
-            {
-                throw exceptions[0];
-            }
-
-            throw new AggregateException(exceptions);
         }
 
         /// <summary>
@@ -449,5 +466,8 @@ namespace Kephas.Operations
             var endedAt = result.EndedAt ?? DateTimeOffset.Now;
             return endedAt - result.StartedAt ?? TimeSpan.Zero;
         }
+
+        private static Exception ToException(this IOperationMessage m)
+            => m.Exception is not null ? m.Exception! : new OperationException(m.Message);
     }
 }

@@ -61,7 +61,7 @@ namespace Kephas.Data.IO.Tests.Import
                 await result.AsTask();
 
                 Assert.AreEqual(OperationState.Completed, result.OperationState);
-                Assert.AreEqual(0, result.Exceptions.Count);
+                Assert.IsFalse(result.Errors().Any());
                 Assert.AreEqual(1, result.Messages.Count);
             }
 
@@ -97,7 +97,7 @@ namespace Kephas.Data.IO.Tests.Import
                 await result.AsTask();
 
                 Assert.AreEqual(OperationState.Completed, result.OperationState);
-                Assert.AreEqual(0, result.Exceptions.Count);
+                Assert.IsFalse(result.Errors().Any());
                 Assert.AreEqual(1, result.Messages.Count);
             }
 

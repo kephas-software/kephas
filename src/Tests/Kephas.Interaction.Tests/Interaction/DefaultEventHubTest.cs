@@ -88,7 +88,7 @@ namespace Kephas.Tests.Interaction
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
                 Assert.IsTrue(result.HasErrors());
-                CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InvalidOperationException));
+                CollectionAssert.AllItemsAreInstancesOfType(result.Errors().Select(e => e.Exception), typeof(InvalidOperationException));
                 CollectionAssert.AreEqual(new List<object?>(), result.Value);
             }
         }
@@ -146,7 +146,7 @@ namespace Kephas.Tests.Interaction
                 var result = await hub.PublishAsync("hello", expectedContext);
 
                 Assert.IsTrue(result.HasErrors());
-                CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InterruptSignal));
+                CollectionAssert.AllItemsAreInstancesOfType(result.Errors().Select(e => e.Exception), typeof(InterruptSignal));
                 CollectionAssert.IsEmpty(result.Value);
             }
         }
@@ -166,7 +166,7 @@ namespace Kephas.Tests.Interaction
                 var result = await hub.PublishAsync("hello", expectedContext);
 
                 Assert.IsTrue(result.HasErrors());
-                CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InvalidOperationException));
+                CollectionAssert.AllItemsAreInstancesOfType(result.Errors().Select(e => e.Exception), typeof(InvalidOperationException));
                 CollectionAssert.IsEmpty(result.Value);
             }
         }
