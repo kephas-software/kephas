@@ -11,17 +11,26 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
+
+    using Microsoft.CSharp.RuntimeBinder;
+
+    using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
     /// <summary>
     /// Helper class for reflection.
     /// </summary>
     public static class ReflectionHelper
     {
+        private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object>>> Getters = new ();
+        private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object?, object>>> Setters = new ();
+
         private static readonly Func<AssemblyName, bool> IsSystemAssemblyFuncValue = assemblyName =>
             {
                 var assemblyFullName = assemblyName.FullName;
@@ -204,7 +213,7 @@ namespace Kephas.Reflection
                 return fullName;
             }
 
-            fullName = fullName.Substring(0, fullName.IndexOf('`'));
+            fullName = fullName[..fullName.IndexOf('`')];
             return fullName;
         }
 
@@ -307,6 +316,59 @@ namespace Kephas.Reflection
             return type.GetRuntimeProperties()
                 .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
                             && p.GetIndexParameters().Length == 0);
+        }
+
+        /// <summary>
+        /// Gets the value of the property identified by its name.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        /// <param name="name">The property name.</param>
+        /// <returns>The property value.</returns>
+        public static object? GetValue(object target, string name)
+        {
+            target = target ?? throw new ArgumentNullException(nameof(target));
+
+            var callSite = Getters.GetOrAdd(name, _ =>
+            {
+                return CallSite<Func<CallSite, object, object>>.Create(
+                    Binder.GetMember(
+                        CSharpBinderFlags.None,
+                        name,
+                        typeof(ReflectionHelper),
+                        new[]
+                        {
+                            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
+                        }));
+            });
+
+            return callSite.Target(callSite, target);
+        }
+
+        /// <summary>
+        /// Sets the value of the property identified by its name.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        /// <param name="name">The property name.</param>
+        /// <param name="value">The value to be set.</param>
+        public static void SetValue(object target, string name, object? value)
+        {
+            target = target ?? throw new ArgumentNullException(nameof(target));
+
+            var callSite = Setters.GetOrAdd(name, _ =>
+            {
+                return CallSite<Func<CallSite, object, object?, object>>.Create(
+                    Binder.SetMember(
+                        CSharpBinderFlags.None,
+                        name,
+                        typeof(ReflectionHelper),
+                        new []
+                        {
+                            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
+                            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null),
+                        }));
+            });
+
+            callSite.Target(callSite, target, value);
         }
     }
 }
