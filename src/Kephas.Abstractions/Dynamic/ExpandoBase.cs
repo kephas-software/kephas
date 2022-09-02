@@ -408,6 +408,21 @@ namespace Kephas.Dynamic
             => type.GetProperty(key, GetBindingFlags(ignoreCase));
 
         /// <summary>
+        /// Tries to get the inner/adapted object.
+        /// </summary>
+        /// <returns>The inner object, or <c>null</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private object? TryGetInnerObject()
+        {
+            if (this.innerObjectRef == null)
+            {
+                return null;
+            }
+
+            return this.innerObjectRef.TryGetTarget(out var innerObject) ? innerObject : null;
+        }
+
+        /// <summary>
         /// Gets the binding flags for retrieving type members.
         /// </summary>
         /// <param name="ignoreCase">
@@ -419,17 +434,6 @@ namespace Kephas.Dynamic
         private static BindingFlags GetBindingFlags(bool ignoreCase)
         {
             return IExpandoMixin.GetBindingFlags(ignoreCase);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private object? TryGetInnerObject()
-        {
-            if (this.innerObjectRef == null)
-            {
-                return null;
-            }
-
-            return this.innerObjectRef.TryGetTarget(out var innerObject) ? innerObject : null;
         }
 
         /// <summary>
