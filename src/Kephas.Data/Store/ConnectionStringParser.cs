@@ -60,7 +60,7 @@ namespace Kephas.Data.Store
                                         kvp => kvp[0].Trim(),
                                         kvp => (object?)kvp[1].Trim(),
                                         StringComparer.OrdinalIgnoreCase)
-                                    .ToExpando();
+                                    .ToDynamic();
 
             return expando;
         }

@@ -19,14 +19,6 @@ namespace Kephas.Tests.Dynamic
     public class ExpandoBaseTest
     {
         [Test]
-        public void Constructor_same_object_and_dictionary()
-        {
-            var dict = new Dictionary<string, object>();
-            dynamic expando = new TestExpando(dict, dict);
-            Assert.IsNull(expando.Count);
-        }
-
-        [Test]
         public void GetDynamicMemberNames_no_duplicates()
         {
             var expando = new TestExpando(new Named());

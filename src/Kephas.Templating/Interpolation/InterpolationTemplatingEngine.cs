@@ -50,7 +50,7 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
         var opResult = new OperationResult<object?>();
         var content = await template.GetContentAsync(cancellationToken).PreserveThreadContext();
 
-        var expandoModel = model?.ToExpando();
+        var expandoModel = model?.ToDynamic();
         var crtIndex = 0;
         var matches = Regex.Matches(content, "{([^{}]*)");
         foreach (Match match in matches)
@@ -99,7 +99,7 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
         var opResult = new OperationResult<object?>();
         var content = template.GetContent();
 
-        var expandoModel = model?.ToExpando();
+        var expandoModel = model?.ToDynamic();
         var crtIndex = 0;
         var matches = Regex.Matches(content, "{([^{}]*)");
         foreach (Match match in matches)

@@ -61,16 +61,16 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void ToExpando_null_exception()
+        public void ToDynamic_null_exception()
         {
-            Assert.Throws<ArgumentNullException>(() => ((object)null).ToExpando());
+            Assert.Throws<ArgumentNullException>(() => ((object)null!).ToDynamic());
         }
 
         [Test]
-        public void ToExpando_object()
+        public void ToDynamic_object()
         {
             var obj = new { Name = "John", FamilyName = "Doe" };
-            var expando = obj.ToExpando();
+            var expando = obj.ToDynamic();
 
             Assert.AreNotSame(obj, expando);
             Assert.AreEqual("John", expando["Name"]);
@@ -78,24 +78,17 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void ToExpando_expando()
-        {
-            var expando = new Expando();
-            Assert.AreSame(expando, expando.ToExpando());
-        }
-
-        [Test]
-        public void ToExpando_expando_base()
+        public void ToDynamic_dynamic()
         {
             var expando = Substitute.For<IDynamic>();
-            Assert.AreSame(expando, expando.ToExpando());
+            Assert.AreSame(expando, expando.ToDynamic());
         }
 
         [Test]
-        public void ToExpando_dictionary_string_object()
+        public void ToDynamic_dictionary_string_object()
         {
             var dictionary = new Dictionary<string, object?>();
-            var expando = dictionary.ToExpando();
+            var expando = dictionary.ToDynamic();
 
             expando["hi"] = "there";
 
@@ -103,10 +96,10 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void ToExpando_dictionary_string_string()
+        public void ToDynamic_dictionary_string_string()
         {
             var dictionary = new Dictionary<string, string>();
-            var expando = dictionary.ToExpando();
+            var expando = dictionary.ToDynamic();
 
             expando["hi"] = "there";
 

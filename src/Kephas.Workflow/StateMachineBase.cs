@@ -213,7 +213,7 @@ namespace Kephas.Workflow
 
         private IEnumerable<object?> GetInvocationArguments(ITransitionInfo transitionInfo, ITransitionContext context, CancellationToken cancellationToken)
         {
-            var args = context.Arguments?.ToExpando();
+            var args = context.Arguments?.ToDynamic();
             foreach (var paramInfo in transitionInfo.Parameters)
             {
                 if (args?.HasDynamicMember(paramInfo.Name) ?? false)
