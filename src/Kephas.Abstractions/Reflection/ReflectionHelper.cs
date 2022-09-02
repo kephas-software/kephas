@@ -13,6 +13,7 @@ namespace Kephas.Reflection
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
@@ -353,6 +354,20 @@ namespace Kephas.Reflection
         public static void SetValue(object target, string name, object? value)
         {
             target = target ?? throw new ArgumentNullException(nameof(target));
+
+            if (target is not IDynamicMetaObjectProvider)
+            {
+                // TODO optimize
+                // workaround for non dynamic targets.
+                var propertyInfo = target.GetType().GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+                if (propertyInfo is null)
+                {
+                    throw new InvalidOperationException($"Property {name} was not found.");
+                }
+
+                propertyInfo.SetValue(target, value);
+                return;
+            }
 
             var callSite = Setters.GetOrAdd(name, _ =>
             {
