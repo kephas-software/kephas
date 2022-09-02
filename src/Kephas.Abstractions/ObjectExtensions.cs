@@ -23,8 +23,8 @@ namespace Kephas
     /// </summary>
     public static class ObjectExtensions
     {
-        private static readonly MethodInfo ToTypedExpandoMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ToTypedExpando<string>(null!));
+        private static readonly MethodInfo ToDictionaryExpandoMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ToDictionaryExpando<string>(null!));
 
         /// <summary>
         /// Gets a dynamic object out of the provided instance.
@@ -38,7 +38,8 @@ namespace Kephas
             return obj switch
             {
                 IDynamicMetaObjectProvider => obj,
-                _ => obj.ToExpando()
+                IAdapter<IDynamicMetaObjectProvider> dynamicAdapter => dynamicAdapter.Of,
+                _ => obj.ToDynamic()
             };
         }
 
@@ -47,17 +48,8 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object to convert.</param>
         /// <returns>The provided instance, if it is an <see cref="IDynamic"/>, or a dynamic wrapper over it.</returns>
-        public static IDynamic ToExpando(this object obj)
-        {
-            obj = obj ?? throw new ArgumentNullException(nameof(obj));
-
-            return obj switch
-            {
-                IDynamic expando => expando,
-                IDictionary<string, object?> objectDictionary => new DictionaryExpando<object?>(objectDictionary),
-                _ => ToExpandoCore(obj)
-            };
-        }
+        [Obsolete("Use ToDynamic() extension method instead.", error: true)]
+        public static IDynamic ToExpando(this object obj) => ToDynamic(obj);
 
         /// <summary>
         /// Converts the provided instance to a dictionary.
@@ -72,7 +64,7 @@ namespace Kephas
             {
                 IDictionary<string, object?> dictionary => dictionary,
                 IDynamic expando => expando.ToDictionary(),
-                _ => obj.ToExpando().ToDictionary()
+                _ => obj.ToDynamic().ToDictionary()
             };
         }
 
@@ -87,12 +79,14 @@ namespace Kephas
 
             return obj switch
             {
-                IDynamic dyn => dyn,
-                _ => obj.ToExpando()
+                IDynamic dynamic => dynamic,
+                IDictionary<string, object?> objectDictionary => new DictionaryExpando<object?>(objectDictionary),
+                IDynamicMetaObjectProvider dynamic => new DynamicExpando(dynamic),
+                _ => ToDynamicCore(obj),
             };
         }
 
-        private static IDynamic ToExpandoCore(object obj)
+        private static IDynamic ToDynamicCore(object obj)
         {
             var keyItemTypePair = obj.GetType().TryGetDictionaryKeyItemType();
             if (keyItemTypePair is null || keyItemTypePair.Value.keyType != typeof(string))
@@ -100,11 +94,11 @@ namespace Kephas
                 return new ObjectExpando(obj);
             }
 
-            var toTypedExpando = ToTypedExpandoMethod.MakeGenericMethod(keyItemTypePair.Value.itemType);
+            var toTypedExpando = ToDictionaryExpandoMethod.MakeGenericMethod(keyItemTypePair.Value.itemType);
             return (IDynamic)toTypedExpando.Call(null, obj)!;
         }
 
-        private static IDynamic ToTypedExpando<T>(IDictionary<string, T> dictionary) =>
+        private static IDynamic ToDictionaryExpando<T>(IDictionary<string, T> dictionary) =>
             new DictionaryExpando<T>(dictionary);
     }
 }
