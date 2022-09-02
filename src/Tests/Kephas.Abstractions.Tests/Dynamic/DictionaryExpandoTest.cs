@@ -34,4 +34,12 @@ public class DictionaryExpandoTest
 
         Assert.AreEqual("there", dict["Hi"]);
     }
+
+    [Test]
+    public void Dynamic_by_key()
+    {
+        dynamic expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
+
+        Assert.AreEqual("there", expando.Hi);
+    }
 }

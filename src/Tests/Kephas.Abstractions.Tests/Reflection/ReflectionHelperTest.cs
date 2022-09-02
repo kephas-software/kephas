@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using System.Collections.Generic;
 
+    using Kephas.Dynamic;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -69,6 +69,49 @@ namespace Kephas.Core.Tests.Reflection
             var objTypeInfo = ReflectionExtensions.GetTypeInfo(obj);
 
             Assert.AreSame(typeInfo, objTypeInfo);
+        }
+
+        [TestCase(typeof(string), "Name", "String")]
+        [TestCase("123", "Length", 3)]
+        [Test]
+        public void GetValue_simple(object target, string name, object? value)
+        {
+            Assert.AreEqual(value, ReflectionHelper.GetValue(target, name));
+        }
+
+        [TestCase("name", "John Doe")]
+        [Test]
+        public void GetValue_dynamic(string name, object? value)
+        {
+            var expando = new DictionaryExpando<object?>(new Dictionary<string, object?> { { "name", "John Doe" } });
+            Assert.AreEqual(value, ReflectionHelper.GetValue(expando, name));
+        }
+
+        [TestCase("Name", "Jane Doe")]
+        [TestCase("Age", 3)]
+        [Test]
+        public void SetValue_simple(string name, object? value)
+        {
+            var person = new Person { Name = "John Doe", Age = 23 };
+            ReflectionHelper.SetValue(person, name, value);
+            Assert.AreEqual(value, ReflectionHelper.GetValue(person, name));
+        }
+
+        [TestCase("Name", "Jane Doe")]
+        [TestCase("Age", 3)]
+        [Test]
+        public void SetValue_dynamic(string name, object? value)
+        {
+            var person = new ObjectExpando(new Person { Name = "John Doe", Age = 23 });
+            ReflectionHelper.SetValue(person, name, value);
+            Assert.AreEqual(value, ReflectionHelper.GetValue(person, name));
+        }
+
+        public class Person
+        {
+            public string? Name { get; set; }
+
+            public int Age { get; set; }
         }
     }
 }
