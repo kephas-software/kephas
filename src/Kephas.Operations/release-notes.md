@@ -11,6 +11,7 @@
 * NEW: Added ```OperationException(Exception)```.
 * Changed ```OperationMessage.ToString()``` to include the exception information, if provided.
 * Breaking change: ``IOperationResult.AsTask()`` returns ``Task<object?>`` instead of ``Task``.
+* NEW: ``IOperationResult`` and ``IOperationResult<TValue>`` can be deconstructed.
 
 # Other resources
 * Please check https://github.com/kephas-software/kephas/releases for the change log.
