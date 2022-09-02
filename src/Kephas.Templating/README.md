@@ -9,6 +9,9 @@ Check the following packages for more information:
 * [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 * [Kephas.Templating.Razor](https://www.nuget.org/packages/Kephas.Templating.Razor)
 
+Typically used areas and classes/interfaces/services:
+* ```ITemplateProcessor```, ```ITemplateProcessingBehavior```, ```ITemplatingEngine```.
+* AttributedModel: ```TemplateKindAttribute```.
 
 ## Usage
 

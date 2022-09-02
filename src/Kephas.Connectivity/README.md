@@ -12,6 +12,9 @@ Check the following packages for more information:
 Packages providing connections:
 * [Kephas.Mail.MailKit](https://www.nuget.org/packages/Kephas.Mail.MailKit)
 
+Typically used areas and classes/interfaces/services:
+* ```IConnection```, ```IConnectionProvider```, ```IConnectionFactory```.
+
 ## Usage
 
 ```C#
