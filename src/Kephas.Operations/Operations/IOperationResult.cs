@@ -78,7 +78,18 @@ namespace Kephas.Operations
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task AsTask();
+        Task<object?> AsTask();
+
+        /// <summary>
+        /// Deconstructs this instance.
+        /// </summary>
+        /// <param name="value">The result value.</param>
+        /// <param name="state">The result state.</param>
+        void Deconstruct(out object? value, out OperationState state)
+        {
+            value = this.Value;
+            state = this.OperationState;
+        }
     }
 
     /// <summary>
@@ -109,6 +120,21 @@ namespace Kephas.Operations
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task IOperationResult.AsTask() => this.AsTask();
+        Task<object?> IOperationResult.AsTask()
+        {
+            var task = this.AsTask();
+            return task as Task<object?> ?? task.ContinueWith(t => (object?)t.Result);
+        }
+
+        /// <summary>
+        /// Deconstructs this instance.
+        /// </summary>
+        /// <param name="value">The result value.</param>
+        /// <param name="state">The result state.</param>
+        void Deconstruct(out TValue value, out OperationState state)
+        {
+            value = this.Value;
+            state = this.OperationState;
+        }
     }
 }

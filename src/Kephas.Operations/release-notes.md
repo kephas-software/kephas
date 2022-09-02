@@ -10,6 +10,7 @@
 * NEW: Added ```IOperationResult``` extension methods ```HasErrors()``` and ```HasWarnings()```, ```Errors()``` and ```Warnings()```.
 * NEW: Added ```OperationException(Exception)```.
 * Changed ```OperationMessage.ToString()``` to include the exception information, if provided.
+* Breaking change: ``IOperationResult.AsTask()`` returns ``Task<object?>`` instead of ``Task``.
 
 # Other resources
 * Please check https://github.com/kephas-software/kephas/releases for the change log.

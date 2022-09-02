@@ -22,7 +22,7 @@ namespace Kephas.Core.Tests.Operations
         public async Task OperationResult_task_completion_sets_state()
         {
             var opResult = new OperationResult<int>(Task.FromResult(12));
-            await opResult;
+            await opResult.AsTask();
 
             Assert.AreEqual(OperationState.Completed, opResult.OperationState);
             Assert.AreEqual(1f, opResult.PercentCompleted);
@@ -33,7 +33,7 @@ namespace Kephas.Core.Tests.Operations
         public async Task OperationResult_task_completion_sets_state_delay()
         {
             var opResult = new OperationResult<int>(Task.Delay(100).ContinueWith(t => 12));
-            await opResult;
+            await opResult.AsTask();
 
             Assert.AreEqual(OperationState.Completed, opResult.OperationState);
             Assert.AreEqual(1f, opResult.PercentCompleted);
@@ -68,7 +68,7 @@ namespace Kephas.Core.Tests.Operations
         public async Task GetAwaiter_default_result()
         {
             var opResult = new OperationResult<int>(10);
-            var result = await opResult;
+            var result = await opResult.AsTask();
 
             Assert.AreEqual(10, result);
         }
@@ -77,11 +77,11 @@ namespace Kephas.Core.Tests.Operations
         public async Task GetAwaiter_subsequent_result()
         {
             var opResult = new OperationResult<int>();
-            var result = await opResult;
+            var result = await opResult.AsTask();
             Assert.AreEqual(0, result);
 
             opResult.Value = 40;
-            result = await opResult;
+            result = await opResult.AsTask();
 
             Assert.AreEqual(40, result);
         }
@@ -90,7 +90,7 @@ namespace Kephas.Core.Tests.Operations
         public async Task GetAwaiter_task()
         {
             var opResult = new OperationResult<int>(Task.FromResult(10));
-            var result = await opResult;
+            var result = await opResult.AsTask();
 
             Assert.AreEqual(10, result);
         }
@@ -103,6 +103,16 @@ namespace Kephas.Core.Tests.Operations
 
             Assert.AreEqual(10, result);
             Assert.AreEqual(10, opResult.Value);
+        }
+
+        [Test]
+        public void Deconstruct()
+        {
+            IOperationResult<string> result = new OperationResult<string>("hello").Complete();
+            var (value, state) = result;
+
+            Assert.AreEqual("hello", value);
+            Assert.AreEqual(OperationState.Completed, state);
         }
     }
 }
