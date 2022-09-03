@@ -137,7 +137,7 @@ A ready-to-use expando class is `Expando`. Upon initialization, a flag controls 
 
 ```C#
     var dictionary = new Dictionary<string, object>();
-    dynamic expando = dictionary.ToExpando();
+    dynamic expando = dictionary.ToDynamic();
 
     expando.Property = "value";
     Assert.AreEqual("value", dictionary["Property"]);
@@ -178,7 +178,7 @@ A ready-to-use expando class is `Expando`. Upon initialization, a flag controls 
     //...
     
     var contact = new Contact();
-    dynamic dynContact = contact.ToExpando();
+    dynamic dynContact = contact.ToDynamic();
 
     dynContact.Name = "John";
     Assert.AreEqual("John", contact.Name);
