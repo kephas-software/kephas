@@ -49,9 +49,9 @@ public class DefaultAppManager : Loggable, IAppManager
     public DefaultAppManager(
         IAppRuntime appRuntime,
         IInjector injector,
-        IEnabledLazyServiceCollection<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
-        IEnabledLazyServiceCollection<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
-        IEnabledLazyServiceCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
+        IEnabledLazyEnumerable<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
+        IEnabledLazyEnumerable<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
+        IEnabledLazyEnumerable<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
         : base(injector)
     {
         appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));

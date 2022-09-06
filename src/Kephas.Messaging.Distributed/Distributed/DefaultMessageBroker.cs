@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Distributed
         public DefaultMessageBroker(
             IInjectableFactory injectableFactory,
             IAppRuntime appRuntime,
-            IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
+            IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories)
             : base(injectableFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());

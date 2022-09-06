@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullEnabledServiceFactoryCollection.cs" company="Kephas Software SRL">
+// <copyright file="NullEnabledFactoryEnumerable.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,17 +15,17 @@ using Kephas.Injection;
 /// </summary>
 /// <typeparam name="TContract">The type of the contract.</typeparam>
 /// <typeparam name="TMetadata">The type of the metadata.</typeparam>
-/// <seealso cref="IEnabledServiceFactoryCollection{TContract, TMetadata}" />
+/// <seealso cref="IEnabledFactoryEnumerable{TContract,TMetadata}" />
 [OverridePriority(Priority.Lowest)]
-public class NullEnabledServiceFactoryCollection<TContract, TMetadata> : IEnabledServiceFactoryCollection<TContract, TMetadata>
+public class NullEnabledFactoryEnumerable<TContract, TMetadata> : IEnabledFactoryEnumerable<TContract, TMetadata>
 {
     private readonly ICollection<IExportFactory<TContract, TMetadata>> services;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="NullEnabledServiceFactoryCollection{TContract, TMetadata}"/> class.
+    /// Initializes a new instance of the <see cref="NullEnabledFactoryEnumerable{TContract,TMetadata}"/> class.
     /// </summary>
     /// <param name="services">The services.</param>
-    public NullEnabledServiceFactoryCollection(ICollection<IExportFactory<TContract, TMetadata>> services)
+    public NullEnabledFactoryEnumerable(ICollection<IExportFactory<TContract, TMetadata>> services)
     {
         this.services = services;
     }

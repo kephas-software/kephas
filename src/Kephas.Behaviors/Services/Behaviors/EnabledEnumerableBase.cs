@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnabledServiceCollectionBase.cs" company="Kephas Software SRL">
+// <copyright file="EnabledEnumerableBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,20 +16,20 @@ namespace Kephas.Services.Behaviors
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
-    public abstract class EnabledServiceCollectionBase<TContract, TMetadata>
+    public abstract class EnabledEnumerableBase<TContract, TMetadata>
         where TContract : class
     {
         private readonly IInjectableFactory injectableFactory;
         private readonly ICollection<IEnabledServiceBehaviorRule> behaviorFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnabledServiceCollectionBase{TContract, TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="EnabledEnumerableBase{TContract,TMetadata}"/> class.
         /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
-        protected EnabledServiceCollectionBase(
+        protected EnabledEnumerableBase(
             IInjectableFactory injectableFactory,
-            ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories = null)
+            ILazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>? behaviorFactories = null)
         {
             this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             this.behaviorFactories = this.ComputeEnabledServiceBehaviorRules(behaviorFactories);
@@ -73,13 +73,11 @@ namespace Kephas.Services.Behaviors
             TMetadata metadata) =>
             this.injectableFactory.Create<ServiceBehaviorContext<TContract, TMetadata>>(serviceFactory, metadata);
 
-        private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules(ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories)
+        private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules(ILazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>? behaviorFactories)
         {
             return behaviorFactories?
-                       .Where(f => f.Metadata.ContractType == typeof(TContract) &&
+                       .SelectServices(f => f.Metadata.ContractType == typeof(TContract) &&
                                    (f.Metadata.MetadataType == null || f.Metadata.MetadataType.IsAssignableFrom(typeof(TMetadata))))
-                       .Order()
-                       .Select(f => f.Value)
                        .ToList()
                    ?? new List<IEnabledServiceBehaviorRule>();
         }

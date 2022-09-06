@@ -746,23 +746,23 @@ namespace Kephas.Tests.Application
             return injector;
         }
 
-        private IEnabledLazyServiceCollection<TService, TMetadata> GetEnabledFactoryCollection<TService, TMetadata>(
+        private IEnabledLazyEnumerable<TService, TMetadata> GetEnabledFactoryCollection<TService, TMetadata>(
             IEnumerable<Lazy<TService, TMetadata>>? factories = null)
         {
-            var collection = Substitute.For<IEnabledLazyServiceCollection<TService, TMetadata>>();
+            var collection = Substitute.For<IEnabledLazyEnumerable<TService, TMetadata>>();
             collection.GetEnumerator().Returns((factories ?? new List<Lazy<TService, TMetadata>>()).GetEnumerator());
             return collection;
         }
 
-        private IEnabledLazyServiceCollection<IAppLifecycleBehavior, AppServiceMetadata> GetAppLifecycleBehaviors(
+        private IEnabledLazyEnumerable<IAppLifecycleBehavior, AppServiceMetadata> GetAppLifecycleBehaviors(
             IEnumerable<Lazy<IAppLifecycleBehavior, AppServiceMetadata>>? factories = null)
             => this.GetEnabledFactoryCollection(factories);
 
-        private IEnabledLazyServiceCollection<IFeatureManager, FeatureManagerMetadata> GetFeatureManagers(
+        private IEnabledLazyEnumerable<IFeatureManager, FeatureManagerMetadata> GetFeatureManagers(
             IEnumerable<Lazy<IFeatureManager, FeatureManagerMetadata>>? factories = null)
             => this.GetEnabledFactoryCollection(factories);
 
-        private IEnabledLazyServiceCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata> GetFeatureLifecycleBehaviors(
+        private IEnabledLazyEnumerable<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata> GetFeatureLifecycleBehaviors(
             IEnumerable<Lazy<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? factories = null)
             => this.GetEnabledFactoryCollection(factories);
     }

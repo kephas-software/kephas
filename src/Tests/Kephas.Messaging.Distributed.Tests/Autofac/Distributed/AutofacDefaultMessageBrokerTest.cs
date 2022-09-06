@@ -382,7 +382,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             public RemoteMessageBroker(
                 IInjectableFactory injectableFactory,
                 IAppRuntime appRuntime,
-                IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories,
+                IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories,
                 ISerializationService serializationService)
                 : base(injectableFactory, appRuntime, routerFactories)
             {
@@ -410,7 +410,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             public LoggableMessageBroker(
                 IInjectableFactory injectableFactory,
                 IAppRuntime appRuntime,
-                IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
+                IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories)
                 : base(injectableFactory, appRuntime, routerFactories)
             {
             }

@@ -1,5 +1,8 @@
 ﻿# Release notes
 
+* Change log: https://github.com/kephas-software/kephas/releases.
+* Documentation and samples: https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+
 # 12.0.0
 
 * Breaking change: ```IOperationResult``` inherits from ```IDynamic``` instead of ```IExpandoBase```.
@@ -12,7 +15,3 @@
 * Changed ```OperationMessage.ToString()``` to include the exception information, if provided.
 * Breaking change: ``IOperationResult.AsTask()`` returns ``Task<object?>`` instead of ``Task``.
 * NEW: ``IOperationResult`` and ``IOperationResult<TValue>`` can be deconstructed.
-
-# Other resources
-* Please check https://github.com/kephas-software/kephas/releases for the change log.
-* Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
