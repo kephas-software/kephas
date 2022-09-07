@@ -21,7 +21,6 @@ namespace Kephas.Application
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -60,7 +59,6 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
@@ -78,7 +76,6 @@ namespace Kephas.Application
         /// <param name="getLocations">Optional. Function for getting application locations.</param>
         protected AppRuntimeBase(
             Func<string, ILogger>? getLogger = null,
-            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             IEnumerable<Assembly>? appAssemblies = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
@@ -96,7 +93,6 @@ namespace Kephas.Application
                 ? new AppArgs()
                 : appArgs as IAppArgs ?? new AppArgs(appArgs);
             this.getLogger = getLogger ?? NullLogManager.GetNullLogger;
-            this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appAssemblies = appAssemblies;
             this.appFolder = appFolder;
@@ -138,14 +134,6 @@ namespace Kephas.Application
         /// The logger.
         /// </value>
         protected virtual ILogger Logger => this.getLogger(this.GetType().FullName!);
-
-        /// <summary>
-        /// Gets the check license delegate.
-        /// </summary>
-        /// <value>
-        /// A function delegate that yields an ILicenseCheckResult.
-        /// </value>
-        protected Func<AppIdentity, IContext?, ILicenseCheckResult> CheckLicense { get; }
 
         /// <summary>
         /// Gets a function for getting application locations.
@@ -270,7 +258,7 @@ namespace Kephas.Application
         /// <returns>
         /// The resolved assembly reference.
         /// </returns>
-        public Assembly LoadAssemblyFromName(AssemblyName assemblyName)
+        protected Assembly LoadAssemblyFromName(AssemblyName assemblyName)
         {
             return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
         }
@@ -282,7 +270,7 @@ namespace Kephas.Application
         /// <returns>
         /// The resolved assembly reference.
         /// </returns>
-        public Assembly LoadAssemblyFromPath(string assemblyFilePath)
+        protected Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
             return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
         }

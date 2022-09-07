@@ -16,7 +16,7 @@ using Kephas.Application.Reflection;
 /// </summary>
 public static class ApplicationAppRuntimeExtensions
 {
-    internal const string FeaturesKey = "Features";
+    internal const string FeaturesToken = $"__{nameof(FeaturesToken)}";
 
     /// <summary>
     /// Gets the application features.
@@ -27,7 +27,7 @@ public static class ApplicationAppRuntimeExtensions
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<IFeatureInfo> GetFeatures(this IAppRuntime appRuntime)
-        => appRuntime?[FeaturesKey] as IEnumerable<IFeatureInfo> ?? Array.Empty<IFeatureInfo>();
+        => appRuntime?[FeaturesToken] as IEnumerable<IFeatureInfo> ?? Array.Empty<IFeatureInfo>();
 
     /// <summary>
     /// Indicates whether the application runtime contains the indicated feature.
@@ -64,7 +64,7 @@ public static class ApplicationAppRuntimeExtensions
     internal static T SetFeatures<T>([DisallowNull] this T appRuntime, IEnumerable<IFeatureInfo> features)
         where T : IAppRuntime
     {
-        appRuntime[FeaturesKey] = features;
+        appRuntime[FeaturesToken] = features;
 
         return appRuntime;
     }

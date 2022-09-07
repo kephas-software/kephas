@@ -19,12 +19,12 @@ namespace Kephas.Application
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Licensing;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
-    /// An application application runtime loading dynamically assemblies from the application localtion.
+    /// An application application runtime loading dynamically assemblies from the application location.
     /// </summary>
     public class DynamicAppRuntime : AppRuntimeBase
     {
@@ -32,7 +32,6 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="DynamicAppRuntime"/> class.
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appFolder">Optional. The application location.</param>
@@ -46,7 +45,6 @@ namespace Kephas.Application
         /// <param name="getLocations">Optional. Function for getting application locations.</param>
         public DynamicAppRuntime(
             Func<string, ILogger>? getLogger = null,
-            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             IEnumerable<Assembly>? appAssemblies = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
@@ -58,7 +56,7 @@ namespace Kephas.Application
             string? appVersion = null,
             IDynamic? appArgs = null,
             Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
-            : base(getLogger, checkLicense, appAssemblies, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
+            : base(getLogger, appAssemblies, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
         {
         }
 

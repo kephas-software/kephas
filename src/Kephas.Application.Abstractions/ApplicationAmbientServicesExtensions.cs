@@ -12,9 +12,7 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Cryptography;
     using Kephas.IO;
-    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -51,16 +49,6 @@ namespace Kephas
 
             return ambientServices;
         }
-
-        /// <summary>
-        /// Gets the licensing manager.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// The licensing manager.
-        /// </returns>
-        public static ILicensingManager GetLicensingManager(this IAmbientServices ambientServices) =>
-            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<ILicensingManager>();
 
         /// <summary>
         /// Gets the locations manager.
@@ -107,7 +95,6 @@ namespace Kephas
 
             var appRuntime = new DynamicAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
-                (appid, ctx) => ambientServices.GetLicensingManager().CheckLicense(appid, ctx),
                 null,
                 assemblyFilter,
                 appFolder,
@@ -159,7 +146,6 @@ namespace Kephas
 
             var appRuntime = new StaticAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
-                (appid, ctx) => ambientServices.GetLicensingManager().CheckLicense(appid, ctx),
                 null,
                 assemblyFilter,
                 appFolder,
@@ -172,46 +158,6 @@ namespace Kephas
                 getLocations: (name, basePath, relativePaths) => ambientServices.GetLocationsManager().GetLocations(relativePaths, basePath, name));
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
-        }
-
-        /// <summary>
-        /// Sets the licensing manager to the ambient services.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="licensingManager">The licensing manager.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices WithLicensingManager(this IAmbientServices ambientServices, ILicensingManager licensingManager)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            licensingManager = licensingManager ?? throw new ArgumentNullException(nameof(licensingManager));
-
-            ambientServices.Register(licensingManager);
-
-            return ambientServices;
-        }
-
-        /// <summary>
-        /// Sets the default licensing manager to the ambient services.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="encryptionService">The encryption service.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices WithDefaultLicensingManager(this IAmbientServices ambientServices, IEncryptionService encryptionService)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
-
-            const string LicenseRepositoryKey = "__LicenseRepository";
-            ambientServices.Register<ILicensingManager>(new DefaultLicensingManager(appid =>
-                ((ambientServices[LicenseRepositoryKey] as ILicenseRepository)
-                 ?? (ILicenseRepository)(ambientServices[LicenseRepositoryKey] = new LicenseRepository(ambientServices.GetAppRuntime()!, encryptionService)))
-                .GetLicenseData(appid)));
-
-            return ambientServices;
         }
     }
 }

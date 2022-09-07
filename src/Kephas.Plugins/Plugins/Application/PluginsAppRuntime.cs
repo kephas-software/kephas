@@ -19,7 +19,6 @@ namespace Kephas.Plugins.Application
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Plugins.Resources;
     using Kephas.Services;
@@ -50,7 +49,6 @@ namespace Kephas.Plugins.Application
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the current
@@ -68,7 +66,6 @@ namespace Kephas.Plugins.Application
         /// <param name="getLocations">Optional. Function for getting application locations.</param>
         public PluginsAppRuntime(
             Func<string, ILogger>? getLogger = null,
-            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             IEnumerable<Assembly>? appAssemblies = null,
             Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
@@ -83,7 +80,7 @@ namespace Kephas.Plugins.Application
             string? pluginsFolder = null,
             IPluginRepository? pluginRepository = null,
             Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
-            : base(getLogger, checkLicense, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
+            : base(getLogger, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));
@@ -270,7 +267,7 @@ namespace Kephas.Plugins.Application
             try
             {
                 var licenseState = this.CheckLicense(pluginIdentity, null);
-                if (!licenseState.IsLicensed)
+                if (!licenseState.Value)
                 {
                     this.Logger.Warn(
                         "Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.",
@@ -278,7 +275,7 @@ namespace Kephas.Plugins.Application
                         licenseState.Messages.Select(m => m.Message).ToArray());
                 }
 
-                return licenseState.IsLicensed;
+                return licenseState.Value;
             }
             catch (Exception ex)
             {

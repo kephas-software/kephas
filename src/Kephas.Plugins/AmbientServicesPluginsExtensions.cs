@@ -15,7 +15,6 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.Licensing;
     using Kephas.Plugins.Application;
 
     /// <summary>
@@ -61,20 +60,19 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new PluginsAppRuntime(
-                    name => ambientServices.LogManager.GetLogger(name),
-                    (appid, ctx) => ambientServices.GetLicensingManager().CheckLicense(appid, ctx),
-                    null,
-                    assemblyFilter,
-                    appFolder,
-                    configFolders,
-                    licenseFolders,
-                    isRoot,
-                    appId,
-                    appInstanceId,
-                    appVersion,
-                    appArgs,
-                    enablePlugins,
-                    pluginsFolder);
+                name => ambientServices.LogManager.GetLogger(name),
+                null,
+                assemblyFilter,
+                appFolder,
+                configFolders,
+                licenseFolders,
+                isRoot,
+                appId,
+                appInstanceId,
+                appVersion,
+                appArgs,
+                enablePlugins,
+                pluginsFolder);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }

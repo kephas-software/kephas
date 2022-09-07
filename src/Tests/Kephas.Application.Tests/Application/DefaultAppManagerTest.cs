@@ -226,9 +226,9 @@ namespace Kephas.Tests.Application
 
             IEnumerable<IFeatureInfo> features = new List<IFeatureInfo>();
             var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.When(a => a[ApplicationAppRuntimeExtensions.FeaturesKey] = Arg.Any<object>())
+            appRuntime.When(a => a[ApplicationAppRuntimeExtensions.FeaturesToken] = Arg.Any<object>())
                 .Do(ci => features = (IEnumerable<IFeatureInfo>)ci.Arg<object>());
-            appRuntime[ApplicationAppRuntimeExtensions.FeaturesKey].Returns(features);
+            appRuntime[ApplicationAppRuntimeExtensions.FeaturesToken].Returns(features);
             var appManager = new DefaultAppManager(
                 appRuntime,
                 this.GetInjector(),
