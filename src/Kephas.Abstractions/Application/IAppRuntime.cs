@@ -12,9 +12,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     using Kephas.Dynamic;
     using Kephas.IO;
@@ -121,24 +119,6 @@ namespace Kephas.Application
         /// An enumeration of application assemblies.
         /// </returns>
         IEnumerable<Assembly> GetAppAssemblies();
-
-        /// <summary>
-        /// Attempts to load an assembly from its given assembly name.
-        /// </summary>
-        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
-        /// <returns>
-        /// The resolved assembly reference.
-        /// </returns>
-        Assembly LoadAssemblyFromName(AssemblyName assemblyName);
-
-        /// <summary>
-        /// Attempts to load an assembly from the provided path.
-        /// </summary>
-        /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
-        /// <returns>
-        /// The resolved assembly reference.
-        /// </returns>
-        Assembly LoadAssemblyFromPath(string assemblyFilePath);
 
         /// <summary>
         /// Gets the identifier of the application.
