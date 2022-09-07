@@ -101,7 +101,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_with_default_filter()
         {
-            var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
+            var ambientServices = this.CreateAmbientServices()
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(asm => asm.Name.StartsWith("Kephas")));
             var appServicesInfos = new List<ContractDeclaration>
             {
                 new (typeof(int), Substitute.For<IAppServiceInfo>()),

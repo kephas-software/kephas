@@ -10,3 +10,21 @@
 * Breaking change: Moved ``IAmbientServices.GetAppRuntime()`` extension method from ``ApplicationAmbientServicesExtensions`` to ``InjectionAmbientServicesExtensions``.
 * Breaking change: Moved the ``Licensing`` area to its own package: [Kephas.Licensing](https://www.nuget.org/packages/Kephas.Licensing).
 * Breaking change: ``AppRuntimeBase`` will not use the ``checkLicence`` callback in the constructor. Instead, the ``With*LicenceManager`` extension methods will add the check licence callback in the ``Kephas.Licensing`` package.
+  * Example:
+```csharp
+// custom licensing manager
+var licensingManager = new MyLicensingManager();
+
+// custom and setup
+ambientServices.Register(licensingManager);
+ambientServices.GetAppRuntime()
+    .OnCheckLicense((appid, context) => licensingManager.CheckLicense(appid, context));
+
+// alternative to the previous block, use the WithLicensingManager() extension method
+ambientServices.WithLicensingManager(licensingManager);
+```
+* Breaking change: ``AppRuntimeBase`` will not use the ``assemblyFilter`` callback in the constructor. Instead, use the ``OnGetAppAssembliesFilter`` extension methods to specify the assembly filter callback.
+  * Example
+```csharp
+ambientServices.WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(an => !this.IsTestAssembly(an)));
+```

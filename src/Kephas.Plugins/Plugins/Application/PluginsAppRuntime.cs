@@ -50,7 +50,6 @@ namespace Kephas.Plugins.Application
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
-        /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
@@ -67,7 +66,6 @@ namespace Kephas.Plugins.Application
         public PluginsAppRuntime(
             Func<string, ILogger>? getLogger = null,
             IEnumerable<Assembly>? appAssemblies = null,
-            Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
@@ -80,7 +78,7 @@ namespace Kephas.Plugins.Application
             string? pluginsFolder = null,
             IPluginRepository? pluginRepository = null,
             Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
-            : base(getLogger, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
+            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));

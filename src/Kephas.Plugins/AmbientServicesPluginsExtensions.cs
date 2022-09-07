@@ -26,7 +26,6 @@ namespace Kephas
         /// Sets the plugins-enabled application runtime to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the assembly
         ///                           location is used.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
@@ -44,7 +43,6 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithPluginsAppRuntime(
             this IAmbientServices ambientServices,
-            Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
@@ -62,7 +60,6 @@ namespace Kephas
             var appRuntime = new PluginsAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
                 null,
-                assemblyFilter,
                 appFolder,
                 configFolders,
                 licenseFolders,

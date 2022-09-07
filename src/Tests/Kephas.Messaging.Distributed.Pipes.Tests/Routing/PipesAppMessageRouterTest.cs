@@ -113,8 +113,8 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
                     appId: masterId,
-                    appInstanceId: masterInstanceId,
-                    defaultAssemblyFilter: this.IsNotTestAssembly));
+                    appInstanceId: masterInstanceId)
+                        .OnGetAppAssembliesFilter(this.IsNotTestAssembly));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
@@ -128,8 +128,8 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
-                    appInstanceId: slaveInstanceId,
-                    defaultAssemblyFilter: this.IsNotTestAssembly));
+                    appInstanceId: slaveInstanceId)
+                        .OnGetAppAssembliesFilter(this.IsNotTestAssembly));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });

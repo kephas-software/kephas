@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_app_manager()
         {
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(an => !this.IsTestAssembly(an));
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(an => !this.IsTestAssembly(an)));
 
             ambientServices.BuildWithLite();
 
@@ -64,7 +64,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_closed_generic_dependency()
         {
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly);
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(this.IsAppAssembly));
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric), typeof(IntGenericDepedent) }));
 
@@ -76,7 +76,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_closed_generic_with_non_generic_contract_metadata()
         {
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly);
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(this.IsAppAssembly));
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(IntGenericSvc) }));
 
@@ -88,7 +88,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_disposable_closed_generic_with_non_generic_contract_metadata()
         {
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly);
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(this.IsAppAssembly));
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(DisposableIntGenericSvc) }));
 
@@ -100,7 +100,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         public void BuildWithLite_multi_service_with_no_implementations()
         {
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly);
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(this.IsAppAssembly));
 
             ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IMultiService) }));
 
@@ -113,7 +113,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         {
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly)
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(this.IsAppAssembly))
                 .Register<IDisposable>(disposable);
 
             ambientServices.BuildWithLite();
@@ -127,7 +127,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
         {
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(this.IsAppAssembly)
+                .WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(this.IsAppAssembly))
                 .Register<IDisposable>(disposable, b => b.ExternallyOwned());
 
             ambientServices.BuildWithLite();

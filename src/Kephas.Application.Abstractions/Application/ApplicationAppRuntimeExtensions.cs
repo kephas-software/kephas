@@ -8,14 +8,17 @@
 namespace Kephas.Application;
 
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Kephas.Application.Reflection;
+using Kephas.Reflection;
 
 /// <summary>
 /// Extension methods for <see cref="IAppRuntime"/>.
 /// </summary>
 public static class ApplicationAppRuntimeExtensions
 {
+    private const string GetAppAssemblyFilterToken = $"__{nameof(GetAppAssemblyFilterToken)}";
     internal const string FeaturesToken = $"__{nameof(FeaturesToken)}";
 
     /// <summary>
@@ -48,6 +51,41 @@ public static class ApplicationAppRuntimeExtensions
         }
 
         return appRuntime.GetFeatures().Any(f => string.Equals(f.Name, featureName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// Sets the callback for filtering the assemblies.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="IAppRuntime"/> type.</typeparam>
+    /// <param name="appRuntime">The application runtime.</param>
+    /// <param name="assemblyFilter">The assembly filter.</param>
+    /// <returns>The provided application runtime.</returns>
+    public static T OnGetAppAssembliesFilter<T>(this T appRuntime, Func<AssemblyName, bool> assemblyFilter)
+        where T : IAppRuntime
+    {
+        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+        assemblyFilter = assemblyFilter ?? throw new ArgumentNullException(nameof(assemblyFilter));
+
+        appRuntime[GetAppAssemblyFilterToken] = assemblyFilter;
+
+        return appRuntime;
+    }
+
+    /// <summary>
+    /// Gets the callback for filtering the assemblies.
+    /// </summary>
+    /// <param name="appRuntime">The application runtime.</param>
+    /// <returns>The assembly filter.</returns>
+    public static Func<AssemblyName, bool> GetAssemblyFilter(this IAppRuntime appRuntime)
+    {
+        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+
+        if (appRuntime[GetAppAssemblyFilterToken] is Func<AssemblyName, bool> assemblyFilter)
+        {
+            return assemblyFilter;
+        }
+
+        return a => !a.IsSystemAssembly();
     }
 
     /// <summary>

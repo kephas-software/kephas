@@ -61,9 +61,8 @@ namespace Kephas.Testing
         /// </returns>
         protected virtual IAppRuntime CreateDefaultAppRuntime(ILogManager logManager)
         {
-            var appRuntime = new StaticAppRuntime(
-                                         logManager.GetLogger,
-                                         defaultAssemblyFilter: this.IsNotTestAssembly);
+            var appRuntime = new StaticAppRuntime(logManager.GetLogger)
+                .OnGetAppAssembliesFilter(this.IsNotTestAssembly);
             return appRuntime;
         }
 

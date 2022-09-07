@@ -67,7 +67,6 @@ namespace Kephas
         /// properly configured before using this method.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="licenseFolders">Optional. The license folders.</param>
@@ -81,7 +80,6 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithDynamicAppRuntime(
             this IAmbientServices ambientServices,
-            Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
@@ -96,7 +94,6 @@ namespace Kephas
             var appRuntime = new DynamicAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
                 null,
-                assemblyFilter,
                 appFolder,
                 configFolders,
                 licenseFolders,
@@ -118,7 +115,6 @@ namespace Kephas
         /// properly configured before using this method.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="licenseFolders">Optional. The license folders.</param>
@@ -132,7 +128,6 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices WithStaticAppRuntime(
             this IAmbientServices ambientServices,
-            Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
@@ -147,7 +142,6 @@ namespace Kephas
             var appRuntime = new StaticAppRuntime(
                 name => ambientServices.LogManager.GetLogger(name),
                 null,
-                assemblyFilter,
                 appFolder,
                 configFolders,
                 licenseFolders,

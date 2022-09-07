@@ -60,8 +60,6 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
-        /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
-        ///                                     assemblies.</param>
         /// <param name="appFolder">Optional. The application folder. If not specified, the current
         ///                           application location is considered.</param>
         /// <param name="configFolders">Optional. The configuration folders relative to the application
@@ -77,7 +75,6 @@ namespace Kephas.Application
         protected AppRuntimeBase(
             Func<string, ILogger>? getLogger = null,
             IEnumerable<Assembly>? appAssemblies = null,
-            Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
@@ -93,7 +90,6 @@ namespace Kephas.Application
                 ? new AppArgs()
                 : appArgs as IAppArgs ?? new AppArgs(appArgs);
             this.getLogger = getLogger ?? NullLogManager.GetNullLogger;
-            this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appAssemblies = appAssemblies;
             this.appFolder = appFolder;
             this.configFolders = configFolders;
@@ -139,14 +135,6 @@ namespace Kephas.Application
         /// Gets a function for getting application locations.
         /// </summary>
         protected Func<string, string, IEnumerable<string>, ILocations> GetLocations { get; }
-
-        /// <summary>
-        /// Gets the assembly filter.
-        /// </summary>
-        /// <value>
-        /// The assembly filter.
-        /// </value>
-        protected Func<AssemblyName, bool> AssemblyFilter { get; }
 
         /// <summary>
         /// Gets the initialization monitor.
@@ -243,7 +231,7 @@ namespace Kephas.Application
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
-            var assemblyFilter = this.AssemblyFilter;
+            var assemblyFilter = this.GetAssemblyFilter();
             var assemblies = this.assemblyResolutionCache.GetOrAdd(
                 (object)assemblyFilter ?? this,
                 _ => this.ComputeAppAssemblies(assemblyFilter!));
