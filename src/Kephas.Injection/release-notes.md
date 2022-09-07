@@ -12,3 +12,6 @@
 * Breaking change: Renamed ``IEnabledServiceCollection`` to ``IEnabledEnumerable`` to preserve consistency.
 * Breaking change: Renamed ``IEnabledLazyServiceCollection`` to ``IEnabledLazyEnumerable`` to preserve consistency.
 * Breaking change: Renamed ``IEnabledServiceFactoryCollection`` to ``IEnabledFactoryEnumerable`` to preserve consistency.
+* Breaking change: Removed ``IAmbientServices.GetAppAssemblies()``. Use instead ``IAmbientServices.GetAppRuntime().GetAppAssemblies()``.
+* NEW: Added ``IInjectionBuildContext.GetAppAssemblies(): IEnumerable<Assembly>``.
+

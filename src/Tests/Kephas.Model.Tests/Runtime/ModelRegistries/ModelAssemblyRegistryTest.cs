@@ -60,7 +60,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var appRuntime = Substitute.For<IAmbientServices>();
+            var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { typeof(ModelAssemblyRegistry).Assembly });
@@ -74,7 +74,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_exclude_from_model()
         {
-            var appRuntime = Substitute.For<IAmbientServices>();
+            var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { typeof(ModelAssemblyRegistryTest).Assembly });

@@ -221,8 +221,7 @@ namespace Kephas.Injection.Builder
             return this.WithStopwatch(
                 () =>
                 {
-                    var rawAssemblies = this.BuildContext.AmbientServices.GetAppAssemblies()
-                                        ?? new List<Assembly>();
+                    var rawAssemblies = this.BuildContext.GetAppAssemblies();
                     var appAssemblies = this.WhereNotSystemAssemblies(rawAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))

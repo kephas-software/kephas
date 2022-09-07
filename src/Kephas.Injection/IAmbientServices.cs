@@ -59,12 +59,5 @@ namespace Kephas
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
         public IAmbientServices RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null);
-
-        /// <summary>
-        /// Gets the application assemblies.
-        /// </summary>
-        /// <returns>An enumeration of application assemblies.</returns>
-        public IEnumerable<Assembly> GetAppAssemblies()
-            => AppDomain.CurrentDomain.GetAssemblies();
     }
 }

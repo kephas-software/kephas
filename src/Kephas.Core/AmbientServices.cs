@@ -103,13 +103,6 @@ namespace Kephas
         IAppServiceRegistry IAmbientServicesMixin.ServiceRegistry => this.registry;
 
         /// <summary>
-        /// Gets the application assemblies.
-        /// </summary>
-        /// <returns>An enumeration of application assemblies.</returns>
-        public IEnumerable<Assembly> GetAppAssemblies()
-            => this.GetAppRuntime()?.GetAppAssemblies() ?? Enumerable.Empty<Assembly>();
-
-        /// <summary>
         /// Gets the application service infos in this collection.
         /// </summary>
         /// <param name="context">Optional. The context in which the service types are requested.</param>

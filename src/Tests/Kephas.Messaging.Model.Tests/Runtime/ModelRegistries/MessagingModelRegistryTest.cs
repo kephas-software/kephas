@@ -37,7 +37,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync()
         {
-            var appRuntime = Substitute.For<IAmbientServices>();
+            var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -57,7 +57,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_ExcludeFromModel()
         {
-            var appRuntime = Substitute.For<IAmbientServices>();
+            var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });

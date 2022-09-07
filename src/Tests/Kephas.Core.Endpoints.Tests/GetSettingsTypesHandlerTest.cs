@@ -27,7 +27,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync()
         {
-            var appRuntime = Substitute.For<IAmbientServices>();
+            var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { typeof(CoreSettings).Assembly });

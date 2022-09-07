@@ -92,7 +92,8 @@ namespace Kephas.Application.AspNetCore.Hosting
 
             try
             {
-                foreach (var configurator in this.GetServicesConfigurators(ambientServices))
+                var appRuntime = ambientServices.GetAppRuntime();
+                foreach (var configurator in this.GetServicesConfigurators(appRuntime))
                 {
                     configurator(services, ambientServices);
                 }
@@ -190,10 +191,10 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <summary>
         /// Gets the services configurators.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <returns>An enumeration of services configurator callbacks.</returns>
-        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
-            => ambientServices.GetServicesConfigurators()
+        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAppRuntime appRuntime)
+            => appRuntime.GetServicesConfigurators()
                 .Select(this.GetServicesConfiguratorAction);
 
         /// <summary>

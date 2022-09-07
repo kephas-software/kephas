@@ -35,6 +35,12 @@ namespace Kephas.Injection.Builder
         IList<Assembly> Assemblies { get; }
 
         /// <summary>
+        /// Gets the application assemblies.
+        /// </summary>
+        /// <returns>An enumeration of assemblies.</returns>
+        IEnumerable<Assembly> GetAppAssemblies();
+
+        /// <summary>
         /// Gets the injection settings.
         /// </summary>
         InjectionSettings Settings { get; }

@@ -26,17 +26,17 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     public class GetSettingsTypesHandler : MessageHandlerBase<GetSettingsTypesMessage, GetSettingsTypesResponseMessage>
     {
-        private readonly IAmbientServices ambientServices;
+        private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSettingsTypesHandler"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
-        public GetSettingsTypesHandler(IAmbientServices ambientServices, ITypeLoader typeLoader)
+        public GetSettingsTypesHandler(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
-            this.ambientServices = ambientServices;
+            this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;
         }
 
@@ -53,7 +53,7 @@ namespace Kephas.Core.Endpoints
         {
             await Task.Yield();
 
-            var settingsTypes = this.ambientServices.GetAppAssemblies()
+            var settingsTypes = this.appRuntime.GetAppAssemblies()
                 .SelectMany(a => this.typeLoader.GetExportedTypes(a)
                         .Where(t => typeof(ISettings).IsAssignableFrom(t) && !t.IsAbstract))
                 .ToList();

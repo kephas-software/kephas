@@ -14,6 +14,7 @@ namespace Kephas.Injection.Builder
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Injection.Configuration;
     using Kephas.Services;
 
@@ -47,6 +48,15 @@ namespace Kephas.Injection.Builder
         /// Gets the list of assemblies used in injection.
         /// </summary>
         public IList<Assembly> Assemblies { get; }
+
+        /// <summary>
+        /// Gets the application assemblies.
+        /// </summary>
+        /// <returns>An enumeration of assemblies.</returns>
+        public IEnumerable<Assembly> GetAppAssemblies()
+        {
+            return this.AmbientServices.GetAppRuntime().GetAppAssemblies();
+        }
 
         /// <summary>
         /// Gets the injection settings.
