@@ -50,6 +50,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "Kephas.Injection.Autofac",
     "Kephas.Injection.Lite",
     "Kephas.Interaction",
+    "Kephas.Licensing",
     "Kephas.Logging",
     "Kephas.Logging.Log4Net",
     "Kephas.Logging.NLog",
