@@ -118,6 +118,7 @@
 		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
 		<ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
 		<ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
+		<ProjectReference Include="..\Kephas.Licensing\Kephas.Licensing.csproj" />
 		<ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
 		<ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
 		<ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
