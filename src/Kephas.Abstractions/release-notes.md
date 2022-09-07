@@ -22,6 +22,7 @@
     * ```GetAppInstanceId```.
     * ```GetFullPath```.
   * Breaking change: Removed the filter parameter from ``IAppRuntime.GetAppAssemblies()``. Reason: was not used.
+  * Breaking change: Removed ``IAppRuntime.LoadAssembly*`` methods, used only in the implementation.
 
 * Dynamic
   * Breaking change: ```ExpandoBase<T>``` is now generic, introducing the possibility of supporting ```IDictionary<string, T>```.
