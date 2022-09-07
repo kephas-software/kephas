@@ -11,6 +11,7 @@ namespace Kephas
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Services;
@@ -316,6 +317,16 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// The application runtime.
+        /// </returns>
+        public static IAppRuntime GetAppRuntime(this IAmbientServices ambientServices) =>
+            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<IAppRuntime>();
+
+        /// <summary>
         /// Gets the registered application service contracts.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
@@ -327,8 +338,7 @@ namespace Kephas
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            return ambientServices[AppServiceInfosKey] as IEnumerable<ContractDeclaration>
-                   ?? Array.Empty<ContractDeclaration>();
+            return ambientServices[AppServiceInfosKey] as IEnumerable<ContractDeclaration> ?? Array.Empty<ContractDeclaration>();
         }
 
         /// <summary>

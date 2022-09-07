@@ -245,18 +245,17 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="assemblyFilter">Optional. A filter for the assemblies.</param>
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
-        public virtual IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool>? assemblyFilter = null)
+        public virtual IEnumerable<Assembly> GetAppAssemblies()
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
-            assemblyFilter ??= this.AssemblyFilter;
+            var assemblyFilter = this.AssemblyFilter;
             var assemblies = this.assemblyResolutionCache.GetOrAdd(
                 (object)assemblyFilter ?? this,
                 _ => this.ComputeAppAssemblies(assemblyFilter!));

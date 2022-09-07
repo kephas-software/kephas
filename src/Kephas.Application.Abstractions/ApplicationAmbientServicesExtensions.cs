@@ -213,15 +213,5 @@ namespace Kephas
 
             return ambientServices;
         }
-
-        /// <summary>
-        /// Gets the application runtime.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// The application runtime.
-        /// </returns>
-        public static IAppRuntime? GetAppRuntime(this IAmbientServices ambientServices) =>
-            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetService<IAppRuntime>();
     }
 }

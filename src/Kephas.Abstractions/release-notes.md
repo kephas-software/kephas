@@ -21,6 +21,7 @@
     * ```IsDevelopment```. Breaking change: Named changed to ```IsDevelopmentEnvironment```.
     * ```GetAppInstanceId```.
     * ```GetFullPath```.
+  * Breaking change: Removed the filter parameter from ``IAppRuntime.GetAppAssemblies()``. Reason: was not used.
 
 * Dynamic
   * Breaking change: ```ExpandoBase<T>``` is now generic, introducing the possibility of supporting ```IDictionary<string, T>```.

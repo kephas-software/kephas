@@ -117,11 +117,10 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
-        IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool>? assemblyFilter = null);
+        IEnumerable<Assembly> GetAppAssemblies();
 
         /// <summary>
         /// Attempts to load an assembly from its given assembly name.

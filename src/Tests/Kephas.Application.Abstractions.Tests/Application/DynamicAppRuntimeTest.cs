@@ -25,7 +25,7 @@ namespace Kephas.Application.Tests.Application
         {
             var appEnv = new DynamicAppRuntime();
             ServiceHelper.Initialize(appEnv);
-            var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains") && !n.FullName.StartsWith("ReSharper"));
+            var assemblies = appEnv.GetAppAssemblies().Where(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains") && !n.FullName.StartsWith("ReSharper"));
             var assemblyList = assemblies.ToList();
 
             Assert.AreEqual(16, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));

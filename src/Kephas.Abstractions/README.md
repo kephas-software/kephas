@@ -10,12 +10,12 @@ Check the following packages for more information:
 * [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 
 Typically used areas and classes/interfaces/services:
+* Application: ``IAppRuntime``, ``AppIdentity``, ``IAppArgs``, ``AppArgs``.
 * Commands: ```CommandInfo```, ```IArgs```, ```Args```.
 * Logging: ```ILogManager```, ```ILogger```.
 * Reflection: ```IPrototype```.
 * Serialization: ```ExcludeFromSerializationAttribute```.
 * Threading.Tasks: ```PreserveThreadContext``` extension method.
-* Versioning: ```SemanticVersion```.
 
 ## Logging
 The logging abstractions provide implementation agnostic logging contracts.
