@@ -8,3 +8,4 @@
 * Added ``README.md`` and ``release-notes.md``.
 * Breaking change: Removed the filter parameter from ``AppRuntimeBase.GetAppAssemblies()``. Reason: was not used.
 * Breaking change: Moved ``IAmbientServices.GetAppRuntime()`` extension method from ``ApplicationAmbientServicesExtensions`` to ``InjectionAmbientServicesExtensions``.
+* Breaking change: Moved the ``Licensing`` area to its own package: [Kephas.Licensing](https://www.nuget.org/packages/Kephas.Licensing).

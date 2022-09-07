@@ -15,6 +15,7 @@ namespace Kephas.Licensing
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -24,34 +25,6 @@ namespace Kephas.Licensing
     public class NullLicensingManager : ILicensingManager
     {
         /// <summary>
-        /// Checks the license for the provided application identity asynchronously.
-        /// </summary>
-        /// <param name="appId">Identifier for the application.</param>
-        /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result that yields the check license result.
-        /// </returns>
-        public Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appId, IContext? context = null, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult<ILicenseCheckResult>(new LicenseCheckResult(appId, true));
-        }
-
-        /// <summary>
-        /// Gets the license for the provided application identity asynchronously.
-        /// </summary>
-        /// <param name="appIdentity">Identifier for the application.</param>
-        /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result that yields the license data.
-        /// </returns>
-        public virtual Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult<LicenseData?>(this.GetLicenseData(appIdentity));
-        }
-
-        /// <summary>
         /// Gets the app licensing state.
         /// </summary>
         /// <param name="appId">Identifier for the application.</param>
@@ -59,10 +32,8 @@ namespace Kephas.Licensing
         /// <returns>
         /// The licensing state.
         /// </returns>
-        public ILicenseCheckResult CheckLicense(AppIdentity appId, IContext? context = null)
-        {
-            return new LicenseCheckResult(appId, true);
-        }
+        public IOperationResult<bool> CheckLicense(AppIdentity appId, IContext? context = null) =>
+            new OperationResult<bool>(true);
 
         /// <summary>
         /// Gets the license for the provided application identity.
@@ -72,10 +43,8 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license data.
         /// </returns>
-        public LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null)
-        {
-            return this.GetLicenseData(appIdentity);
-        }
+        public LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null) =>
+            this.GetLicenseData(appIdentity);
 
         private LicenseData? GetLicenseData(AppIdentity appIdentity)
         {

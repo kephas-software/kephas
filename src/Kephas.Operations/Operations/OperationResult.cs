@@ -21,7 +21,6 @@ namespace Kephas.Operations
     using Kephas.Collections;
     using Kephas.Data.Formatting;
     using Kephas.Dynamic;
-    using Kephas.ExceptionHandling;
 
     /// <summary>
     /// Encapsulates the result of an operation.

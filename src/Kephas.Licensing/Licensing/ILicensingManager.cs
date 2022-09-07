@@ -14,6 +14,7 @@ namespace Kephas.Licensing
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -31,7 +32,11 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the license check result.
         /// </returns>
-        Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<bool>> CheckLicenseAsync(
+            AppIdentity appIdentity,
+            IContext? context = null,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(this.CheckLicense(appIdentity, context));
 
         /// <summary>
         /// Gets the license for the provided application identity asynchronously.
@@ -42,7 +47,8 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the license data.
         /// </returns>
-        Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default);
+        Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
+            => Task.FromResult(this.GetLicense(appIdentity, context));
 
         /// <summary>
         /// Checks the license for the provided application identity.
@@ -52,10 +58,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null)
-        {
-            return this.CheckLicenseAsync(appIdentity, context).GetResultNonLocking();
-        }
+        IOperationResult<bool> CheckLicense(AppIdentity appIdentity, IContext? context = null);
 
         /// <summary>
         /// Gets the license for the provided application identity.

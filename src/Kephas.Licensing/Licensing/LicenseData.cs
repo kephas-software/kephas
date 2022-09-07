@@ -15,64 +15,31 @@ namespace Kephas.Licensing
     using System.Linq;
 
     using Kephas.Data;
+    using Kephas.Licensing.Resources;
 
     /// <summary>
     /// Class storing license data.
     /// </summary>
-    public sealed class LicenseData : ICloneable, IIdentifiable
+    /// <param name="Id">Gets the license identifier.</param>
+    /// <param name="AppId">Gets the regular expression matching the identifier of the application.</param>
+    /// <param name="AppVersionRange">Gets the application version range.</param>
+    /// <param name="LicenseType">Gets the type of the license.</param>
+    /// <param name="LicensedTo">Gets the entity the license is assigned to.</param>
+    /// <param name="LicensedBy">Gets the entity that issued this license.</param>
+    public sealed record LicenseData(
+        string Id,
+        string AppId,
+        string AppVersionRange,
+        string LicenseType,
+        string LicensedTo,
+        string LicensedBy,
+        DateTime? ValidFrom = null,
+        DateTime? ValidTo = null,
+        IDictionary<string, string?>? Data = null) : IIdentifiable
     {
         private const int ParseChecksumInvalidCode = 3;
         private const int ChecksumInvalidCode = 100;
         private const string DateTimeFormat = "yyyy-MM-dd";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LicenseData"/> class.
-        /// </summary>
-        /// <param name="id">The license identifier.</param>
-        /// <param name="appId">The regular expression matching the identifier of the application.</param>
-        /// <param name="appVersionRange">The application version range.</param>
-        /// <param name="licenseType">The type of the license.</param>
-        /// <param name="licensedTo">The entity the application is licensed to.</param>
-        /// <param name="licensedBy">The entity that licensed the application.</param>
-        /// <param name="validFrom">Optional. The date the license is valid from.</param>
-        /// <param name="validTo">Optional. The date the license is valid to.</param>
-        /// <param name="data">Optional. The additional data associated with the license.</param>
-        public LicenseData(
-            string id,
-            string appId,
-            string appVersionRange,
-            string licenseType,
-            string licensedTo,
-            string licensedBy,
-            DateTime? validFrom = null,
-            DateTime? validTo = null,
-            IDictionary<string, string?>? data = null)
-        {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Argument must not be empty", nameof(id));
-            if (string.IsNullOrEmpty(appId)) throw new ArgumentException("Argument must not be empty", nameof(appId));
-            if (string.IsNullOrEmpty(appVersionRange)) throw new ArgumentException("Argument must not be empty", nameof(appVersionRange));
-            if (string.IsNullOrEmpty(licenseType)) throw new ArgumentException("Argument must not be empty", nameof(licenseType));
-            if (string.IsNullOrEmpty(licensedTo)) throw new ArgumentException("Argument must not be empty", nameof(licensedTo));
-            if (string.IsNullOrEmpty(licensedBy)) throw new ArgumentException("Argument must not be empty", nameof(licensedBy));
-
-            this.Id = id;
-            this.AppId = appId;
-            this.AppVersionRange = appVersionRange;
-            this.LicenseType = licenseType;
-            this.LicensedTo = licensedTo;
-            this.LicensedBy = licensedBy;
-            this.ValidFrom = validFrom;
-            this.ValidTo = validTo;
-            this.Data = data ?? new Dictionary<string, string?>();
-        }
-
-        /// <summary>
-        /// Gets the license identifier.
-        /// </summary>
-        /// <value>
-        /// The license identifier.
-        /// </value>
-        public string Id { get; }
 
         /// <summary>
         /// Gets the identifier for this instance.
@@ -83,12 +50,20 @@ namespace Kephas.Licensing
         object IIdentifiable.Id => this.Id;
 
         /// <summary>
+        /// Gets the license identifier.
+        /// </summary>
+        /// <value>
+        /// The license identifier.
+        /// </value>
+        public string Id { get; } = string.IsNullOrEmpty(Id) ? throw new ArgumentException(LicensingStrings.LicenseData_ArgumentMustNotBeEmpty, nameof(Id)) : Id;
+
+        /// <summary>
         /// Gets a regular expression matching the identifier of the application.
         /// </summary>
         /// <value>
         /// The regular expression matching identifier of the application.
         /// </value>
-        public string AppId { get; }
+        public string AppId { get; } = string.IsNullOrEmpty(AppId) ? throw new ArgumentException(LicensingStrings.LicenseData_ArgumentMustNotBeEmpty, nameof(AppId)) : AppId;
 
         /// <summary>
         /// Gets the application version range.
@@ -96,7 +71,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The application version range.
         /// </value>
-        public string AppVersionRange { get; }
+        public string AppVersionRange { get; } = string.IsNullOrEmpty(AppVersionRange) ? throw new ArgumentException(LicensingStrings.LicenseData_ArgumentMustNotBeEmpty, nameof(AppVersionRange)) : AppVersionRange;
 
         /// <summary>
         /// Gets the date from which the license is valid.
@@ -104,7 +79,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The valid from date.
         /// </value>
-        public DateTime? ValidFrom { get; }
+        public DateTime? ValidFrom { get; } = ValidFrom;
 
         /// <summary>
         /// Gets the date to which this license is valid.
@@ -112,7 +87,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The valid to date.
         /// </value>
-        public DateTime? ValidTo { get; }
+        public DateTime? ValidTo { get; } = ValidTo;
 
         /// <summary>
         /// Gets the entity that issued this license.
@@ -120,7 +95,7 @@ namespace Kephas.Licensing
         /// <value>
         /// Describes who issued this object.
         /// </value>
-        public string LicensedBy { get; }
+        public string LicensedBy { get; } = string.IsNullOrEmpty(LicensedBy) ? throw new ArgumentException(LicensingStrings.LicenseData_ArgumentMustNotBeEmpty, nameof(LicensedBy)) : LicensedBy;
 
         /// <summary>
         /// Gets the entity the license is assigned to.
@@ -128,7 +103,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The entity the license is assigned to.
         /// </value>
-        public string LicensedTo { get; }
+        public string LicensedTo { get; } = string.IsNullOrEmpty(LicensedTo) ? throw new ArgumentException(LicensingStrings.LicenseData_ArgumentMustNotBeEmpty, nameof(LicensedTo)) : LicensedTo;
 
         /// <summary>
         /// Gets the type of the license.
@@ -136,7 +111,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The type of the license.
         /// </value>
-        public string LicenseType { get; }
+        public string LicenseType { get; } = string.IsNullOrEmpty(LicenseType) ? throw new ArgumentException(LicensingStrings.LicenseData_ArgumentMustNotBeEmpty, nameof(LicenseType)) : LicenseType;
 
         /// <summary>
         /// Gets additional data associated with the license.
@@ -144,7 +119,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The additional data associated with the license.
         /// </value>
-        public IDictionary<string, string?> Data { get; }
+        public IDictionary<string, string?> Data { get; } = Data?.ToDictionary(kv => kv.Key, kv => kv.Value) ?? new Dictionary<string, string?>();
 
         /// <summary>
         /// Parses the license data from the provided string.
@@ -184,26 +159,6 @@ namespace Kephas.Licensing
         }
 
         /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        public object Clone()
-        {
-            return new LicenseData(
-                this.Id,
-                this.AppId,
-                this.AppVersionRange,
-                this.LicenseType,
-                this.LicensedTo,
-                this.LicensedBy,
-                this.ValidFrom,
-                this.ValidTo,
-                this.Data.ToDictionary(kv => kv.Key, kv => kv.Value));
-        }
-
-        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -228,7 +183,7 @@ namespace Kephas.Licensing
                 return date.Date;
             }
 
-            throw new ArgumentException($"The provided date '{value}' has an invalid format.");
+            throw new ArgumentException(string.Format(LicensingStrings.LicenseData_TheProvidedDateHasAnInvalidFormat, value));
         }
 
         private static IDictionary<string, string?> DataParse(IEnumerable<string> values)
@@ -244,7 +199,7 @@ namespace Kephas.Licensing
                 var pos = value.IndexOf(':');
                 if (pos >= 0)
                 {
-                    data[value.Substring(0, pos)] = value.Substring(pos + 1);
+                    data[value[..pos]] = value[(pos + 1)..];
                 }
                 else
                 {
@@ -257,12 +212,9 @@ namespace Kephas.Licensing
 
         private static string DataToString(IDictionary<string, string?> data)
         {
-            if (data == null || data.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            return string.Join("\n", data.Select(kv => $"{kv.Key}:{kv.Value}"));
+            return data is { Count: not 0 }
+                ? string.Join("\n", data.Select(kv => $"{kv.Key}:{kv.Value}"))
+                : string.Empty;
         }
 
         private int GetChecksum()

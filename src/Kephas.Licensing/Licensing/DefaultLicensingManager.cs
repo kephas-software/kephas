@@ -13,8 +13,6 @@ namespace Kephas.Licensing
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Cryptography;
@@ -65,36 +63,20 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        public virtual ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null)
+        public virtual IOperationResult<bool> CheckLicense(AppIdentity appIdentity, IContext? context = null)
         {
             var licenses = this.GetLicenseData(appIdentity);
             var results = licenses.Select(l => this.CheckLicenseData(l, appIdentity, context));
-            var successful = results.FirstOrDefault(r => r.IsLicensed);
+            var successful = results.FirstOrDefault(r => r.Value);
             if (successful != null)
             {
                 return successful;
             }
 
             return results.Aggregate(
-                new LicenseCheckResult(appIdentity, false),
+                new OperationResult<bool>(false),
                 (acc, r) => acc.MergeMessages(r))
                 .Complete();
-        }
-
-        /// <summary>
-        /// Checks the license for the provided application identity asynchronously.
-        /// </summary>
-        /// <param name="appIdentity">Identifier for the application.</param>
-        /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result that yields the check license result.
-        /// </returns>
-        public virtual async Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
-        {
-            await Task.Yield();
-
-            return this.CheckLicense(appIdentity, context);
         }
 
         /// <summary>
@@ -108,23 +90,7 @@ namespace Kephas.Licensing
         public virtual LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null)
         {
             return this.GetLicenseData(appIdentity)
-                .FirstOrDefault(l => this.CheckLicenseData(l, appIdentity, context).IsLicensed);
-        }
-
-        /// <summary>
-        /// Gets the license for the provided application identity asynchronously.
-        /// </summary>
-        /// <param name="appIdentity">Identifier for the application.</param>
-        /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result that yields the license data.
-        /// </returns>
-        public virtual async Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
-        {
-            await Task.Yield();
-
-            return this.GetLicense(appIdentity, context);
+                .FirstOrDefault(l => this.CheckLicenseData(l, appIdentity, context).Value);
         }
 
         /// <summary>
@@ -146,16 +112,16 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        protected virtual ILicenseCheckResult CheckLicenseData(LicenseData? license, AppIdentity appIdentity, IContext? context = null)
+        protected virtual IOperationResult<bool> CheckLicenseData(LicenseData? license, AppIdentity appIdentity, IContext? context = null)
         {
             if (license == null)
             {
-                return new LicenseCheckResult(appIdentity, false)
+                return new OperationResult<bool>(false)
                     .MergeMessage($"Missing license for '{appIdentity}'.")
                     .Complete();
             }
 
-            var result = new LicenseCheckResult(appIdentity, false);
+            var result = new OperationResult<bool>(false);
             if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
             {
                 return result
