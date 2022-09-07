@@ -20,8 +20,9 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurato
     {
         public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
         {
+            var appRuntime = ambientServices.GetAppRuntime();
             services.AddControllersWithViews()
-                .ConfigureApplicationPartManager(ambientServices)
+                .ConfigureApplicationPartManager(appRuntime)
                 .AddNewtonsoftJson(opts => ambientServices.ConfigureJsonSerialization(opts.SerializerSettings));
             services.AddRazorPages();
 

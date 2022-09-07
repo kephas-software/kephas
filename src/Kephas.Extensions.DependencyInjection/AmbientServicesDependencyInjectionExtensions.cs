@@ -15,6 +15,7 @@ namespace Kephas
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Extensions.DependencyInjection.Hosting;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
@@ -50,11 +51,11 @@ namespace Kephas
         /// <summary>
         /// Gets the services configurators.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
-        public static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAmbientServices ambientServices)
+        public static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAppRuntime appRuntime)
         {
-            var appAssemblies = ambientServices.GetAppAssemblies();
+            var appAssemblies = appRuntime.GetAppAssemblies();
             var configuratorTypes = ServiceHelper.GetAppServiceInfosProviders(appAssemblies)
                 .SelectMany(p => p.GetAppServices(null))
                 .Where(t => t.ContractDeclarationType == typeof(IServicesConfigurator))
