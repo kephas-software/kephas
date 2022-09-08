@@ -22,7 +22,9 @@ So, there is no information whatsoever about who processes the message, only the
 # Messages
 
 The message is the content of communication. A message:
-* implements `IMessage`. This is only a marker interface so that messages may be identified as such and no other kind of objects are communicated.
+* typically implements `IMessage`, but it is only recommended. This is only a marker interface so that message types may be identified and used through reflection by other components.
+  * for example, a discovery system may identify the messages and provide documentation for them.
+  * messages not implementing `IMessage` are anonymous and cannot be discovered through reflection.
 * is serializable. This is somehow natural, as the communication may happen inter-processes and even across machines.
 
 ## Strongly typed and weakly typed messages
@@ -38,7 +40,7 @@ Events are a special case of messages targeting the _Publisher/Subscriber_ patte
 
 # Message handlers
 
-A message handler is an [[application service|Application Services]] processing a message of a given type and, optionally, name.
+A message handler is an application service processing a message of a given type and, optionally, name.
 * implements the `IMessageHandler<TMessage>` application service contract.
 * provides the `ProcessAsync` method where the message handling takes place.
   * `ProcessAsync(message: TMessage, context: IMessageProcessingContext, token: CancellationToken): Task<IMessage>`
