@@ -43,13 +43,13 @@ namespace Kephas.Application
         protected static readonly string AssemblyFileExtension = ".dll";
 
         private readonly Func<string, ILogger> getLogger;
-        private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache = new();
 
         private readonly string? appFolder;
         private readonly IEnumerable<string>? configFolders;
         private readonly IEnumerable<string>? licenseFolders;
         private readonly IEnumerable<Assembly>? appAssemblies;
 
+        private IEnumerable<Assembly>? assemblyCache;
         private string? appLocation;
         private ILocations? configLocations;
         private ILocations? licenseLocations;
@@ -228,15 +228,7 @@ namespace Kephas.Application
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            // TODO The assemblies from the current domain do not consider the not loaded
-            // but required referenced assemblies. Therefore load all the references recursively.
-            // This could be optimized somehow.
-            var assemblyFilter = this.GetAssemblyFilter();
-            var assemblies = this.assemblyResolutionCache.GetOrAdd(
-                (object)assemblyFilter ?? this,
-                _ => this.ComputeAppAssemblies(assemblyFilter!));
-
-            return assemblies;
+            return this.assemblyCache ??= this.ComputeAppAssemblies(this.IsAppAssembly);
         }
 
         /// <summary>

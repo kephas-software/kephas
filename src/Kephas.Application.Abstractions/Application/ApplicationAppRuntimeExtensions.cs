@@ -9,8 +9,10 @@ namespace Kephas.Application;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Kephas.Application.Reflection;
+using Kephas.IO;
 using Kephas.Reflection;
 
 /// <summary>
@@ -19,6 +21,7 @@ using Kephas.Reflection;
 public static class ApplicationAppRuntimeExtensions
 {
     private const string GetAppAssemblyFilterToken = $"__{nameof(GetAppAssemblyFilterToken)}";
+    private const string GetLocationsToken = $"__{nameof(GetLocationsToken)}";
     internal const string FeaturesToken = $"__{nameof(FeaturesToken)}";
 
     /// <summary>
@@ -54,13 +57,13 @@ public static class ApplicationAppRuntimeExtensions
     }
 
     /// <summary>
-    /// Sets the callback for filtering the assemblies.
+    /// Sets the callback for checking whether an assembly is an application-specific assembly.
     /// </summary>
     /// <typeparam name="T">The <see cref="IAppRuntime"/> type.</typeparam>
     /// <param name="appRuntime">The application runtime.</param>
     /// <param name="assemblyFilter">The assembly filter.</param>
     /// <returns>The provided application runtime.</returns>
-    public static T OnGetAppAssembliesFilter<T>(this T appRuntime, Func<AssemblyName, bool> assemblyFilter)
+    public static T OnIsAppAssembly<T>(this T appRuntime, Func<AssemblyName, bool> assemblyFilter)
         where T : IAppRuntime
     {
         appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
@@ -72,20 +75,39 @@ public static class ApplicationAppRuntimeExtensions
     }
 
     /// <summary>
-    /// Gets the callback for filtering the assemblies.
+    /// Gets a value indicating whether the assembly with the provided name is an application-specific assembly.
     /// </summary>
     /// <param name="appRuntime">The application runtime.</param>
+    /// <param name="assemblyName">The assembly name.</param>
     /// <returns>The assembly filter.</returns>
-    public static Func<AssemblyName, bool> GetAssemblyFilter(this IAppRuntime appRuntime)
+    public static bool IsAppAssembly(this IAppRuntime appRuntime, AssemblyName assemblyName)
     {
         appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
         if (appRuntime[GetAppAssemblyFilterToken] is Func<AssemblyName, bool> assemblyFilter)
         {
-            return assemblyFilter;
+            return assemblyFilter(assemblyName);
         }
 
-        return a => !a.IsSystemAssembly();
+        return !assemblyName.IsSystemAssembly();
+    }
+
+    /// <summary>
+    /// Sets the callback for filtering the assemblies.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="IAppRuntime"/> type.</typeparam>
+    /// <param name="appRuntime">The application runtime.</param>
+    /// <param name="getLocations">The callback for getting the locations.</param>
+    /// <returns>The provided application runtime.</returns>
+    public static T OnGetLocations<T>(this T appRuntime, Func<string, string, IEnumerable<string>, ILocations> getLocations)
+        where T : IAppRuntime
+    {
+        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+        getLocations = getLocations ?? throw new ArgumentNullException(nameof(getLocations));
+
+        appRuntime[GetLocationsToken] = getLocations;
+
+        return appRuntime;
     }
 
     /// <summary>

@@ -23,8 +23,10 @@ ambientServices.GetAppRuntime()
 // alternative to the previous block, use the WithLicensingManager() extension method
 ambientServices.WithLicensingManager(licensingManager);
 ```
-* Breaking change: ``AppRuntimeBase`` will not use the ``assemblyFilter`` callback in the constructor. Instead, use the ``OnGetAppAssembliesFilter`` extension methods to specify the assembly filter callback.
+* Breaking change: ``AppRuntimeBase`` will not use the ``assemblyFilter`` callback in the constructor. Instead, use the ``OnIsAppAssembly`` extension methods to specify the callback used for checking whether an assembly is an application-specific assembly.
   * Example
 ```csharp
-ambientServices.WithStaticAppRuntime(config: rt => rt.OnGetAppAssembliesFilter(an => !this.IsTestAssembly(an)));
+ambientServices.WithStaticAppRuntime(config: rt => rt.OnIsAppAssembly(an => !this.IsTestAssembly(an)));
+
+Assert.IsTrue(ambientServices.GetAppRuntime().IsAppAssembly(new AssemblyName("My.Tests")));
 ```

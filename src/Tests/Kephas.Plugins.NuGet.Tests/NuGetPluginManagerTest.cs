@@ -124,7 +124,7 @@ namespace Kephas.Plugins.NuGet.Tests
         private PluginsAppRuntime CreateAppRuntime(ILogManager logManager, string? pluginsPath = null)
         {
             var appRuntime = new PluginsAppRuntime(logManager.GetLogger, pluginsFolder: pluginsPath)
-                .OnGetAppAssembliesFilter(this.IsNotTestAssembly);
+                .OnIsAppAssembly(this.IsNotTestAssembly);
             return appRuntime;
         }
 

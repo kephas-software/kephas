@@ -49,7 +49,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
             ambientServices
                 .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
                 .WithDynamicAppRuntime(
-                    config: rt => rt.OnGetAppAssembliesFilter(asm => asm.Name.StartsWith("Kephas") || asm.Name.StartsWith("WebApp")),
+                    config: rt => rt.OnIsAppAssembly(asm => asm.Name.StartsWith("Kephas") || asm.Name.StartsWith("WebApp")),
                     isRoot: rootMode)
                 .WithSerilogManager(configuration);
 
