@@ -100,8 +100,7 @@ namespace Kephas
                 isRoot,
                 appId,
                 appInstanceId,
-                appVersion,
-                getLocations: (name, basePath, relativePaths) => ambientServices.GetLocationsManager().GetLocations(relativePaths, basePath, name));
+                appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }
@@ -148,8 +147,7 @@ namespace Kephas
                 isRoot,
                 appId,
                 appInstanceId,
-                appVersion,
-                getLocations: (name, basePath, relativePaths) => ambientServices.GetLocationsManager().GetLocations(relativePaths, basePath, name));
+                appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }

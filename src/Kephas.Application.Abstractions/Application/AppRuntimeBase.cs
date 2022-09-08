@@ -71,7 +71,6 @@ namespace Kephas.Application
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="getLocations">Optional. Function for getting application locations.</param>
         protected AppRuntimeBase(
             Func<string, ILogger>? getLogger = null,
             IEnumerable<Assembly>? appAssemblies = null,
@@ -82,8 +81,7 @@ namespace Kephas.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IDynamic? appArgs = null,
-            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
+            IDynamic? appArgs = null)
             : base(isThreadSafe: true)
         {
             this.AppArgs = appArgs == null
@@ -94,8 +92,6 @@ namespace Kephas.Application
             this.appFolder = appFolder;
             this.configFolders = configFolders;
             this.licenseFolders = licenseFolders;
-            this.GetLocations = getLocations 
-                ?? ((name, basePath, relativePaths) => new FolderLocations(relativePaths, basePath, name));
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(
@@ -130,11 +126,6 @@ namespace Kephas.Application
         /// The logger.
         /// </value>
         protected virtual ILogger Logger => this.getLogger(this.GetType().FullName!);
-
-        /// <summary>
-        /// Gets a function for getting application locations.
-        /// </summary>
-        protected Func<string, string, IEnumerable<string>, ILocations> GetLocations { get; }
 
         /// <summary>
         /// Gets the initialization monitor.

@@ -30,3 +30,4 @@ ambientServices.WithStaticAppRuntime(config: rt => rt.OnIsAppAssembly(an => !thi
 
 Assert.IsTrue(ambientServices.GetAppRuntime().IsAppAssembly(new AssemblyName("My.Tests")));
 ```
+* Breaking change: `AppRuntimeBase` will not use the `getLocations` callback in the constructor. Instead, use the ``OnGetLocations`` extension methods to specify the callback used for getting the locations.

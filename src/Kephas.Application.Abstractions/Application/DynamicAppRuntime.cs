@@ -18,10 +18,7 @@ namespace Kephas.Application
 
     using Kephas.Collections;
     using Kephas.Dynamic;
-    using Kephas.IO;
     using Kephas.Logging;
-    using Kephas.Operations;
-    using Kephas.Services;
 
     /// <summary>
     /// An application application runtime loading dynamically assemblies from the application location.
@@ -41,7 +38,6 @@ namespace Kephas.Application
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="getLocations">Optional. Function for getting application locations.</param>
         public DynamicAppRuntime(
             Func<string, ILogger>? getLogger = null,
             IEnumerable<Assembly>? appAssemblies = null,
@@ -52,9 +48,8 @@ namespace Kephas.Application
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
-            IDynamic? appArgs = null,
-            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
-            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
+            IDynamic? appArgs = null)
+            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
         }
 

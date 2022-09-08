@@ -62,7 +62,6 @@ namespace Kephas.Plugins.Application
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
-        /// <param name="getLocations">Optional. Function for getting application locations.</param>
         public PluginsAppRuntime(
             Func<string, ILogger>? getLogger = null,
             IEnumerable<Assembly>? appAssemblies = null,
@@ -76,9 +75,8 @@ namespace Kephas.Plugins.Application
             IDynamic? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
-            IPluginRepository? pluginRepository = null,
-            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
-            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
+            IPluginRepository? pluginRepository = null)
+            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));
