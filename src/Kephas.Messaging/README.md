@@ -29,7 +29,10 @@ The message is the content of communication. A message:
 
 ## Strongly typed and weakly typed messages
 
-The message type plays an important role, as it is used to filter message handlers (more about this in the [[message handlers|Architecture-of-messaging#Message handlers]] section. However, there are so called _weakly typed_ messages, which hold actually a category of messages that for some reason cannot be _strongly typed_, typically used in distributed scenarios and coming from external sources. These _weakly typed_ messages will provide a name, used for discriminating the message handlers, retrieved as:
+The message type plays an important role, as it is used to filter message handlers (more about this in the [message handlers](#message-handlers) section.
+However, there are so called _weakly typed_ messages, which hold actually a category of messages that for some reason
+cannot be _strongly typed_, typically used in distributed scenarios and coming from external sources.
+These _weakly typed_ messages will provide a name, used for discriminating the message handlers, retrieved as:
 * the _MessageName_ property of the message class -or-
 * the dynamic _MessageName_ property in the case of a dynamic message object.
 
@@ -54,13 +57,13 @@ Typically, a message handler specializes the `MessageHandlerBase<TMessage, TResp
 
 # The message processor
 
-The service taking care of message processing is the message processor. It is a [[singleton application service|Application-Services#shared-scope-shared-or-instance-based-services]] which is in charge of selecting the appropriate handler (or handlers) for a particular message, ensuring that that (or those) handlers handle the message, and returning a response. It provides a single method:
+The service taking care of message processing is the message processor. It is a [singleton application service](https://www.nuget.org/packages/Kephas.Injection#configuring-the-application-service-contracts) which is in charge of selecting the appropriate handler (or handlers) for a particular message, ensuring that that (or those) handlers handle the message, and returning a response. It provides a single method:
 
 * `ProcessAsync(message: IMessage, [context: IMessageProcessingContext], [token: CancellationToken]): Task<IMessage>`
   * _message_: the message to process.
   * _context_: contextual information related to the particular call. If no processing context is provided, a default one will be created. The processor ensures that the context contains the processor itself, the original message to be processed, and the handler which is at that moment handling the message. This information may be useful in the [[processing behaviors|Architecture-of-messaging#Processing behaviors]], as described in the following sections.
 
-Kephas provides a default implementation, see the [[default message processor|In-Process-messaging#the-defaultmessageprocessor]] for more information about it.
+Kephas provides a default implementation, see the [default message processor](https://www.nuget.org/packages/Kephas.Messaging#the-defaultmessageprocessor) for more information about it.
 
 # Handler selectors
 
@@ -71,7 +74,7 @@ The typical message bus implementations do not filter the message handlers, leav
 
 ## `EventMessageHandlerSelector`
 
-This is a handler selector for [[events|Architecture-of-messaging#Events]]. It returns all the handlers processing the specific event type and name, ordered by their processing priority.
+This is a handler selector for [events](https://www.nuget.org/packages/Kephas.Messaging#events). It returns all the handlers processing the specific event type and name, ordered by their processing priority.
 
 > Note: it has the `Low` processing priority, so that custom code can modify easily the strategy of selecting event handlers.
 
@@ -94,10 +97,10 @@ The processing of a message may be intercepted be message processing behaviors, 
 
 # The `DefaultMessageProcessor`
 
-Kephas provides the `DefaultMessageProcessor` class, a [[low override priority|Application-Services#override-priority]] message processor. It provides a basic, overridable functionality for processing messages, which should be enough for most cases.
+Kephas provides the `DefaultMessageProcessor` class, a [low override priority](https://www.nuget.org/packages/Kephas.Injection#override-priority) message processor. It provides a basic, overridable functionality for processing messages, which should be enough for most cases.
 
-* It aggregates [[message handler selectors|Architecture-of-messaging#Handler selectors]] and calls them to provide a list of message handlers to process a particular message, in their [[processing priority|Application-Services#processing-priority]] order.
-* It aggregates [[processing filters|Architecture-of-messaging#Processing filters]] and calls them before and after each handler's `ProcessAsync` call.
+* It aggregates _message handler selectors_ and calls them to provide a list of message handlers to process a particular message, in their [processing priority](https://www.nuget.org/packages/Kephas.Injection#processing-priority) order.
+* It aggregates _processing filters_ and calls them before and after each handler's `ProcessAsync` call.
 
 > Note that the message processor is an in-process service. However, if the handlers themselves go beyond the process boundary it is their sole responsibility and, at the same time, freedom.
 
@@ -119,8 +122,8 @@ The responsibility of the message processor during execution is to ensure that t
 
 * `EnsureAuthorizedMessageProcessingBehavior` takes the job of ensuring that the handling of the message is authorized.
   * Retrieves the required permissions as specified at message level.
-  * Identifies the authorization scope by invoking the [[authorization scope service]].
-  * Invokes the [[authorization service]] to authorize the scope for the required permissions.
+  * Identifies the authorization scope by invoking the [authorization scope service](https://www.nuget.org/packages/Kephas.Security).
+  * Invokes the [authorization service](https://www.nuget.org/packages/Kephas.Security) to authorize the scope for the required permissions.
 
 ## Securing messages
 
