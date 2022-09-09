@@ -35,6 +35,7 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     msbuildArchitecture: 'x64'
+    msbuildArgs: '/p:Version=$(package.version) /p:AssemblyVersion=$(package.version).0 /p:FileVersion=$(package.version).$(build.number)'
 
 - task: VSTest@2
   inputs:
