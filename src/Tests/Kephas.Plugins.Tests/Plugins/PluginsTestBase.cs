@@ -41,7 +41,7 @@ namespace Kephas.Tests.Plugins
             Func<PluginData, IPluginContext, bool>? canEnable = null,
             Func<PluginData, IPluginContext, bool>? canDisable = null)
         {
-            var pluginsDataStore = new TestPluginRepository();
+            var pluginsDataStore = new TestPluginStore();
             var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
             return new TestPluginManager(
                 context,
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Plugins
                 canDisable: canDisable);
         }
 
-        public class TestPluginRepository : IPluginRepository
+        public class TestPluginStore : IPluginStore
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 
@@ -101,7 +101,7 @@ namespace Kephas.Tests.Plugins
                 IAppRuntime appRuntime,
                 IInjectableFactory injectableFactory,
                 IEventHub eventHub,
-                IPluginRepository pluginRepository,
+                IPluginStore pluginStore,
                 ILogManager? logManager = null,
                 Action<IPlugin, IPluginContext>? onInstall = null,
                 Func<PluginData, IPluginContext, bool>? canInstall = null,
@@ -110,7 +110,7 @@ namespace Kephas.Tests.Plugins
                 Func<PluginData, IPluginContext, bool>? canUninitialize = null,
                 Func<PluginData, IPluginContext, bool>? canEnable = null,
                 Func<PluginData, IPluginContext, bool>? canDisable = null)
-                : base(appRuntime, injectableFactory, eventHub, pluginRepository, logManager)
+                : base(appRuntime, injectableFactory, eventHub, pluginStore, logManager)
             {
                 this.ctx = ctx;
                 this.onInstall = onInstall;
@@ -124,7 +124,7 @@ namespace Kephas.Tests.Plugins
 
             public override IEnumerable<IPlugin> GetInstalledPlugins()
             {
-                var repo = this.PluginRepository as TestPluginRepository;
+                var repo = this.PluginStore as TestPluginStore;
                 if (repo == null)
                 {
                     return base.GetInstalledPlugins();

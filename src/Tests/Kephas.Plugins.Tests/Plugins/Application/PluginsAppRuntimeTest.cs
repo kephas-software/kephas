@@ -85,7 +85,7 @@ namespace Kephas.Tests.Plugins.Application
         [Test]
         public void GetAppBinLocations()
         {
-            var pluginRepository = new TestPluginRepository();
+            var pluginRepository = new TestPluginStore();
 
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -112,7 +112,7 @@ namespace Kephas.Tests.Plugins.Application
         [Test]
         public void LoadAssemblyFromName_common_dependencies()
         {
-            var pluginRepository = new TestPluginRepository();
+            var pluginRepository = new TestPluginStore();
 
             var thisFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var thisAppLocation = Path.Combine(thisFolder, "netstandard2.0");

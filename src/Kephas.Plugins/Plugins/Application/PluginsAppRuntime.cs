@@ -75,13 +75,13 @@ namespace Kephas.Plugins.Application
             IDynamic? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
-            IPluginRepository? pluginRepository = null)
+            IPluginStore? pluginRepository = null)
             : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));
-            this.PluginRepository = pluginRepository ??
-                                    new PluginRepository(appIdentity =>
+            this.PluginStore = pluginRepository ??
+                                    new PluginStore(appIdentity =>
                                         this.GetAppLocation(appIdentity, throwOnNotFound: false));
         }
 
@@ -107,7 +107,7 @@ namespace Kephas.Plugins.Application
         /// <value>
         /// The plugin repository.
         /// </value>
-        protected internal IPluginRepository PluginRepository { get; }
+        protected internal IPluginStore PluginStore { get; }
 
         /// <summary>
         /// Gets the location of the application with the indicated identity.
@@ -170,7 +170,7 @@ namespace Kephas.Plugins.Application
         public virtual IEnumerable<PluginData> GetInstalledPlugins()
         {
             return this.GetPluginsInstallationLocations()
-                .Select(pluginDirectory => this.PluginRepository.GetPluginData(
+                .Select(pluginDirectory => this.PluginStore.GetPluginData(
                     new AppIdentity(Path.GetFileName(pluginDirectory)),
                     throwOnInvalid: false));
         }
@@ -242,7 +242,7 @@ namespace Kephas.Plugins.Application
             var pluginIdentity = new AppIdentity(pluginId);
             try
             {
-                var pluginData = this.PluginRepository.GetPluginData(pluginIdentity, throwOnInvalid: false);
+                var pluginData = this.PluginStore.GetPluginData(pluginIdentity, throwOnInvalid: false);
                 pluginIdentity = pluginData.Identity;
 
                 var shouldLoadPlugin = (pluginData.State == PluginState.PendingInitialization

@@ -50,7 +50,7 @@ namespace Kephas.Plugins
             IInjectableFactory injectableFactory,
             IEventHub eventHub,
             ILogManager? logManager = null)
-            : this(appRuntime, injectableFactory, eventHub, appRuntime.GetPluginRepository(), logManager)
+            : this(appRuntime, injectableFactory, eventHub, appRuntime.GetPluginStore(), logManager)
         {
         }
 
@@ -60,20 +60,20 @@ namespace Kephas.Plugins
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="pluginRepository">The plugin data store.</param>
+        /// <param name="pluginStore">The plugin data store.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         protected PluginManagerBase(
             IAppRuntime appRuntime,
             IInjectableFactory injectableFactory,
             IEventHub eventHub,
-            IPluginRepository pluginRepository,
+            IPluginStore pluginStore,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
             this.InjectableFactory = injectableFactory;
             this.EventHub = eventHub;
-            this.PluginRepository = pluginRepository;
+            this.PluginStore = pluginStore;
         }
 
         /// <summary>
@@ -101,12 +101,12 @@ namespace Kephas.Plugins
         protected IEventHub EventHub { get; }
 
         /// <summary>
-        /// Gets the plugin repository.
+        /// Gets the plugin store.
         /// </summary>
         /// <value>
-        /// The plugin repository.
+        /// The plugin store.
         /// </value>
-        protected IPluginRepository PluginRepository { get; }
+        protected IPluginStore PluginStore { get; }
 
         /// <summary>
         /// Gets the available plugins asynchronously.
@@ -138,7 +138,7 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual PluginState GetPluginState(AppIdentity pluginIdentity)
         {
-            return this.PluginRepository.GetPluginData(pluginIdentity, throwOnInvalid: false).State;
+            return this.PluginStore.GetPluginData(pluginIdentity, throwOnInvalid: false).State;
         }
 
         /// <summary>
@@ -859,7 +859,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual IPlugin ToPlugin(PluginData pluginData, bool offline = false)
         {
-            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginData.Identity);
+            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginStore, pluginData.Identity);
             return (Plugin)pluginInfo.CreateInstance(new object?[] { offline ? pluginData : null });
         }
 
@@ -1011,7 +1011,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual PluginData GetInstalledPluginData(AppIdentity pluginIdentity)
         {
-            var pluginData = this.PluginRepository.GetPluginData(pluginIdentity);
+            var pluginData = this.PluginStore.GetPluginData(pluginIdentity);
             return pluginData;
         }
 
@@ -1171,17 +1171,17 @@ namespace Kephas.Plugins
 
             if (state == PluginState.None)
             {
-                this.PluginRepository.RemovePluginData(pluginData.ChangeState(state));
+                this.PluginStore.RemovePluginData(pluginData.ChangeState(state));
             }
             else
             {
-                this.PluginRepository.StorePluginData(pluginData.ChangeState(state));
+                this.PluginStore.StorePluginData(pluginData.ChangeState(state));
             }
         }
 
         private void SetUpdatingToVersion(PluginData pluginData, SemanticVersion version)
         {
-            this.PluginRepository.StorePluginData(pluginData.ChangeUpdatingToVersion(version));
+            this.PluginStore.StorePluginData(pluginData.ChangeUpdatingToVersion(version));
         }
     }
 }

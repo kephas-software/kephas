@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PluginRepository.cs" company="Kephas Software SRL">
+// <copyright file="PluginStore.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,17 +18,17 @@ namespace Kephas.Plugins
     /// <summary>
     /// A plugin repository.
     /// </summary>
-    internal class PluginRepository : IPluginRepository
+    internal class PluginStore : IPluginStore
     {
         private const string PluginDataFileName = ".plugindata";
 
         private readonly Func<AppIdentity, string?> pluginLocationResolver;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PluginRepository"/> class.
+        /// Initializes a new instance of the <see cref="PluginStore"/> class.
         /// </summary>
         /// <param name="pluginLocationResolver">The plugin location resolver.</param>
-        public PluginRepository(Func<AppIdentity, string?> pluginLocationResolver)
+        public PluginStore(Func<AppIdentity, string?> pluginLocationResolver)
         {
             this.pluginLocationResolver = pluginLocationResolver;
         }

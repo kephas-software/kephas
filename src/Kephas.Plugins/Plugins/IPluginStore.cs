@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPluginRepository.cs" company="Kephas Software SRL">
+// <copyright file="IPluginStore.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IPluginRepository interface.
+//   Declares the IPluginStore interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ namespace Kephas.Plugins
     using Kephas.Application;
 
     /// <summary>
-    /// Interface for plugin repository.
+    /// Interface for plugin store.
     /// </summary>
-    public interface IPluginRepository
+    public interface IPluginStore
     {
         /// <summary>
         /// Gets the plugin information from the store.

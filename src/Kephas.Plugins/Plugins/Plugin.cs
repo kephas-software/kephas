@@ -28,7 +28,7 @@ namespace Kephas.Plugins
     {
         private readonly IAppInfo pluginInfo;
         private readonly PluginData? pluginData;
-        private readonly IPluginRepository pluginRepository;
+        private readonly IPluginStore pluginStore;
         private readonly IAppRuntime appRuntime;
         private PluginState? state;
         private string? location;
@@ -44,7 +44,7 @@ namespace Kephas.Plugins
 
             this.pluginInfo = pluginInfo;
             this.pluginData = pluginData;
-            this.pluginRepository = pluginInfo.PluginRepository;
+            this.pluginStore = pluginInfo.PluginStore;
             this.appRuntime = pluginInfo.AppRuntime;
         }
 
@@ -112,7 +112,7 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual PluginData GetPluginData()
         {
-            return this.pluginData ?? this.pluginRepository.GetPluginData(this.Identity);
+            return this.pluginData ?? this.pluginStore.GetPluginData(this.Identity);
         }
 
         /// <summary>
