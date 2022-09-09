@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoggingServiceCollectionExtensions.cs" company="Kephas Software SRL">
+// <copyright file="ExtensionsLogging.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,7 +20,7 @@ namespace Kephas.Extensions.Logging
     /// <summary>
     /// Logging extensions.
     /// </summary>
-    public static class LoggingServiceCollectionExtensions
+    public static class ExtensionsLogging
     {
         /// <summary>
         /// Adds the Kephas logging provider to the service collection.
@@ -35,22 +35,23 @@ namespace Kephas.Extensions.Logging
         /// Disadvantage: Kephas will log only to its own configured logger.
         /// </para>
         /// <para>
-        /// WARNING: Do not use both <see cref="WithExtensionsLogManager"/> and <see cref="ConfigureExtensionsLogging"/> methods
+        /// WARNING: Do not use both <see cref="WithExtensionsLogManager"/> and <see cref="UseKephasLogging"/> methods
         /// as this might generate StackOverflow exception.
         /// </para>
         /// </remarks>
-        /// <param name="ambientServices">The ambientServices to act on.</param>
-        /// <param name="serviceCollection">The service collection.</param>
+        /// <param name="services">The service collection.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices ConfigureExtensionsLogging(this IAmbientServices ambientServices, IServiceCollection serviceCollection)
+        public static IServiceCollection UseKephasLogging(this IServiceCollection services, IAmbientServices ambientServices)
         {
+            services = services ?? throw new ArgumentNullException(nameof(services));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(ambientServices.LogManager)));
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(ambientServices.LogManager)));
 
-            return ambientServices;
+            return services;
         }
 
         /// <summary>
@@ -65,22 +66,22 @@ namespace Kephas.Extensions.Logging
         /// Disadvantage: the configured loggers will be available only after the container is built.
         /// </para>
         /// <para>
-        /// WARNING: Do not use both <see cref="WithExtensionsLogManager"/> and <see cref="ConfigureExtensionsLogging"/> methods
+        /// WARNING: Do not use both <see cref="WithExtensionsLogManager"/> and <see cref="UseKephasLogging"/> methods
         /// as this might generate StackOverflow exception.
         /// </para>
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="services">The service collection.</param>
         /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithExtensionsLogManager(this IAmbientServices ambientServices, bool replaceDefault = true)
+        public static IAmbientServices WithExtensionsLogManager(this IAmbientServices ambientServices, IServiceCollection services, bool replaceDefault = true)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
             var logFactory = new LoggerFactory();
-            serviceCollection.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>(_ => logFactory));
+            services.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>(_ => logFactory));
 
             return ambientServices.WithLogManager(new ExtensionsLogManager(logFactory), replaceDefault);
         }
