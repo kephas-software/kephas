@@ -23,22 +23,22 @@ namespace Kephas.Extensions.DependencyInjection
         /// <summary>
         /// Includes the service collection in the composition.
         /// </summary>
+        /// <param name="services">The service collection.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="serviceCollection">The service collection.</param>
         /// <returns>
         /// An IServiceCollection.
         /// </returns>
-        public static IAmbientServices WithServiceCollection(this IAmbientServices ambientServices, IServiceCollection serviceCollection)
+        public static IServiceCollection UseAmbientServices(this IServiceCollection services, IAmbientServices ambientServices)
         {
-            serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
+            services = services ?? throw new ArgumentNullException(nameof(services));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             // make sure to register the service collection *BEFORE* the attributed service provider.
-            ambientServices.Register(serviceCollection);
-            serviceCollection.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, InjectionServiceScopeFactory>());
-            serviceCollection.TryAddSingleton<IServiceProvider>(provider => provider);
+            ambientServices.Register(services);
+            services.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, InjectionServiceScopeFactory>());
+            services.TryAddSingleton<IServiceProvider>(provider => provider);
 
-            return ambientServices;
+            return services;
         }
     }
 }

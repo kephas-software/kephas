@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesDependencyInjectionExtensions.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionAmbientServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -28,7 +28,7 @@ namespace Kephas
     /// <summary>
     /// Microsoft.Extensions.DependencyInjection related ambient services extensions.
     /// </summary>
-    public static class AmbientServicesDependencyInjectionExtensions
+    public static class DependencyInjectionAmbientServicesExtensions
     {
         /// <summary>
         /// Sets the injector to the ambient services.

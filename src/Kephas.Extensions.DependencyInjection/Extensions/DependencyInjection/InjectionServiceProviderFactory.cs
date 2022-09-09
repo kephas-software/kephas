@@ -44,7 +44,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// </returns>
         public IAmbientServices CreateBuilder(IServiceCollection services)
         {
-            this.ambientServices.WithServiceCollection(services);
+            services.UseAmbientServices(this.ambientServices);
             this.containerBuilder(this.ambientServices);
 
             return this.ambientServices;
