@@ -39,7 +39,7 @@ steps:
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Core 6.0'
+    testRunTitle: '.NET 6.0'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
       **\net6.0*\*Tests.dll
