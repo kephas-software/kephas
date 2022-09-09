@@ -39,10 +39,10 @@ steps:
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Core 3.1'
+    testRunTitle: '.NET Core 6.0'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\netcoreapp*\*Tests.dll
+      **\net6.0*\*Tests.dll
       !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**
@@ -54,10 +54,10 @@ steps:
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Core 6.0'
+    testRunTitle: '.NET Core 3.1'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\net6.0*\*Tests.dll
+      **\netcoreapp*\*Tests.dll
       !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**
