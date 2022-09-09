@@ -33,16 +33,16 @@ namespace Kephas.Licensing
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="encryptionService">The encryption service.</param>
         public DefaultLicensingManager(IAppRuntime appRuntime, IEncryptionService encryptionService)
-            : this(new LicenseRepository(appRuntime, encryptionService))
+            : this(new LicenseStore(appRuntime, encryptionService))
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
         /// </summary>
-        /// <param name="licenseRepository">The license repository.</param>
-        public DefaultLicensingManager(ILicenseRepository licenseRepository)
-            : this(licenseRepository.GetLicenseData)
+        /// <param name="licenseStore">The license repository.</param>
+        public DefaultLicensingManager(ILicenseStore licenseStore)
+            : this(licenseStore.GetLicenseData)
         {
         }
 

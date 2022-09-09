@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LicenseRepository.cs" company="Kephas Software SRL">
+// <copyright file="LicenseStore.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,7 +21,7 @@ namespace Kephas.Licensing
     /// <summary>
     /// A license repository.
     /// </summary>
-    internal class LicenseRepository : ILicenseRepository
+    internal class LicenseStore : ILicenseStore
     {
         private const string LicenseFileName = "License";
 
@@ -29,11 +29,11 @@ namespace Kephas.Licensing
         private readonly IEncryptionService encryptionService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicenseRepository"/> class.
+        /// Initializes a new instance of the <see cref="LicenseStore"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="encryptionService">The encryption service.</param>
-        public LicenseRepository(IAppRuntime appRuntime, IEncryptionService encryptionService)
+        public LicenseStore(IAppRuntime appRuntime, IEncryptionService encryptionService)
         {
             this.appRuntime = appRuntime;
             this.encryptionService = encryptionService;

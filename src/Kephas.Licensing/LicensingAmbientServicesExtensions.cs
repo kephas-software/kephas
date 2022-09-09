@@ -65,9 +65,9 @@ public static class LicensingAmbientServicesExtensions
         encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
         const string LicenseRepositoryKey = "__LicenseRepository";
-        var licenseRepository = (ambientServices[LicenseRepositoryKey] as ILicenseRepository)
-                                ?? (ILicenseRepository)(ambientServices[LicenseRepositoryKey] =
-                                    new LicenseRepository(ambientServices.GetAppRuntime(), encryptionService));
+        var licenseRepository = (ambientServices[LicenseRepositoryKey] as ILicenseStore)
+                                ?? (ILicenseStore)(ambientServices[LicenseRepositoryKey] =
+                                    new LicenseStore(ambientServices.GetAppRuntime(), encryptionService));
         var licenseManager = new DefaultLicensingManager(appid => licenseRepository.GetLicenseData(appid));
 
         return WithLicensingManager(ambientServices, licenseManager);

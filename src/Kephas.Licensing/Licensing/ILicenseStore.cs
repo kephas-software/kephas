@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILicenseRepository.cs" company="Kephas Software SRL">
+// <copyright file="ILicenseStore.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ILicenseRepository interface.
+//   Declares the ILicenseStore interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,9 +15,9 @@ namespace Kephas.Licensing
     using Kephas.Application;
 
     /// <summary>
-    /// Interface for license repository.
+    /// Interface for license store.
     /// </summary>
-    public interface ILicenseRepository
+    public interface ILicenseStore
     {
         /// <summary>
         /// Gets the matching license information from the store.

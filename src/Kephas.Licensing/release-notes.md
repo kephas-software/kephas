@@ -17,3 +17,4 @@ appRuntime.OnCheckLicense((appid, context) => licensingManager.CheckLicense(appi
 // invoke the license check
 appRuntime.CheckLicense(new AppIndentity("my-app"), null);
 ```
+* Breaking change: `ILicenseRepository` renamed to `ILicenseStore`.
