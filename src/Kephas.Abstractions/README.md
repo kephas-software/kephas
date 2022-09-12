@@ -234,6 +234,9 @@ The [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers) package 
 > Recommendation: Prefer using statically invoked assembly initializers instead by using the `AssemblyInitializerAttribute`.
 > This is solely for increasing loading time performance through avoiding reflection.
 
+> Caution: do not add to an assembly referencing the [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers) package
+> a `[ModuleInitializer]` annotated method, as it will collide with the one generated.
+
 ## Other resources
 
 * [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)
