@@ -7,8 +7,6 @@
 
 namespace Kephas.Application;
 
-#if NET6_0_OR_GREATER
-
 /// <summary>
 /// Interface for components doing assembly initialization.
 /// Initializers implementing this interface must have a parameterless constructor.
@@ -20,5 +18,3 @@ public interface IAssemblyInitializer
     /// </summary>
     void Initialize();
 }
-
-#endif

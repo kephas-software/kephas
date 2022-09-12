@@ -7,8 +7,6 @@
 
 namespace Kephas.CodeAnalysis;
 
-#if NET6_0_OR_GREATER
-
 /// <summary>
 /// Attribute indicating assembly initializer attributes.
 /// </summary>
@@ -33,5 +31,3 @@ public class AssemblyInitializerAttribute : Attribute
     /// </summary>
     public Type[] InitializerTypes { get; }
 }
-
-#endif

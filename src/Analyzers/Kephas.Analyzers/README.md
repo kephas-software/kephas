@@ -14,6 +14,10 @@ Generates code for application services registered through `AppServiceContract` 
 
 Generates code for assembly initializers identified by classes implementing the `IAssemblyInitializer` interface.
 
+## Reflection assembly initializers
+
+Generates code for automatic registration of runtime element information factories into the `RuntimeTypeRegistry.Instance`.
+
 ## Other resources
 
 * [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
