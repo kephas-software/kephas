@@ -5,17 +5,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 namespace Kephas.Analyzers.Injection;
 
-public interface IAppServicesCompilationContext
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+public interface IAppServicesCompilationContext : ICompilationContext
 {
     public IList<TypeDeclarationSyntax> ContractTypes { get; }
 
     public IList<ClassDeclarationSyntax> MetadataTypes { get; }
 
     public IList<ClassDeclarationSyntax> ServiceTypes { get; }
-
-    public IDictionary<string, FileScopedNamespaceDeclarationSyntax> FileScopedNamespaces { get; }
 }

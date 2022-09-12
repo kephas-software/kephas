@@ -11,7 +11,7 @@ namespace Kephas.Analyzers.Injection
 {
     using System;
     using System.Collections.Generic;
-using System.Diagnostics;
+
     using System.Linq;
     using System.Text;
 
@@ -201,62 +201,6 @@ using System.Diagnostics;
                 : fullNameBuilder.ToString();
         }
 
-        public static string GetTypeFullName(TypeDeclarationSyntax typeSyntax, IAppServicesCompilationContext compilationContext)
-        {
-            var sb = new StringBuilder();
-
-            var parent = typeSyntax.Parent;
-            while (parent != null)
-            {
-                switch (parent)
-                {
-                    case TypeDeclarationSyntax parentTypeDeclSyntax:
-                        sb.Insert(0, '.');
-                        sb.Insert(0, GetTypeFullName(parentTypeDeclSyntax, compilationContext));
-                        parent = null;
-                        break;
-                    case NamespaceDeclarationSyntax namespaceSyntax:
-                        sb.Insert(0, '.');
-                        sb.Insert(0, namespaceSyntax.Name.ToString());
-                        break;
-                }
-
-                parent = parent?.Parent;
-            }
-
-            var fileScopedNamespace = GetFileScopedNamespace(typeSyntax, compilationContext);
-            if (fileScopedNamespace != null)
-            {
-                sb.Insert(0, '.');
-                sb.Insert(0, fileScopedNamespace);
-            }
-
-            sb.Append(typeSyntax.Identifier.Text);
-
-            if (typeSyntax.TypeParameterList != null)
-            {
-                sb.Append('<');
-                for (var i = 0; i < typeSyntax.TypeParameterList.Parameters.Count - 1; i++)
-                {
-                    sb.Append(',');
-                }
-
-                sb.Append('>');
-            }
-
-            return sb.ToString();
-        }
-
-        private static string? GetFileScopedNamespace(TypeDeclarationSyntax typeSyntax, IAppServicesCompilationContext compilationContext)
-        {
-            if (!string.IsNullOrEmpty(typeSyntax.SyntaxTree.FilePath) && compilationContext.FileScopedNamespaces.TryGetValue(typeSyntax.SyntaxTree.FilePath, out var fileScopedNamespace))
-            {
-                return fileScopedNamespace.Name.ToString();
-            }
-
-            return null;
-        }
-
         public static bool AppendAppServicesProviderClass(
             (string typeNamespace, string typeName) serviceTypeProvider,
             StringBuilder source,
@@ -283,9 +227,9 @@ using System.Diagnostics;
                 var contractTypesBuilder = new StringBuilder();
                 foreach (var typeSyntax in contractTypes)
                 {
-                    var typeFullName = InjectionHelper.GetTypeFullName(typeSyntax, compilationContext);
+                    var typeFullName = typeSyntax.GetTypeFullName(compilationContext);
                     var metadataTypeSyntax = InjectionHelper.TryGetMetadataType(typeSyntax, metadataTypes);
-                    var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({InjectionHelper.GetTypeFullName(metadataTypeSyntax, compilationContext)})";
+                    var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({metadataTypeSyntax.GetTypeFullName(compilationContext)})";
                     source.AppendLine($"            yield return new ContractDeclarationInfo(typeof({typeFullName}), {metadataTypeFullName});");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
@@ -317,7 +261,7 @@ using System.Diagnostics;
                         continue;
                     }
 
-                    var typeFullName = InjectionHelper.GetTypeFullName(serviceDeclaration.ServiceType, compilationContext);
+                    var typeFullName = serviceDeclaration.ServiceType.GetTypeFullName(compilationContext);
                     try
                     {
                         source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");

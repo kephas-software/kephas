@@ -23,6 +23,7 @@
     * ```GetFullPath```.
   * Breaking change: Removed the filter parameter from ``IAppRuntime.GetAppAssemblies()``. Reason: was not used.
   * Breaking change: Removed ``IAppRuntime.LoadAssembly*`` methods, used only in the implementation.
+  * NEW: added support for module initialization. Check the [README.md](README.md) file for more information.
 
 * Dynamic
   * Breaking change: ```ExpandoBase<T>``` is now generic, introducing the possibility of supporting ```IDictionary<string, T>```.
