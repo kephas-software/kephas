@@ -40,7 +40,7 @@ namespace Kephas.Data.Tests.Application
             Assert.IsInstanceOf<ServiceRefRuntimePropertyInfo>(typeInfo.Properties[nameof(IMyServiceEntity.ObjectServiceRef)]);
         }
 
-        private void RegisterFactories(RuntimeTypeRegistry typeRegistry)
+        private void RegisterFactories(IRuntimeTypeRegistry typeRegistry)
         {
             typeRegistry.RegisterFactory(new RuntimeEntityInfoFactory());
             typeRegistry.RegisterFactory(new RefRuntimePropertyInfoFactory());
