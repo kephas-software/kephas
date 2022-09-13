@@ -34,7 +34,7 @@ namespace Kephas.Core.Tests.Injection
         [Test]
         public void Build_success()
         {
-            var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: null)
+            var ambientServices = new AmbientServices(registerDefaultServices: false)
                 .Register(Substitute.For<ILogManager>())
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests.Injection
             }
 
             private static IAmbientServices CreateAmbientServices() =>
-                new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+                new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
         }
 
         public class TestRegistrationInjectorBuilder : InjectorBuilderBase<TestRegistrationInjectorBuilder>
@@ -108,7 +108,7 @@ namespace Kephas.Core.Tests.Injection
             private TestTypeBuilder CreateBuilder(Type serviceType) => new TestTypeBuilder(serviceType);
 
             private static IAmbientServices CreateAmbientServices() =>
-                new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+                new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
         }
 
         public class TestTypeBuilder : IRegistrationBuilder

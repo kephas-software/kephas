@@ -6,6 +6,12 @@ Provides a dependency injection implementation based on the ```Autofac``` infras
 Typically used areas and classes/interfaces/services:
 * ```IAmbientServices.BuildWithAutofac()```.
 
+## Usage
+
+```csharp
+var ambientServices = new AmbientServices().BuildWithAutofac();
+```
+
 ## Other resources
 
 * [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)

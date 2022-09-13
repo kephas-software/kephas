@@ -15,7 +15,7 @@ Packages providing specific dependency injection implementations:
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 * [Kephas.Injection.Lite](https://www.nuget.org/packages/Kephas.Injection.Lite)
 
-## IAmbientServices
+## `IAmbientServices` interface
 This collection holds the service registrations. 
 
 ### Registering default services
@@ -38,6 +38,8 @@ public class InjectionAssemblyInitializer : IAssemblyInitializer
     }
 }
 ```
+
+## `AmbientServices` implementation
 
 When an `AmbientServices` instance is created, the initializer callbacks are invoked to add the default services.
 

@@ -37,7 +37,6 @@ namespace Kephas.Testing
     /// It includes:
     /// * Creating mocks for:
     ///   * <see cref="Kephas.Services.IInjectableFactory"/>.
-    ///   * <see cref="ISerializationService"/>.
     /// </content>
     public class TestBase
     {
@@ -49,7 +48,7 @@ namespace Kephas.Testing
         /// <returns>The newly created <see cref="AmbientServices"/> instance.</returns>
         protected virtual IAmbientServices CreateAmbientServices(IRuntimeTypeRegistry? typeRegistry = null)
         {
-            return new AmbientServices(typeRegistry: typeRegistry);
+            return new AmbientServices().Register<IRuntimeTypeRegistry>(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
         }
 
         /// <summary>

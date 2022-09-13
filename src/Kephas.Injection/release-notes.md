@@ -15,3 +15,14 @@
 * Breaking change: Removed ``IAmbientServices.GetAppAssemblies()``. Use instead ``IAmbientServices.GetAppRuntime().GetAppAssemblies()``.
 * NEW: Added ``IInjectionBuildContext.GetAppAssemblies(): IEnumerable<Assembly>``.
 * NEW: Added `IAmbientServices.RegisterInitializer(initializer)` and `Initialize(ambientServices)` static methods.
+* Breaking change: Removed the constructors of `AmbientServices` accepting `IRuntimeTypeRegistry`. Instead, register the registry after creating the instance.
+
+OLD code
+```csharp
+new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+```
+NEW code
+```csharp
+new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
+```
+ 

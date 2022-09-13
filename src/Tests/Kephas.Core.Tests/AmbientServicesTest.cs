@@ -459,7 +459,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void GetAppServiceInfos_no_default_services()
         {
-            var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: null);
+            var ambientServices = new AmbientServices(registerDefaultServices: false);
             var appServiceInfos = ambientServices.GetAppServiceContracts();
 
             Assert.AreEqual(2, appServiceInfos.Count());

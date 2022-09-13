@@ -13,16 +13,11 @@ namespace Kephas
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Configuration;
+    using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Lite.Internal;
-    using Kephas.IO;
-    using Kephas.Licensing;
-    using Kephas.Logging;
-    using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -46,17 +41,7 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
         public AmbientServices()
-            : this(registerDefaultServices: true, typeRegistry: null)
-        {
-        }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AmbientServices"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public AmbientServices(IRuntimeTypeRegistry? typeRegistry)
-            : this(registerDefaultServices: true, typeRegistry: typeRegistry)
+            : this(registerDefaultServices: true)
         {
         }
 
@@ -64,35 +49,21 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
         /// <param name="registerDefaultServices">Optional. True to register default services.</param>
-        /// <param name="typeRegistry">Optional. The type registry.</param>
-        protected internal AmbientServices(bool registerDefaultServices, IRuntimeTypeRegistry? typeRegistry)
+        protected internal AmbientServices(bool registerDefaultServices)
         {
+#if NETSTANDARD2_1
+            // for versions prior to .NET 6.0 make sure that the assemblies are initialized.
+            IAssemblyInitializer.InitializeAssemblies();
+#endif
             this.registry = new ServiceRegistry();
-
-            typeRegistry ??= RuntimeTypeRegistry.Instance;
-
-            this.Register<IAmbientServices>(this, b => b.ExternallyOwned())
-                .Register<IInjector>(this.registry.ToInjector(), b => b.ExternallyOwned())
-                .Register<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned());
 
             if (registerDefaultServices)
             {
-                this
-                    .Register<IConfigurationStore, DefaultConfigurationStore>()
-                    .Register<ILogManager, NullLogManager>()
-                    .Register<ITypeLoader, DefaultTypeLoader>()
-                    .Register<ILicensingManager, NullLicensingManager>()
-                    .Register<ILocationsManager, FolderLocationsManager>();
+                IAmbientServices.Initialize(this);
             }
 
-            this.registry
-                .RegisterSource(new LazyServiceSource(this.registry))
-                .RegisterSource(new LazyWithMetadataServiceSource(this.registry))
-                .RegisterSource(new ExportFactoryServiceSource(this.registry))
-                .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry))
-                .RegisterSource(new ListServiceSource(this.registry))
-                .RegisterSource(new CollectionServiceSource(this.registry))
-                .RegisterSource(new EnumerableServiceSource(this.registry));
+            this.Register<IAmbientServices>(this, b => b.ExternallyOwned())
+                .Register<IInjector>(this.registry.ToInjector(), b => b.ExternallyOwned());
         }
 
         /// <summary>
