@@ -66,8 +66,8 @@ namespace {initializerNamespace}
         foreach (var initializerType in syntaxReceiver.InitializerTypes
                      .Where(t => ApplicationHelper.IsAssemblyInitializer(t, context)))
         {
-            source.AppendLine($"initializer = (IAssemblyInitializer)new {initializerType.GetTypeFullName(syntaxReceiver)}();");
-            source.AppendLine($"initializer.Initialize();");
+            source.AppendLine($"            initializer = (IAssemblyInitializer)new {initializerType.GetTypeFullName(syntaxReceiver)}();");
+            source.AppendLine($"            initializer.Initialize();");
         }
 
         source.AppendLine($@"
