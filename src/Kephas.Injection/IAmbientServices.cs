@@ -12,7 +12,6 @@ namespace Kephas
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using Kephas.Dynamic;
     using Kephas.Injection;
@@ -24,6 +23,8 @@ namespace Kephas
     /// </summary>
     public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
     {
+        private static readonly List<Action<IAmbientServices>> Initializers = new ();
+
         /// <summary>
         /// Gets the injector.
         /// </summary>
@@ -59,5 +60,32 @@ namespace Kephas
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
         public IAmbientServices RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null);
+
+        /// <summary>
+        /// Adds an initializer for <see cref="IAmbientServices"/>.
+        /// </summary>
+        /// <param name="initializer">The initializer.</param>
+        public static void RegisterInitializer(Action<IAmbientServices> initializer)
+        {
+            lock (Initializers)
+            {
+                Initializers.Add(initializer ?? throw new ArgumentNullException(nameof(initializer)));
+            }
+        }
+
+        /// <summary>
+        /// Initializes the ambient services with the registered initializers.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        public static void Initialize(IAmbientServices ambientServices)
+        {
+            lock (Initializers)
+            {
+                foreach (var initializer in Initializers)
+                {
+                    initializer(ambientServices);
+                }
+            }
+        }
     }
 }

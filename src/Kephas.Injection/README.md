@@ -10,6 +10,47 @@ Typically used areas and classes/interfaces/services:
 
 > Consuming an application service implies depending on its contract and never on its implementation.
 
+Packages providing specific dependency injection implementations:
+* [Kephas.Injection.Autofac](https://www.nuget.org/packages/Kephas.Injection.Autofac)
+* [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
+* [Kephas.Injection.Lite](https://www.nuget.org/packages/Kephas.Injection.Lite)
+
+## IAmbientServices
+This collection holds the service registrations. 
+
+### Registering default services
+The `IAmbientServices.RegisterInitializer` static method registers a callback to be invoked when initializing ambient services.
+Typically, ambient services initializers are registered in [assembly initializers](https://www.nuget.org/packages/Kephas.Abstractions#assembly-initialization).
+
+```csharp
+/// <summary>
+/// Assembly initializer for Kephas.Injection.
+/// </summary>
+public class InjectionAssemblyInitializer : IAssemblyInitializer
+{
+    /// <summary>
+    /// Initializes the assembly.
+    /// </summary>
+    public void Initialize()
+    {
+        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ILogManager, NullLogManager>());
+        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ILocationsManager, FolderLocationsManager>());
+    }
+}
+```
+
+When an `AmbientServices` instance is created, the initializer callbacks are invoked to add the default services.
+
+> Note: there is no guarantee about the order in which these services are added.
+
+#### Example
+```csharp
+var ambientServices = new AmbientServices()
+    .BuildWithAutofac();
+
+var logger = ambientServices.Injector.Resolve<ILogger<MyComponent>>();
+```
+
 ## Aims of application services design
 * Provide an internal application SOA.
 * Declare the expected behavior at the service contract level, not at the implementation level.
@@ -533,3 +574,12 @@ It aggregates the enabled rule services and applies them to each of the service 
 
     }
 ```
+
+## Other resources
+
+* [Kephas.Injection.Lite](https://www.nuget.org/packages/Kephas.Injection.Lite)
+* [Kephas.Injection.Autofac](https://www.nuget.org/packages/Kephas.Injection.Autofac)
+* [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
+
+> Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+

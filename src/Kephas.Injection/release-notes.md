@@ -14,4 +14,4 @@
 * Breaking change: Renamed ``IEnabledServiceFactoryCollection`` to ``IEnabledFactoryEnumerable`` to preserve consistency.
 * Breaking change: Removed ``IAmbientServices.GetAppAssemblies()``. Use instead ``IAmbientServices.GetAppRuntime().GetAppAssemblies()``.
 * NEW: Added ``IInjectionBuildContext.GetAppAssemblies(): IEnumerable<Assembly>``.
-
+* NEW: Added `IAmbientServices.RegisterInitializer(initializer)` and `Initialize(ambientServices)` static methods.
