@@ -1,13 +1,19 @@
 ﻿# Configuration
 
+## Introduction
+Provides infrastructure for application configuration.
+
+Typically used areas and classes/interfaces/services:
+* Configuration: `IConfiguration<TSettings>`.
+
 ## The `IConfiguration<TSettings>` service
 
 While the application configuration should be fine for most cases, when working very strictly component oriented it would be more appropriate to access a configuration targeted to that component, if possible injected through composition. This is possible through the `IConfiguration<TSettings>` [[shared application service|Application-Services]].
 
-* This service is itself an [[expando|Expando]] object, where values may be dynamically added.
+* This service is itself a [dynamic](https://www.nuget.org/packages/Kephas.Abstractions) object, where values may be dynamically added.
 * Provides the `Settings: TSettings` property, which returns the settings of the specified type.
 
-Example of usage:
+#### Example of usage
 
 ```C#
 
@@ -62,3 +68,10 @@ A configuration provider:
 * provides the settings through the `GetSettings(settingsType: Type): object` method.
 
 Another typical configuration provider would be a file based one, for example JSON or XML.
+
+## Other resources
+
+* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+
+> Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
