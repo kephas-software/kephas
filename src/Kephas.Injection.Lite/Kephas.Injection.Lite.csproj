@@ -58,21 +58,6 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
-        <None Update="kephas.logo.stone.png">
-            <Pack>true</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-        <None Update="release-notes.md">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
-        <None Update="README.md">
-          <Pack>true</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -99,6 +84,8 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
