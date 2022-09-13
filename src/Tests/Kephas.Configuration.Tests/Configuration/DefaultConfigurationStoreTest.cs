@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Configuration
+namespace Kephas.Tests.Configuration
 {
     using Kephas.Configuration;
     using Kephas.Runtime;

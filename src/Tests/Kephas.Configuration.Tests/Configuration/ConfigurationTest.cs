@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Configuration
+namespace Kephas.Tests.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -20,11 +20,11 @@ namespace Kephas.Core.Tests.Configuration
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
     using Kephas.Configuration.Providers;
-    using Kephas.Core.Tests;
     using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
