@@ -18,7 +18,7 @@
     <PackageReference Include="Kephas.Core" Version="7.0.0-rc.37" />
     <PackageReference Include="Kephas.Logging.NLog" Version="7.0.0-rc.37" />
     <PackageReference Include="Kephas.Model" Version="7.0.0-rc.37" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="NLog" Version="4.6.6" />
