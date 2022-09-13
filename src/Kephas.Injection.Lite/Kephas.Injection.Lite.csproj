@@ -17,14 +17,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>
-            Provides a lightweight dependency injection implementation.
-            Typically used areas and classes/interfaces/services:
-            - Injection: LiteInjectorBuilder.
-            - IAmbientServices.BuildWithLite().
-
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+        <Description>Provides a lightweight dependency injection implementation.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -34,11 +27,9 @@
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log.
-            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-        </PackageReleaseNotes>
-        <PackageTags>kephas injection autofac</PackageTags>
+        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>kephas injection lite</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -70,6 +61,14 @@
         <None Update="kephas.logo.stone.png">
             <Pack>true</Pack>
             <PackagePath>\</PackagePath>
+        </None>
+        <None Update="release-notes.md">
+          <Pack>true</Pack>
+          <PackagePath>\</PackagePath>
+        </None>
+        <None Update="README.md">
+          <Pack>true</Pack>
+          <PackagePath>\</PackagePath>
         </None>
     </ItemGroup>
 

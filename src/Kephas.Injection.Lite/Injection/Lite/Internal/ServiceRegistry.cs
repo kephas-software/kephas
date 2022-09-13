@@ -30,6 +30,21 @@ namespace Kephas.Injection.Lite.Internal
         private readonly List<IAppServiceSource> serviceSources = new ();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceRegistry"/> class.
+        /// </summary>
+        public ServiceRegistry()
+        {
+            this
+                .RegisterSource(new LazyServiceSource(this))
+                .RegisterSource(new LazyWithMetadataServiceSource(this))
+                .RegisterSource(new ExportFactoryServiceSource(this))
+                .RegisterSource(new ExportFactoryWithMetadataServiceSource(this))
+                .RegisterSource(new ListServiceSource(this))
+                .RegisterSource(new CollectionServiceSource(this))
+                .RegisterSource(new EnumerableServiceSource(this));
+        }
+
+        /// <summary>
         /// Attempts to get the <see cref="IAppServiceSource"/> for the given service contract.
         /// </summary>
         /// <param name="contractType">Type of the service contract.</param>
