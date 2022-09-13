@@ -33,61 +33,61 @@ A ready-to-use expando class is `Expando`. Upon initialization, a flag controls 
 * Plain expando
 
 ```C#
-    dynamic expando = new Expando();
+dynamic expando = new Expando();
 
-    expando.Property = "value";
-    Assert.AreEqual("value", expando.Property);
+expando.Property = "value";
+Assert.AreEqual("value", expando.Property);
 ```
 
 * Expando over a dictionary
 
 ```C#
-    var dictionary = new Dictionary<string, object>();
-    dynamic expando = dictionary.ToDynamic();
+var dictionary = new Dictionary<string, object>();
+dynamic expando = dictionary.ToDynamic();
 
-    expando.Property = "value";
-    Assert.AreEqual("value", dictionary["Property"]);
+expando.Property = "value";
+Assert.AreEqual("value", dictionary["Property"]);
 ```
 
 * Access over API, dynamic, or indexer
 
 ```C#
-    public class Person : Expando
-    {
-        public int Age { get; set; }
-    }
+public class Person : Expando
+{
+    public int Age { get; set; }
+}
 
-    //...
-    
-    var person = new Person();
-    person.Age = 30;     // the age is set through the class API
+//...
 
-    dynamic dynPerson = person;
-    dynPerson.Age = 23;  // the age is set through the dynamic features
-    Assert.AreEqual(23, person.Age);
+var person = new Person();
+person.Age = 30;     // the age is set through the class API
 
-    person["Age"] = 40;
-    Assert.AreEqual(40, person.Age);
+dynamic dynPerson = person;
+dynPerson.Age = 23;  // the age is set through the dynamic features
+Assert.AreEqual(23, person.Age);
 
-    dynPerson.IsOld = true;
-    Assert.IsTrue(person["IsOld"]);
+person["Age"] = 40;
+Assert.AreEqual(40, person.Age);
+
+dynPerson.IsOld = true;
+Assert.IsTrue(person["IsOld"]);
 ```
 
 * Expose non-dynamic objects as dynamic
 
 ```C#
-    public class Contact
-    {
-        public string Name { get; set; }
-    }
+public class Contact
+{
+    public string Name { get; set; }
+}
 
-    //...
-    
-    var contact = new Contact();
-    dynamic dynContact = contact.ToDynamic();
+//...
 
-    dynContact.Name = "John";
-    Assert.AreEqual("John", contact.Name);
+var contact = new Contact();
+dynamic dynContact = contact.ToDynamic();
+
+dynContact.Name = "John";
+Assert.AreEqual("John", contact.Name);
 ```
 
 ### Usage
@@ -120,65 +120,65 @@ All the values from the expand can be collected in form a dictionary, using the 
 #### Example
 
 ```csharp
-    /// <summary>
-    /// Expando class for evaluating the internal values on demand, based on a value resolver function.
-    /// </summary>
-    public class LazyExpando : ExpandoBase<object?>
+/// <summary>
+/// Expando class for evaluating the internal values on demand, based on a value resolver function.
+/// </summary>
+public class LazyExpando : ExpandoBase<object?>
+{
+    private readonly IDictionary<string, object> lockDictionary = new Dictionary<string, object>();
+    private readonly IDictionary<string, object?> innerDictionary;
+
+    public LazyExpando(Func<string, object?>? valueResolver = null)
+        : this(new Dictionary<string, object?>(), valueResolver)
     {
-        private readonly IDictionary<string, object> lockDictionary = new Dictionary<string, object>();
-        private readonly IDictionary<string, object?> innerDictionary;
-
-        public LazyExpando(Func<string, object?>? valueResolver = null)
-            : this(new Dictionary<string, object?>(), valueResolver)
-        {
-        }
-
-        public LazyExpando(IDictionary<string, object?> dictionary, Func<string, object?>? valueResolver = null)
-            : base(dictionary ?? throw new ArgumentNullException(nameof(dictionary)))
-        {
-            this.innerDictionary = dictionary;
-            this.ValueResolver = valueResolver;
-        }
-
-        protected Func<string, object?>? ValueResolver { get; set; }
-
-        protected override bool TryGetValue(string key, out object? value)
-        {
-            if (base.TryGetValue(key, out value))
-            {
-                return true;
-            }
-
-            var valueResolver = this.ValueResolver;
-            if (valueResolver != null)
-            {
-                if (this.lockDictionary.ContainsKey(key))
-                {
-                    return this.HandleCircularDependency(key, out value);
-                }
-
-                try
-                {
-                    this.lockDictionary[key] = true;
-                    value = valueResolver(key);
-                    this.innerDictionary[key] = value;
-                }
-                finally
-                {
-                    this.lockDictionary.Remove(key);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        protected virtual bool HandleCircularDependency(string key, out object? value)
-        {
-            throw new CircularDependencyException($"Circular dependency among values involving '{key}'.");
-        }
     }
+
+    public LazyExpando(IDictionary<string, object?> dictionary, Func<string, object?>? valueResolver = null)
+        : base(dictionary ?? throw new ArgumentNullException(nameof(dictionary)))
+    {
+        this.innerDictionary = dictionary;
+        this.ValueResolver = valueResolver;
+    }
+
+    protected Func<string, object?>? ValueResolver { get; set; }
+
+    protected override bool TryGetValue(string key, out object? value)
+    {
+        if (base.TryGetValue(key, out value))
+        {
+            return true;
+        }
+
+        var valueResolver = this.ValueResolver;
+        if (valueResolver != null)
+        {
+            if (this.lockDictionary.ContainsKey(key))
+            {
+                return this.HandleCircularDependency(key, out value);
+            }
+
+            try
+            {
+                this.lockDictionary[key] = true;
+                value = valueResolver(key);
+                this.innerDictionary[key] = value;
+            }
+            finally
+            {
+                this.lockDictionary.Remove(key);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected virtual bool HandleCircularDependency(string key, out object? value)
+    {
+        throw new CircularDependencyException($"Circular dependency among values involving '{key}'.");
+    }
+}
 ```
 
 ```csharp
@@ -194,14 +194,14 @@ Alternatively, the ```IExpandoMixin``` interface can be implemented. Basically, 
 #### Example
 
 ```csharp
-    public class Expandable : IExpandoMixin
-    {
-        private IDictionary<string, object?> inner = new Dictionary<string, object?>();
+public class Expandable : IExpandoMixin
+{
+    private IDictionary<string, object?> inner = new Dictionary<string, object?>();
 
-        IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.inner;
+    IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.inner;
 
-        public string? Name { get; set; }
-    }
+    public string? Name { get; set; }
+}
 ```
 
 ```csharp
@@ -217,14 +217,14 @@ To leverage it, Kephas introduced the `IAssemblyInitializer` interface and the `
 The [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers) package is aware of these and generates the code according to the following rules:
 * A class is generated with a single `InitializeModule` method, annotated appropriately.
 ```csharp
-    internal static class ModuleInitializer_My_Assembly
+internal static class ModuleInitializer_My_Assembly
+{
+    [ModuleInitializer]
+    internal static void InitializeModule()
     {
-        [ModuleInitializer]
-        internal static void InitializeModule()
-        {
-            // ...
-        }
+        // ...
     }
+}
 ```
 * All classes implementing the `IAssemblyInitializer` interface are instantiated and their `Initialize` method is called.
   * It is by-design to have instance classes instead of static classes.
@@ -236,6 +236,12 @@ The [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers) package 
 
 > Caution: do not add to an assembly referencing the [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers) package
 > a `[ModuleInitializer]` annotated method, as it will collide with the one generated.
+
+### .NET version prior to .NET 6.0
+Module initializers are not invoked upon assembly load, hence `IAssemblyInitializer`s are also not invoked. To address this, invoke the `IAssemblyInitializer.InitializeAssemblies()` static method somewhere before bootstrapping your code.
+However, be advised that:
+* the `AmbientServices` constructor invokes by default this method to register the default services.
+* the initializers are invoked only upon assembly load, not before.
 
 ## Other resources
 
