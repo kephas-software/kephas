@@ -243,6 +243,9 @@ However, be advised that:
 * the `AmbientServices` constructor invokes by default this method to register the default services.
 * the initializers are invoked only upon assembly load, not before.
 
+### Initializers
+* `ThreadContextAssemblyInitializer` adds support for restoring the culture in the thread when returning from async methods.
+
 ## Other resources
 
 * [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)

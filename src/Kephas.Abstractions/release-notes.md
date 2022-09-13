@@ -41,6 +41,7 @@
 * Threading
   * Breaking change: Removed the ```throwOnTimeout``` parameter from ```WaitNonLocking()``` and ```GetResultNonLocking()```.
   * NEW: added ```TryWaitNonLocking()``` and ```TryGetResultNonLocking()``` methods for silent fail cases.
+  * Added ThreadContextAssemblyInitializer to support restoring the culture in the thread when returning from async methods.
 
 * Linq
   * Breaking change: Removed ```IDisposableQueryable```, not feasible.
