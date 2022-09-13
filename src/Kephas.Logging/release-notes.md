@@ -6,3 +6,4 @@
 # 12.0.0
 
 * Added ``README.md`` and ``release-notes.md``.
+* Made in `ILogger<out TContract>` the `TContract` type parameter covariant.
