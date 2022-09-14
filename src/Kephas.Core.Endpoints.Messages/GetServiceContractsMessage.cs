@@ -7,7 +7,8 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
@@ -15,26 +16,26 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message for retrieving metadata of the application service contracts.
     /// </summary>
-    [DisplayInfo(Description = "Gets the metadata of the application service contracts.")]
+    [Display(Description = "Gets the metadata of the application service contracts.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class GetServiceContractsMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the contract type.
         /// </summary>
-        [DisplayInfo(Description = "Filter on the contract type.")]
+        [Display(Description = "Filter on the contract type.")]
         public string? ContractType { get; set; }
 
         /// <summary>
         /// Gets or sets the flag for allowing multiple registrations.
         /// </summary>
-        [DisplayInfo(Description = "Filter on the AllowMultiple flag.")]
+        [Display(Description = "Filter on the AllowMultiple flag.")]
         public bool? AllowMultiple { get; set; }
 
         /// <summary>
         /// Gets or sets the flag for the open generic registration.
         /// </summary>
-        [DisplayInfo(Description = "Filter on the AsOpenGeneric flag.")]
+        [Display(Description = "Filter on the AsOpenGeneric flag.")]
         public bool? AsOpenGeneric { get; set; }
     }
 }

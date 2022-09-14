@@ -7,7 +7,8 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
@@ -15,7 +16,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message for getting the setting types.
     /// </summary>
-    [DisplayInfo(Description = "Gets the registered settings types.")]
+    [Display(Description = "Gets the registered settings types.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class GetSettingsTypesMessage : IMessage
     {

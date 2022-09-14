@@ -8,8 +8,8 @@
 namespace Kephas.Scheduling.Endpoints
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
-    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Dynamic;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
@@ -21,7 +21,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message for enqueuing a job.
     /// </summary>
-    [DisplayInfo(Description = "Enqueues a new job.")]
+    [Display(Description = "Enqueues a new job.")]
     public class EnqueueMessage : IMessage
     {
         /// <summary>

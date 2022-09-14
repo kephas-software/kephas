@@ -21,7 +21,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A disable plugin message.
     /// </summary>
-    [DisplayInfo(Description = "Disables the indicated plugin.")]
+    [Display(Description = "Disables the indicated plugin.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class DisablePluginMessage : IMessage
     {
