@@ -13,6 +13,7 @@ variables:
   solution: 'src/Kephas.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  package.version: '12.0.0'
 
 steps:
 - task: NuGetToolInstaller@0
