@@ -37,15 +37,15 @@ namespace Kephas.Services
         /// <param name="builder">The registration builder.</param>
         /// <param name="buildContext">Context for the registration.</param>
         /// <param name="appServiceInfoProviders">The list of <see cref="IAppServiceInfosProvider"/>.</param>
+        /// <param name="logger">The logger.</param>
         public void RegisterServices(
             IInjectorBuilder builder,
             IInjectionBuildContext buildContext,
-            IList<IAppServiceInfosProvider> appServiceInfoProviders)
+            IList<IAppServiceInfosProvider> appServiceInfoProviders,
+            ILogger logger)
         {
             buildContext = buildContext ?? throw new ArgumentNullException(nameof(buildContext));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
-
-            var logger = (buildContext.AmbientServices.TryGetServiceInstance<ILogManager>() ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType());
 
             // get all type infos from the injection assemblies
             var appServiceInfoList = appServiceInfoProviders

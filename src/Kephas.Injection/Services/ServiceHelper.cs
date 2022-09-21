@@ -12,14 +12,20 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Collections;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
+    using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -235,6 +241,114 @@ namespace Kephas.Services
                 .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
 
             return providers;
+        }
+
+        /// <summary>
+        /// Gets the application service information providers.
+        /// </summary>
+        /// <param name="buildContext">The build context.</param>
+        /// <returns>
+        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// </returns>
+        public static IList<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
+        {
+            var assemblies = buildContext.GetDefaultAssemblies();
+
+            if (buildContext.Logger.IsDebugEnabled())
+            {
+                var logAssemblies = assemblies;
+                try
+                {
+                    buildContext.Logger.Debug("Using application assemblies: {assemblies}.", logAssemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
+                }
+                catch (Exception ex)
+                {
+                    buildContext.Logger.Debug(ex, "Error while logging application assemblies.");
+                }
+            }
+
+            var providers = ServiceHelper.GetAppServiceInfosProviders(assemblies)
+                .Union(buildContext.AppServiceInfosProviders)
+                .ToList();
+
+            return providers;
+        }
+
+        /// <summary>
+        /// Gets the default assemblies if none provided in the context.
+        /// </summary>
+        /// <returns>A list of assemblies.</returns>
+        private static IList<Assembly> GetDefaultAssemblies(this IInjectionBuildContext buildContext)
+        {
+            var searchPattern = buildContext.Settings.AssemblyFileNamePattern;
+
+            buildContext.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(GetDefaultAssemblies), searchPattern);
+
+            return WithStopwatch(
+                () =>
+                {
+                    var appAssemblies = buildContext.Assemblies.WhereNotSystemAssemblies();
+
+                    if (string.IsNullOrWhiteSpace(searchPattern))
+                    {
+                        return appAssemblies.ToList();
+                    }
+
+                    var regex = new Regex(searchPattern);
+                    return appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
+                },
+                buildContext.Logger,
+                LogLevel.Debug);
+        }
+
+        /// <summary>
+        /// Filters out the system assemblies from the provided assemblies.
+        /// </summary>
+        /// <param name="assemblies">The convention assemblies.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process where not system assemblies in this
+        /// collection.
+        /// </returns>
+        private static IEnumerable<Assembly> WhereNotSystemAssemblies(this IEnumerable<Assembly> assemblies)
+        {
+            return assemblies.Where(a => !a.IsSystemAssembly());
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at the indicated
+        /// log level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        /// <param name="logLevel">Optional. The log level.</param>
+        /// <param name="memberName">Optional. Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        private static T WithStopwatch<T>(
+            Func<T> action,
+            ILogger? logger = null,
+            LogLevel logLevel = LogLevel.Debug,
+            [CallerMemberName] string? memberName = null)
+        {
+            action = action ?? throw new ArgumentNullException(nameof(action));
+
+            logger?.Log(logLevel, "{operation}. Started at: {startedAt:s}.", memberName, DateTime.Now);
+            var stopwatch = new Stopwatch();
+
+            try
+            {
+                stopwatch.Start();
+                var value = action();
+                logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
+                return value;
+            }
+            catch (Exception ex)
+            {
+                logger?.Log(LogLevel.Error, ex, "{operation}. Failed at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
+                throw;
+            }
         }
     }
 }

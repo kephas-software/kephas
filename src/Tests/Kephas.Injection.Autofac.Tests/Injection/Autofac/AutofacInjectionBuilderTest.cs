@@ -420,7 +420,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var (builder, ambientServices) = this.CreateInjectorBuilder();
 
-            var mockLoggerManager = ambientServices.LogManager;
+            var mockLoggerManager = ambientServices.GetServiceInstance<ILogManager>();
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
 
             return builder;

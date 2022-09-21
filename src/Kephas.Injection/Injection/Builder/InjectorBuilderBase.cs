@@ -40,8 +40,6 @@ namespace Kephas.Injection.Builder
                 () => context.Logger ?? LoggingHelper.DefaultLogManager.GetLogger(this.GetType()));
 
             this.BuildContext = context;
-
-            this.Registry = new AppServiceInfoRegistry();
         }
 
         /// <summary>
@@ -56,14 +54,6 @@ namespace Kephas.Injection.Builder
         /// The logger.
         /// </value>
         public ILogger? Logger => this.lazyLogger.Value;
-
-        /// <summary>
-        /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
-        /// </summary>
-        /// <value>
-        /// The serviceRegistry.
-        /// </value>
-        protected internal AppServiceInfoRegistry Registry { get; }
 
         /// <summary>
         /// Define a rule that will apply to the specified type.
@@ -120,22 +110,6 @@ namespace Kephas.Injection.Builder
         }
 
         /// <summary>
-        /// Adds the registrations.
-        /// </summary>
-        /// <param name="registrations">A variable-length parameters list containing registrations.</param>
-        /// <returns>
-        /// A TBuilder.
-        /// </returns>
-        public virtual TBuilder WithRegistration(params IAppServiceInfo[] registrations)
-        {
-            registrations = registrations ?? throw new ArgumentNullException(nameof(registrations));
-
-            registrations.ForEach(this.Registry.Add);
-
-            return (TBuilder)this;
-        }
-
-        /// <summary>
         /// Creates the injector.
         /// </summary>
         /// <returns>The newly created injector.</returns>
@@ -148,39 +122,6 @@ namespace Kephas.Injection.Builder
         }
 
         /// <summary>
-        /// Gets the application service information providers.
-        /// </summary>
-        /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
-        /// </returns>
-        protected internal IList<IAppServiceInfosProvider> GetAppServiceInfosProviders()
-        {
-            var assemblies = this.BuildContext.Assemblies.Count == 0
-                ? this.GetDefaultAssemblies()
-                : this.BuildContext.Assemblies;
-
-            if (this.Logger.IsDebugEnabled())
-            {
-                var logAssemblies = assemblies;
-                try
-                {
-                    this.Logger.Debug("Using application assemblies: {assemblies}.", logAssemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.Debug(ex, "Error while logging application assemblies.");
-                }
-            }
-
-            var providers = ServiceHelper.GetAppServiceInfosProviders(assemblies)
-                .Union(this.BuildContext.AppServiceInfosProviders)
-                .Union(new[] { this.Registry })
-                .ToList();
-
-            return providers;
-        }
-
-        /// <summary>
         /// Registers the services from <see cref="IAppServiceInfo"/> collected from all providers.
         /// </summary>
         /// <returns>
@@ -188,7 +129,7 @@ namespace Kephas.Injection.Builder
         /// </returns>
         protected internal TBuilder RegisterServices()
         {
-            var appServiceInfosProviders = this.GetAppServiceInfosProviders();
+            var appServiceInfosProviders = ServiceHelper.GetAppServiceInfosProviders(this.BuildContext);
             if (this.Logger.IsDebugEnabled())
             {
                 this.Logger.Debug("Registering conventions from providers '{appServiceInfosProviders}...", appServiceInfosProviders);
@@ -203,34 +144,6 @@ namespace Kephas.Injection.Builder
             }
 
             return (TBuilder)this;
-        }
-
-        /// <summary>
-        /// Gets the default assemblies if none provided in the context.
-        /// </summary>
-        /// <returns>A list of assemblies.</returns>
-        protected virtual IList<Assembly> GetDefaultAssemblies()
-        {
-            var searchPattern = this.BuildContext.Settings.AssemblyFileNamePattern;
-
-            this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetDefaultAssemblies), searchPattern);
-
-            return this.WithStopwatch(
-                () =>
-                {
-                    var rawAssemblies = this.BuildContext.Assemblies;
-                    var appAssemblies = this.WhereNotSystemAssemblies(rawAssemblies);
-
-                    if (string.IsNullOrWhiteSpace(searchPattern))
-                    {
-                        return appAssemblies.ToList();
-                    }
-
-                    var regex = new Regex(searchPattern);
-                    return appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
-                },
-                this.Logger,
-                LogLevel.Debug);
         }
 
         /// <summary>
@@ -276,19 +189,6 @@ namespace Kephas.Injection.Builder
                 logger?.Log(LogLevel.Error, ex, "{operation}. Failed at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Filters out the system assemblies from the provided assemblies.
-        /// </summary>
-        /// <param name="assemblies">The convention assemblies.</param>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process where not system assemblies in this
-        /// collection.
-        /// </returns>
-        private IEnumerable<Assembly> WhereNotSystemAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            return assemblies.Where(a => !a.IsSystemAssembly());
         }
 
         /// <summary>
