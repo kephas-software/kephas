@@ -11,7 +11,7 @@
 namespace Kephas
 {
     using System;
-
+    using Kephas.Injection;
     using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Builder;
 
@@ -27,7 +27,7 @@ namespace Kephas
         /// <param name="builderOptions">The injector builder configuration.</param>
         /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacInjectorBuilder>? builderOptions = null, bool preserveRegistrationOrder = true)
+        public static IInjector BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacInjectorBuilder>? builderOptions = null, bool preserveRegistrationOrder = true)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
@@ -35,8 +35,7 @@ namespace Kephas
 
             builderOptions?.Invoke(injectorBuilder);
 
-            var container = injectorBuilder.Build();
-            return ambientServices.WithInjector(container);
+            return injectorBuilder.Build();
         }
     }
 }

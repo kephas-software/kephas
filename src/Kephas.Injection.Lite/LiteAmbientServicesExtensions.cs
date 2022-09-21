@@ -11,7 +11,7 @@
 namespace Kephas
 {
     using System;
-
+    using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Injection.Lite.Builder;
 
@@ -28,7 +28,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? builderOptions = null)
+        public static IInjector BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? builderOptions = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
@@ -36,8 +36,7 @@ namespace Kephas
 
             builderOptions?.Invoke(injectorBuilder);
 
-            var container = injectorBuilder.Build();
-            return ambientServices.WithInjector(container);
+            return injectorBuilder.Build();
         }
     }
 }

@@ -19,21 +19,6 @@ namespace Kephas
     public interface IAmbientServicesMixin : IAmbientServices
     {
         /// <summary>
-        /// Gets the service registry.
-        /// </summary>
-        protected internal IAppServiceRegistry ServiceRegistry { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the service with the provided contract is registered.
-        /// </summary>
-        /// <param name="contractType">Type of the service contract.</param>
-        /// <returns>
-        /// <c>true</c> if the service is registered, <c>false</c> if not.
-        /// </returns>
-        bool IAmbientServices.IsRegistered(Type contractType) =>
-            this.ServiceRegistry.IsRegistered(contractType);
-
-        /// <summary>
         /// Registers the provided service using a registration builder.
         /// </summary>
         /// <param name="contractDeclarationType">The contract declaration type.</param>

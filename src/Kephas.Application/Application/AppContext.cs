@@ -13,13 +13,15 @@ namespace Kephas.Application
     using System;
 
     using Kephas.Commands;
+    using Kephas.Dynamic;
     using Kephas.Injection;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
     /// The default application context.
     /// </summary>
-    public class AppContext : Context, IAppContext
+    public class AppContext : Expando, IAppContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
@@ -31,16 +33,20 @@ namespace Kephas.Application
             IAmbientServices ambientServices,
             IAppRuntime? appRuntime = null,
             IAppArgs? appArgs = null)
-            : base(ambientServices)
         {
-            this.AppRuntime = appRuntime ?? this.AmbientServices.GetAppRuntime()!;
+            this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
+        /// Gets the service collection.
+        /// </summary>
+        public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
         /// Gets the application runtime.
         /// </summary>
-        public IAppRuntime AppRuntime { get; }
+        public IAppRuntime AppRuntime => this.AmbientServices.GetAppRuntime();
 
         /// <summary>
         /// Gets the application arguments passed typically as command line arguments.
@@ -67,16 +73,16 @@ namespace Kephas.Application
         public object? AppResult { get; set; }
 
         /// <summary>
-        /// Gets the injector.
+        /// Gets the logger.
         /// </summary>
-        /// <remarks>
-        /// Due to the fact that at the time the AppContext is created, the Injector is
-        /// not properly set in the AmbientServices, it is always returned from the AmbientServices
-        /// so that, when it is available, the proper one to be used.
-        /// </remarks>
-        /// <newValue>
-        /// The injector.
-        /// </newValue>
-        public override IInjector Injector => this.AmbientServices.Injector;
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger? Logger => this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger();
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        void IDisposable.Dispose()
+        {
+        }
     }
 }

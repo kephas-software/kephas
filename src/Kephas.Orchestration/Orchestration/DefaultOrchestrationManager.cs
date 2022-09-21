@@ -167,7 +167,7 @@ namespace Kephas.Orchestration
         /// <value>
         /// The live apps cache.
         /// </value>
-        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ConcurrentDictionary<string, IAppEvent>();
+        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ();
 
         /// <summary>
         /// Initializes the service asynchronously.

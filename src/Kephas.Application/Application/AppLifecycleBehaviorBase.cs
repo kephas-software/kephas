@@ -10,13 +10,10 @@
 
 namespace Kephas.Application
 {
-    using System;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas;
-    using Kephas.Application.Resources;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
@@ -117,7 +114,8 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task<IOperationResult> IAppLifecycleBehavior.BeforeAppFinalizeAsync(IAppContext appContext,
+        Task<IOperationResult> IAppLifecycleBehavior.BeforeAppFinalizeAsync(
+            IAppContext appContext,
             CancellationToken cancellationToken)
         {
             this.EnsureInitialized(appContext);

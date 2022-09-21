@@ -276,6 +276,33 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service using a registration builder.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        /// <param name="builder">The builder.</param>
+        /// <returns>
+        /// This <see cref="IAmbientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterService(
+            this IAmbientServices ambientServices,
+            Type contractDeclarationType,
+            object instancingStrategy,
+            Action<IRegistrationBuilder>? builder = null)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
+
+            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
+            builder?.Invoke(serviceBuilder);
+            ambientServices.RegisterService(serviceBuilder.Build());
+
+            return ambientServices;
+        }
+
+        /// <summary>
         /// Tries to get the service instance from the registered services,
         /// in case the service was registered using an instance.
         /// </summary>
@@ -325,24 +352,6 @@ namespace Kephas
         /// <summary>
         /// Sets the injector to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="injector">The injector.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices WithInjector(this IAmbientServices ambientServices, IInjector injector)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
-
-            ambientServices.Register(injector);
-
-            return ambientServices;
-        }
-
-        /// <summary>
-        /// Sets the injector to the ambient services.
-        /// </summary>
         /// <typeparam name="TInjectorBuilder">Type of the injector builder.</typeparam>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="builderOptions">The injector builder configuration.</param>
@@ -350,7 +359,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithInjector<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? builderOptions = null)
+        public static IInjector BuildWith<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? builderOptions = null)
             where TInjectorBuilder : IInjectorBuilder
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -361,7 +370,7 @@ namespace Kephas
 
             builderOptions?.Invoke(containerBuilder);
 
-            return ambientServices.WithInjector(containerBuilder.Build());
+            return containerBuilder.Build();
         }
 
         /// <summary>

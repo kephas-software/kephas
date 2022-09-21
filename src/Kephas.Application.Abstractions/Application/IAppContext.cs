@@ -11,7 +11,10 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Security.Principal;
 
+    using Kephas.Injection;
+    using Kephas.Resources;
     using Kephas.Services;
 
     /// <summary>
@@ -19,6 +22,11 @@ namespace Kephas.Application
     /// </summary>
     public interface IAppContext : IContext
     {
+        /// <summary>
+        /// Gets the service collection.
+        /// </summary>
+        IAmbientServices AmbientServices { get; }
+
         /// <summary>
         /// Gets the application runtime.
         /// </summary>
@@ -50,5 +58,26 @@ namespace Kephas.Application
         /// The application result.
         /// </value>
         object? AppResult { get; set; }
+
+        /// <summary>
+        /// Gets a context for the dependency injection/composition.
+        /// </summary>
+        /// <value>
+        /// The injector.
+        /// </value>
+        IInjector IContext.Injector
+            => throw new ServiceException(AppAbstractionStrings.AppContextInjector_InjectorNotAvailable);
+
+        /// <summary>
+        /// Gets or sets the authenticated identity.
+        /// </summary>
+        /// <value>
+        /// The authenticated identity.
+        /// </value>
+        IIdentity? IContext.Identity
+        {
+            get => null;
+            set { }
+        }
     }
 }

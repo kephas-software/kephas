@@ -97,6 +97,10 @@
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>ILLink.Descriptors.xml</LogicalName>
         </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppAbstractionStrings.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>AppAbstractionStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -109,6 +113,11 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>ApplicationStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <Compile Update="Resources\AppAbstractionStrings.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>AppAbstractionStrings.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

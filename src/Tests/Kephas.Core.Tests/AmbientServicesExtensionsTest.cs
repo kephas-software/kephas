@@ -35,9 +35,9 @@ namespace Kephas.Core.Tests
         [Test]
         public void Constructor_register_ambient_services()
         {
-            IServiceProvider ambientServices = this.CreateAmbientServices();
+            var ambientServices = this.CreateAmbientServices();
 
-            Assert.AreSame(ambientServices, ambientServices.GetService(typeof(IAmbientServices)));
+            Assert.AreSame(ambientServices, ambientServices.GetServiceInstance(typeof(IAmbientServices)));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace Kephas.Core.Tests
             IAmbientServices ambientServices = this.CreateAmbientServices();
             ambientServices.WithLogManager(new DebugLogManager());
 
-            Assert.IsTrue(ambientServices.LogManager is DebugLogManager);
+            Assert.IsTrue(ambientServices.GetServiceInstance<ILogManager>() is DebugLogManager);
         }
 
         [Test]
@@ -57,18 +57,18 @@ namespace Kephas.Core.Tests
                 .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
             var injector = Substitute.For<IInjector>();
-            ambientServices.WithInjector<TestInjectorBuilder>(
+            var builderInjector = ambientServices.BuildWith<TestInjectorBuilder>(
                 b => b.WithAssemblies(this.GetType().Assembly)
                     .WithInjector(injector));
 
-            Assert.AreSame(injector, ambientServices.Injector);
+            Assert.AreSame(injector, builderInjector);
         }
 
         [Test]
         public void WithInjector_builder_missing_required_constructor()
         {
             var ambientServices = this.CreateAmbientServices();
-            Assert.Throws<MissingMethodException>(() => ambientServices.WithInjector<BadTestInjectorBuilder>());
+            Assert.Throws<MissingMethodException>(() => ambientServices.BuildWith<BadTestInjectorBuilder>());
         }
 
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>

@@ -14,9 +14,6 @@ namespace Kephas
     using System.Collections.Generic;
 
     using Kephas.Dynamic;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
-    using Kephas.Logging;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -37,15 +34,13 @@ namespace Kephas
             => this.Any(r => r.ContractType == contractType);
 
         /// <summary>
-        /// Registers the provided service using a registration builder.
+        /// Registers the provided service.
         /// </summary>
-        /// <param name="contractDeclarationType">The contract declaration type.</param>
-        /// <param name="instancingStrategy">The instancing strategy.</param>
-        /// <param name="builder">The builder.</param>
+        /// <param name="appServiceInfo">The application service registration.</param>
         /// <returns>
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        public IAmbientServices RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null);
+        public IAmbientServices RegisterService(IAppServiceInfo appServiceInfo);
 
         /// <summary>
         /// Adds an collector for <see cref="IAmbientServices"/>.
