@@ -10,10 +10,11 @@ namespace Kephas
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Runtime.CompilerServices;
     using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
+    using Kephas.Injection.Resources;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
@@ -275,6 +276,53 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Tries to get the service instance from the registered services,
+        /// in case the service was registered using an instance.
+        /// </summary>
+        /// <param name="ambientServices">The service collection.</param>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>The service instance or <c>null</c>.</returns>
+        public static object? TryGetServiceInstance(this IAmbientServices ambientServices, Type contractType)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+
+            return ambientServices.LastOrDefault(i => i.ContractType == contractType && i.Instance is not null)?.Instance;
+        }
+
+        /// <summary>
+        /// Tries to get the service instance from the registered services
+        /// </summary>
+        /// <typeparam name="T">The contract type.</typeparam>
+        /// <param name="ambientServices">The service collection.</param>
+        /// <returns>The service instance or <c>null</c>.</returns>
+        public static T? TryGetServiceInstance<T>(this IAmbientServices ambientServices)
+            where T : class
+            => ambientServices.TryGetServiceInstance(typeof(T)) as T;
+
+        /// <summary>
+        /// Tries to get the service instance from the registered services,
+        /// in case the service was registered using an instance.
+        /// </summary>
+        /// <param name="ambientServices">The service collection.</param>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>The service instance or <c>null</c>.</returns>
+        public static object GetServiceInstance(this IAmbientServices ambientServices, Type contractType)
+            => ambientServices.TryGetServiceInstance(contractType)
+               ?? throw new ArgumentException(string.Format(Strings.ServiceInstanceNotRegistered, contractType), nameof(contractType));
+
+        /// <summary>
+        /// Gets the service instance from the registered services
+        /// </summary>
+        /// <typeparam name="T">The contract type.</typeparam>
+        /// <param name="ambientServices">The service collection.</param>
+        /// <returns>The service instance or <c>null</c>.</returns>
+        [return: NotNull]
+        public static T GetServiceInstance<T>(this IAmbientServices ambientServices)
+            where T : class
+            => (T)ambientServices.GetServiceInstance(typeof(T));
+
+        /// <summary>
         /// Sets the injector to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
@@ -307,7 +355,7 @@ namespace Kephas
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            var context = new InjectionBuildContext(ambientServices);
+            var context = new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies());
 
             var containerBuilder = (TInjectorBuilder)Activator.CreateInstance(typeof(TInjectorBuilder), context)!;
 
@@ -323,8 +371,13 @@ namespace Kephas
         /// <returns>
         /// The application runtime.
         /// </returns>
-        public static IAppRuntime GetAppRuntime(this IAmbientServices ambientServices) =>
-            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<IAppRuntime>();
+        public static IAppRuntime GetAppRuntime(this IAmbientServices ambientServices)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+
+            return ambientServices.TryGetServiceInstance<IAppRuntime>()
+                   ?? throw new InvalidOperationException("The application runtime is not registered.");
+        }
 
         /// <summary>
         /// Gets the registered application service contracts.

@@ -33,15 +33,6 @@ namespace Kephas.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected Loggable(IAmbientServices ambientServices)
-            : this(() => ambientServices?.LogManager)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Loggable"/> class.
-        /// </summary>
         /// <param name="injector">The injector.</param>
         protected Loggable(IInjector injector)
             : this(() => injector?.Resolve<ILogManager>())

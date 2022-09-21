@@ -48,12 +48,12 @@ namespace Kephas.Core.Tests.Injection
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
             public TestInjectorBuilder(IAmbientServices? ambientServices = null)
-                : base(new InjectionBuildContext(ambientServices ?? CreateAmbientServices().WithStaticAppRuntime()))
+                : base(new InjectionBuildContext((ambientServices ?? CreateAmbientServices().WithStaticAppRuntime()).GetAppRuntime().GetAppAssemblies()))
             {
             }
 
             public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
-                : base(new InjectionBuildContext(CreateAmbientServices().Register(logManager).Register(appRuntime)))
+                : base(new InjectionBuildContext(CreateAmbientServices().Register(logManager).Register(appRuntime).GetAppRuntime().GetAppAssemblies()))
             {
             }
 
@@ -75,7 +75,7 @@ namespace Kephas.Core.Tests.Injection
         public class TestRegistrationInjectorBuilder : InjectorBuilderBase<TestRegistrationInjectorBuilder>
         {
             public TestRegistrationInjectorBuilder(IInjectionBuildContext? buildContext = null)
-                : base(buildContext ?? new InjectionBuildContext(CreateAmbientServices()))
+                : base(buildContext ?? new InjectionBuildContext(CreateAmbientServices().GetAppRuntime().GetAppAssemblies()))
             {
             }
 
@@ -105,7 +105,7 @@ namespace Kephas.Core.Tests.Injection
 
             protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
 
-            private TestTypeBuilder CreateBuilder(Type serviceType) => new TestTypeBuilder(serviceType);
+            private TestTypeBuilder CreateBuilder(Type serviceType) => new (serviceType);
 
             private static IAmbientServices CreateAmbientServices() =>
                 new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());

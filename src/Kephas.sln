@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Mail", "Kephas.Mail\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingFramework", "TestingFramework", "{EEE1C452-EDDF-47E2-842B-970E33C42FA5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{AB144611-DCE3-4DF6-8D58-08A410E7D978}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Configuration", "Solution Configuration", "{AB144611-DCE3-4DF6-8D58-08A410E7D978}"
 	ProjectSection(SolutionItems) = preProject
 		..\nuget.config = ..\nuget.config
 		Settings.StyleCop = Settings.StyleCop

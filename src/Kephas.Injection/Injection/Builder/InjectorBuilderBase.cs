@@ -36,11 +36,8 @@ namespace Kephas.Injection.Builder
         /// <param name="context">The context.</param>
         protected InjectorBuilderBase(IInjectionBuildContext context)
         {
-            var ambientServices = context.AmbientServices;
-            ambientServices = ambientServices ?? throw new ArgumentException($"The {nameof(context)}.{nameof(context.AmbientServices)} is not set.", nameof(context));
-
             this.lazyLogger = new Lazy<ILogger>(
-                () => (ambientServices.LogManager ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType()));
+                () => context.Logger ?? LoggingHelper.DefaultLogManager.GetLogger(this.GetType()));
 
             this.BuildContext = context;
 
@@ -221,7 +218,7 @@ namespace Kephas.Injection.Builder
             return this.WithStopwatch(
                 () =>
                 {
-                    var rawAssemblies = this.BuildContext.GetAppAssemblies();
+                    var rawAssemblies = this.BuildContext.Assemblies;
                     var appAssemblies = this.WhereNotSystemAssemblies(rawAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))

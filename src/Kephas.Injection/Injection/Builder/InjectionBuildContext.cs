@@ -13,27 +13,29 @@ namespace Kephas.Injection.Builder
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Security.Principal;
 
-    using Kephas.Application;
+    using Kephas.Dynamic;
     using Kephas.Injection.Configuration;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
     /// A context for building the injector.
     /// </summary>
-    public class InjectionBuildContext : Context, IInjectionBuildContext
+    public class InjectionBuildContext : Expando, IInjectionBuildContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionBuildContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="assemblies">
         /// An enumeration of assemblies used in injection.
         /// </param>
-        public InjectionBuildContext(IAmbientServices ambientServices, IList<Assembly>? assemblies = null)
-            : base(ambientServices ?? throw new ArgumentNullException(nameof(ambientServices)))
+        public InjectionBuildContext(IEnumerable<Assembly>? assemblies = null)
         {
-            this.Assemblies = assemblies ?? new List<Assembly>();
+            this.Assemblies = assemblies is null
+                ? new List<Assembly>()
+                : new List<Assembly>(assemblies);
         }
 
         /// <summary>
@@ -42,25 +44,29 @@ namespace Kephas.Injection.Builder
         /// <value>
         /// The application service information providers.
         /// </value>
-        public IList<IAppServiceInfosProvider> AppServiceInfosProviders { get; } = new List<IAppServiceInfosProvider>();
+        public ICollection<IAppServiceInfosProvider> AppServiceInfosProviders { get; } = new List<IAppServiceInfosProvider>();
 
         /// <summary>
         /// Gets the list of assemblies used in injection.
         /// </summary>
-        public IList<Assembly> Assemblies { get; }
-
-        /// <summary>
-        /// Gets the application assemblies.
-        /// </summary>
-        /// <returns>An enumeration of assemblies.</returns>
-        public IEnumerable<Assembly> GetAppAssemblies()
-        {
-            return this.AmbientServices.GetAppRuntime().GetAppAssemblies();
-        }
+        public ICollection<Assembly> Assemblies { get; }
 
         /// <summary>
         /// Gets the injection settings.
         /// </summary>
         public InjectionSettings Settings { get; } = new ();
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger? Logger { get; set; }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        void IDisposable.Dispose()
+        {
+        }
     }
 }

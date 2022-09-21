@@ -15,6 +15,7 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Plugins.Application;
 
     /// <summary>
@@ -58,7 +59,7 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new PluginsAppRuntime(
-                name => ambientServices.LogManager.GetLogger(name),
+                name => ambientServices.GetServiceInstance<ILogManager>().GetLogger(name),
                 null,
                 appFolder,
                 configFolders,

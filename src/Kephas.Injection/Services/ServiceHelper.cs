@@ -159,7 +159,7 @@ namespace Kephas.Services
         /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <returns>The metadata.</returns>
         public static TMetadata GetServiceMetadata<TMetadata>(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? serviceType,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType)
         {
             var metadata = GetServiceMetadata(serviceType, contractDeclarationType);
@@ -189,11 +189,11 @@ namespace Kephas.Services
         /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <returns>The metadata.</returns>
         public static IDictionary<string, object?> GetServiceMetadata(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? serviceType,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType)
         {
             var metadata = new Dictionary<string, object?>();
-            serviceType.GetCustomAttributes()
+            serviceType?.GetCustomAttributes()
                 .OfType<IMetadataProvider>()
                 .SelectMany(p => p.GetMetadata())
                 .ForEach(m => metadata[m.name] = m.value);
@@ -205,7 +205,7 @@ namespace Kephas.Services
             {
                 var metadataSourceGenericType = contractDeclarationType.IsConstructedGenericType
                     ? contractDeclarationType
-                    : serviceType.IsGenericType
+                    : serviceType is null || serviceType.IsGenericType
                         ? null
                         : serviceType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == contractDeclarationType);
                 if (metadataSourceGenericType != null)

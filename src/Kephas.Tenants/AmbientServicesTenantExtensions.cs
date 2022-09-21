@@ -25,7 +25,7 @@ public static class AmbientServicesTenantExtensions
     /// <typeparam name="T">The ambient services type.</typeparam>
     /// <returns>The provided <see cref="IAmbientServices"/>.</returns>
     [return: NotNull]
-    public static T WithTenantSupport<T>([DisallowNull] this T ambientServices, IAppArgs appArgs)
+    public static T UseTenantSupport<T>([DisallowNull] this T ambientServices, IAppArgs appArgs)
         where T : IAmbientServices
     {
         var tenant = appArgs.Tenant();

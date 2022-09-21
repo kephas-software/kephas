@@ -25,7 +25,7 @@ public static class LicensingAmbientServicesExtensions
     /// </returns>
     public static ILicensingManager GetLicensingManager(this IAmbientServices ambientServices) =>
         (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices)))
-        .GetRequiredService<ILicensingManager>();
+        .GetServiceInstance<ILicensingManager>();
 
     /// <summary>
     /// Sets the licensing manager to the ambient services.

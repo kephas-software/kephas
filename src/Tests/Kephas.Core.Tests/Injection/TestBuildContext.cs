@@ -10,8 +10,9 @@
 
 namespace Kephas.Core.Tests.Injection
 {
+    using System.Reflection;
+
     using Kephas.Injection.Builder;
-    using NSubstitute;
 
     /// <summary>
     /// The test registration context.
@@ -23,7 +24,7 @@ namespace Kephas.Core.Tests.Injection
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional).</param>
         public TestBuildContext(IAmbientServices? ambientServices = null)
-            : base(ambientServices ?? Substitute.For<IAmbientServices>())
+            : base(ambientServices?.GetAppRuntime().GetAppAssemblies() ?? new List<Assembly>())
         {
         }
     }

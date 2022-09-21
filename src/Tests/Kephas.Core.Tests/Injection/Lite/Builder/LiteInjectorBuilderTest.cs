@@ -319,7 +319,8 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
 
             var context = new InjectionBuildContext((ambientServices ?? this.CreateAmbientServices())
                                         .Register(mockLoggerManager)
-                                        .Register(mockPlatformManager));
+                                        .Register(mockPlatformManager)
+                                        .GetAppRuntime().GetAppAssemblies());
             config?.Invoke(context);
             var factory = new LiteInjectorBuilder(context);
             return factory;

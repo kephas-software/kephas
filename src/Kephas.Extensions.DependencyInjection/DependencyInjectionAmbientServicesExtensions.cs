@@ -40,7 +40,7 @@ namespace Kephas
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            var injectorBuilder = new DependencyInjectionInjectorBuilder(new InjectionBuildContext(ambientServices));
+            var injectorBuilder = new DependencyInjectionInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
 
             builderOptions?.Invoke(injectorBuilder);
 

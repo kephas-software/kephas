@@ -366,7 +366,7 @@ namespace Kephas.Core.Tests.Services
                 new TestBuildContext(this.GetTestAmbientServices(m => log.AppendLine(m))),
                 new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) });
 
-            var testBuilder = (InjectorBuilderBaseTest.TestTypeBuilder)conventions.TypeBuilders.Values.Single();
+            var testBuilder = conventions.TypeBuilders.Values.Single();
             var metadata = testBuilder.Metadata;
 
             // should not warn that metadata attributes are not supported

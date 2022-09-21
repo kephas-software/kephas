@@ -34,12 +34,12 @@ namespace Kephas.Services
         /// </returns>
         public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
         {
-            if ((context as IContext)?.AmbientServices is not IAppServiceInfosProvider ambientServicesProvider)
+            if (context?.Injector.TryResolve<IAmbientServices>() is not IAmbientServices appServiceCollection)
             {
                 return Array.Empty<ContractDeclaration>();
             }
 
-            return ambientServicesProvider.GetAppServiceContracts(context);
+            return appServiceCollection.Select(info => new ContractDeclaration(info.ContractType!, info));
         }
     }
 }

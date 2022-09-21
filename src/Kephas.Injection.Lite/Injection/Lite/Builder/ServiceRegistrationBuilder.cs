@@ -19,6 +19,7 @@ namespace Kephas.Injection.Lite.Builder
     using Kephas.Injection.Lite.Internal;
     using Kephas.Resources;
     using Kephas.Services;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// A service registration builder.
@@ -53,6 +54,12 @@ namespace Kephas.Injection.Lite.Builder
             this.contractType = this.contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
             this.SetInstancingStrategy(instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy)));
         }
+
+        /// <summary>
+        /// Builds the <see cref="IAppServiceInfo"/> instance.
+        /// </summary>
+        /// <returns>The <see cref="IAppServiceInfo"/> instance.</returns>
+        IAppServiceInfo IRegistrationBuilder.Build() => this.Build();
 
         /// <summary>
         /// Builds the configured information into a <see cref="IServiceInfo"/> and returns it.

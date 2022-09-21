@@ -55,7 +55,7 @@ namespace Kephas.Testing.Injection
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices));
+            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
         }
 
         /// <summary>

@@ -20,15 +20,6 @@ namespace Kephas.Interaction
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractionContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public InteractionContext(IAmbientServices ambientServices)
-            : base(ambientServices)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InteractionContext"/> class.
-        /// </summary>
         /// <param name="injector">The injector.</param>
         public InteractionContext(IInjector injector)
             : base(injector)

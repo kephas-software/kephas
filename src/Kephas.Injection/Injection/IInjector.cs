@@ -61,21 +61,19 @@ namespace Kephas.Injection
         public T? TryResolve<T>(string serviceName)
         {
             var exportFactories = this
-                .ResolveMany<Lazy<T, AppServiceMetadata>>()
-                .Order()
+                .Resolve<ILazyEnumerable<T, AppServiceMetadata>>()
                 .Where(f => f.Metadata.ServiceName == serviceName)
                 .ToList();
-            if (exportFactories.Count == 0)
+            return exportFactories.Count switch
             {
-                return default;
-            }
-
-            if (exportFactories.Count > 1)
-            {
-                throw new AmbiguousMatchException(string.Format(AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception, serviceName, typeof(T)));
-            }
-
-            return exportFactories[0].Value;
+                0 => default,
+                > 1 => throw new AmbiguousMatchException(
+                    string.Format(
+                        AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception,
+                        serviceName,
+                        typeof(T))),
+                _ => exportFactories[0].Value
+            };
         }
 
         /// <summary>
@@ -90,12 +88,13 @@ namespace Kephas.Injection
         public T Resolve<T>(string serviceName)
         {
             var service = this.TryResolve<T>(serviceName);
-            if (service is null)
-            {
-                throw new ServiceException(string.Format(AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception, serviceName, typeof(T)));
-            }
-
-            return service;
+            return service is null
+                ? throw new ServiceException(
+                    string.Format(
+                        AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception,
+                        serviceName,
+                        typeof(T)))
+                : service;
         }
 
         /// <summary>

@@ -7,3 +7,4 @@
 
 * Added ``README.md`` and ``release-notes.md``.
 * Made in `ILogger<out TContract>` the `TContract` type parameter covariant.
+* Breaking change: `IAmbientServices.GetLogger` overload methods removed. Replaced by `IAppServiceCollection.GetServiceInstance<ILogManager>().GetLogger`.

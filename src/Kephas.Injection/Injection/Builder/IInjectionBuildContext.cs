@@ -12,8 +12,10 @@ namespace Kephas.Injection.Builder
 {
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Security.Principal;
 
     using Kephas.Injection.Configuration;
+    using Kephas.Injection.Resources;
     using Kephas.Services;
 
     /// <summary>
@@ -27,22 +29,37 @@ namespace Kephas.Injection.Builder
         /// <value>
         /// The application service information providers.
         /// </value>
-        IList<IAppServiceInfosProvider> AppServiceInfosProviders { get; }
+        ICollection<IAppServiceInfosProvider> AppServiceInfosProviders { get; }
 
         /// <summary>
         /// Gets the list of assemblies used in injection.
         /// </summary>
-        IList<Assembly> Assemblies { get; }
-
-        /// <summary>
-        /// Gets the application assemblies.
-        /// </summary>
-        /// <returns>An enumeration of assemblies.</returns>
-        IEnumerable<Assembly> GetAppAssemblies();
+        ICollection<Assembly> Assemblies { get; }
 
         /// <summary>
         /// Gets the injection settings.
         /// </summary>
         InjectionSettings Settings { get; }
+
+        /// <summary>
+        /// Gets a context for the dependency injection/composition.
+        /// </summary>
+        /// <value>
+        /// The injector.
+        /// </value>
+        IInjector IContext.Injector
+            => throw new ServiceException(Strings.ServiceProviderIsBeingBuilt);
+
+        /// <summary>
+        /// Gets or sets the authenticated identity.
+        /// </summary>
+        /// <value>
+        /// The authenticated identity.
+        /// </value>
+        IIdentity? IContext.Identity
+        {
+            get => null;
+            set { }
+        }
     }
 }

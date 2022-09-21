@@ -112,6 +112,29 @@ namespace Kephas.Services.Reflection
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceInfo"/> class.
+        /// </summary>
+        /// <param name="contractType">The contract type of the export.</param>
+        /// <param name="instancingStrategy">Type of the service instance.</param>
+        /// <param name="lifetime">Optional. The application service lifetime.</param>
+        /// <param name="asOpenGeneric">Optional.
+        ///                             <c>true</c> if the contract should be exported as an open generic;
+        ///                             otherwise, <c>false</c>.
+        /// </param>
+        /// <param name="metadata">The metadata.</param>
+        internal AppServiceInfo(Type contractType, object? instancingStrategy, AppServiceLifetime lifetime, bool asOpenGeneric, IDictionary<string, object?>? metadata)
+        {
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
+
+            this.SetContractType(contractType);
+            this.InstancingStrategy = instancingStrategy;
+            this.AsOpenGeneric = asOpenGeneric;
+            this.SetLifetime(lifetime);
+            this.Metadata = metadata;
+        }
+
+        /// <summary>
         /// Gets the application service lifetime.
         /// </summary>
         /// <value>

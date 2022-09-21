@@ -69,6 +69,6 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Gets the runtime type registry.
         /// </summary>
-        IRuntimeTypeRegistry RuntimeTypeRegistry => this.AmbientServices.GetTypeRegistry();
+        IRuntimeTypeRegistry RuntimeTypeRegistry => this.Injector.Resolve<IRuntimeTypeRegistry>();
     }
 }

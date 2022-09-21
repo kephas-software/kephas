@@ -227,8 +227,6 @@ namespace Kephas.Application
         /// </summary>
         protected virtual void AfterAppManagerFinalize()
         {
-            this.AmbientServices?.Injector.Dispose();
-            this.AmbientServices?.Dispose();
         }
 
         /// <summary>
@@ -262,7 +260,7 @@ namespace Kephas.Application
 
                 this.BuildServicesContainer(this.AmbientServices);
 
-                this.Logger ??= this.AmbientServices.GetLogger(this.GetType());
+                this.Logger ??= this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
                 // and after configuring the ambient services and the logger, as it may

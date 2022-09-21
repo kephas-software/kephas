@@ -9,7 +9,7 @@ namespace Kephas.Data.Model.Associations
 {
     using System;
     using System.Collections.Generic;
-
+    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -21,9 +21,9 @@ namespace Kephas.Data.Model.Associations
         /// <summary>
         /// Initializes a new instance of the <see cref="AssociationContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public AssociationContext(IAmbientServices ambientServices)
-            : base(ambientServices)
+        /// <param name="injector">The DI injector.</param>
+        public AssociationContext(IInjector injector)
+            : base(injector)
         {
         }
 

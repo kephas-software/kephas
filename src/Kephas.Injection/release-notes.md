@@ -5,17 +5,13 @@
 
 # 12.0.0
 
-* Breaking change: Removed ```ExportFactory(Func<Tuple<TContract, Action>> factory)``` constructor.
-* Breaking change: Removed ```IExportFactory.CreateExport```. Replace with ```IExportFactory.CreateExportedValue```.
-* Breaking change: Removed ```IExport``` and ```Export```. No replacement. Reason: obsolete artifact to support ``System.Composition``.
-* Breaking change: Renamed ``IOrderedLazyServiceCollection`` to ``ILazyEnumerable`` and ``IOrderedServiceFactoryCollection`` to ``IFactoryEnumerable``. Renamed ``GetServices`` in both to ``SelectServices``. Added ``GetService`` and ``TryGetService`` methods in both.
-* Breaking change: Renamed ``IEnabledServiceCollection`` to ``IEnabledEnumerable`` to preserve consistency.
-* Breaking change: Renamed ``IEnabledLazyServiceCollection`` to ``IEnabledLazyEnumerable`` to preserve consistency.
-* Breaking change: Renamed ``IEnabledServiceFactoryCollection`` to ``IEnabledFactoryEnumerable`` to preserve consistency.
-* Breaking change: Removed ``IAmbientServices.GetAppAssemblies()``. Use instead ``IAmbientServices.GetAppRuntime().GetAppAssemblies()``.
-* NEW: Added ``IInjectionBuildContext.GetAppAssemblies(): IEnumerable<Assembly>``.
-* NEW: Added `IAmbientServices.RegisterInitializer(initializer)` and `Initialize(ambientServices)` static methods.
-* Breaking change: Removed the constructors of `AmbientServices` accepting `IRuntimeTypeRegistry`. Instead, register the registry after creating the instance.
+## Ambient services
+* Breaking change: Renamed `IAmbientServices` to `IAppServiceCollection` and `AmbientServices` to `AppServiceCollection`.
+Also, their semantic was changed to only hold the collection of services, not cumulate also the service provider functionality.
+* Breaking change: Removed `IAmbientServices.GetAppAssemblies()`. Use instead `IAppServiceCollection.GetAppRuntime().GetAppAssemblies()`.
+* NEW: Added `RegisterCollector(collect)` and `Initialize(appServiceCollection)` static methods in `IAppServiceCollection`.
+* NEW Added `TryGetServiceInstance` and `GetServiceInstance` extension methods for `IAppServiceCollection`, for trying to retrieve services registered as instances before the service provider is built.
+* Breaking change: Removed the constructors of `AppServiceCollection` (former `AmbientServices`) accepting `IRuntimeTypeRegistry`. Instead, register the runtime type registry after creating the instance.
 
 OLD code
 ```csharp
@@ -23,6 +19,32 @@ new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
 ```
 NEW code
 ```csharp
-new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
+new AppServiceCollection().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
 ```
- 
+
+* Breaking change: removed `Injector` and `LogManager` properties from `IAmbientServices`. There is no replacement, as the injector/service provider is built at a later time and is not registered in the service collection.
+* Breaking change: removed `LogManager` property from `IAmbientServices`. Instead, use one of the new `TryGetServiceInstance`/`GetServiceInstance` extension methods. 
+
+OLD code
+```csharp
+var logManager = AmbientServices.LogManager;
+```
+NEW code
+```csharp
+var logManager = AppServiceCollection.TryGetServiceInstance<ILogManager>();
+```
+
+## Export factory
+* Breaking change: Removed `ExportFactory(Func<Tuple<TContract, Action>> factory)` constructor.
+* Breaking change: Removed `IExportFactory.CreateExport`. Replace with `IExportFactory.CreateExportedValue`.
+* Breaking change: Removed `IExport` and `Export`. No replacement. Reason: obsolete artifact to support `System.Composition`.
+
+## Ordered service collections
+* Breaking change: Renamed `IOrderedLazyServiceCollection` to `ILazyEnumerable` and `IOrderedServiceFactoryCollection` to `IFactoryEnumerable`. Renamed `GetServices` in both to `SelectServices`. Added `GetService` and `TryGetService` methods in both.
+* Breaking change: Renamed `IEnabledServiceCollection` to `IEnabledEnumerable` to preserve consistency.
+* Breaking change: Renamed `IEnabledLazyServiceCollection` to `IEnabledLazyEnumerable` to preserve consistency.
+* Breaking change: Renamed `IEnabledServiceFactoryCollection` to `IEnabledFactoryEnumerable` to preserve consistency.
+* NEW: Added `IInjectionBuildContext.GetAppAssemblies(): IEnumerable<Assembly>`.
+
+## Context
+* Breaking change: removed `IContext.AmbientServices`. Reason: the injector/service provider should suffice. If required, the injector can be invoked to resolve the `IAppServiceCollection` service.

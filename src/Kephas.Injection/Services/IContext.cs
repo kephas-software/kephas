@@ -31,14 +31,6 @@ namespace Kephas.Services
         IInjector Injector { get; }
 
         /// <summary>
-        /// Gets the ambient services.
-        /// </summary>
-        /// <value>
-        /// The ambient services.
-        /// </value>
-        IAmbientServices AmbientServices { get; }
-
-        /// <summary>
         /// Gets or sets the authenticated identity.
         /// </summary>
         /// <value>

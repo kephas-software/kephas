@@ -32,7 +32,7 @@ namespace Kephas.Logging
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            var logManager = context?.AmbientServices?.LogManager ?? LoggingHelper.DefaultLogManager;
+            var logManager = context?.Injector?.Resolve<ILogManager>() ?? LoggingHelper.DefaultLogManager;
             return logManager.GetLogger(type);
         }
 
@@ -54,7 +54,7 @@ namespace Kephas.Logging
             var objType = obj as Type ?? obj.GetType();
             if (obj is IAmbientServices ambientServices)
             {
-                return ambientServices.LogManager.GetLogger(objType);
+                return ambientServices.GetServiceInstance<ILogManager>().GetLogger(objType);
             }
 
             if (obj is IInjector injector)
@@ -64,12 +64,6 @@ namespace Kephas.Logging
 
             if (obj is IContext contextObj)
             {
-                ambientServices = contextObj.AmbientServices;
-                if (ambientServices != null)
-                {
-                    return ambientServices.LogManager.GetLogger(objType);
-                }
-
                 injector = contextObj.Injector;
                 if (injector != null)
                 {
@@ -77,7 +71,7 @@ namespace Kephas.Logging
                 }
             }
 
-            var logManager = context?.AmbientServices?.LogManager ?? LoggingHelper.DefaultLogManager;
+            var logManager = context?.Injector.Resolve<ILogManager>() ?? LoggingHelper.DefaultLogManager;
             return logManager.GetLogger(objType);
         }
     }

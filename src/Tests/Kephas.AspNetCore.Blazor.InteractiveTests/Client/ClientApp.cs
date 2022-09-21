@@ -85,7 +85,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
             this.ConfigureHost(this.HostBuilder);
 
             this.HostBuilder.Services
-                .UseKephasLogging(this.AmbientServices)
+                .UseKephasLogging(this.AmbientServices.GetServiceInstance<ILogManager>())
                 .UseAmbientServices(this.AmbientServices);
 
             return base.RunAsync(mainCallback ?? this.RunAsync, cancellationToken);

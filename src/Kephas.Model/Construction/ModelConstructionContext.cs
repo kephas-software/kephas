@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Construction
 {
     using System;
     using System.Collections.Generic;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
@@ -33,7 +32,7 @@ namespace Kephas.Model.Construction
         {
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
 
-            this.Logger = parentContext.AmbientServices.GetLogger(this.GetType());
+            this.Logger = parentContext.Injector.GetLogger(this.GetType());
         }
 
         /// <summary>

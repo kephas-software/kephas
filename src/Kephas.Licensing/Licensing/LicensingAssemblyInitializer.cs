@@ -19,6 +19,6 @@ public class LicensingAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ILicensingManager, NullLicensingManager>());
+        IAmbientServices.RegisterCollector(ambient => ambient.Register<ILicensingManager, NullLicensingManager>());
     }
 }

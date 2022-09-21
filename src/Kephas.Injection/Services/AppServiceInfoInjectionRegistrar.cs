@@ -45,7 +45,7 @@ namespace Kephas.Services
             buildContext = buildContext ?? throw new ArgumentNullException(nameof(buildContext));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-            var logger = (buildContext.AmbientServices.LogManager ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType());
+            var logger = (buildContext.AmbientServices.TryGetServiceInstance<ILogManager>() ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType());
 
             // get all type infos from the injection assemblies
             var appServiceInfoList = appServiceInfoProviders

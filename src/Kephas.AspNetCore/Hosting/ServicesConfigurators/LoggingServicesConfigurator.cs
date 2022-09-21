@@ -8,6 +8,7 @@
 namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
 {
     using Kephas.Extensions.Logging;
+    using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +25,7 @@ namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
         /// <param name="ambientServices">The ambient services.</param>
         public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
         {
-            services.UseKephasLogging(ambientServices);
+            services.UseKephasLogging(ambientServices.GetServiceInstance<ILogManager>());
         }
     }
 }

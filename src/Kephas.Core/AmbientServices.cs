@@ -32,7 +32,7 @@ namespace Kephas
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
     [ExcludeFromInjection]
-    public class AmbientServices : Expando, IAmbientServicesMixin, IAmbientServices, IAppServiceInfosProvider
+    public class AmbientServices : Expando, IAmbientServicesMixin, IAmbientServices
     {
         private readonly IAppServiceRegistry registry;
         private bool isDisposed = false;

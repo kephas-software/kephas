@@ -1,26 +1,44 @@
 ﻿# Injection
 
 ## Introduction
-A Kephas application uses internally all kinds of services, built-in and custom ones. Structurally, an **application service** has a *service contract* (an interface) declaring its API and one or more *service implementations* of this service contract. A good design keeps the services loosely coupled, ideally with no dependencies at the contract level; this approach has the big advantage of allowing the replacement of implementations due to new or changed requirements with no or minimum side-effects.
+This package provides support for application services and dependency injection.
 
 Typically used areas and classes/interfaces/services:
 - Injection: ``IInjector``, ``IInjectorBuilder``, ``InjectorBuilderBase``.
 - Services: ``IAppServiceInfo``, ``IAppServiceInfosProvider``, ``SingletonAppServiceContractAttribute``, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
-- ``IAmbientServices``, ``AmbientServices``.
-
-> Consuming an application service implies depending on its contract and never on its implementation.
+- ``IAppServiceCollection``, ``AppServiceCollection``.
 
 Packages providing specific dependency injection implementations:
 * [Kephas.Injection.Autofac](https://www.nuget.org/packages/Kephas.Injection.Autofac)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 * [Kephas.Injection.Lite](https://www.nuget.org/packages/Kephas.Injection.Lite)
 
-## `IAmbientServices` interface
-This collection holds the service registrations. 
+## Application services and dependency injection
+An application service is an in-process component handling a particular concern.
+It consists of:
+* The service contract. This is typically an interface and has two purposes:
+  * Provide the API for invoking the functionality.
+  * Be the key through which the service implementation is resolved.
+* One or more service implementations.
+* Metadata associated to the service contract.
+* Metadata associated to the service implementation.
+
+> Consuming an application service implies depending on its contract and never on its implementation.
+
+> A good design keeps the services loosely coupled, ideally with no dependencies at the contract level; this approach has the big advantage of allowing the replacement of implementations due to new or changed requirements with no or minimum side-effects.
+
+During the application startup, the service declarations are collected using an implementation of the `IAppServiceCollection` and,
+after that, the `IServiceProvider` will be built.
+
+#### Example
+
+```csharp
+
+```
 
 ### Registering default services
-The `IAmbientServices.RegisterInitializer` static method registers a callback to be invoked when initializing ambient services.
-Typically, ambient services initializers are registered in [assembly initializers](https://www.nuget.org/packages/Kephas.Abstractions#assembly-initialization).
+The `IAmbientServices.RegisterCollector` static method registers a callback to be invoked when initializing the app services collection.
+Typically, app services collectors are registered in [assembly initializers](https://www.nuget.org/packages/Kephas.Abstractions#assembly-initialization).
 
 ```csharp
 /// <summary>
@@ -33,8 +51,8 @@ public class InjectionAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ILogManager, NullLogManager>());
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ILocationsManager, FolderLocationsManager>());
+        IAmbientServices.RegisterCollector(ambient => ambient.Register<ILogManager, NullLogManager>());
+        IAmbientServices.RegisterCollector(ambient => ambient.Register<ILocationsManager, FolderLocationsManager>());
     }
 }
 ```

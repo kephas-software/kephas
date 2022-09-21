@@ -17,29 +17,14 @@ namespace Kephas
     using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
-    public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
+    public interface IAmbientServices : IExpando, IEnumerable<IAppServiceInfo>
     {
-        private static readonly List<Action<IAmbientServices>> Initializers = new ();
-
-        /// <summary>
-        /// Gets the injector.
-        /// </summary>
-        /// <value>
-        /// The injector.
-        /// </value>
-        public IInjector Injector => this.GetRequiredService<IInjector>();
-
-        /// <summary>
-        /// Gets the log manager.
-        /// </summary>
-        /// <value>
-        /// The log manager.
-        /// </value>
-        public ILogManager LogManager => this.GetRequiredService<ILogManager>();
+        private static readonly List<Action<IAmbientServices>> Collectors = new ();
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.
@@ -48,7 +33,8 @@ namespace Kephas
         /// <returns>
         /// <c>true</c> if the service is registered, <c>false</c> if not.
         /// </returns>
-        public bool IsRegistered(Type contractType);
+        public bool IsRegistered(Type contractType)
+            => this.Any(r => r.ContractType == contractType);
 
         /// <summary>
         /// Registers the provided service using a registration builder.
@@ -62,14 +48,14 @@ namespace Kephas
         public IAmbientServices RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null);
 
         /// <summary>
-        /// Adds an initializer for <see cref="IAmbientServices"/>.
+        /// Adds an collector for <see cref="IAmbientServices"/>.
         /// </summary>
-        /// <param name="initializer">The initializer.</param>
-        public static void RegisterInitializer(Action<IAmbientServices> initializer)
+        /// <param name="collect">The collect callback function.</param>
+        public static void RegisterCollector(Action<IAmbientServices> collect)
         {
-            lock (Initializers)
+            lock (Collectors)
             {
-                Initializers.Add(initializer ?? throw new ArgumentNullException(nameof(initializer)));
+                Collectors.Add(collect ?? throw new ArgumentNullException(nameof(collect)));
             }
         }
 
@@ -79,9 +65,9 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         public static void Initialize(IAmbientServices ambientServices)
         {
-            lock (Initializers)
+            lock (Collectors)
             {
-                foreach (var initializer in Initializers)
+                foreach (var initializer in Collectors)
                 {
                     initializer(ambientServices);
                 }

@@ -42,7 +42,7 @@ namespace Kephas
         /// <returns>
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        IAmbientServices IAmbientServices.RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder = null)
+        IAmbientServices IAmbientServices.RegisterService(Type contractDeclarationType, object instancingStrategy, Action<IRegistrationBuilder>? builder)
         {
             contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
             instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
@@ -53,15 +53,5 @@ namespace Kephas
 
             return this;
         }
-
-        /// <summary>
-        /// Gets the service object of the specified type.
-        /// </summary>
-        /// <returns>
-        /// A service object of type <paramref name="contractType"/>.-or- null if there is no service object of type <paramref name="contractType"/>.
-        /// </returns>
-        /// <param name="contractType">The contract type of service to get. </param>
-        object? IServiceProvider.GetService(Type contractType) =>
-            this.ServiceRegistry.GetService(contractType);
     }
 }

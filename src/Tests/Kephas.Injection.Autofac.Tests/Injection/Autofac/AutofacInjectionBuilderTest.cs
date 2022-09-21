@@ -410,7 +410,7 @@ namespace Kephas.Tests.Injection.Autofac
             var ambientServices = this.CreateAmbientServices()
                 .Register(mockLoggerManager)
                 .Register(mockAppRuntime);
-            var context = new InjectionBuildContext(ambientServices);
+            var context = new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies());
             config?.Invoke(context);
             var factory = new AutofacInjectorBuilder(context);
             return (factory, ambientServices);

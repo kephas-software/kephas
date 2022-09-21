@@ -40,16 +40,16 @@ namespace Kephas.Extensions.Logging
         /// </para>
         /// </remarks>
         /// <param name="services">The service collection.</param>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="logManager">The log manager.</param>
         /// <returns>
-        /// This <paramref name="ambientServices"/>.
+        /// This <paramref name="services"/>.
         /// </returns>
-        public static IServiceCollection UseKephasLogging(this IServiceCollection services, IAmbientServices ambientServices)
+        public static IServiceCollection UseKephasLogging(this IServiceCollection services, ILogManager logManager)
         {
             services = services ?? throw new ArgumentNullException(nameof(services));
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
 
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(ambientServices.LogManager)));
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(logManager)));
 
             return services;
         }

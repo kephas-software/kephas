@@ -54,21 +54,6 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="isThreadSafe">
-        /// <c>true</c> if this object is thread safe when working
-        /// with the internal dictionary, <c>false</c> otherwise. Default is <c>false</c>.
-        /// </param>
-        public Context(IAmbientServices ambientServices, bool isThreadSafe = false)
-            : base(isThreadSafe)
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            this.SetAmbientServices(ambientServices);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Context"/> class.
-        /// </summary>
         /// <param name="injector">The injector.</param>
         /// <param name="isThreadSafe">
         /// <c>true</c> if this object is thread safe when working
@@ -85,15 +70,6 @@ namespace Kephas.Services
         /// Occurs when the identity changes.
         /// </summary>
         public event EventHandler? IdentityChanged;
-
-        /// <summary>
-        /// Gets the ambient services.
-        /// </summary>
-        /// <newValue>
-        /// The ambient services.
-        /// </newValue>
-        [ExcludeFromSerialization]
-        public IAmbientServices AmbientServices { get; private set; } = null!;
 
         /// <summary>
         /// Gets the dependency injection/injector.
@@ -177,23 +153,7 @@ namespace Kephas.Services
         {
             injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
-            this.AmbientServices = injector.Resolve<IAmbientServices>();
             this.Injector = injector;
-        }
-
-        /// <summary>
-        /// Sets the ambient services.
-        /// </summary>
-        /// <remarks>
-        /// The injector is also set as the one exposed by the ambient services.
-        /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected virtual void SetAmbientServices(IAmbientServices ambientServices)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            this.AmbientServices = ambientServices;
-            this.Injector = ambientServices.Injector;
         }
 
         /// <summary>

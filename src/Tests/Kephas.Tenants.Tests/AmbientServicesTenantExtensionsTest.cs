@@ -17,7 +17,7 @@ public class AmbientServicesTenantExtensionsTest
     public void WithTenantSupport_no_tenant()
     {
         var ambientServices = new AmbientServices()
-            .WithTenantSupport(new AppArgs("--no tenant"))
+            .UseTenantSupport(new AppArgs("--no tenant"))
             .WithStaticAppRuntime();
         var configLocations = ambientServices.GetAppRuntime()!.GetAppConfigLocations();
         var licenseLocations = ambientServices.GetAppRuntime()!.GetAppLicenseLocations();
@@ -30,7 +30,7 @@ public class AmbientServicesTenantExtensionsTest
     public void WithTenantSupport_with_tenant()
     {
         var ambientServices = new AmbientServices()
-            .WithTenantSupport(new AppArgs("--tenant my"))
+            .UseTenantSupport(new AppArgs("--tenant my"))
             .WithStaticAppRuntime();
         var configLocations = ambientServices.GetAppRuntime()!.GetAppConfigLocations();
         var licenseLocations = ambientServices.GetAppRuntime()!.GetAppLicenseLocations();

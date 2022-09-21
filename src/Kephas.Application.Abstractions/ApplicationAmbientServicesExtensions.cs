@@ -51,14 +51,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets the locations manager.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>The locations manager.</returns>
-        public static ILocationsManager GetLocationsManager(this IAmbientServices ambientServices) =>
-            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<ILocationsManager>();
-
-        /// <summary>
         /// Adds the dynamic application runtime to the ambient services.
         /// </summary>
         /// <remarks>
@@ -92,7 +84,7 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new DynamicAppRuntime(
-                name => ambientServices.LogManager.GetLogger(name),
+                name => ambientServices.GetServiceInstance<ILogManager>().GetLogger(name),
                 null,
                 appFolder,
                 configFolders,
@@ -139,7 +131,7 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             var appRuntime = new StaticAppRuntime(
-                name => ambientServices.LogManager.GetLogger(name),
+                name => ambientServices.GetServiceInstance<ILogManager>().GetLogger(name),
                 null,
                 appFolder,
                 configFolders,

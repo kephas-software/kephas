@@ -13,6 +13,7 @@ namespace Kephas.Injection.Builder
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Interface for part builder.
@@ -127,5 +128,11 @@ namespace Kephas.Injection.Builder
         /// This builder.
         /// </returns>
         IRegistrationBuilder ExternallyOwned();
+
+        /// <summary>
+        /// Builds the <see cref="IAppServiceInfo"/> instance.
+        /// </summary>
+        /// <returns>The <see cref="IAppServiceInfo"/> instance.</returns>
+        IAppServiceInfo Build();
     }
 }
