@@ -25,11 +25,10 @@ namespace Kephas.Model
         /// <summary>
         /// Gets the contract declaration types.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts()
         {
             yield return new ContractDeclaration(
                 typeof(IModelSpace),

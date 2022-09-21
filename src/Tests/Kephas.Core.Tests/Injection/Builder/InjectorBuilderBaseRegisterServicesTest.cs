@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Injection.Builder
 
     public class CalculatorAppServiceInfosProvider : IAppServiceInfosProvider
     {
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts()
         {
             yield return new ContractDeclaration(
                 typeof(ICalculator),

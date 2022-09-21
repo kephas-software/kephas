@@ -18,8 +18,6 @@ namespace Kephas.Injection
     /// </summary>
     public static class InjectorExtensions
     {
-        internal const string LiteInjectionKey = "__LiteInjection";
-
         /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>

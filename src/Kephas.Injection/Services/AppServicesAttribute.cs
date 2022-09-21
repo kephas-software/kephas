@@ -61,11 +61,10 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
     /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
     /// is not provided, the contract declaration type is also the contract type.
     /// </summary>
-    /// <param name="context">Optional. The context in which the service types are requested.</param>
     /// <returns>
     /// An enumeration of application service information objects and their contract declaration type.
     /// </returns>
-    public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
+    public IEnumerable<ContractDeclaration> GetAppServiceContracts()
     {
         if (this.Logger.IsTraceEnabled())
         {
@@ -85,7 +84,7 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
 
         try
         {
-            var contracts = provider.GetAppServiceContracts(context) ?? Array.Empty<ContractDeclaration>();
+            var contracts = provider.GetAppServiceContracts() ?? Array.Empty<ContractDeclaration>();
             return contracts.ToArray();
         }
         catch (Exception ex)
@@ -98,11 +97,10 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
     /// <summary>
     /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
     /// </summary>
-    /// <param name="context">Optional. The context in which the contracts are requested.</param>
     /// <returns>
     /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
     /// </returns>
-    public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)
+    public IEnumerable<ServiceDeclaration> GetAppServices()
     {
         if (this.Logger.IsTraceEnabled())
         {
@@ -122,7 +120,7 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
 
         try
         {
-            var services = provider.GetAppServices(context) ?? Enumerable.Empty<ServiceDeclaration>();
+            var services = provider.GetAppServices() ?? Enumerable.Empty<ServiceDeclaration>();
             if (this.Logger.IsTraceEnabled() && !services.Any())
             {
                 this.Logger.Trace("Instance {provider} did not provide any services in {operation}.", provider, nameof(this.GetAppServices));

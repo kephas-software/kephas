@@ -313,7 +313,7 @@ namespace Kephas.Tests.Injection.Autofac
 
         public class MultiFilterAppServiceInfosProvider : IAppServiceInfosProvider
         {
-            public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
+            public IEnumerable<ContractDeclaration> GetAppServiceContracts()
             {
                 yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton) { AllowMultiple = true });
                 yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient) { AllowMultiple = true });

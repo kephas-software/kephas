@@ -66,8 +66,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
                    new (typeof(bool), Substitute.For<IAppServiceInfo>()),
             };
 
-            ambientServices.SetAppServiceInfos(appServicesInfos);
-
             var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetAppRuntime(), ambientServices.GetTypeRegistry(), (sc, amb) => true);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
@@ -87,8 +85,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
                 new (typeof(string), Substitute.For<IAppServiceInfo>()),
                 new (typeof(bool), Substitute.For<IAppServiceInfo>()),
             };
-
-            ambientServices.SetAppServiceInfos(appServicesInfos);
 
             var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetAppRuntime(), ambientServices.GetTypeRegistry(), (sc, amb) => sc.ContractDeclarationType == typeof(int));
             var elements = await registry.GetRuntimeElementsAsync();
@@ -111,8 +107,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
                 new (typeof(IRuntimeModelRegistry), Substitute.For<IAppServiceInfo>()),
                 new (typeof(IModelSpace), Substitute.For<IAppServiceInfo>()),
             };
-
-            ambientServices.SetAppServiceInfos(appServicesInfos);
 
             var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetAppRuntime(), ambientServices.GetTypeRegistry());
             var elements = await registry.GetRuntimeElementsAsync();

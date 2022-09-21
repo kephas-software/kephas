@@ -35,20 +35,18 @@ namespace Kephas.Testing.Injection
         /// <summary>
         /// Gets the contract declaration types.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// The contract declaration types.
         /// </returns>
-        IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context) => this.parts.Select(p => new ContractDeclarationInfo(p, null));
+        IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes() => this.parts.Select(p => new ContractDeclarationInfo(p, null));
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
-        /// <param name="context">Optional. The context in which the services are requested.</param>
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices()
         {
             return
                 from serviceType in this.parts

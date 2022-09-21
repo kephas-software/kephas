@@ -32,7 +32,6 @@ namespace Kephas.Injection.Lite.Builder
             : base(context ?? throw new ArgumentNullException(nameof(context)))
         {
             this.ambientServices = context.AmbientServices;
-            this.ambientServices[InjectorExtensions.LiteInjectionKey] = true;
         }
 
         /// <summary>

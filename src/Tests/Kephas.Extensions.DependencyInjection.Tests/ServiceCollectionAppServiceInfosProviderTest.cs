@@ -36,7 +36,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             {
                 services.AddSingleton<string>("hello");
             });
-            var serviceInfos = provider.GetAppServiceContracts(context).ToList();
+            var serviceInfos = provider.GetAppServiceContracts().ToList();
 
             Assert.AreEqual(1, serviceInfos.Count);
             Assert.AreEqual(typeof(string), serviceInfos[0].ContractDeclarationType);
@@ -64,7 +64,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             {
                 services.AddSingleton(typeof(ICollection<>), typeof(List<>));
             });
-            var serviceInfos = provider.GetAppServiceContracts(context).ToList();
+            var serviceInfos = provider.GetAppServiceContracts().ToList();
 
             Assert.AreEqual(1, serviceInfos.Count);
             Assert.AreEqual(typeof(ICollection<>), serviceInfos[0].ContractDeclarationType);

@@ -37,11 +37,10 @@ namespace Kephas.Extensions.DependencyInjection
         /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
         /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts()
         {
             var ambientServices = context?.AmbientServices;
             var serviceCollection = ambientServices?.GetService<IServiceCollection>();

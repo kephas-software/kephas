@@ -17,6 +17,7 @@ Also, their semantic was changed to only hold the collection of services, not cu
 * Breaking change: `IAmbientServices.RegisterService` renamed to `IAppServiceCollection.Add`.
 * Breaking change: `IAmbientServices.IsRegistered` renamed to `IAppServiceCollection.Contains`.
 * NEW: Added `IAmbientServices.Replace`.
+* Breaking change: removed `SetAppServiceInfos` and `GetAppServiceInfos`. Instead, `IAppServiceCollection` is now the service enumeration.
 
 OLD code
 ```csharp

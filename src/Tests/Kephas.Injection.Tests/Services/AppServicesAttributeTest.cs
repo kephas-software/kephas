@@ -55,11 +55,10 @@ namespace Kephas.Tests.Services
             /// <summary>
             /// Gets the contract declaration types.
             /// </summary>
-            /// <param name="context">Optional. The context in which the service types are requested.</param>
             /// <returns>
             /// The contract declaration types.
             /// </returns>
-            IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)
+            IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes()
             {
                 yield return new ContractDeclarationInfo(typeof(IService), null);
             }

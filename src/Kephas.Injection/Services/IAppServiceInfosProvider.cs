@@ -58,21 +58,19 @@ namespace Kephas.Services
         /// The contract declaration type is the type declaring the contract: if the <see cref="AppServiceContractAttribute.ContractType"/>
         /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
-        /// <param name="context">Optional. The context in which the contracts are requested.</param>
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts(IContext? context = null)
-            => GetAppServiceContractDeclarations(this, context);
+        public IEnumerable<ContractDeclaration> GetAppServiceContracts()
+            => GetAppServiceContractDeclarations(this);
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </summary>
-        /// <param name="context">Optional. The context in which the services are requested.</param>
         /// <returns>
         /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
         /// </returns>
-        public IEnumerable<ServiceDeclaration> GetAppServices(IContext? context = null)
+        public IEnumerable<ServiceDeclaration> GetAppServices()
             => Enumerable.Empty<ServiceDeclaration>();
 
         /// <summary>
@@ -91,13 +89,12 @@ namespace Kephas.Services
         /// is not provided, the contract declaration type is also the contract type.
         /// </summary>
         /// <param name="provider">The provider.</param>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        protected internal static IEnumerable<ContractDeclaration> GetAppServiceContractDeclarations(IAppServiceInfosProvider provider, dynamic? context = null)
+        protected internal static IEnumerable<ContractDeclaration> GetAppServiceContractDeclarations(IAppServiceInfosProvider provider)
         {
-            IEnumerable<ContractDeclarationInfo>? contractDeclarationTypes = provider.GetContractDeclarationTypes(context);
+            var contractDeclarationTypes = provider.GetContractDeclarationTypes();
             if (contractDeclarationTypes == null)
             {
                 yield break;
@@ -106,29 +103,30 @@ namespace Kephas.Services
             foreach (var (contractType, metadataType) in contractDeclarationTypes)
             {
                 var appServiceInfo = provider.TryGetAppServiceInfo(contractType);
-                if (appServiceInfo != null)
+                if (appServiceInfo == null)
                 {
-                    if (appServiceInfo.MetadataType is null)
-                    {
-                        appServiceInfo.MetadataType = metadataType;
-                    }
-                    else if (appServiceInfo.MetadataType != metadataType)
-                    {
-                        // TODO notify about the metadata type difference
-                    }
-
-                    yield return new ContractDeclaration(contractType, appServiceInfo);
+                    continue;
                 }
+
+                if (appServiceInfo.MetadataType is null)
+                {
+                    appServiceInfo.MetadataType = metadataType;
+                }
+                else if (appServiceInfo.MetadataType != metadataType)
+                {
+                    // TODO notify about the metadata type difference
+                }
+
+                yield return new ContractDeclaration(contractType, appServiceInfo);
             }
         }
 
         /// <summary>
         /// Gets the contract declaration types.
         /// </summary>
-        /// <param name="context">Optional. The context in which the service types are requested.</param>
         /// <returns>
         /// The contract declaration types.
         /// </returns>
-        protected internal IEnumerable<ContractDeclarationInfo>? GetContractDeclarationTypes(IContext? context = null) => null;
+        protected internal IEnumerable<ContractDeclarationInfo>? GetContractDeclarationTypes() => null;
     }
 }

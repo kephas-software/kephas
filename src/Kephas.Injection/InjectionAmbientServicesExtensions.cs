@@ -12,9 +12,13 @@ namespace Kephas
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
     using Kephas.Application;
+    using Kephas.Collections;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
+    using Kephas.Injection.Configuration;
     using Kephas.Injection.Resources;
+    using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
@@ -666,51 +670,181 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets the registered application service contracts.
+        /// Adds the application services from the provided <see cref="IAppServiceInfosProvider"/>s.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
-        /// value is the <see cref="IAppServiceInfo"/>.
-        /// </returns>
-        internal static IEnumerable<ContractDeclaration> GetAppServiceInfos(this IAmbientServices ambientServices)
+        /// <param name="appServiceInfoProviders">The providers.</param>
+        /// <param name="resolutionStrategy">The resolution strategy for ambiguous registrations.</param>
+        /// <returns>The provided ambient services.</returns>
+        public static IAmbientServices AddAppServices(
+            this IAmbientServices ambientServices,
+            IEnumerable<IAppServiceInfosProvider> appServiceInfoProviders,
+            AmbiguousServiceResolutionStrategy resolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority,
+            ILogger logger)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            // get all type infos from the injection assemblies
+            var appServiceInfoList = appServiceInfoProviders
+                .SelectMany(p => p.GetAppServiceContracts())
+                .Select(t => t with
+                {
+                    ContractDeclarationType = t.ContractDeclarationType.ToNormalizedType()
+                })
+                .ToList();
 
-            return ambientServices[AppServiceInfosKey] as IEnumerable<ContractDeclaration> ?? Array.Empty<ContractDeclaration>();
-        }
+            ambientServices.Replace<IContractDeclarationCollection>(new ContractDeclarationCollection(appServiceInfoList));
 
-        /// <summary>
-        /// Gets the registered application service contracts.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="appServiceInfos">An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
-        /// value is the <see cref="IAppServiceInfo"/>.</param>
-        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<ContractDeclaration> appServiceInfos)
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            // Lite injector exclude its own services, so add them now.
-            // CAUTION: this assumes that the app service infos from the other registration sources
-            // did not add them already, so after that do not call SetAppServiceInfos!
-            if ((bool?)ambientServices[InjectorExtensions.LiteInjectionKey] ?? false)
+            if (logger.IsDebugEnabled())
             {
-                var liteServiceInfos = (ambientServices as IAppServiceInfosProvider)?.GetAppServiceContracts(null);
-                var allServiceInfos = new List<ContractDeclaration>();
-                if (liteServiceInfos != null)
-                {
-                    allServiceInfos.AddRange(liteServiceInfos);
-                }
-
-                if (appServiceInfos != null)
-                {
-                    allServiceInfos.AddRange(appServiceInfos);
-                }
-
-                appServiceInfos = allServiceInfos;
+                logger.Debug("Aggregating the service types...");
             }
 
-            ambientServices[AppServiceInfosKey] = appServiceInfos;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfosProvider appServiceInfosProvider)
+            {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug("Getting the app services from provider {provider}...", appServiceInfosProvider);
+                }
+
+                var appServices = appServiceInfosProvider.GetAppServices();
+
+                if (logger.IsTraceEnabled())
+                {
+                    logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfosProvider);
+                }
+
+                return appServices;
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            ServiceDeclaration NormalizeAppService(ServiceDeclaration serviceDeclaration)
+            {
+                var (serviceType, contractDeclarationType) = serviceDeclaration;
+
+                if (logger.IsTraceEnabled())
+                {
+                    logger.Trace("Normalizing the service declaration for {serviceType}/{contractDeclarationType}.", serviceType, contractDeclarationType);
+                }
+
+                return new ServiceDeclaration(serviceType.ToNormalizedType(), contractDeclarationType.ToNormalizedType());
+            }
+
+            var serviceTypes = appServiceInfoProviders
+                .SelectMany(GetAppServices)
+                .Select(NormalizeAppService)
+                .ToList();
+
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug("Building the service map...");
+            }
+
+            var serviceMap = BuildServiceMap(
+                appServiceInfoList,
+                serviceTypes,
+                logger);
+
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug("Service map built.");
+            }
+
+            // TODO add code from AppServiceInfoInjectionRegistrar.RegisterServices
+
+            return ambientServices;
+        }
+
+        private static IDictionary<Type, ServiceEntry> BuildServiceMap(
+            IList<ContractDeclaration> appServiceInfoList,
+            IEnumerable<ServiceDeclaration> serviceTypes,
+            ILogger logger)
+        {
+            var serviceMap = new Dictionary<Type, ServiceEntry>();
+
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug("Entering {operation}...", nameof(BuildServiceMap));
+            }
+
+            foreach (var (contractDeclarationType, appServiceInfo) in appServiceInfoList)
+            {
+                if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
+                {
+                    serviceMap.Add(contractDeclarationType, serviceEntry = new ServiceEntry(contractDeclarationType));
+                }
+
+                serviceEntry.Registrations.Add(appServiceInfo);
+            }
+
+            serviceTypes.ForEach(si => AddServiceType(serviceMap, si.ContractDeclarationType, si.ServiceType, logger));
+
+            return serviceMap;
+        }
+
+
+        private static void AddServiceType(
+            IDictionary<Type, ServiceEntry> serviceMap,
+            Type contractDeclarationType,
+            Type serviceType,
+            ILogger logger)
+        {
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug("Adding service type {serviceType} for {contractDeclarationType}", serviceType, contractDeclarationType);
+            }
+
+            if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
+            {
+                // if the contract declaration type is not found in the map,
+                // it may be because it is a constructed generic type and the
+                // registration contains the generic type definition.
+                if (contractDeclarationType.IsConstructedGenericType)
+                {
+                    var contractDeclarationTypeGenericDefinition = contractDeclarationType.GetGenericTypeDefinition();
+                    if (serviceMap.TryGetValue(contractDeclarationTypeGenericDefinition, out serviceEntry))
+                    {
+                        // if the contract declaration based on the generic type definition is found,
+                        // build a new contract declaration based on the constructed generic type
+                        // and add a new entry in the map.
+                        var appServiceInfoGenericDefinition = serviceEntry.Registrations.First();
+                        var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoGenericDefinition, contractDeclarationType);
+                        IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType);
+                        appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
+
+                        // add to the list of service infos on the first place the declaration.
+                        serviceMap[contractDeclarationType] = new ServiceEntry(contractDeclarationType) { Registrations = { appServiceInfoDeclaration, appServiceInfo } };
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                // The first app service info in the list must be the contract declaration.
+                var appServiceInfoDeclaration = serviceEntry.Registrations.First();
+                IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType);
+                appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
+                serviceEntry.Registrations.Add(appServiceInfo);
+                return;
+            }
+
+            logger.Warn(
+                "Service type {contractType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
+                serviceType,
+                contractDeclarationType);
+        }
+
+        private class ServiceEntry
+        {
+            public ServiceEntry(Type contractDeclarationType)
+            {
+                this.ContractDeclarationType = contractDeclarationType;
+            }
+
+            public Type ContractDeclarationType { get; set; }
+
+            public IList<IAppServiceInfo> Registrations { get; } = new List<IAppServiceInfo>();
+
+            public IList<Type> OverriddenTypes { get; } = new List<Type>();
         }
     }
 }

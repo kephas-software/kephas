@@ -40,78 +40,13 @@ namespace Kephas.Services
         /// <param name="logger">The logger.</param>
         public void RegisterServices(
             IInjectorBuilder builder,
-            IInjectionBuildContext buildContext,
             IList<IAppServiceInfosProvider> appServiceInfoProviders,
+            AmbiguousServiceResolutionStrategy resolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority,
             ILogger logger)
         {
-            buildContext = buildContext ?? throw new ArgumentNullException(nameof(buildContext));
             builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-            // get all type infos from the injection assemblies
-            var appServiceInfoList = appServiceInfoProviders
-                .SelectMany(p => p.GetAppServiceContracts(buildContext))
-                .Select(t => new ContractDeclaration(
-                    t.ContractDeclarationType.ToNormalizedType(),
-                    t.AppServiceInfo))
-                .ToList();
-
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Aggregating the service types...");
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfosProvider appServiceInfosProvider)
-            {
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Getting the app services from provider {provider}...", appServiceInfosProvider);
-                }
-
-                var appServices = appServiceInfosProvider.GetAppServices(buildContext);
-
-                if (logger.IsTraceEnabled())
-                {
-                    logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfosProvider);
-                }
-
-                return appServices;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            ServiceDeclaration NormalizeAppService(ServiceDeclaration serviceDeclaration)
-            {
-                var (serviceType, contractDeclarationType) = serviceDeclaration;
-
-                if (logger.IsTraceEnabled())
-                {
-                    logger.Trace("Normalizing the service declaration for {serviceType}/{contractDeclarationType}.", serviceType, contractDeclarationType);
-                }
-
-                return new ServiceDeclaration(serviceType.ToNormalizedType(), contractDeclarationType.ToNormalizedType());
-            }
-
-            var serviceTypes = appServiceInfoProviders
-                .SelectMany(GetAppServices)
-                .Select(NormalizeAppService)
-                .ToList();
-
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Building the service map...");
-            }
-
-            var serviceMap = this.BuildServiceMap(
-                appServiceInfoList,
-                serviceTypes,
-                logger);
-
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Service map built.");
-            }
-
-            buildContext.AmbientServices.SetAppServiceInfos(appServiceInfoList);
+            // TODO code moved to InjectionAmbientServicesExtensions.AddAppServices
 
             foreach (var (contractDeclarationType, serviceEntry) in serviceMap)
             {
@@ -151,7 +86,7 @@ namespace Kephas.Services
                     var appServiceInfo = ResolveAmbiguousRegistration(
                         contractDeclarationType,
                         sortedRegistrations,
-                        buildContext.Settings?.AmbiguousResolutionStrategy ?? AmbiguousServiceResolutionStrategy.ForcePriority,
+                        resolutionStrategy,
                         logger);
                     this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
                 }
@@ -289,84 +224,6 @@ namespace Kephas.Services
             return (overrideChain, overriddenTypes!);
         }
 
-        private IDictionary<Type, ServiceEntry> BuildServiceMap(
-                IList<ContractDeclaration> appServiceInfoList,
-                IEnumerable<ServiceDeclaration> serviceTypes,
-                ILogger logger)
-        {
-            var serviceMap = new Dictionary<Type, ServiceEntry>();
-
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Entering {operation}...", nameof(this.BuildServiceMap));
-            }
-
-            foreach (var (contractDeclarationType, appServiceInfo) in appServiceInfoList)
-            {
-                if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
-                {
-                    serviceMap.Add(contractDeclarationType, serviceEntry = new ServiceEntry(contractDeclarationType));
-                }
-
-                serviceEntry.Registrations.Add(appServiceInfo);
-            }
-
-            serviceTypes.ForEach(si => this.AddServiceType(serviceMap, si.ContractDeclarationType, si.ServiceType, logger));
-
-            return serviceMap;
-        }
-
-        private void AddServiceType(
-            IDictionary<Type, ServiceEntry> serviceMap,
-            Type contractDeclarationType,
-            Type serviceType,
-            ILogger logger)
-        {
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Adding service type {serviceType} for {contractDeclarationType}", serviceType, contractDeclarationType);
-            }
-
-            if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
-            {
-                // if the contract declaration type is not found in the map,
-                // it may be because it is a constructed generic type and the
-                // registration contains the generic type definition.
-                if (contractDeclarationType.IsConstructedGenericType)
-                {
-                    var contractDeclarationTypeGenericDefinition = contractDeclarationType.GetGenericTypeDefinition();
-                    if (serviceMap.TryGetValue(contractDeclarationTypeGenericDefinition, out serviceEntry))
-                    {
-                        // if the contract declaration based on the generic type definition is found,
-                        // build a new contract declaration based on the constructed generic type
-                        // and add a new entry in the map.
-                        var appServiceInfoGenericDefinition = serviceEntry.Registrations.First();
-                        var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoGenericDefinition, contractDeclarationType);
-                        IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType);
-                        appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
-
-                        // add to the list of service infos on the first place the declaration.
-                        serviceMap[contractDeclarationType] = new ServiceEntry(contractDeclarationType) { Registrations = { appServiceInfoDeclaration, appServiceInfo } };
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                // The first app service info in the list must be the contract declaration.
-                var appServiceInfoDeclaration = serviceEntry.Registrations.First();
-                IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType);
-                appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
-                serviceEntry.Registrations.Add(appServiceInfo);
-                return;
-            }
-
-            logger.Warn(
-                "Service type {contractType} declares a contract of {contractDeclarationType}, but the contract is not registered as an application service contract.",
-                serviceType,
-                contractDeclarationType);
-        }
-
         private string ToJsonString(Type contractDeclarationType, IAppServiceInfo appServiceInfo)
         {
             return $"{{ '{contractDeclarationType.Name}': {appServiceInfo.ToJsonString()} }}";
@@ -416,20 +273,6 @@ namespace Kephas.Services
             }
 
             return explicitlyMarkedConstructors[0];
-        }
-
-        private class ServiceEntry
-        {
-            public ServiceEntry(Type contractDeclarationType)
-            {
-                this.ContractDeclarationType = contractDeclarationType;
-            }
-
-            public Type ContractDeclarationType { get; set; }
-
-            public IList<IAppServiceInfo> Registrations { get; } = new List<IAppServiceInfo>();
-
-            public IList<Type> OverriddenTypes { get; } = new List<Type>();
         }
     }
 }

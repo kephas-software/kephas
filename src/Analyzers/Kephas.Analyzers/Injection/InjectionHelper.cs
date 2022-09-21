@@ -217,7 +217,7 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"#endif");
             source.AppendLine($@"   internal partial class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
             source.AppendLine($@"   {{");
-            source.AppendLine($@"       IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes(IContext? context)");
+            source.AppendLine($@"       IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes()");
             source.AppendLine($@"       {{");
 
             var contractTypes = compilationContext.ContractTypes;
@@ -247,7 +247,7 @@ namespace Kephas.Analyzers.Injection
 
             source.AppendLine($@"       }}");
             source.AppendLine();
-            source.AppendLine($@"       IEnumerable<ServiceDeclaration> IAppServiceInfosProvider.GetAppServices(IContext? context)");
+            source.AppendLine($@"       IEnumerable<ServiceDeclaration> IAppServiceInfosProvider.GetAppServices()");
             source.AppendLine($@"       {{");
 
             if (serviceTypes.Count > 0)
