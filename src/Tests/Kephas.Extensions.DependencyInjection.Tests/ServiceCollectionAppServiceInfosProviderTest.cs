@@ -90,7 +90,7 @@ namespace Kephas.Extensions.DependencyInjection.Tests
             var ambientServices = new AmbientServices();
             context.AmbientServices.Returns(ambientServices);
             var serviceCollection = new ServiceCollection();
-            ambientServices.Register<IServiceCollection>(serviceCollection);
+            ambientServices.Add<IServiceCollection>(serviceCollection);
             configure(serviceCollection);
             return context;
         }

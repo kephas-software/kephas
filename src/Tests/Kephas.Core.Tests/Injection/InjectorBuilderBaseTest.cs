@@ -35,9 +35,9 @@ namespace Kephas.Core.Tests.Injection
         public void Build_success()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false)
-                .Register(Substitute.For<ILogManager>())
-                .Register(Substitute.For<ITypeLoader>())
-                .Register(Substitute.For<IAppRuntime>());
+                .Add(Substitute.For<ILogManager>())
+                .Add(Substitute.For<ITypeLoader>())
+                .Add(Substitute.For<IAppRuntime>());
             var builder = new TestInjectorBuilder(ambientServices)
                 .WithAssemblies(new[] { this.GetType().Assembly });
 
@@ -53,7 +53,7 @@ namespace Kephas.Core.Tests.Injection
             }
 
             public TestInjectorBuilder(ILogManager logManager, IAppRuntime appRuntime)
-                : base(new InjectionBuildContext(CreateAmbientServices().Register(logManager).Register(appRuntime).GetAppRuntime().GetAppAssemblies()))
+                : base(new InjectionBuildContext(CreateAmbientServices().Add(logManager).Add(appRuntime).GetAppRuntime().GetAppAssemblies()))
             {
             }
 
@@ -69,7 +69,7 @@ namespace Kephas.Core.Tests.Injection
             }
 
             private static IAmbientServices CreateAmbientServices() =>
-                new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
+                new AmbientServices().Add<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
         }
 
         public class TestRegistrationInjectorBuilder : InjectorBuilderBase<TestRegistrationInjectorBuilder>
@@ -108,7 +108,7 @@ namespace Kephas.Core.Tests.Injection
             private TestTypeBuilder CreateBuilder(Type serviceType) => new (serviceType);
 
             private static IAmbientServices CreateAmbientServices() =>
-                new AmbientServices().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
+                new AmbientServices().Add<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
         }
 
         public class TestTypeBuilder : IRegistrationBuilder

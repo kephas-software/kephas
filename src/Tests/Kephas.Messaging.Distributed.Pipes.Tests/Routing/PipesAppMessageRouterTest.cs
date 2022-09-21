@@ -74,7 +74,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .RegisterAppArgs(slaveArgs),
+                    .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -124,7 +124,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbSlave)
-                    .RegisterAppArgs(slaveArgs),
+                    .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -174,7 +174,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .RegisterAppArgs(slaveArgs),
+                    .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,
@@ -219,7 +219,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateInjector(
                 this.CreateAmbientServices()
-                    .RegisterAppArgs(slaveArgs),
+                    .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
                     appId: slaveId,

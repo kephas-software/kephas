@@ -16,7 +16,7 @@ namespace Kephas.Injection.Internal
     /// <summary>
     /// An adapter of <see cref="IServiceProvider"/> for <see cref="IInjector"/>.
     /// </summary>
-    internal class InjectorAdapter : IInjector
+    internal class InjectorAdapter : IInjector, IAdapter<IServiceProvider>
     {
         private readonly IServiceProvider serviceProvider;
 
@@ -30,16 +30,22 @@ namespace Kephas.Injection.Internal
         }
 
         /// <summary>
+        /// Gets the object the current instance adapts.
+        /// </summary>
+        /// <value>
+        /// The object the current instance adapts.
+        /// </value>
+        public IServiceProvider Of => this.serviceProvider;
+
+        /// <summary>
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType"/>.
         /// </returns>
-        public object Resolve(Type contractType)
-        {
-            return this.serviceProvider.GetRequiredService(contractType ?? throw new ArgumentNullException(nameof(contractType)));
-        }
+        public object Resolve(Type contractType) =>
+            this.serviceProvider.GetRequiredService(contractType ?? throw new ArgumentNullException(nameof(contractType)));
 
         /// <summary>
         /// Tries to resolve the specified contract type.
@@ -49,10 +55,8 @@ namespace Kephas.Injection.Internal
         /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object? TryResolve(Type contractType)
-        {
-            return this.serviceProvider.GetService(contractType ?? throw new ArgumentNullException(nameof(contractType)));
-        }
+        public object? TryResolve(Type contractType) =>
+            this.serviceProvider.GetService(contractType ?? throw new ArgumentNullException(nameof(contractType)));
 
         /// <summary>
         /// Creates a new scoped injector.
@@ -60,7 +64,7 @@ namespace Kephas.Injection.Internal
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        IInjector IInjector.CreateScopedInjector()
+        IInjectionScope IInjector.CreateScope()
         {
             return this;
         }

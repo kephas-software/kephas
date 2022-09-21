@@ -21,7 +21,7 @@ public class InjectionAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.RegisterCollector(ambient => ambient.Register<ILogManager, NullLogManager>());
-        IAmbientServices.RegisterCollector(ambient => ambient.Register<ILocationsManager, FolderLocationsManager>());
+        IAmbientServices.AddCollector(ambient => ambient.Add<ILogManager, NullLogManager>());
+        IAmbientServices.AddCollector(ambient => ambient.Add<ILocationsManager, FolderLocationsManager>());
     }
 }

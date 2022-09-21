@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Contract interface for ambient services.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas
@@ -17,7 +14,7 @@ namespace Kephas
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Contract interface for ambient services.
+    /// Provides a registration container for application services.
     /// </summary>
     public interface IAmbientServices : IExpando, IEnumerable<IAppServiceInfo>
     {
@@ -30,23 +27,32 @@ namespace Kephas
         /// <returns>
         /// <c>true</c> if the service is registered, <c>false</c> if not.
         /// </returns>
-        public bool IsRegistered(Type contractType)
+        public bool Contains(Type contractType)
             => this.Any(r => r.ContractType == contractType);
 
         /// <summary>
-        /// Registers the provided service.
+        /// Adds the service.
         /// </summary>
         /// <param name="appServiceInfo">The application service registration.</param>
         /// <returns>
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        public IAmbientServices RegisterService(IAppServiceInfo appServiceInfo);
+        public IAmbientServices Add(IAppServiceInfo appServiceInfo);
+
+        /// <summary>
+        /// Replaces the service with the provided contract.
+        /// </summary>
+        /// <param name="appServiceInfo">The application service registration.</param>
+        /// <returns>
+        /// This <see cref="IAmbientServices"/>.
+        /// </returns>
+        public IAmbientServices Replace(IAppServiceInfo appServiceInfo);
 
         /// <summary>
         /// Adds an collector for <see cref="IAmbientServices"/>.
         /// </summary>
         /// <param name="collect">The collect callback function.</param>
-        public static void RegisterCollector(Action<IAmbientServices> collect)
+        public static void AddCollector(Action<IAmbientServices> collect)
         {
             lock (Collectors)
             {
@@ -62,9 +68,9 @@ namespace Kephas
         {
             lock (Collectors)
             {
-                foreach (var initializer in Collectors)
+                foreach (var collect in Collectors)
                 {
-                    initializer(ambientServices);
+                    collect(ambientServices);
                 }
             }
         }

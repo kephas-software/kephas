@@ -32,7 +32,7 @@ namespace Kephas.Tests.Injection.Autofac
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
-            using var scopedContext = container.CreateScopedInjector();
+            using var scopedContext = container.CreateScope();
             Assert.IsInstanceOf<AutofacScopedInjector>(scopedContext);
             var scopedInstance1 = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
 
@@ -55,7 +55,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void CreateScopedInjector_Injector_registration_scope()
         {
             var container = this.CreateInjectorWithBuilder();
-            using var scopedContext = container.CreateScopedInjector();
+            using var scopedContext = container.CreateScope();
             var selfScopedContext = scopedContext.Resolve<IInjector>();
             Assert.AreSame(selfScopedContext, scopedContext);
         }
@@ -69,7 +69,7 @@ namespace Kephas.Tests.Injection.Autofac
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
-            using var scopedContext = container.CreateScopedInjector();
+            using var scopedContext = container.CreateScope();
             var scopedInstance = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
             Assert.AreSame(scopedContext, scopedInstance.Injector);
         }

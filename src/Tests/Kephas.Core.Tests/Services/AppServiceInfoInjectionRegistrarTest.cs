@@ -542,7 +542,7 @@ namespace Kephas.Core.Tests.Services
             logManager.GetLogger(Arg.Any<string>()).Returns(logger);
 
             var ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(logManager);
+            ambientServices.Add(logManager);
 
             return ambientServices;
         }

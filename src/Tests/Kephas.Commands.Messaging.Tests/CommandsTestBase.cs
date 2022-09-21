@@ -34,10 +34,10 @@ namespace Kephas.Commands.Messaging.Tests
             IAppRuntime? appRuntime = null)
         {
             ambientServices ??= this.CreateAmbientServices();
-            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            if (!ambientServices.Contains(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+                ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
             return base.CreateInjector(ambientServices, assemblies, parts, config);

@@ -88,7 +88,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         {
             var ambientServices = services.GetAmbientServices() ?? this.AmbientServices;
             this.AmbientServices = ambientServices;
-            ambientServices.Register(this.AppArgs);
+            ambientServices.Add(this.AppArgs);
 
             try
             {
@@ -124,8 +124,8 @@ namespace Kephas.Application.AspNetCore.Hosting
             this.Logger.Info("{app} is running in the {environment} environment.", appContext.AppRuntime.GetAppInstanceId(), env.EnvironmentName);
 
             this.AmbientServices
-                .Register(app)
-                .Register(appLifetime);
+                .Add(app)
+                .Add(appLifetime);
 
             // ensure upon request processing that the bootstrapping procedure is done.
             app.Use(async (context, next) =>

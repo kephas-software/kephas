@@ -60,6 +60,15 @@ namespace Kephas.Injection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The contract type {0} must be assignable from the declaration type {1}..
+        /// </summary>
+        internal static string AppServiceInfoBuilderContractTypeMismatch {
+            get {
+                return ResourceManager.GetString("AppServiceInfoBuilderContractTypeMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The service with the requested criteria was not found..
         /// </summary>
         internal static string OrderedServiceFactoryCollection_service_with_requested_criteria_not_found {

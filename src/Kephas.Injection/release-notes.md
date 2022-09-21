@@ -11,9 +11,12 @@
 * Breaking change: Renamed `IAmbientServices` to `IAppServiceCollection` and `AmbientServices` to `AppServiceCollection`.
 Also, their semantic was changed to only hold the collection of services, not cumulate also the service provider functionality.
 * Breaking change: Removed `IAmbientServices.GetAppAssemblies()`. Use instead `IAppServiceCollection.GetAppRuntime().GetAppAssemblies()`.
-* NEW: Added `RegisterCollector(collect)` and `Initialize(appServiceCollection)` static methods in `IAppServiceCollection`.
+* NEW: Added `AddCollector(collect)` and `Initialize(appServiceCollection)` static methods in `IAppServiceCollection`.
 * NEW Added `TryGetServiceInstance` and `GetServiceInstance` extension methods for `IAppServiceCollection`, for trying to retrieve services registered as instances before the service provider is built.
 * Breaking change: Removed the constructors of `AppServiceCollection` (former `AmbientServices`) accepting `IRuntimeTypeRegistry`. Instead, register the runtime type registry after creating the instance.
+* Breaking change: `IAmbientServices.RegisterService` renamed to `IAppServiceCollection.Add`.
+* Breaking change: `IAmbientServices.IsRegistered` renamed to `IAppServiceCollection.Contains`.
+* NEW: Added `IAmbientServices.Replace`.
 
 OLD code
 ```csharp

@@ -132,6 +132,6 @@ namespace Kephas.Injection
         /// <returns>
         /// The new scoped injector.
         /// </returns>
-        IInjector CreateScopedInjector();
+        IInjectionScope CreateScope();
     }
 }

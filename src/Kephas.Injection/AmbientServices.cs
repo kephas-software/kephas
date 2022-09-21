@@ -16,20 +16,13 @@ namespace Kephas
 
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Services.Reflection;
 
     /// <summary>
     /// Provides the global ambient services.
     /// </summary>
-    /// <remarks>
-    /// It is a recommended practice to not use global services, instead get the services
-    /// using the composition (the classical example is the unit testing, where the classes
-    /// should be sandboxed as much as possible). However, there may be cases when this cannot be avoided,
-    /// such as static classes or classes which get instantiated outside of the developer's control
-    /// (like in the case of the entities instantiated by the ORMs). Those are cases where the
-    /// <see cref="AmbientServices"/> can be safely used.
-    /// </remarks>
     [ExcludeFromInjection]
     public class AmbientServices : Expando, IAmbientServices
     {
@@ -58,7 +51,7 @@ namespace Kephas
                 IAmbientServices.Initialize(this);
             }
 
-            this.Register<IAmbientServices>(this, b => b.ExternallyOwned());
+            this.Add<IAmbientServices>(this, b => b.ExternallyOwned());
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -76,9 +69,33 @@ namespace Kephas
         /// <returns>
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        public IAmbientServices RegisterService(IAppServiceInfo appServiceInfo)
+        public IAmbientServices Add(IAppServiceInfo appServiceInfo)
         {
             this.registry.Add(appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo)));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Replaces the service with the provided contract.
+        /// </summary>
+        /// <param name="appServiceInfo">The application service registration.</param>
+        /// <returns>
+        /// This <see cref="IAmbientServices"/>.
+        /// </returns>
+        public IAmbientServices Replace(IAppServiceInfo appServiceInfo)
+        {
+            var toDelete = this.registry
+                .Select((i, idx) => (appServiceInfo: i, index: idx))
+                .Where(t => t.appServiceInfo.ContractType == appServiceInfo.ContractType)
+                .Select(t => t.index)
+                .OrderBy(i => i)
+                .ToList();
+            var delta = 0;
+            foreach (var i in toDelete)
+            {
+                this.registry.RemoveAt(i + (delta--));
+            }
 
             return this;
         }

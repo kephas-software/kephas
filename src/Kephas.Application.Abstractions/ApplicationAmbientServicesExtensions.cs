@@ -44,7 +44,7 @@ namespace Kephas
             if (existingAppRuntime != appRuntime)
             {
                 ServiceHelper.Initialize(appRuntime);
-                ambientServices.Register(appRuntime);
+                ambientServices.Add(appRuntime);
             }
 
             return ambientServices;

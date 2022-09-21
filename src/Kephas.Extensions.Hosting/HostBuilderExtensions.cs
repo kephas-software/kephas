@@ -47,7 +47,7 @@ public static class HostBuilderExtensions
             .ConfigureAppConfiguration(
                 (ctx, cfg) =>
                 {
-                    ambientServices.RegisterAppArgs(appArgs);
+                    ambientServices.AddAppArgs(appArgs);
                 });
 
         hostBuilder.Properties[nameof(IAmbientServices)] = ambientServices;

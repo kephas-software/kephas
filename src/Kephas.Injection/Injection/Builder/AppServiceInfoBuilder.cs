@@ -10,6 +10,7 @@ namespace Kephas.Injection.Builder;
 using System.Reflection;
 using Kephas.Services;
 using Kephas.Services.Reflection;
+using Microsoft.VisualBasic;
 
 /// <summary>
 /// Builder class for an <see cref="AppServiceInfo"/>.
@@ -50,7 +51,13 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// </returns>
     public IRegistrationBuilder As(Type contractType)
     {
-        this.contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        if (!contractType.IsAssignableFrom(this.contractDeclarationType))
+        {
+            throw new ArgumentException(string.Format(Resources.Strings.AppServiceInfoBuilderContractTypeMismatch, contractType, this.contractDeclarationType), nameof(contractType));
+        }
+
+        this.contractType = contractType;
 
         return this;
     }
@@ -150,7 +157,7 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>The <see cref="IAppServiceInfo"/> instance.</returns>
     public IAppServiceInfo Build()
     {
-        var appServiceInfo = new AppServiceInfo(this.contractType, this.instancingStrategy, this.lifetime, this.contractType.IsGenericTypeDefinition, this.metadata)
+        var appServiceInfo = new AppServiceInfo(this.contractType, this.contractDeclarationType, this.instancingStrategy, this.lifetime, this.contractType.IsGenericTypeDefinition, this.metadata)
             {
                 AllowMultiple = this.allowMultiple,
                 IsExternallyOwned = this.isExternallyOwned,

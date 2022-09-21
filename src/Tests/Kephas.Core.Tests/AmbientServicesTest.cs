@@ -41,14 +41,14 @@ namespace Kephas.Core.Tests
         public void Register_instance_cannot_set_null()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            Assert.That(() => ambientServices.Register(typeof(IInjector), (object)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Add(typeof(IInjector), (object)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
         public void Register_factory_cannot_set_null()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            Assert.That(() => ambientServices.Register(typeof(IInjector), (Func<IInjector, object>)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Add(typeof(IInjector), (Func<IInjector, object>)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(ILogManager), logManager);
+            ambientServices.Add(typeof(ILogManager), logManager);
             Assert.AreSame(logManager, ambientServices.GetService(typeof(ILogManager)));
         }
 
@@ -65,8 +65,8 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var dependency = Substitute.For<IDependency>();
-            ambientServices.Register(typeof(IService), typeof(DependentService));
-            ambientServices.Register(typeof(IDependency), dependency);
+            ambientServices.Add(typeof(IService), typeof(DependentService));
+            ambientServices.Add(typeof(IDependency), dependency);
 
             var service = (DependentService)ambientServices.GetService(typeof(IService));
             Assert.AreSame(dependency, service.Dependency);
@@ -77,8 +77,8 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var dependency = Substitute.For<IDependency>();
-            ambientServices.Register(typeof(IService), typeof(OptionalDependentService));
-            ambientServices.Register(typeof(IDependency), dependency);
+            ambientServices.Add(typeof(IService), typeof(OptionalDependentService));
+            ambientServices.Add(typeof(IDependency), dependency);
 
             var service = (OptionalDependentService)ambientServices.GetService(typeof(IService));
             Assert.AreSame(dependency, service.Dependency);
@@ -88,7 +88,7 @@ namespace Kephas.Core.Tests
         public void Register_service_type_singleton_optional_dependency_not_resolved()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(IService), typeof(OptionalDependentService));
+            ambientServices.Add(typeof(IService), typeof(OptionalDependentService));
 
             var service = (OptionalDependentService)ambientServices.GetService(typeof(IService));
             Assert.IsNull(service.Dependency);
@@ -98,9 +98,9 @@ namespace Kephas.Core.Tests
         public void Register_service_type_singleton_dependency_ambiguous()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(IService), typeof(AmbiguousDependentService));
-            ambientServices.Register(typeof(IDependency), Substitute.For<IDependency>());
-            ambientServices.Register(typeof(IAnotherDependency), Substitute.For<IAnotherDependency>());
+            ambientServices.Add(typeof(IService), typeof(AmbiguousDependentService));
+            ambientServices.Add(typeof(IDependency), Substitute.For<IDependency>());
+            ambientServices.Add(typeof(IAnotherDependency), Substitute.For<IAnotherDependency>());
 
             Assert.Throws<AmbiguousMatchException>(() => ambientServices.GetService(typeof(IService)));
         }
@@ -109,8 +109,8 @@ namespace Kephas.Core.Tests
         public void Register_service_type_singleton_dependency_non_ambiguous()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(IService), typeof(AmbiguousDependentService));
-            ambientServices.Register(typeof(IDependency), Substitute.For<IDependency>());
+            ambientServices.Add(typeof(IService), typeof(AmbiguousDependentService));
+            ambientServices.Add(typeof(IDependency), Substitute.For<IDependency>());
 
             var service = (AmbiguousDependentService)ambientServices.GetService(typeof(IService));
             Assert.IsNotNull(service.Dependency);
@@ -122,7 +122,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(IService), typeof(SimpleService));
+            ambientServices.Add(typeof(IService), typeof(SimpleService));
 
             var service = ambientServices.GetService(typeof(IService));
             Assert.IsInstanceOf<SimpleService>(service);
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(IService), typeof(SimpleService), b => b.Transient());
+            ambientServices.Add(typeof(IService), typeof(SimpleService), b => b.Transient());
 
             var service = ambientServices.GetService(typeof(IService));
             Assert.IsInstanceOf<SimpleService>(service);
@@ -149,16 +149,16 @@ namespace Kephas.Core.Tests
         public void Register_conflicting_allow_multiple_first_single_failure()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(typeof(SimpleService));
-            Assert.Throws<InvalidOperationException>(() => ambientServices.Register<IService, DependentService>(b => b.AllowMultiple()));
+            ambientServices.Add<IService>(typeof(SimpleService));
+            Assert.Throws<InvalidOperationException>(() => ambientServices.Add<IService, DependentService>(b => b.AllowMultiple()));
         }
 
         [Test]
         public void Register_conflicting_allow_multiple_first_multiple_failure()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(typeof(SimpleService), b => b.AllowMultiple());
-            Assert.Throws<InvalidOperationException>(() => ambientServices.Register<IService, DependentService>());
+            ambientServices.Add<IService>(typeof(SimpleService), b => b.AllowMultiple());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.Add<IService, DependentService>());
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(ILogManager), () => logManager);
+            ambientServices.Add(typeof(ILogManager), () => logManager);
             Assert.AreSame(logManager, ambientServices.GetService(typeof(ILogManager)));
         }
 
@@ -174,7 +174,7 @@ namespace Kephas.Core.Tests
         public void Register_service_factory_non_singleton()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(ILogManager), () => Substitute.For<ILogManager>(), b => b.Transient());
+            ambientServices.Add(typeof(ILogManager), () => Substitute.For<ILogManager>(), b => b.Transient());
             var logManager1 = ambientServices.GetService(typeof(ILogManager));
             var logManager2 = ambientServices.GetService(typeof(ILogManager));
             Assert.AreNotSame(logManager1, logManager2);
@@ -184,8 +184,8 @@ namespace Kephas.Core.Tests
         public void Register_circular_dependency_singleton()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<CircularDependency1, CircularDependency1>();
-            ambientServices.Register<CircularDependency2, CircularDependency2>();
+            ambientServices.Add<CircularDependency1, CircularDependency1>();
+            ambientServices.Add<CircularDependency2, CircularDependency2>();
 
             Assert.Throws<CircularDependencyException>(() => ambientServices.GetService<CircularDependency1>());
         }
@@ -194,8 +194,8 @@ namespace Kephas.Core.Tests
         public void Register_circular_dependency_transient()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<CircularDependency1, CircularDependency1>(b => b.Transient());
-            ambientServices.Register<CircularDependency2, CircularDependency2>(b => b.Transient());
+            ambientServices.Add<CircularDependency1, CircularDependency1>(b => b.Transient());
+            ambientServices.Add<CircularDependency2, CircularDependency2>(b => b.Transient());
 
             Assert.Throws<CircularDependencyException>(() => ambientServices.GetService<CircularDependency1>());
         }
@@ -204,7 +204,7 @@ namespace Kephas.Core.Tests
         public Task Register_transient_is_multi_threaded()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(
+            ambientServices.Add<IService>(
                 () =>
                 {
                     Thread.Sleep(100);
@@ -225,7 +225,7 @@ namespace Kephas.Core.Tests
         public Task Register_singleton_is_multi_threaded()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService>(
+            ambientServices.Add<IService>(
                 () =>
                 {
                     Thread.Sleep(100);
@@ -247,7 +247,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
+            ambientServices.Add(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
 
             var service = ambientServices.GetService(typeof(OpenGenericService<string, int>));
             Assert.IsInstanceOf<OpenGenericService<string, int>>(service);
@@ -258,8 +258,8 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
-            ambientServices.Register<OpenGenericDependency, OpenGenericDependency>();
+            ambientServices.Add(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
+            ambientServices.Add<OpenGenericDependency, OpenGenericDependency>();
 
             var service = ambientServices.GetService<OpenGenericDependency>();
             Assert.IsNotNull(service.ServiceIntString);
@@ -271,7 +271,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(ILogManager), logManager);
+            ambientServices.Add(typeof(ILogManager), logManager);
 
             var logManagerFactory = ambientServices.GetService<IExportFactory<ILogManager>>();
             Assert.AreSame(logManager, logManagerFactory.CreateExportedValue());
@@ -282,7 +282,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(ILogManager), logManager);
+            ambientServices.Add(typeof(ILogManager), logManager);
 
             var logManagerFactory = ambientServices.GetService<Lazy<ILogManager>>();
             Assert.AreSame(logManager, logManagerFactory.Value);
@@ -292,8 +292,8 @@ namespace Kephas.Core.Tests
         public void GetService_collection_of_exportFactory()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, SimpleService>();
-            ambientServices.Register<DependentCollectionService, DependentCollectionService>();
+            ambientServices.Add<IService, SimpleService>();
+            ambientServices.Add<DependentCollectionService, DependentCollectionService>();
 
             var dependent = ambientServices.GetService<DependentCollectionService>();
             Assert.IsNotNull(dependent.Factories);
@@ -304,8 +304,8 @@ namespace Kephas.Core.Tests
         public void GetService_collection_of_lazy()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, SimpleService>();
-            ambientServices.Register<DependentCollectionService, DependentCollectionService>();
+            ambientServices.Add<IService, SimpleService>();
+            ambientServices.Add<DependentCollectionService, DependentCollectionService>();
 
             var factories = ambientServices.GetService<IEnumerable<Lazy<IService>>>();
             Assert.IsInstanceOf<SimpleService>(factories.Single().Value);
@@ -315,8 +315,8 @@ namespace Kephas.Core.Tests
         public void GetService_enumeration_of_exportFactory()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, SimpleService>();
-            ambientServices.Register<DependentEnumerationService, DependentEnumerationService>();
+            ambientServices.Add<IService, SimpleService>();
+            ambientServices.Add<DependentEnumerationService, DependentEnumerationService>();
 
             var dependent = ambientServices.GetService<DependentEnumerationService>();
             Assert.IsNotNull(dependent.Factories);
@@ -327,9 +327,9 @@ namespace Kephas.Core.Tests
         public void GetService_enumeration_of_exportFactory_multiple()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, SimpleService>(b => b.AllowMultiple());
-            ambientServices.Register<IService, OptionalDependentService>(b => b.AllowMultiple());
-            ambientServices.Register<DependentEnumerationService, DependentEnumerationService>();
+            ambientServices.Add<IService, SimpleService>(b => b.AllowMultiple());
+            ambientServices.Add<IService, OptionalDependentService>(b => b.AllowMultiple());
+            ambientServices.Add<DependentEnumerationService, DependentEnumerationService>();
 
             var dependent = ambientServices.GetService<DependentEnumerationService>();
             Assert.IsNotNull(dependent.Factories);
@@ -343,7 +343,7 @@ namespace Kephas.Core.Tests
         public void GetService_exportFactory_with_priority_metadata()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(
+            ambientServices.Add(
                 typeof(IDependency),
                 () => Substitute.For<IDependency>(),
                 b => b
@@ -362,7 +362,7 @@ namespace Kephas.Core.Tests
         public void GetService_exportFactory_with_metadata()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, DependentService>();
+            ambientServices.Add<IService, DependentService>();
 
             var service = ambientServices.GetRequiredService<IExportFactory<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
@@ -374,7 +374,7 @@ namespace Kephas.Core.Tests
         public void GetService_exportFactory_with_metadata_from_generic()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.RegisterService(typeof(IService<,>), typeof(GenericService), b => b.As<IService>());
+            ambientServices.AddService(typeof(IService<,>), typeof(GenericService), b => b.As<IService>());
 
             var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
             Assert.IsNotNull(service.Metadata);
@@ -386,8 +386,8 @@ namespace Kephas.Core.Tests
         public void GetService_lazy_with_metadata()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, DependentService>();
-            ambientServices.Register<IDependency>(Substitute.For<IDependency>());
+            ambientServices.Add<IService, DependentService>();
+            ambientServices.Add<IDependency>(Substitute.For<IDependency>());
 
             var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
@@ -399,7 +399,7 @@ namespace Kephas.Core.Tests
         public void GetService_lazy_with_metadata_from_generic()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.RegisterService(typeof(IService<,>), typeof(GenericService), b => b.As<IService>());
+            ambientServices.AddService(typeof(IService<,>), typeof(GenericService), b => b.As<IService>());
 
             var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
@@ -411,9 +411,9 @@ namespace Kephas.Core.Tests
         public void GetService_two_levels()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            ambientServices.Register<IService, DependentService>();
-            ambientServices.Register<IDependency, DependencyWithDependency>();
-            ambientServices.Register<IAnotherDependency>(Substitute.For<IAnotherDependency>());
+            ambientServices.Add<IService, DependentService>();
+            ambientServices.Add<IDependency, DependencyWithDependency>();
+            ambientServices.Add<IAnotherDependency>(Substitute.For<IAnotherDependency>());
 
             var service = ambientServices.GetService<IService>();
             Assert.IsNotNull(((DependencyWithDependency)((DependentService)service).Dependency).AnotherDependency);
@@ -424,7 +424,7 @@ namespace Kephas.Core.Tests
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(ILogManager), logManager);
+            ambientServices.Add(typeof(ILogManager), logManager);
 
             var logManagerCollection = ambientServices.GetService<IEnumerable<ILogManager>>();
             Assert.AreSame(logManager, logManagerCollection.Single());
@@ -436,7 +436,7 @@ namespace Kephas.Core.Tests
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var injector = Substitute.For<IInjector>();
             injector.TryResolve<IInjector>().Returns((IInjector)null);
-            ambientServices.Register(injector);
+            ambientServices.Add(injector);
             var noService = ambientServices.Injector.TryResolve<IInjector>();
             Assert.IsNull(noService);
         }

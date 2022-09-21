@@ -34,7 +34,7 @@ public static class AmbientServicesTenantExtensions
             return ambientServices;
         }
 
-        ambientServices.Register<ILocationsManager>(new TenantFolderLocationsManager(tenant));
+        ambientServices.Add<ILocationsManager>(new TenantFolderLocationsManager(tenant));
         return ambientServices;
     }
 }

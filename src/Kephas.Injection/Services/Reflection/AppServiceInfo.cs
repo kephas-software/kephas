@@ -115,6 +115,7 @@ namespace Kephas.Services.Reflection
         /// Initializes a new instance of the <see cref="AppServiceInfo"/> class.
         /// </summary>
         /// <param name="contractType">The contract type of the export.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <param name="instancingStrategy">Type of the service instance.</param>
         /// <param name="lifetime">Optional. The application service lifetime.</param>
         /// <param name="asOpenGeneric">Optional.
@@ -122,12 +123,13 @@ namespace Kephas.Services.Reflection
         ///                             otherwise, <c>false</c>.
         /// </param>
         /// <param name="metadata">The metadata.</param>
-        internal AppServiceInfo(Type contractType, object? instancingStrategy, AppServiceLifetime lifetime, bool asOpenGeneric, IDictionary<string, object?>? metadata)
+        internal AppServiceInfo(Type contractType, Type? contractDeclarationType, object? instancingStrategy, AppServiceLifetime lifetime, bool asOpenGeneric, IDictionary<string, object?>? metadata)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
             this.SetContractType(contractType);
+            this.ContractDeclarationType = contractDeclarationType ?? contractType;
             this.InstancingStrategy = instancingStrategy;
             this.AsOpenGeneric = asOpenGeneric;
             this.SetLifetime(lifetime);
@@ -170,6 +172,18 @@ namespace Kephas.Services.Reflection
         /// The contract type of the export.
         /// </value>
         public Type? ContractType { get; private set; }
+
+        /// <summary>
+        /// Gets the type declaring the contract type.
+        /// </summary>
+        /// <remarks>
+        /// This is the type annotated with the [AppServiceContract] attribute, but which declares a base contract type.
+        /// Typically this is a generic type used for collecting metadata, redirecting to the non-generic contract type. 
+        /// </remarks>
+        /// <value>
+        /// The type declaring the contract type.
+        /// </value>
+        public Type? ContractDeclarationType { get; private set; }
 
         /// <summary>
         /// Gets or sets the supported metadata type.
@@ -222,6 +236,7 @@ namespace Kephas.Services.Reflection
         private void SetContractType(Type? contractType)
         {
             this.ContractType = contractType;
+            this.ContractDeclarationType = contractType;
             if (contractType?.IsGenericTypeDefinition ?? false)
             {
                 this.AsOpenGeneric = true;

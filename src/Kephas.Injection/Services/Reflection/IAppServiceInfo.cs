@@ -13,6 +13,7 @@ namespace Kephas.Services.Reflection
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.CompilerServices;
     using System.Text;
 
     using Kephas.Injection;
@@ -55,15 +56,31 @@ namespace Kephas.Services.Reflection
         IDictionary<string, object?>? Metadata => null;
 
         /// <summary>
-        /// Gets the contract type of the export.
+        /// Gets the contract type of the service.
         /// </summary>
         /// <value>
-        /// The contract type of the export.
+        /// The contract type of the service.
         /// </value>
         Type? ContractType
         {
             [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
             get;
+        }
+
+        /// <summary>
+        /// Gets the type declaring the contract type.
+        /// </summary>
+        /// <remarks>
+        /// This is the type annotated with the [AppServiceContract] attribute, but which declares a base contract type.
+        /// Typically this is a generic type used for collecting metadata, redirecting to the non-generic contract type. 
+        /// </remarks>
+        /// <value>
+        /// The type declaring the contract type.
+        /// </value>
+        Type? ContractDeclarationType
+        {
+            [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+            get => this.ContractType;
         }
 
         /// <summary>

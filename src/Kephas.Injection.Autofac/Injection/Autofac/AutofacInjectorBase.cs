@@ -187,7 +187,7 @@ namespace Kephas.Injection.Autofac
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public IInjector CreateScopedInjector()
+        public IInjectionScope CreateScope()
         {
             this.AssertNotDisposed();
 

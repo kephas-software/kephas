@@ -35,7 +35,7 @@ namespace Kephas
                 LoggingHelper.DefaultLogManager = logManager;
             }
 
-            ambientServices.Register<ILogManager>(logManager);
+            ambientServices.Add<ILogManager>(logManager);
 
             return ambientServices;
         }

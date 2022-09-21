@@ -215,8 +215,8 @@ namespace Kephas.Tests.Injection.Autofac
                         typeof(ScopeExportedClass),
                         typeof(ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
-            using (var scopedContext = container.CreateScopedInjector())
-            using (var otherScopedContext = container.CreateScopedInjector())
+            using (var scopedContext = container.CreateScope())
+            using (var otherScopedContext = container.CreateScope())
             {
                 var scopedInstance1 = scopedContext.Resolve<ScopeExportedClass>();
                 var scopedInstance2 = scopedContext.Resolve<ScopeExportedClass>();
@@ -233,7 +233,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var ambientServices = this.CreateAmbientServices();
             var service = Substitute.For<IAsyncInitializable>();
-            ambientServices.Register(typeof(IAsyncInitializable), service);
+            ambientServices.Add(typeof(IAsyncInitializable), service);
 
             var container = this.CreateInjectorWithBuilder(ambientServices);
 
@@ -245,7 +245,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_ambient_services_factory()
         {
             var ambientServices = this.CreateAmbientServices();
-            ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
+            ambientServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
             var container = this.CreateInjectorWithBuilder(ambientServices);
 
@@ -263,7 +263,7 @@ namespace Kephas.Tests.Injection.Autofac
             var service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);
 
-            ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+            ambientServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             // This is null because the injector caches the export providers, and after a first request
             // when the export was not available, will cache the empty export providers.

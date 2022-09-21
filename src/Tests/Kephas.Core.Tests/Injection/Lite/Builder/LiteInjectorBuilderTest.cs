@@ -114,7 +114,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(config: rt => rt.OnIsAppAssembly(this.IsAppAssembly))
-                .Register<IDisposable>(disposable);
+                .Add<IDisposable>(disposable);
 
             var injector = ambientServices.BuildWithLite();
 
@@ -128,7 +128,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = this.CreateAmbientServices()
                 .WithStaticAppRuntime(config: rt => rt.OnIsAppAssembly(this.IsAppAssembly))
-                .Register<IDisposable>(disposable, b => b.ExternallyOwned());
+                .Add<IDisposable>(disposable, b => b.ExternallyOwned());
 
             var injector = ambientServices.BuildWithLite();
 
@@ -318,8 +318,8 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
             var context = new InjectionBuildContext((ambientServices ?? this.CreateAmbientServices())
-                                        .Register(mockLoggerManager)
-                                        .Register(mockPlatformManager)
+                                        .Add(mockLoggerManager)
+                                        .Add(mockPlatformManager)
                                         .GetAppRuntime().GetAppAssemblies());
             config?.Invoke(context);
             var factory = new LiteInjectorBuilder(context);

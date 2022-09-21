@@ -48,7 +48,7 @@ namespace Kephas.Testing
         /// <returns>The newly created <see cref="AmbientServices"/> instance.</returns>
         protected virtual IAmbientServices CreateAmbientServices(IRuntimeTypeRegistry? typeRegistry = null)
         {
-            return new AmbientServices().Register<IRuntimeTypeRegistry>(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
+            return new AmbientServices().Add<IRuntimeTypeRegistry>(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
         }
 
         /// <summary>

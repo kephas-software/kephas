@@ -68,9 +68,9 @@ namespace Kephas.Testing.Injection
 
             ambientServices ??= this.CreateAmbientServices();
             ambientServices
-                .Register(logManager)
+                .Add(logManager)
                 .WithAppRuntime(appRuntime)
-                .Register(log);
+                .Add(log);
             return new AutofacInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
         }
 
@@ -115,7 +115,7 @@ namespace Kephas.Testing.Injection
             config?.Invoke(containerBuilder);
 
             var container = containerBuilder.Build();
-            ambientServices.Register(container);
+            ambientServices.Add(container);
             return container;
         }
 

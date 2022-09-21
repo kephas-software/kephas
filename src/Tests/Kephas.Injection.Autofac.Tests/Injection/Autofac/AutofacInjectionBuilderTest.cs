@@ -261,7 +261,7 @@ namespace Kephas.Tests.Injection.Autofac
                 .Build();
 
             ITestScopedExport exportScope1;
-            using (var scopedContext = container.CreateScopedInjector())
+            using (var scopedContext = container.CreateScope())
             {
                 exportScope1 = scopedContext.Resolve<ITestScopedExport>();
                 Assert.IsInstanceOf<TestScopedExport>(exportScope1);
@@ -270,7 +270,7 @@ namespace Kephas.Tests.Injection.Autofac
                 Assert.AreSame(exportScope1, export);
             }
 
-            using (var scopedContext2 = container.CreateScopedInjector())
+            using (var scopedContext2 = container.CreateScope())
             {
                 var export2 = scopedContext2.Resolve<ITestScopedExport>();
                 Assert.AreNotSame(exportScope1, export2);
@@ -408,8 +408,8 @@ namespace Kephas.Tests.Injection.Autofac
             var mockAppRuntime = Substitute.For<IAppRuntime>();
 
             var ambientServices = this.CreateAmbientServices()
-                .Register(mockLoggerManager)
-                .Register(mockAppRuntime);
+                .Add(mockLoggerManager)
+                .Add(mockAppRuntime);
             var context = new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies());
             config?.Invoke(context);
             var factory = new AutofacInjectorBuilder(context);

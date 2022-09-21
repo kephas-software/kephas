@@ -53,9 +53,9 @@ namespace Kephas.Core.Tests
         public void WithInjector_builder()
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false)
-                .Register(Substitute.For<ILogManager>())
-                .Register(Substitute.For<ITypeLoader>())
-                .Register(Substitute.For<IAppRuntime>());
+                .Add(Substitute.For<ILogManager>())
+                .Add(Substitute.For<ITypeLoader>())
+                .Add(Substitute.For<IAppRuntime>());
             var injector = Substitute.For<IInjector>();
             var builderInjector = ambientServices.BuildWith<TestInjectorBuilder>(
                 b => b.WithAssemblies(this.GetType().Assembly)

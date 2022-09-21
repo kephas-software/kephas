@@ -51,7 +51,7 @@ namespace Kephas.Injection.Lite.Internal
         {
             if (serviceProvider is IAmbientServices ambientServices)
             {
-                return ambientServices.IsRegistered(serviceType);
+                return ambientServices.Contains(serviceType);
             }
 
             return false;

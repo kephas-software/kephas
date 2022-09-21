@@ -42,7 +42,7 @@ public static class LicensingAmbientServicesExtensions
         ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
         licensingManager = licensingManager ?? throw new ArgumentNullException(nameof(licensingManager));
 
-        ambientServices.Register(licensingManager);
+        ambientServices.Add(licensingManager);
         ambientServices.GetAppRuntime()
             .OnCheckLicense((appid, context) => licensingManager.CheckLicense(appid, context));
 

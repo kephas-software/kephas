@@ -121,7 +121,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public IInjector CreateScopedInjector()
+        public IInjectionScope CreateScope()
         {
             return new DependencyInjectionScopedInjector(this.ServiceProvider.CreateScope());
         }

@@ -26,7 +26,7 @@ namespace Kephas.Workflow.Model.Tests.Models.StateMachinesModel
             typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
 
             var container = this.CreateInjectorForModel(
-                new AmbientServices().Register<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()),
+                new AmbientServices().Add<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()),
                 typeof(IDocumentStateMachine));
             var provider = container.Resolve<IModelSpaceProvider>();
 

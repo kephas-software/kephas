@@ -29,7 +29,7 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             configurationStore = configurationStore ?? throw new ArgumentNullException(nameof(configurationStore));
 
-            ambientServices.Register(configurationStore);
+            ambientServices.Add(configurationStore);
 
             return ambientServices;
         }

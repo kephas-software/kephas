@@ -52,9 +52,9 @@ namespace Kephas.Testing.Injection
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
             ambientServices = (ambientServices ?? this.CreateAmbientServices())
-                .Register(logManager)
+                .Add(logManager)
                 .WithAppRuntime(appRuntime)
-                .Register(log);
+                .Add(log);
             return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
         }
 
@@ -101,7 +101,7 @@ namespace Kephas.Testing.Injection
             config?.Invoke(containerBuilder);
 
             var container = containerBuilder.Build();
-            ambientServices.Register(container);
+            ambientServices.Add(container);
             return container;
         }
 

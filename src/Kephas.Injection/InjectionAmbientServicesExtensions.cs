@@ -35,13 +35,32 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            return ambientServices.RegisterService(typeof(TContract), serviceInstance, builder);
+            return ambientServices.AddService(typeof(TContract), serviceInstance, builder);
+        }
+
+        /// <summary>
+        /// Replaces the provided service instance.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceInstance">The service instance.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IRegistrationBuilder>? builder = null)
+            where TContract : class
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
+
+            return ambientServices.ReplaceService(typeof(TContract), serviceInstance, builder);
         }
 
         /// <summary>
@@ -54,12 +73,37 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            return ambientServices.RegisterService(
+            return ambientServices.AddService(
+                typeof(TContract),
+                typeof(TService),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Replaces the provided service with implementation type as singleton.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <typeparam name="TService">Type of the service implementation.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IRegistrationBuilder>? builder = null)
+            where TContract : class
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+
+            return ambientServices.ReplaceService(
                 typeof(TContract),
                 typeof(TService),
                 b =>
@@ -79,13 +123,39 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-            return ambientServices.RegisterService(
+            return ambientServices.AddService(
+                typeof(TContract),
+                serviceType,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Replaces the provided service with implementation type as singleton.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IRegistrationBuilder>? builder = null)
+            where TContract : class
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+
+            return ambientServices.ReplaceService(
                 typeof(TContract),
                 serviceType,
                 b =>
@@ -105,7 +175,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
             Func<TContract> serviceFactory,
             Action<IRegistrationBuilder>? builder = null)
@@ -114,7 +184,36 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.RegisterService(
+            return ambientServices.AddService(
+                typeof(TContract),
+                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Replaces the provided service as singleton factory.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+            this IAmbientServices ambientServices,
+            Func<TContract> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
+            where TContract : class
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return ambientServices.ReplaceService(
                 typeof(TContract),
                 (Func<IInjector, object>)(_ => (object)serviceFactory()),
                 b =>
@@ -134,7 +233,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
             Func<IInjector, TContract> serviceFactory,
             Action<IRegistrationBuilder>? builder = null)
@@ -143,7 +242,36 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.RegisterService(
+            return ambientServices.AddService(
+                typeof(TContract),
+                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Replaces the provided service as singleton factory.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+            this IAmbientServices ambientServices,
+            Func<IInjector, TContract> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
+            where TContract : class
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return ambientServices.ReplaceService(
                 typeof(TContract),
                 (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
                 b =>
@@ -163,7 +291,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register(
+        public static IAmbientServices Add(
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             Func<object> serviceFactory,
@@ -173,7 +301,37 @@ namespace Kephas
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.RegisterService(
+            return ambientServices.AddService(
+                contractType,
+                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Replaces the provided service as singleton factory.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace(
+            this IAmbientServices ambientServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            Func<object> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return ambientServices.ReplaceService(
                 contractType,
                 (Func<IInjector, object>)(_ => (object)serviceFactory()),
                 b =>
@@ -193,7 +351,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register(
+        public static IAmbientServices Add(
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             Func<IInjector, object> serviceFactory,
@@ -203,7 +361,37 @@ namespace Kephas
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            return ambientServices.RegisterService(
+            return ambientServices.AddService(
+                contractType,
+                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Replaces the provided service as singleton factory.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace(
+            this IAmbientServices ambientServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            Func<IInjector, object> serviceFactory,
+            Action<IRegistrationBuilder>? builder = null)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return ambientServices.ReplaceService(
                 contractType,
                 (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
                 b =>
@@ -223,7 +411,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register(
+        public static IAmbientServices Add(
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
@@ -233,7 +421,38 @@ namespace Kephas
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-            ambientServices.RegisterService(
+            ambientServices.AddService(
+                contractType,
+                serviceType,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Replaces the provided service as singleton.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceType">The service implementation type.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace(
+            this IAmbientServices ambientServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+            Action<IRegistrationBuilder>? builder = null)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+
+            ambientServices.ReplaceService(
                 contractType,
                 serviceType,
                 b =>
@@ -254,7 +473,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Register(
+        public static IAmbientServices Add(
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             object serviceInstance,
@@ -264,7 +483,38 @@ namespace Kephas
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            ambientServices.RegisterService(
+            ambientServices.AddService(
+                contractType,
+                serviceInstance,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Replaces the provided service instance as singleton.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceInstance">The service instance.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Replace(
+            this IAmbientServices ambientServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            object serviceInstance,
+            Action<IRegistrationBuilder>? builder = null)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
+
+            ambientServices.ReplaceService(
                 contractType,
                 serviceInstance,
                 b =>
@@ -285,7 +535,7 @@ namespace Kephas
         /// <returns>
         /// This <see cref="IAmbientServices"/>.
         /// </returns>
-        public static IAmbientServices RegisterService(
+        internal static IAmbientServices AddService(
             this IAmbientServices ambientServices,
             Type contractDeclarationType,
             object instancingStrategy,
@@ -297,7 +547,34 @@ namespace Kephas
 
             var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
             builder?.Invoke(serviceBuilder);
-            ambientServices.RegisterService(serviceBuilder.Build());
+            ambientServices.Add(serviceBuilder.Build());
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Replaces the service with the same contract type, adding the provided service.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        /// <param name="builder">The registration builder.</param>
+        /// <returns>
+        /// This <see cref="IAmbientServices"/>.
+        /// </returns>
+        internal static IAmbientServices ReplaceService(
+            this IAmbientServices ambientServices,
+            Type contractDeclarationType,
+            object instancingStrategy,
+            Action<IRegistrationBuilder>? builder = null)
+        {
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
+
+            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
+            builder?.Invoke(serviceBuilder);
+            ambientServices.Replace(serviceBuilder.Build());
 
             return ambientServices;
         }

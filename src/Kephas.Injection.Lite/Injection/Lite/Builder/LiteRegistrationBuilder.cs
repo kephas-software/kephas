@@ -256,7 +256,7 @@ namespace Kephas.Injection.Lite.Builder
 
             if (this.InstancingStrategy != null)
             {
-                this.ambientServices.RegisterService(this.ContractType, this.InstancingStrategy, ConfigureService);
+                this.ambientServices.AddService(this.ContractType, this.InstancingStrategy, ConfigureService);
 
                 return;
             }

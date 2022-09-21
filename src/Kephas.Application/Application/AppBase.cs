@@ -254,9 +254,9 @@ namespace Kephas.Application
                 // require the AppContext to be computed each time, so that if it is called
                 // to early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
-                this.AmbientServices.Register(() => this.AppContext!, b => b.Transient());
+                this.AmbientServices.Add(() => this.AppContext!, b => b.Transient());
 
-                this.AmbientServices.RegisterAppArgs(appArgs);
+                this.AmbientServices.AddAppArgs(appArgs);
 
                 this.BuildServicesContainer(this.AmbientServices);
 
