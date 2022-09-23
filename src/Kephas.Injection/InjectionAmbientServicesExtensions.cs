@@ -749,14 +749,65 @@ namespace Kephas
                 logger.Debug("Service map built.");
             }
 
+            foreach (var (contractDeclarationType, serviceEntry) in serviceMap)
+            {
+                // first: split the contract info and the rest of the registrations.
+                var registrations = serviceEntry.Registrations;
+                var appContractDefinition = serviceEntry.ContractAppServiceInfo;
+
+                if (registrations.Count == 0)
+                {
+                    if (logger.IsDebugEnabled())
+                    {
+                        logger.Warn("No service types registered for {contractDeclarationType}.", contractDeclarationType);
+                    }
+
+                    continue;
+                }
+
+                var contractType = appContractDefinition.ContractType ?? contractDeclarationType;
+                if (registrations.Count == 1)
+                {
+                    // register one service, no matter if multiple or single.
+                    var registration = registrations[0];
+                    ambientServices.Add(new AppServiceInfo(registration, contractType) with {})
+                    this.RegisterService(builder, contractDeclarationType, contractType, registrations[0], logger);
+                    continue;
+                }
+
+                // order the services by override and processing priority, resolve overrides
+                // and with the rest of the services:
+                // 1. if multiple are registered, register them in the computed order.
+                // 2. for single mode, pick the first one in the order and register it.
+                var (sortedRegistrations, overriddenTypes) = this.SortRegistrations(registrations, logger);
+                if (!appContractDefinition.AllowMultiple)
+                {
+                    var appServiceInfo = ResolveAmbiguousRegistration(
+                        contractDeclarationType,
+                        sortedRegistrations,
+                        resolutionStrategy,
+                        logger);
+                    this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
+                }
+                else
+                {
+                    var filteredServiceInfos = overriddenTypes.Count == 0
+                        ? registrations
+                        : registrations.Where(i => !overriddenTypes.Contains(i.InstanceType!));
+                    foreach (var appServiceInfo in filteredServiceInfos)
+                    {
+                        this.RegisterService(builder, contractDeclarationType, contractType, appServiceInfo, logger);
+                    }
+                }
+            }
             // TODO add code from AppServiceInfoInjectionRegistrar.RegisterServices
 
             return ambientServices;
         }
 
         private static IDictionary<Type, ServiceEntry> BuildServiceMap(
-            IList<ContractDeclaration> appServiceInfoList,
-            IEnumerable<ServiceDeclaration> serviceTypes,
+            IEnumerable<ContractDeclaration> contractDeclarations,
+            IEnumerable<ServiceDeclaration> serviceDeclarations,
             ILogger logger)
         {
             var serviceMap = new Dictionary<Type, ServiceEntry>();
@@ -766,17 +817,29 @@ namespace Kephas
                 logger.Debug("Entering {operation}...", nameof(BuildServiceMap));
             }
 
-            foreach (var (contractDeclarationType, appServiceInfo) in appServiceInfoList)
+            foreach (var (contractDeclarationType, appServiceInfo) in contractDeclarations)
             {
                 if (!serviceMap.TryGetValue(contractDeclarationType, out var serviceEntry))
                 {
-                    serviceMap.Add(contractDeclarationType, serviceEntry = new ServiceEntry(contractDeclarationType));
+                    serviceMap.Add(contractDeclarationType, new ServiceEntry(contractDeclarationType, appServiceInfo));
                 }
-
-                serviceEntry.Registrations.Add(appServiceInfo);
+                else
+                {
+                    logger.Warn(
+                        Strings.AppServiceCollectionMultipleContractDeclarationsWithSameType,
+                        contractDeclarationType,
+                        serviceEntry.ContractAppServiceInfo,
+                        appServiceInfo);
+                    serviceEntry.ContractAppServiceInfo = appServiceInfo;
+                }
             }
 
-            serviceTypes.ForEach(si => AddServiceType(serviceMap, si.ContractDeclarationType, si.ServiceType, logger));
+            serviceDeclarations.ForEach(si => AddServiceType(serviceMap, si.ContractDeclarationType, si.ServiceType, logger));
+
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug("Exiting {operation}...", nameof(BuildServiceMap));
+            }
 
             return serviceMap;
         }
@@ -808,11 +871,11 @@ namespace Kephas
                         // and add a new entry in the map.
                         var appServiceInfoGenericDefinition = serviceEntry.Registrations.First();
                         var appServiceInfoDeclaration = new AppServiceInfo(appServiceInfoGenericDefinition, contractDeclarationType);
-                        IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType);
-                        appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
+                        var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, contractDeclarationType, serviceType);
+                        ((IAppServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
 
                         // add to the list of service infos on the first place the declaration.
-                        serviceMap[contractDeclarationType] = new ServiceEntry(contractDeclarationType) { Registrations = { appServiceInfoDeclaration, appServiceInfo } };
+                        serviceMap[contractDeclarationType] = new ServiceEntry(contractDeclarationType, appServiceInfoDeclaration) { Registrations = { appServiceInfo } };
                         return;
                     }
                 }
@@ -821,8 +884,8 @@ namespace Kephas
             {
                 // The first app service info in the list must be the contract declaration.
                 var appServiceInfoDeclaration = serviceEntry.Registrations.First();
-                IAppServiceInfo appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType);
-                appServiceInfo.AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
+                var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, serviceType);
+                ((IAppServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
                 serviceEntry.Registrations.Add(appServiceInfo);
                 return;
             }
@@ -833,18 +896,13 @@ namespace Kephas
                 contractDeclarationType);
         }
 
-        private class ServiceEntry
+        private record ServiceEntry(Type ContractDeclarationType, IAppServiceInfo ContractAppServiceInfo)
         {
-            public ServiceEntry(Type contractDeclarationType)
-            {
-                this.ContractDeclarationType = contractDeclarationType;
-            }
-
-            public Type ContractDeclarationType { get; set; }
-
-            public IList<IAppServiceInfo> Registrations { get; } = new List<IAppServiceInfo>();
+            public IList<AppServiceInfo> Registrations { get; } = new List<AppServiceInfo>();
 
             public IList<Type> OverriddenTypes { get; } = new List<Type>();
+
+            public IAppServiceInfo ContractAppServiceInfo { get; set; } = ContractAppServiceInfo;
         }
     }
 }

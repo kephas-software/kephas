@@ -60,6 +60,15 @@ namespace Kephas.Injection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple contract declarations for {0}. {1} will be overwritten by {2}..
+        /// </summary>
+        internal static string AppServiceCollectionMultipleContractDeclarationsWithSameType {
+            get {
+                return ResourceManager.GetString("AppServiceCollectionMultipleContractDeclarationsWithSameType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The contract type {0} must be assignable from the declaration type {1}..
         /// </summary>
         internal static string AppServiceInfoBuilderContractTypeMismatch {

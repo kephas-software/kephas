@@ -30,4 +30,7 @@
     <data name="AppServiceInfoBuilderContractTypeMismatch" xml:space="preserve">
         <value>The contract type {0} must be assignable from the declaration type {1}.</value>
     </data>
+    <data name="AppServiceCollectionMultipleContractDeclarationsWithSameType" xml:space="preserve">
+        <value>Multiple contract declarations for {0}. {1} will be overwritten by {2}.</value>
+    </data>
 </root>
