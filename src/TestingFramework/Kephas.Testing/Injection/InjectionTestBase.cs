@@ -48,14 +48,14 @@ namespace Kephas.Testing.Injection
             IAppRuntime? appRuntime = null)
         {
             var log = new StringBuilder();
-            logManager ??= ambientServices?.LogManager ?? new DebugLogManager(log);
+            logManager ??= ambientServices?.TryGetServiceInstance<ILogManager>() ?? new DebugLogManager(log);
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
             ambientServices = (ambientServices ?? this.CreateAmbientServices())
                 .Add(logManager)
                 .WithAppRuntime(appRuntime)
                 .Add(log);
-            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
+            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices));
         }
 
         /// <summary>

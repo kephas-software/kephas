@@ -24,8 +24,8 @@ namespace Kephas.Core.Tests.Injection.Lite
         [Test]
         public void Build_scoped_makes_singleton()
         {
-            var ambientServices = Substitute.For<IAppServiceRegistry>();
-            var builder = new ServiceRegistrationBuilder(ambientServices, typeof(string), typeof(string));
+            var serviceRegistry = Substitute.For<IAppServiceRegistry>();
+            var builder = new LiteRegistrationBuilder(serviceRegistry, typeof(string));
             builder.Scoped();
 
             var svcInfo = builder.Build();
@@ -37,8 +37,8 @@ namespace Kephas.Core.Tests.Injection.Lite
         [Test]
         public void Build_generic_service_generic_type()
         {
-            var ambientServices = Substitute.For<IAppServiceRegistry>();
-            var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>), typeof(UnknownGenericSvc<>));
+            var serviceRegistry = Substitute.For<IAppServiceRegistry>();
+            var builder = new LiteRegistrationBuilder(serviceRegistry, typeof(UnknownGenericSvc<>));
 
             var svcInfo = builder.Build();
             Assert.AreSame(typeof(IGenericSvc<>), svcInfo.ContractType);
@@ -48,8 +48,8 @@ namespace Kephas.Core.Tests.Injection.Lite
         [Test]
         public void Build_generic_service_non_generic_implementation_type()
         {
-            var ambientServices = Substitute.For<IAppServiceRegistry>();
-            var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>), typeof(UnknownIntSvc));
+            var serviceRegistry = Substitute.For<IAppServiceRegistry>();
+            var builder = new LiteRegistrationBuilder(serviceRegistry, typeof(UnknownIntSvc));
 
             Assert.Throws<ArgumentException>(() => builder.Build());
         }
@@ -57,8 +57,8 @@ namespace Kephas.Core.Tests.Injection.Lite
         [Test]
         public void Build_generic_service_non_generic_implementation_type_non_generic_contract()
         {
-            var ambientServices = Substitute.For<IAppServiceRegistry>();
-            var builder = new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>), typeof(UnknownIntSvc));
+            var serviceRegistry = Substitute.For<IAppServiceRegistry>();
+            var builder = new LiteRegistrationBuilder(serviceRegistry, typeof(UnknownIntSvc));
             builder.As(typeof(ISvc));
 
             var svcInfo = builder.Build();
@@ -70,9 +70,9 @@ namespace Kephas.Core.Tests.Injection.Lite
         [Test]
         public void WithType_generic_service_mismatch_implementation_type()
         {
-            var ambientServices = Substitute.For<IAppServiceRegistry>();
+            var serviceRegistry = Substitute.For<IAppServiceRegistry>();
 
-            Assert.Throws<ArgumentException>(() => new ServiceRegistrationBuilder(ambientServices, typeof(IGenericSvc<>), typeof(string)));
+            Assert.Throws<ArgumentException>(() => new LiteRegistrationBuilder(serviceRegistry, typeof(string)));
         }
 
         private interface IUnknown { }

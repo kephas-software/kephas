@@ -134,11 +134,6 @@ namespace Kephas.Injection.Builder
                 ((IInjectorBuilder)this).Register(appServiceInfo);
             }
 
-            if (this.Logger.IsDebugEnabled())
-            {
-                this.Logger.Debug("Registering conventions from '{registrar}...", typeof(AppServiceInfoInjectionRegistrar));
-            }
-
             return (TBuilder)this;
         }
 

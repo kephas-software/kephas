@@ -200,7 +200,7 @@ namespace Kephas.Injection.Autofac
             this.AssertNotDisposed();
 
             var scope = this.innerContainer!.BeginLifetimeScope();
-            return (this.root ?? (IInjectionContainer)this).GetInjector(scope);
+            return new AutofacInjectionScope((this.root ?? (IInjectionContainer)this).GetInjector(scope));
         }
 
         /// <summary>Gets the service object of the specified type.</summary>

@@ -14,13 +14,14 @@ namespace Kephas.Injection.Lite.Builder
     using System.Collections.Generic;
 
     using Kephas.Injection.Builder;
+    using Kephas.Injection.Lite.Internal;
 
     /// <summary>
     /// A lightweight injector builder.
     /// </summary>
     public class LiteInjectorBuilder : InjectorBuilderBase<LiteInjectorBuilder>
     {
-        private readonly IAmbientServices ambientServices;
+        private readonly ServiceRegistry serviceRegistry = new ();
 
         private readonly IList<LiteRegistrationBuilder> descriptorBuilders = new List<LiteRegistrationBuilder>();
 
@@ -31,7 +32,6 @@ namespace Kephas.Injection.Lite.Builder
         public LiteInjectorBuilder(IInjectionBuildContext context)
             : base(context ?? throw new ArgumentNullException(nameof(context)))
         {
-            this.ambientServices = context.AmbientServices;
         }
 
         /// <summary>
@@ -41,10 +41,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> that must be used to specify the rule.</returns>
         public override IRegistrationBuilder ForType(Type type)
         {
-            var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
-            {
-                InstancingStrategy = type,
-            };
+            var descriptorBuilder = new LiteRegistrationBuilder(this.serviceRegistry, type);
             this.descriptorBuilders.Add(descriptorBuilder);
             return descriptorBuilder;
         }
@@ -56,10 +53,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForInstance(object instance)
         {
-            var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
-            {
-                InstancingStrategy = instance,
-            };
+            var descriptorBuilder = new LiteRegistrationBuilder(this.serviceRegistry, instance);
             this.descriptorBuilders.Add(descriptorBuilder);
             return descriptorBuilder;
         }
@@ -72,10 +66,7 @@ namespace Kephas.Injection.Lite.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
         {
-            var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
-            {
-                InstancingStrategy = factory,
-            };
+            var descriptorBuilder = new LiteRegistrationBuilder(this.serviceRegistry, factory);
             this.descriptorBuilders.Add(descriptorBuilder);
             descriptorBuilder.As(type);
             return descriptorBuilder;
@@ -94,7 +85,7 @@ namespace Kephas.Injection.Lite.Builder
                 descriptorBuilder.Build();
             }
 
-            return this.ambientServices.ToInjector();
+            return this.serviceRegistry.ToInjector();
         }
     }
 }

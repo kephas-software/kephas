@@ -93,6 +93,18 @@
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>ILLink.Descriptors.xml</LogicalName>
         </EmbeddedResource>
+        <EmbeddedResource Update="Injection\Lite\Resources\LiteStrings.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>LiteStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Injection\Lite\Resources\LiteStrings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LiteStrings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

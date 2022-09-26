@@ -82,20 +82,5 @@ namespace Kephas.Injection
             return injector as IServiceProvider
                    ?? new ServiceProviderAdapter(injector);
         }
-
-        /// <summary>
-        /// Converts a <see cref="IServiceProvider"/> to a <see cref="IInjector"/>.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider to act on.</param>
-        /// <returns>
-        /// The service provider as an <see cref="IInjector"/>.
-        /// </returns>
-        public static IInjector ToInjector(this IServiceProvider serviceProvider)
-        {
-            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-
-            return serviceProvider as IInjector
-                   ?? new InjectorAdapter(serviceProvider);
-        }
     }
 }

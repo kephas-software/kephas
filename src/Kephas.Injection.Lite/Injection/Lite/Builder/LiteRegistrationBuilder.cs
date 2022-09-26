@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the registration builder class.
+//   Implements the service registration builder class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,108 +12,182 @@ namespace Kephas.Injection.Lite.Builder
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
-    using Kephas.Collections;
     using Kephas.Injection.Builder;
-    using Kephas.Logging;
+    using Kephas.Injection.Lite.Internal;
+    using Kephas.Injection.Lite.Resources;
     using Kephas.Resources;
     using Kephas.Services;
 
     /// <summary>
-    /// A lightweight registration builder.
+    /// A service registration builder.
     /// </summary>
-    internal class LiteRegistrationBuilder : Loggable, IRegistrationBuilder
+    internal class LiteRegistrationBuilder : IRegistrationBuilder
     {
-        private readonly IAmbientServices ambientServices;
+        private readonly IAppServiceRegistry serviceRegistry;
+
+        private Type? contractType;
+
+        private AppServiceLifetime lifetime = AppServiceLifetime.Singleton;
+
+        private bool allowMultiple = false;
+
+        private bool externallyOwned = false;
+
+        private object? instancingStrategy;
+
+        private IDictionary<string, object?>? metadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LiteRegistrationBuilder"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public LiteRegistrationBuilder(IAmbientServices ambientServices)
-            : base(ambientServices)
+        /// <param name="serviceRegistry">The ambient services.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        public LiteRegistrationBuilder(IAppServiceRegistry serviceRegistry, object instancingStrategy)
         {
-            this.ambientServices = ambientServices;
+            this.serviceRegistry = serviceRegistry ?? throw new ArgumentNullException(nameof(serviceRegistry));
+            this.SetInstancingStrategy(instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy)));
         }
 
         /// <summary>
-        /// Gets or sets the type of the contract.
+        /// Builds the configured information into a <see cref="IServiceInfo"/> and returns it.
         /// </summary>
-        /// <value>
-        /// The type of the contract.
-        /// </value>
-        public Type ContractType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the instancing strategy.
-        /// </summary>
-        public object? InstancingStrategy { get; set; }
-
-        /// <summary>
-        /// Gets the service instance.
-        /// </summary>
-        /// <value>
-        /// The service instance.
-        /// </value>
-        public object? Instance => this.Factory == null && this.ImplementationType == null ? this.InstancingStrategy : null;
-
-        /// <summary>
-        /// Gets the factory.
-        /// </summary>
-        /// <value>
-        /// A function delegate that yields an object.
-        /// </value>
-        public Func<IInjector, object>? Factory => this.InstancingStrategy as Func<IInjector, object>;
-
-        /// <summary>
-        /// Gets the type of the implementation.
-        /// </summary>
-        /// <value>
-        /// The type of the implementation.
-        /// </value>
-        public Type? ImplementationType => this.InstancingStrategy as Type;
-
-        /// <summary>
-        /// Gets or sets the lifetime.
-        /// </summary>
-        /// <value>
-        /// The lifetime.
-        /// </value>
-        public AppServiceLifetime Lifetime { get; set; } = AppServiceLifetime.Transient;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether we allow multiple.
-        /// </summary>
-        /// <value>
-        /// True if allow multiple, false if not.
-        /// </value>
-        public bool AllowMultiple { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the service instance is disposed from outside.
-        /// </summary>
-        /// <value>
-        /// True if externally owned, false if not.
-        /// </value>
-        public bool IsExternallyOwned { get; internal set; }
-
-        /// <summary>
-        /// Gets the metadata.
-        /// </summary>
-        public IDictionary<string, object?>? Metadata { get; private set; }
-
-        /// <summary>
-        /// Add export metadata to the export.
-        /// </summary>
-        /// <param name="name">The name of the metadata item.</param>
-        /// <param name="value">The metadata value.</param>
         /// <returns>
-        /// An export builder allowing further configuration.
+        /// An <see cref="IServiceInfo"/>.
         /// </returns>
-        public IRegistrationBuilder AddMetadata(string name, object? value)
+        public IServiceInfo Build()
         {
-            (this.Metadata ??= new Dictionary<string, object?>())[name] = value;
+            if (this.contractType is null)
+            {
+                throw new InjectionException(LiteStrings.LiteRegistrationBuilder_Build_ContractTypeNotSet);
+            }
+
+            switch (this.instancingStrategy)
+            {
+                case Type serviceType:
+                    this.EnsureContractTypeMatchesImplementationType(this.contractType, serviceType);
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, serviceType, this.lifetime != AppServiceLifetime.Transient)
+                    {
+                        AllowMultiple = this.allowMultiple,
+                        IsExternallyOwned = this.externallyOwned,
+                        Metadata = this.metadata,
+                    };
+                case Func<IInjector?, object> factory:
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
+                    {
+                        AllowMultiple = this.allowMultiple,
+                        IsExternallyOwned = this.externallyOwned,
+                        Metadata = this.metadata,
+                    };
+                case { } instance:
+                    return new ServiceInfo(this.serviceRegistry, this.contractType, instance)
+                    {
+                        AllowMultiple = this.allowMultiple,
+                        IsExternallyOwned = this.externallyOwned,
+                        Metadata = this.metadata,
+                    };
+                case var _:
+                    return this.allowMultiple
+                        ? new MultiServiceInfo(this.contractType)
+                        : throw new InvalidOperationException(
+                            AbstractionStrings.ServiceRegistrationBuilder_InstancingNotProvided_Exception.FormatWith(
+                                this.contractType, nameof(AppServiceContractAttribute.AllowMultiple), true));
+            }
+        }
+
+        /// <summary>
+        /// Sets the registration key to a super type of the service type.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder As(Type contractType)
+        {
+            this.contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the service as a singleton.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder Singleton()
+        {
+            this.lifetime = AppServiceLifetime.Singleton;
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the service as a scoped.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder Scoped()
+        {
+            this.lifetime = AppServiceLifetime.Scoped;
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the service as transient.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder Transient()
+        {
+            this.lifetime = AppServiceLifetime.Transient;
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the service with multiple instances.
+        /// </summary>
+        /// <param name="value">Optional. True if multiple service registrations are allowed (default), false otherwise.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder AllowMultiple(bool value = true)
+        {
+            this.allowMultiple = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
+        /// <param name="parameterBuilder">The parameter builder.</param>
+        /// <returns>
+        /// A registration builder allowing further configuration.
+        /// </returns>
+        public IRegistrationBuilder SelectConstructor(
+            Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
+            Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
+        {
+            // TODO: not supported currently
+            return this;
+        }
+
+        /// <summary>
+        /// Adds metadata in form of (key, value) pairs.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IRegistrationBuilder AddMetadata(string key, object? value)
+        {
+            (this.metadata ??= new Dictionary<string, object?>())[key] = value;
+
             return this;
         }
 
@@ -125,7 +199,7 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         public IRegistrationBuilder ExternallyOwned()
         {
-            this.IsExternallyOwned = true;
+            this.externallyOwned = true;
             return this;
         }
 
@@ -137,131 +211,92 @@ namespace Kephas.Injection.Lite.Builder
         /// </returns>
         public override string ToString()
         {
-            var implementationString = this.ImplementationType?.ToString()
-                                       ?? (this.Factory != null
-                                                ? "factory"
-                                                : this.Instance != null ? "instance" : "unknown");
-            return $"{this.ContractType}/{this.Lifetime}/{implementationString}";
+            var implementationString = this.instancingStrategy is Type serviceType
+                                       ? serviceType.ToString()
+                                       : this.instancingStrategy is Delegate
+                                           ? "factory"
+                                           : this.instancingStrategy != null
+                                               ? "instance"
+                                               : "unknown";
+            return $"{this.contractType}/{this.lifetime}/{implementationString}";
         }
 
         /// <summary>
-        /// Indicates the type registered as the exported service key.
+        /// Registers the service with the provided instance strategy.
         /// </summary>
-        /// <param name="contractType">Type of the service.</param>
+        /// <param name="instancingStrategy">The service instance strategy.</param>
         /// <returns>
-        /// A part builder allowing further configuration of the part.
+        /// This builder.
         /// </returns>
-        public IRegistrationBuilder As(Type contractType)
+        private IRegistrationBuilder SetInstancingStrategy(object instancingStrategy)
         {
-            this.ContractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
-            return this;
-        }
-
-        /// <summary>
-        /// Mark the part as being shared within the entire composition.
-        /// </summary>
-        /// <returns>
-        /// A part builder allowing further configuration of the part.
-        /// </returns>
-        IRegistrationBuilder IRegistrationBuilder.Singleton()
-        {
-            this.Lifetime = AppServiceLifetime.Singleton;
-            return this;
-        }
-
-        /// <summary>
-        /// Mark the part as being shared within the scope.
-        /// </summary>
-        /// <returns>
-        /// A part builder allowing further configuration of the part.
-        /// </returns>
-        IRegistrationBuilder IRegistrationBuilder.Scoped()
-        {
-            this.Lifetime = AppServiceLifetime.Scoped;
-            return this;
-        }
-
-        /// <summary>
-        /// Indicates that this service allows multiple registrations.
-        /// </summary>
-        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
-        /// <returns>
-        /// A part builder allowing further configuration of the part.
-        /// </returns>
-        IRegistrationBuilder IRegistrationBuilder.AllowMultiple(bool value)
-        {
-            this.AllowMultiple = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Select which of the available constructors will be used to instantiate the part.
-        /// </summary>
-        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
-        /// <param name="parameterBuilder">The parameter builder.</param>
-        /// <returns>
-        /// A part builder allowing further configuration of the part.
-        /// </returns>
-        IRegistrationBuilder IRegistrationBuilder.SelectConstructor(
-            Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector,
-            Action<ParameterInfo, IParameterBuilder>? parameterBuilder)
-        {
-            // TODO not supported.
-            if (this.Logger.IsTraceEnabled())
+            var inferredContractType = instancingStrategy switch
             {
-                this.Logger.Warn("Selecting a specific constructor is not supported ({registrationBuilder}).", this);
+                Type implementationType =>
+                    this.MatchesContractType(implementationType)
+                        ? implementationType
+                        : throw new ArgumentException(
+                            string.Format(
+                                AbstractionStrings.AmbientServices_ServiceTypeAndImplementationMismatch_Exception,
+                                implementationType,
+                                this.contractType),
+                            nameof(implementationType)),
+                Func<IInjector, object> factory =>
+                    null,
+                var instance =>
+                    this.MatchesContractType(instance)
+                        ? instance.GetType()
+                        : throw new InvalidOperationException(
+                            string.Format(
+                                AbstractionStrings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception,
+                                instance.GetType(),
+                                this.contractType)),
+            };
+
+            this.instancingStrategy = instancingStrategy;
+            if (this.contractType is null)
+            {
+                this.contractType = inferredContractType;
             }
 
             return this;
         }
 
-        internal void Build()
+        private bool MatchesContractType(object instance)
         {
-            void ConfigureService(IRegistrationBuilder b)
+            return this.contractType?.IsInstanceOfType(instance) ?? true;
+        }
+
+        private bool MatchesContractType(Type implementationType)
+        {
+            if (this.contractType is null)
             {
-                if (this.Lifetime == AppServiceLifetime.Singleton)
-                {
-                    b.Singleton();
-                }
-                else if (this.Lifetime == AppServiceLifetime.Transient)
-                {
-                    b.Transient();
-                }
-                else if (this.Lifetime == AppServiceLifetime.Scoped)
-                {
-                    this.Logger.Warn("Scoped services not supported, will be registered as singleton: '{contractType}'.", this.ContractType);
-                    b.Singleton();
-                }
-
-                if (this.AllowMultiple)
-                {
-                    b.AllowMultiple();
-                }
-
-                if (this.ContractType != null)
-                {
-                    b.As(this.ContractType);
-                }
-
-                if (this.Metadata != null)
-                {
-                    this.Metadata.ForEach(kv => b.AddMetadata(kv.Key, kv.Value));
-                }
-
-                if (this.IsExternallyOwned)
-                {
-                    b.ExternallyOwned();
-                }
+                return true;
             }
 
-            if (this.InstancingStrategy != null)
+            return this.contractType.IsAssignableFrom(implementationType)
+                   || (this.contractType.IsGenericTypeDefinition
+                       && !implementationType.IsGenericTypeDefinition
+                       && implementationType.GetInterfaces().Any(i =>
+                           i.IsGenericType && ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType)))
+                   || (this.contractType.IsGenericTypeDefinition
+                       && implementationType.IsGenericTypeDefinition
+                       && implementationType.GetInterfaces().Any(i => i.Name == this.contractType.Name));
+        }
+
+        private void EnsureContractTypeMatchesImplementationType(Type contractType, Type implementationType)
+        {
+            switch (contractType.IsGenericTypeDefinition)
             {
-                this.ambientServices.AddService(this.ContractType, this.InstancingStrategy, ConfigureService);
-
-                return;
+                case true when !implementationType.IsGenericTypeDefinition:
+                    throw new ArgumentException(
+                        string.Format(LiteStrings.LiteRegistrationBuilder_EnsureContractTypeMatchesImplementationType_ImplementationTypeMustBeGenericTypeDefinition, implementationType, contractType),
+                        nameof(implementationType));
+                case false when implementationType.IsGenericTypeDefinition:
+                    throw new ArgumentException(
+                        string.Format(LiteStrings.LiteRegistrationBuilder_EnsureContractTypeMatchesImplementationType_ImplementationTypeMustNotBeGenericTypeDefinition, implementationType, contractType),
+                        nameof(implementationType));
             }
-
-            throw new InvalidOperationException(string.Format(AbstractionStrings.LiteRegistrationBuilder_InvalidRegistration_Exception, nameof(this.ImplementationType), nameof(this.Factory)));
         }
     }
 }

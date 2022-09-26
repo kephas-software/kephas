@@ -21,7 +21,6 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
     using Kephas.Injection;
     using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Internal;
     using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;

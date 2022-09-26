@@ -6,6 +6,7 @@
 # 12.0.0
 
 ## Ambient services
+* Breaking change: Removed `IAmbientServicesMixin`.
 * Breaking change: Removed `IAmbientServices.WithInjector(injector)`.
 * Breaking change: Renamed `IAmbientServices.WithInjector<TInjectorBuilder>(builderOptions)` to `IAmbientServices.BuildWith<TInjectorBuilder>(builderOptions)`.
 * Breaking change: Renamed `IAmbientServices` to `IAppServiceCollection` and `AmbientServices` to `AppServiceCollection`.
