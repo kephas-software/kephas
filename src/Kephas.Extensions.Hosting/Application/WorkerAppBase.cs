@@ -97,7 +97,7 @@ namespace Kephas.Extensions.Hosting.Application
             this.Host = this.HostBuilder.Build();
 
             var stoppingTokenSource = new CancellationTokenSource();
-            var eventHub = this.AmbientServices.Injector.Resolve<IEventHub>();
+            var eventHub = this.Host.Services.GetRequiredService<IEventHub>();
             eventHub.Subscribe<ShutdownSignal>((_, _) => stoppingTokenSource.Cancel());
 
             return base.RunAsync(mainCallback ?? (args => RunHostAsync(this.Host, stoppingTokenSource.Token)), cancellationToken);

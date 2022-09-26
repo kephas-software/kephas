@@ -117,14 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
-    <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
-    <comment>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</comment>
-  </data>
-  <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
-    <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>
-    <comment>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</comment>
-  </data>
   <data name="DefaultAppManager_InitializeCanceled_Exception" xml:space="preserve">
     <value>The application's initialize procedure was canceled, at {0:s}.</value>
   </data>
@@ -169,10 +161,6 @@
   </data>
   <data name="DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all exported types from {assembly}. Only the loadable types will be considered.</value>
-  </data>
-  <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
-    <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
-    <comment>The specified contract type '{0}' is not assignable from the service contract '{1}'.</comment>
   </data>
   <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
@@ -232,18 +220,6 @@
   </data>
   <data name="DefaultMediaTypeProvider_NotFound_Exception" xml:space="preserve">
     <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
-  </data>
-  <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
-    <value>Shutting down the application...</value>
-    <comment>Shutting down the application...</comment>
-  </data>
-  <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
-    <value>Errors occurred during the application shutdown procedure, please check the exception details for more information.</value>
-    <comment>Errors occurred during the application shutdown procedure, please check the exception details for more information.</comment>
-  </data>
-  <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
-    <value>The application shut down successfully. Goodbye!</value>
-    <comment>The application shut down successfully. Good bye!</comment>
   </data>
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{type}'.</value>

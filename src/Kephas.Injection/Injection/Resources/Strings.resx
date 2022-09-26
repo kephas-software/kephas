@@ -33,4 +33,16 @@
     <data name="AppServiceCollectionMultipleContractDeclarationsWithSameType" xml:space="preserve">
         <value>Multiple contract declarations for {0}. {1} will be overwritten by {2}.</value>
     </data>
+    <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
+        <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>
+    </data>
+    <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
+        <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
+    </data>
+    <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+        <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+    </data>
+    <data name="InjectorBuilder_RegisterService_InvalidContractType" xml:space="preserve">
+        <value>No contract type provided for {0}.</value>
+    </data>
 </root>

@@ -118,7 +118,7 @@ namespace Kephas.Injection.Autofac.Builder
                 builderConfig(this.containerBuilder);
             }
 
-            return new AutofacInjector(this.containerBuilder, this.BuildContext?.AmbientServices?.LogManager);
+            return new AutofacInjector(this.containerBuilder, this.BuildContext?.Logger);
         }
     }
 }

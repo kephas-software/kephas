@@ -135,35 +135,8 @@
   <data name="AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception" xml:space="preserve">
     <value>Der Servicetyp '{0}' muss ein Supertyp des Contract-Typs '{1}' sein.</value>
   </data>
-  <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
-    <value>Mehrere für den Contract {0} registrierte Anwendungsdienste und die Überschreibungspriorität ermöglichen keine ordnungsgemäße Dienstauflösung. Identifizierte mögliche Teile: {1}.</value>
-  </data>
-  <data name="App_RunAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
-    <value>Während des Anwendungskonfigurationsvorgangs sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_RunAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
-    <value>Während des erzwungenen Herunterfahrens der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_RunAsync_InitializingAppManager_Message" xml:space="preserve">
-    <value>App-Manager initialisieren ...</value>
-  </data>
-  <data name="App_RunAsync_StartComplete_Message" xml:space="preserve">
-    <value>Die Anwendung wurde erfolgreich gebootet.</value>
-  </data>
-  <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
-    <value>Die Anwendung wurde erfolgreich heruntergefahren. Auf Wiedersehen!</value>
-  </data>
-  <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
-    <value>Beim Herunterfahren der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
-    <value>Anwendung herunterfahren ...</value>
-  </data>
   <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
     <value>Assembly '{Assembly}' kann nicht geladen werden. Weitere Informationen finden Sie in der Ausnahme.</value>
-  </data>
-  <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
-    <value>Der angegebene Contract-Typ '{0}' kann nicht aus dem Service-Contract '{1}' zugewiesen werden.</value>
   </data>
   <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Mehrere mit {0} gekennzeichnete Konstruktoren werden für die Service-Implementierung '{1}' mit dem Contract '{2}' deklariert.</value>

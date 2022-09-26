@@ -96,13 +96,19 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <param name="appServiceInfo">The <see cref="IAppServiceInfo"/> from which the information should be copied.</param>
         /// <param name="contractType">The contract type, in case the service information does not have it already.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
         /// <param name="instancingStrategy">Optional. The instancing strategy.</param>
-        internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType, object? instancingStrategy = null)
+        internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType, Type? contractDeclarationType, object? instancingStrategy = null)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
             this.SetContractType(contractType ?? appServiceInfo.ContractType);
+            if (contractDeclarationType != null)
+            {
+                this.ContractDeclarationType = contractDeclarationType;
+            }
+
             this.InstancingStrategy = instancingStrategy ?? appServiceInfo.InstancingStrategy;
 
             this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;

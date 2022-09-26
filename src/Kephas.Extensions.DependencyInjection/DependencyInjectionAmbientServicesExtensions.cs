@@ -13,16 +13,11 @@ namespace Kephas
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection.Hosting;
     using Kephas.Injection;
-    using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;
-    using Kephas.Model.AttributedModel;
-    using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -40,7 +35,9 @@ namespace Kephas
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            var injectorBuilder = new DependencyInjectionInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
+            var buildContext = new InjectionBuildContext(ambientServices);
+            buildContext.AddAppServices();
+            var injectorBuilder = new DependencyInjectionInjectorBuilder(buildContext);
 
             builderOptions?.Invoke(injectorBuilder);
 

@@ -60,6 +60,15 @@ namespace Kephas.Injection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple application services registered for the contract &apos;{0}&apos; and the override priority does not allow a proper service resolution. Registrations: {1}..
+        /// </summary>
+        internal static string AmbiguousOverrideForAppServiceContract {
+            get {
+                return ResourceManager.GetString("AmbiguousOverrideForAppServiceContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple contract declarations for {0}. {1} will be overwritten by {2}..
         /// </summary>
         internal static string AppServiceCollectionMultipleContractDeclarationsWithSameType {
@@ -69,11 +78,38 @@ namespace Kephas.Injection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified contract type &apos;{0}&apos; is not assignable from the service contract &apos;{1}&apos;..
+        /// </summary>
+        internal static string AppServiceContractTypeDoesNotMatchServiceContract {
+            get {
+                return ResourceManager.GetString("AppServiceContractTypeDoesNotMatchServiceContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The contract type {0} must be assignable from the declaration type {1}..
         /// </summary>
         internal static string AppServiceInfoBuilderContractTypeMismatch {
             get {
                 return ResourceManager.GetString("AppServiceInfoBuilderContractTypeMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No contract type provided for {0}..
+        /// </summary>
+        internal static string InjectorBuilder_RegisterService_InvalidContractType {
+            get {
+                return ResourceManager.GetString("InjectorBuilder_RegisterService_InvalidContractType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple application services registered for the contract &apos;{contractType}&apos;. Strategy is {resolutionStrategy}, registrations: {registrations}..
+        /// </summary>
+        internal static string MultipleRegistrationsForAppServiceContract {
+            get {
+                return ResourceManager.GetString("MultipleRegistrationsForAppServiceContract", resourceCulture);
             }
         }
         

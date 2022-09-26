@@ -17,6 +17,7 @@ namespace Kephas.Injection.Autofac.Builder
     using global::Autofac;
     using global::Autofac.Builder;
     using Kephas.Injection.Builder;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// An Autofac part builder.

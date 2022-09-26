@@ -13,7 +13,6 @@ namespace Kephas.Injection.Builder
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Security.Principal;
 
     using Kephas.Dynamic;
     using Kephas.Injection.Configuration;
@@ -28,15 +27,21 @@ namespace Kephas.Injection.Builder
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionBuildContext"/> class.
         /// </summary>
-        /// <param name="assemblies">
-        /// An enumeration of assemblies used in injection.
-        /// </param>
-        public InjectionBuildContext(IEnumerable<Assembly>? assemblies = null)
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="settings">Optional. The injection settings.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        public InjectionBuildContext(IAmbientServices ambientServices, InjectionSettings? settings = null, ILogger? logger = null)
         {
-            this.Assemblies = assemblies is null
-                ? new List<Assembly>()
-                : new List<Assembly>(assemblies);
+            this.AmbientServices = ambientServices;
+            this.Assemblies = ambientServices.GetAppRuntime().GetAppAssemblies().ToList();
+            this.Settings = settings ?? new InjectionSettings();
+            this.Logger = logger ?? ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
         }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the application service information providers.
@@ -54,15 +59,15 @@ namespace Kephas.Injection.Builder
         /// <summary>
         /// Gets the injection settings.
         /// </summary>
-        public InjectionSettings Settings { get; } = new ();
+        public InjectionSettings Settings { get; }
 
         /// <summary>
-        /// Gets or sets the logger.
+        /// Gets the logger.
         /// </summary>
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger? Logger { get; set; }
+        public ILogger? Logger { get; }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         void IDisposable.Dispose()

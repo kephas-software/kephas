@@ -24,6 +24,7 @@ namespace Kephas.Services
     using Kephas.Collections;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
+    using Kephas.Injection.Configuration;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
@@ -250,16 +251,15 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
         /// </returns>
-        public static IList<IAppServiceInfosProvider> GetAppServiceInfosProviders(IInjectionBuildContext buildContext)
+        public static IList<IAppServiceInfosProvider> GetAppServiceInfosProviders(this IInjectionBuildContext buildContext)
         {
             var assemblies = buildContext.GetDefaultAssemblies();
 
             if (buildContext.Logger.IsDebugEnabled())
             {
-                var logAssemblies = assemblies;
                 try
                 {
-                    buildContext.Logger.Debug("Using application assemblies: {assemblies}.", logAssemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
+                    buildContext.Logger.Debug("Using application assemblies: {assemblies}.", assemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
                 }
                 catch (Exception ex)
                 {
@@ -267,7 +267,7 @@ namespace Kephas.Services
                 }
             }
 
-            var providers = ServiceHelper.GetAppServiceInfosProviders(assemblies)
+            var providers = GetAppServiceInfosProviders(assemblies)
                 .Union(buildContext.AppServiceInfosProviders)
                 .ToList();
 

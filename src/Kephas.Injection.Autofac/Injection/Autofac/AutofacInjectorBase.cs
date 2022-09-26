@@ -21,7 +21,7 @@ namespace Kephas.Injection.Autofac
     /// <summary>
     /// An Autofac injector base.
     /// </summary>
-    public abstract class AutofacInjectorBase : Loggable, IInjector, IServiceProvider
+    public abstract class AutofacInjectorBase : ILoggable, IInjector, IServiceProvider
     {
         private readonly IInjectionContainer? root;
 
@@ -31,12 +31,20 @@ namespace Kephas.Injection.Autofac
         /// Initializes a new instance of the <see cref="AutofacInjectorBase"/> class.
         /// </summary>
         /// <param name="root">The root.</param>
-        /// <param name="logManager">The log manager.</param>
-        internal AutofacInjectorBase(IInjectionContainer? root, ILogManager? logManager)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        internal AutofacInjectorBase(IInjectionContainer? root, ILogger? logger)
         {
             this.root = root;
+            this.Logger = logger;
         }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger? Logger { get; }
 
         /// <summary>
         /// Resolves the specified contract type.

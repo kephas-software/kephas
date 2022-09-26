@@ -24,6 +24,11 @@ namespace Kephas.Injection.Builder
     public interface IInjectionBuildContext : IContext
     {
         /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        IAmbientServices AmbientServices { get; }
+
+        /// <summary>
         /// Gets the application service information providers.
         /// </summary>
         /// <value>

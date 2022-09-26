@@ -11,6 +11,11 @@
 namespace Kephas.Injection.Builder
 {
     using System;
+    using System.Reflection;
+    using Kephas.Injection.AttributedModel;
+    using Kephas.Injection.Resources;
+    using Kephas.Resources;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Contract for injection builders.
@@ -53,5 +58,81 @@ namespace Kephas.Injection.Builder
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
         IRegistrationBuilder ForFactory<T>(Func<IInjector, T> factory)
             => this.ForFactory(typeof(T), injector => factory(injector)!);
+
+        /// <summary>
+        /// Registers the <see cref="IAppServiceInfo"/> into the injector.
+        /// </summary>
+        /// <param name="appServiceInfo">The app service info.</param>
+        void Register(IAppServiceInfo appServiceInfo)
+        {
+            var contractType = appServiceInfo.ContractType ?? throw new InjectionException(Strings.InjectorBuilder_RegisterService_InvalidContractType.FormatWith(appServiceInfo));
+            var serviceBuilder = appServiceInfo.InstancingStrategy switch
+            {
+                Type type => this
+                    .ForType(type)
+                    .SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(contractType, ctorInfos)),
+                Func<IInjector, object> factory => this
+                    .ForFactory(contractType, factory),
+                { } instance => this
+                    .ForInstance(instance),
+                _ => null,
+            };
+
+            if (serviceBuilder == null)
+            {
+                return;
+            }
+
+            serviceBuilder
+                .As(contractType)
+                .AllowMultiple(appServiceInfo.AllowMultiple);
+            if (appServiceInfo.IsSingleton())
+            {
+                serviceBuilder.Singleton();
+            }
+            else if (appServiceInfo.IsScoped())
+            {
+                serviceBuilder.Scoped();
+            }
+
+            if (appServiceInfo.Metadata != null)
+            {
+                serviceBuilder.AddMetadata(appServiceInfo.Metadata);
+            }
+
+            if (appServiceInfo.IsExternallyOwned)
+            {
+                serviceBuilder.ExternallyOwned();
+            }
+        }
+
+        private ConstructorInfo? TrySelectAppServiceConstructor(
+            Type contractDeclarationType,
+            IEnumerable<ConstructorInfo> constructors)
+        {
+            var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
+
+            // get the one constructor marked as InjectConstructor.
+            var explicitlyMarkedConstructors = constructorsList
+                .Where(c => c.GetCustomAttributes().OfType<IInjectConstructorAnnotation>().Any())
+                .ToList();
+            if (explicitlyMarkedConstructors.Count == 0)
+            {
+                // none marked explicitly, leave the decision up to the IoC implementation.
+                return null;
+            }
+
+            if (explicitlyMarkedConstructors.Count > 1)
+            {
+                throw new InjectionException(
+                    string.Format(
+                        AbstractionStrings.AppServiceMultipleInjectConstructors,
+                        typeof(InjectConstructorAttribute),
+                        constructorsList[0].DeclaringType,
+                        contractDeclarationType));
+            }
+
+            return explicitlyMarkedConstructors[0];
+        }
     }
 }
