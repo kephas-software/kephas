@@ -39,7 +39,7 @@ namespace Kephas.Tests.Orchestration
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector(this.CreateAmbientServices());
+            var container = this.BuildServiceProvider(this.CreateAmbientServices());
 
             var manager = container.Resolve<IOrchestrationManager>();
 
@@ -50,7 +50,7 @@ namespace Kephas.Tests.Orchestration
         public async Task InitializeAsync_Heartbeat_integration()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjector(ambientServices);
+            var container = this.BuildServiceProvider(ambientServices);
 
             var appManager = container.Resolve<IAppManager>();
             var orchManager = (DefaultOrchestrationManager)container.Resolve<IOrchestrationManager>();
@@ -83,7 +83,7 @@ namespace Kephas.Tests.Orchestration
 
             var eventHub = this.CreateEventHubMock();
 
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             ambientServices.WithAppRuntime(appRuntime);
             var appContext = new AppContext(ambientServices);
 

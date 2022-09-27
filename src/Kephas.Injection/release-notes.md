@@ -55,3 +55,9 @@ var logManager = AppServiceCollection.TryGetServiceInstance<ILogManager>();
 
 ## Context
 * Breaking change: removed `IContext.AmbientServices`. Reason: the injector/service provider should suffice. If required, the injector can be invoked to resolve the `IAppServiceCollection` service.
+
+## Injection
+* Breaking change: `IInjector` interface removed, replaced by `IServiceProvider`.
+`ServiceProviderInjectionExtensions` will provide the methods of the `IInjector` interface as extension methods of `IServiceProvider`.
+* Breaking change: All `Injector` methods were renamed to `ServiceProvider`.
+* IInjector.CreateScope()

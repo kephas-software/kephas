@@ -23,7 +23,7 @@ namespace Kephas.Serialization.Bson.Tests
         [Ignore("Not relevant for the moment, should be fixed in the future.")]
         public async Task SerializeAsync_Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var serializationService = container.Resolve<ISerializationService>();
 
             var obj = new TestEntity

@@ -42,7 +42,7 @@ public class EnsureAuthorizedMessageProcessingBehaviorTest
         // this should not crash, no required permissions
         await behavior.BeforeProcessAsync(
             message,
-            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
             default);
     }
 
@@ -60,7 +60,7 @@ public class EnsureAuthorizedMessageProcessingBehaviorTest
         var message = new NonFreeMessage();
         Assert.ThrowsAsync<AuthorizationException>(() => behavior.BeforeProcessAsync(
             message,
-            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
             default), "Should be called with gigi!");
     }
 
@@ -80,7 +80,7 @@ public class EnsureAuthorizedMessageProcessingBehaviorTest
         var message = new NonFreeMessage();
         await behavior.BeforeProcessAsync(
             message,
-            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
             default);
     }
 
@@ -100,7 +100,7 @@ public class EnsureAuthorizedMessageProcessingBehaviorTest
         var message = new NonFree();
         await behavior.BeforeProcessAsync(
             message.ToMessage(),
-            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
             default);
     }
 

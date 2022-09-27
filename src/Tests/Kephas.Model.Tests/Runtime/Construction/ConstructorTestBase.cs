@@ -39,7 +39,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IRuntimeModelElementFactory? factory = null)
         {
             var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime();
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             return new ModelConstructionContext(injector)
             {

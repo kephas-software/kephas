@@ -41,14 +41,14 @@ namespace Kephas.Core.Tests
         public void Register_instance_cannot_set_null()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            Assert.That(() => ambientServices.Add(typeof(IInjector), (object)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Add(typeof(IServiceProvider), (object)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
         public void Register_factory_cannot_set_null()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            Assert.That(() => ambientServices.Add(typeof(IInjector), (Func<IInjector, object>)null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.Add(typeof(IServiceProvider), (Func<IServiceProvider, object>)null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -434,10 +434,10 @@ namespace Kephas.Core.Tests
         public void InjectionContainer_works_fine_when_explicitely_set()
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
-            var injector = Substitute.For<IInjector>();
-            injector.TryResolve<IInjector>().Returns((IInjector)null);
+            var injector = Substitute.For<IServiceProvider>();
+            injector.TryResolve<IServiceProvider>().Returns((IServiceProvider)null);
             ambientServices.Add(injector);
-            var noService = ambientServices.Injector.TryResolve<IInjector>();
+            var noService = ambientServices.Injector.TryResolve<IServiceProvider>();
             Assert.IsNull(noService);
         }
 

@@ -39,15 +39,15 @@ namespace Kephas.Core.Tests
             ambientServices
                 .Add(logManager)
                 .WithAppRuntime(appRuntime);
-            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices.GetAppRuntime().GetAppAssemblies()));
+            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices));
         }
 
-        public IInjector CreateInjector(params Assembly[] assemblies)
+        public IServiceProvider CreateInjector(params Assembly[] assemblies)
         {
             return this.CreateInjector(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
-        public virtual IInjector CreateInjector(
+        public virtual IServiceProvider CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -66,18 +66,18 @@ namespace Kephas.Core.Tests
             return container;
         }
 
-        public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
+        public IServiceProvider CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
         {
             var builder = this.WithInjectorBuilder()
-                .WithAssemblies(typeof(IInjector).Assembly, typeof(IInjectableFactory).Assembly);
+                .WithAssemblies(typeof(IServiceProvider).Assembly, typeof(IInjectableFactory).Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
 
-        public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        public IServiceProvider CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             return this.WithInjectorBuilder(ambientServices)
-                .WithAssemblies(typeof(IInjector).Assembly, typeof(IInjectableFactory).Assembly)
+                .WithAssemblies(typeof(IServiceProvider).Assembly, typeof(IInjectableFactory).Assembly)
                 .WithParts(types)
                 .Build();
         }
@@ -86,7 +86,7 @@ namespace Kephas.Core.Tests
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).Assembly,          /* Kephas.Injection */
+                           typeof(IServiceProvider).Assembly,          /* Kephas.Injection */
                        };
         }
 

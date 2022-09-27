@@ -17,7 +17,7 @@ public class DefaultConnectionProviderTest : ConnectivityTestBase
     [Test]
     public void DefaultConnectionProvider_Injection_success()
     {
-        var container = this.CreateInjector();
+        var container = this.BuildServiceProvider();
         var provider = container.Resolve<IConnectionProvider>();
         Assert.IsInstanceOf<DefaultConnectionProvider>(provider);
 
@@ -28,7 +28,7 @@ public class DefaultConnectionProviderTest : ConnectivityTestBase
     [Test]
     public void CreateConnection_Injection_success()
     {
-        var container = this.CreateInjector(parts: new[] { typeof(TestConnectionFactory) });
+        var container = this.BuildServiceProvider(parts: new[] { typeof(TestConnectionFactory) });
         var provider = container.Resolve<IConnectionProvider>();
 
         var expected = Substitute.For<IConnection>();
@@ -42,7 +42,7 @@ public class DefaultConnectionProviderTest : ConnectivityTestBase
     [Test]
     public void CreateConnection_Injection_failed()
     {
-        var container = this.CreateInjector();
+        var container = this.BuildServiceProvider();
         var provider = container.Resolve<IConnectionProvider>();
 
         var expected = Substitute.For<IConnection>();

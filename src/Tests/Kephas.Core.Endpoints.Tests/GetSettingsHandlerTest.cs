@@ -31,7 +31,7 @@ namespace Kephas.Core.Endpoints.Tests
             var settings = new CoreSettings();
             var config = Substitute.For<IConfiguration<CoreSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
-            var container = Substitute.For<IInjector>();
+            var container = Substitute.For<IServiceProvider>();
             container.Resolve(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });

@@ -28,7 +28,7 @@ namespace Kephas.Services
         /// <value>
         /// The injector.
         /// </value>
-        IInjector Injector { get; }
+        IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Gets or sets the authenticated identity.

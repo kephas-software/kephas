@@ -108,9 +108,9 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
         }
 
 
-        private IInjector CreateInjectorWithFactories(params Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[] ruleFactories)
+        private IServiceProvider CreateInjectorWithFactories(params Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[] ruleFactories)
         {
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             injector.Resolve(typeof(ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>))
                 .Returns(ruleFactories);
 

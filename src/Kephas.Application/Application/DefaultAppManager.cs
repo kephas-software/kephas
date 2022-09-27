@@ -42,23 +42,23 @@ public class DefaultAppManager : Loggable, IAppManager
     /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
     /// </summary>
     /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="injector">The ambient services.</param>
+    /// <param name="serviceProvider">The ambient services.</param>
     /// <param name="appLifecycleBehaviorFactories">Optional. The application lifecycle behavior factories.</param>
     /// <param name="featureManagerFactories">Optional. The feature manager factories.</param>
     /// <param name="featureLifecycleBehaviorFactories">Optional. The feature lifecycle behavior factories.</param>
     public DefaultAppManager(
         IAppRuntime appRuntime,
-        IInjector injector,
+        IServiceProvider serviceProvider,
         IEnabledLazyEnumerable<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
         IEnabledLazyEnumerable<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
         IEnabledLazyEnumerable<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
-        : base(injector)
+        : base(serviceProvider)
     {
         appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-        injector = injector ?? throw new ArgumentNullException(nameof(injector));
+        serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
         this.AppRuntime = appRuntime;
-        this.Injector = injector;
+        this.ServiceProvider = serviceProvider;
         this.lazyAppLifecycleBehaviorFactories = new Lazy<ICollection<Lazy<IAppLifecycleBehavior, AppServiceMetadata>>>(
             () => appLifecycleBehaviorFactories == null
                 ? new List<Lazy<IAppLifecycleBehavior, AppServiceMetadata>>()
@@ -113,7 +113,7 @@ public class DefaultAppManager : Loggable, IAppManager
     /// <value>
     /// The injector.
     /// </value>
-    protected IInjector Injector { get; }
+    protected IServiceProvider ServiceProvider { get; }
 
     /// <summary>
     /// Initializes the application asynchronously.

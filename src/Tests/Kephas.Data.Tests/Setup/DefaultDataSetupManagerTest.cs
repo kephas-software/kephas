@@ -29,7 +29,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task InstallDataAsync_proper_order()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -43,7 +43,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task InstallDataAsync_filtered()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -56,7 +56,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task UninstallDataAsync_proper_order()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -70,7 +70,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task UninstallDataAsync_filtered()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);

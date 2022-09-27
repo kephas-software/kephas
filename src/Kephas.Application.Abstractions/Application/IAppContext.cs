@@ -65,7 +65,7 @@ namespace Kephas.Application
         /// <value>
         /// The injector.
         /// </value>
-        IInjector IContext.Injector
+        IServiceProvider IContext.ServiceProvider
             => throw new ServiceException(AppAbstractionStrings.AppContextInjector_InjectorNotAvailable);
 
         /// <summary>

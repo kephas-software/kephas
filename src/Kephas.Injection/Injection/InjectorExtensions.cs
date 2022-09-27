@@ -10,77 +10,61 @@ namespace Kephas.Injection
     using System;
     using System.Diagnostics.Contracts;
 
-    using Kephas.Injection.Internal;
     using Kephas.Logging;
 
     /// <summary>
-    /// Extension methods for <see cref="IInjector"/>.
+    /// Extension methods for <see cref="IServiceProvider"/>.
     /// </summary>
     public static class InjectorExtensions
     {
         /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>
-        /// <param name="injector">The injector to act on.</param>
+        /// <param name="serviceProvider">The injector to act on.</param>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>
         /// A logger for the provided name.
         /// </returns>
         [Pure]
-        public static ILogger GetLogger(this IInjector injector, string loggerName)
+        public static ILogger GetLogger(this IServiceProvider serviceProvider, string loggerName)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             loggerName = loggerName ?? throw new ArgumentNullException(nameof(loggerName));
 
-            return injector.Resolve<ILogManager>().GetLogger(loggerName);
+            return serviceProvider.Resolve<ILogManager>().GetLogger(loggerName);
         }
 
         /// <summary>
         /// Gets the logger for the provided type.
         /// </summary>
-        /// <param name="injector">The injector to act on.</param>
+        /// <param name="serviceProvider">The injector to act on.</param>
         /// <param name="type">The type.</param>
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
         [Pure]
-        public static ILogger GetLogger(this IInjector injector, Type type)
+        public static ILogger GetLogger(this IServiceProvider serviceProvider, Type type)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            return injector.Resolve<ILogManager>().GetLogger(type);
+            return serviceProvider.Resolve<ILogManager>().GetLogger(type);
         }
 
         /// <summary>
         /// Gets the logger for the provided type.
         /// </summary>
         /// <typeparam name="T">The type for which a logger should be created.</typeparam>
-        /// <param name="injector">The injector to act on.</param>
+        /// <param name="serviceProvider">The injector to act on.</param>
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
         [Pure]
-        public static ILogger GetLogger<T>(this IInjector injector)
+        public static ILogger GetLogger<T>(this IServiceProvider serviceProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            return injector.Resolve<ILogManager>().GetLogger(typeof(T));
-        }
-
-        /// <summary>
-        /// Converts a <see cref="IInjector"/> to a <see cref="IServiceProvider"/>.
-        /// </summary>
-        /// <param name="injector">The injector to act on.</param>
-        /// <returns>
-        /// The <see cref="IInjector"/> as an <see cref="IServiceProvider"/>.
-        /// </returns>
-        public static IServiceProvider ToServiceProvider(this IInjector injector)
-        {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
-
-            return injector as IServiceProvider
-                   ?? new ServiceProviderAdapter(injector);
+            return serviceProvider.Resolve<ILogManager>().GetLogger(typeof(T));
         }
     }
 }

@@ -81,7 +81,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// The new container.
         /// </returns>
-        public IInjector CreateInjector(params Assembly[] assemblies)
+        public IServiceProvider CreateInjector(params Assembly[] assemblies)
         {
             return this.CreateInjector(assemblies: (IEnumerable<Assembly>)assemblies);
         }
@@ -98,7 +98,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// The new container.
         /// </returns>
-        public virtual IInjector CreateInjector(
+        public virtual IServiceProvider CreateInjector(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -119,18 +119,18 @@ namespace Kephas.Testing.Injection
             return container;
         }
 
-        public IInjector CreateInjectorWithBuilder(Action<AutofacInjectorBuilder>? config = null)
+        public IServiceProvider CreateInjectorWithBuilder(Action<AutofacInjectorBuilder>? config = null)
         {
             var builder = WithInjectorBuilder()
-                .WithAssemblies(typeof(IInjector).Assembly);
+                .WithAssemblies(typeof(IServiceProvider).Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
 
-        public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        public IServiceProvider CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
             return WithInjectorBuilder(ambientServices)
-                .WithAssemblies(typeof(IInjector).Assembly)
+                .WithAssemblies(typeof(IServiceProvider).Assembly)
                 .WithParts(types)
                 .Build();
         }
@@ -139,11 +139,11 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).Assembly,              /* Kephas.Injection */
+                           typeof(IServiceProvider).Assembly,              /* Kephas.Injection */
                            typeof(IEventHub).Assembly,              /* Kephas.Interaction */
                            typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
                            typeof(AmbientServices).Assembly,        /* Kephas.Core*/
-                           typeof(AutofacInjector).Assembly,      /* Kephas.Injection.Autofac */
+                           typeof(AutofacServiceProvider).Assembly,      /* Kephas.Injection.Autofac */
                        };
         }
 

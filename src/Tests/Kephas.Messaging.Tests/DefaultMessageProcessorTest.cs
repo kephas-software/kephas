@@ -41,7 +41,7 @@ namespace Kephas.Messaging.Tests
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultMessageProcessorTest : InjectionTestBase
     {
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -56,13 +56,13 @@ namespace Kephas.Messaging.Tests
                 typeof(IAuthorizationService).Assembly,   /* Kephas.Security */
             };
 
-            return base.CreateInjector(ambientServices, assemblyList, parts, config);
+            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
         public void DefaultMessageProcessor_Injection_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
@@ -73,7 +73,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public async Task ProcessAsync_Injection_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var requestProcessor = container.Resolve<IMessageProcessor>();
             Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
@@ -84,7 +84,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public async Task ProcessAsync_injection_non_message_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<string>((s, c, token) => Task.FromResult<IMessage>(new ResponseMessage { Message = s + " handled" }));
             var requestProcessor = container.Resolve<IMessageProcessor>();
@@ -98,7 +98,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public async Task ProcessAsync_injection_non_message_sync_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<string>((s, c) => new ResponseMessage { Message = s + " handled" });
             var requestProcessor = container.Resolve<IMessageProcessor>();
@@ -290,7 +290,7 @@ namespace Kephas.Messaging.Tests
             var f = this.CreateTestBehaviorFactory(messageType: typeof(PingMessage));
 
             var processor = (TestMessageProcessor)this.CreateMessageProcessor(new[] { f }, handler, message);
-            var processingContext = new MessagingContext(Substitute.For<IInjector>(), processor, message);
+            var processingContext = new MessagingContext(Substitute.For<IServiceProvider>(), processor, message);
             processor.CreateProcessingContextFunc = (msg, ctx) => processingContext;
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -611,9 +611,9 @@ namespace Kephas.Messaging.Tests
                 behaviorFactories);
 
             contextFactory.Create<MessagingContext>(Arg.Any<object[]>())
-                .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
+                .Returns(ci => new MessagingContext(Substitute.For<IServiceProvider>(), processor));
             contextFactory.Create(typeof(MessagingContext), Arg.Any<object[]>())
-                .Returns(ci => new MessagingContext(Substitute.For<IInjector>(), processor));
+                .Returns(ci => new MessagingContext(Substitute.For<IServiceProvider>(), processor));
 
             return processor;
         }

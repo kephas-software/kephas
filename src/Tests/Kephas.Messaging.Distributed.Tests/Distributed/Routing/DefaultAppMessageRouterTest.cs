@@ -24,7 +24,7 @@ public class DefaultAppMessageRouterTest : MessagingTestBase
     [Test]
     public void DefaultAppMessageRouter_Injection_success()
     {
-        var container = this.CreateInjector();
+        var container = this.BuildServiceProvider();
         var messageRouters = container.ResolveMany<IMessageRouter>();
         Assert.IsTrue(messageRouters.OfType<DefaultAppMessageRouter>().Any());
     }
@@ -32,7 +32,7 @@ public class DefaultAppMessageRouterTest : MessagingTestBase
     [Test]
     public async Task DispatchAsync_with_request()
     {
-        var container = this.CreateInjector();
+        var container = this.BuildServiceProvider();
         using (var inProcessRouter = container.ResolveMany<IMessageRouter>().OfType<DefaultAppMessageRouter>().Single())
         {
             var appContext = new Context(container);
@@ -59,7 +59,7 @@ public class DefaultAppMessageRouterTest : MessagingTestBase
     [Test]
     public async Task DispatchAsync_with_reply()
     {
-        var container = this.CreateInjector();
+        var container = this.BuildServiceProvider();
         using (var inProcessRouter = container.ResolveMany<IMessageRouter>().OfType<DefaultAppMessageRouter>().Single())
         {
             var appContext = new Context(container);

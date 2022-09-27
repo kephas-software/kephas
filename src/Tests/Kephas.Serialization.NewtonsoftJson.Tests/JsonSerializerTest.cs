@@ -40,7 +40,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync_injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var serializationService = container.Resolve<ISerializationService>();
 
             var obj = new TestEntity
@@ -94,7 +94,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = new Uri("http://site.com/my-site"),
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
@@ -113,7 +113,7 @@ namespace Kephas.Serialization.Json.Tests
                               Name = "John Doe",
                               PersonalSite = new Uri("http://site.com/my-site"),
                           };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
@@ -132,7 +132,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = new Uri("http://site.com/my-site"),
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
@@ -150,7 +150,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = null,
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeNullValues = false };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeNullValues = false };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
@@ -168,7 +168,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = null,
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeNullValues = true };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeNullValues = true };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
@@ -186,7 +186,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = new Uri("http://site.com/my-site"),
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
@@ -204,7 +204,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = new Uri("http://site.com/my-site"),
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
@@ -222,7 +222,7 @@ namespace Kephas.Serialization.Json.Tests
                 Name = "John Doe",
                 PersonalSite = new Uri("http://site.com/my-site"),
             };
-            var serializationContext = new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
+            var serializationContext = new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
@@ -292,7 +292,7 @@ namespace Kephas.Serialization.Json.Tests
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
-            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
+            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
 
             Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
@@ -307,7 +307,7 @@ namespace Kephas.Serialization.Json.Tests
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
-            var obj = serializer.Deserialize(serializedObj, new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
+            var obj = serializer.Deserialize(serializedObj, new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
 
             Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
@@ -444,7 +444,7 @@ namespace Kephas.Serialization.Json.Tests
                 .BuildWithAutofac(
                     b =>
                     b.WithAssemblies(
-                        typeof(IInjector).Assembly,
+                        typeof(IServiceProvider).Assembly,
                         typeof(ISerializationService).Assembly,
                         typeof(JsonSerializer).Assembly,
                         typeof(DefaultTypeResolver).Assembly));
@@ -462,7 +462,7 @@ namespace Kephas.Serialization.Json.Tests
                 .BuildWithLite(
                     b =>
                         b.WithAssemblies(
-                            typeof(IInjector).Assembly,
+                            typeof(IServiceProvider).Assembly,
                             typeof(ISerializationService).Assembly,
                             typeof(JsonSerializer).Assembly,
                             typeof(DefaultTypeResolver).Assembly));

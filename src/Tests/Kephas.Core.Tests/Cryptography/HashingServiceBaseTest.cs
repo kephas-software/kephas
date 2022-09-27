@@ -26,7 +26,7 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public void Hash_with_config()
         {
-            var service = new TestHashingService(this.CreateInjectableFactoryMock(() => new HashingContext(Substitute.For<IInjector>())));
+            var service = new TestHashingService(this.CreateInjectableFactoryMock(() => new HashingContext(Substitute.For<IServiceProvider>())));
 
             var hash = service.Hash(new byte[] { 1, 2, 3 }, ctx => ctx["hash"] = Encoding.UTF8.GetBytes("hashed!"));
             var actual = Encoding.UTF8.GetString(service.LastHashingContext?["hash"] as byte[]);

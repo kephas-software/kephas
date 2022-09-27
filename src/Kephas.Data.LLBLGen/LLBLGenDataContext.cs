@@ -64,20 +64,20 @@ namespace Kephas.Data.LLBLGen
         /// <summary>
         /// Initializes a new instance of the <see cref="LLBLGenDataContext" /> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataAccessAdapterFactory">The data access adapter factory.</param>
         /// <param name="modelTypeResolver">The model type resolver.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="queryFactoryProvider">The query factory provider.</param>
         public LLBLGenDataContext(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             IDataCommandProvider dataCommandProvider,
             IDataAccessAdapterFactory dataAccessAdapterFactory,
             IModelTypeResolver modelTypeResolver,
             IDataBehaviorProvider dataBehaviorProvider,
             IQueryFactoryProvider queryFactoryProvider)
-            : base(injector, dataCommandProvider, dataBehaviorProvider, localCache: new LLBLGenCache())
+            : base(serviceProvider, dataCommandProvider, dataBehaviorProvider, localCache: new LLBLGenCache())
         {
             this.dataAccessAdapterFactory = dataAccessAdapterFactory;
             this.modelTypeResolver = modelTypeResolver;

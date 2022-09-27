@@ -11,22 +11,22 @@ namespace Kephas.Injection.Internal
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Adapter for <see cref="IServiceProvider"/> based on <see cref="IInjector"/>.
+    /// Adapter for <see cref="System.IServiceProvider"/> based on <see cref="Injection.IServiceProvider"/>.
     /// </summary>
-    internal class ServiceProviderAdapter : IServiceProvider
+    internal class ServiceProviderAdapter : System.IServiceProvider
     {
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceProviderAdapter"/>
         /// class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public ServiceProviderAdapter(IInjector injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public ServiceProviderAdapter(IServiceProvider serviceProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.injector = injector;
+            this.serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Kephas.Injection.Internal
         /// </returns>
         public object? GetService([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType)
         {
-            return this.injector.TryResolve(serviceType);
+            return this.serviceProvider.TryResolve(serviceType);
         }
     }
 }

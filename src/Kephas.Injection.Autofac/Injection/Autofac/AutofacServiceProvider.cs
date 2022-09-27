@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacInjector.cs" company="Kephas Software SRL">
+// <copyright file="AutofacServiceProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,31 +14,30 @@ namespace Kephas.Injection.Autofac
 
     using global::Autofac;
     using global::Autofac.Builder;
-    using Kephas.Injection;
     using Kephas.Logging;
 
     /// <summary>
     /// An Autofac injection container.
     /// </summary>
-    public class AutofacInjector : AutofacInjectorBase, IInjectionContainer
+    public class AutofacServiceProvider : AutofacServiceProviderBase, IServiceProviderContainer
     {
-        private readonly ConcurrentDictionary<IComponentContext, IInjector> map;
+        private readonly ConcurrentDictionary<IComponentContext, IServiceProvider> map;
 
         private readonly IContainer container;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacInjector"/> class.
+        /// Initializes a new instance of the <see cref="AutofacServiceProvider"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         /// <param name="logger">The log manager.</param>
-        public AutofacInjector(ContainerBuilder containerBuilder, ILogger? logger)
+        public AutofacServiceProvider(ContainerBuilder containerBuilder, ILogger? logger)
             : base(null, logger)
         {
-            this.map = new ConcurrentDictionary<IComponentContext, IInjector>();
+            this.map = new ConcurrentDictionary<IComponentContext, IServiceProvider>();
 
             var registration = RegistrationBuilder
-                .ForDelegate((c, p) => this.TryGetInjector(c, createNewIfMissing: true)!)
-                .As<IInjector>()
+                .ForDelegate((c, p) => this.TryGetServiceProvider(c, createNewIfMissing: true)!)
+                .As<IServiceProvider>()
                 .InstancePerLifetimeScope()
                 .CreateRegistration();
             containerBuilder.RegisterComponent(registration);
@@ -56,7 +55,7 @@ namespace Kephas.Injection.Autofac
         /// <returns>
         /// The injection wrapper.
         /// </returns>
-        public IInjector? TryGetInjector(IComponentContext context, bool createNewIfMissing)
+        public IServiceProvider? TryGetServiceProvider(IComponentContext context, bool createNewIfMissing)
         {
             var lifetimeScope = context.GetLifetimeScope();
             var key = "root".Equals(lifetimeScope.Tag) ? this.container : lifetimeScope;
@@ -70,7 +69,7 @@ namespace Kephas.Injection.Autofac
                 return null;
             }
 
-            return this.GetInjector(lifetimeScope);
+            return this.GetServiceProvider(lifetimeScope);
         }
 
         /// <summary>
@@ -89,9 +88,9 @@ namespace Kephas.Injection.Autofac
         /// <returns>
         /// The injector.
         /// </returns>
-        public IInjector GetInjector(ILifetimeScope scope)
+        public IServiceProvider GetServiceProvider(ILifetimeScope scope)
         {
-            return this.map.GetOrAdd(scope, _ => new AutofacScopedInjector(this, scope, this.Logger));
+            return this.map.GetOrAdd(scope, _ => new AutofacScopedServiceProvider(this, scope, this.Logger));
         }
     }
 }

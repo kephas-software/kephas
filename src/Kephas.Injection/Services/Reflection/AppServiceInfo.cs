@@ -60,7 +60,7 @@ namespace Kephas.Services.Reflection
         /// <param name="contractType">The contract type of the export.</param>
         /// <param name="serviceInstanceFactory">The service instance factory.</param>
         /// <param name="lifetime">Optional. The application service lifetime.</param>
-        public AppServiceInfo(Type contractType, Func<IInjector, object> serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)
+        public AppServiceInfo(Type contractType, Func<IServiceProvider, object> serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)
         {
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceInstanceFactory = serviceInstanceFactory ?? throw new ArgumentNullException(nameof(serviceInstanceFactory));

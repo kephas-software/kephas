@@ -12,15 +12,15 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     /// <summary>
     /// A scoped injector for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public class DependencyInjectionScopedInjector : DependencyInjectionInjectorBase
+    public class DependencyInjectionScopedServiceProvider : DependencyInjectionServiceProviderBase
     {
         private readonly IServiceScope serviceScope;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyInjectionScopedInjector"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionScopedServiceProvider"/> class.
         /// </summary>
         /// <param name="serviceScope">The service scope.</param>
-        public DependencyInjectionScopedInjector(IServiceScope serviceScope)
+        public DependencyInjectionScopedServiceProvider(IServiceScope serviceScope)
             : base(serviceScope.ServiceProvider)
         {
             this.serviceScope = serviceScope;

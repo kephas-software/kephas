@@ -89,7 +89,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
-        public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
+        public override IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory)
         {
             var partBuilder = new AutofacFactoryRegistrationBuilder(this.containerBuilder, type, factory, this.preserveRegistrationOrder);
             this.partBuilders.Add(partBuilder);
@@ -103,7 +103,7 @@ namespace Kephas.Injection.Autofac.Builder
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore()
+        protected override IServiceProvider CreateInjectorCore()
         {
             foreach (var partBuilder in this.partBuilders)
             {
@@ -118,7 +118,7 @@ namespace Kephas.Injection.Autofac.Builder
                 builderConfig(this.containerBuilder);
             }
 
-            return new AutofacInjector(this.containerBuilder, this.BuildContext?.Logger);
+            return new AutofacServiceProvider(this.containerBuilder, this.BuildContext?.Logger);
         }
     }
 }

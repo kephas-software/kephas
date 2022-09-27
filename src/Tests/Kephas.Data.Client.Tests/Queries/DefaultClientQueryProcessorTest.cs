@@ -33,7 +33,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var processor = container.Resolve<IClientQueryProcessor>();
 
             Assert.IsInstanceOf<DefaultClientQueryProcessor>(processor);
@@ -42,7 +42,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IServiceProvider>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -78,7 +78,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync_skip_conversion_for_same_type()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IServiceProvider>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -117,7 +117,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync_context_config()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IServiceProvider>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 

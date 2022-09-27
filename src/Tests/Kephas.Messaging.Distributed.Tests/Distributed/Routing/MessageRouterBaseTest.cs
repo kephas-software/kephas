@@ -88,7 +88,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     {
         return this.CreateInjectableFactoryMock(
             args => new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),

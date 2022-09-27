@@ -24,7 +24,7 @@ namespace Kephas.Application.Console.Tests
 
     public abstract class ConsoleTestBase : InjectionTestBase
     {
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -39,7 +39,7 @@ namespace Kephas.Application.Console.Tests
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config);
+            return base.BuildServiceProvider(ambientServices, assemblies, parts, config);
         }
 
         public override IEnumerable<Assembly> GetAssemblies()

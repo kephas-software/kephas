@@ -13,7 +13,7 @@ namespace Kephas.Injection;
 public interface IInjectionScope : IDisposable
 {
     /// <summary>
-    /// Gets the injector for this scope.
+    /// Gets the service provider for this scope.
     /// </summary>
-    public IInjector Injector { get; }
+    public IServiceProvider ServiceProvider { get; }
 }

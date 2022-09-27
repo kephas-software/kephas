@@ -32,14 +32,14 @@ namespace Kephas.Data.Client.DTO
         /// <summary>
         /// Initializes a new instance of the <see cref="DtoDataContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="serializationService">The serialization service.</param>
         public DtoDataContext(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             IDataCommandProvider dataCommandProvider,
             ISerializationService serializationService)
-            : base(injector, dataCommandProvider, new NoneDataBehaviorProvider(), serializationService)
+            : base(serviceProvider, dataCommandProvider, new NoneDataBehaviorProvider(), serializationService)
         {
         }
 

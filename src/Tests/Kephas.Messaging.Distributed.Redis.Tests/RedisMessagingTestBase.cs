@@ -49,7 +49,7 @@ namespace Kephas.Messaging.Redis.Tests
             };
         }
 
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -64,7 +64,7 @@ namespace Kephas.Messaging.Redis.Tests
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            return base.BuildServiceProvider(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }
 }

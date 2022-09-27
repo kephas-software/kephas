@@ -24,18 +24,18 @@ namespace Kephas.Data.Commands.Factory
     [OverridePriority(Priority.Low)]
     public class DefaultDataCommandProvider : IDataCommandProvider
     {
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
         private readonly ConcurrentDictionary<DataCommandFactoryKey, Func<IDataCommand>> commandFactories = new ConcurrentDictionary<DataCommandFactoryKey, Func<IDataCommand>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataCommandProvider"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public DefaultDataCommandProvider(IInjector injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public DefaultDataCommandProvider(IServiceProvider serviceProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.injector = injector;
+            this.serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Kephas.Data.Commands.Factory
         private Func<IDataCommand> CreateCommandFactory(Type dataContextType, Type commandType)
         {
             var dataCommandFactoryType = typeof(IDataCommandFactory<>).MakeGenericType(commandType);
-            var dataCommandFactory = (IDataCommandFactory)this.injector.TryResolve(dataCommandFactoryType);
+            var dataCommandFactory = (IDataCommandFactory)this.serviceProvider.TryResolve(dataCommandFactoryType);
             if (dataCommandFactory == null)
             {
                 return () => null;

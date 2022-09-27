@@ -19,13 +19,13 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
     /// <summary>
     /// An injector base for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public abstract class DependencyInjectionInjectorBase : IInjector, IServiceProvider
+    public abstract class DependencyInjectionServiceProviderBase : IServiceProvider
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyInjectionInjectorBase"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionServiceProviderBase"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        protected DependencyInjectionInjectorBase(IServiceProvider serviceProvider)
+        protected DependencyInjectionServiceProviderBase(System.IServiceProvider serviceProvider)
         {
             this.ServiceProvider = serviceProvider;
         }
@@ -36,7 +36,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <value>
         /// The service provider.
         /// </value>
-        protected IServiceProvider ServiceProvider { get; }
+        protected System.IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -123,7 +123,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// </returns>
         public IInjectionScope CreateScope()
         {
-            return new DependencyInjectionScopedInjector(this.ServiceProvider.CreateScope());
+            return new DependencyInjectionScopedServiceProvider(this.ServiceProvider.CreateScope());
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace Kephas.Serialization.Json.Tests
         public virtual ISerializationContext GetSerializationContext(Type? rootObjectType = null, Action<ISerializationContext>? options = null)
         {
             var context = new SerializationContext(
-                    Substitute.For<IInjector>(),
+                    Substitute.For<IServiceProvider>(),
                     Substitute.For<ISerializationService>())
             {
                 RootObjectType = rootObjectType,

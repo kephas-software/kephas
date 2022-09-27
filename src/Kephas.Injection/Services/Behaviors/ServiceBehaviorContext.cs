@@ -26,11 +26,11 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TContract, TMetadata}" />
         /// class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <param name="metadata">Optional. The metadata.</param>
-        public ServiceBehaviorContext(IInjector injector, Func<TContract> serviceFactory, TMetadata metadata)
-            : base(injector)
+        public ServiceBehaviorContext(IServiceProvider serviceProvider, Func<TContract> serviceFactory, TMetadata metadata)
+            : base(serviceProvider)
         {
             this.ServiceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             this.Metadata = metadata;

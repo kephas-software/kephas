@@ -24,7 +24,7 @@ namespace Kephas.Messaging.Tests
         public void MessagingContext_parent_context()
         {
             var parentContext =
-                new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
+                new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
                     {
                         Identity = Substitute.For<IIdentity>()
                     };
@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Tests
         public void MessagingContext_parent_context_merge()
         {
             var parentContext =
-                new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
+                new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
                     {
                         Identity = Substitute.For<IIdentity>(),
                         ["hi"] = "there",

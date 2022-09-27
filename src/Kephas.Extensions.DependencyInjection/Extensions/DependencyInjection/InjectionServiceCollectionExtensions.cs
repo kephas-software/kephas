@@ -35,7 +35,6 @@ namespace Kephas.Extensions.DependencyInjection
 
             // make sure to register the service collection *BEFORE* the attributed service provider.
             ambientServices.Add(services);
-            services.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, InjectionServiceScopeFactory>());
             services.TryAddSingleton<IServiceProvider>(provider => provider);
 
             return services;

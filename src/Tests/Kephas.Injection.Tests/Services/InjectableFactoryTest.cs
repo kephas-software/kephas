@@ -29,7 +29,7 @@ public class InjectableFactoryTest
         var context = factory.Create<Context>();
 
         Assert.AreSame(ambientServices, context.AmbientServices);
-        Assert.AreSame(injector, context.Injector);
+        Assert.AreSame(injector, context.ServiceProvider);
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class InjectableFactoryTest
         var context = factory.Create<TestContext>();
 
         Assert.AreSame(ambientServices, context.AmbientServices);
-        Assert.AreSame(injector, context.Injector);
+        Assert.AreSame(injector, context.ServiceProvider);
     }
 
     [Test]
@@ -54,39 +54,39 @@ public class InjectableFactoryTest
         var context = factory.Create<TestContext>(typeof(string));
 
         Assert.AreSame(ambientServices, context.AmbientServices);
-        Assert.AreSame(injector, context.Injector);
+        Assert.AreSame(injector, context.ServiceProvider);
         Assert.AreSame(testService, context.TestService);
         Assert.AreSame(typeof(string), context.MediaType);
     }
 
-    private (IAmbientServices ambientServices, IInjector injector) GetServices(params IAppServiceInfo[] appServiceInfos)
+    private (IAmbientServices ambientServices, IServiceProvider injector) GetServices(params IAppServiceInfo[] appServiceInfos)
     {
         var ambientServices = Substitute.For<IAmbientServices>();
-        var injector = Substitute.For<IInjector>();
+        var injector = Substitute.For<IServiceProvider>();
 
         var infos = appServiceInfos.Select(i => new ContractDeclaration(i.ContractType, i));
 
         ambientServices.Injector.Returns(injector);
-        ambientServices.GetService(typeof(IInjector)).Returns(injector);
+        ambientServices.GetService(typeof(IServiceProvider)).Returns(injector);
         ambientServices[InjectionAmbientServicesExtensions.AppServiceInfosKey].Returns(infos);
 
         injector.Resolve(typeof(IAmbientServices)).Returns(ambientServices);
         injector.Resolve<IAmbientServices>().Returns(ambientServices);
-        injector.Resolve(typeof(IInjector)).Returns(injector);
-        injector.Resolve<IInjector>().Returns(injector);
+        injector.Resolve(typeof(IServiceProvider)).Returns(injector);
+        injector.Resolve<IServiceProvider>().Returns(injector);
 
         return (ambientServices, injector);
     }
 
     public class TestContext : Context
     {
-        public TestContext(IInjector injector)
-            : base(injector)
+        public TestContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 
-        public TestContext(IInjector injector, ITestService testService, Type? mediaType = null)
-            : base(injector)
+        public TestContext(IServiceProvider serviceProvider, ITestService testService, Type? mediaType = null)
+            : base(serviceProvider)
         {
             testService = testService ?? throw new ArgumentNullException(nameof(testService));
 

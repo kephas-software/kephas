@@ -18,11 +18,11 @@ namespace Kephas.Testing.Injection
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class AutofacTestInjectionExtensions
     {
-        public static AutofacInjector CreateInjector(this ContainerBuilder configuration)
+        public static AutofacServiceProvider CreateInjector(this ContainerBuilder configuration)
         {
             configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            return new AutofacInjector(configuration, null);
+            return new AutofacServiceProvider(configuration, null);
         }
     }
 }

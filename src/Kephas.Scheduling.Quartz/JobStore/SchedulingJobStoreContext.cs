@@ -25,9 +25,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// Initializes a new instance of the <see cref="SchedulingJobStoreContext"/> class.
         /// </summary>
         /// <param name="dataContextFactory">The data context factory.</param>
-        /// <param name="injector">The injector.</param>
-        public SchedulingJobStoreContext(Func<IContext, IDataContext> dataContextFactory, IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public SchedulingJobStoreContext(Func<IContext, IDataContext> dataContextFactory, IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             dataContextFactory = dataContextFactory ?? throw new System.ArgumentNullException(nameof(dataContextFactory));
 

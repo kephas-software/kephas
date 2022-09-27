@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Tests
 
     public class MessagingTestBase : InjectionTestBase
     {
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -41,12 +41,12 @@ namespace Kephas.Messaging.Tests
                 typeof(IEventHub).Assembly,               /* Kephas.Interaction */
             };
 
-            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
+            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
-        protected virtual IInjector CreateMessagingContainerMock()
+        protected virtual IServiceProvider CreateMessagingContainerMock()
         {
-            var container = Substitute.For<IInjector>();
+            var container = Substitute.For<IServiceProvider>();
 
             return container;
         }

@@ -47,7 +47,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var router = container.ResolveMany<IMessageRouter>().OfType<RedisAppMessageRouter>().SingleOrDefault();
 
             Assert.IsNotNull(router);
@@ -58,14 +58,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
@@ -96,7 +96,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var sbMaster = new StringBuilder();
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbMaster)
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, config: rt => rt.OnIsAppAssembly(this.IsNotTestAssembly)));
@@ -105,7 +105,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbSlave)
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, config: rt => rt.OnIsAppAssembly(this.IsNotTestAssembly)));
@@ -140,14 +140,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
@@ -177,14 +177,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
@@ -213,14 +213,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             }
         }
 
-        private async Task InitializeAppAsync(IInjector container)
+        private async Task InitializeAppAsync(IServiceProvider container)
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.InitializeAsync(
                 new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
         }
 
-        private async Task FinalizeAppAsync(IInjector container)
+        private async Task FinalizeAppAsync(IServiceProvider container)
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(

@@ -50,7 +50,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var router = container.ResolveMany<IMessageRouter>().OfType<PipesAppMessageRouter>().SingleOrDefault();
 
             Assert.IsNotNull(router);
@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices(),
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -72,7 +72,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
@@ -107,7 +107,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var sbMaster = new StringBuilder();
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbMaster),
                 appRuntime: new StaticAppRuntime(
@@ -121,7 +121,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .WithDebugLogManager(sbSlave)
                     .AddAppArgs(slaveArgs),
@@ -161,7 +161,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices(),
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -172,7 +172,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
@@ -206,7 +206,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
+            var masterContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices(),
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -217,7 +217,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
+            var slaveContainer = this.BuildServiceProvider(
                 this.CreateAmbientServices()
                     .AddAppArgs(slaveArgs),
                 appRuntime: new StaticAppRuntime(
@@ -250,7 +250,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task InitializeAppAsync(IInjector container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
+        private async Task InitializeAppAsync(IServiceProvider container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
         {
             var appManager = container.Resolve<IAppManager>();
             var appContext = new AppContext(
@@ -266,7 +266,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task FinalizeAppAsync(IInjector container)
+        private async Task FinalizeAppAsync(IServiceProvider container)
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(

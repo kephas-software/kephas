@@ -17,7 +17,7 @@ namespace Kephas.Scripting.Tests
         [Test]
         public void DefaultScriptProcessor_Injection_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var scriptProcessor = container.Resolve<IScriptProcessor>();
             Assert.IsInstanceOf<DefaultScriptProcessor>(scriptProcessor);
 
@@ -28,7 +28,7 @@ namespace Kephas.Scripting.Tests
         [Test]
         public async Task ExecuteAsync_Injection_success()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(TestLanguageService) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(TestLanguageService) });
             var scriptingEngine = container.Resolve<IScriptProcessor>();
 
             var script = new StringScript("dummy", "test");

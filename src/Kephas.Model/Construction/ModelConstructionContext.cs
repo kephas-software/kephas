@@ -32,19 +32,19 @@ namespace Kephas.Model.Construction
         {
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
 
-            this.Logger = parentContext.Injector.GetLogger(this.GetType());
+            this.Logger = parentContext.ServiceProvider.GetLogger(this.GetType());
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public ModelConstructionContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public ModelConstructionContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.Logger = injector.GetLogger(this.GetType());
+            this.Logger = serviceProvider.GetLogger(this.GetType());
         }
 
         /// <summary>

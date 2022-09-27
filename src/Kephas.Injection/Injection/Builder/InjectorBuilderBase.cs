@@ -75,7 +75,7 @@ namespace Kephas.Injection.Builder
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
-        public abstract IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory);
+        public abstract IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory);
 
         /// <summary>
         /// Adds the assemblies containing the composition parts.
@@ -113,7 +113,7 @@ namespace Kephas.Injection.Builder
         /// Creates the injector.
         /// </summary>
         /// <returns>The newly created injector.</returns>
-        public virtual IInjector Build()
+        public virtual IServiceProvider Build()
         {
             return this.WithStopwatch(
                 () => this.RegisterServices().CreateInjectorCore(),
@@ -143,7 +143,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected abstract IInjector CreateInjectorCore();
+        protected abstract IServiceProvider CreateInjectorCore();
 
         /// <summary>
         /// Executes the action with a stopwatch, optionally logging the elapsed time at the indicated

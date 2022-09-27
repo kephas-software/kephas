@@ -77,7 +77,7 @@ namespace Kephas.Extensions.DependencyInjection
                                         serviceType,
                                         new AppServiceInfo(
                                          serviceType,
-                                         ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider()))
+                                         provider => descriptor.ImplementationFactory(provider))
                                          { AllowMultiple = true });
                 }
                 else

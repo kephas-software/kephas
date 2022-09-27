@@ -54,16 +54,16 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="isThreadSafe">
         /// <c>true</c> if this object is thread safe when working
         /// with the internal dictionary, <c>false</c> otherwise. Default is <c>false</c>.
         /// </param>
-        public Context(IInjector injector, bool isThreadSafe = false)
+        public Context(IServiceProvider serviceProvider, bool isThreadSafe = false)
             : base(isThreadSafe)
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            this.SetInjector(injector);
+            this.SetInjector(serviceProvider);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Kephas.Services
         /// The injector.
         /// </newValue>
         [ExcludeFromSerialization]
-        public virtual IInjector Injector { get; private set; } = null!;
+        public virtual IServiceProvider ServiceProvider { get; private set; } = null!;
 
         /// <summary>
         /// Gets or sets the authenticated user.
@@ -148,12 +148,12 @@ namespace Kephas.Services
         /// <summary>
         /// Sets the injector.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        protected virtual void SetInjector(IInjector injector)
+        /// <param name="serviceProvider">The injector.</param>
+        protected virtual void SetInjector(IServiceProvider serviceProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.Injector = injector;
+            this.ServiceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -167,15 +167,15 @@ namespace Kephas.Services
             this.DisposeResources();
         }
 
-        private static IInjector GetParentInjector(IContext parentContext)
+        private static IServiceProvider GetParentInjector(IContext parentContext)
         {
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
-            if (parentContext.Injector == null)
+            if (parentContext.ServiceProvider == null)
             {
-                throw new ArgumentNullException(nameof(parentContext.Injector));
+                throw new ArgumentNullException(nameof(parentContext.ServiceProvider));
             }
 
-            return parentContext.Injector;
+            return parentContext.ServiceProvider;
         }
     }
 }

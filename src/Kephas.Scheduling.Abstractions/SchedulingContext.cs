@@ -33,9 +33,9 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulingContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public SchedulingContext(IInjector injector)
-            : base(injector, isThreadSafe: false)
+        /// <param name="serviceProvider">The injector.</param>
+        public SchedulingContext(IServiceProvider serviceProvider)
+            : base(serviceProvider, isThreadSafe: false)
         {
         }
 

@@ -26,7 +26,7 @@ namespace Kephas.Injection.Builder
         /// Creates the injector.
         /// </summary>
         /// <returns>The newly created injector.</returns>
-        IInjector Build();
+        IServiceProvider Build();
 
         /// <summary>
         /// Define a rule that will apply to the specified type.
@@ -48,7 +48,7 @@ namespace Kephas.Injection.Builder
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
-        IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory);
+        IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory);
 
         /// <summary>
         /// Defines a registration for the specified type and its instance factory.
@@ -56,7 +56,7 @@ namespace Kephas.Injection.Builder
         /// <typeparam name="T">The service type.</typeparam>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
-        IRegistrationBuilder ForFactory<T>(Func<IInjector, T> factory)
+        IRegistrationBuilder ForFactory<T>(Func<IServiceProvider, T> factory)
             => this.ForFactory(typeof(T), injector => factory(injector)!);
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Kephas.Injection.Builder
                 Type type => this
                     .ForType(type)
                     .SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(contractType, ctorInfos)),
-                Func<IInjector, object> factory => this
+                Func<IServiceProvider, object> factory => this
                     .ForFactory(contractType, factory),
                 { } instance => this
                     .ForInstance(instance),

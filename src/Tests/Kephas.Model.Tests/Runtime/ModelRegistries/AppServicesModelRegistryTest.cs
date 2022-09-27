@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class AppServicesModelRegistryTest : InjectionTestBase
     {
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -44,13 +44,13 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             {
                 typeof(AppServicesModelRegistry).Assembly, /* Kephas.Model */
             };
-            return base.CreateInjector(ambientServices, assemblyList, parts, config);
+            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
         public void AppServicesRegistry_Injection_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesModelRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }

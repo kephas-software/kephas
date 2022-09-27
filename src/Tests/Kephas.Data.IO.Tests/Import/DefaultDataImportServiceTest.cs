@@ -40,7 +40,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IServiceProvider>()));
 
             var changedTargetEntities = new List<IEntityEntry>();
 
@@ -76,7 +76,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IServiceProvider>()));
 
             var changedTargetEntities = new List<IEntityEntry>();
 
@@ -112,7 +112,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IServiceProvider>()));
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext();

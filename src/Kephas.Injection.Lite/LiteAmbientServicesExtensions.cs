@@ -28,7 +28,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IInjector BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? builderOptions = null)
+        public static IServiceProvider BuildWithLite(this IAmbientServices ambientServices, Action<LiteInjectorBuilder>? builderOptions = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 

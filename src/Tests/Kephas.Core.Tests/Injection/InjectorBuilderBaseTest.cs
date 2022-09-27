@@ -61,11 +61,11 @@ namespace Kephas.Core.Tests.Injection
 
             public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
-            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory) => Substitute.For<IRegistrationBuilder>();
 
-            protected override IInjector CreateInjectorCore()
+            protected override IServiceProvider CreateInjectorCore()
             {
-                return Substitute.For<IInjector>();
+                return Substitute.For<IServiceProvider>();
             }
 
             private static IAmbientServices CreateAmbientServices() =>
@@ -101,9 +101,9 @@ namespace Kephas.Core.Tests.Injection
             /// <param name="type">The registered service type.</param>
             /// <param name="factory">The service factory.</param>
             /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
-            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory) => Substitute.For<IRegistrationBuilder>();
 
-            protected override IInjector CreateInjectorCore() => Substitute.For<IInjector>();
+            protected override IServiceProvider CreateInjectorCore() => Substitute.For<IServiceProvider>();
 
             private TestTypeBuilder CreateBuilder(Type serviceType) => new (serviceType);
 

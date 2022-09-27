@@ -21,9 +21,9 @@ public class EncryptionContext : Context, IEncryptionContext
     /// <summary>
     /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
     /// </summary>
-    /// <param name="injector">The injector.</param>
-    public EncryptionContext(IInjector injector)
-        : base(injector)
+    /// <param name="serviceProvider">The injector.</param>
+    public EncryptionContext(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
     }
 

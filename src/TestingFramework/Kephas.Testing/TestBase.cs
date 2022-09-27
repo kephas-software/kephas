@@ -151,7 +151,7 @@ namespace Kephas.Testing
         {
             var serializationService = Substitute.For<ISerializationService, IInjectableFactoryAware>(/*Behavior.Strict*/);
             var factoryMock = this.CreateInjectableFactoryMock(
-                () => new SerializationContext(Substitute.For<IInjector>(), serializationService));
+                () => new SerializationContext(Substitute.For<IServiceProvider>(), serializationService));
             ((IInjectableFactoryAware)serializationService).InjectableFactory.Returns(factoryMock);
             return serializationService;
         }
@@ -167,7 +167,7 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var factoryMock = this.CreateInjectableFactoryMock(() => new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>()));
+            var factoryMock = this.CreateInjectableFactoryMock(() => new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>()));
             var serializationService = new DefaultSerializationService(
                 factoryMock,
                 new List<IExportFactory<ISerializer, SerializerMetadata>>

@@ -132,7 +132,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<IInjector, object>? InstanceFactory => this.InstancingStrategy as Func<IInjector, object>;
+        Func<IServiceProvider, object>? InstanceFactory => this.InstancingStrategy as Func<IServiceProvider, object>;
 
         /// <summary>
         /// Indicates whether the service information is only a contract definition (<c>true</c>)

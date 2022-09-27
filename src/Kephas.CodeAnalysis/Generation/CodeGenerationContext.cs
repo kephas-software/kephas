@@ -23,14 +23,14 @@ namespace Kephas.CodeAnalysis.Generation
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeGenerationContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="codeGenerator">The code generator.</param>
         /// <param name="codeFormatter">Optional. The code formatter.</param>
         public CodeGenerationContext(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             ICodeGenerator codeGenerator,
             ICodeFormatter? codeFormatter = null)
-            : base(injector)
+            : base(serviceProvider)
         {
             codeGenerator = codeGenerator ?? throw new ArgumentNullException(nameof(codeGenerator));
 

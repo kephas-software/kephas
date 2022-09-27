@@ -30,7 +30,7 @@ namespace Kephas
         /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
         /// <param name="logger">Optional. The logger.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IInjector BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacInjectorBuilder>? builderOptions = null, bool preserveRegistrationOrder = true, ILogger? logger = null)
+        public static IServiceProvider BuildWithAutofac(this IAmbientServices ambientServices, Action<AutofacInjectorBuilder>? builderOptions = null, bool preserveRegistrationOrder = true, ILogger? logger = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 

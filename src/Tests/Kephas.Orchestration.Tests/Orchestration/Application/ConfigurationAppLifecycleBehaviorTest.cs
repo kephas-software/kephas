@@ -110,7 +110,7 @@ namespace Kephas.Tests.Orchestration.Application
                 .Returns(ci =>
                 {
                     var ctx = new DispatchingContext(
-                        Substitute.For<IInjector>(),
+                        Substitute.For<IServiceProvider>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         Substitute.For<IMessageBroker>(),
                         appRuntime,

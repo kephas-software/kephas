@@ -190,7 +190,7 @@ namespace Kephas
 
             return ambientServices.AddService(
                 typeof(TContract),
-                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
                 b =>
                 {
                     b.Singleton();
@@ -219,7 +219,7 @@ namespace Kephas
 
             return ambientServices.ReplaceService(
                 typeof(TContract),
-                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
                 b =>
                 {
                     b.Singleton();
@@ -239,7 +239,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
-            Func<IInjector, TContract> serviceFactory,
+            Func<IServiceProvider, TContract> serviceFactory,
             Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
@@ -248,7 +248,7 @@ namespace Kephas
 
             return ambientServices.AddService(
                 typeof(TContract),
-                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
                 b =>
                 {
                     b.Singleton();
@@ -268,7 +268,7 @@ namespace Kephas
         /// </returns>
         public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
-            Func<IInjector, TContract> serviceFactory,
+            Func<IServiceProvider, TContract> serviceFactory,
             Action<IRegistrationBuilder>? builder = null)
             where TContract : class
         {
@@ -277,7 +277,7 @@ namespace Kephas
 
             return ambientServices.ReplaceService(
                 typeof(TContract),
-                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
                 b =>
                 {
                     b.Singleton();
@@ -307,7 +307,7 @@ namespace Kephas
 
             return ambientServices.AddService(
                 contractType,
-                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
                 b =>
                 {
                     b.Singleton();
@@ -337,7 +337,7 @@ namespace Kephas
 
             return ambientServices.ReplaceService(
                 contractType,
-                (Func<IInjector, object>)(_ => (object)serviceFactory()),
+                (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
                 b =>
                 {
                     b.Singleton();
@@ -358,7 +358,7 @@ namespace Kephas
         public static IAmbientServices Add(
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
-            Func<IInjector, object> serviceFactory,
+            Func<IServiceProvider, object> serviceFactory,
             Action<IRegistrationBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -367,7 +367,7 @@ namespace Kephas
 
             return ambientServices.AddService(
                 contractType,
-                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
                 b =>
                 {
                     b.Singleton();
@@ -388,7 +388,7 @@ namespace Kephas
         public static IAmbientServices Replace(
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
-            Func<IInjector, object> serviceFactory,
+            Func<IServiceProvider, object> serviceFactory,
             Action<IRegistrationBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -397,7 +397,7 @@ namespace Kephas
 
             return ambientServices.ReplaceService(
                 contractType,
-                (Func<IInjector, object>)(injector => (object)serviceFactory(injector)),
+                (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
                 b =>
                 {
                     b.Singleton();
@@ -640,7 +640,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IInjector BuildWith<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? builderOptions = null)
+        public static IServiceProvider BuildWith<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? builderOptions = null)
             where TInjectorBuilder : IInjectorBuilder
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));

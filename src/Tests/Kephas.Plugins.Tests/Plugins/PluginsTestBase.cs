@@ -46,7 +46,7 @@ namespace Kephas.Tests.Plugins
             return new TestPluginManager(
                 context,
                 appRuntime,
-                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IInjector>())),
+                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IServiceProvider>())),
                 this.CreateEventHubMock(),
                 pluginsDataStore,
                 onInstall: onInstall,

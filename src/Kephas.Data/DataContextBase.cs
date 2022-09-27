@@ -45,26 +45,26 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="dataCommandProvider">Optional. The data command provider. If not
         ///                                   provided, the <see cref="DefaultDataCommandProvider"/>
         ///                                   will be used.</param>
         /// <param name="dataBehaviorProvider">Optional. The data behavior provider.</param>
         /// <param name="localCache">Optional. The local cache. If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             IDataCommandProvider? dataCommandProvider = null,
             IDataBehaviorProvider? dataBehaviorProvider = null,
             IDataContextCache? localCache = null)
-            : base(injector)
+            : base(serviceProvider)
         {
             this.dataBehaviorProvider = dataBehaviorProvider;
-            this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(injector);
+            this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(serviceProvider);
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
-            this.Logger = injector.GetLogger(this.GetType());
-            this.typeRegistry = injector.Resolve<IRuntimeTypeRegistry>();
+            this.Logger = serviceProvider.GetLogger(this.GetType());
+            this.typeRegistry = serviceProvider.Resolve<IRuntimeTypeRegistry>();
         }
 
         /// <summary>

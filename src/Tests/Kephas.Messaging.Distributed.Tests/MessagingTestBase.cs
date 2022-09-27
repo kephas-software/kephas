@@ -30,7 +30,7 @@ namespace Kephas.Messaging.Tests
 
     public class MessagingTestBase : ApplicationTestBase
     {
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -48,12 +48,12 @@ namespace Kephas.Messaging.Tests
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
 
-            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
+            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
-        protected virtual IInjector CreateMessagingContainerMock()
+        protected virtual IServiceProvider CreateMessagingContainerMock()
         {
-            var container = Substitute.For<IInjector>();
+            var container = Substitute.For<IServiceProvider>();
 
             Func<object[], DispatchingContext> ctxCreator = args =>
                                     new DispatchingContext(

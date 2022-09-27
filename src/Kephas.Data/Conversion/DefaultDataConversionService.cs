@@ -58,20 +58,20 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
         /// <param name="targetResolverFactories">The target resolver factories.</param>
         public DefaultDataConversionService(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories,
             ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
-            : base(injector)
+            : base(serviceProvider)
         {
-            injector = injector ?? throw new ArgumentNullException(nameof(injector));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             converterExportFactories = converterExportFactories ?? throw new System.ArgumentNullException(nameof(converterExportFactories));
             targetResolverFactories = targetResolverFactories ?? throw new System.ArgumentNullException(nameof(targetResolverFactories));
 
-            this.Injector = injector;
+            this.ServiceProvider = serviceProvider;
             this.converterExportFactories = converterExportFactories;
             this.targetResolverFactories = targetResolverFactories;
         }
@@ -82,7 +82,7 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The injector.
         /// </value>
-        public IInjector Injector { get; }
+        public IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Converts the source object to the target object asynchronously.

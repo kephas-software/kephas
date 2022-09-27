@@ -52,7 +52,7 @@ namespace Kephas.Injection.Builder
         /// <value>
         /// The injector.
         /// </value>
-        IInjector IContext.Injector
+        IServiceProvider IContext.ServiceProvider
             => throw new ServiceException(Strings.ServiceProviderIsBeingBuilt);
 
         /// <summary>

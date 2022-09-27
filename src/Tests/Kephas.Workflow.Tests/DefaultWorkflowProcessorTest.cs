@@ -30,7 +30,7 @@ namespace Kephas.Workflow.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector(
+            var container = this.BuildServiceProvider(
                 typeof(IWorkflowProcessor).Assembly,
                 typeof(DefaultWorkflowProcessor).Assembly);
             var workflowProcessor = container.Resolve<IWorkflowProcessor>();
@@ -40,7 +40,7 @@ namespace Kephas.Workflow.Tests
         [Test]
         public async Task ExecuteAsync_basic_flow()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new ActivityContext(Substitute.For<IInjector>(), Substitute.For<IWorkflowProcessor>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ActivityContext(Substitute.For<IServiceProvider>(), Substitute.For<IWorkflowProcessor>()));
             var processor = new DefaultWorkflowProcessor(ctxFactory, new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>(), new RuntimeTypeRegistry());
 
             var activityInfo = Substitute.For<IActivityInfo>();

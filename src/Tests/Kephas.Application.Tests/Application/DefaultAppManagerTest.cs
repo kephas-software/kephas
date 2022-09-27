@@ -740,9 +740,9 @@ namespace Kephas.Tests.Application
             return featureManager;
         }
 
-        private IInjector GetInjector()
+        private IServiceProvider GetInjector()
         {
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             return injector;
         }
 

@@ -219,7 +219,7 @@ namespace Kephas.Data.Tests.InMemory
         }
 
         private InMemoryDataContext CreateInMemoryDataContext(
-            IInjector injector = null,
+            IServiceProvider serviceProvider = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             ISerializationService serializationService = null,
@@ -227,7 +227,7 @@ namespace Kephas.Data.Tests.InMemory
             IRuntimeTypeRegistry typeRegistry = null)
         {
             return new InMemoryDataContext(
-                injector ?? this.CreateInjector(typeRegistry ?? new RuntimeTypeRegistry()),
+                serviceProvider ?? this.CreateInjector(typeRegistry ?? new RuntimeTypeRegistry()),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
                 dataBehaviorProvider ?? Substitute.For<IDataBehaviorProvider>(),
                 serializationService ?? (serializer == null ? this.CreateSerializationServiceMock() : this.CreateSerializationServiceMock<JsonMediaType>(serializer)));
@@ -270,9 +270,9 @@ namespace Kephas.Data.Tests.InMemory
             return activator;
         }
 
-        private IInjector CreateInjector(IRuntimeTypeRegistry typeRegistry)
+        private IServiceProvider CreateInjector(IRuntimeTypeRegistry typeRegistry)
         {
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IRuntimeTypeRegistry>().Returns(typeRegistry);
             return injector;
         }

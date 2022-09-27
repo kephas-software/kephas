@@ -48,14 +48,14 @@ namespace Kephas.Testing.Model
             return registry;
         }
 
-        public IInjector CreateInjectorForModel(params Type[] elements)
+        public IServiceProvider CreateInjectorForModel(params Type[] elements)
         {
             return this.CreateInjectorForModel(ambientServices: null, elements: elements);
         }
 
-        public IInjector CreateInjectorForModel(IAmbientServices? ambientServices, params Type[] elements)
+        public IServiceProvider CreateInjectorForModel(IAmbientServices? ambientServices, params Type[] elements)
         {
-            var container = this.CreateInjector(
+            var container = this.BuildServiceProvider(
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).Assembly },
                 config: b => b.ForFactory(_ => this.GetModelRegistry(elements)).Singleton().AllowMultiple());
@@ -63,14 +63,14 @@ namespace Kephas.Testing.Model
             return container;
         }
 
-        public IInjector CreateInjectorForModel(Type[] parts, Type[] elements)
+        public IServiceProvider CreateInjectorForModel(Type[] parts, Type[] elements)
         {
             return this.CreateInjectorForModel(ambientServices: null, parts: parts, elements: elements);
         }
 
-        public IInjector CreateInjectorForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
+        public IServiceProvider CreateInjectorForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
         {
-            var container = this.CreateInjector(
+            var container = this.BuildServiceProvider(
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).Assembly },
                 parts: parts,

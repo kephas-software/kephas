@@ -65,9 +65,9 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// The new container.
         /// </returns>
-        public IInjector CreateInjector(params Assembly[] assemblies)
+        public IServiceProvider BuildServiceProvider(params Assembly[] assemblies)
         {
-            return this.CreateInjector(assemblies: (IEnumerable<Assembly>)assemblies);
+            return this.BuildServiceProvider(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// The new container.
         /// </returns>
-        public virtual IInjector CreateInjector(
+        public virtual IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -105,18 +105,18 @@ namespace Kephas.Testing.Injection
             return container;
         }
 
-        public IInjector CreateInjectorWithBuilder(Action<LiteInjectorBuilder>? config = null)
+        public IServiceProvider BuildServiceProviderWith(Action<LiteInjectorBuilder>? config = null)
         {
             var builder = this.WithInjectorBuilder()
-                .WithAssemblies(typeof(IInjector).Assembly);
+                .WithAssemblies(typeof(IServiceProvider).Assembly);
             config?.Invoke(builder);
             return builder.Build();
         }
 
-        public IInjector CreateInjectorWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        public IServiceProvider BuildServiceProviderWith(IAmbientServices ambientServices, params Type[] types)
         {
             return this.WithInjectorBuilder(ambientServices)
-                .WithAssemblies(typeof(IInjector).Assembly)
+                .WithAssemblies(typeof(IServiceProvider).Assembly)
                 .WithParts(types)
                 .Build();
         }
@@ -132,7 +132,7 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IInjector).Assembly,              /* Kephas.Injection */
+                           typeof(IServiceProvider).Assembly,              /* Kephas.Injection */
                            typeof(IEventHub).Assembly,              /* Kephas.Interaction */
                            typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
                            typeof(AmbientServices).Assembly,        /* Kephas.Core*/

@@ -41,7 +41,7 @@ namespace Kephas.Core.Endpoints.Tests
                         new OperationResult<bool>(success)
                         .Complete(operationState: success ? OperationState.Completed : OperationState.Warning));
                 });
-            var container = Substitute.For<IInjector>();
+            var container = Substitute.For<IServiceProvider>();
             container.Resolve(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });
@@ -69,7 +69,7 @@ namespace Kephas.Core.Endpoints.Tests
                         new OperationResult<bool>(success)
                             .Complete(operationState: success ? OperationState.Completed : OperationState.Warning));
                 });
-            var container = Substitute.For<IInjector>();
+            var container = Substitute.For<IServiceProvider>();
             container.Resolve(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });

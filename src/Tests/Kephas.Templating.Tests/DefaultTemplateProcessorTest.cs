@@ -18,7 +18,7 @@ namespace Kephas.Templating.Tests
         [Test]
         public void DefaultTemplateProcessor_Injection_success()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var templateProcessor = container.Resolve<ITemplateProcessor>();
             Assert.IsInstanceOf<DefaultTemplateProcessor>(templateProcessor);
 
@@ -29,7 +29,7 @@ namespace Kephas.Templating.Tests
         [Test]
         public async Task ProcessAsync_Injection_success()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(TestTemplatingEngine) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(TestTemplatingEngine) });
             var templateProcessor = container.Resolve<ITemplateProcessor>();
 
             var template = new StringTemplate("dummy", "test", "test-template");
@@ -41,7 +41,7 @@ namespace Kephas.Templating.Tests
         [Test]
         public async Task ProcessAsync_Injection_success_with_writer()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(TestTemplatingEngine) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(TestTemplatingEngine) });
             var templateProcessor = container.Resolve<ITemplateProcessor>();
             using var writer = new StringWriter();
 
@@ -55,7 +55,7 @@ namespace Kephas.Templating.Tests
         [Test]
         public async Task ProcessAsync_Injection_failure_missing_handler()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var templateProcessor = container.Resolve<ITemplateProcessor>();
 
             var template = new StringBuilderTemplate(new StringBuilder("dummy"), "test", "test-template");

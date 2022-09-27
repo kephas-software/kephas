@@ -74,7 +74,7 @@ namespace Kephas.Injection.Lite.Builder
                         IsExternallyOwned = this.externallyOwned,
                         Metadata = this.metadata,
                     };
-                case Func<IInjector?, object> factory:
+                case Func<IServiceProvider?, object> factory:
                     return new ServiceInfo(this.serviceRegistry, this.contractType, factory, this.lifetime != AppServiceLifetime.Transient)
                     {
                         AllowMultiple = this.allowMultiple,
@@ -241,7 +241,7 @@ namespace Kephas.Injection.Lite.Builder
                                 implementationType,
                                 this.contractType),
                             nameof(implementationType)),
-                Func<IInjector, object> factory =>
+                Func<IServiceProvider, object> factory =>
                     null,
                 var instance =>
                     this.MatchesContractType(instance)

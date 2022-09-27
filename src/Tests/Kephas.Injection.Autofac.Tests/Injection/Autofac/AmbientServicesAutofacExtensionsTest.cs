@@ -31,7 +31,7 @@ namespace Kephas.Tests.Injection.Autofac
                 .BuildWithAutofac();
 
             var injector = ambientServices.Injector;
-            Assert.IsInstanceOf<AutofacInjector>(injector);
+            Assert.IsInstanceOf<AutofacServiceProvider>(injector);
         }
 
         [Test]

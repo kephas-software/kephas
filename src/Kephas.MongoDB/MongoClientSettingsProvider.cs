@@ -20,15 +20,15 @@ using Kephas.Services;
 [OverridePriority(Priority.Low)]
 public class MongoClientSettingsProvider : IMongoClientSettingsProvider
 {
-    private readonly IInjector injector;
+    private readonly IServiceProvider serviceProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MongoClientSettingsProvider"/> class.
     /// </summary>
-    /// <param name="injector">The injector.</param>
-    public MongoClientSettingsProvider(IInjector injector)
+    /// <param name="serviceProvider">The injector.</param>
+    public MongoClientSettingsProvider(IServiceProvider serviceProvider)
     {
-        this.injector = injector ?? throw new ArgumentNullException(nameof(injector));
+        this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class MongoClientSettingsProvider : IMongoClientSettingsProvider
         settings.ClusterConfigurator = b =>
         {
             b.ConfigureConnectionPool(s => s.With());
-            b.Subscribe(new MongoLogEventSubscriber(this.injector));
+            b.Subscribe(new MongoLogEventSubscriber(this.serviceProvider));
         };
         settings.SslSettings = new SslSettings
         {

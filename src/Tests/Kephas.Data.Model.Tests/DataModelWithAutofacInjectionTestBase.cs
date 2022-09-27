@@ -31,7 +31,7 @@ namespace Kephas.Data.Model.Tests
             return registry;
         }
 
-        public IInjector CreateInjectorForModel(params Type[] elements)
+        public IServiceProvider CreateInjectorForModel(params Type[] elements)
         {
             var container = this.CreateInjector(
                 assemblies: new[] { typeof(IModelSpace).Assembly, typeof(IEntityType).Assembly },

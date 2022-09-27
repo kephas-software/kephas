@@ -47,10 +47,10 @@ internal class MongoLogEventSubscriber : IEventSubscriber
     /// <summary>
     /// Initializes a new instance of the <see cref="MongoLogEventSubscriber" /> class.
     /// </summary>
-    /// <param name="injector">The injector.</param>
-    public MongoLogEventSubscriber(IInjector injector)
+    /// <param name="serviceProvider">The injector.</param>
+    public MongoLogEventSubscriber(IServiceProvider serviceProvider)
     {
-        this.logger = injector.Resolve<ILogManager>().GetLogger<MongoLogEventSubscriber>();
+        this.logger = serviceProvider.Resolve<ILogManager>().GetLogger<MongoLogEventSubscriber>();
         this.subscriber = new ReflectionEventSubscriber(this, nameof(this.Handle), BindingFlags.Instance | BindingFlags.NonPublic);
     }
 

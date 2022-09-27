@@ -25,17 +25,17 @@ namespace Kephas.Tests.Injection.Autofac
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="AutofacInjector"/>.
+    /// Tests for <see cref="AutofacServiceProvider"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacInjectorTest : AutofacInjectionTestBase
     {
-        public AutofacInjector CreateInjector(params Type[] types)
+        public AutofacServiceProvider CreateInjector(params Type[] types)
         {
             var builder = this.WithEmptyConfiguration();
             builder.RegisterTypes(types);
-            return new AutofacInjector(builder, null);
+            return new AutofacServiceProvider(builder, null);
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace Kephas.Tests.Injection.Autofac
             var container = this.CreateInjector(
                 config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
 
-            var rawFilters = container.ToServiceProvider().GetService(typeof(IEnumerable<IFilter>));
+            var rawFilters = container.GetService(typeof(IEnumerable<IFilter>));
             var filters = rawFilters as IEnumerable<IFilter>;
 
             Assert.AreEqual(3, filters.Count());
@@ -273,11 +273,11 @@ namespace Kephas.Tests.Injection.Autofac
 
         public class ScopeExportedClass
         {
-            public IInjector Injector { get; }
+            public IServiceProvider ServiceProvider { get; }
 
-            public ScopeExportedClass(IInjector injector)
+            public ScopeExportedClass(IServiceProvider serviceProvider)
             {
-                this.Injector = injector;
+                this.ServiceProvider = serviceProvider;
             }
         }
 

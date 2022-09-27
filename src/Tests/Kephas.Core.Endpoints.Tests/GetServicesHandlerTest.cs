@@ -39,7 +39,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_missing_contracttype()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.ProcessAsync(
@@ -51,7 +51,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_single()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
 
             var result = await handler.ProcessAsync(
@@ -66,7 +66,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_multiple()
         {
-            var container = this.CreateInjector(
+            var container = this.BuildServiceProvider(
                 assemblies: new[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesHandler).Assembly, typeof(PingMessageHandler).Assembly },
                 parts: new[] { typeof(TestGetServicesHandler) });
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
@@ -85,7 +85,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_multiple_with_override()
         {
-            var container = this.CreateInjector(
+            var container = this.BuildServiceProvider(
                 assemblies: new Assembly[] { typeof(IMessageProcessor).Assembly, typeof(GetServicesMessage).Assembly },
                 parts: new Type[] { typeof(TestGetServicesHandler) });
             var handler = new GetServicesHandler(container.Resolve<ITypeResolver>(), container);
@@ -104,8 +104,8 @@ namespace Kephas.Core.Endpoints.Tests
         [Override]
         public class TestGetServicesHandler : GetServicesHandler
         {
-            public TestGetServicesHandler(ITypeResolver typeResolver, IInjector injector)
-                : base(typeResolver, injector)
+            public TestGetServicesHandler(ITypeResolver typeResolver, IServiceProvider serviceProvider)
+                : base(typeResolver, serviceProvider)
             {
             }
         }

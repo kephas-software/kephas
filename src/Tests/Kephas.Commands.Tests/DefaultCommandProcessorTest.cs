@@ -26,7 +26,7 @@ namespace Kephas.Commands.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var processor = container.Resolve<ICommandProcessor>();
 
             Assert.IsInstanceOf<DefaultCommandProcessor>(processor);

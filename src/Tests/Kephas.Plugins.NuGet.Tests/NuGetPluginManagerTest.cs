@@ -45,7 +45,7 @@ namespace Kephas.Plugins.NuGet.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var manager = container.Resolve<IPluginManager>();
 
             Assert.IsInstanceOf<NuGetPluginManager>(manager);
@@ -60,7 +60,7 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.CreateInjector(
+                var container = this.BuildServiceProvider(
                     config: b => b.ForFactory<ISettingsProvider>(
                         _ => new PluginsSettingsProvider("tags:kephas"))
                         .Singleton()
@@ -95,7 +95,7 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.CreateInjector(
+                var container = this.BuildServiceProvider(
                     config: b => b.ForFactory<ISettingsProvider>(
                         _ => new PluginsSettingsProvider("tags:kismsspplugin"))
                         .Singleton()

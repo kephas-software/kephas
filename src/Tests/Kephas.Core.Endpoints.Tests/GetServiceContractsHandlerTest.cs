@@ -33,7 +33,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_all()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var handler = new GetServiceContractsHandler(container.Resolve<IAmbientServices>());
 
             var result = await handler.ProcessAsync(
@@ -53,7 +53,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync_filter_asopengeneric()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var handler = new GetServiceContractsHandler(container.Resolve<IAmbientServices>());
 
             var result = await handler.ProcessAsync(

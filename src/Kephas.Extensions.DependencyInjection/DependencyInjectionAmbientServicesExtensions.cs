@@ -31,7 +31,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="builderOptions">The injector builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static IInjector BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? builderOptions = null)
+        public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? builderOptions = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 

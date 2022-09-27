@@ -21,9 +21,9 @@ namespace Kephas.Data.Model.Associations
         /// <summary>
         /// Initializes a new instance of the <see cref="AssociationContext"/> class.
         /// </summary>
-        /// <param name="injector">The DI injector.</param>
-        public AssociationContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The DI injector.</param>
+        public AssociationContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 

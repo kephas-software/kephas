@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionContainer.cs" company="Kephas Software SRL">
+// <copyright file="IServiceProviderContainer.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,31 +8,20 @@
 namespace Kephas.Injection.Autofac
 {
     using global::Autofac;
-    using Kephas.Injection;
 
     /// <summary>
-    /// Interface for injection container.
+    /// Interface for a container or <see cref="IServiceProvider"/>.
     /// </summary>
-    internal interface IInjectionContainer : IInjector
+    internal interface IServiceProviderContainer : IServiceProvider
     {
         /// <summary>
-        /// Gets the injector wrapper for the provided injector.
+        /// Gets the <see cref="IServiceProvider"/> adapter for the provided injector.
         /// </summary>
         /// <param name="scope">The lifetime scope.</param>
         /// <returns>
         /// The injector.
         /// </returns>
-        IInjector GetInjector(ILifetimeScope scope);
-
-        /// <summary>
-        /// Tries to get the injector wrapper for the provided injector.
-        /// </summary>
-        /// <param name="context">The inner container.</param>
-        /// <param name="createNewIfMissing">True to create new if missing.</param>
-        /// <returns>
-        /// The injector wrapper.
-        /// </returns>
-        IInjector? TryGetInjector(IComponentContext context, bool createNewIfMissing);
+        IServiceProvider GetServiceProvider(ILifetimeScope scope);
 
         /// <summary>
         /// Cleanups the given injector.

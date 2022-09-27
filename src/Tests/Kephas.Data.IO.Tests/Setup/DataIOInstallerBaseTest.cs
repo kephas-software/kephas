@@ -30,7 +30,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void CreateDataSource_missing_file()
         {
-            var contextFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
             var handler = new DataInstaller(contextFactory);
             Assert.Throws<IOException>(() => handler.CreateDataSource("dummy file which does not exist"));
         }

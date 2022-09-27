@@ -39,7 +39,7 @@ namespace Kephas.Injection.Autofac.Builder
         public AutofacFactoryRegistrationBuilder(
             ContainerBuilder containerBuilder,
             Type type,
-            Func<IInjector, object> factory,
+            Func<IServiceProvider, object> factory,
             bool preserveRegistrationOrder)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
@@ -47,7 +47,7 @@ namespace Kephas.Injection.Autofac.Builder
             this.containerBuilder = containerBuilder ?? throw new ArgumentNullException(nameof(containerBuilder));
             this.registrationBuilder = RegistrationBuilder.ForDelegate(
                 type,
-                (context, _) => factory(context.Resolve<IInjector>()));
+                (context, _) => factory(context.Resolve<IServiceProvider>()));
             this.registrationBuilder.As(type);
             this.preserveRegistrationOrder = preserveRegistrationOrder;
         }

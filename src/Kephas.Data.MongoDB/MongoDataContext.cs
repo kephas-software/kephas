@@ -41,7 +41,7 @@ namespace Kephas.Data.MongoDB
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="typeRegistry">The type registry.</param>
@@ -49,14 +49,14 @@ namespace Kephas.Data.MongoDB
         /// <param name="namingStrategy">The naming strategy.</param>
         /// <param name="mongoClientSettingsProvider">The MongoDB client settings provider.</param>
         public MongoDataContext(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             IDataCommandProvider dataCommandProvider,
             IDataBehaviorProvider dataBehaviorProvider,
             IRuntimeTypeRegistry typeRegistry,
             IMongoClientProvider clientProvider,
             IMongoNamingStrategy namingStrategy,
             IMongoClientSettingsProvider mongoClientSettingsProvider)
-            : base(injector, dataCommandProvider, dataBehaviorProvider)
+            : base(serviceProvider, dataCommandProvider, dataBehaviorProvider)
         {
             this.typeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
             this.clientProvider = clientProvider ?? throw new ArgumentNullException(nameof(clientProvider));
@@ -124,7 +124,7 @@ namespace Kephas.Data.MongoDB
                 throw new MongoDataException(Strings.Initialize_DatabaseNameEmpty_Exception);
             }
 
-            this.Client = this.clientProvider.GetMongoClient(new MongoContext(this.Injector) { ConnectionString = config.ConnectionString });
+            this.Client = this.clientProvider.GetMongoClient(new MongoContext(this.ServiceProvider) { ConnectionString = config.ConnectionString });
             this.Database = this.Client.GetDatabase(databaseName);
         }
     }

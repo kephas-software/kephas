@@ -40,10 +40,10 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
     [TestFixture]
     public class AutofacDefaultMessageBrokerTest : AutofacMessagingTestBase
     {
-        public async Task<IMessageBroker> GetMessageBrokerAsync(IInjector injector)
+        public async Task<IMessageBroker> GetMessageBrokerAsync(IServiceProvider serviceProvider)
         {
-            var messageBroker = injector.Resolve<IMessageBroker>();
-            await ServiceHelper.InitializeAsync(messageBroker, new Context(injector));
+            var messageBroker = serviceProvider.Resolve<IMessageBroker>();
+            await ServiceHelper.InitializeAsync(messageBroker, new Context(serviceProvider));
 
             return messageBroker;
         }

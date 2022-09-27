@@ -42,17 +42,17 @@ public class RedisDataContext : DataContextBase
     /// Initializes a new instance of the <see cref="RedisDataContext"/> class.
     /// </summary>
     /// <param name="connectionProvider">The connection provider.</param>
-    /// <param name="injector">The injector.</param>
+    /// <param name="serviceProvider">The injector.</param>
     /// <param name="dataCommandProvider">The data command provider.</param>
     /// <param name="serializationService">The serialization service.</param>
     /// <param name="dbConfiguration">The Redis database settings.</param>
     public RedisDataContext(
         IConnectionProvider connectionProvider,
-        IInjector injector,
+        IServiceProvider serviceProvider,
         IDataCommandProvider dataCommandProvider,
         ISerializationService serializationService,
         IConfiguration<RedisDbSettings> dbConfiguration)
-        : base(injector, dataCommandProvider)
+        : base(serviceProvider, dataCommandProvider)
     {
         this.connectionProvider = connectionProvider ?? throw new ArgumentNullException(nameof(connectionProvider));
         this.serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));

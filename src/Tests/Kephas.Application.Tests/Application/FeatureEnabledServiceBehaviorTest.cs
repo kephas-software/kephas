@@ -104,7 +104,7 @@ namespace Kephas.Tests.Application
         private ServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata> GetServiceBehaviorContext(Lazy<IFeatureManager, FeatureManagerMetadata> exportFactory)
         {
             var context = new ServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata>(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 () => exportFactory.Value,
                 exportFactory.Metadata);
             return context;

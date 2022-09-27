@@ -75,12 +75,12 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <param name="type">The registered service type.</param>
         /// <param name="factory">The service factory.</param>
         /// <returns>A <see cref="IRegistrationBuilder"/> to further configure the rule.</returns>
-        public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory)
+        public override IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
             {
                 ContractType = type,
-                InstancingStrategy = (Func<IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetRequiredService<IInjector>())),
+                InstancingStrategy = (Func<System.IServiceProvider, object>)(serviceProvider => factory(serviceProvider.GetRequiredService<IServiceProvider>())),
             };
             this.descriptorBuilders.Add(descriptorBuilder);
             return new DependencyInjectionRegistrationBuilder(descriptorBuilder);
@@ -92,7 +92,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <returns>
         /// A new injector.
         /// </returns>
-        protected override IInjector CreateInjectorCore()
+        protected override IServiceProvider CreateInjectorCore()
         {
             foreach (var descriptorBuilder in this.descriptorBuilders)
             {
@@ -101,7 +101,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
 
             var serviceProvider = this.serviceCollection.BuildServiceProvider();
 
-            return new DependencyInjectionInjector(serviceProvider);
+            return new DependencyInjectionServiceProvider(serviceProvider);
         }
     }
 }

@@ -392,7 +392,7 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_InitializingAppManager_Message);
 
-                var container = appContext.Injector;
+                var container = appContext.ServiceProvider;
                 var appManager = container.Resolve<IAppManager>();
 
                 await appManager.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();

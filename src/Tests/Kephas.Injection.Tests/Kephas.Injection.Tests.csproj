@@ -45,4 +45,8 @@
         <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Injection\Internal" />
+    </ItemGroup>
+
 </Project>

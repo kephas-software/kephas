@@ -56,7 +56,7 @@ namespace Kephas.Core.Tests
                 .Add(Substitute.For<ILogManager>())
                 .Add(Substitute.For<ITypeLoader>())
                 .Add(Substitute.For<IAppRuntime>());
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             var builderInjector = ambientServices.BuildWith<TestInjectorBuilder>(
                 b => b.WithAssemblies(this.GetType().Assembly)
                     .WithInjector(injector));
@@ -73,16 +73,16 @@ namespace Kephas.Core.Tests
 
         public class TestInjectorBuilder : InjectorBuilderBase<TestInjectorBuilder>
         {
-            private IInjector injector;
+            private IServiceProvider serviceProvider;
 
             public TestInjectorBuilder(IInjectionBuildContext context)
                 : base(context)
             {
             }
 
-            public TestInjectorBuilder WithInjector(IInjector injector)
+            public TestInjectorBuilder WithInjector(IServiceProvider serviceProvider)
             {
-                this.injector = injector;
+                this.serviceProvider = serviceProvider;
                 return this;
             }
 
@@ -90,11 +90,11 @@ namespace Kephas.Core.Tests
 
             public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
-            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory) => Substitute.For<IRegistrationBuilder>();
 
-            protected override IInjector CreateInjectorCore()
+            protected override IServiceProvider CreateInjectorCore()
             {
-                return this.injector ?? Substitute.For<IInjector>();
+                return this.serviceProvider ?? Substitute.For<IServiceProvider>();
             }
         }
 
@@ -112,11 +112,11 @@ namespace Kephas.Core.Tests
 
             public override IRegistrationBuilder ForInstance(object instance) => Substitute.For<IRegistrationBuilder>();
 
-            public override IRegistrationBuilder ForFactory(Type type, Func<IInjector, object> factory) => Substitute.For<IRegistrationBuilder>();
+            public override IRegistrationBuilder ForFactory(Type type, Func<IServiceProvider, object> factory) => Substitute.For<IRegistrationBuilder>();
 
-            protected override IInjector CreateInjectorCore()
+            protected override IServiceProvider CreateInjectorCore()
             {
-                return Substitute.For<IInjector>();
+                return Substitute.For<IServiceProvider>();
             }
         }
     }

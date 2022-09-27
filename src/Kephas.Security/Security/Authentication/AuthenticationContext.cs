@@ -23,19 +23,19 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public AuthenticationContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public AuthenticationContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="credentials">The credentials.</param>
-        public AuthenticationContext(IInjector injector, ICredentials credentials)
-            : base(injector)
+        public AuthenticationContext(IServiceProvider serviceProvider, ICredentials credentials)
+            : base(serviceProvider)
         {
             this.Credentials = credentials ?? throw new ArgumentNullException(nameof(credentials));
         }

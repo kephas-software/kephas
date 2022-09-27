@@ -17,7 +17,7 @@ namespace Kephas.Tests.Injection.Autofac
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="AutofacScopedInjector"/>.
+    /// Tests for <see cref="AutofacScopedServiceProvider"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -33,7 +33,7 @@ namespace Kephas.Tests.Injection.Autofac
                         typeof(AutofacInjectorTest.ScopeExportedClass),
                         AppServiceLifetime.Scoped)));
             using var scopedContext = container.CreateScope();
-            Assert.IsInstanceOf<AutofacScopedInjector>(scopedContext);
+            Assert.IsInstanceOf<AutofacScopedServiceProvider>(scopedContext);
             var scopedInstance1 = scopedContext.Resolve<AutofacInjectorTest.ScopeExportedClass>();
 
             using var nestedContext = scopedContext.CreateScopedInjector();
@@ -47,7 +47,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void CreateScopedInjector_Injector_registration_root()
         {
             var container = this.CreateInjectorWithBuilder();
-            var selfContainer = container.Resolve<IInjector>();
+            var selfContainer = container.Resolve<IServiceProvider>();
             Assert.AreSame(container, selfContainer);
         }
 
@@ -56,7 +56,7 @@ namespace Kephas.Tests.Injection.Autofac
         {
             var container = this.CreateInjectorWithBuilder();
             using var scopedContext = container.CreateScope();
-            var selfScopedContext = scopedContext.Resolve<IInjector>();
+            var selfScopedContext = scopedContext.Resolve<IServiceProvider>();
             Assert.AreSame(selfScopedContext, scopedContext);
         }
 

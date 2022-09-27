@@ -30,7 +30,7 @@ namespace Kephas.Services
         private const int InjectorIndex = -2;
         private const int LogManagerIndex = -3;
 
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
         private readonly IAmbientServices ambientServices;
         private readonly ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>> typeCache = new ();
 
@@ -39,12 +39,12 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Kephas.Services.InjectableFactory"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logManager">Manager for log.</param>
-        public InjectableFactory(IInjector injector, IAmbientServices ambientServices, ILogManager logManager)
+        public InjectableFactory(IServiceProvider serviceProvider, IAmbientServices ambientServices, ILogManager logManager)
         {
-            this.injector = injector;
+            this.serviceProvider = serviceProvider;
             this.ambientServices = ambientServices;
             this.LogManager = logManager;
         }
@@ -115,7 +115,7 @@ namespace Kephas.Services
                 {
                     null,
                     () => this.ambientServices,
-                    () => this.injector,
+                    () => this.serviceProvider,
                     () => this.LogManager,
                 };
             foreach (var paramInfo in paramInfos)
@@ -138,7 +138,7 @@ namespace Kephas.Services
                     if (appServiceInfo != null && !appServiceInfo.AllowMultiple)
                     {
                         argIndexMap.Add(-argResolverMap.Count);
-                        argResolverMap.Add(() => this.injector.Resolve(paramType));
+                        argResolverMap.Add(() => this.serviceProvider.Resolve(paramType));
                     }
                     else if (paramInfo.HasDefaultValue)
                     {
@@ -163,7 +163,7 @@ namespace Kephas.Services
                 return AmbientServicesIndex;
             }
 
-            if (paramType == typeof(IInjector))
+            if (paramType == typeof(IServiceProvider))
             {
                 return InjectorIndex;
             }

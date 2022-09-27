@@ -36,7 +36,7 @@ namespace Kephas.Workflow.Tests
         public async Task TransitionAsync_changes_state_on_success()
         {
             var stateMachine = new TestStateMachine(new TestEntity(), this.TypeRegistry);
-            var context = new TransitionContext(Substitute.For<IInjector>(), stateMachine)
+            var context = new TransitionContext(Substitute.For<IServiceProvider>(), stateMachine)
             {
                 To = TestState.Valid,
             };

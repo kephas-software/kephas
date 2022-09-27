@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Pipes.Tests
             };
         }
 
-        public override IInjector CreateInjector(
+        public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
@@ -63,7 +63,7 @@ namespace Kephas.Messaging.Pipes.Tests
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config);
+            return base.BuildServiceProvider(ambientServices, assemblies, parts, config);
         }
     }
 }

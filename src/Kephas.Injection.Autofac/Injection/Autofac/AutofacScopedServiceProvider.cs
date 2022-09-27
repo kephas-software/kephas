@@ -16,15 +16,15 @@ namespace Kephas.Injection.Autofac
     /// <summary>
     /// An Autofac scoped injector.
     /// </summary>
-    internal class AutofacScopedInjector : AutofacInjectorBase
+    internal class AutofacScopedServiceProvider : AutofacServiceProviderBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacScopedInjector"/> class.
+        /// Initializes a new instance of the <see cref="AutofacScopedServiceProvider"/> class.
         /// </summary>
         /// <param name="root">The root.</param>
         /// <param name="scope">The scope.</param>
         /// <param name="logger">The logger.</param>
-        public AutofacScopedInjector(IInjectionContainer root, ILifetimeScope scope, ILogger? logger)
+        public AutofacScopedServiceProvider(IServiceProviderContainer root, ILifetimeScope scope, ILogger? logger)
             : base(root, logger)
         {
             this.Initialize(scope);

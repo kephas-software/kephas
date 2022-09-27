@@ -28,7 +28,7 @@ namespace Kephas.Scripting.Python.Tests
         [Test]
         public void Injection()
         {
-            var injector = this.CreateInjector();
+            var injector = this.BuildServiceProvider();
             var engine = injector.Resolve<ILanguageService>(PythonLanguageService.Language);
             
             Assert.IsInstanceOf<PythonLanguageService>(engine);

@@ -20,9 +20,9 @@ namespace Kephas.Interaction
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractionContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public InteractionContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public InteractionContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 
