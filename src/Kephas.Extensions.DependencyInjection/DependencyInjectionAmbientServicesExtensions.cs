@@ -15,10 +15,9 @@ namespace Kephas
     using System.Linq;
 
     using Kephas.Application;
-    using Kephas.Extensions.DependencyInjection.Hosting;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
+    using Kephas.Extensions.DependencyInjection;
     using Kephas.Services;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Microsoft.Extensions.DependencyInjection related ambient services extensions.
@@ -26,22 +25,30 @@ namespace Kephas
     public static class DependencyInjectionAmbientServicesExtensions
     {
         /// <summary>
-        /// Sets the injector to the ambient services.
+        /// Builds the service provider using the service collection.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="builderOptions">The injector builder configuration.</param>
-        /// <returns>The provided ambient services builder.</returns>
-        public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<DependencyInjectionInjectorBuilder>? builderOptions = null)
+        /// <param name="builderOptions">The builder configuration.</param>
+        /// <returns>The built service provider.</returns>
+        public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<IServiceCollection> builderOptions)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            var services = new ServiceCollection();
+            builderOptions?.Invoke(services);
 
-            var buildContext = new InjectionBuildContext(ambientServices);
-            buildContext.AddAppServices();
-            var injectorBuilder = new DependencyInjectionInjectorBuilder(buildContext);
+            return ambientServices.BuildWithDependencyInjection(services);
+        }
 
-            builderOptions?.Invoke(injectorBuilder);
+        /// <summary>
+        /// Builds the service provider using the service collection.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The built service provider.</returns>
+        public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, IServiceCollection services)
+        {
+            services.UseAmbientServices(ambientServices);
 
-            return injectorBuilder.Build();
+            return services.BuildServiceProvider();
         }
 
         /// <summary>

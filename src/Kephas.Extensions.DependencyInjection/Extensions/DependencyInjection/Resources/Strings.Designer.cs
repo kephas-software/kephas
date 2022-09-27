@@ -69,6 +69,16 @@ namespace Kephas.Extensions.DependencyInjection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must provide a type as instancing strategy for open generics in {0}..
+        /// </summary>
+        public static string InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics {
+            get {
+                return ResourceManager.GetString("InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForO" +
+                        "penGenerics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided conventions must implement {0}..
         /// </summary>
         public static string InvalidConventions {

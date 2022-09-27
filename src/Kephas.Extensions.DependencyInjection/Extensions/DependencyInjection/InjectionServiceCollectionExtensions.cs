@@ -21,13 +21,14 @@ namespace Kephas.Extensions.DependencyInjection
     using Kephas.Services;
     using Kephas.Services.Reflection;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <summary>
     /// Extension methods for <see cref="IServiceCollection"/>.
     /// </summary>
     public static class InjectionServiceCollectionExtensions
     {
-        private static MethodInfo AddServiceFactoriesMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactoriesOfObject<string, string>(null!, null!, null));
+        private static MethodInfo AddServiceFactoriesWithFactoryMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactoriesOfObject<string, string>(null!, null!, null));
 
         /// <summary>
         /// Includes the service collection in the composition.
@@ -42,6 +43,8 @@ namespace Kephas.Extensions.DependencyInjection
             services = services ?? throw new ArgumentNullException(nameof(services));
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
+            services.AddGenericCollections();
+
             var buildContext = new InjectionBuildContext(ambientServices);
             buildContext.AddAppServices();
 
@@ -53,11 +56,20 @@ namespace Kephas.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, IServiceCollection services)
+        /// <summary>
+        /// Adds the <see cref="ICollection{T}"/>, <see cref="IList{T}"/>, <see cref="IReadOnlyCollection{T}"/>, and
+        /// <see cref="IReadOnlyList{T}"/> as open generic registrations.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The provided service collection.</returns>
+        public static IServiceCollection AddGenericCollections(this IServiceCollection services)
         {
-            services.UseAmbientServices(ambientServices);
+            services.TryAddTransient(typeof(ICollection<>), typeof(List<>));
+            services.TryAddTransient(typeof(IReadOnlyCollection<>), typeof(List<>));
+            services.TryAddTransient(typeof(IList<>), typeof(List<>));
+            services.TryAddTransient(typeof(IReadOnlyList<>), typeof(List<>));
 
-            return services.BuildServiceProvider();
+            return services;
         }
 
         /// <summary>
@@ -73,18 +85,24 @@ namespace Kephas.Extensions.DependencyInjection
             services = services ?? throw new ArgumentNullException(nameof(services));
 
             var metadataType = appServiceInfo.MetadataType ?? typeof(AppServiceMetadata);
-            var contractType = appServiceInfo.ContractType ?? throw new InvalidOperationException(Strings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet);
+            var contractType = appServiceInfo.ContractType ?? appServiceInfo.InstanceType ?? throw new InvalidOperationException(Strings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet.FormatWith(appServiceInfo));
+            var instanceType = appServiceInfo.InstanceType;
+            if (appServiceInfo.AsOpenGeneric && instanceType is null)
+            {
+                throw new InvalidOperationException(Strings.InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics.FormatWith(appServiceInfo));
+            }
+
             return appServiceInfo switch
             {
                 { InstanceType: not null, Lifetime: AppServiceLifetime.Singleton } =>
-                    services.AddSingleton(appServiceInfo.InstanceType)
-                        .AddServiceFactories(contractType, appServiceInfo.InstanceType, metadataType, appServiceInfo.Metadata),
+                    services.AddSingleton(instanceType)
+                        .AddServiceFactories(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
                 { InstanceType: not null, Lifetime: AppServiceLifetime.Scoped } =>
                     services.AddScoped(appServiceInfo.InstanceType)
-                        .AddServiceFactories(contractType, appServiceInfo.InstanceType, metadataType, appServiceInfo.Metadata),
+                        .AddServiceFactories(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
                 { InstanceType: not null } =>
                     services.AddTransient(appServiceInfo.InstanceType)
-                        .AddServiceFactories(contractType, appServiceInfo.InstanceType, metadataType, appServiceInfo.Metadata),
+                        .AddServiceFactories(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
                 { InstanceFactory: not null, Lifetime: AppServiceLifetime.Singleton } =>
                     services.AddSingleton(contractType, appServiceInfo.InstanceFactory)
                         .AddServiceFactories(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
@@ -329,7 +347,7 @@ namespace Kephas.Extensions.DependencyInjection
             Type metadataType,
             IDictionary<string, object?>? metadata)
         {
-            var addServiceFactories = AddServiceFactoriesMethod.MakeGenericMethod(contractType, metadataType);
+            var addServiceFactories = AddServiceFactoriesWithFactoryMethod.MakeGenericMethod(contractType, metadataType);
             addServiceFactories.Call(services, serviceFactory, metadata);
             return services;
         }
