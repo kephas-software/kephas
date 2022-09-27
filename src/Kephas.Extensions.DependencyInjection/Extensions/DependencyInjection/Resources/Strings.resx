@@ -120,4 +120,7 @@
   <data name="InvalidConventions" xml:space="preserve">
     <value>The provided conventions must implement {0}.</value>
   </data>
+  <data name="InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet" xml:space="preserve">
+    <value>The contract type is not set.</value>
+  </data>
 </root>

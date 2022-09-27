@@ -68,6 +68,16 @@ public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, T
     /// <summary>
     /// Initializes a new instance of the <see cref="FactoryService{T, TImplementation, TMetadata}"/> class.
     /// </summary>
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <param name="metadata">The metadata.</param>
+    internal FactoryService(IServiceProvider serviceProvider, IDictionary<string, object?>? metadata)
+        : this(() => serviceProvider.GetRequiredService<TImplementation>(), ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FactoryService{T, TImplementation, TMetadata}"/> class.
+    /// </summary>
     /// <param name="factory">The service factory.</param>
     /// <param name="metadata">The metadata.</param>
     protected internal FactoryService(Func<T> factory, TMetadata metadata)

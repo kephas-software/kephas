@@ -631,30 +631,6 @@ namespace Kephas
             => (T)ambientServices.GetServiceInstance(typeof(T));
 
         /// <summary>
-        /// Sets the injector to the ambient services.
-        /// </summary>
-        /// <typeparam name="TInjectorBuilder">Type of the injector builder.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="builderOptions">The injector builder configuration.</param>
-        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IServiceProvider BuildWith<TInjectorBuilder>(this IAmbientServices ambientServices, Action<TInjectorBuilder>? builderOptions = null)
-            where TInjectorBuilder : IInjectorBuilder
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            var buildContext = new InjectionBuildContext(ambientServices);
-            buildContext.AddAppServices();
-            var containerBuilder = (TInjectorBuilder)Activator.CreateInstance(typeof(TInjectorBuilder), buildContext)!;
-
-            builderOptions?.Invoke(containerBuilder);
-
-            return containerBuilder.Build();
-        }
-
-        /// <summary>
         /// Gets the application runtime.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>

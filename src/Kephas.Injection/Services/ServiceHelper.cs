@@ -162,32 +162,43 @@ namespace Kephas.Services
         /// Collects the metadata from the service type attributes and generic type arguments.
         /// </summary>
         /// <typeparam name="TMetadata">The metadata type.</typeparam>
-        /// <param name="serviceType">The service type.</param>
-        /// <param name="contractDeclarationType">The contract declaration type.</param>
-        /// <returns>The metadata.</returns>
-        public static TMetadata GetServiceMetadata<TMetadata>(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? serviceType,
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType)
+        /// <param name="metadata">The metadata dictionary.</param>
+        /// <returns>The typed metadata.</returns>
+        public static TMetadata GetServiceMetadata<TMetadata>(IDictionary<string, object?>? metadata)
         {
-            var metadata = GetServiceMetadata(serviceType, contractDeclarationType);
-
             var ctor = typeof(TMetadata).GetConstructor(new[] { typeof(IDictionary<string, object>) });
             if (ctor is not null)
             {
-                return (TMetadata)ctor.Invoke(new object[] { metadata });
+                return (TMetadata)ctor.Invoke(new object?[] { metadata });
             }
 
             ctor = typeof(TMetadata).GetConstructor(Type.EmptyTypes);
             if (ctor is not null)
             {
                 var typedMetadata = ctor.Invoke(Array.Empty<object>());
-                var dynamicMetadata = typedMetadata.ToDynamic();
-                metadata.ForEach(kv => dynamicMetadata[kv.Key] = kv.Value);
+                if (metadata is not null)
+                {
+                    var dynamicMetadata = typedMetadata.ToDynamic();
+                    metadata.ForEach(kv => dynamicMetadata[kv.Key] = kv.Value);
+                }
+
                 return (TMetadata)typedMetadata;
             }
 
             throw new ServiceException($"Cannot instantiate metadata of type {typeof(TMetadata)}, neither a constructor accepting an IDictionary<string, object> parameter, nor a default constructor is provided.");
         }
+
+        /// <summary>
+        /// Collects the metadata from the service type attributes and generic type arguments.
+        /// </summary>
+        /// <typeparam name="TMetadata">The metadata type.</typeparam>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <returns>The typed metadata.</returns>
+        public static TMetadata GetServiceMetadata<TMetadata>(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? serviceType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType) =>
+            GetServiceMetadata<TMetadata>(GetServiceMetadata(serviceType, contractDeclarationType));
 
         /// <summary>
         /// Collects the metadata from the service type attributes and generic type arguments.

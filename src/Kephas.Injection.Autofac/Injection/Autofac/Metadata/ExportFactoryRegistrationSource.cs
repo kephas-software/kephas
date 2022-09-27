@@ -14,6 +14,7 @@ namespace Kephas.Injection.Autofac.Metadata
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;

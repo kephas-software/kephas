@@ -11,6 +11,7 @@
 namespace Kephas.Injection
 {
     using System;
+    using Kephas.Services;
 
     /// <summary>
     /// An export factory.
@@ -59,6 +60,16 @@ namespace Kephas.Injection
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
     public class ExportFactory<TContract, TMetadata> : ExportFactory<TContract>, IExportFactory<TContract, TMetadata>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExportFactory{TContract, TMetadata}"/> class.
+        /// </summary>
+        /// <param name="factory">The factory.</param>
+        /// <param name="metadata">The metadata.</param>
+        public ExportFactory(Func<TContract> factory, IDictionary<string, object?>? metadata)
+            : this(factory, ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportFactory{TContract, TMetadata}"/> class.
         /// </summary>
