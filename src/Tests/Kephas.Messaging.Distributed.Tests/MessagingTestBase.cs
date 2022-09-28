@@ -19,7 +19,6 @@ namespace Kephas.Messaging.Tests
     using Kephas.Configuration;
     using Kephas.Cryptography;
     using Kephas.Injection;
-    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;

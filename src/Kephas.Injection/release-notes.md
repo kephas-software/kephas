@@ -61,3 +61,8 @@ var logManager = AppServiceCollection.TryGetServiceInstance<ILogManager>();
 `ServiceProviderInjectionExtensions` will provide the methods of the `IInjector` interface as extension methods of `IServiceProvider`.
 * Breaking change: All `Injector` methods were renamed to `ServiceProvider`.
 * IInjector.CreateScope()
+* Breaking change: Removed the `IInjectorBuilder` and `InjectorBuilderBase`. Now, the specific injection implementations will provide two methods for two use cases:
+  * `BuildWith{Container}: IServiceProvider`: The framework will build the appropriate container and will return the `IServiceProvider` adapter for that container.
+  * `{builder}.UseAppServiceCollection(IAppServiceCollection)`: The framework will add the collected app service infos to the specific builder. It is the responsibility of the client to build the container.
+It must be made sure that a scoped `IServiceProvider` service is provided.
+The advantage of this approach is that the container creation is controlled by the client.

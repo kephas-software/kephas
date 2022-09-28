@@ -21,7 +21,6 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Injection;
-    using Kephas.Injection.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;

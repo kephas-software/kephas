@@ -18,7 +18,6 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Configuration;
     using Kephas.Connectivity;
     using Kephas.Cryptography;
-    using Kephas.Injection.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;

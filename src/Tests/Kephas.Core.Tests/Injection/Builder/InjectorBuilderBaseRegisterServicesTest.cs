@@ -16,7 +16,6 @@ namespace Kephas.Core.Tests.Injection.Builder
 
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     /// <summary>

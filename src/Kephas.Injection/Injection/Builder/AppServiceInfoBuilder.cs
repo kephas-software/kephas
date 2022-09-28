@@ -7,15 +7,13 @@
 
 namespace Kephas.Injection.Builder;
 
-using System.Reflection;
 using Kephas.Services;
 using Kephas.Services.Reflection;
-using Microsoft.VisualBasic;
 
 /// <summary>
 /// Builder class for an <see cref="AppServiceInfo"/>.
 /// </summary>
-public class AppServiceInfoBuilder : IRegistrationBuilder
+public class AppServiceInfoBuilder : IAppServiceInfoBuilder
 {
     private readonly Type contractDeclarationType;
     private readonly object instancingStrategy;
@@ -24,8 +22,6 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     private AppServiceLifetime lifetime = AppServiceLifetime.Transient;
     private bool allowMultiple = false;
     private bool isExternallyOwned = false;
-    private Func<IEnumerable<ConstructorInfo>, ConstructorInfo?>? constructorSelector;
-    private Action<ParameterInfo, IParameterBuilder>? parameterBuilder;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AppServiceInfoBuilder"/> class.
@@ -49,7 +45,7 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>
     /// A registration builder allowing further configuration.
     /// </returns>
-    public IRegistrationBuilder As(Type contractType)
+    public IAppServiceInfoBuilder As(Type contractType)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         if (!contractType.IsAssignableFrom(this.contractDeclarationType))
@@ -68,7 +64,7 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>
     /// A registration builder allowing further configuration.
     /// </returns>
-    public IRegistrationBuilder Singleton()
+    public IAppServiceInfoBuilder Singleton()
     {
         this.lifetime = AppServiceLifetime.Singleton;
 
@@ -81,7 +77,7 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>
     /// A registration builder allowing further configuration.
     /// </returns>
-    public IRegistrationBuilder Scoped()
+    public IAppServiceInfoBuilder Scoped()
     {
         this.lifetime = AppServiceLifetime.Scoped;
 
@@ -95,25 +91,9 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>
     /// A registration builder allowing further configuration.
     /// </returns>
-    public IRegistrationBuilder AllowMultiple(bool value = true)
+    public IAppServiceInfoBuilder AllowMultiple(bool value = true)
     {
         this.allowMultiple = value;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Select which of the available constructors will be used to instantiate the part.
-    /// </summary>
-    /// <param name="constructorSelector">Filter that selects a single constructor.</param>
-    /// <param name="parameterBuilder">The parameter builder.</param>
-    /// <returns>
-    /// A registration builder allowing further configuration.
-    /// </returns>
-    public IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null)
-    {
-        this.constructorSelector = constructorSelector ?? throw new ArgumentNullException(nameof(constructorSelector));
-        this.parameterBuilder = parameterBuilder;
 
         return this;
     }
@@ -126,7 +106,7 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>
     /// A registration builder allowing further configuration.
     /// </returns>
-    public IRegistrationBuilder AddMetadata(string name, object? value)
+    public IAppServiceInfoBuilder AddMetadata(string name, object? value)
     {
         if (name == null)
         {
@@ -144,7 +124,7 @@ public class AppServiceInfoBuilder : IRegistrationBuilder
     /// <returns>
     /// This builder.
     /// </returns>
-    public IRegistrationBuilder ExternallyOwned()
+    public IAppServiceInfoBuilder ExternallyOwned()
     {
         this.isExternallyOwned = true;
 

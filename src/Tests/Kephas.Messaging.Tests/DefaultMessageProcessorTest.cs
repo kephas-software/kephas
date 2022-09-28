@@ -21,7 +21,6 @@ namespace Kephas.Messaging.Tests
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Injection;
-    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Events;

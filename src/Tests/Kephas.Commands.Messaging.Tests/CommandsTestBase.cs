@@ -16,7 +16,6 @@ namespace Kephas.Commands.Messaging.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Testing.Injection;

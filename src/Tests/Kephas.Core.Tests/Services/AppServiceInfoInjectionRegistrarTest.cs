@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
 
     using Kephas.Core.Tests.Injection;

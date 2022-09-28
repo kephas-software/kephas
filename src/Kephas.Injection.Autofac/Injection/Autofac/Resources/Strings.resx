@@ -126,4 +126,10 @@
   <data name="AutofacInjector_Disposed_Exception" xml:space="preserve">
     <value>The injector is disposed.</value>
   </data>
+  <data name="AutofacExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics" xml:space="preserve">
+    <value>Must provide a type as instancing strategy for open generics in {0}.</value>
+  </data>
+  <data name="AutofacExtensions_AddAppServiceInfo_ContractTypeNotSet" xml:space="preserve">
+    <value>The contract type is not set.</value>
+  </data>
 </root>

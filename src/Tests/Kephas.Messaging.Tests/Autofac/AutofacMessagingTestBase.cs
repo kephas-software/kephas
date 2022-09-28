@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Tests.Autofac
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Injection.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Security.Authorization;

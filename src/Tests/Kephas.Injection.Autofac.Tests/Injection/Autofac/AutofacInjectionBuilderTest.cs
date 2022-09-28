@@ -574,35 +574,12 @@ namespace Kephas.Tests.Injection.Autofac
             }
         }
 
-        public class MultipleInjectConstructorAppService : IConstructorAppService
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MultipleInjectConstructorAppService"/> class.
-            /// </summary>
-            [InjectConstructor]
-            public MultipleInjectConstructorAppService()
-            {
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MultipleInjectConstructorAppService"/> class.
-            /// </summary>
-            /// <param name="injectionContainer">
-            /// The injector.
-            /// </param>
-            [InjectConstructor]
-            public MultipleInjectConstructorAppService(IServiceProvider injectionContainer)
-            {
-            }
-        }
-
         public class ExportedClass
         {
         }
 
         public class ExportedClassWithFakeDependency : ExportedClass
         {
-            [InjectConstructor]
             public ExportedClassWithFakeDependency()
             {
             }

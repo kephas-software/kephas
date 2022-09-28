@@ -39,7 +39,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -58,7 +58,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, TContract serviceInstance, Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -77,7 +77,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -102,7 +102,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAmbientServices ambientServices, Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -127,7 +127,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -153,7 +153,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IRegistrationBuilder>? builder = null)
+        public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAmbientServices ambientServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -182,7 +182,7 @@ namespace Kephas
         public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
             Func<TContract> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -211,7 +211,7 @@ namespace Kephas
         public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
             Func<TContract> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -240,7 +240,7 @@ namespace Kephas
         public static IAmbientServices Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
             Func<IServiceProvider, TContract> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -269,7 +269,7 @@ namespace Kephas
         public static IAmbientServices Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
             this IAmbientServices ambientServices,
             Func<IServiceProvider, TContract> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
             where TContract : class
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -299,7 +299,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             Func<object> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -329,7 +329,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             Func<object> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -359,7 +359,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             Func<IServiceProvider, object> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -389,7 +389,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             Func<IServiceProvider, object> serviceFactory,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -419,7 +419,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -450,7 +450,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -481,7 +481,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             object serviceInstance,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -512,7 +512,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
             object serviceInstance,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -543,7 +543,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             Type contractDeclarationType,
             object instancingStrategy,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
@@ -570,7 +570,7 @@ namespace Kephas
             this IAmbientServices ambientServices,
             Type contractDeclarationType,
             object instancingStrategy,
-            Action<IRegistrationBuilder>? builder = null)
+            Action<IAppServiceInfoBuilder>? builder = null)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));

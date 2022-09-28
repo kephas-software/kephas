@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesAutofacExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,7 +19,7 @@ namespace Kephas.Tests.Injection.Autofac
     using NUnit.Framework;
 
     [TestFixture]
-    public class AmbientServicesAutofacExtensionsTest : TestBase
+    public class AutofacExtensionsTest : TestBase
     {
         [Test]
         public void BuildWithAutofac_defaults()

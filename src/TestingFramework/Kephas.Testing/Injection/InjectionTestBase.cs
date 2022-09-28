@@ -17,7 +17,6 @@ namespace Kephas.Testing.Injection
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Serialization;

@@ -19,9 +19,7 @@ namespace Kephas.Core.Tests.Injection.Lite.Hosting
     using Kephas.Collections;
     using Kephas.Cryptography;
     using Kephas.Injection;
-    using Kephas.Injection.AttributedModel;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;

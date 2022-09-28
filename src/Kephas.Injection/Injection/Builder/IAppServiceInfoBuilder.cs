@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRegistrationBuilder.cs" company="Kephas Software SRL">
+// <copyright file="IAppServiceInfoBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IRegistrationBuilder interface.
+//   Declares the IAppServiceInfoBuilder interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,12 +12,12 @@ namespace Kephas.Injection.Builder
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Interface for part builder.
     /// </summary>
-    public interface IRegistrationBuilder
+    public interface IAppServiceInfoBuilder
     {
         /// <summary>
         /// Sets the registration contract.
@@ -30,7 +30,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder As(Type contractType);
+        IAppServiceInfoBuilder As(Type contractType);
 
         /// <summary>
         /// Sets the registration contract.
@@ -43,7 +43,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder As<TContract>() => this.As(typeof(TContract));
+        IAppServiceInfoBuilder As<TContract>() => this.As(typeof(TContract));
 
         /// <summary>
         /// Registers the service as a singleton.
@@ -51,7 +51,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder Singleton();
+        IAppServiceInfoBuilder Singleton();
 
         /// <summary>
         /// Registers the service as scoped.
@@ -59,7 +59,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder Scoped();
+        IAppServiceInfoBuilder Scoped();
 
         /// <summary>
         /// Registers the service as transient.
@@ -72,7 +72,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        IRegistrationBuilder Transient() => this;
+        IAppServiceInfoBuilder Transient() => this;
 
         /// <summary>
         /// Registers the service with multiple instances.
@@ -81,17 +81,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder AllowMultiple(bool value = true);
-
-        /// <summary>
-        /// Select which of the available constructors will be used to instantiate the part.
-        /// </summary>
-        /// <param name="constructorSelector">Filter that selects a single constructor.</param>
-        /// <param name="parameterBuilder">The parameter builder.</param>
-        /// <returns>
-        /// A registration builder allowing further configuration.
-        /// </returns>
-        IRegistrationBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IParameterBuilder>? parameterBuilder = null);
+        IAppServiceInfoBuilder AllowMultiple(bool value = true);
 
         /// <summary>
         /// Adds metadata to the export.
@@ -101,7 +91,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder AddMetadata(string name, object? value);
+        IAppServiceInfoBuilder AddMetadata(string name, object? value);
 
         /// <summary>
         /// Adds metadata to the export.
@@ -110,7 +100,7 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// A registration builder allowing further configuration.
         /// </returns>
-        IRegistrationBuilder AddMetadata(IDictionary<string, object?> metadata)
+        IAppServiceInfoBuilder AddMetadata(IDictionary<string, object?> metadata)
         {
             foreach (var (key, value) in metadata)
             {
@@ -126,6 +116,12 @@ namespace Kephas.Injection.Builder
         /// <returns>
         /// This builder.
         /// </returns>
-        IRegistrationBuilder ExternallyOwned();
+        IAppServiceInfoBuilder ExternallyOwned();
+
+        /// <summary>
+        /// Builds the <see cref="IAppServiceInfo"/> instance.
+        /// </summary>
+        /// <returns>The <see cref="IAppServiceInfo"/> instance.</returns>
+        IAppServiceInfo Build();
     }
 }
