@@ -16,6 +16,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Hosting.ServicesConfigurators
     using Kephas.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>

@@ -8,10 +8,8 @@
 namespace Kephas.Extensions.Hosting;
 
 using System;
-using System.Collections.Generic;
 
 using Kephas.Application;
-using Kephas.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -29,19 +27,17 @@ public static class HostBuilderExtensions
     /// <param name="hostBuilder">The host builder.</param>
     /// <param name="ambientServices">The ambient services.</param>
     /// <param name="appArgs">The application arguments.</param>
-    /// <param name="containerBuilder">The container builder.</param>
     /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
     /// <returns>The provided host builder.</returns>
-    public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IAppArgs appArgs, Action<IAmbientServices> containerBuilder, Action<HostBuilderContext, IServiceCollection, IAmbientServices>? setupAction = null)
+    public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IAppArgs appArgs, Action<HostBuilderContext, IServiceCollection, IAmbientServices>? setupAction = null)
     {
         hostBuilder = hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder));
         ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
         hostBuilder
-            .UseServiceProviderFactory(new InjectionServiceProviderFactory(ambientServices, containerBuilder))
             .ConfigureServices((context, services) =>
             {
-                services.AddAmbientServices(ambientServices);
+                services.UseAmbientServices(ambientServices);
                 setupAction?.Invoke(context, services, ambientServices);
             })
             .ConfigureAppConfiguration(

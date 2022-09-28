@@ -10,6 +10,7 @@ namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
     using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -22,7 +23,7 @@ namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="configuration"></param>
+        /// <param name="configuration">The configuration.</param>
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.UseKephasLogging(configuration.GetServiceInstance<ILogManager>());
