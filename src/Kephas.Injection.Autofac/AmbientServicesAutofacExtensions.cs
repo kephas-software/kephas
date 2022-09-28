@@ -12,7 +12,6 @@ namespace Kephas
 {
     using System;
 
-    using Kephas.Injection;
     using Kephas.Injection.Autofac.Builder;
     using Kephas.Injection.Builder;
     using Kephas.Logging;

@@ -18,10 +18,7 @@ return await new SwitchApp(args)
                         ambientServices,
                         appArgs,
                         ambient => ambient.WithDynamicAppRuntime().BuildWithAutofac(),
-                        (services, ambient) =>
-                            ambient.SetupAmbientServices(
-                                CreateEncryptionService,
-                                services.TryGetStartupService<IConfiguration>()));
+                        (context, services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, context.Configuration));
             });
     }).RunAsync(1);
 

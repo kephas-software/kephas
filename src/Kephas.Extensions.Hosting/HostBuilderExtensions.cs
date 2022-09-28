@@ -32,17 +32,17 @@ public static class HostBuilderExtensions
     /// <param name="containerBuilder">The container builder.</param>
     /// <param name="setupAction">Optional. Callback to setup the ambient services.</param>
     /// <returns>The provided host builder.</returns>
-    public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IAppArgs appArgs, Action<IAmbientServices> containerBuilder, Action<IServiceCollection, IAmbientServices>? setupAction = null)
+    public static IHostBuilder ConfigureAmbientServices(this IHostBuilder hostBuilder, IAmbientServices ambientServices, IAppArgs appArgs, Action<IAmbientServices> containerBuilder, Action<HostBuilderContext, IServiceCollection, IAmbientServices>? setupAction = null)
     {
         hostBuilder = hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder));
         ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
         hostBuilder
             .UseServiceProviderFactory(new InjectionServiceProviderFactory(ambientServices, containerBuilder))
-            .ConfigureServices(services =>
+            .ConfigureServices((context, services) =>
             {
                 services.AddAmbientServices(ambientServices);
-                setupAction?.Invoke(services, ambientServices);
+                setupAction?.Invoke(context, services, ambientServices);
             })
             .ConfigureAppConfiguration(
                 (ctx, cfg) =>

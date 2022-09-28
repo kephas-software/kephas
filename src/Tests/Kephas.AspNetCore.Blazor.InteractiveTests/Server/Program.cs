@@ -26,13 +26,12 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
         {
             var appArgs = new AppArgs(args);
             var ambientServices = new AmbientServices();
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureAmbientServices(
+            var builder = Host.CreateDefaultBuilder(args);
+            return builder.ConfigureAmbientServices(
                     ambientServices,
                     appArgs,
                     ambient => ambient.BuildWithAutofac(),
-                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService,
-                        services.TryGetStartupService<IConfiguration>()))
+                    (context, services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, context.Configuration))
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder
                         .UseKestrel()
