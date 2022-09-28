@@ -13,7 +13,6 @@ namespace Kephas.Tests.Application
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Configuration;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using NSubstitute;

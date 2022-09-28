@@ -115,7 +115,6 @@
 		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
-		<ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
 	</ItemGroup>
 
 </Project>

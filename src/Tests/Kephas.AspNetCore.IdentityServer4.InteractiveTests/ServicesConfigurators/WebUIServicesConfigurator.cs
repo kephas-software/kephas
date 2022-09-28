@@ -18,12 +18,12 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurato
 
     public class WebUIServicesConfigurator : IServicesConfigurator
     {
-        public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
+        public void ConfigureServices(IServiceCollection services, IConfiguration configuration1)
         {
-            var appRuntime = ambientServices.GetAppRuntime();
+            var appRuntime = configuration1.GetAppRuntime();
             services.AddControllersWithViews()
                 .ConfigureApplicationPartManager(appRuntime)
-                .AddNewtonsoftJson(opts => ambientServices.ConfigureJsonSerialization(opts.SerializerSettings));
+                .AddNewtonsoftJson(opts => configuration1.ConfigureJsonSerialization(opts.SerializerSettings));
             services.AddRazorPages();
 
             // In production, the Angular files will be served from this directory

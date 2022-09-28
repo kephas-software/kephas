@@ -15,7 +15,6 @@ namespace Kephas.Tests.Application
     using Kephas.Application.Configuration;
     using Kephas.Behaviors;
     using Kephas.Configuration;
-    using Kephas.Injection;
     using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Services.Behaviors;

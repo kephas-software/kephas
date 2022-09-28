@@ -12,8 +12,6 @@ namespace Kephas.Application
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application;
     using Kephas.Application.Configuration;
     using Kephas.Application.Interaction;
     using Kephas.Commands;

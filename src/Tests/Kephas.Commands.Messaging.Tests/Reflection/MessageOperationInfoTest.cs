@@ -23,7 +23,6 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     using Kephas.Messaging.Messages;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 

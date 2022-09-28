@@ -22,10 +22,10 @@ namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
+        /// <param name="configuration"></param>
+        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.UseKephasLogging(ambientServices.GetServiceInstance<ILogManager>());
+            services.UseKephasLogging(configuration.GetServiceInstance<ILogManager>());
         }
     }
 }

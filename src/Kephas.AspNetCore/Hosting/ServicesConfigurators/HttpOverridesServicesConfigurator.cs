@@ -32,15 +32,10 @@ public class HttpOverridesServicesConfigurator : Loggable, IServicesConfigurator
     /// <summary>
     /// Configure the services.
     /// </summary>
-    /// <param name="services">
-    /// The services to configure.
-    /// </param>
-    /// <param name="ambientServices">
-    /// The ambient services.
-    /// </param>
-    public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
+    /// <param name="services">The services to configure.</param>
+    /// <param name="configuration">The configuration.</param>
+    public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        var configuration = services.TryGetStartupService<IConfiguration>();
         var forwardedHeadersEnabled = configuration.GetValue<bool>("ForwardedHeaders_Enabled", false);
         if (forwardedHeadersEnabled)
         {

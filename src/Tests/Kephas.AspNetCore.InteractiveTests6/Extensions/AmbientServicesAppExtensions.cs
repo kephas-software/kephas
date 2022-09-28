@@ -8,8 +8,6 @@
 namespace Kephas.AspNetCore.InteractiveTests6.Extensions
 {
     using System;
-
-    using Kephas.Application;
     using Kephas.Cryptography;
     using Kephas.Logging.Serilog;
     using Microsoft.Extensions.Configuration;

@@ -5,13 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Injection.Autofac
+namespace Kephas.Tests.Extensions.DependencyInjection
 {
     using System.Diagnostics.CodeAnalysis;
-    using Kephas.Injection.Autofac;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     /// <summary>

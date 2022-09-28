@@ -21,7 +21,6 @@ namespace Kephas.Model.Tests
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Testing.Model;
     using NSubstitute;
     using NUnit.Framework;

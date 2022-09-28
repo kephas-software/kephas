@@ -18,7 +18,6 @@ namespace Kephas.Core.Tests.Cryptography
     using System.Threading.Tasks;
 
     using Kephas.Cryptography;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Testing;
     using NSubstitute;

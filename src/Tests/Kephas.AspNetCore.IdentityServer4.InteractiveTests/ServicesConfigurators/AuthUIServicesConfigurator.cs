@@ -25,8 +25,8 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurato
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
+        /// <param name="configuration"></param>
+        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true);
         }

@@ -19,9 +19,7 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Cryptography;
-    using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Pipes.Routing;

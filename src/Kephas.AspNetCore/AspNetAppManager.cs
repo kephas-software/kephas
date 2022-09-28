@@ -16,7 +16,6 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Resources;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
 

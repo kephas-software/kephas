@@ -7,7 +7,6 @@
 
 namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests
 {
-    using Kephas;
     using Kephas.Application.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;

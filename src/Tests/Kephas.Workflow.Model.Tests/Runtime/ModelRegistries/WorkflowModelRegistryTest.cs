@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
 {
     using System;

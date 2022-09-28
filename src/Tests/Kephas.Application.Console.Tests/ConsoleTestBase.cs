@@ -16,9 +16,7 @@ namespace Kephas.Application.Console.Tests
     using System.Reflection;
 
     using Kephas.Commands;
-    using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Testing.Injection;
 

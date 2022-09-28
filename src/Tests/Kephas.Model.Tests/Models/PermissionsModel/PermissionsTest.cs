@@ -9,8 +9,6 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
 {
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Kephas.Application;
     using Kephas.Model.Security.Permissions.Elements;
     using Kephas.Runtime;
     using Kephas.Security.Authorization;

@@ -17,9 +17,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Injection;
     using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;

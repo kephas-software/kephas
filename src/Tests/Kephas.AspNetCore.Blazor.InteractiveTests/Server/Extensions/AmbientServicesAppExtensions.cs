@@ -8,7 +8,6 @@
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions
 {
     using System;
-    using Kephas.Application;
     using Kephas.Cryptography;
     using Kephas.Logging.Serilog;
     using Microsoft.Extensions.Configuration;

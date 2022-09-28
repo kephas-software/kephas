@@ -27,7 +27,7 @@ return await new SwitchApp(args)
 
 static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
 {
-return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
+    return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
 }
 
 class EncryptionService : AesEncryptionService

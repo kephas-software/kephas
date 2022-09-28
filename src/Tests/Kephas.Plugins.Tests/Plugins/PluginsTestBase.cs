@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
-using Kephas.Injection;
 using Kephas.Plugins.Application;
 using Kephas.Plugins.Reflection;
 

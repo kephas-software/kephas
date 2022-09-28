@@ -17,7 +17,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
 
     using Kephas.AspNetCore.IdentityServer4.Stores;
     using Kephas.Dynamic;
-    using Kephas.Injection;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

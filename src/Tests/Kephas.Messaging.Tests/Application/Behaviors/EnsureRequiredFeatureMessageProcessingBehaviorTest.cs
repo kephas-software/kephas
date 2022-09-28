@@ -9,7 +9,6 @@ namespace Kephas.Messaging.Tests.Application.Behaviors;
 
 using Kephas.Application;
 using Kephas.Application.Reflection;
-using Kephas.Injection;
 using Kephas.Messaging.Application.Behaviors;
 using NSubstitute;
 using NUnit.Framework;

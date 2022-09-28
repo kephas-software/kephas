@@ -16,7 +16,6 @@ namespace Kephas.Data.Tests
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Store;
-    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Services;
     using NSubstitute;

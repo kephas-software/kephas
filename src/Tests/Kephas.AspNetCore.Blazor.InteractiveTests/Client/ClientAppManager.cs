@@ -8,7 +8,6 @@
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
 {
     using Kephas.Application;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
 

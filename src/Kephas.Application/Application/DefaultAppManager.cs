@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 
 using Kephas.Application.Reflection;
 using Kephas.Diagnostics;
-using Kephas.Injection;
 using Kephas.Logging;
 using Kephas.Resources;
 using Kephas.Services;

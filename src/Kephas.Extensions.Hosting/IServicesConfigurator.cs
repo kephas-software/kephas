@@ -8,6 +8,7 @@
 namespace Kephas
 {
     using Kephas.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -25,7 +26,7 @@ namespace Kephas
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices);
+        /// <param name="configuration">The configuration.</param>
+        void ConfigureServices(IServiceCollection services, IConfiguration configuration);
     }
 }

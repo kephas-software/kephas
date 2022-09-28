@@ -18,7 +18,6 @@ namespace Kephas.Scheduling.Tests
 
     using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Injection;
     using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.JobStore;

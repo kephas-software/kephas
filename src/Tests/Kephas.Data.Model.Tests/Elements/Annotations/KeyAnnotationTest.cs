@@ -8,7 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
 using Kephas.Runtime;
 
 namespace Kephas.Data.Model.Tests.Elements.Annotations

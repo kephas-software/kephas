@@ -15,8 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Kephas.Injection;
 using Kephas.Messaging.Authorization.Behaviors;
 using Kephas.Security.Authorization;
 using Kephas.Security.Permissions.AttributedModel;

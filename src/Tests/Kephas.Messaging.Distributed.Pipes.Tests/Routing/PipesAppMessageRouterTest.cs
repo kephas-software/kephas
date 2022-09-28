@@ -20,7 +20,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     using Kephas.Application;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
-    using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Queues;

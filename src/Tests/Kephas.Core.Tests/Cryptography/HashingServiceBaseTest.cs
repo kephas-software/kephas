@@ -14,7 +14,6 @@ namespace Kephas.Core.Tests.Cryptography
     using System.Text;
 
     using Kephas.Cryptography;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Testing;
     using NSubstitute;

@@ -14,9 +14,7 @@ namespace Kephas.Application
 
     using Kephas.Commands;
     using Kephas.Dynamic;
-    using Kephas.Injection;
     using Kephas.Logging;
-    using Kephas.Services;
 
     /// <summary>
     /// The default application context.

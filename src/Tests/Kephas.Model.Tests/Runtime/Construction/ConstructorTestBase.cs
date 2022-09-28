@@ -12,8 +12,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
     using System.Collections.Generic;
-
-    using Kephas.Application;
     using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;

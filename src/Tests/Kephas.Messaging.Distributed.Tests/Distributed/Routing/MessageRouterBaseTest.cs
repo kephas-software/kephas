@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using Kephas.Application;
 using Kephas.Configuration;
-using Kephas.Injection;
 using Kephas.Messaging.Distributed;
 using Kephas.Messaging.Distributed.Routing;
 using Kephas.Security.Authentication;

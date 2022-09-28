@@ -8,8 +8,6 @@
 namespace Kephas.Data.Tests.Application
 {
     using System.Threading.Tasks;
-
-    using Kephas.Application;
     using Kephas.Data.Runtime;
     using Kephas.Runtime;
     using NSubstitute;

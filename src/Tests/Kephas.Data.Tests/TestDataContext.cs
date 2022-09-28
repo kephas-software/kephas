@@ -18,7 +18,6 @@ namespace Kephas.Data.Tests
     using Kephas.Data.Caching;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
-    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;

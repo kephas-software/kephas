@@ -17,7 +17,6 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Data;
     using Kephas.Messaging;
     using Kephas.Reflection;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 

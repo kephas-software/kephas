@@ -33,9 +33,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Hosting.ServicesConfigurators
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        public virtual void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
-            => this.ConfigureServices<IdentityUser, IdentityRole>(services, ambientServices, null);
+        /// <param name="configuration"></param>
+        public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+            => this.ConfigureServices<IdentityUser, IdentityRole>(services, null);
 
         /// <summary>
         /// Configure the services.
@@ -43,9 +43,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Hosting.ServicesConfigurators
         /// <typeparam name="TUser">The user type.</typeparam>
         /// <typeparam name="TRole">The role type.</typeparam>
         /// <param name="services">The services to configure.</param>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="setupAction">The setup action.</param>
-        protected virtual void ConfigureServices<TUser, TRole>(IServiceCollection services, IAmbientServices ambientServices, Action<IdentityServerOptions>? setupAction)
+        protected virtual void ConfigureServices<TUser, TRole>(IServiceCollection services, Action<IdentityServerOptions>? setupAction)
             where TUser : class
             where TRole : class
         {

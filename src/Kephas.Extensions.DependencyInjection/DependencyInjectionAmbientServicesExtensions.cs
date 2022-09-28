@@ -11,12 +11,8 @@
 namespace Kephas
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
-    using Kephas.Services;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -49,27 +45,6 @@ namespace Kephas
             services.UseAmbientServices(ambientServices);
 
             return services.BuildServiceProvider();
-        }
-
-        /// <summary>
-        /// Gets the services configurators.
-        /// </summary>
-        /// <param name="appRuntime">The application runtime.</param>
-        /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
-        public static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAppRuntime appRuntime)
-        {
-            var appAssemblies = appRuntime.GetAppAssemblies();
-            var configuratorTypes = ServiceHelper.GetAppServiceInfosProviders(appAssemblies)
-                .SelectMany(p => p.GetAppServices())
-                .Where(t => t.ContractDeclarationType == typeof(IServicesConfigurator))
-                .Select(t => t.ServiceType)
-                .ToList();
-            var orderedConfiguratorTypes = configuratorTypes
-                .Select(t => new Lazy<IServicesConfigurator, AppServiceMetadata>(
-                    () => (IServicesConfigurator)Activator.CreateInstance(t),
-                    new AppServiceMetadata(ServiceHelper.GetServiceMetadata(t, typeof(IServicesConfigurator)))))
-                .Order();
-            return orderedConfiguratorTypes.Select(f => f.Value);
         }
     }
 }

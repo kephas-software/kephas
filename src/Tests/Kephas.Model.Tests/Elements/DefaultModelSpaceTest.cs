@@ -13,8 +13,6 @@ namespace Kephas.Model.Tests.Elements
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
