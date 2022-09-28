@@ -34,8 +34,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Hosting.ServicesConfigurators
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="configuration"></param>
-        public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices)
             => this.ConfigureServices<IdentityUser, IdentityRole>(services, null);
 
         /// <summary>

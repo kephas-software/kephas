@@ -9,6 +9,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurato
 {
     using Kephas.Services;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -27,8 +28,9 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurato
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="configuration"></param>
-        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        public void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }

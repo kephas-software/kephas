@@ -254,7 +254,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var appManager = container.Resolve<IAppManager>();
             var appContext = new AppContext(
                 container.Resolve<IAmbientServices>(),
-                container.Resolve<IAppRuntime>(),
                 appArgs);
             await appManager.InitializeAsync(appContext);
 
@@ -269,7 +268,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(
-                new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
+                new AppContext(container.Resolve<IAmbientServices>()));
         }
 
         public class PipesSettingsProvider : ISettingsProvider

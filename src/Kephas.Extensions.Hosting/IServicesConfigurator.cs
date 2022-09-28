@@ -27,6 +27,7 @@ namespace Kephas
         /// </summary>
         /// <param name="services">The services to configure.</param>
         /// <param name="configuration">The configuration.</param>
-        void ConfigureServices(IServiceCollection services, IConfiguration configuration);
+        /// <param name="ambientServices">The ambient services.</param>
+        void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices);
     }
 }

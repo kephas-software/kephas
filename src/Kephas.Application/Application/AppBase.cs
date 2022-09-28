@@ -25,12 +25,12 @@ namespace Kephas.Application
     /// </summary>
     /// <typeparam name="TAmbientServices">The actual class implementing <see cref="IAmbientServices"/>.</typeparam>
     /// <remarks>
-    /// You should inherit this class and override at least the <see cref="BuildServicesContainer"/> method.
+    /// You should inherit this class and override at least the <see cref="Build"/> method.
     /// </remarks>
     public abstract class AppBase<TAmbientServices> : IApp
         where TAmbientServices : IAmbientServices, new()
     {
-        private readonly Action<IAmbientServices>? builder;
+        private readonly Func<IAmbientServices, IServiceProvider>? serviceProviderBuilder;
         private bool isConfigured;
 
         /// <summary>
@@ -39,13 +39,17 @@ namespace Kephas.Application
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
-        /// <param name="builder">Optional. The container builder.</param>
-        protected AppBase(IAmbientServices? ambientServices = null, IAppArgs? appArgs = null, CancellationTokenSource? appLifetimeTokenSource = null, Action<IAmbientServices>? builder = null)
+        /// <param name="serviceProviderBuilder">Optional. The service provider builder.</param>
+        protected AppBase(
+            IAmbientServices? ambientServices = null,
+            IAppArgs? appArgs = null,
+            CancellationTokenSource? appLifetimeTokenSource = null,
+            Func<IAmbientServices, IServiceProvider>? serviceProviderBuilder = null)
         {
             this.AmbientServices = ambientServices ?? new TAmbientServices();
             this.AppArgs = appArgs ?? new AppArgs();
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
-            this.builder = builder;
+            this.serviceProviderBuilder = serviceProviderBuilder;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
 
@@ -56,6 +60,11 @@ namespace Kephas.Application
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; protected set; }
+
+        /// <summary>
+        /// Gets the <see cref="IServiceProvider"/>.
+        /// </summary>
+        public IServiceProvider? ServiceProvider { get; private set; }
 
         /// <summary>
         /// Gets a context for the application.
@@ -122,7 +131,7 @@ namespace Kephas.Application
 
             this.BeforeAppManagerInitialize(this.AppArgs);
 
-            await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
+            await this.InitializeAppManagerAsync(this.AppContext!, cancellationToken).PreserveThreadContext();
 
             this.AfterAppManagerInitialize();
 
@@ -141,7 +150,7 @@ namespace Kephas.Application
             catch (Exception ex)
             {
                 this.Logger.Fatal(ex, "Abnormal application termination.");
-                this.AppContext.Exception = ex;
+                this.AppContext!.Exception = ex;
                 return new AppRunResult(null, instruction);
             }
             finally
@@ -175,7 +184,7 @@ namespace Kephas.Application
                 this.BeforeAppManagerFinalize();
 
                 var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
-                appContext?.Dispose();
+                appContext.Dispose();
 
                 this.Log(LogLevel.Info, null, "Completed the shutdown procedure.");
             }
@@ -232,7 +241,7 @@ namespace Kephas.Application
         /// <summary>
         /// The <see cref="BeforeAppManagerInitialize"/> is called before the application manager is initialized.
         /// Initializes the application prerequisites: the ambient services, the application context
-        /// registration, its own logger, and other. In the end, the <see cref="BuildServicesContainer"/> method is called
+        /// registration, its own logger, and other. In the end, the <see cref="Build"/> method is called
         /// to complete the service registration and build the injector.
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
@@ -251,21 +260,23 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_ConfiguringAmbientServices_Message);
 
-                // require the AppContext to be computed each time, so that if it is called
-                // to early, to be able to still get it at a later time.
-                // registers the application context as a global service, so that other services can benefit from it.
-                this.AmbientServices.Add(() => this.AppContext!, b => b.Transient());
-
-                this.AmbientServices.AddAppArgs(appArgs);
-
-                this.BuildServicesContainer(this.AmbientServices);
-
-                this.Logger ??= this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger(this.GetType());
+                this.Logger ??= this.AmbientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
                 // and after configuring the ambient services and the logger, as it may
                 // use registered services.
-                this.AppContext = this.CreateAppContext(this.AmbientServices, appArgs);
+                this.AppContext = this.CreateAppContext(this.AmbientServices, appArgs, this.Logger);
+
+                // require the AppContext to be computed each time, so that if it is called
+                // to early, to be able to still get it at a later time.
+                // registers the application context as a global service, so that other services can benefit from it.
+                this.AmbientServices.Add(this.AppContext);
+
+                this.AmbientServices.AddAppArgs(appArgs);
+
+                this.ServiceProvider = this.Build(this.AmbientServices);
+
+                this.Logger ??= this.ServiceProvider.GetRequiredService<ILogManager>().GetLogger(this.GetType());
 
                 this.Log(LogLevel.Info, null, "The ambient services are successfully configured.");
             }
@@ -309,8 +320,7 @@ namespace Kephas.Application
                 }
                 else
                 {
-                    var container = this.AmbientServices.Injector;
-                    var mainLoop = container.TryResolve<IAppMainLoop>();
+                    var mainLoop = this.ServiceProvider!.TryResolve<IAppMainLoop>();
                     if (mainLoop != null)
                     {
                         (result, instruction) = await mainLoop.Main(cancellationToken).PreserveThreadContext();
@@ -362,20 +372,20 @@ namespace Kephas.Application
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected virtual void BuildServicesContainer(IAmbientServices ambientServices)
+        /// <returns>The service provider.</returns>
+        protected virtual IServiceProvider Build(IAmbientServices ambientServices)
         {
-            if (this.builder != null)
+            if (this.serviceProviderBuilder is null)
             {
-                this.Log(LogLevel.Debug, null, "Building the services container by using the build callback.");
+                var exception = new InvalidOperationException("Cannot build the service provider as the builder is not set.");
+                this.Log(LogLevel.Error, exception);
 
-                this.builder(ambientServices);
+                throw exception;
             }
-            else
-            {
-                this.Log(LogLevel.Debug, null, "Building the services container by using Lite.");
 
-                ambientServices.BuildWithLite();
-            }
+            this.Log(LogLevel.Debug, null, "Building the service provider by using the build callback.");
+
+            return this.serviceProviderBuilder(ambientServices);
         }
 
         /// <summary>
@@ -408,10 +418,8 @@ namespace Kephas.Application
                     AppContext = appContext,
                     AmbientServices = this.AmbientServices,
                 };
-                if (appContext != null)
-                {
-                    appContext.Exception = bootstrapException;
-                }
+
+                appContext.Exception = bootstrapException;
 
                 this.Log(LogLevel.Fatal, bootstrapException);
 
@@ -443,9 +451,8 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
-                var container = this.AmbientServices.Injector;
-                appContext = container.Resolve<IAppContext>();
-                var appManager = container.Resolve<IAppManager>();
+                appContext = this.ServiceProvider!.Resolve<IAppContext>();
+                var appManager = this.ServiceProvider!.Resolve<IAppManager>();
 
                 await appManager.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
 
@@ -470,14 +477,15 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appArgs">The application arguments.</param>
+        /// <param name="logger">The logger.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs)
+        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs, ILogger? logger)
         {
             var appContext = new AppContext(ambientServices, appArgs: appArgs)
             {
-                Logger = this.Logger,
+                Logger = logger,
             };
             return appContext;
         }

@@ -86,14 +86,14 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="services">Collection of services.</param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var ambientServices = services.GetAmbientServices() ?? this.AmbientServices;
-            this.AmbientServices = ambientServices;
-            ambientServices.Add(this.AppArgs);
+            var ambientServices = this.AmbientServices;
+            ambientServices.Replace(this.AppArgs);
+
+            services.UseAmbientServices(ambientServices);
 
             try
             {
-                var appRuntime = ambientServices.GetAppRuntime();
-                foreach (var configurator in this.GetServicesConfigurators(appRuntime))
+                foreach (var configurator in this.GetServicesConfigurators(ambientServices))
                 {
                     configurator(services, ambientServices);
                 }
@@ -180,7 +180,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <returns>An enumeration of middleware configurator callbacks.</returns>
         protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(IAspNetAppContext appContext)
         {
-            var container = appContext.AmbientServices.Injector;
+            var container = appContext.AppBuilder.ApplicationServices;
             var middlewareConfigurators = container
                 .Resolve<IFactoryEnumerable<IMiddlewareConfigurator, AppServiceMetadata>>()
                 .SelectServices()
@@ -191,10 +191,10 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <summary>
         /// Gets the services configurators.
         /// </summary>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>An enumeration of services configurator callbacks.</returns>
-        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAppRuntime appRuntime)
-            => appRuntime.GetServicesConfigurators()
+        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
+            => ambientServices.GetServicesConfigurators()
                 .Select(this.GetServicesConfiguratorAction);
 
         /// <summary>
@@ -211,16 +211,20 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appArgs">The application arguments.</param>
+        /// <param name="logger">The logger.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected override IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs)
+        protected override IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs, ILogger? logger)
         {
             var appContext = new AspNetAppContext(
                 this.HostEnvironment,
                 this.Configuration,
                 this.AmbientServices,
-                appArgs: appArgs);
+                appArgs: appArgs)
+            {
+                Logger = logger,
+            };
             return appContext;
         }
 
@@ -231,8 +235,9 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected override void BuildServicesContainer(IAmbientServices ambientServices)
+        protected override IServiceProvider Build(IAmbientServices ambientServices)
         {
+            return this.Host.Services;
         }
 
         private Action<IServiceCollection, IAmbientServices> GetServicesConfiguratorAction(IServicesConfigurator c)
@@ -240,7 +245,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             return (s, a) =>
             {
                 this.Logger.Debug($"Configuring services by {s.GetType()}...");
-                c.ConfigureServices(s, a);
+                c.ConfigureServices(s, this.Configuration);
                 this.Logger.Debug($"Services configured by {s.GetType()}.");
             };
         }

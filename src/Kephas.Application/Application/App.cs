@@ -17,12 +17,15 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
         /// </summary>
-        /// <param name="containerBuilder">Optional. The container builder.</param>
+        /// <param name="serviceProviderBuilder">Optional. The service provider serviceProviderBuilder.</param>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
-        ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
+        ///     a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        public App(Action<IAmbientServices>? containerBuilder = null, IAmbientServices? ambientServices = null, IAppArgs? appArgs = null)
-            : base(ambientServices, appArgs: appArgs, builder: containerBuilder)
+        public App(
+            Func<IAmbientServices, IServiceProvider>? serviceProviderBuilder = null,
+            IAmbientServices? ambientServices = null,
+            IAppArgs? appArgs = null)
+            : base(ambientServices, appArgs: appArgs, serviceProviderBuilder: serviceProviderBuilder)
         {
         }
     }

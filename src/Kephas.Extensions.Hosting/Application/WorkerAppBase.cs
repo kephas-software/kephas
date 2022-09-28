@@ -94,10 +94,8 @@ namespace Kephas.Extensions.Hosting.Application
 
             this.BeforeAppManagerInitialize(this.AppArgs);
 
-            this.Host = this.HostBuilder.Build();
-
             var stoppingTokenSource = new CancellationTokenSource();
-            var eventHub = this.Host.Services.GetRequiredService<IEventHub>();
+            var eventHub = this.Host!.Services.GetRequiredService<IEventHub>();
             eventHub.Subscribe<ShutdownSignal>((_, _) => stoppingTokenSource.Cancel());
 
             return base.RunAsync(mainCallback ?? (args => RunHostAsync(this.Host, stoppingTokenSource.Token)), cancellationToken);
@@ -110,8 +108,11 @@ namespace Kephas.Extensions.Hosting.Application
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected override void BuildServicesContainer(IAmbientServices ambientServices)
+        /// <returns>The service provider.</returns>
+        protected override IServiceProvider Build(IAmbientServices ambientServices)
         {
+            this.Host ??= this.HostBuilder.Build();
+            return this.Host.Services;
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.ServicesConfigurators
 {
     using Kephas.Serialization.Json;
     using Kephas.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -21,8 +22,9 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.ServicesConfigurators
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
+        public void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices)
         {
             services.AddControllersWithViews();
             services

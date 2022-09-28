@@ -12,7 +12,6 @@ namespace Kephas.Application
 {
     using System;
 
-    using Kephas.Commands;
     using Kephas.Dynamic;
     using Kephas.Logging;
 
@@ -21,15 +20,15 @@ namespace Kephas.Application
     /// </summary>
     public class AppContext : Expando, IAppContext
     {
+        private ILogger? logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AppContext(
             IAmbientServices ambientServices,
-            IAppRuntime? appRuntime = null,
             IAppArgs? appArgs = null)
         {
             this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
@@ -76,7 +75,11 @@ namespace Kephas.Application
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger? Logger => this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger();
+        public ILogger? Logger
+        {
+            get => this.logger ?? this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger();
+            init => this.logger = value;
+        }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         void IDisposable.Dispose()
