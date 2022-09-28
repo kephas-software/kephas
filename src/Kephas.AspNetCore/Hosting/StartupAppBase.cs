@@ -245,7 +245,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             return (s, a) =>
             {
                 this.Logger.Debug($"Configuring services by {s.GetType()}...");
-                c.ConfigureServices(s, this.Configuration);
+                c.ConfigureServices(s, this.Configuration, this.AmbientServices);
                 this.Logger.Debug($"Services configured by {s.GetType()}.");
             };
         }
