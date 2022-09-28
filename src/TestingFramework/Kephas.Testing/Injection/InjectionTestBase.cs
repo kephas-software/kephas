@@ -41,7 +41,7 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// A LiteInjectorBuilder.
         /// </returns>
-        public virtual LiteInjectorBuilder WithInjectorBuilder(
+        public virtual IAppServiceCollectionBuildContext WithInjectorBuilder(
             IAmbientServices? ambientServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
@@ -54,7 +54,7 @@ namespace Kephas.Testing.Injection
                 .Add(logManager)
                 .WithAppRuntime(appRuntime)
                 .Add(log);
-            return new LiteInjectorBuilder(new InjectionBuildContext(ambientServices));
+            return new AppServiceCollectionBuildContext(ambientServices);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Kephas.Testing.Injection
             IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
+            Action<IAmbientServices>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

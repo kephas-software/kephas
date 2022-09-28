@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionBuildContext.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceCollectionBuildContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,17 +20,17 @@ namespace Kephas.Injection.Builder
     using Kephas.Services;
 
     /// <summary>
-    /// A context for building the injector.
+    /// A context for building the <see cref="IAmbientServices"/>.
     /// </summary>
-    public class InjectionBuildContext : Expando, IInjectionBuildContext
+    public class AppServiceCollectionBuildContext : Expando, IAppServiceCollectionBuildContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionBuildContext"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceCollectionBuildContext"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="settings">Optional. The injection settings.</param>
         /// <param name="logger">Optional. The logger.</param>
-        public InjectionBuildContext(IAmbientServices ambientServices, InjectionSettings? settings = null, ILogger? logger = null)
+        public AppServiceCollectionBuildContext(IAmbientServices ambientServices, InjectionSettings? settings = null, ILogger? logger = null)
         {
             this.AmbientServices = ambientServices;
             this.Assemblies = ambientServices.GetAppRuntime().GetAppAssemblies().ToList();

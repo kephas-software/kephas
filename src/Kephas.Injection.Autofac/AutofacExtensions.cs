@@ -58,8 +58,8 @@ public static class AutofacExtensions
         containerBuilder = containerBuilder ?? throw new ArgumentNullException(nameof(containerBuilder));
         ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-        var buildContext = new InjectionBuildContext(ambientServices);
-        buildContext.AddAppServices();
+        var buildContext = new AppServiceCollectionBuildContext(ambientServices);
+        buildContext.Build();
 
         foreach (var appServiceInfo in ambientServices)
         {

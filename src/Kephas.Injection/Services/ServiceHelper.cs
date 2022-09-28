@@ -262,7 +262,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
         /// </returns>
-        public static IList<IAppServiceInfosProvider> GetAppServiceInfosProviders(this IInjectionBuildContext buildContext)
+        public static IList<IAppServiceInfosProvider> GetAppServiceInfosProviders(this IAppServiceCollectionBuildContext buildContext)
         {
             var assemblies = buildContext.GetDefaultAssemblies();
 
@@ -289,7 +289,7 @@ namespace Kephas.Services
         /// Gets the default assemblies if none provided in the context.
         /// </summary>
         /// <returns>A list of assemblies.</returns>
-        private static IList<Assembly> GetDefaultAssemblies(this IInjectionBuildContext buildContext)
+        private static IList<Assembly> GetDefaultAssemblies(this IAppServiceCollectionBuildContext buildContext)
         {
             var searchPattern = buildContext.Settings.AssemblyFileNamePattern;
 

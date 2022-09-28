@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionBuildContext.cs" company="Kephas Software SRL">
+// <copyright file="IAppServiceCollectionBuildContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IInjectionBuildContext interface.
+//   Declares the IAppServiceCollectionBuildContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,9 +19,9 @@ namespace Kephas.Injection.Builder
     using Kephas.Services;
 
     /// <summary>
-    /// Contract interface for <see cref="IInjectorBuilder"/> contexts.
+    /// Contract interface for building <see cref="IAmbientServices"/>.
     /// </summary>
-    public interface IInjectionBuildContext : IContext
+    public interface IAppServiceCollectionBuildContext : IContext
     {
         /// <summary>
         /// Gets the ambient services.

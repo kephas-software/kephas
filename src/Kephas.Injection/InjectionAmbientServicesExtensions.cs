@@ -651,8 +651,8 @@ namespace Kephas
         /// <param name="buildContext">The build context.</param>
         /// <param name="logger">Optional. The logger.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices AddAppServices(
-            this IInjectionBuildContext buildContext,
+        public static IAmbientServices Build(
+            this IAppServiceCollectionBuildContext buildContext,
             ILogger? logger = null)
         {
             var providers = buildContext.GetAppServiceInfosProviders();

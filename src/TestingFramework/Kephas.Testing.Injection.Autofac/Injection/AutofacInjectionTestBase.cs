@@ -62,7 +62,7 @@ namespace Kephas.Testing.Injection
                 .Add(logManager)
                 .WithAppRuntime(appRuntime)
                 .Add(log);
-            return new AutofacInjectorBuilder(new InjectionBuildContext(ambientServices));
+            return new AutofacInjectorBuilder(new AppServiceCollectionBuildContext(ambientServices));
         }
 
         /// <summary>

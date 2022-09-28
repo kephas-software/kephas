@@ -395,7 +395,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             public IEnumerable<ContractDeclaration> GetAppServiceContracts() => this.serviceInfos;
         }
 
-        private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IInjectionBuildContext>? config = null)
+        private (AutofacInjectorBuilder builder, IAmbientServices ambientServices) CreateInjectorBuilder(Action<IAppServiceCollectionBuildContext>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockAppRuntime = Substitute.For<IAppRuntime>();
@@ -403,7 +403,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var ambientServices = this.CreateAmbientServices()
                 .Add(mockLoggerManager)
                 .Add(mockAppRuntime);
-            var context = new InjectionBuildContext(ambientServices);
+            var context = new AppServiceCollectionBuildContext(ambientServices);
             config?.Invoke(context);
             var factory = new AutofacInjectorBuilder(context);
             return (factory, ambientServices);
