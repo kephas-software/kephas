@@ -21,7 +21,6 @@ namespace Kephas.Testing.Injection
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection.Autofac;
     using Kephas.Injection.Autofac.Builder;
-    using Kephas.Injection.Autofac.Metadata;
     using Kephas.Injection.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;

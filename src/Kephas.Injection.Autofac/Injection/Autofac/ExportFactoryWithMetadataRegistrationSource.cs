@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Injection.Autofac.Metadata
+namespace Kephas.Injection.Autofac
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using Autofac;
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;

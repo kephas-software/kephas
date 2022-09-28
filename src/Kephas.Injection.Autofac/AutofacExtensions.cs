@@ -16,7 +16,6 @@ using Autofac;
 using Autofac.Builder;
 using Autofac.Core.Resolving.Pipeline;
 using Kephas.Injection.Autofac;
-using Kephas.Injection.Autofac.Metadata;
 using Kephas.Injection.Autofac.Resources;
 using Kephas.Injection.Builder;
 using Kephas.Logging;
