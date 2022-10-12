@@ -28,7 +28,6 @@ public class InjectableFactoryTest
         IInjectableFactory factory = new InjectableFactory(injector, ambientServices, Substitute.For<ILogManager>());
         var context = factory.Create<Context>();
 
-        Assert.AreSame(ambientServices, context.AmbientServices);
         Assert.AreSame(injector, context.ServiceProvider);
     }
 
@@ -39,7 +38,6 @@ public class InjectableFactoryTest
         IInjectableFactory factory = new InjectableFactory(injector, ambientServices, Substitute.For<ILogManager>());
         var context = factory.Create<TestContext>();
 
-        Assert.AreSame(ambientServices, context.AmbientServices);
         Assert.AreSame(injector, context.ServiceProvider);
     }
 
@@ -53,7 +51,6 @@ public class InjectableFactoryTest
         IInjectableFactory factory = new InjectableFactory(injector, ambientServices, Substitute.For<ILogManager>());
         var context = factory.Create<TestContext>(typeof(string));
 
-        Assert.AreSame(ambientServices, context.AmbientServices);
         Assert.AreSame(injector, context.ServiceProvider);
         Assert.AreSame(testService, context.TestService);
         Assert.AreSame(typeof(string), context.MediaType);
@@ -64,11 +61,7 @@ public class InjectableFactoryTest
         var ambientServices = Substitute.For<IAmbientServices>();
         var injector = Substitute.For<IServiceProvider>();
 
-        var infos = appServiceInfos.Select(i => new ContractDeclaration(i.ContractType, i));
-
-        ambientServices.Injector.Returns(injector);
-        ambientServices.GetService(typeof(IServiceProvider)).Returns(injector);
-        ambientServices[InjectionAmbientServicesExtensions.AppServiceInfosKey].Returns(infos);
+        ambientServices.GetEnumerator().Returns(appServiceInfos.GetEnumerator());
 
         injector.Resolve(typeof(IAmbientServices)).Returns(ambientServices);
         injector.Resolve<IAmbientServices>().Returns(ambientServices);

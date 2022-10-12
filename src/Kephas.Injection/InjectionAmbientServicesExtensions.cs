@@ -648,89 +648,25 @@ namespace Kephas
         /// <summary>
         /// Adds the application services from the provided <see cref="IAppServiceInfosProvider"/>s.
         /// </summary>
-        /// <param name="buildContext">The build context.</param>
-        /// <param name="logger">Optional. The logger.</param>
-        /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices Build(
-            this IAppServiceCollectionBuildContext buildContext,
-            ILogger? logger = null)
-        {
-            var providers = buildContext.GetAppServiceInfosProviders();
-            var ambientServices = buildContext.AmbientServices;
-            ambientServices.AddAppServices(providers, buildContext.Settings.AmbiguousResolutionStrategy, logger);
-            return ambientServices;
-        }
-
-        /// <summary>
-        /// Adds the application services from the provided <see cref="IAppServiceInfosProvider"/>s.
-        /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="appServiceInfoProviders">The providers.</param>
+        /// <param name="contracts">The contract declarations.</param>
+        /// <param name="services">The service declarations.</param>
         /// <param name="resolutionStrategy">The resolution strategy for ambiguous registrations.</param>
         /// <param name="logger">Optional. The logger.</param>
         /// <returns>The provided ambient services.</returns>
-        private static IAmbientServices AddAppServices(
+        public static IAmbientServices AddAppServices(
             this IAmbientServices ambientServices,
-            IEnumerable<IAppServiceInfosProvider> appServiceInfoProviders,
+            IEnumerable<ContractDeclaration> contracts,
+            IEnumerable<ServiceDeclaration> services,
             AmbiguousServiceResolutionStrategy resolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority,
             ILogger? logger = null)
         {
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Adding app services from providers '{appServiceInfosProviders}...", appServiceInfoProviders);
-            }
-
-            // get all type infos from the injection assemblies
-            var appServiceInfoList = appServiceInfoProviders
-                .SelectMany(p => p.GetAppServiceContracts())
-                .Select(t => t with
-                {
-                    ContractDeclarationType = t.ContractDeclarationType.ToNormalizedType()
-                })
-                .ToList();
-
-            ambientServices.Replace<IContractDeclarationCollection>(new ContractDeclarationCollection(appServiceInfoList));
-
-            if (logger.IsDebugEnabled())
-            {
-                logger.Debug("Aggregating the service types...");
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfosProvider appServiceInfosProvider)
-            {
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug("Getting the app services from provider {provider}...", appServiceInfosProvider);
-                }
-
-                var appServices = appServiceInfosProvider.GetAppServices();
-
-                if (logger.IsTraceEnabled())
-                {
-                    logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfosProvider);
-                }
-
-                return appServices;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            ServiceDeclaration NormalizeAppService(ServiceDeclaration serviceDeclaration)
-            {
-                var (serviceType, contractDeclarationType) = serviceDeclaration;
-
-                if (logger.IsTraceEnabled())
-                {
-                    logger.Trace("Normalizing the service declaration for {serviceType}/{contractDeclarationType}.", serviceType, contractDeclarationType);
-                }
-
-                return new ServiceDeclaration(serviceType.ToNormalizedType(), contractDeclarationType.ToNormalizedType());
-            }
-
-            var serviceTypes = appServiceInfoProviders
-                .SelectMany(GetAppServices)
-                .Select(NormalizeAppService)
-                .ToList();
+            var existingContracts = ambientServices.TryGetServiceInstance<IContractDeclarationCollection>();
+            contracts = existingContracts is null
+                ? new ContractDeclarationCollection(contracts)
+                : new ContractDeclarationCollection(
+                    ((ICollection<ContractDeclaration>)new List<ContractDeclaration>(existingContracts)).AddRange(contracts));
+            ambientServices.Replace((IContractDeclarationCollection)contracts);
 
             if (logger.IsDebugEnabled())
             {
@@ -738,8 +674,8 @@ namespace Kephas
             }
 
             var serviceMap = BuildServiceMap(
-                appServiceInfoList,
-                serviceTypes,
+                contracts,
+                services,
                 logger);
 
             if (logger.IsDebugEnabled())

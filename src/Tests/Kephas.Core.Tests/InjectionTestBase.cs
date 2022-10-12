@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests
             ambientServices
                 .Add(logManager)
                 .WithAppRuntime(appRuntime);
-            return new LiteInjectorBuilder(new AppServiceCollectionBuildContext(ambientServices));
+            return new LiteInjectorBuilder(new AppServiceCollectionBuilder(ambientServices));
         }
 
         public IServiceProvider CreateInjector(params Assembly[] assemblies)

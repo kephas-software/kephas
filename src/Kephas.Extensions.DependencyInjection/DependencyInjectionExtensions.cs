@@ -73,8 +73,8 @@ public static class DependencyInjectionExtensions
 
         services.AddGenericCollections();
 
-        var buildContext = new AppServiceCollectionBuildContext(ambientServices);
-        buildContext.Build();
+        var serviceBuilder = new AppServiceCollectionBuilder(ambientServices);
+        serviceBuilder.Build();
 
         foreach (var appServiceInfo in ambientServices)
         {

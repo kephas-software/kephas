@@ -43,13 +43,16 @@ namespace Kephas.Reflection
                     || assemblyFullName.StartsWith("Mono");
             };
 
+        private static Func<AssemblyName, bool>? isSystemAssemblyFunc = IsSystemAssemblyFuncValue;
+
         /// <summary>
-        /// Gets or sets the function to check whether an assembly is a system assembly.
+        /// Sets the callback invoked when <see cref="IsSystemAssembly(System.Reflection.Assembly)"/> is called.
         /// </summary>
-        /// <value>
-        /// A function delegate that yields a bool.
-        /// </value>
-        public static Func<AssemblyName, bool> IsSystemAssemblyFunc { get; set; } = IsSystemAssemblyFuncValue;
+        /// <param name="callback">The callback. If <c>null</c>, no check is performed and all assemblies are considered as being not system.</param>
+        public static void OnIsSystemAssembly(Func<AssemblyName, bool>? callback)
+        {
+            isSystemAssemblyFunc = callback;
+        }
 
         /// <summary>
         /// Indicates whether the identifier is private.
@@ -254,7 +257,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this Assembly assembly)
         {
-            return IsSystemAssemblyFunc?.Invoke(assembly.GetName()) ?? false;
+            return isSystemAssemblyFunc?.Invoke(assembly.GetName()) ?? false;
         }
 
         /// <summary>
@@ -266,7 +269,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this AssemblyName assemblyName)
         {
-            return IsSystemAssemblyFunc?.Invoke(assemblyName) ?? false;
+            return isSystemAssemblyFunc?.Invoke(assemblyName) ?? false;
         }
 
         /// <summary>

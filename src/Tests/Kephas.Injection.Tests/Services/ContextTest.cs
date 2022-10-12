@@ -46,19 +46,7 @@ namespace Kephas.Tests.Services
         public void Constructor_sync_injection_context_and_ambient_services()
         {
             var injector = Substitute.For<IServiceProvider>();
-            var ambientServices = Substitute.For<IAmbientServices>();
-            injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new Context(injector);
-            Assert.AreSame(ambientServices, context.AmbientServices);
-        }
-
-        [Test]
-        public void Constructor_sync_ambient_services_and_injection_context()
-        {
-            var injector = Substitute.For<IServiceProvider>();
-            var ambientServices = Substitute.For<IAmbientServices>();
-            ambientServices.Injector.Returns(injector);
-            var context = new Context(ambientServices);
             Assert.AreSame(injector, context.ServiceProvider);
         }
 

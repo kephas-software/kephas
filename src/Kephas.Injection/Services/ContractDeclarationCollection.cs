@@ -22,7 +22,7 @@ public class ContractDeclarationCollection : IContractDeclarationCollection
     /// <param name="contracts">The contract declarations.</param>
     public ContractDeclarationCollection(IEnumerable<ContractDeclaration> contracts)
     {
-        this.contracts = contracts ?? throw new ArgumentNullException(nameof(contracts));
+        this.contracts = new List<ContractDeclaration>(contracts ?? throw new ArgumentNullException(nameof(contracts)));
     }
 
     /// <summary>Returns an enumerator that iterates through the collection.</summary>

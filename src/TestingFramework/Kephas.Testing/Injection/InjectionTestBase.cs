@@ -14,6 +14,7 @@ namespace Kephas.Testing.Injection
     using System.Text;
 
     using Kephas.Application;
+    using Kephas.Collections;
     using Kephas.Diagnostics.Logging;
     using Kephas.Injection;
     using Kephas.Injection.Builder;
@@ -32,7 +33,7 @@ namespace Kephas.Testing.Injection
     public class InjectionTestBase : TestBase
     {
         /// <summary>
-        /// Creates a container builder for further configuration.
+        /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
         ///                               will be created as linked to the newly created container.</param>
@@ -41,8 +42,8 @@ namespace Kephas.Testing.Injection
         /// <returns>
         /// A LiteInjectorBuilder.
         /// </returns>
-        public virtual IAppServiceCollectionBuildContext WithInjectorBuilder(
-            IAmbientServices? ambientServices = null,
+        private IAppServiceCollectionBuilder CreateAppServiceCollectionBuilder(
+            IAmbientServices ambientServices,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
@@ -50,11 +51,11 @@ namespace Kephas.Testing.Injection
             logManager ??= ambientServices?.TryGetServiceInstance<ILogManager>() ?? new DebugLogManager(log);
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices = (ambientServices ?? this.CreateAmbientServices())
+            ambientServices = ambientServices
                 .Add(logManager)
                 .WithAppRuntime(appRuntime)
                 .Add(log);
-            return new AppServiceCollectionBuildContext(ambientServices);
+            return new AppServiceCollectionBuilder(ambientServices);
         }
 
         /// <summary>
@@ -72,7 +73,6 @@ namespace Kephas.Testing.Injection
         /// <summary>
         /// Creates a container for the provided convention assemblies and parts.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance will be created as linked to the newly created container.</param>
         /// <param name="assemblies">Optional. A variable-length parameters list containing assemblies.</param>
         /// <param name="parts">Optional. The parts.</param>
         /// <param name="config">Optional. The configuration.</param>
@@ -82,42 +82,27 @@ namespace Kephas.Testing.Injection
         /// The new container.
         /// </returns>
         public virtual IServiceProvider BuildServiceProvider(
-            IAmbientServices? ambientServices = null,
             IEnumerable<Assembly>? assemblies = null,
             IEnumerable<Type>? parts = null,
             Action<IAmbientServices>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var allParts = this.GetDefaultParts().ToList();
             allParts.AddRange(parts ?? Type.EmptyTypes);
-            var containerBuilder = this.WithInjectorBuilder(ambientServices, logManager, appRuntime)
-                    .WithAssemblies(this.GetAssemblies())
-                    .WithAssemblies(assemblies ?? Array.Empty<Assembly>())
-                    .WithParts(allParts);
+            var servicesBuilder = this.CreateAppServiceCollectionBuilder(ambientServices, logManager, appRuntime);
+            servicesBuilder.Assemblies
+                .AddRange(this.GetAssemblies())
+                .AddRange(assemblies ?? Array.Empty<Assembly>());
+            servicesBuilder.Assemblies
+                .WithParts(allParts);
 
-            config?.Invoke(containerBuilder);
+            config?.Invoke(servicesBuilder);
 
-            var container = containerBuilder.Build();
+            var container = servicesBuilder.Build();
             ambientServices.Add(container);
             return container;
-        }
-
-        public IServiceProvider BuildServiceProviderWith(Action<LiteInjectorBuilder>? config = null)
-        {
-            var builder = this.WithInjectorBuilder()
-                .WithAssemblies(typeof(IServiceProvider).Assembly);
-            config?.Invoke(builder);
-            return builder.Build();
-        }
-
-        public IServiceProvider BuildServiceProviderWith(IAmbientServices ambientServices, params Type[] types)
-        {
-            return this.WithInjectorBuilder(ambientServices)
-                .WithAssemblies(typeof(IServiceProvider).Assembly)
-                .WithParts(types)
-                .Build();
         }
 
         /// <summary>
@@ -131,10 +116,9 @@ namespace Kephas.Testing.Injection
         {
             return new List<Assembly>
                        {
-                           typeof(IServiceProvider).Assembly,              /* Kephas.Injection */
+                           typeof(IAmbientServices).Assembly,       /* Kephas.Injection */
                            typeof(IEventHub).Assembly,              /* Kephas.Interaction */
                            typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
-                           typeof(AmbientServices).Assembly,        /* Kephas.Core*/
                        };
         }
 

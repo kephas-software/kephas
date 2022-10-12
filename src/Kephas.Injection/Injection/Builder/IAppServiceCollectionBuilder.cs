@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppServiceCollectionBuildContext.cs" company="Kephas Software SRL">
+// <copyright file="IAppServiceCollectionBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAppServiceCollectionBuildContext interface.
+//   Declares the IAppServiceCollectionBuilder interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,16 +12,16 @@ namespace Kephas.Injection.Builder
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Security.Principal;
 
+    using Kephas.Dynamic;
     using Kephas.Injection.Configuration;
-    using Kephas.Injection.Resources;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
-    /// Contract interface for building <see cref="IAmbientServices"/>.
+    /// Contract interface for <see cref="IAmbientServices"/> builders.
     /// </summary>
-    public interface IAppServiceCollectionBuildContext : IContext
+    public interface IAppServiceCollectionBuilder : IDynamic, ILoggable
     {
         /// <summary>
         /// Gets the ambient services.
@@ -47,24 +47,9 @@ namespace Kephas.Injection.Builder
         InjectionSettings Settings { get; }
 
         /// <summary>
-        /// Gets a context for the dependency injection/composition.
+        /// Adds the application services from the <see cref="IAppServiceInfosProvider"/>s identified in the assemblies.
         /// </summary>
-        /// <value>
-        /// The injector.
-        /// </value>
-        IServiceProvider IContext.ServiceProvider
-            => throw new ServiceException(Strings.ServiceProviderIsBeingBuilt);
-
-        /// <summary>
-        /// Gets or sets the authenticated identity.
-        /// </summary>
-        /// <value>
-        /// The authenticated identity.
-        /// </value>
-        IIdentity? IContext.Identity
-        {
-            get => null;
-            set { }
-        }
+        /// <returns>The provided ambient services.</returns>
+        IAmbientServices Build();
     }
 }
