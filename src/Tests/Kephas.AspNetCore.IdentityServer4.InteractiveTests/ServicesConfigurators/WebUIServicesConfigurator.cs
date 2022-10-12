@@ -7,13 +7,9 @@
 
 namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.ServicesConfigurators
 {
-    using System.Linq;
-
     using Kephas;
     using Kephas.Application.AspNetCore;
     using Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions;
-    using Kephas.Collections;
-    using Microsoft.AspNetCore.Mvc.ApplicationParts;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
