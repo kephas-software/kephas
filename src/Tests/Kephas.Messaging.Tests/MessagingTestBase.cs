@@ -21,7 +21,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class MessagingTestBase : InjectionTestBase
+    public class MessagingTestBase  : TestBase
     {
         public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,

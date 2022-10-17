@@ -14,9 +14,9 @@ namespace Kephas.Scripting.Tests
     using System.Reflection;
     using Kephas.Testing.Injection;
 
-    public class ScriptingTestBase : InjectionTestBase
+    public class ScriptingTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

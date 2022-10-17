@@ -15,7 +15,7 @@ namespace Kephas.Workflow.Model.Tests
 
     public abstract class WorkflowModelTestBase : ModelTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

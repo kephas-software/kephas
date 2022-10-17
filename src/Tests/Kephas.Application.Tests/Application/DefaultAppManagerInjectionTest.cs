@@ -23,7 +23,7 @@ namespace Kephas.Tests.Application
     [TestFixture]
     public class DefaultAppManagerInjectionTest : ApplicationTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

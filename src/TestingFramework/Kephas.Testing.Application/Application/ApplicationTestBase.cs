@@ -25,7 +25,7 @@ namespace Kephas.Testing.Application
     ///   * Kephas.Core
     ///   * Kephas.Application
     /// </content>
-    public class ApplicationTestBase : InjectionTestBase
+    public class ApplicationTestBase : TestBase
     {
         /// <summary>
         /// Gets the default convention assemblies to be considered when building the container. By
@@ -35,7 +35,7 @@ namespace Kephas.Testing.Application
         /// An enumerator that allows foreach to be used to process the default convention assemblies in
         /// this collection.
         /// </returns>
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
                        {

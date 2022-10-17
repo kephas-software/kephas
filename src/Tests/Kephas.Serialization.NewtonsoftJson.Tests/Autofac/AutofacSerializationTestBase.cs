@@ -17,7 +17,7 @@ namespace Kephas.Serialization.Json.Tests.Autofac
 
     public class AutofacSerializationTestBase : AutofacInjectionTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {

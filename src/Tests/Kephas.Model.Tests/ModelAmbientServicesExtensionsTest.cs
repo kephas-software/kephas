@@ -19,7 +19,7 @@ namespace Kephas.Model.Tests
     [TestFixture]
     public class ModelAmbientServicesExtensionsTest : ModelTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

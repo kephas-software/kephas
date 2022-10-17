@@ -15,7 +15,6 @@ namespace Kephas.Tests.Injection.Autofac
     using Kephas.Injection.Autofac;
     using Kephas.Services;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,11 +25,10 @@ namespace Kephas.Tests.Injection.Autofac
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
-            builder
+            var injector = builder
                 .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test")))
                 .BuildWithAutofac();
 
-            var injector = ambientServices.Injector;
             Assert.IsInstanceOf<AutofacServiceProvider>(injector);
         }
 
@@ -39,11 +37,10 @@ namespace Kephas.Tests.Injection.Autofac
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
-            builder
+            var injector = builder
                 .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
                 .BuildWithAutofac(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
-            var injector = ambientServices.Injector;
             var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
         }
@@ -53,11 +50,10 @@ namespace Kephas.Tests.Injection.Autofac
         {
             IAmbientServices ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
-            builder
+            var injector = builder
                 .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
                 .BuildWithAutofac(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
-            var injector = ambientServices.Injector;
             var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);
         }

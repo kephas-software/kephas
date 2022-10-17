@@ -44,7 +44,6 @@
     <ProjectReference Include="..\..\Kephas.Data.Model\Kephas.Data.Model.csproj" />
     <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
     <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj" />
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.Autofac\Kephas.Testing.Injection.Autofac.csproj" />
   </ItemGroup>
 
 </Project>

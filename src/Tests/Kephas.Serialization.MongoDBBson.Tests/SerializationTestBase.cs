@@ -14,9 +14,9 @@ namespace Kephas.Serialization.Bson.Tests
     using System.Reflection;
     using Kephas.Testing.Injection;
 
-    public class SerializationTestBase : InjectionTestBase
+    public class SerializationTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {

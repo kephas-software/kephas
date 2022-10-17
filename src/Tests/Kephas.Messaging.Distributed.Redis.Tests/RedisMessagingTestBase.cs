@@ -27,9 +27,9 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Serialization.Json;
     using Kephas.Testing.Injection;
 
-    public abstract class RedisMessagingTestBase : InjectionTestBase
+    public abstract class RedisMessagingTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

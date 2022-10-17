@@ -27,7 +27,7 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
     using NUnit.Framework;
 
     [TestFixture]
-    public class PermissionsModelRegistryTest : InjectionTestBase
+    public class PermissionsModelRegistryTest : TestBase
     {
         [Test]
         public async Task GetRuntimeElementsAsync()

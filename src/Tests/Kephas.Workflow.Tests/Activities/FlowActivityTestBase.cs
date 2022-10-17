@@ -12,7 +12,7 @@ using Kephas.Operations;
 using Kephas.Testing.Injection;
 using NSubstitute;
 
-public abstract class FlowActivityTestBase : InjectionTestBase
+public abstract class FlowActivityTestBase  : TestBase
 {
     protected IActivityContext CreateActivityContext(IDynamic? scope = null)
     {

@@ -30,6 +30,17 @@ public static class AutofacExtensions
     /// <summary>
     /// Builds the injector with Autofac and adds it to the ambient services.
     /// </summary>
+    /// <param name="servicesBuilder">The services builder.</param>
+    /// <param name="containerBuilder">The container builder.</param>
+    /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
+    /// <param name="logger">Optional. The logger.</param>
+    /// <returns>The provided ambient services.</returns>
+    public static IServiceProvider BuildWithAutofac(this IAppServiceCollectionBuilder servicesBuilder, ContainerBuilder? containerBuilder = null, bool preserveRegistrationOrder = true, ILogger? logger = null) =>
+        BuildWithAutofac(servicesBuilder.Build(), containerBuilder, preserveRegistrationOrder, logger);
+
+    /// <summary>
+    /// Builds the injector with Autofac and adds it to the ambient services.
+    /// </summary>
     /// <param name="ambientServices">The ambient services.</param>
     /// <param name="containerBuilder">The container builder.</param>
     /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>

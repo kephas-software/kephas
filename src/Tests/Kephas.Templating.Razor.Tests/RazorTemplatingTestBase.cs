@@ -10,9 +10,9 @@ namespace Kephas.Templating.Razor.Tests;
 using System.Reflection;
 using Kephas.Testing.Injection;
 
-public abstract class RazorTemplatingTestBase : InjectionTestBase
+public abstract class RazorTemplatingTestBase  : TestBase
 {
-    public override IEnumerable<Assembly> GetAssemblies()
+    protected override IEnumerable<Assembly> GetAssemblies()
     {
         return new List<Assembly>(base.GetAssemblies())
         {

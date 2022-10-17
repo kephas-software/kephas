@@ -14,7 +14,7 @@ using Kephas.Testing.Injection;
 
 public class AutofacConnectivityTestBase : AutofacInjectionTestBase
 {
-    public override IEnumerable<Assembly> GetAssemblies()
+    protected override IEnumerable<Assembly> GetAssemblies()
     {
         return new List<Assembly>(base.GetAssemblies())
             {

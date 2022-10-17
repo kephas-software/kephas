@@ -35,7 +35,7 @@ namespace Kephas
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
-            var existingAppRuntime = ambientServices.GetAppRuntime();
+            var existingAppRuntime = ambientServices.TryGetServiceInstance<IAppRuntime>();
             if (existingAppRuntime != null && existingAppRuntime != appRuntime)
             {
                 ServiceHelper.Finalize(existingAppRuntime);
@@ -44,7 +44,14 @@ namespace Kephas
             if (existingAppRuntime != appRuntime)
             {
                 ServiceHelper.Initialize(appRuntime);
-                ambientServices.Add(appRuntime);
+                if (existingAppRuntime != null)
+                {
+                    ambientServices.Replace(appRuntime);
+                }
+                else
+                {
+                    ambientServices.Add(appRuntime);
+                }
             }
 
             return ambientServices;

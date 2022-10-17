@@ -389,8 +389,7 @@ namespace Kephas.Application
         /// <returns>
         /// True if assembly match, false if not, <c>null</c> if the assembly matches the name but not the version or public key token.
         /// </returns>
-        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version,
-            byte[]? publicKeyToken)
+        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[]? publicKeyToken)
         {
             if (assemblyName.Name != name)
             {

@@ -57,7 +57,7 @@ namespace Kephas.Model.Tests
             Assert.IsTrue((modelSpace as IConstructibleElement)?.ConstructionState.IsCompleted);
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var baseAssemblies = base.GetAssemblies().ToList();
             baseAssemblies.Add(typeof(IModelSpace).Assembly);

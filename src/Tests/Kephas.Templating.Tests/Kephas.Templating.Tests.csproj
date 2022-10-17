@@ -33,7 +33,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Templating\Kephas.Templating.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.Autofac\Kephas.Testing.Injection.Autofac.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 

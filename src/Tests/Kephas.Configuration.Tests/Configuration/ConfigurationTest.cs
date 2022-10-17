@@ -24,14 +24,15 @@ namespace Kephas.Tests.Configuration
     using Kephas.Interaction;
     using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Testing;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class ConfigurationTest : InjectionTestBase
+    public class ConfigurationTest : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
@@ -89,7 +90,9 @@ namespace Kephas.Tests.Configuration
         public void Injection_Configuration_specific_provider()
         {
             // specific provider
-            var container = this.BuildServiceProvider(parts: new[] { typeof(TestConfigurationProvider) });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(ISettingsProvider), typeof(TestConfigurationProvider))
+                .BuildWithDependencyInjection();
 
             var config = container.Resolve<IConfiguration<TestSettings>>();
             Assert.AreSame(TestConfigurationProvider.Settings, config.GetSettings());
@@ -99,7 +102,9 @@ namespace Kephas.Tests.Configuration
         public async Task Injection_Configuration_change_signal_skipped_when_not_changed()
         {
             // specific provider
-            var container = this.BuildServiceProvider(parts: new[] { typeof(TestConfigurationProvider) });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(ISettingsProvider), typeof(TestConfigurationProvider))
+                .BuildWithDependencyInjection();
             var eventHub = container.Resolve<IEventHub>();
             var appRuntime = container.Resolve<IAppRuntime>();
             var configChanged = 0;
@@ -118,7 +123,9 @@ namespace Kephas.Tests.Configuration
         public async Task Injection_Configuration_change_signal_when_changed()
         {
             // specific provider
-            var container = this.BuildServiceProvider(parts: new[] { typeof(TestConfigurationProvider) });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(ISettingsProvider), typeof(TestConfigurationProvider))
+                .BuildWithDependencyInjection();
             var eventHub = container.Resolve<IEventHub>();
             var appRuntime = container.Resolve<IAppRuntime>();
             var configChanged = 0;

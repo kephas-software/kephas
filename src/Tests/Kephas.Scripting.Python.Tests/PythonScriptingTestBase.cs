@@ -4,9 +4,9 @@ using System.Reflection;
 using Kephas.Configuration;
 using Kephas.Testing.Injection;
 
-public abstract class PythonScriptingTestBase : InjectionTestBase
+public abstract class PythonScriptingTestBase  : TestBase
 {
-    public override IEnumerable<Assembly> GetAssemblies()
+    protected override IEnumerable<Assembly> GetAssemblies()
     {
         return new List<Assembly>(base.GetAssemblies())
         {

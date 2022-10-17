@@ -22,7 +22,7 @@ namespace Kephas.Commands.Messaging.Tests
     [TestFixture]
     public class MessagingCommandRegistryTest : CommandsTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

@@ -21,9 +21,9 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class SerializationTestBase : InjectionTestBase
+    public class SerializationTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {

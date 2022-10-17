@@ -105,7 +105,6 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Analyzers\Kephas.Analyzers",
     "..\TestingFramework\Kephas.Testing",
     "..\TestingFramework\Kephas.Testing.Application",
-    "..\TestingFramework\Kephas.Testing.Injection.Autofac",
     "..\TestingFramework\Kephas.Testing.Model"
 ) }
 Else

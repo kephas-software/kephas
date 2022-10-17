@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Configuration;
-using Kephas.Operations;
-
 namespace Kephas.Testing.Model
 {
     using System;
@@ -18,18 +15,20 @@ namespace Kephas.Testing.Model
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Configuration;
     using Kephas.Model;
     using Kephas.Model.Runtime;
+    using Kephas.Operations;
     using Kephas.Runtime;
-    using Kephas.Testing.Injection;
     using NSubstitute;
 
     /// <summary>
     /// A model test base.
     /// </summary>
-    public abstract class ModelTestBase : InjectionTestBase
+    public abstract class ModelTestBase : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

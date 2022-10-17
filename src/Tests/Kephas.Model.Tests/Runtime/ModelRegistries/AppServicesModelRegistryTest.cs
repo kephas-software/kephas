@@ -28,7 +28,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesModelRegistryTest : InjectionTestBase
+    public class AppServicesModelRegistryTest : TestBase
     {
         public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,

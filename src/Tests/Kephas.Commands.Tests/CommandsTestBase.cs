@@ -19,7 +19,7 @@ namespace Kephas.Commands.Tests
     using Kephas.Logging;
     using Kephas.Testing.Injection;
 
-    public abstract class CommandsTestBase : InjectionTestBase
+    public abstract class CommandsTestBase  : TestBase
     {
         public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,
@@ -39,7 +39,7 @@ namespace Kephas.Commands.Tests
             return base.BuildServiceProvider(ambientServices, assemblies, parts, config);
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = base.GetAssemblies().ToList();
             assemblies.AddRange(new[]

@@ -22,7 +22,7 @@ namespace Kephas.Data.MongoDB.Tests
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
 
-    public abstract class MongoTestBase : InjectionTestBase
+    public abstract class MongoTestBase  : TestBase
     {
         private const string MongoTestDataStoreName = "mongotest";
 
@@ -48,7 +48,7 @@ namespace Kephas.Data.MongoDB.Tests
             };
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

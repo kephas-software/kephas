@@ -31,7 +31,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     /// Tests for <see cref="ModelAssemblyRegistry"/>.
     /// </summary>
     [TestFixture]
-    public class ModelAssemblyRegistryTest : InjectionTestBase
+    public class ModelAssemblyRegistryTest : TestBase
     {
         public override IServiceProvider BuildServiceProvider(
             IAmbientServices? ambientServices = null,

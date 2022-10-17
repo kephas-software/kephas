@@ -26,9 +26,9 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Serialization.Json;
     using Kephas.Testing.Injection;
 
-    public abstract class PipesMessagingTestBase : InjectionTestBase
+    public abstract class PipesMessagingTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

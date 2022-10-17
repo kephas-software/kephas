@@ -5,14 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Castle.Core.Internal;
-
 namespace Kephas.Testing.Injection
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
+    using Castle.Core.Internal;
     using Kephas.Injection.AttributedModel;
     using Kephas.Services;
 

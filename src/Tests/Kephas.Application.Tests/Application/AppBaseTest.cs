@@ -26,7 +26,7 @@ namespace Kephas.Tests.Application
     [TestFixture]
     public class AppBaseTest : ApplicationTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

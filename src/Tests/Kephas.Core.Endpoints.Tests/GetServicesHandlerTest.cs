@@ -24,9 +24,9 @@ namespace Kephas.Core.Endpoints.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class GetServicesHandlerTest : InjectionTestBase
+    public class GetServicesHandlerTest : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

@@ -26,9 +26,9 @@ namespace Kephas.Plugins.NuGet.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class NuGetPluginManagerTest : InjectionTestBase
+    public class NuGetPluginManagerTest : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
             {

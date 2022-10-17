@@ -17,7 +17,7 @@ namespace Kephas.Templating.Tests.Injection.Autofac
 
     public class AutofacTemplatingTestBase : AutofacInjectionTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

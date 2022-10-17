@@ -12,9 +12,9 @@ namespace Kephas.Connectivity.Tests
 
     using Kephas.Testing.Injection;
 
-    public class ConnectivityTestBase : InjectionTestBase
+    public class ConnectivityTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

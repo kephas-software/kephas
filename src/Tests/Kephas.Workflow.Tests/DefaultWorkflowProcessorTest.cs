@@ -25,7 +25,7 @@ namespace Kephas.Workflow.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultWorkflowProcessorTest : InjectionTestBase
+    public class DefaultWorkflowProcessorTest : TestBase
     {
         [Test]
         public void Injection()

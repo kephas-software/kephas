@@ -14,9 +14,9 @@ namespace Kephas.Scheduling.Tests
     using Kephas.Testing.Injection;
     using Kephas.Workflow;
 
-    public abstract class SchedulingTestBase : InjectionTestBase
+    public abstract class SchedulingTestBase  : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
