@@ -47,12 +47,14 @@ namespace Kephas.Testing.Model
             return registry;
         }
 
-        public IServiceProvider CreateServicesBuilderForModel(params Type[] elements)
+        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(params Type[] elements)
         {
             return this.CreateServicesBuilderForModel(ambientServices: null, elements: elements);
         }
 
-        public IServiceProvider CreateServicesBuilderForModel(IAmbientServices? ambientServices, params Type[] elements)
+        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(
+            IAmbientServices? ambientServices,
+            params Type[] elements)
         {
             var builder = this
                     .CreateServicesBuilder(ambientServices: ambientServices)
@@ -63,21 +65,18 @@ namespace Kephas.Testing.Model
             return builder;
         }
 
-        public IServiceProvider CreateServicesBuilderForModel(Type[] parts, Type[] elements)
+        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(Type[] parts, Type[] elements)
         {
             return this.CreateServicesBuilderForModel(ambientServices: null, parts: parts, elements: elements);
         }
 
-        public IServiceProvider CreateServicesBuilderForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
+        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(
+            IAmbientServices? ambientServices,
+            Type[] parts,
+            Type[] elements)
         {
-            var container = this.
-                BuildServiceProvider(
-                ambientServices: ambientServices,
-                assemblies: new[] { typeof(IModelSpace).Assembly },
-                parts: parts,
-                config: b => b.ForFactory(_ => this.GetModelRegistry(elements)).Singleton().AllowMultiple());
-
-            return container;
+            return this.CreateServicesBuilderForModel(ambientServices, elements)
+                .WithParts(parts);
         }
     }
 }
