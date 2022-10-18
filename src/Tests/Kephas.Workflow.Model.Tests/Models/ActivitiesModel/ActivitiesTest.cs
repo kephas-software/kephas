@@ -25,7 +25,7 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
             var typeRegistry = new RuntimeTypeRegistry();
             typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
 
-            var container = this.CreateInjectorForModel(
+            var container = this.CreateServicesBuilderForModel(
                 new AmbientServices().Add<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()),
                 typeof(ILaughActivity),
                 typeof(IEnjoyActivity));

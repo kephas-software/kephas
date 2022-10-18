@@ -17,6 +17,7 @@ namespace Kephas.Testing.Model
     using System.Threading.Tasks;
 
     using Kephas.Configuration;
+    using Kephas.Injection.Builder;
     using Kephas.Model;
     using Kephas.Model.Runtime;
     using Kephas.Operations;
@@ -46,29 +47,31 @@ namespace Kephas.Testing.Model
             return registry;
         }
 
-        public IServiceProvider CreateInjectorForModel(params Type[] elements)
+        public IServiceProvider CreateServicesBuilderForModel(params Type[] elements)
         {
-            return this.CreateInjectorForModel(ambientServices: null, elements: elements);
+            return this.CreateServicesBuilderForModel(ambientServices: null, elements: elements);
         }
 
-        public IServiceProvider CreateInjectorForModel(IAmbientServices? ambientServices, params Type[] elements)
+        public IServiceProvider CreateServicesBuilderForModel(IAmbientServices? ambientServices, params Type[] elements)
         {
-            var container = this.BuildServiceProvider(
-                ambientServices: ambientServices,
-                assemblies: new[] { typeof(IModelSpace).Assembly },
-                config: b => b.ForFactory(_ => this.GetModelRegistry(elements)).Singleton().AllowMultiple());
+            var builder = this
+                    .CreateServicesBuilder(ambientServices: ambientServices)
+                    .WithAssemblies(typeof(IModelSpace).Assembly);
 
-            return container;
+            builder.AmbientServices.Add(_ => this.GetModelRegistry(elements), b => b.Singleton().AllowMultiple());
+
+            return builder;
         }
 
-        public IServiceProvider CreateInjectorForModel(Type[] parts, Type[] elements)
+        public IServiceProvider CreateServicesBuilderForModel(Type[] parts, Type[] elements)
         {
-            return this.CreateInjectorForModel(ambientServices: null, parts: parts, elements: elements);
+            return this.CreateServicesBuilderForModel(ambientServices: null, parts: parts, elements: elements);
         }
 
-        public IServiceProvider CreateInjectorForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
+        public IServiceProvider CreateServicesBuilderForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
         {
-            var container = this.BuildServiceProvider(
+            var container = this.
+                BuildServiceProvider(
                 ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).Assembly },
                 parts: parts,

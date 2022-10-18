@@ -26,7 +26,7 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
             var typeRegistry = new RuntimeTypeRegistry();
             typeRegistry.RegisterFactory(new SecurityTypeInfoFactory());
 
-            var container = this.CreateInjectorForModel(
+            var container = this.CreateServicesBuilderForModel(
                 new AmbientServices().Add<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()),
                 typeof(IDoPermission),
                 typeof(ISpecialDoPermission));
