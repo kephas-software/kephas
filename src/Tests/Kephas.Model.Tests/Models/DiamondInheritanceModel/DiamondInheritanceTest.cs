@@ -22,7 +22,9 @@ namespace Kephas.Model.Tests.Models.DiamondInheritanceModel
         [Test]
         public async Task InitializeAsync_members_inherited_once()
         {
-            var container = this.CreateServicesBuilderForModel(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter), typeof(IAppParameter));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter), typeof(IAppParameter))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

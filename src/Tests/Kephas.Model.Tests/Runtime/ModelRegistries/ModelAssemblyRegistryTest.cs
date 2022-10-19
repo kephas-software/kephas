@@ -23,6 +23,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Testing;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;

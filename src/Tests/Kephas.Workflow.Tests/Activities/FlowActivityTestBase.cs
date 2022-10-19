@@ -9,6 +9,7 @@ namespace Kephas.Workflow.Tests.Activities;
 
 using Kephas.Dynamic;
 using Kephas.Operations;
+using Kephas.Testing;
 using Kephas.Testing.Injection;
 using NSubstitute;
 

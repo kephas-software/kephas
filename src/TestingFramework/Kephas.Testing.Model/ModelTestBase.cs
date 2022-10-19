@@ -10,19 +10,12 @@
 
 namespace Kephas.Testing.Model
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Kephas.Configuration;
-    using Kephas.Injection.Builder;
-    using Kephas.Model;
-    using Kephas.Model.Runtime;
     using Kephas.Operations;
     using Kephas.Runtime;
-    using NSubstitute;
 
     /// <summary>
     /// A model test base.
@@ -37,46 +30,6 @@ namespace Kephas.Testing.Model
                 typeof(IConfiguration<>).Assembly,  // Kephas.Configuration
                 typeof(IOperationResult).Assembly,  // Kephas.Operations
             };
-        }
-
-        public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
-        {
-            var registry = Substitute.For<IRuntimeModelRegistry>();
-            registry.GetRuntimeElementsAsync(Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult<IEnumerable<object>>(elements));
-            return registry;
-        }
-
-        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(params Type[] elements)
-        {
-            return this.CreateServicesBuilderForModel(ambientServices: null, elements: elements);
-        }
-
-        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(
-            IAmbientServices? ambientServices,
-            params Type[] elements)
-        {
-            var builder = this
-                    .CreateServicesBuilder(ambientServices: ambientServices)
-                    .WithAssemblies(typeof(IModelSpace).Assembly);
-
-            builder.AmbientServices.Add(_ => this.GetModelRegistry(elements), b => b.Singleton().AllowMultiple());
-
-            return builder;
-        }
-
-        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(Type[] parts, Type[] elements)
-        {
-            return this.CreateServicesBuilderForModel(ambientServices: null, parts: parts, elements: elements);
-        }
-
-        public IAppServiceCollectionBuilder CreateServicesBuilderForModel(
-            IAmbientServices? ambientServices,
-            Type[] parts,
-            Type[] elements)
-        {
-            return this.CreateServicesBuilderForModel(ambientServices, elements)
-                .WithParts(parts);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Kephas.Model.Tests
     using System.Threading.Tasks;
 
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Runtime.Configuration;
@@ -47,7 +48,9 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_using_injection()
         {
-            var container = this.BuildServiceProvider(typeof(IModelSpace).Assembly);
+            var container = this.CreateServicesBuilder()
+                .WithAssemblies(typeof(IModelSpace).Assembly)
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

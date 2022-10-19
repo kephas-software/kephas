@@ -16,6 +16,7 @@ namespace Kephas.Workflow.Tests
 
     using Kephas.Dynamic;
     using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Runtime;
     using Kephas.Testing;
     using Kephas.Testing.Injection;
@@ -30,9 +31,9 @@ namespace Kephas.Workflow.Tests
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider(
-                typeof(IWorkflowProcessor).Assembly,
-                typeof(DefaultWorkflowProcessor).Assembly);
+            var container = this.CreateServicesBuilder()
+                .WithAssemblies(typeof(IWorkflowProcessor).Assembly, typeof(DefaultWorkflowProcessor).Assembly)
+                .BuildWithDependencyInjection();
             var workflowProcessor = container.Resolve<IWorkflowProcessor>();
             Assert.IsInstanceOf<DefaultWorkflowProcessor>(workflowProcessor);
         }

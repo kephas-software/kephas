@@ -23,6 +23,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Reflection;
+    using Kephas.Testing;
     using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
@@ -30,25 +31,19 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class AppServicesModelRegistryTest : TestBase
     {
-        public override IServiceProvider BuildServiceProvider(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
-            ILogManager? logManager = null,
-            IAppRuntime? appRuntime = null)
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(AppServicesModelRegistry).Assembly, /* Kephas.Model */
             };
-            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
         public void AppServicesRegistry_Injection_success()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateServicesBuilder()
+                .BuildWithDependencyInjection();
             var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesModelRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }
