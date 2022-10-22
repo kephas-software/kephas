@@ -11,7 +11,6 @@ Typically used areas and classes/interfaces/services:
 Packages providing specific dependency injection implementations:
 * [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
-* [Kephas.Services.Lite](https://www.nuget.org/packages/Kephas.Services.Lite)
 
 ## Application services and dependency injection
 An application service is an in-process component handling a particular concern.
@@ -597,7 +596,6 @@ It aggregates the enabled rule services and applies them to each of the service 
 
 ## Other resources
 
-* [Kephas.Services.Lite](https://www.nuget.org/packages/Kephas.Services.Lite)
 * [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 

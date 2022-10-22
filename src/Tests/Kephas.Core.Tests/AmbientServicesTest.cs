@@ -13,15 +13,12 @@ namespace Kephas.Core.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Services;
-    using Kephas.Services.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -473,29 +470,6 @@ namespace Kephas.Core.Tests
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(RuntimeTypeRegistry.Instance, info.InstanceFactory(null));
-        }
-
-        [Test]
-        public void GetAppServiceInfos_no_services_for_lite_injection()
-        {
-            var ambientServices = (AmbientServices)this.CreateAmbientServices();
-            ambientServices[InjectorExtensions.LiteInjectionKey] = true;
-            var appServiceInfos = ambientServices.GetAppServiceContracts();
-
-            Assert.IsFalse(appServiceInfos.Any());
-        }
-
-        [Test]
-        public void GetAppServiceInfos_all_services_for_lite_injection_when_null_registration_context()
-        {
-            var ambientServices = (AmbientServices)this.CreateAmbientServices().WithStaticAppRuntime();
-            ambientServices[InjectorExtensions.LiteInjectionKey] = true;
-            var appServiceInfos = ambientServices.GetAppServiceContracts(null);
-
-            var (c, info) = appServiceInfos.SingleOrDefault(i => i.ContractDeclarationType == typeof(IAppRuntime));
-            Assert.IsNotNull(info);
-            Assert.IsNotNull(info.InstanceFactory);
-            Assert.AreSame(((IAmbientServices)ambientServices).GetAppRuntime(), info.InstanceFactory(null));
         }
 
         public interface IService { }

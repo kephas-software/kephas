@@ -16,13 +16,10 @@ namespace Kephas.Core.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Services;
-    using Kephas.Services.Builder;
-    using Kephas.Services.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Testing;
-    using Kephas.Testing.Services;
 
     /// <summary>
     /// Base class for tests using composition.

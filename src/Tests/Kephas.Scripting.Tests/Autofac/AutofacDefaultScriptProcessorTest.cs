@@ -8,18 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting.Tests.Injection.Autofac
+namespace Kephas.Scripting.Tests.Autofac
 {
     using System.Threading.Tasks;
+
+    using Kephas.Testing;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutofacDefaultScriptProcessorTest : AutofacScriptingTestBase
+    public class AutofacDefaultScriptProcessorTest : TestBase
     {
         [Test]
         public void DefaultMessageProcessor_Injection_success()
         {
-            var container = CreateInjector();
+            var container = this.CreateServicesBuilder()
+                .BuildWithAutofac();
             var scriptingEngine = container.Resolve<IScriptProcessor>();
             Assert.IsInstanceOf<DefaultScriptProcessor>(scriptingEngine);
 
@@ -30,7 +33,9 @@ namespace Kephas.Scripting.Tests.Injection.Autofac
         [Test]
         public async Task ExecuteAsync_Injection_success()
         {
-            var container = CreateInjector(parts: new[] { typeof(TestLanguageService) });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(TestLanguageService))
+                .BuildWithAutofac();
             var scriptingEngine = container.Resolve<IScriptProcessor>();
 
             var script = new StringScript("dummy", "test");

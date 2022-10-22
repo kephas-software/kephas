@@ -10,7 +10,9 @@
 
 namespace Kephas.Tests.Extensions.DependencyInjection
 {
+    using Kephas.Application;
     using Kephas.Services;
+    using Kephas.Testing;
     using NUnit.Framework;
 
     [TestFixture]

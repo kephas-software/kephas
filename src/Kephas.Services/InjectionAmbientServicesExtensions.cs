@@ -925,8 +925,7 @@ namespace Kephas
             }
             else
             {
-                // The first app service info in the list must be the contract declaration.
-                var appServiceInfoDeclaration = serviceEntry.Registrations.First();
+                var appServiceInfoDeclaration = serviceEntry.ContractAppServiceInfo;
                 var appServiceInfo = new AppServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ContractType ?? contractDeclarationType, contractDeclarationType, serviceType);
                 ((IAppServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(serviceType, contractDeclarationType));
                 serviceEntry.Registrations.Add(appServiceInfo);

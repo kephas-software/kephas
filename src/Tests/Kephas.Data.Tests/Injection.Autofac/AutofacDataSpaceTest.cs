@@ -13,7 +13,7 @@ namespace Kephas.Data.Tests.Injection.Autofac
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutofacDataSpaceTest : AutofacDataTestBase
+    public class AutofacDataSpaceTest : DataTestBase
     {
         [Test]
         public void Injection_success()

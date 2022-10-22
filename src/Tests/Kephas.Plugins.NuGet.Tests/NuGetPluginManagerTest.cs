@@ -22,6 +22,7 @@ namespace Kephas.Plugins.NuGet.Tests
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Plugins.Application;
+    using Kephas.Testing;
     using Kephas.Testing.Services;
     using NUnit.Framework;
 
@@ -45,7 +46,7 @@ namespace Kephas.Plugins.NuGet.Tests
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var manager = container.Resolve<IPluginManager>();
 
             Assert.IsInstanceOf<NuGetPluginManager>(manager);

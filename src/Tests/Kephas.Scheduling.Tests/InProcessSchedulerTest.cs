@@ -41,7 +41,7 @@ namespace Kephas.Scheduling.Tests
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var scheduler = container.Resolve<IScheduler>();
             Assert.IsInstanceOf<InProcessScheduler>(scheduler);
         }

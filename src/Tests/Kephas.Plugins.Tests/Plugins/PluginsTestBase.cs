@@ -25,6 +25,7 @@ namespace Kephas.Tests.Plugins
     using Kephas.Operations;
     using Kephas.Plugins;
     using Kephas.Services;
+    using Kephas.Testing;
     using Kephas.Testing.Services;
     using NSubstitute;
 

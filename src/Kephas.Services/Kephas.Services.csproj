@@ -100,6 +100,10 @@
           <Generator>ResXFileCodeGenerator</Generator>
           <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Services\Resources\Strings.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
