@@ -39,7 +39,8 @@ namespace Kephas.Tests.Orchestration
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider(this.CreateAmbientServices());
+            var container = this.CreateServicesBuilder(this.CreateAmbientServices())
+                .BuildWithAutofac();
 
             var manager = container.Resolve<IOrchestrationManager>();
 
@@ -50,7 +51,8 @@ namespace Kephas.Tests.Orchestration
         public async Task InitializeAsync_Heartbeat_integration()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.BuildServiceProvider(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices)
+                .BuildWithAutofac();
 
             var appManager = container.Resolve<IAppManager>();
             var orchManager = (DefaultOrchestrationManager)container.Resolve<IOrchestrationManager>();

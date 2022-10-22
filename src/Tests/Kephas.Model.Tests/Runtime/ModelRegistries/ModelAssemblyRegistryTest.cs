@@ -34,23 +34,26 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class ModelAssemblyRegistryTest : TestBase
     {
-        public override IServiceProvider BuildServiceProvider(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
-            ILogManager? logManager = null,
-            IAppRuntime? appRuntime = null)
+        /// <summary>
+        /// Gets the default convention types to be considered when building the container. By default it includes Kephas.Core.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default convention types in
+        /// this collection.
+        /// </returns>
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(ModelAssemblyRegistry).Assembly); /* Kephas.Model */
-            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config);
+            return new List<Assembly>(base.GetAssemblies())
+            {
+                typeof(ModelAssemblyRegistry).Assembly, /* Kephas.Model */
+            };
         }
 
         [Test]
         public void ModelAssemblyRegistry_Injection_success()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateServicesBuilder()
+                .BuildWithDependencyInjection();
             var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<ModelAssemblyRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }

@@ -30,7 +30,7 @@ namespace Kephas.Application.Console.Tests.Application
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var awaiter = container.Resolve<IAppMainLoop>();
 
             Assert.IsInstanceOf<ConsoleAppMainLoop>(awaiter);

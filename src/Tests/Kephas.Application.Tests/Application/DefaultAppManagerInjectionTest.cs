@@ -17,6 +17,8 @@ namespace Kephas.Tests.Application
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Services.Behaviors;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
     using Kephas.Versioning;
     using NUnit.Framework;
 
@@ -31,22 +33,27 @@ namespace Kephas.Tests.Application
             };
         }
 
-        public override IServiceProvider BuildServiceProvider(
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
             IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
+            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
+            ambientServices = builder.AmbientServices;
             if (!ambientServices.Contains(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.BuildServiceProvider(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            return builder;
+        }
+
+        protected IServiceProvider BuildServiceProvider(params Type[] parts)
+        {
+            return this.CreateServicesBuilder()
+                .WithParts(parts)
+                .BuildWithAutofac();
         }
 
         [Test]

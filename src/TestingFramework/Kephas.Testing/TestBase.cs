@@ -18,11 +18,10 @@ namespace Kephas.Testing
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Cryptography;
     using Kephas.Diagnostics.Logging;
-    using Kephas.Services;
-    using Kephas.Services.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -30,6 +29,7 @@ namespace Kephas.Testing
     using Kephas.Runtime;
     using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using NSubstitute;
     using NSubstitute.Core;
 

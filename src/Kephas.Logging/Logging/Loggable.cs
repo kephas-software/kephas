@@ -51,6 +51,16 @@ namespace Kephas.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
+        /// <param name="logger">The logger.</param>
+        protected Loggable(ILogger logger)
+        {
+            logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.lazyLogger = new Lazy<ILogger>(() => logger);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="logTarget">Optional. The log target type. Defaults to this type.</param>
         protected Loggable(ILogManager? logManager, Type? logTarget = null)

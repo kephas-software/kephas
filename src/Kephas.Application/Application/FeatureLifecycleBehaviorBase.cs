@@ -25,6 +25,15 @@ namespace Kephas.Application
         private bool isInitialized;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureLifecycleBehaviorBase"/> class.
+        /// </summary>
+        /// <param name="logger">The behavior logger.</param>
+        protected FeatureLifecycleBehaviorBase(ILogger<FeatureLifecycleBehaviorBase> logger)
+            : base(logger)
+        {
+        }
+
+        /// <summary>
         /// Interceptor called before a feature starts its asynchronous initialization.
         /// </summary>
         /// <remarks>

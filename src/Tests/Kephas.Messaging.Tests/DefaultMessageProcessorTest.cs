@@ -12,7 +12,6 @@ namespace Kephas.Messaging.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -20,43 +19,38 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Services;
-    using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.HandlerProviders;
     using Kephas.Messaging.Messages;
     using Kephas.Security.Authorization;
     using Kephas.Services;
-    using Kephas.Testing.Services;
+    using Kephas.Testing;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
 
+    [TestFixture]
+    public class DefaultMessageProcessorTest : DefaultMessageProcessorTestBase
+    {
+    }
+    
     /// <summary>
     /// Test class for <see cref="DefaultMessageProcessor"/>.
     /// </summary>
-    [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DefaultMessageProcessorTest : TestBase
+    public abstract class DefaultMessageProcessorTestBase : TestBase
     {
-        public override IServiceProvider BuildServiceProvider(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
-            ILogManager? logManager = null,
-            IAppRuntime? appRuntime = null)
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IMessageProcessor).Assembly,       /* Kephas.Messaging */
                 typeof(IAppLifecycleBehavior).Assembly,   /* Kephas.Application.Abstractions */
                 typeof(IAuthorizationService).Assembly,   /* Kephas.Security */
             };
-
-            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config);
         }
+
+        protected abstract IServiceProvider BuildServiceProvider();
 
         [Test]
         public void DefaultMessageProcessor_Injection_success()
