@@ -9,7 +9,7 @@ namespace Kephas.Templating.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-
+    using Kephas.Testing;
     using Kephas.Testing.Services;
 
     public class TemplatingTestBase  : TestBase
