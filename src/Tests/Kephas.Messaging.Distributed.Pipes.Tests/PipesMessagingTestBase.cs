@@ -24,7 +24,7 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
     using Kephas.Serialization.Json;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public abstract class PipesMessagingTestBase  : TestBase
     {

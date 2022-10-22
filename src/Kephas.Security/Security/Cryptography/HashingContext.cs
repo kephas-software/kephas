@@ -10,7 +10,7 @@
 
 namespace Kephas.Cryptography
 {
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>

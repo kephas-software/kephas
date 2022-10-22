@@ -27,7 +27,7 @@ namespace Kephas.Analyzers.Tests.Injection
             Assert.AreEqual(1, appServicesAttrs.Count);
 
             var serviceProviderType = appServicesAttrs[0].ProviderType;
-            Assert.AreEqual("Kephas.Injection.Generated.AppServices_Kephas_Analyzers_TestAssembly", serviceProviderType.FullName);
+            Assert.AreEqual("Kephas.Services.Generated.AppServices_Kephas_Analyzers_TestAssembly", serviceProviderType.FullName);
         }
 
         [Test]

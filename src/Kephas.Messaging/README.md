@@ -57,7 +57,7 @@ Typically, a message handler specializes the `MessageHandlerBase<TMessage, TResp
 
 # The message processor
 
-The service taking care of message processing is the message processor. It is a [singleton application service](https://www.nuget.org/packages/Kephas.Injection#configuring-the-application-service-contracts) which is in charge of selecting the appropriate handler (or handlers) for a particular message, ensuring that that (or those) handlers handle the message, and returning a response. It provides a single method:
+The service taking care of message processing is the message processor. It is a [singleton application service](https://www.nuget.org/packages/Kephas.Services#configuring-the-application-service-contracts) which is in charge of selecting the appropriate handler (or handlers) for a particular message, ensuring that that (or those) handlers handle the message, and returning a response. It provides a single method:
 
 * `ProcessAsync(message: IMessage, [context: IMessageProcessingContext], [token: CancellationToken]): Task<IMessage>`
   * _message_: the message to process.
@@ -97,9 +97,9 @@ The processing of a message may be intercepted be message processing behaviors, 
 
 # The `DefaultMessageProcessor`
 
-Kephas provides the `DefaultMessageProcessor` class, a [low override priority](https://www.nuget.org/packages/Kephas.Injection#override-priority) message processor. It provides a basic, overridable functionality for processing messages, which should be enough for most cases.
+Kephas provides the `DefaultMessageProcessor` class, a [low override priority](https://www.nuget.org/packages/Kephas.Services#override-priority) message processor. It provides a basic, overridable functionality for processing messages, which should be enough for most cases.
 
-* It aggregates _message handler selectors_ and calls them to provide a list of message handlers to process a particular message, in their [processing priority](https://www.nuget.org/packages/Kephas.Injection#processing-priority) order.
+* It aggregates _message handler selectors_ and calls them to provide a list of message handlers to process a particular message, in their [processing priority](https://www.nuget.org/packages/Kephas.Services#processing-priority) order.
 * It aggregates _processing filters_ and calls them before and after each handler's `ProcessAsync` call.
 
 > Note that the message processor is an in-process service. However, if the handlers themselves go beyond the process boundary it is their sole responsibility and, at the same time, freedom.

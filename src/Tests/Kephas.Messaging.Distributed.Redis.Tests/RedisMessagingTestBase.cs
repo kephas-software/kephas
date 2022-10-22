@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Redis;
     using Kephas.Redis.Connectivity;
     using Kephas.Serialization.Json;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public abstract class RedisMessagingTestBase  : TestBase
     {

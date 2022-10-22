@@ -12,7 +12,7 @@ namespace Kephas.Model.Construction
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;

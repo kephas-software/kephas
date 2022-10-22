@@ -8,7 +8,7 @@
 namespace Kephas.Templating.Razor.Tests;
 
 using System.Reflection;
-using Kephas.Testing.Injection;
+using Kephas.Testing.Services;
 
 public abstract class RazorTemplatingTestBase  : TestBase
 {

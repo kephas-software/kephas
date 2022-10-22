@@ -16,7 +16,7 @@ namespace Kephas.Core.Endpoints
     using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;

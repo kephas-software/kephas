@@ -18,7 +18,7 @@ namespace Kephas.Application.Console.Tests
     using Kephas.Commands;
     using Kephas.Logging;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public abstract class ConsoleTestBase : TestBase
     {

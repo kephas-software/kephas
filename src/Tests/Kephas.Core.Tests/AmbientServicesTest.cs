@@ -20,8 +20,8 @@ namespace Kephas.Core.Tests
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Injection;
-    using Kephas.Injection.Lite.Builder;
+    using Kephas.Services;
+    using Kephas.Services.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;

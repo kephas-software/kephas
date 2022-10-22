@@ -17,7 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Kephas.Dynamic;
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Logging;
 using Kephas.Runtime;
 using Kephas.Services;

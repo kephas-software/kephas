@@ -78,7 +78,7 @@ using Kephas.Services;
 
     private (string typeNamespace, string typeName) GetServiceTypeProviderClassName(GeneratorExecutionContext context)
     {
-        return ("Kephas.Injection.Generated", $"AppServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
+        return ("Kephas.Services.Generated", $"AppServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
     }
 
     private class SyntaxReceiver : SyntaxReceiverBase, IAppServicesCompilationContext

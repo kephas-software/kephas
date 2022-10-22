@@ -16,7 +16,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime.Factories;

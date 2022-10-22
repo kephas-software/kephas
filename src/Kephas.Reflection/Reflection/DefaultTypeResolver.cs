@@ -17,7 +17,7 @@ namespace Kephas.Reflection
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;

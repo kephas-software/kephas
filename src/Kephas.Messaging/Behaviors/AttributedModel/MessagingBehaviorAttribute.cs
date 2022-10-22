@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Messaging.Behaviors;
 
     /// <summary>

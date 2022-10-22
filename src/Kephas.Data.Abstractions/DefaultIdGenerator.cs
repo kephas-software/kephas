@@ -13,7 +13,7 @@ namespace Kephas.Data;
 using System;
 
 using Kephas.Configuration;
-using Kephas.Injection.AttributedModel;
+using Kephas.Services.AttributedModel;
 using Kephas.Services;
 
 /// <summary>

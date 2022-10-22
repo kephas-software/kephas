@@ -137,6 +137,6 @@ public class MongoDateTimeOffsetSerializer : DateTimeOffsetSerializer, IMongoSer
 
 ## Other resources
 
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

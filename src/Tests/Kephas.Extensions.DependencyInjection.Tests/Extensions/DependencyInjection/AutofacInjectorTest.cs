@@ -11,7 +11,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Reflection;

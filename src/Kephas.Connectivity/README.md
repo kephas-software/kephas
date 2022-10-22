@@ -6,7 +6,7 @@ The purpose of this library is to provide abstractions for connections to variou
 
 Check the following packages for more information:
 * [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Security](https://www.nuget.org/packages/Kephas.Security)
 
 Packages providing connections:

@@ -15,7 +15,7 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Services;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
     using NUnit.Framework;
 

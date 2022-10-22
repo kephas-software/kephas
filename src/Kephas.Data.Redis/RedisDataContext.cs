@@ -18,7 +18,7 @@ using Kephas.Data.Commands.Factory;
 using Kephas.Data.Linq;
 using Kephas.Data.Redis.Configuration;
 using Kephas.Data.Store;
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Redis;
 using Kephas.Redis.Connectivity;
 using Kephas.Serialization;

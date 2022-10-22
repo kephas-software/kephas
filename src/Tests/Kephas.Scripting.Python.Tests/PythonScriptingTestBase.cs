@@ -2,7 +2,7 @@
 
 using System.Reflection;
 using Kephas.Configuration;
-using Kephas.Testing.Injection;
+using Kephas.Testing.Services;
 
 public abstract class PythonScriptingTestBase  : TestBase
 {

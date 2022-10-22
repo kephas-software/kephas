@@ -35,7 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Injection\Kephas.Injection.csproj" />
+        <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
         <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
     </ItemGroup>
 

@@ -12,7 +12,7 @@ namespace Kephas.Logging
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>

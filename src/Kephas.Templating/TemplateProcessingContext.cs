@@ -9,7 +9,7 @@ namespace Kephas.Templating
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Operations;
     using Kephas.Services;
 

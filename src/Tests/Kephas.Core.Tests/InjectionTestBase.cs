@@ -16,13 +16,13 @@ namespace Kephas.Core.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
+    using Kephas.Services;
+    using Kephas.Services.Builder;
+    using Kephas.Services.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     /// <summary>
     /// Base class for tests using composition.
@@ -86,7 +86,7 @@ namespace Kephas.Core.Tests
         {
             return new List<Assembly>
                        {
-                           typeof(IServiceProvider).Assembly,          /* Kephas.Injection */
+                           typeof(IServiceProvider).Assembly,          /* Kephas.Services */
                        };
         }
 

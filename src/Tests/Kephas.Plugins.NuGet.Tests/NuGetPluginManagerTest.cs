@@ -22,7 +22,7 @@ namespace Kephas.Plugins.NuGet.Tests
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Plugins.Application;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NUnit.Framework;
 
     [TestFixture]

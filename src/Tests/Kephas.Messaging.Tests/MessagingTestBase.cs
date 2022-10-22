@@ -18,7 +18,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Security.Authorization;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
 
     public class MessagingTestBase  : TestBase

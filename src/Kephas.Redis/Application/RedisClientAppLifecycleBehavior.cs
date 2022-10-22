@@ -15,7 +15,7 @@ namespace Kephas.Redis.Application
 
     using Kephas.Application;
     using Kephas.Connectivity;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Operations;
     using Kephas.Redis.Connectivity;
     using Kephas.Services;

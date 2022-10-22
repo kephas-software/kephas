@@ -8,7 +8,7 @@
 namespace Kephas.Testing.Model;
 
 using System.Transactions;
-using Kephas.Injection.Builder;
+using Kephas.Services.Builder;
 using Kephas.Model;
 using Kephas.Model.Runtime;
 using Kephas.Model.Runtime.Configuration;

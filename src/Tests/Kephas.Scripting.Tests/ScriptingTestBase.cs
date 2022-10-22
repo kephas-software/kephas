@@ -12,7 +12,7 @@ namespace Kephas.Scripting.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public class ScriptingTestBase  : TestBase
     {

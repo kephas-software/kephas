@@ -15,7 +15,7 @@ namespace Kephas.Tests.Application
     using Kephas.Application;
     using Kephas.Operations;
     using Kephas.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public class ApplicationTestBase  : TestBase
     {

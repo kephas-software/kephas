@@ -23,7 +23,7 @@ namespace Kephas.Scheduling.Tests
     using Kephas.Scheduling.JobStore;
     using Kephas.Scheduling.Runtime;
     using Kephas.Scheduling.Triggers;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using Kephas.Workflow;
     using NSubstitute;
     using NUnit.Framework;

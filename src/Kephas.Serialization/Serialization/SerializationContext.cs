@@ -12,7 +12,7 @@ namespace Kephas.Serialization
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Net.Mime;
     using Kephas.Services;
 

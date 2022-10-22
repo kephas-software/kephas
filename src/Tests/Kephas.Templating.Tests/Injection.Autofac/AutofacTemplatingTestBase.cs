@@ -13,7 +13,7 @@ namespace Kephas.Templating.Tests.Injection.Autofac
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public class AutofacTemplatingTestBase : AutofacInjectionTestBase
     {

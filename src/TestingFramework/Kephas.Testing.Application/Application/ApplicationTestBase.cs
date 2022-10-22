@@ -14,7 +14,7 @@ namespace Kephas.Testing.Application
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     /// <summary>
     /// Base class for application tests using dependency injection.

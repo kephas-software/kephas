@@ -9,7 +9,7 @@ namespace Kephas.Connectivity;
 
 using Kephas.Collections;
 using Kephas.Connectivity.Behaviors;
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Logging;
 using Kephas.Security.Authentication;
 using Kephas.Services;

@@ -18,7 +18,7 @@ namespace Kephas.Commands.Messaging.Tests
     using Kephas.Application;
     using Kephas.Logging;
     using Kephas.Messaging;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
 
     public abstract class CommandsTestBase  : TestBase
     {

@@ -12,7 +12,7 @@ namespace Kephas.Application
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
 
     /// <summary>
     /// Attribute declaring that the annotated entity requires a specific feature.

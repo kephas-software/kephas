@@ -249,7 +249,7 @@ However, be advised that:
 ## Other resources
 
 * [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)
 

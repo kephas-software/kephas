@@ -20,7 +20,7 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
     using Kephas.Behaviors;
     using Kephas.Diagnostics.Logging;
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Distributed;

@@ -15,11 +15,11 @@ namespace Kephas.Workflow.Tests
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
+    using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Runtime;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using Kephas.Workflow.Behaviors;
     using Kephas.Workflow.Reflection;
     using NSubstitute;

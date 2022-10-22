@@ -8,7 +8,7 @@
 namespace Kephas.Serialization.Json.Converters;
 
 using Kephas.Collections;
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Reflection;
 using Kephas.Runtime;
 using Kephas.Serialization.Json.ContractResolvers;

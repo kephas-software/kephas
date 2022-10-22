@@ -20,7 +20,7 @@ namespace Kephas.Messaging.Tests.Autofac
 
     using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Tests.Autofac
     using Kephas.Messaging.Messages;
     using Kephas.Security.Authorization;
     using Kephas.Services;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;

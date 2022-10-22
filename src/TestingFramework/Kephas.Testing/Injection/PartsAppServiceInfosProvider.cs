@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Injection
+namespace Kephas.Testing.Services
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Kephas.Testing.Injection
     using System.Reflection;
 
     using Castle.Core.Internal;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services.AttributedModel;
     using Kephas.Services;
 
     /// <summary>

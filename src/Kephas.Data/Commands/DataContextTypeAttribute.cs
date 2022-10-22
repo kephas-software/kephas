@@ -12,7 +12,7 @@ namespace Kephas.Data.Commands
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
 
     /// <summary>
     /// Attribute indicating the supported data context.

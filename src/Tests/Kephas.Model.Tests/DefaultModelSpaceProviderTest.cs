@@ -15,8 +15,8 @@ namespace Kephas.Model.Tests
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
+    using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Runtime.Configuration;

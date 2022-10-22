@@ -21,8 +21,8 @@ namespace Kephas.Testing
     using Kephas.Application;
     using Kephas.Cryptography;
     using Kephas.Diagnostics.Logging;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
+    using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -83,7 +83,7 @@ namespace Kephas.Testing
         {
             return new List<Assembly>
                        {
-                           typeof(IAmbientServices).Assembly,       /* Kephas.Injection */
+                           typeof(IAmbientServices).Assembly,       /* Kephas.Services */
                            typeof(IEventHub).Assembly,              /* Kephas.Interaction */
                            typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
                        };

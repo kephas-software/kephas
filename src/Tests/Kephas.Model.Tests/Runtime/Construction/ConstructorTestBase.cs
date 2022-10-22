@@ -12,7 +12,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;
