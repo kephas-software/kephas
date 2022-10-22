@@ -23,12 +23,12 @@ namespace Kephas.Messaging.Tests.Events
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutofacMessagingEventHubTest : AutofacMessagingTestBase
+    public class AutofacMessagingEventHubTest : MessagingTestBase
     {
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder().BuildWithAutofac();
             var hub = container.Resolve<IEventHub>();
 
             Assert.IsNotNull(hub);

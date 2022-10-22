@@ -11,27 +11,8 @@
 namespace Kephas.Messaging.Tests.Autofac
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
-    using Kephas.Application;
-    using Kephas.Dynamic;
-    using Kephas.Services;
-    using Kephas.Interaction;
-    using Kephas.Logging;
-    using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Events;
-    using Kephas.Messaging.HandlerProviders;
-    using Kephas.Messaging.Messages;
-    using Kephas.Security.Authorization;
-    using Kephas.Services;
-    using Kephas.Testing.Services;
-    using NSubstitute;
-    using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
 
     /// <summary>
@@ -41,5 +22,9 @@ namespace Kephas.Messaging.Tests.Autofac
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacDefaultMessageProcessorTest : DefaultMessageProcessorTestBase
     {
+        protected override IServiceProvider BuildServiceProvider()
+        {
+            return this.CreateServicesBuilder().BuildWithAutofac();
+        }
     }
 }
