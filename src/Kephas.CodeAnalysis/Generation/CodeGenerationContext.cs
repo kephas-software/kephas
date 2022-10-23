@@ -12,7 +12,7 @@ namespace Kephas.CodeAnalysis.Generation
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>

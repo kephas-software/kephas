@@ -9,7 +9,7 @@ namespace Kephas.Data.Model.Associations
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Reflection;
     using Kephas.Services;
 

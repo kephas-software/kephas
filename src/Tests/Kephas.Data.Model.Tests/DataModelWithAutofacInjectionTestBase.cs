@@ -14,7 +14,7 @@ namespace Kephas.Data.Model.Tests
     using System.Threading.Tasks;
     using Kephas.Model;
     using Kephas.Model.Runtime;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
 
     /// <summary>

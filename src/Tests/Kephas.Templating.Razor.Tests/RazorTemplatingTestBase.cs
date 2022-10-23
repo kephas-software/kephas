@@ -8,7 +8,8 @@
 namespace Kephas.Templating.Razor.Tests;
 
 using System.Reflection;
-using Kephas.Testing.Injection;
+using Kephas.Testing;
+using Kephas.Testing.Services;
 
 public abstract class RazorTemplatingTestBase  : TestBase
 {
@@ -19,5 +20,10 @@ public abstract class RazorTemplatingTestBase  : TestBase
             typeof(ITemplatingEngine).Assembly, // Kephas.Templating
             typeof(RazorTemplatingEngine).Assembly, // Kephas.Templating.Razor
         };
+    }
+
+    protected virtual IServiceProvider BuildServiceProvider()
+    {
+        return this.CreateServicesBuilder().BuildWithDependencyInjection();
     }
 }

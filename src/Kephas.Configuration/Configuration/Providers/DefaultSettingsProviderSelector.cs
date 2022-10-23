@@ -15,7 +15,7 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;

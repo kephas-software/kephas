@@ -19,7 +19,7 @@ namespace Kephas.Data.Client.Tests.Queries
     using Kephas.Data.Client.Queries;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -43,7 +43,7 @@ namespace Kephas.Data.Client.Tests.Queries
         public async Task ExecuteQueryAsync()
         {
             var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IServiceProvider>()));
-            var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
+            var entities = new List<TestEntity> { new () { Name = "1" }, new () { Name = "2" }, new () { Name = "3" }, };
             var query = entities.AsQueryable();
 
             var clientQuery = new ClientQuery();
@@ -79,7 +79,7 @@ namespace Kephas.Data.Client.Tests.Queries
         public async Task ExecuteQueryAsync_skip_conversion_for_same_type()
         {
             var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IServiceProvider>()));
-            var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
+            var entities = new List<TestEntity> { new () { Name = "1" }, new () { Name = "2" }, new () { Name = "3" }, };
             var query = entities.AsQueryable();
 
             var clientQuery = new ClientQuery();
@@ -118,7 +118,7 @@ namespace Kephas.Data.Client.Tests.Queries
         public async Task ExecuteQueryAsync_context_config()
         {
             var ctxFactory = this.CreateInjectableFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<IServiceProvider>()));
-            var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
+            var entities = new List<TestEntity> { new () { Name = "1" }, new () { Name = "2" }, new () { Name = "3" }, };
             var query = entities.AsQueryable();
 
             var clientQuery = new ClientQuery();

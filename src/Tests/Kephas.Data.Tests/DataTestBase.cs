@@ -12,7 +12,8 @@ namespace Kephas.Data.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
 
     public abstract class DataTestBase  : TestBase
     {

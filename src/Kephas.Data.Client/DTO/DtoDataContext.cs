@@ -19,8 +19,8 @@ namespace Kephas.Data.Client.DTO
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Data.Store;
-    using Kephas.Injection;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services;
+    using Kephas.Services.AttributedModel;
     using Kephas.Serialization;
 
     /// <summary>

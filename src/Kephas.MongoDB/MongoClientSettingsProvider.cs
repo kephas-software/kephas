@@ -10,7 +10,7 @@ namespace Kephas.MongoDB;
 using System.Security.Authentication;
 
 using global::MongoDB.Driver;
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.MongoDB.Diagnostics;
 using Kephas.Services;
 

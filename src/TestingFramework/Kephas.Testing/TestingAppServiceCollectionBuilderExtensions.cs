@@ -7,8 +7,8 @@
 
 namespace Kephas.Testing;
 
-using Kephas.Injection.Builder;
-using Kephas.Testing.Injection;
+using Kephas.Services.Builder;
+using Kephas.Testing.Services;
 
 /// <summary>
 /// Extension methods for <see cref="IAppServiceCollectionBuilder"/> in testing.

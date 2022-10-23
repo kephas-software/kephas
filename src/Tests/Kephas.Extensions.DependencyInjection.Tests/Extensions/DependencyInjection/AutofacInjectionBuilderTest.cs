@@ -13,9 +13,9 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     using System.Linq;
     using System.Threading.Tasks;
     using Kephas.Application;
-    using Kephas.Injection;
-    using Kephas.Injection.AttributedModel;
-    using Kephas.Injection.Builder;
+    using Kephas.Services;
+    using Kephas.Services.AttributedModel;
+    using Kephas.Services.Builder;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Reflection;

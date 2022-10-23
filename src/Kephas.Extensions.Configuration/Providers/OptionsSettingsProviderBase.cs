@@ -16,7 +16,7 @@ namespace Kephas.Extensions.Configuration.Providers
 
     using Kephas;
     using Kephas.Configuration.Providers;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.Extensions.Options;

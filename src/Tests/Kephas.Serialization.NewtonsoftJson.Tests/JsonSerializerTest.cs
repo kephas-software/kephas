@@ -20,7 +20,7 @@ namespace Kephas.Serialization.Json.Tests
 
     using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Reflection;

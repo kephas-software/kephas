@@ -12,7 +12,7 @@ namespace Kephas.Security.Authentication
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>

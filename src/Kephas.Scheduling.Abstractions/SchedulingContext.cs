@@ -10,7 +10,7 @@ namespace Kephas.Scheduling
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
     using Kephas.Workflow;

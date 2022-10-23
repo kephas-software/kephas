@@ -43,7 +43,7 @@ This service is the default implementation of the ``ILicensingManager`` applicat
 ## Other resources
 
 * [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Operations](https://www.nuget.org/packages/Kephas.Operations)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

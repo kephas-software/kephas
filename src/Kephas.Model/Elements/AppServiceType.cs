@@ -15,7 +15,7 @@ namespace Kephas.Model.Elements
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Model.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;

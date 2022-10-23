@@ -16,8 +16,8 @@ using System.Reflection;
 
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Extensions.DependencyInjection.Resources;
-using Kephas.Injection;
-using Kephas.Injection.Builder;
+using Kephas.Services;
+using Kephas.Services.Builder;
 using Kephas.Reflection;
 using Kephas.Services;
 using Kephas.Services.Reflection;

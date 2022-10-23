@@ -17,7 +17,7 @@ namespace Kephas.Serialization
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Net.Mime;
     using Kephas.Resources;
     using Kephas.Services;

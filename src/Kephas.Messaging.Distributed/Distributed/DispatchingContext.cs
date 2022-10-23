@@ -12,7 +12,7 @@ namespace Kephas.Messaging.Distributed
 {
     using Kephas.Application;
     using Kephas.Configuration;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Security.Authentication;
     using Kephas.Services;

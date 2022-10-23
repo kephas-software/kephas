@@ -17,7 +17,7 @@ namespace Kephas.Tests.Serialization
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Services;

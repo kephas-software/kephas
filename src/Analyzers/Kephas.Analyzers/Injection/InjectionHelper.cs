@@ -29,7 +29,7 @@ namespace Kephas.Analyzers.Injection
 
         static InjectionHelper()
         {
-            ExcludedAttrs = GetAttrNames("Kephas.Injection.AttributedModel.ExcludeFromInjectionAttribute").ToList();
+            ExcludedAttrs = GetAttrNames("Kephas.Services.AttributedModel.ExcludeFromInjectionAttribute").ToList();
             AppServiceContractAttrs = new List<string>();
             AppServiceContractAttrs.AddRange(GetAttrNames("Kephas.Services.AppServiceContractAttribute"));
             AppServiceContractAttrs.AddRange(GetAttrNames("Kephas.Services.SingletonAppServiceContractAttribute"));

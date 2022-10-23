@@ -16,7 +16,7 @@ using System.Text;
 
 using global::MongoDB.Bson;
 using global::MongoDB.Driver.Core.Events;
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Logging;
 
 /// <summary>

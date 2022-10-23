@@ -94,7 +94,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting", "Kephas.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Tests", "Tests\Kephas.Scripting.Tests\Kephas.Scripting.Tests.csproj", "{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Autofac", "Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj", "{D8B1AFB3-AC1A-4E06-BA86-138CDCFB9010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Services.Autofac", "Kephas.Services.Autofac\Kephas.Services.Autofac.csproj", "{D8B1AFB3-AC1A-4E06-BA86-138CDCFB9010}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow", "Kephas.Workflow\Kephas.Workflow.csproj", "{478DCC86-FBBA-4061-AD44-E917A77512B5}"
 EndProject
@@ -128,7 +128,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen", "Keph
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen.Tests", "Tests\Kephas.Data.LLBLGen.Tests\Kephas.Data.LLBLGen.Tests.csproj", "{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Autofac.Tests", "Tests\Kephas.Injection.Autofac.Tests\Kephas.Injection.Autofac.Tests.csproj", "{A561331E-F0E7-4338-9DB6-5A23AFBDC116}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Services.Autofac.Tests", "Tests\Kephas.Services.Autofac.Tests\Kephas.Services.Autofac.Tests.csproj", "{A561331E-F0E7-4338-9DB6-5A23AFBDC116}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing", "TestingFramework\Kephas.Testing\Kephas.Testing.csproj", "{59769055-29BC-4AEB-927A-8F13F8FE2868}"
 EndProject
@@ -220,7 +220,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Messages",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Distributed.Tests", "Tests\Kephas.Messaging.Distributed.Tests\Kephas.Messaging.Distributed.Tests.csproj", "{76138A6C-5FA3-46CB-BD8D-068694B136FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection", "Kephas.Injection\Kephas.Injection.csproj", "{A2902491-83EB-454B-8B2B-C97D679D9915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Services", "Kephas.Services\Kephas.Services.csproj", "{A2902491-83EB-454B-8B2B-C97D679D9915}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{2E7C2BA3-8717-4C8B-8BF9-BBE423D8340F}"
 EndProject
@@ -232,7 +232,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Analyzers.TestAssemb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Analyzers.Tests", "Tests\Analyzers\Kephas.Analyzers.Tests\Kephas.Analyzers.Tests.csproj", "{C349B544-099C-4604-A1B2-5CBC165AA999}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Injection.Tests", "Tests\Kephas.Injection.Tests\Kephas.Injection.Tests.csproj", "{D686828B-B03F-44AB-97D0-C56985A8ED8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Services.Tests", "Tests\Kephas.Services.Tests\Kephas.Services.Tests.csproj", "{D686828B-B03F-44AB-97D0-C56985A8ED8D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Application", "TestingFramework\Kephas.Testing.Application\Kephas.Testing.Application.csproj", "{D55E4277-2A60-4D26-8F59-52A3CCE13CCE}"
 EndProject

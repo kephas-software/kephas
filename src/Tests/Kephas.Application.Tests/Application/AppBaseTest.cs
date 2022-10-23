@@ -14,12 +14,14 @@ namespace Kephas.Tests.Application
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -40,7 +42,11 @@ namespace Kephas.Tests.Application
             var injector = Substitute.For<IServiceProvider>();
 
             IAmbientServices? ambientServices = null;
-            var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
+            var app = new TestApp(b =>
+            {
+                ambientServices = b;
+                return injector;
+            });
             var (appContext, instruction) = await app.RunAsync();
 
             Assert.IsNotNull(ambientServices);
@@ -54,7 +60,11 @@ namespace Kephas.Tests.Application
             var injector = Substitute.For<IServiceProvider>();
 
             IAmbientServices? ambientServices = null;
-            var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
+            var app = new TestApp(b =>
+            {
+                ambientServices = b;
+                return injector;
+            });
             var (appContext, instruction) = await app.RunAsync();
 
             Assert.AreSame(app.AmbientServices, ambientServices);
@@ -70,7 +80,11 @@ namespace Kephas.Tests.Application
             injector.Resolve<IAppManager>().Returns(appManager);
 
             IAmbientServices? ambientServices = null;
-            var app = new TestApp(async b => ambientServices = b.WithInjector(injector));
+            var app = new TestApp(b =>
+            {
+                ambientServices = b;
+                return injector;
+            });
             await app.RunAsync();
 
             appManager.Received(1).InitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -84,7 +98,7 @@ namespace Kephas.Tests.Application
             injector.Resolve<IAppManager>()
                 .Returns(appManager);
 
-            var app = new TestApp(async b => b.WithInjector(injector));
+            var app = new TestApp(b => injector);
             var (appContext, instruction) = await app.RunAsync(_ => throw new InvalidOperationException("bad thing happened"));
 
             appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -106,7 +120,7 @@ namespace Kephas.Tests.Application
             injector.TryResolve<IAppMainLoop>()
                 .Returns(termAwaiter);
 
-            var app = new TestApp(async b => b.WithInjector(injector));
+            var app = new TestApp(_ => injector);
             var (appContext, instruction) = await app.RunAsync();
 
             appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -123,7 +137,7 @@ namespace Kephas.Tests.Application
             injector.Resolve<IAppManager>()
                 .Returns(appManager);
 
-            var app = new TestApp(async b => b.WithInjector(injector));
+            var app = new TestApp(_ => injector);
             var (appContext, instruction) = await app.RunAsync(async _ => (new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
             appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -145,7 +159,7 @@ namespace Kephas.Tests.Application
             injector.TryResolve<IAppMainLoop>()
                 .Returns(mainLoop);
 
-            var app = new TestApp(async b => b.WithInjector(injector));
+            var app = new TestApp(_ => injector);
             var (appContext, instruction) = await app.RunAsync();
 
             appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -162,7 +176,7 @@ namespace Kephas.Tests.Application
             injector.Resolve<IAppManager>()
                 .Returns(appManager);
 
-            var app = new TestApp(async b => b.WithInjector(injector));
+            var app = new TestApp(_ => injector);
             var (appContext, instruction) = await app.RunAsync(async _ => (new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
             appManager.Received(0).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -184,7 +198,7 @@ namespace Kephas.Tests.Application
             injector.TryResolve<IAppMainLoop>()
                 .Returns(termAwaiter);
 
-            var app = new TestApp(async b => b.WithInjector(injector));
+            var app = new TestApp(_ => injector);
             var (appContext, instruction) = await app.RunAsync();
 
             appManager.Received(0).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -195,8 +209,10 @@ namespace Kephas.Tests.Application
         [Test]
         public async Task RunAsync_injection()
         {
-            var container = this.BuildServiceProvider(parts: new[] { typeof(TestApp), typeof(TestMainLoop), typeof(TestShutdownFeatureManager) });
-            var app = new TestApp(ambientServices: container.Resolve<IAmbientServices>());
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(TestApp), typeof(TestMainLoop), typeof(TestShutdownFeatureManager))
+                .BuildWithAutofac();
+            var app = new TestApp(_ => container, container.Resolve<IAmbientServices>());
             var (appContext, instruction) = await app.RunAsync();
 
             Assert.AreEqual(AppShutdownInstruction.Ignore, instruction);
@@ -212,9 +228,8 @@ namespace Kephas.Tests.Application
             var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IAppManager>().Returns(appManager);
 
-            var ambientServices = this.CreateAmbientServices()
-                .WithInjector(injector);
-            var app = new TestApp(ambientServices: ambientServices);
+            var ambientServices = this.CreateAmbientServices();
+            var app = new TestApp(_ => injector, ambientServices);
             await app.ShutdownAsync();
 
             appManager.Received(1).FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -262,9 +277,9 @@ namespace Kephas.Tests.Application
 
     public class TestApp : AppBase<AmbientServices>
     {
-        private readonly Func<IAmbientServices, Task>? asyncConfig;
+        private readonly Func<IAmbientServices, IServiceProvider>? asyncConfig;
 
-        public TestApp(Func<IAmbientServices, Task>? asyncConfig = null, IAmbientServices? ambientServices = null)
+        public TestApp(Func<IAmbientServices, IServiceProvider> asyncConfig, IAmbientServices? ambientServices = null)
             : base(ambientServices ?? CreateAmbientServices())
         {
             this.asyncConfig = asyncConfig;
@@ -274,12 +289,14 @@ namespace Kephas.Tests.Application
         /// Configures the ambient services asynchronously.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        protected override async IServiceProvider Build(IAmbientServices ambientServices)
+        protected override IServiceProvider Build(IAmbientServices ambientServices)
         {
             if (this.asyncConfig != null)
             {
-                await this.asyncConfig(ambientServices);
+                return this.asyncConfig(ambientServices);
             }
+
+            throw new InvalidOperationException("No config provided.");
         }
 
         private static IAmbientServices CreateAmbientServices() =>

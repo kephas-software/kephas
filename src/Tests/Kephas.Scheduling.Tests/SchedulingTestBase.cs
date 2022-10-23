@@ -11,7 +11,8 @@ namespace Kephas.Scheduling.Tests
     using System.Reflection;
 
     using Kephas.Scheduling.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using Kephas.Workflow;
 
     public abstract class SchedulingTestBase  : TestBase

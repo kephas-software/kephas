@@ -20,12 +20,12 @@ namespace Kephas.Tests.Configuration
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
     using Kephas.Configuration.Providers;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Interaction;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -37,7 +37,7 @@ namespace Kephas.Tests.Configuration
             return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IEventHub).Assembly,         // Kephas.Interaction
-                typeof(IInjectableFactory).Assembly,   // Kephas.Injection
+                typeof(IInjectableFactory).Assembly,   // Kephas.Services
                 typeof(IConfiguration<>).Assembly,  // Kephas.Configuration
                 typeof(ISerializationService).Assembly,  // Kephas.Serialization
             };

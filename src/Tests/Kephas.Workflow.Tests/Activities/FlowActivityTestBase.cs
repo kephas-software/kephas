@@ -10,7 +10,7 @@ namespace Kephas.Workflow.Tests.Activities;
 using Kephas.Dynamic;
 using Kephas.Operations;
 using Kephas.Testing;
-using Kephas.Testing.Injection;
+using Kephas.Testing.Services;
 using NSubstitute;
 
 public abstract class FlowActivityTestBase  : TestBase

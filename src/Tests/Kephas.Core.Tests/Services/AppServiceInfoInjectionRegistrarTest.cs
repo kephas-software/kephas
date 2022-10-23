@@ -19,13 +19,13 @@ namespace Kephas.Core.Tests.Services
     using Kephas.Core.Tests.Services.CustomValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.DefaultAppServiceMetadata;
     using Kephas.Core.Tests.Services.DefaultExplicitAppServiceMetadata;
-    using Kephas.Injection;
-    using Kephas.Injection.Configuration;
+    using Kephas.Services;
+    using Kephas.Services.Configuration;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
     using NUnit.Framework;
 

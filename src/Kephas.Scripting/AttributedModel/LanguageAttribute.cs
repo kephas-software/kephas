@@ -12,7 +12,7 @@ namespace Kephas.Scripting.AttributedModel;
 
 using System;
 
-using Kephas.Injection;
+using Kephas.Services;
 
 /// <summary>
 /// Indicates the supported language.

@@ -15,7 +15,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
     using System.Linq;
 
     using Kephas.Behaviors;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using Kephas.Testing;

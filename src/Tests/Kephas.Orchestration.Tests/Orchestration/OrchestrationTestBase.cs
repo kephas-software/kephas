@@ -21,6 +21,7 @@ namespace Kephas.Tests.Orchestration
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration;
+    using Kephas.Services.Builder;
     using Kephas.Testing.Application;
     using NSubstitute;
 
@@ -39,22 +40,26 @@ namespace Kephas.Tests.Orchestration
             return assemblies;
         }
 
-        public override IServiceProvider BuildServiceProvider(
+        /// <summary>
+        /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        ///                               will be created as linked to the newly created container.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <returns>
+        /// A LiteInjectorBuilder.
+        /// </returns>
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
             IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var oldConfig = config;
-            config = b =>
-            {
-                var appContext = Substitute.For<IAppContext>();
-                b.ForFactory(_ => appContext);
-                oldConfig?.Invoke(b);
-            };
-            return base.BuildServiceProvider(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
+            ambientServices = builder.AmbientServices;
+            var appContext = Substitute.For<IAppContext>();
+            ambientServices.Add<IAppContext>(_ => appContext);
+            return builder;
         }
     }
 }

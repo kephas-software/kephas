@@ -26,20 +26,17 @@ namespace Kephas.Tests.Application
         [Test]
         public async Task Log()
         {
-            var logger = Substitute.For<ILogger>();
-            var logManager = Substitute.For<ILogManager>();
+            var logger = Substitute.For<ILogger<TestFeatureLifecycleBehavior>>();
             var ambientServices = Substitute.For<IAmbientServices>();
             var appContext = Substitute.For<IAppContext>();
             appContext.AmbientServices.Returns(ambientServices);
-            ambientServices.LogManager.Returns(logManager);
-            logManager.GetLogger(Arg.Any<string>()).Returns(logger);
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
 
             var sb = new StringBuilder();
             logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
                 .Do(ci => sb.Append(ci.Arg<string>()).Append("."));
 
-            IFeatureLifecycleBehavior behavior = new TestFeatureLifecycleBehavior();
+            IFeatureLifecycleBehavior behavior = new TestFeatureLifecycleBehavior(logger);
             await behavior.BeforeInitializeAsync(appContext, null);
             await behavior.AfterInitializeAsync(appContext, null);
             await behavior.BeforeFinalizeAsync(appContext, null);
@@ -50,6 +47,11 @@ namespace Kephas.Tests.Application
 
         public class TestFeatureLifecycleBehavior : FeatureLifecycleBehaviorBase
         {
+            public TestFeatureLifecycleBehavior(ILogger<TestFeatureLifecycleBehavior> logger)
+                : base(logger)
+            {
+            }
+
             public override Task<IOperationResult> BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("BeforeInitializeAsync");

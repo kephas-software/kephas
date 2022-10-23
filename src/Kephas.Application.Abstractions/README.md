@@ -5,7 +5,7 @@ This package provides abstractions for applications based on Kephas Framework.
 
 Check the following packages for more information:
 * [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 
 Typically used areas and classes/interfaces/services:
 * Application management: ``StaticAppRuntime``, ``DynamicAppRuntime``, ``IAppLifecycleBehavior``.

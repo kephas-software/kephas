@@ -12,7 +12,7 @@ namespace Kephas.Logging
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>
@@ -46,6 +46,16 @@ namespace Kephas.Logging
         protected Loggable(IInjectableFactory injectableFactory)
             : this(() => injectableFactory?.GetLogManager())
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        protected Loggable(ILogger logger)
+        {
+            logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.lazyLogger = new Lazy<ILogger>(() => logger);
         }
 
         /// <summary>

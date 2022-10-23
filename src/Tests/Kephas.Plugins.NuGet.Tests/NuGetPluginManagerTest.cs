@@ -22,7 +22,8 @@ namespace Kephas.Plugins.NuGet.Tests
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Plugins.Application;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using NUnit.Framework;
 
     [TestFixture]
@@ -45,7 +46,7 @@ namespace Kephas.Plugins.NuGet.Tests
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var manager = container.Resolve<IPluginManager>();
 
             Assert.IsInstanceOf<NuGetPluginManager>(manager);
@@ -60,12 +61,13 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.BuildServiceProvider(
-                    config: b => b.ForFactory<ISettingsProvider>(
-                        _ => new PluginsSettingsProvider("tags:kephas"))
-                        .Singleton()
-                        .AllowMultiple(),
-                    appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
+                var ambientServices = new AmbientServices()
+                    .WithAppRuntime(this.CreateAppRuntime(new DebugLogManager(), pluginsFolder))
+                    .Add<ISettingsProvider>(
+                        _ => new PluginsSettingsProvider("tags:kephas"),
+                        b => b.Singleton().AllowMultiple());
+                var container = this.CreateServicesBuilder(ambientServices)
+                    .BuildWithDependencyInjection();
                 var manager = container.Resolve<IPluginManager>();
 
                 var result = await manager.InstallPluginAsync(new AppIdentity("Kephas.Core", "11.0.0"));
@@ -95,12 +97,13 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.BuildServiceProvider(
-                    config: b => b.ForFactory<ISettingsProvider>(
-                        _ => new PluginsSettingsProvider("tags:kismsspplugin"))
-                        .Singleton()
-                        .AllowMultiple(),
-                    appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
+                var ambientServices = new AmbientServices()
+                    .WithAppRuntime(this.CreateAppRuntime(new DebugLogManager(), pluginsFolder))
+                    .Add<ISettingsProvider>(
+                        _ => new PluginsSettingsProvider("tags:kismsspplugin"),
+                        b => b.Singleton().AllowMultiple());
+                var container = this.CreateServicesBuilder(ambientServices)
+                    .BuildWithDependencyInjection();
                 var manager = container.Resolve<IPluginManager>();
 
                 var result = await manager.InstallPluginAsync(new AppIdentity("Kis.Logging.Seq", "4.0.0"));

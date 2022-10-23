@@ -15,7 +15,7 @@ namespace Kephas.Application.Console
     using System.Threading.Tasks;
 
     using Kephas.Commands;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Serialization;
     using Kephas.Services;

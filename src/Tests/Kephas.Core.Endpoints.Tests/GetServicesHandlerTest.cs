@@ -19,7 +19,7 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Messaging.Endpoints;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using NSubstitute;
     using NUnit.Framework;
 
