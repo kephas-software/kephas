@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
@@ -8,6 +8,10 @@
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RootNamespace>Kephas.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,11 +37,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Security.Permissions\Kephas.Security.Permissions.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Properties\" />
+        <ProjectReference Include="..\..\Kephas.Security\Kephas.Security.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
     <ItemGroup>

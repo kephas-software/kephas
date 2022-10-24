@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceInfoInjectionRegistrarTest.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceCollectionBuilderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,26 +14,25 @@ namespace Kephas.Core.Tests.Services
     using System.Collections.Generic;
     using System.Text;
 
-    using Kephas.Core.Tests.Injection;
     using Kephas.Core.Tests.Services.CustomNamedValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.CustomValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.DefaultAppServiceMetadata;
     using Kephas.Core.Tests.Services.DefaultExplicitAppServiceMetadata;
-    using Kephas.Services;
-    using Kephas.Services.Configuration;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
+    using Kephas.Services.Builder;
+    using Kephas.Services.Configuration;
     using Kephas.Testing;
     using Kephas.Testing.Services;
     using NSubstitute;
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="AppServiceInfoInjectionRegistrar"/>.
+    /// Test class for <see cref="AppServiceCollectionBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class AppServiceInfoInjectionRegistrarTest : TestBase
+    public class AppServiceCollectionBuilderTest : TestBase
     {
         [Test]
         public void RegisterServices_Multiple()

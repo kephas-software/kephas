@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services;
+namespace Kephas.Tests.Services;
 
 using System.Collections.Generic;
 using System.Linq;
-
-using Kephas.Services;
 using Kephas.Services;
 using NSubstitute;
 using NUnit.Framework;

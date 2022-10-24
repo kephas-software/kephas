@@ -41,4 +41,8 @@
         <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services" />
+    </ItemGroup>
+
 </Project>

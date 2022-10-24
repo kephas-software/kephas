@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionAmbientServicesExtensions.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Kephas
     /// <summary>
     /// Extensions for <see cref="IAmbientServices"/> for the injection subsystem.
     /// </summary>
-    public static class InjectionAmbientServicesExtensions
+    public static class AmbientServicesExtensions
     {
         internal const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
 
