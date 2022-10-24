@@ -11,12 +11,10 @@
 namespace Kephas.Services.Autofac
 {
     using System;
-    using System.Collections.Generic;
 
     using global::Autofac;
-    using Kephas.Services;
-    using Kephas.Services.Autofac.Resources;
     using Kephas.Logging;
+    using Kephas.Services.Autofac.Resources;
 
     /// <summary>
     /// An Autofac injector base.
@@ -54,27 +52,13 @@ namespace Kephas.Services.Autofac
         /// </value>
         ILifetimeScope IAdapter<ILifetimeScope>.Of => this.innerContainer!;
 
-        /// <summary>
-        /// Creates a new scoped injector.
-        /// </summary>
-        /// <returns>
-        /// The new scoped context.
-        /// </returns>
-        public IInjectionScope CreateScope()
-        {
-            this.AssertNotDisposed();
-
-            var scope = this.innerContainer!.BeginLifetimeScope();
-            return new InjectionScope((this.root ?? (IServiceProviderContainer)this).GetServiceProvider(scope));
-        }
-
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
         /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
         /// <see langword="null" /> if there is no service object of type <paramref name="serviceType" />.</returns>
         /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.IServiceProvider.GetService?view=netstandard-2.1">`IServiceProvider.GetService` on docs.microsoft.com</a></footer>
-        object? System.IServiceProvider.GetService(Type serviceType)
+        object? IServiceProvider.GetService(Type serviceType)
         {
             return this.TryResolve(serviceType);
         }

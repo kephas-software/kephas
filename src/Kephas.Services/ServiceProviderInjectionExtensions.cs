@@ -137,14 +137,4 @@ public static class ServiceProviderInjectionExtensions
     public static T? TryResolve<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IServiceProvider serviceProvider)
         where T : class
         => serviceProvider.GetService<T>();
-
-    /// <summary>
-    /// Creates a disposable injection scope.
-    /// </summary>
-    /// <param name="serviceProvider">The service provider.</param>
-    /// <returns>
-    /// The new disposable injection scope.
-    /// </returns>
-    public static IInjectionScope CreateScope(this IServiceProvider serviceProvider) =>
-        serviceProvider.GetRequiredService<IInjectionScopeFactory>().CreateScope();
 }
