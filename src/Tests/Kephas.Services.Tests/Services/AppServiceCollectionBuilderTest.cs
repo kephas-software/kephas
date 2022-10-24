@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Test class for <see cref="AttributedAppServiceInfoConventionsRegistrar" />.
+//   Test class for <see cref="AttributedAppServiceInfoConventionsbuilder" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,6 +12,7 @@ namespace Kephas.Core.Tests.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Text;
 
     using Kephas.Core.Tests.Services.CustomNamedValueAppServiceMetadata;
@@ -35,21 +36,16 @@ namespace Kephas.Core.Tests.Services
     public class AppServiceCollectionBuilderTest : TestBase
     {
         [Test]
-        public void RegisterServices_Multiple()
+        public void Build_Multiple()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
                 {
                     typeof(IMultipleTestAppService),
                     typeof(MultipleTestService),
                     typeof(NewMultipleTestService),
                 };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
 
@@ -58,10 +54,8 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_Multiple_Derived()
+        public void Build_Multiple_Derived()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IMultipleTestAppService),
@@ -69,11 +63,8 @@ namespace Kephas.Core.Tests.Services
                 typeof(NewMultipleTestService),
                 typeof(DerivedMultipleTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(3, conventions.TypeBuilders.Count);
 
@@ -83,30 +74,23 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_Single_one_service()
+        public void Build_Single_one_service()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
                 {
                     typeof(ISingleTestAppService),
                     typeof(SingleTestService),
                 };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
         }
 
         [Test]
-        public void RegisterServices_Single_one_service_overridden_chain()
+        public void Build_Single_one_service_overridden_chain()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ISingleTestAppService),
@@ -114,73 +98,57 @@ namespace Kephas.Core.Tests.Services
                 typeof(SingleOverrideTestService),
                 typeof(ChainSingleOverrideTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(ChainSingleOverrideTestService)));
         }
 
         [Test]
-        public void RegisterServices_Single_one_service_overridden()
+        public void Build_Single_one_service_overridden()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ISingleTestAppService),
                 typeof(SingleTestService),
                 typeof(DerivedOverrideSingleTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(DerivedOverrideSingleTestService)));
         }
 
         [Test]
-        public void RegisterServices_Single_override_service_success()
+        public void Build_Single_override_service_success()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ISingleTestAppService),
                 typeof(SingleTestService),
                 typeof(SingleOverrideTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()), new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleOverrideTestService)));
         }
 
         [Test]
-        public void RegisterServices_Single_service_multiple_registrations_first()
+        public void Build_Single_service_multiple_registrations_first()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ISingleTestAppService),
                 typeof(SingleTestService),
                 typeof(SingleSameOverrideTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()) { Settings = { AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseFirst } },
-                new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseFirst;
+            var services = builder.WithParts(parts).Build();
 
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
             Assert.IsFalse(conventions.TypeBuilders.ContainsKey(typeof(SingleSameOverrideTestService)));
@@ -188,21 +156,17 @@ namespace Kephas.Core.Tests.Services
 
 
         [Test]
-        public void RegisterServices_Single_service_multiple_registrations_last()
+        public void Build_Single_service_multiple_registrations_last()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ISingleTestAppService),
                 typeof(SingleTestService),
                 typeof(SingleSameOverrideTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()) { Settings = { AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseLast } },
-                new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseLast;
+            var services = builder.WithParts(parts).Build();
 
             Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleSameOverrideTestService)));
             Assert.IsFalse(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
@@ -210,38 +174,29 @@ namespace Kephas.Core.Tests.Services
 
 
         [Test]
-        public void RegisterServices_Single_service_multiple_registrations_force_failure()
+        public void Build_Single_service_multiple_registrations_force_failure()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ISingleTestAppService),
                 typeof(SingleTestService),
                 typeof(SingleSameOverrideTestService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            Assert.Throws<AmbiguousServiceResolutionException>(() => registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()) { Settings = { AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority } },
-                new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) }));
+            var builder = this.CreateAppServiceCollectionBuilder();
+            builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority;
+            Assert.Throws<AmbiguousServiceResolutionException>(() => builder.WithParts(parts).Build());
         }
 
         [Test]
-        public void RegisterServices_generic()
+        public void Build_generic()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IGenericAppService<>),
                 typeof(GenericAppService<>),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             var match = conventions.TypeBuilders.Keys.First();
@@ -249,20 +204,15 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_default_metadata()
+        public void Build_default_metadata()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IDefaultMetadataAppService),
                 typeof(DefaultMetadataAppService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             var testBuilder = conventions.TypeBuilders[typeof(DefaultMetadataAppService)];
             var metadata = testBuilder.Metadata!;
@@ -275,20 +225,15 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_generic_with_nongeneric_base()
+        public void Build_generic_with_nongeneric_base()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IOneGenericAppService<>),
                 typeof(OneGenericAppServiceString),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(1, conventions.TypeBuilders.Count);
             var testBuilder = conventions.TypeBuilders.Values.First();
@@ -296,20 +241,15 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_generic_with_nongeneric_metadata()
+        public void Build_generic_with_nongeneric_metadata()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IOneGenericAppService<>),
                 typeof(OneGenericAppServiceString),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             var testBuilder = conventions.TypeBuilders.Values.First()!;
             var metadata = testBuilder.Metadata;
@@ -320,20 +260,15 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_generic_with_nongeneric_metadata_two()
+        public void Build_generic_with_nongeneric_metadata_two()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ITwoGenericAppService<,>),
                 typeof(TwoGenericAppServiceIntBool),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             var testBuilder = conventions.TypeBuilders.Values.First();
             var metadata = testBuilder.Metadata;
@@ -347,10 +282,8 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_as_open_generic_ILogger()
+        public void Build_as_open_generic_ILogger()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var log = new StringBuilder();
 
             var parts = new[]
@@ -358,11 +291,9 @@ namespace Kephas.Core.Tests.Services
                 typeof(ILogger<>),
                 typeof(TypedLogger<>),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.GetTestAmbientServices(m => log.AppendLine(m))),
-                new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder(
+                this.GetTestAmbientServices(m => log.AppendLine(m)));
+            var services = builder.WithParts(parts).Build();
 
             var testBuilder = conventions.TypeBuilders.Values.Single();
             var metadata = testBuilder.Metadata;
@@ -374,21 +305,16 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_metadata()
+        public void Build_metadata()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IExplicitMetadataAppService),
                 typeof(ExplicitMetadataAppService),
                 typeof(NullExplicitMetadataAppService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
             var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(NullExplicitMetadataAppService));
@@ -407,21 +333,16 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_metadata_IMetadataValue()
+        public void Build_metadata_IMetadataValue()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ICustomValueMetadataAppService),
                 typeof(CustomValueMetadataAppService),
                 typeof(CustomValueNullMetadataAppService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
             var customEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueMetadataAppService));
@@ -438,21 +359,16 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_metadata_MetadataValue_properties()
+        public void Build_metadata_MetadataValue_properties()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ICustomValueMetadataAppService),
                 typeof(CustomValueMetadataAppService),
                 typeof(CustomValueNullMetadataAppService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
 
@@ -467,21 +383,16 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_metadata_MetadataNamedValue_properties()
+        public void Build_metadata_MetadataNamedValue_properties()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(ICustomNamedValueMetadataAppService),
                 typeof(CustomNamedValueMetadataAppService),
                 typeof(CustomNamedValueNullMetadataAppService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            registrar.RegisterServices(
-                conventions,
-                new TestBuildContext(this.CreateAmbientServices()),
-                new IAppServiceInfosProvider[] { new PartsAppServiceInfosProvider(parts) });
+            var builder = this.CreateAppServiceCollectionBuilder();
+            var services = builder.WithParts(parts).Build();
 
             Assert.AreEqual(2, conventions.TypeBuilders.Count);
             var customBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueMetadataAppService));
@@ -503,27 +414,21 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void RegisterServices_bad_contract_type()
+        public void Build_bad_contract_type()
         {
-            var conventions = new InjectorBuilderBaseTest.TestRegistrationInjectorBuilder();
-
             var parts = new[]
             {
                 typeof(IBadAppService),
                 typeof(BadAppService),
             };
-            var registrar = CreateAppServiceInfoInjectionRegistrar();
-            Assert.Throws<InjectionException>(
-                () => registrar.RegisterServices(
-                    conventions,
-                    new TestBuildContext(this.CreateAmbientServices()),
-                    new List<IAppServiceInfosProvider> { new PartsAppServiceInfosProvider(parts) }));
+            var builder = this.CreateAppServiceCollectionBuilder();
+            Assert.Throws<InjectionException>(() => builder.WithParts(parts).Build());
         }
 
-        private static AppServiceInfoInjectionRegistrar CreateAppServiceInfoInjectionRegistrar()
+        private AppServiceCollectionBuilder CreateAppServiceCollectionBuilder(IAmbientServices? ambientServices = null)
         {
-            var registrar = new AppServiceInfoInjectionRegistrar();
-            return registrar;
+            var builder = new AppServiceCollectionBuilder(ambientServices ?? this.CreateAmbientServices());
+            return builder;
         }
 
         private IAmbientServices GetTestAmbientServices(Action<string>? logAction = null)

@@ -8,7 +8,7 @@
 namespace Kephas.Services;
 
 /// <summary>
-/// Defines an injection scope.
+/// Defines a service scope.
 /// </summary>
 public interface IInjectionScope : IDisposable
 {
