@@ -24,20 +24,15 @@ namespace Kephas.Messaging.Tests
     using Kephas.Security.Authentication;
     using Kephas.Serialization.Json;
     using Kephas.Services;
+    using Kephas.Testing;
     using Kephas.Testing.Application;
     using NSubstitute;
 
     public class MessagingTestBase : ApplicationTestBase
     {
-        public override IServiceProvider BuildServiceProvider(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
-            ILogManager? logManager = null,
-            IAppRuntime? appRuntime = null)
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
                 typeof(IEncryptionService).Assembly,            // Kephas.Security
@@ -46,8 +41,6 @@ namespace Kephas.Messaging.Tests
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
-
-            return base.BuildServiceProvider(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
         protected virtual IServiceProvider CreateMessagingContainerMock()

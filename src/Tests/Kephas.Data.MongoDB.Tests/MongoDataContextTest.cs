@@ -19,6 +19,11 @@ namespace Kephas.Data.MongoDB.Tests
     [TestFixture]
     public class MongoDataContextTest : MongoTestBase
     {
+        protected IServiceProvider BuildServiceProvider()
+        {
+            return this.CreateServicesBuilder().BuildWithDependencyInjection();
+        }
+
         [Test]
         public void Injection()
         {

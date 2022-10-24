@@ -19,12 +19,13 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Messaging.Endpoints;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
+    using Kephas.Testing;
     using Kephas.Testing.Services;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class GetServicesHandlerTest : TestBase
+    public class GetServicesHandlerTest : EndpointsTestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {

@@ -11,7 +11,7 @@ using System.Reflection;
 using Kephas.Testing;
 using Kephas.Testing.Services;
 
-public abstract class RazorTemplatingTestBase  : TestBase
+public abstract class RazorTemplatingTestBase : TestBase
 {
     protected override IEnumerable<Assembly> GetAssemblies()
     {

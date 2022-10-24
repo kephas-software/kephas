@@ -9,10 +9,10 @@ namespace Kephas.Connectivity.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-
+    using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public class ConnectivityTestBase  : TestBase
+    public class ConnectivityTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {

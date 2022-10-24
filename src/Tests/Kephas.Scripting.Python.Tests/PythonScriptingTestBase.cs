@@ -5,7 +5,7 @@ using Kephas.Configuration;
 using Kephas.Testing;
 using Kephas.Testing.Services;
 
-public abstract class PythonScriptingTestBase  : TestBase
+public abstract class PythonScriptingTestBase : TestBase
 {
     protected override IEnumerable<Assembly> GetAssemblies()
     {

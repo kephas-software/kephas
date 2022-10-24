@@ -13,7 +13,7 @@ using Kephas.Testing;
 using Kephas.Testing.Services;
 using NSubstitute;
 
-public abstract class FlowActivityTestBase  : TestBase
+public abstract class FlowActivityTestBase : TestBase
 {
     protected IActivityContext CreateActivityContext(IDynamic? scope = null)
     {

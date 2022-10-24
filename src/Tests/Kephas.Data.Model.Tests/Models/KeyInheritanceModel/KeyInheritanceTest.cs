@@ -5,16 +5,18 @@
 
     using Kephas.Data.Model.Elements.Annotations;
     using Kephas.Model;
-
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]
-    public class KeyInheritanceWithAutofacInjectionTest : DataModelWithAutofacInjectionTestBase
+    public class KeyInheritanceTest : DataModelTestBase
     {
         [Test]
         public async Task InitializeAsync_key_inheritance()
         {
-            var container = this.CreateInjectorForModel(typeof(IUniqueName), typeof(IUniqueGuid), typeof(IPlugin));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(IUniqueName), typeof(IUniqueGuid), typeof(IPlugin))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

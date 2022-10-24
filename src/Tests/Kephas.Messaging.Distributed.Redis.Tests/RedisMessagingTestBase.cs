@@ -25,9 +25,11 @@ namespace Kephas.Messaging.Redis.Tests
     using Kephas.Redis;
     using Kephas.Redis.Connectivity;
     using Kephas.Serialization.Json;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public abstract class RedisMessagingTestBase  : TestBase
+    public abstract class RedisMessagingTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {
@@ -46,22 +48,25 @@ namespace Kephas.Messaging.Redis.Tests
             };
         }
 
-        public override IServiceProvider BuildServiceProvider(
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
             IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
+            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
+            ambientServices = builder.AmbientServices;
             if (!ambientServices.Contains(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.BuildServiceProvider(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            return builder;
+        }
+
+        protected IServiceProvider BuildServiceProvider(IAmbientServices? ambientServices = null)
+        {
+            return this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
         }
     }
 }

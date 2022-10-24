@@ -18,6 +18,11 @@ using NUnit.Framework;
 [TestFixture]
 public class MessagingEventHubTest : MessagingTestBase
 {
+    protected IServiceProvider BuildServiceProvider()
+    {
+        return this.CreateServicesBuilder().BuildWithDependencyInjection();
+    }
+
     [Test]
     public async Task Subscribe_integration_subscription_called()
     {

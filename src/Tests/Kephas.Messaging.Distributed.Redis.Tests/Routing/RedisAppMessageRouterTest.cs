@@ -34,7 +34,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     [TestFixture]
     public class RedisAppMessageRouterTest : RedisMessagingTestBase
     {
-        public override IEnumerable<Type> GetDefaultParts()
+        protected override IEnumerable<Type> GetDefaultParts()
         {
             return new List<Type>(base.GetDefaultParts())
             {

@@ -35,6 +35,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
         <ProjectReference Include="..\..\Kephas.Messaging.Distributed.Redis\Kephas.Messaging.Distributed.Redis.csproj" />
         <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\..\Kephas.Redis\Kephas.Redis.csproj" />

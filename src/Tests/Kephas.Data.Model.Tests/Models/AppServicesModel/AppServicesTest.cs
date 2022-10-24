@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServicesWithAutofacInjectionTest.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,15 +12,18 @@ namespace Kephas.Data.Model.Tests.Models.AppServicesModel
 
     using Kephas.Model;
     using Kephas.Model.Elements;
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesWithAutofacInjectionTest : DataModelWithAutofacInjectionTestBase
+    public class AppServicesTest : DataModelTestBase
     {
         [Test]
         public async Task InitializeAsync_data_app_service()
         {
-            var container = this.CreateInjectorForModel(typeof(IDataContext));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(IDataContext))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

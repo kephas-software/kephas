@@ -24,9 +24,11 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
     using Kephas.Serialization.Json;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public abstract class PipesMessagingTestBase  : TestBase
+    public abstract class PipesMessagingTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {
@@ -45,22 +47,25 @@ namespace Kephas.Messaging.Pipes.Tests
             };
         }
 
-        public override IServiceProvider BuildServiceProvider(
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
             IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
+            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
+            ambientServices = builder.AmbientServices;
             if (!ambientServices.Contains(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.BuildServiceProvider(ambientServices, assemblies, parts, config);
+            return builder;
+        }
+
+        protected IServiceProvider BuildServiceProvider(IAmbientServices? ambientServices = null)
+        {
+            return this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
         }
     }
 }

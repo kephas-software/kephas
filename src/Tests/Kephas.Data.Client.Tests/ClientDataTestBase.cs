@@ -18,7 +18,7 @@ namespace Kephas.Data.Client.Tests
     using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public abstract class ClientDataTestBase  : TestBase
+    public abstract class ClientDataTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {

@@ -23,7 +23,6 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Net.Mime;
-    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Serialization.Json;
     using Kephas.Services;
@@ -37,23 +36,6 @@ namespace Kephas.Serialization.Json.Tests
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class JsonSerializerTest : SerializationTestBase
     {
-        [Test]
-        public async Task SerializeAsync_injection()
-        {
-            var container = this.BuildServiceProvider();
-            var serializationService = container.Resolve<ISerializationService>();
-
-            var obj = new TestEntity
-            {
-                Name = "John Doe",
-                PersonalSite = new Uri("http://site.com/my-site"),
-            };
-
-            var serializedObj = await serializationService.JsonSerializeAsync(obj);
-
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
-        }
-
         [Test]
         public async Task SerializeAsync()
         {
@@ -434,42 +416,6 @@ namespace Kephas.Serialization.Json.Tests
             var testEntity = (TestEntity)obj;
 
             Assert.AreEqual("John Doe", testEntity.Name);
-        }
-
-        [Test]
-        public async Task JsonSerializer_injection_autofac()
-        {
-            var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime()
-                .BuildWithAutofac(
-                    b =>
-                    b.WithAssemblies(
-                        typeof(IServiceProvider).Assembly,
-                        typeof(ISerializationService).Assembly,
-                        typeof(JsonSerializer).Assembly,
-                        typeof(DefaultTypeResolver).Assembly));
-            var serializers = ambientServices.Injector.ResolveMany<Lazy<ISerializer, SerializerMetadata>>();
-            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.Value;
-
-            Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
-        }
-
-        [Test]
-        public async Task JsonSerializer_injection_lite()
-        {
-            var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime()
-                .BuildWithLite(
-                    b =>
-                        b.WithAssemblies(
-                            typeof(IServiceProvider).Assembly,
-                            typeof(ISerializationService).Assembly,
-                            typeof(JsonSerializer).Assembly,
-                            typeof(DefaultTypeResolver).Assembly));
-            var serializers = ambientServices.Injector.ResolveMany<Lazy<ISerializer, SerializerMetadata>>();
-            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.Value;
-
-            Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }
 
         [Test]

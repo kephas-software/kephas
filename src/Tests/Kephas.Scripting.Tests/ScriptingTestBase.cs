@@ -15,7 +15,7 @@ namespace Kephas.Scripting.Tests
     using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public class ScriptingTestBase  : TestBase
+    public class ScriptingTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {

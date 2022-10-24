@@ -17,12 +17,13 @@ namespace Kephas.Data.MongoDB.Tests
     using Kephas.Data.Store;
     using Kephas.MongoDB;
     using Kephas.Services;
+    using Kephas.Testing;
     using Kephas.Testing.Services;
     using Kephas.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
 
-    public abstract class MongoTestBase  : TestBase
+    public abstract class MongoTestBase : TestBase
     {
         private const string MongoTestDataStoreName = "mongotest";
 
@@ -39,7 +40,7 @@ namespace Kephas.Data.MongoDB.Tests
                 .WaitNonLocking();
         }
 
-        public override IEnumerable<Type> GetDefaultParts()
+        protected override IEnumerable<Type> GetDefaultParts()
         {
             return new List<Type>(base.GetDefaultParts())
             {

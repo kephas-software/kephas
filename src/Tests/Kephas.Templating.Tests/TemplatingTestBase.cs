@@ -12,7 +12,7 @@ namespace Kephas.Templating.Tests
     using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public class TemplatingTestBase  : TestBase
+    public class TemplatingTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {

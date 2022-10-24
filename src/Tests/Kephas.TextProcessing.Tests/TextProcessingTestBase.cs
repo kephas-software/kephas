@@ -15,7 +15,7 @@ namespace Kephas.TextProcessing.Tests
     using Kephas.Testing;
     using Kephas.Testing.Services;
 
-    public abstract class TextProcessingTestBase  : TestBase
+    public abstract class TextProcessingTestBase : TestBase
     {
         protected override IEnumerable<Assembly> GetAssemblies()
         {
