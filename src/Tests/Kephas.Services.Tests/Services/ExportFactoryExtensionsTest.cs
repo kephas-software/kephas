@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Injection
+namespace Kephas.Tests.Services
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Services;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;

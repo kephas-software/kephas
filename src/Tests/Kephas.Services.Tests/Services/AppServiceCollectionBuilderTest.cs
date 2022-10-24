@@ -8,24 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services
+namespace Kephas.Tests.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
     using System.Text;
-
-    using Kephas.Core.Tests.Services.CustomNamedValueAppServiceMetadata;
-    using Kephas.Core.Tests.Services.CustomValueAppServiceMetadata;
-    using Kephas.Core.Tests.Services.DefaultAppServiceMetadata;
-    using Kephas.Core.Tests.Services.DefaultExplicitAppServiceMetadata;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
     using Kephas.Services.Builder;
     using Kephas.Services.Configuration;
     using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Tests.Services.CustomNamedValueAppServiceMetadata;
+    using Kephas.Tests.Services.CustomValueAppServiceMetadata;
+    using Kephas.Tests.Services.DefaultAppServiceMetadata;
+    using Kephas.Tests.Services.DefaultExplicitAppServiceMetadata;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -47,10 +44,10 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(2, conventions.TypeBuilders.Count);
+            Assert.AreEqual(2, services.Count(s => s.InstanceType is not null));
 
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(MultipleTestService)));
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(NewMultipleTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(MultipleTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(NewMultipleTestService)));
         }
 
         [Test]
@@ -66,11 +63,11 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(3, conventions.TypeBuilders.Count);
+            Assert.AreEqual(3, services.Count(s => s.InstanceType is not null));
 
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(MultipleTestService)));
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(NewMultipleTestService)));
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(DerivedMultipleTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(MultipleTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(NewMultipleTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(DerivedMultipleTestService)));
         }
 
         [Test]
@@ -84,8 +81,8 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
+            Assert.AreEqual(1, services.Count(s => s.InstanceType is not null));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(SingleTestService)));
         }
 
         [Test]
@@ -101,8 +98,8 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(ChainSingleOverrideTestService)));
+            Assert.AreEqual(1, services.Count(s => s.InstanceType is not null));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(ChainSingleOverrideTestService)));
         }
 
         [Test]
@@ -117,8 +114,8 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(DerivedOverrideSingleTestService)));
+            Assert.AreEqual(1, services.Count(s => s.InstanceType is not null));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(DerivedOverrideSingleTestService)));
         }
 
         [Test]
@@ -133,8 +130,8 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleOverrideTestService)));
+            Assert.AreEqual(1, services.Count(s => s.InstanceType is not null));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(SingleOverrideTestService)));
         }
 
         [Test]
@@ -150,8 +147,8 @@ namespace Kephas.Core.Tests.Services
             builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseFirst;
             var services = builder.WithParts(parts).Build();
 
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
-            Assert.IsFalse(conventions.TypeBuilders.ContainsKey(typeof(SingleSameOverrideTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(SingleTestService)));
+            CollectionAssert.IsEmpty(services.Where(s => s.InstanceType == typeof(SingleSameOverrideTestService)));
         }
 
 
@@ -168,8 +165,8 @@ namespace Kephas.Core.Tests.Services
             builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseLast;
             var services = builder.WithParts(parts).Build();
 
-            Assert.IsTrue(conventions.TypeBuilders.ContainsKey(typeof(SingleSameOverrideTestService)));
-            Assert.IsFalse(conventions.TypeBuilders.ContainsKey(typeof(SingleTestService)));
+            CollectionAssert.IsNotEmpty(services.Where(s => s.InstanceType == typeof(SingleSameOverrideTestService)));
+            CollectionAssert.IsEmpty(services.Where(s => s.InstanceType == typeof(SingleTestService)));
         }
 
 
@@ -198,9 +195,9 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            var match = conventions.TypeBuilders.Keys.First();
-            Assert.AreEqual(match, typeof(GenericAppService<>));
+            Assert.AreEqual(1, services.Count(s => s.InstanceType is not null));
+            var match = services.First(s => s.InstanceType is not null);
+            Assert.AreEqual(match.InstanceType, typeof(GenericAppService<>));
         }
 
         [Test]
@@ -214,13 +211,11 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            var testBuilder = conventions.TypeBuilders[typeof(DefaultMetadataAppService)];
+            var testBuilder = services.Single(s => s.InstanceType == typeof(DefaultMetadataAppService));
             var metadata = testBuilder.Metadata!;
 
             Assert.AreEqual(1, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceType)));
-
-            var valueGetter = metadata[nameof(AppServiceMetadata.ServiceType)];
             Assert.AreEqual(typeof(DefaultMetadataAppService), metadata[nameof(AppServiceMetadata.ServiceType)]);
         }
 
@@ -235,8 +230,8 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(1, conventions.TypeBuilders.Count);
-            var testBuilder = conventions.TypeBuilders.Values.First();
+            Assert.AreEqual(1, services.Count(s => s.InstanceType is not null));
+            var testBuilder = services.Single(s => s.InstanceType is not null);
             Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ContractType);
         }
 
@@ -251,7 +246,7 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            var testBuilder = conventions.TypeBuilders.Values.First()!;
+            var testBuilder = services.First(s => s.InstanceType is not null);
             var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(2, metadata.Count);
@@ -270,7 +265,7 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            var testBuilder = conventions.TypeBuilders.Values.First();
+            var testBuilder = services.First(s => s.InstanceType is not null);
             var metadata = testBuilder.Metadata;
 
             Assert.AreEqual(3, metadata.Count);
@@ -295,7 +290,7 @@ namespace Kephas.Core.Tests.Services
                 this.GetTestAmbientServices(m => log.AppendLine(m)));
             var services = builder.WithParts(parts).Build();
 
-            var testBuilder = conventions.TypeBuilders.Values.Single();
+            var testBuilder = services.Single(s => s.InstanceType is not null);
             var metadata = testBuilder.Metadata;
 
             // should not warn that metadata attributes are not supported
@@ -316,13 +311,12 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(2, conventions.TypeBuilders.Count);
-            var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(NullExplicitMetadataAppService));
-            var explicitBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(ExplicitMetadataAppService));
-            Assert.AreEqual(nullBuilderEntry.Value.ServiceType, typeof(NullExplicitMetadataAppService));
+            Assert.AreEqual(2, services.Count(s => s.InstanceType is not null));
+            var nullBuilderEntry = services.Single(s => s.InstanceType == typeof(NullExplicitMetadataAppService));
+            var explicitBuilderEntry = services.Single(s => s.InstanceType == typeof(ExplicitMetadataAppService));
 
-            var nullMetadata = nullBuilderEntry.Value.Metadata!;
-            var explicitMetadata = explicitBuilderEntry.Value.Metadata!;
+            var nullMetadata = nullBuilderEntry.Metadata!;
+            var explicitMetadata = explicitBuilderEntry.Metadata!;
 
             Assert.AreEqual(1, nullMetadata.Count);
             Assert.IsFalse(nullMetadata.ContainsKey(nameof(AppServiceMetadata.ProcessingPriority)));
@@ -344,18 +338,16 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(2, conventions.TypeBuilders.Count);
-            var customEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueMetadataAppService));
-            var nullEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueNullMetadataAppService));
-            Assert.AreEqual(customEntry.Value.ServiceType, typeof(CustomValueMetadataAppService));
+            Assert.AreEqual(2, services.Count(s => s.InstanceType is not null));
+            var customEntry = services.First(s => s.InstanceType == typeof(CustomValueMetadataAppService));
+            var nullEntry = services.First(s => s.InstanceType == typeof(CustomValueNullMetadataAppService));
 
-            var customBuilder = customEntry.Value;
-            var customMetadata = customBuilder.Metadata!;
+            var customMetadata = customEntry.Metadata!;
 
             Assert.AreEqual(2, customMetadata.Count);
             Assert.AreEqual("hi there", customMetadata["CustomValueMetadata"]);
 
-            Assert.IsFalse(nullEntry.Value.Metadata!.ContainsKey("CustomValueMetadata"));
+            Assert.IsFalse(nullEntry.Metadata!.ContainsKey("CustomValueMetadata"));
         }
 
         [Test]
@@ -370,15 +362,15 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(2, conventions.TypeBuilders.Count);
+            Assert.AreEqual(2, services.Count(s => s.InstanceType is not null));
 
-            var customBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueMetadataAppService));
-            var customMetadata = customBuilderEntry.Value.Metadata!;
+            var customBuilderEntry = services.First(s => s.InstanceType == typeof(CustomValueMetadataAppService));
+            var customMetadata = customBuilderEntry.Metadata!;
             Assert.AreEqual(2, customMetadata.Count);
             Assert.AreEqual("hi there", customMetadata["CustomValueMetadata"]);
 
-            var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomValueNullMetadataAppService));
-            var nullMetadata = nullBuilderEntry.Value.Metadata!;
+            var nullBuilderEntry = services.First(s => s.InstanceType == typeof(CustomValueNullMetadataAppService));
+            var nullMetadata = nullBuilderEntry.Metadata!;
             Assert.IsFalse(nullMetadata.ContainsKey("CustomValueMetadata"));
         }
 
@@ -394,15 +386,13 @@ namespace Kephas.Core.Tests.Services
             var builder = this.CreateAppServiceCollectionBuilder();
             var services = builder.WithParts(parts).Build();
 
-            Assert.AreEqual(2, conventions.TypeBuilders.Count);
-            var customBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueMetadataAppService));
-            Assert.AreEqual(customBuilderEntry.Value.ServiceType, typeof(CustomNamedValueMetadataAppService));
+            Assert.AreEqual(2, services.Count(s => s.InstanceType is not null));
+            var customBuilderEntry = services.First(s => s.InstanceType == typeof(CustomNamedValueMetadataAppService));
 
-            var nullBuilderEntry = conventions.TypeBuilders.First(kv => kv.Key == typeof(CustomNamedValueNullMetadataAppService));
-            Assert.AreEqual(nullBuilderEntry.Value.ServiceType, typeof(CustomNamedValueNullMetadataAppService));
+            var nullBuilderEntry = services.First(s => s.InstanceType == typeof(CustomNamedValueNullMetadataAppService));
 
-            var customMetadata = customBuilderEntry.Value.Metadata!;
-            var nullMetadata = nullBuilderEntry.Value.Metadata!;
+            var customMetadata = customBuilderEntry.Metadata!;
+            var nullMetadata = nullBuilderEntry.Metadata!;
 
             Assert.AreEqual(3, customMetadata.Count);
             Assert.AreEqual("hi there", customMetadata["Name"]);
@@ -524,8 +514,6 @@ namespace Kephas.Core.Tests.Services
 
     namespace CustomNamedValueAppServiceMetadata
     {
-        using System.Collections.Generic;
-
         [SingletonAppServiceContract(AllowMultiple = true)]
         public interface ICustomNamedValueMetadataAppService { }
 
