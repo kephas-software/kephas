@@ -11,6 +11,7 @@
 namespace Kephas.Tests.Extensions.DependencyInjection
 {
     using Kephas.Logging;
+    using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -23,7 +24,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
             var container = ambientServices
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
-                .BuildWithAutofac().Injector;
+                .BuildWithDependencyInjection();
             var otherAmbientServices = container.Resolve<IAmbientServices>();
 
             Assert.AreSame(ambientServices, otherAmbientServices);

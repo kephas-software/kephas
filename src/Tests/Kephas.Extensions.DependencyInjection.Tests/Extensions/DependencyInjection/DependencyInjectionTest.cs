@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacInjectorTest.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,32 +11,39 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Kephas.Services;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Services.Reflection;
+    using Kephas.Testing;
+    using Microsoft.Extensions.DependencyInjection;
     using NSubstitute;
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="AutofacServiceProvider"/>.
+    /// Tests for <see cref="ServiceProvider"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacInjectorTest : AutofacInjectionTestBase
+    public class DependencyInjectionTest : TestBase
     {
-        public AutofacServiceProvider CreateInjector(params Type[] types)
+        public IServiceProvider CreateServiceProvider(params Type[] types)
         {
-            var builder = this.WithEmptyConfiguration();
-            builder.RegisterTypes(types);
-            return new AutofacServiceProvider(builder, null);
+            var services = new ServiceCollection();
+            foreach (var type in types)
+            {
+                services.AddSingleton(type, type);
+            }
+
+            return services.BuildServiceProvider();
         }
 
         [Test]
         public void Resolve_from_ambient_services_self()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
             var containerExport = container.Resolve(typeof(IAmbientServices));
             var ambientExport = container.Resolve(typeof(IAmbientServices));
 
@@ -49,7 +56,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void Resolve_from_ambient_services_instance()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
             var containerExport = container.Resolve(typeof(ILogManager));
             var ambientExport = container.Resolve(typeof(ILogManager));
 
@@ -61,7 +68,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void Resolve_from_ambient_services_instance_type()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
             var containerExport = container.Resolve(typeof(ITypeLoader));
             var ambientExport = container.Resolve(typeof(ITypeLoader));
 
@@ -72,7 +79,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.Resolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -82,7 +89,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void TryResolve_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -92,7 +99,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void TryResolve_failure()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServiceProvider();
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNull(exported);
@@ -101,7 +108,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_generic_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.Resolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -111,7 +118,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void TryResolve_generic_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -121,7 +128,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void TryResolve_generic_failure()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServiceProvider();
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNull(exported);
@@ -130,14 +137,14 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_failure()
         {
-            var container = this.CreateInjector();
-            Assert.Throws<ComponentNotRegisteredException>(() => container.Resolve(typeof(ExportedClass)));
+            var container = this.CreateServiceProvider();
+            Assert.Throws<InvalidOperationException>(() => container.Resolve(typeof(ExportedClass)));
         }
 
         [Test]
         public void ResolveMany_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -149,7 +156,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_empty()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(string));
 
             Assert.IsNotNull(exported);
@@ -160,8 +167,9 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_various_same_contract_registrations()
         {
-            var container = this.CreateInjector(
-                config: b => { b.WithAppServiceInfoProvider(new MultiFilterAppServiceInfoProvider()); });
+            var builder = this.CreateServicesBuilder()
+                .WithServiceInfoProviders(new MultiFilterAppServiceInfoProvider());
+            var container = builder.BuildWithDependencyInjection();
 
             var filters = container.ResolveMany(typeof(IFilter));
 
@@ -173,8 +181,9 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void GetService_various_same_contract_registrations()
         {
-            var container = this.CreateInjector(
-                config: b => { b.WithAppServiceInfoProvider(new MultiFilterAppServiceInfoProvider()); });
+            var container = this.CreateServicesBuilder()
+                .WithServiceInfoProviders(new MultiFilterAppServiceInfoProvider())
+                .BuildWithDependencyInjection();
 
             var rawFilters = container.GetService(typeof(IEnumerable<IFilter>));
             var filters = rawFilters as IEnumerable<IFilter>;
@@ -187,39 +196,39 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Dispose()
         {
-            var container = this.CreateInjector();
-            container.Dispose();
+            var container = this.CreateServiceProvider();
+            (container as IDisposable)!.Dispose();
             Assert.Throws<ObjectDisposedException>(() => container.TryResolve<IList<string>>());
         }
 
         [Test]
         public void Dispose_multiple()
         {
-            var container = this.CreateInjector();
-            container.Dispose();
-            container.Dispose();
+            var container = this.CreateServiceProvider();
+            (container as IDisposable)!.Dispose();
+            (container as IDisposable)!.Dispose();
         }
 
         [Test]
         public void CreateScopedInjector_ScopeExportedClass()
         {
-            var container = this.CreateInjectorWithBuilder(
-                b => b.WithRegistration(
-                    new AppServiceInfo(
-                        typeof(ScopeExportedClass),
-                        typeof(ScopeExportedClass),
-                        AppServiceLifetime.Scoped)));
-            using (var scopedContext = container.CreateScope())
-            using (var otherScopedContext = container.CreateScope())
-            {
-                var scopedInstance1 = scopedContext.Resolve<ScopeExportedClass>();
-                var scopedInstance2 = scopedContext.Resolve<ScopeExportedClass>();
+            var builder = this.CreateServicesBuilder();
+            builder.AmbientServices.Add(
+                new AppServiceInfo(
+                    typeof(ScopeExportedClass),
+                    typeof(ScopeExportedClass),
+                    AppServiceLifetime.Scoped));
+            var container = builder.BuildWithDependencyInjection();
 
-                Assert.AreSame(scopedInstance1, scopedInstance2);
+            using var scopedContext = container.CreateScope();
+            using var otherScopedContext = container.CreateScope();
+            var scopedInstance1 = scopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
+            var scopedInstance2 = scopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
 
-                var otherScopedInstance = otherScopedContext.Resolve<ScopeExportedClass>();
-                Assert.AreNotSame(scopedInstance1, otherScopedInstance);
-            }
+            Assert.AreSame(scopedInstance1, scopedInstance2);
+
+            var otherScopedInstance = otherScopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
+            Assert.AreNotSame(scopedInstance1, otherScopedInstance);
         }
 
         [Test]
@@ -229,7 +238,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var service = Substitute.For<IAsyncInitializable>();
             ambientServices.Add(typeof(IAsyncInitializable), service);
 
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
 
             var actualService = container.Resolve<IAsyncInitializable>();
             Assert.AreSame(service, actualService);
@@ -241,7 +250,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var ambientServices = this.CreateAmbientServices();
             ambientServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
 
             var service1 = container.Resolve<IAsyncInitializable>();
             var service2 = container.Resolve<IAsyncInitializable>();
@@ -252,7 +261,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void Resolve_ambient_services_not_available_after_first_failed_request()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
 
             var service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);

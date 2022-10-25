@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesAutofacExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,49 +12,48 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 {
     using Kephas.Application;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Testing;
+    using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AmbientServicesAutofacExtensionsTest : TestBase
+    public class DependencyInjectionExtensionsTest : TestBase
     {
         [Test]
-        public void BuildWithAutofac_defaults()
+        public void BuildWithDependencyInjection_defaults()
         {
-            IAmbientServices ambientServices = this.CreateAmbientServices();
+            var ambientServices = this.CreateAmbientServices();
             var builder = ambientServices;
-            builder
+            var injector = builder
                 .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test")))
-                .BuildWithAutofac();
+                .BuildWithDependencyInjection();
 
-            var injector = ambientServices.Injector;
-            Assert.IsInstanceOf<AutofacServiceProvider>(injector);
+            Assert.IsInstanceOf<ServiceProvider>(injector);
         }
 
         [Test]
-        public void BuildWithAutofac_with_open_generic_override()
+        public void BuildWithDependencyInjection_with_open_generic_override()
         {
-            IAmbientServices ambientServices = this.CreateAmbientServices();
-            var builder = ambientServices;
-            builder
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
-                .BuildWithAutofac(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
+            var ambientServices = this.CreateAmbientServices()
+                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")));
+            var builder = new AppServiceCollectionBuilder(ambientServices)
+                .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
+            var injector = builder.BuildWithDependencyInjection();
 
-            var injector = ambientServices.Injector;
             var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
         }
 
         [Test]
-        public void BuildWithAutofac_with_open_generic_override_and_dependency()
+        public void BuildWithDependencyInjection_with_open_generic_override_and_dependency()
         {
-            IAmbientServices ambientServices = this.CreateAmbientServices();
-            var builder = ambientServices;
-            builder
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
-                .BuildWithAutofac(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
+            var ambientServices = this.CreateAmbientServices()
+                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")));
+            var builder = new AppServiceCollectionBuilder(ambientServices)
+                .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
+            var injector = builder.BuildWithDependencyInjection();
 
-            var injector = ambientServices.Injector;
             var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);
         }
@@ -62,16 +61,12 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Autofac_generic_export_with_ctor_dependency()
         {
-            var conventions = new ContainerBuilder();
+            var conventions = new ServiceCollection();
 
-            conventions
-                .RegisterType<Dependency>()
-                .As<Dependency>();
-            conventions
-                .RegisterGeneric(typeof(MoreOpenWithDependency<>))
-                .As(typeof(IOpen<>));
+            conventions.AddSingleton<Dependency>();
+            conventions.AddSingleton(typeof(IOpen<>), typeof(MoreOpenWithDependency<>));
 
-            using (var container = conventions.Build())
+            using (var container = conventions.BuildServiceProvider())
             {
                 var myService = container.Resolve(typeof(IOpen<object>));
                 Assert.IsInstanceOf<MoreOpenWithDependency<object>>(myService);

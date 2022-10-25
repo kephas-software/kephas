@@ -31,7 +31,7 @@ namespace Kephas.Tests.Services.Autofac
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacServiceProviderTest : TestBase
     {
-        public AutofacServiceProvider CreateAutofacServiceProvider(params Type[] types)
+        public AutofacServiceProvider CreateServiceProvider(params Type[] types)
         {
             var builder = new ContainerBuilder();
             builder.RegisterTypes(types);
@@ -78,7 +78,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void Resolve_success()
         {
-            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.Resolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -88,7 +88,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void TryResolve_success()
         {
-            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -98,7 +98,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void TryResolve_failure()
         {
-            var container = this.CreateAutofacServiceProvider();
+            var container = this.CreateServiceProvider();
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNull(exported);
@@ -107,7 +107,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void Resolve_generic_success()
         {
-            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.Resolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -117,7 +117,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void TryResolve_generic_success()
         {
-            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -127,7 +127,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void TryResolve_generic_failure()
         {
-            var container = this.CreateAutofacServiceProvider();
+            var container = this.CreateServiceProvider();
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNull(exported);
@@ -136,14 +136,14 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void Resolve_failure()
         {
-            var container = this.CreateAutofacServiceProvider();
+            var container = this.CreateServiceProvider();
             Assert.Throws<ComponentNotRegisteredException>(() => container.Resolve(typeof(ExportedClass)));
         }
 
         [Test]
         public void ResolveMany_success()
         {
-            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -155,7 +155,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void ResolveMany_empty()
         {
-            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
+            var container = this.CreateServiceProvider(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(string));
 
             Assert.IsNotNull(exported);
@@ -195,7 +195,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void Dispose()
         {
-            var container = this.CreateAutofacServiceProvider();
+            var container = this.CreateServiceProvider();
             container.Dispose();
             Assert.Throws<ObjectDisposedException>(() => container.TryResolve<IList<string>>());
         }
@@ -203,7 +203,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void Dispose_multiple()
         {
-            var container = this.CreateAutofacServiceProvider();
+            var container = this.CreateServiceProvider();
             container.Dispose();
             container.Dispose();
         }
