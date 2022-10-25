@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutofacInjectorTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacServiceProviderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Injection.Autofac
+namespace Kephas.Tests.Services.Autofac
 {
     using System;
     using System.Collections.Generic;
@@ -14,13 +14,13 @@ namespace Kephas.Tests.Injection.Autofac
 
     using global::Autofac;
     using global::Autofac.Core.Registration;
-    using Kephas.Services;
-    using Kephas.Services.Autofac;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Autofac;
+    using Kephas.Services.Builder;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -29,11 +29,11 @@ namespace Kephas.Tests.Injection.Autofac
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacInjectorTest : AutofacInjectionTestBase
+    public class AutofacServiceProviderTest : TestBase
     {
-        public AutofacServiceProvider CreateInjector(params Type[] types)
+        public AutofacServiceProvider CreateAutofacServiceProvider(params Type[] types)
         {
-            var builder = this.WithEmptyConfiguration();
+            var builder = new ContainerBuilder();
             builder.RegisterTypes(types);
             return new AutofacServiceProvider(builder, null);
         }
@@ -42,7 +42,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_from_ambient_services_self()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithAutofac();
             var containerExport = container.Resolve(typeof(IAmbientServices));
             var ambientExport = container.Resolve(typeof(IAmbientServices));
 
@@ -55,7 +55,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_from_ambient_services_instance()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithAutofac();
             var containerExport = container.Resolve(typeof(ILogManager));
             var ambientExport = container.Resolve(typeof(ILogManager));
 
@@ -67,7 +67,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_from_ambient_services_instance_type()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithAutofac();
             var containerExport = container.Resolve(typeof(ITypeLoader));
             var ambientExport = container.Resolve(typeof(ITypeLoader));
 
@@ -78,7 +78,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
             var exported = container.Resolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -88,7 +88,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void TryResolve_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -98,7 +98,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void TryResolve_failure()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateAutofacServiceProvider();
             var exported = container.TryResolve(typeof(ExportedClass));
 
             Assert.IsNull(exported);
@@ -107,7 +107,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_generic_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
             var exported = container.Resolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -117,7 +117,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void TryResolve_generic_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNotNull(exported);
@@ -127,7 +127,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void TryResolve_generic_failure()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateAutofacServiceProvider();
             var exported = container.TryResolve<ExportedClass>();
 
             Assert.IsNull(exported);
@@ -136,14 +136,14 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Resolve_failure()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateAutofacServiceProvider();
             Assert.Throws<ComponentNotRegisteredException>(() => container.Resolve(typeof(ExportedClass)));
         }
 
         [Test]
         public void ResolveMany_success()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
@@ -155,7 +155,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void ResolveMany_empty()
         {
-            var container = this.CreateInjector(typeof(ExportedClass));
+            var container = this.CreateAutofacServiceProvider(typeof(ExportedClass));
             var exported = container.ResolveMany(typeof(string));
 
             Assert.IsNotNull(exported);
@@ -166,8 +166,9 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void ResolveMany_various_same_contract_registrations()
         {
-            var container = this.CreateInjector(
-                config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
+            var builder = this.CreateServicesBuilder()
+                .WithServiceInfoProviders(new MultiFilterAppServiceInfoProvider());
+            var container = builder.BuildWithAutofac();
 
             var filters = container.ResolveMany(typeof(IFilter));
 
@@ -179,8 +180,9 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void GetService_various_same_contract_registrations()
         {
-            var container = this.CreateInjector(
-                config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
+            var container = this.CreateServicesBuilder()
+                .WithServiceInfoProviders(new MultiFilterAppServiceInfoProvider())
+                .BuildWithAutofac();
 
             var rawFilters = container.GetService(typeof(IEnumerable<IFilter>));
             var filters = rawFilters as IEnumerable<IFilter>;
@@ -193,7 +195,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Dispose()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateAutofacServiceProvider();
             container.Dispose();
             Assert.Throws<ObjectDisposedException>(() => container.TryResolve<IList<string>>());
         }
@@ -201,7 +203,7 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void Dispose_multiple()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateAutofacServiceProvider();
             container.Dispose();
             container.Dispose();
         }
@@ -209,23 +211,23 @@ namespace Kephas.Tests.Injection.Autofac
         [Test]
         public void CreateScopedInjector_ScopeExportedClass()
         {
-            var container = this.CreateInjectorWithBuilder(
-                b => b.WithRegistration(
-                    new AppServiceInfo(
-                        typeof(ScopeExportedClass),
-                        typeof(ScopeExportedClass),
-                        AppServiceLifetime.Scoped)));
-            using (var scopedContext = container.CreateScope())
-            using (var otherScopedContext = container.CreateScope())
-            {
-                var scopedInstance1 = scopedContext.Resolve<ScopeExportedClass>();
-                var scopedInstance2 = scopedContext.Resolve<ScopeExportedClass>();
+            var builder = this.CreateServicesBuilder();
+            builder.AmbientServices.Add(
+                new AppServiceInfo(
+                    typeof(ScopeExportedClass),
+                    typeof(ScopeExportedClass),
+                    AppServiceLifetime.Scoped));
+            var container = builder.BuildWithAutofac();
 
-                Assert.AreSame(scopedInstance1, scopedInstance2);
+            using var scopedContext = container.CreateScope();
+            using var otherScopedContext = container.CreateScope();
+            var scopedInstance1 = scopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
+            var scopedInstance2 = scopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
 
-                var otherScopedInstance = otherScopedContext.Resolve<ScopeExportedClass>();
-                Assert.AreNotSame(scopedInstance1, otherScopedInstance);
-            }
+            Assert.AreSame(scopedInstance1, scopedInstance2);
+
+            var otherScopedInstance = otherScopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
+            Assert.AreNotSame(scopedInstance1, otherScopedInstance);
         }
 
         [Test]
@@ -235,7 +237,7 @@ namespace Kephas.Tests.Injection.Autofac
             var service = Substitute.For<IAsyncInitializable>();
             ambientServices.Add(typeof(IAsyncInitializable), service);
 
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithAutofac();
 
             var actualService = container.Resolve<IAsyncInitializable>();
             Assert.AreSame(service, actualService);
@@ -247,7 +249,7 @@ namespace Kephas.Tests.Injection.Autofac
             var ambientServices = this.CreateAmbientServices();
             ambientServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithAutofac();
 
             var service1 = container.Resolve<IAsyncInitializable>();
             var service2 = container.Resolve<IAsyncInitializable>();
@@ -258,7 +260,7 @@ namespace Kephas.Tests.Injection.Autofac
         public void Resolve_ambient_services_not_available_after_first_failed_request()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjectorWithBuilder(ambientServices);
+            var container = this.CreateServicesBuilder(ambientServices).BuildWithAutofac();
 
             var service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);
@@ -311,7 +313,7 @@ namespace Kephas.Tests.Injection.Autofac
             }
         }
 
-        public class MultiFilterAppServiceInfosProvider : IAppServiceInfosProvider
+        public class MultiFilterAppServiceInfoProvider : IAppServiceInfoProvider
         {
             public IEnumerable<ContractDeclaration> GetAppServiceContracts()
             {

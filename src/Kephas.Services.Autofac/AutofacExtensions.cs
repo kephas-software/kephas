@@ -84,6 +84,22 @@ public static class AutofacExtensions
     }
 
     /// <summary>
+    /// Creates a scope from the service provider.
+    /// </summary>
+    /// <param name="serviceProvider">The parent service provider.</param>
+    /// <returns>A <see cref="IServiceScope"/>.</returns>
+    public static IServiceScope CreateScope(this IServiceProvider serviceProvider)
+    {
+        if (serviceProvider is not AutofacServiceProviderBase providerBase)
+        {
+            throw new NotSupportedException(Strings.AutofacExtensions_CreateScope_ServiceProviderNotSupported);
+        }
+
+        var rootContainer = providerBase.GetRoot()!;
+        return new ServiceScope(rootContainer.GetServiceProvider(providerBase.Of.BeginLifetimeScope()));
+    }
+
+    /// <summary>
     /// Gets the lifetime scope from a component context.
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
@@ -91,7 +107,7 @@ public static class AutofacExtensions
     /// <returns>
     /// The lifetime scope.
     /// </returns>
-    public static ILifetimeScope GetLifetimeScope(this IComponentContext c)
+    internal static ILifetimeScope GetLifetimeScope(this IComponentContext c)
     {
         return c switch
         {

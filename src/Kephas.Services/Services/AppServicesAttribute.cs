@@ -18,7 +18,7 @@ using Kephas.Logging;
 /// Assembly attribute decorating an assembly and collecting the application services, both contract types and implementation types.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, IHasProcessingPriority
+public sealed class AppServicesAttribute : Attribute, IAppServiceInfoProvider, IHasProcessingPriority
 {
     private readonly Lazy<ILogger> lazyLogger = new(() => LoggingHelper.DefaultLogManager.GetLogger(typeof(AppServicesAttribute)));
 
@@ -27,7 +27,7 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
     /// </summary>
     /// <param name="providerType">
     /// The type providing the application services.
-    /// Should implement the <see cref="IAppServiceInfosProvider"/> interface.
+    /// Should implement the <see cref="IAppServiceInfoProvider"/> interface.
     /// </param>
     /// <param name="processingPriority">Adds the processing priority in which the attributes will be processed.</param>
     public AppServicesAttribute([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type providerType, Priority processingPriority = Priority.Normal)
@@ -35,9 +35,9 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
         this.ProviderType = providerType ?? throw new ArgumentNullException(nameof(providerType));
         this.ProcessingPriority = processingPriority;
 
-        if (!typeof(IAppServiceInfosProvider).IsAssignableFrom(this.ProviderType))
+        if (!typeof(IAppServiceInfoProvider).IsAssignableFrom(this.ProviderType))
         {
-            throw new ArgumentException($"The provider type must implement {nameof(IAppServiceInfosProvider)}", nameof(providerType));
+            throw new ArgumentException($"The provider type must implement {nameof(IAppServiceInfoProvider)}", nameof(providerType));
         }
     }
 
@@ -71,9 +71,9 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
             this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServiceContracts));
         }
 
-        if (Activator.CreateInstance(this.ProviderType) is not IAppServiceInfosProvider provider)
+        if (Activator.CreateInstance(this.ProviderType) is not IAppServiceInfoProvider provider)
         {
-            this.Logger.Warn($"Instance of {{providerType}} cannot be converted to {nameof(IAppServiceInfosProvider)}.", this.ProviderType);
+            this.Logger.Warn($"Instance of {{providerType}} cannot be converted to {nameof(IAppServiceInfoProvider)}.", this.ProviderType);
             return Enumerable.Empty<ContractDeclaration>();
         }
 
@@ -107,9 +107,9 @@ public sealed class AppServicesAttribute : Attribute, IAppServiceInfosProvider, 
             this.Logger.Trace("Creating instance of {providerType} in {operation}...", this.ProviderType, nameof(this.GetAppServices));
         }
 
-        if (Activator.CreateInstance(this.ProviderType) is not IAppServiceInfosProvider provider)
+        if (Activator.CreateInstance(this.ProviderType) is not IAppServiceInfoProvider provider)
         {
-            this.Logger.Warn($"Instance of {{providerType}} cannot be converted to {nameof(IAppServiceInfosProvider)}.", this.ProviderType);
+            this.Logger.Warn($"Instance of {{providerType}} cannot be converted to {nameof(IAppServiceInfoProvider)}.", this.ProviderType);
             return Enumerable.Empty<ServiceDeclaration>();
         }
 

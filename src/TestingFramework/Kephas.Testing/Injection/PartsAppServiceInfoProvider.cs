@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PartsAppServiceInfosProvider.cs" company="Kephas Software SRL">
+// <copyright file="PartsAppServiceInfoProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,17 +17,17 @@ namespace Kephas.Testing.Services
     using Kephas.Services;
 
     /// <summary>
-    /// Implementation of <see cref="IAppServiceInfosProvider"/> for an enumeration of types.
+    /// Implementation of <see cref="IAppServiceInfoProvider"/> for an enumeration of types.
     /// </summary>
-    public class PartsAppServiceInfosProvider : IAppServiceInfosProvider
+    public class PartsAppServiceInfoProvider : IAppServiceInfoProvider
     {
         private readonly IList<Type> parts;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PartsAppServiceInfosProvider"/> class.
+        /// Initializes a new instance of the <see cref="PartsAppServiceInfoProvider"/> class.
         /// </summary>
         /// <param name="parts">The parts.</param>
-        public PartsAppServiceInfosProvider(IEnumerable<Type> parts)
+        public PartsAppServiceInfoProvider(IEnumerable<Type> parts)
         {
             this.parts = parts.ToList();
         }
@@ -38,7 +38,7 @@ namespace Kephas.Testing.Services
         /// <returns>
         /// The contract declaration types.
         /// </returns>
-        IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes() => this.parts.Select(p => new ContractDeclarationInfo(p, null));
+        IEnumerable<ContractDeclarationInfo>? IAppServiceInfoProvider.GetContractDeclarationTypes() => this.parts.Select(p => new ContractDeclarationInfo(p, null));
 
         /// <summary>
         /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
@@ -102,6 +102,6 @@ namespace Kephas.Testing.Services
         }
 
         private bool IsAppServiceContract(Type type) =>
-            ((IAppServiceInfosProvider)this).TryGetAppServiceInfo(type) != null;
+            ((IAppServiceInfoProvider)this).TryGetAppServiceInfo(type) != null;
     }
 }

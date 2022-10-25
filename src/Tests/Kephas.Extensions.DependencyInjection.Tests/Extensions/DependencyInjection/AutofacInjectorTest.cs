@@ -161,7 +161,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void ResolveMany_various_same_contract_registrations()
         {
             var container = this.CreateInjector(
-                config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
+                config: b => { b.WithAppServiceInfoProvider(new MultiFilterAppServiceInfoProvider()); });
 
             var filters = container.ResolveMany(typeof(IFilter));
 
@@ -174,7 +174,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void GetService_various_same_contract_registrations()
         {
             var container = this.CreateInjector(
-                config: b => { b.WithAppServiceInfosProvider(new MultiFilterAppServiceInfosProvider()); });
+                config: b => { b.WithAppServiceInfoProvider(new MultiFilterAppServiceInfoProvider()); });
 
             var rawFilters = container.GetService(typeof(IEnumerable<IFilter>));
             var filters = rawFilters as IEnumerable<IFilter>;
@@ -305,7 +305,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             }
         }
 
-        public class MultiFilterAppServiceInfosProvider : IAppServiceInfosProvider
+        public class MultiFilterAppServiceInfoProvider : IAppServiceInfoProvider
         {
             public IEnumerable<ContractDeclaration> GetAppServiceContracts()
             {

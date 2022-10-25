@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelAppServiceInfosProvider.cs" company="Kephas Software SRL">
+// <copyright file="ModelAppServiceInfoProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 using Kephas.Model;
 using Kephas.Services;
 
-[assembly: AppServices(providerType: typeof(ModelAppServiceInfosProvider))]
+[assembly: AppServices(providerType: typeof(ModelAppServiceInfoProvider))]
 
 namespace Kephas.Model
 {
@@ -18,9 +18,9 @@ namespace Kephas.Model
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// An <see cref="IAppServiceInfosProvider"/> for the model.
+    /// An <see cref="IAppServiceInfoProvider"/> for the model.
     /// </summary>
-    public class ModelAppServiceInfosProvider : IAppServiceInfosProvider
+    public class ModelAppServiceInfoProvider : IAppServiceInfoProvider
     {
         /// <summary>
         /// Gets the contract declaration types.

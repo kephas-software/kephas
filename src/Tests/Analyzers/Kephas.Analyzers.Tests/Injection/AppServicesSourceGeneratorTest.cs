@@ -38,7 +38,7 @@ namespace Kephas.Analyzers.Tests.Injection
             var appServicesAttr = testAssembly.GetCustomAttributes<AppServicesAttribute>().Single();
 
             var provider = Activator.CreateInstance(appServicesAttr.ProviderType)!;
-            var typesProvider = (IAppServiceInfosProvider)provider;
+            var typesProvider = (IAppServiceInfoProvider)provider;
             var services = typesProvider.GetAppServices();
 
             var expectedServices = new (Type serviceType, Type contractDeclarationType)[]
@@ -58,7 +58,7 @@ namespace Kephas.Analyzers.Tests.Injection
                     service => services.Any(
                         s => s.ServiceType == service.serviceType && s.ContractDeclarationType == service.contractDeclarationType)));
 
-            var contractsProvider = (IAppServiceInfosProvider)provider;
+            var contractsProvider = (IAppServiceInfoProvider)provider;
             CollectionAssert.AreEquivalent(
                 new[]
                 {

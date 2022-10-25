@@ -5,7 +5,7 @@ This package provides support for application services and dependency injection.
 
 Typically used areas and classes/interfaces/services:
 - Injection: ``IInjector``, ``IInjectorBuilder``, ``InjectorBuilderBase``.
-- Services: ``IAppServiceInfo``, ``IAppServiceInfosProvider``, ``SingletonAppServiceContractAttribute``, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
+- Services: ``IAppServiceInfo``, ``IAppServiceInfoProvider``, ``SingletonAppServiceContractAttribute``, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
 - ``IAppServiceCollection``, ``AppServiceCollection``.
 
 Packages providing specific dependency injection implementations:

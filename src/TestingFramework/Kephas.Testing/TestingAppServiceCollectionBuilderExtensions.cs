@@ -25,7 +25,7 @@ public static class TestingAppServiceCollectionBuilderExtensions
     {
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-        builder.AppServiceInfosProviders.Add(new PartsAppServiceInfosProvider(types));
+        builder.ServiceInfoProviders.Add(new PartsAppServiceInfoProvider(types));
 
         return builder;
     }

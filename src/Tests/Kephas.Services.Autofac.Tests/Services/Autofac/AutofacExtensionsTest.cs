@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Injection.Autofac
+namespace Kephas.Tests.Services.Autofac
 {
     using global::Autofac;
     using Kephas.Application;
-    using Kephas.Services.Autofac;
     using Kephas.Services;
+    using Kephas.Services.Autofac;
     using Kephas.Services.Builder;
     using Kephas.Testing;
     using NUnit.Framework;

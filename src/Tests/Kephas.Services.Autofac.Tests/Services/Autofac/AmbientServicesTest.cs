@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Injection.Autofac
+namespace Kephas.Tests.Services.Autofac
 {
     using Kephas.Logging;
     using Kephas.Testing;

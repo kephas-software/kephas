@@ -14,9 +14,9 @@ namespace Kephas.Services.Builder
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.Services.Configuration;
     using Kephas.Logging;
     using Kephas.Services;
+    using Kephas.Services.Configuration;
 
     /// <summary>
     /// Contract interface for <see cref="IAmbientServices"/> builders.
@@ -34,7 +34,7 @@ namespace Kephas.Services.Builder
         /// <value>
         /// The application service information providers.
         /// </value>
-        ICollection<IAppServiceInfosProvider> AppServiceInfosProviders { get; }
+        ICollection<IAppServiceInfoProvider> ServiceInfoProviders { get; }
 
         /// <summary>
         /// Gets the list of assemblies used in injection.
@@ -47,7 +47,7 @@ namespace Kephas.Services.Builder
         InjectionSettings Settings { get; }
 
         /// <summary>
-        /// Adds the application services from the <see cref="IAppServiceInfosProvider"/>s identified in the assemblies.
+        /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
         /// </summary>
         /// <returns>The provided ambient services.</returns>
         IAmbientServices Build();

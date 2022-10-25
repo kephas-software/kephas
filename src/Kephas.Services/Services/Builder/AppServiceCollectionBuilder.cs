@@ -50,7 +50,7 @@ namespace Kephas.Services.Builder
         /// <value>
         /// The application service information providers.
         /// </value>
-        public ICollection<IAppServiceInfosProvider> AppServiceInfosProviders { get; } = new List<IAppServiceInfosProvider>();
+        public ICollection<IAppServiceInfoProvider> ServiceInfoProviders { get; } = new List<IAppServiceInfoProvider>();
 
         /// <summary>
         /// Gets the list of assemblies used in injection.
@@ -71,24 +71,24 @@ namespace Kephas.Services.Builder
         public ILogger? Logger { get; }
 
         /// <summary>
-        /// Adds the application services from the <see cref="IAppServiceInfosProvider"/>s identified in the assemblies.
+        /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
         /// </summary>
         /// <returns>The provided ambient services.</returns>
         public IAmbientServices Build()
         {
-            var providers = this.GetAppServiceInfosProviders();
+            var providers = this.GetServiceInfoProviders();
             return this.AddAppServices(this.AmbientServices, providers, this.Settings.AmbiguousResolutionStrategy);
         }
 
         private IAmbientServices AddAppServices(
             IAmbientServices ambientServices,
-            IEnumerable<IAppServiceInfosProvider> appServiceInfoProviders,
+            IEnumerable<IAppServiceInfoProvider> appServiceInfoProviders,
             AmbiguousServiceResolutionStrategy resolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority)
         {
             var logger = this.Logger;
             if (logger.IsDebugEnabled())
             {
-                logger.Debug("Adding app services from providers '{appServiceInfosProviders}...", appServiceInfoProviders);
+                logger.Debug("Adding app services from providers '{appServiceInfoProviders}...", appServiceInfoProviders);
             }
 
             // get all type infos from the injection assemblies
@@ -106,18 +106,18 @@ namespace Kephas.Services.Builder
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfosProvider appServiceInfosProvider)
+            IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfoProvider appServiceInfoProvider)
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug("Getting the app services from provider {provider}...", appServiceInfosProvider);
+                    logger.Debug("Getting the app services from provider {provider}...", appServiceInfoProvider);
                 }
 
-                var appServices = appServiceInfosProvider.GetAppServices();
+                var appServices = appServiceInfoProvider.GetAppServices();
 
                 if (logger.IsTraceEnabled())
                 {
-                    logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfosProvider);
+                    logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfoProvider);
                 }
 
                 return appServices;
@@ -149,14 +149,14 @@ namespace Kephas.Services.Builder
         /// </summary>
         /// <param name="appAssemblies">The application assemblies.</param>
         /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        private IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders(IEnumerable<Assembly> appAssemblies)
+        private IEnumerable<IAppServiceInfoProvider> GetServiceInfoProviders(IEnumerable<Assembly> appAssemblies)
         {
             appAssemblies = appAssemblies ?? throw new ArgumentNullException(nameof(appAssemblies));
 
             var providers = appAssemblies
-                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfosProvider>())
+                .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfoProvider>())
                 .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
 
             return providers;
@@ -166,9 +166,9 @@ namespace Kephas.Services.Builder
         /// Gets the application service information providers.
         /// </summary>
         /// <returns>
-        /// An enumeration of <see cref="IAppServiceInfosProvider"/> objects.
+        /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        private IEnumerable<IAppServiceInfosProvider> GetAppServiceInfosProviders()
+        private IEnumerable<IAppServiceInfoProvider> GetServiceInfoProviders()
         {
             var assemblies = this.GetBuildAssemblies();
 
@@ -184,8 +184,8 @@ namespace Kephas.Services.Builder
                 }
             }
 
-            var providers = this.GetAppServiceInfosProviders(assemblies)
-                .Union(this.AppServiceInfosProviders)
+            var providers = this.GetServiceInfoProviders(assemblies)
+                .Union(this.ServiceInfoProviders)
                 .ToList();
 
             return providers;

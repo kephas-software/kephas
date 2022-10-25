@@ -14,7 +14,6 @@ namespace Kephas.Services.Autofac
 
     using global::Autofac;
     using Kephas.Logging;
-    using Kephas.Services.Autofac.Resources;
 
     /// <summary>
     /// An Autofac injector base.
@@ -50,7 +49,7 @@ namespace Kephas.Services.Autofac
         /// <value>
         /// The object the current instance adapts.
         /// </value>
-        ILifetimeScope IAdapter<ILifetimeScope>.Of => this.innerContainer!;
+        public ILifetimeScope Of => this.innerContainer!;
 
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
@@ -71,6 +70,12 @@ namespace Kephas.Services.Autofac
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        /// Gets the root container.
+        /// </summary>
+        /// <returns>The root container.</returns>
+        internal IServiceProviderContainer? GetRoot() => this.root;
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -97,18 +102,6 @@ namespace Kephas.Services.Autofac
             container = container ?? throw new ArgumentNullException(nameof(container));
 
             this.innerContainer = container;
-        }
-
-        /// <summary>
-        /// Asserts that the container is not disposed.
-        /// </summary>
-        protected void AssertNotDisposed()
-        {
-            if (this.innerContainer == null)
-            {
-                this.Logger.Error(Strings.AutofacInjector_Disposed_Exception);
-                throw new ObjectDisposedException(Strings.AutofacInjector_Disposed_Exception);
-            }
         }
     }
 }

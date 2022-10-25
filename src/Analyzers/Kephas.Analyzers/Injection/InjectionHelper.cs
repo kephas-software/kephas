@@ -215,9 +215,9 @@ namespace Kephas.Analyzers.Injection
             source.AppendLine($@"#if NET6_0_OR_GREATER");
             source.AppendLine($@"   [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]");
             source.AppendLine($@"#endif");
-            source.AppendLine($@"   internal partial class {serviceTypeProvider.typeName}: IAppServiceInfosProvider");
+            source.AppendLine($@"   internal partial class {serviceTypeProvider.typeName}: IAppServiceInfoProvider");
             source.AppendLine($@"   {{");
-            source.AppendLine($@"       IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes()");
+            source.AppendLine($@"       IEnumerable<ContractDeclarationInfo>? IAppServiceInfoProvider.GetContractDeclarationTypes()");
             source.AppendLine($@"       {{");
 
             var contractTypes = compilationContext.ContractTypes;
@@ -247,7 +247,7 @@ namespace Kephas.Analyzers.Injection
 
             source.AppendLine($@"       }}");
             source.AppendLine();
-            source.AppendLine($@"       IEnumerable<ServiceDeclaration> IAppServiceInfosProvider.GetAppServices()");
+            source.AppendLine($@"       IEnumerable<ServiceDeclaration> IAppServiceInfoProvider.GetAppServices()");
             source.AppendLine($@"       {{");
 
             if (serviceTypes.Count > 0)

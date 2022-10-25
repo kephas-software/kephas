@@ -42,7 +42,7 @@ namespace Kephas.Tests.Services
             CollectionAssert.IsEmpty(attr.GetAppServices());
         }
 
-        private class NullAppServicesProvider : IAppServiceInfosProvider
+        private class NullAppServicesProvider : IAppServiceInfoProvider
         {
         }
 
@@ -50,7 +50,7 @@ namespace Kephas.Tests.Services
         {
         }
 
-        private class AppServicesProvider : IAppServiceInfosProvider
+        private class AppServicesProvider : IAppServiceInfoProvider
         {
             /// <summary>
             /// Gets the contract declaration types.
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Services
             /// <returns>
             /// The contract declaration types.
             /// </returns>
-            IEnumerable<ContractDeclarationInfo>? IAppServiceInfosProvider.GetContractDeclarationTypes()
+            IEnumerable<ContractDeclarationInfo>? IAppServiceInfoProvider.GetContractDeclarationTypes()
             {
                 yield return new ContractDeclarationInfo(typeof(IService), null);
             }

@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppServiceInfosProvider.cs" company="Kephas Software SRL">
+// <copyright file="IAppServiceInfoProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAppServiceInfosProvider interface.
+//   Declares the IAppServiceInfoProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ namespace Kephas.Services
 #if NET6_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-    public interface IAppServiceInfosProvider
+    public interface IAppServiceInfoProvider
     {
         /// <summary>
         /// Gets an enumeration of application service information objects and their contract declaration type.
@@ -92,7 +92,7 @@ namespace Kephas.Services
         /// <returns>
         /// An enumeration of application service information objects and their contract declaration type.
         /// </returns>
-        protected internal static IEnumerable<ContractDeclaration> GetAppServiceContractDeclarations(IAppServiceInfosProvider provider)
+        protected internal static IEnumerable<ContractDeclaration> GetAppServiceContractDeclarations(IAppServiceInfoProvider provider)
         {
             var contractDeclarationTypes = provider.GetContractDeclarationTypes();
             if (contractDeclarationTypes == null)

@@ -38,4 +38,28 @@ public static class AppServiceCollectionBuilderExtensions
     /// <returns>The provided <see cref="IAppServiceCollectionBuilder"/> instance.</returns>
     public static IAppServiceCollectionBuilder WithAssemblies(this IAppServiceCollectionBuilder builder, params Assembly[] assemblies) =>
         WithAssemblies(builder, (IEnumerable<Assembly>)assemblies);
+
+    /// <summary>
+    /// Add the service providers to the builder.
+    /// </summary>
+    /// <param name="builder">The <see cref="IAppServiceCollectionBuilder"/> instance.</param>
+    /// <param name="serviceProviders">The service providers.</param>
+    /// <returns>The provided <see cref="IAppServiceCollectionBuilder"/> instance.</returns>
+    public static IAppServiceCollectionBuilder WithServiceInfoProviders(this IAppServiceCollectionBuilder builder, IEnumerable<IAppServiceInfoProvider> serviceProviders)
+    {
+        builder = builder ?? throw new ArgumentNullException(nameof(builder));
+
+        builder.ServiceInfoProviders.AddRange(serviceProviders);
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Add the service providers to the builder.
+    /// </summary>
+    /// <param name="builder">The <see cref="IAppServiceCollectionBuilder"/> instance.</param>
+    /// <param name="serviceProviders">The service providers.</param>
+    /// <returns>The provided <see cref="IAppServiceCollectionBuilder"/> instance.</returns>
+    public static IAppServiceCollectionBuilder WithServiceInfoProviders(this IAppServiceCollectionBuilder builder, params IAppServiceInfoProvider[] serviceProviders) =>
+        WithServiceInfoProviders(builder, (IEnumerable<IAppServiceInfoProvider>)serviceProviders);
 }

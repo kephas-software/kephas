@@ -646,7 +646,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Adds the application services from the provided <see cref="IAppServiceInfosProvider"/>s.
+        /// Adds the application services from the provided <see cref="IAppServiceInfoProvider"/>s.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="contracts">The contract declarations.</param>
