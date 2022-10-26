@@ -13,6 +13,7 @@ namespace Kephas.Extensions.Logging
     using System;
 
     using Kephas.Logging;
+    using Kephas.Services.Builder;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;
@@ -70,20 +71,20 @@ namespace Kephas.Extensions.Logging
         /// as this might generate StackOverflow exception.
         /// </para>
         /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="services">The service collection.</param>
         /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
-        /// This <paramref name="ambientServices"/>.
+        /// This <paramref name="servicesBuilder"/>.
         /// </returns>
-        public static IAmbientServices WithExtensionsLogManager(this IAmbientServices ambientServices, IServiceCollection services, bool replaceDefault = true)
+        public static IAppServiceCollectionBuilder WithExtensionsLogManager(this IAppServiceCollectionBuilder servicesBuilder, IServiceCollection services, bool replaceDefault = true)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
             var logFactory = new LoggerFactory();
             services.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>(_ => logFactory));
 
-            return ambientServices.WithLogManager(new ExtensionsLogManager(logFactory), replaceDefault);
+            return servicesBuilder.WithLogManager(new ExtensionsLogManager(logFactory), replaceDefault);
         }
     }
 }

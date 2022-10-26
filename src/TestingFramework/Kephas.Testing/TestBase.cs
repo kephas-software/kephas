@@ -64,10 +64,10 @@ namespace Kephas.Testing
 
             ambientServices = (ambientServices ?? new AmbientServices())
                 .Add(logManager)
-                .WithAppRuntime(appRuntime)
                 .Add(log);
 
             return new AppServiceCollectionBuilder(ambientServices)
+                .WithAppRuntime(appRuntime)
                 .WithAssemblies(this.GetAssemblies())
                 .WithParts(this.GetDefaultParts());
         }

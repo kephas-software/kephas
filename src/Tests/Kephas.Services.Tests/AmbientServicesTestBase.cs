@@ -451,8 +451,10 @@ public abstract class AmbientServicesTestBase : TestBase
     [Test]
     public void GetAppServiceInfos_default_services()
     {
-        var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime();
-        ambientServices = new AppServiceCollectionBuilder(ambientServices).Build();
+        var ambientServices = this.CreateAmbientServices();
+        ambientServices = new AppServiceCollectionBuilder(ambientServices)
+            .WithStaticAppRuntime()
+            .Build();
         var contracts = ambientServices.GetServiceInstance<IContractDeclarationCollection>();
 
         var (c, info) = contracts.SingleOrDefault(i => i.ContractDeclarationType == typeof(ILogManager));

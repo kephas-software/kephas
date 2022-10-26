@@ -14,7 +14,7 @@ return await new SwitchApp(args)
             builder =>
             {
                 builder.Host
-                    .ConfigureAmbientServices(
+                    .ConfigureAppServices(
                         ambientServices,
                         appArgs,
                         ambient => ambient.WithDynamicAppRuntime().BuildWithAutofac(),

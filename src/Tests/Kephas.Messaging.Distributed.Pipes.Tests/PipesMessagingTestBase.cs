@@ -63,9 +63,16 @@ namespace Kephas.Messaging.Pipes.Tests
             return builder;
         }
 
-        protected IServiceProvider BuildServiceProvider(IAmbientServices? ambientServices = null)
+        protected IServiceProvider BuildServiceProvider()
         {
-            return this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
+            return this.CreateServicesBuilder().BuildWithDependencyInjection();
+        }
+
+        protected IServiceProvider BuildServiceProvider(Action<IAppServiceCollectionBuilder> servicesBuilderConfig)
+        {
+            var builder = this.CreateServicesBuilder(this.CreateAmbientServices());
+            servicesBuilderConfig(builder);
+            return builder.BuildWithDependencyInjection();
         }
     }
 }

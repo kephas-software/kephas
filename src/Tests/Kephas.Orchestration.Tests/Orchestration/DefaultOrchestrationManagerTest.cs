@@ -28,6 +28,7 @@ namespace Kephas.Tests.Orchestration
     using Kephas.Orchestration.Diagnostics;
     using Kephas.Orchestration.Interaction;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -86,7 +87,7 @@ namespace Kephas.Tests.Orchestration
             var eventHub = this.CreateEventHubMock();
 
             var injector = Substitute.For<IServiceProvider>();
-            ambientServices.WithAppRuntime(appRuntime);
+            new AppServiceCollectionBuilder(ambientServices).WithAppRuntime(appRuntime);
             var appContext = new AppContext(ambientServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();

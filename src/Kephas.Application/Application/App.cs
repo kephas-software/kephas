@@ -25,7 +25,7 @@ namespace Kephas.Application
             Func<IAmbientServices, IServiceProvider>? serviceProviderBuilder = null,
             IAmbientServices? ambientServices = null,
             IAppArgs? appArgs = null)
-            : base(ambientServices, appArgs: appArgs, serviceProviderBuilder: serviceProviderBuilder)
+            : base(ambientServices, appArgs: appArgs)
         {
         }
     }

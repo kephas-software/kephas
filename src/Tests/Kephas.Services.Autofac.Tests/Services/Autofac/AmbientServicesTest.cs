@@ -11,6 +11,7 @@
 namespace Kephas.Tests.Services.Autofac
 {
     using Kephas.Logging;
+    using Kephas.Services.Builder;
     using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
@@ -22,7 +23,7 @@ namespace Kephas.Tests.Services.Autofac
         public void CustomAmbientServices_singleton()
         {
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
-            var container = ambientServices
+            var container = new AppServiceCollectionBuilder(ambientServices)
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
                 .BuildWithAutofac();
             var otherAmbientServices = container.Resolve<IAmbientServices>();

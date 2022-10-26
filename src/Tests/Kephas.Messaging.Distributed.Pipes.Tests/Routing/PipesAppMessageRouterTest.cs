@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(
                         isRoot: true,
                         appId: masterId,
@@ -72,7 +72,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .AddAppArgs(slaveArgs)
                     .WithStaticAppRuntime(
                         isRoot: false,
@@ -107,7 +107,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithDebugLogManager(sbMaster)
                     .WithStaticAppRuntime(
                         isRoot: true,
@@ -121,7 +121,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithDebugLogManager(sbSlave)
                     .AddAppArgs(slaveArgs)
                     .WithStaticAppRuntime(
@@ -161,7 +161,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(
                         isRoot: true,
                         appId: masterId,
@@ -172,7 +172,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .AddAppArgs(slaveArgs)
                     .WithStaticAppRuntime(
                         isRoot: false,
@@ -206,7 +206,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(
                         isRoot: true,
                         appId: masterId,
@@ -217,7 +217,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .AddAppArgs(slaveArgs)
                     .WithStaticAppRuntime(
                         isRoot: false,

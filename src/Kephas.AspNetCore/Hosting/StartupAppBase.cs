@@ -36,7 +36,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-3.1 for more options.
     /// Another good read is https://stevetalkscode.co.uk/separating-aspnetcore-startup.
     /// </remarks>
-    public abstract class StartupAppBase : AppBase<AmbientServices>
+    public abstract class StartupAppBase : AppBase
     {
         private Task? bootstrapTask;
 
@@ -45,14 +45,12 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// </summary>
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
-        /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         protected StartupAppBase(
             IWebHostEnvironment env,
             IConfiguration config,
-            IAmbientServices? ambientServices = null,
             IAppArgs? appArgs = null)
-            : base(ambientServices, appArgs: appArgs)
+            : base(appArgs: appArgs)
         {
             this.HostEnvironment = env;
             this.Configuration = config;

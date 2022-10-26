@@ -275,7 +275,7 @@ namespace Kephas.Tests.Application
         }
     }
 
-    public class TestApp : AppBase<AmbientServices>
+    public class TestApp : AppBase
     {
         private readonly Func<IAmbientServices, IServiceProvider>? asyncConfig;
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesSerilogExtensions.cs" company="Kephas Software SRL">
+// <copyright file="SerilogServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,17 +15,18 @@ namespace Kephas
 
     using Kephas.Logging;
     using Kephas.Logging.Serilog;
+    using Kephas.Services.Builder;
     using Serilog.Events;
 
     /// <summary>
-    /// Extension methods for the <see cref="IAmbientServices"/>.
+    /// Serilog related extension methods for the <see cref="IAppServiceCollectionBuilder"/>.
     /// </summary>
-    public static class AmbientServicesSerilogExtensions
+    public static class SerilogServicesExtensions
     {
         /// <summary>
         /// Sets the Serilog log manager to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services builder.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="configuration">Optional. The logger configuration.</param>
         /// <param name="minimumLevel">Optional. The minimum logging level.</param>
         /// <param name="dynamicMinimumLevel">
@@ -35,13 +36,13 @@ namespace Kephas
         /// </param>
         /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
-        /// This <paramref name="ambientServices"/>.
+        /// This <paramref name="servicesBuilder"/>.
         /// </returns>
-        public static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, LoggerConfiguration? configuration = null, LogEventLevel? minimumLevel = null, bool? dynamicMinimumLevel = null, bool replaceDefault = true)
+        public static IAppServiceCollectionBuilder WithSerilogManager(this IAppServiceCollectionBuilder servicesBuilder, LoggerConfiguration? configuration = null, LogEventLevel? minimumLevel = null, bool? dynamicMinimumLevel = null, bool replaceDefault = true)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
-            return ambientServices.WithLogManager(new SerilogManager(configuration, minimumLevel, dynamicMinimumLevel), replaceDefault);
+            return servicesBuilder.WithLogManager(new SerilogManager(configuration, minimumLevel, dynamicMinimumLevel), replaceDefault);
         }
     }
 }

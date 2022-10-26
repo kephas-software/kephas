@@ -33,7 +33,8 @@ public abstract class JsonSerializerIntegrationTestBase : SerializationTestBase
     [Test]
     public async Task JsonSerializer_injection()
     {
-        var builder = this.CreateServicesBuilder(this.CreateAmbientServices().WithStaticAppRuntime())
+        var builder = this.CreateServicesBuilder(this.CreateAmbientServices())
+            .WithStaticAppRuntime()
             .WithAssemblies(
                 typeof(ISerializationService).Assembly,
                 typeof(JsonSerializer).Assembly,

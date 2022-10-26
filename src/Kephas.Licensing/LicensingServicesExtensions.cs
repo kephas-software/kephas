@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LicensingAmbientServicesExtensions.cs" company="Kephas Software SRL">
+// <copyright file="LicensingServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,66 +10,58 @@ namespace Kephas;
 using Kephas.Application;
 using Kephas.Cryptography;
 using Kephas.Licensing;
+using Kephas.Services.Builder;
 
 /// <summary>
-/// Extension methods for <see cref="IAmbientServices"/> in the licensing area.
+/// Extension methods for <see cref="IAppServiceCollectionBuilder"/> in the licensing area.
 /// </summary>
-public static class LicensingAmbientServicesExtensions
+public static class LicensingServicesExtensions
 {
-    /// <summary>
-    /// Gets the licensing manager.
-    /// </summary>
-    /// <param name="ambientServices">The ambient services.</param>
-    /// <returns>
-    /// The licensing manager.
-    /// </returns>
-    public static ILicensingManager GetLicensingManager(this IAmbientServices ambientServices) =>
-        (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices)))
-        .GetServiceInstance<ILicensingManager>();
-
     /// <summary>
     /// Sets the licensing manager to the ambient services.
     /// </summary>
-    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="licensingManager">The licensing manager.</param>
     /// <returns>
-    /// This <paramref name="ambientServices"/>.
+    /// This <paramref name="servicesBuilder"/>.
     /// </returns>
-    public static IAmbientServices WithLicensingManager(
-        this IAmbientServices ambientServices,
+    public static IAppServiceCollectionBuilder WithLicensingManager(
+        this IAppServiceCollectionBuilder servicesBuilder,
         ILicensingManager licensingManager)
     {
-        ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
         licensingManager = licensingManager ?? throw new ArgumentNullException(nameof(licensingManager));
 
+        var ambientServices = servicesBuilder.AmbientServices;
         ambientServices.Add(licensingManager);
         ambientServices.GetAppRuntime()
             .OnCheckLicense((appid, context) => licensingManager.CheckLicense(appid, context));
 
-        return ambientServices;
+        return servicesBuilder;
     }
 
     /// <summary>
     /// Sets the default licensing manager to the ambient services.
     /// </summary>
-    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="encryptionService">The encryption service.</param>
     /// <returns>
-    /// This <paramref name="ambientServices"/>.
+    /// This <paramref name="servicesBuilder"/>.
     /// </returns>
-    public static IAmbientServices WithDefaultLicensingManager(
-        this IAmbientServices ambientServices,
+    public static IAppServiceCollectionBuilder WithDefaultLicensingManager(
+        this IAppServiceCollectionBuilder servicesBuilder,
         IEncryptionService encryptionService)
     {
-        ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
         encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
         const string LicenseRepositoryKey = "__LicenseRepository";
+        var ambientServices = servicesBuilder.AmbientServices;
         var licenseRepository = (ambientServices[LicenseRepositoryKey] as ILicenseStore)
                                 ?? (ILicenseStore)(ambientServices[LicenseRepositoryKey] =
                                     new LicenseStore(ambientServices.GetAppRuntime(), encryptionService));
         var licenseManager = new DefaultLicensingManager(appid => licenseRepository.GetLicenseData(appid));
 
-        return WithLicensingManager(ambientServices, licenseManager);
+        return WithLicensingManager(servicesBuilder, licenseManager);
     }
 }

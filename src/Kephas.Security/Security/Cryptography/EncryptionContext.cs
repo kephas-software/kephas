@@ -10,23 +10,13 @@
 
 namespace Kephas.Cryptography;
 
-using Kephas.Services;
-using Kephas.Services;
+using Kephas.Dynamic;
 
 /// <summary>
 /// An encryption context.
 /// </summary>
-public class EncryptionContext : Context, IEncryptionContext
+public class EncryptionContext : Expando, IEncryptionContext
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
-    /// </summary>
-    /// <param name="serviceProvider">The injector.</param>
-    public EncryptionContext(IServiceProvider serviceProvider)
-        : base(serviceProvider)
-    {
-    }
-
     /// <summary>
     /// Gets or sets the key for encryption/decryption.
     /// </summary>

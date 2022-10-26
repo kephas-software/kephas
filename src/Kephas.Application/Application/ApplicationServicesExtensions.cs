@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationExtensions.cs" company="Kephas Software SRL">
+// <copyright file="ApplicationServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,11 +16,12 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
 
     using Kephas.Application.Reflection;
+    using Kephas.Services.Builder;
 
     /// <summary>
     /// Extension methods for <see cref="IAppRuntime"/>.
     /// </summary>
-    public static class ApplicationExtensions
+    public static class ApplicationServicesExtensions
     {
         /// <summary>
         /// Add the application arguments as <see cref="IAppArgs"/> service.
@@ -51,9 +52,31 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices AddAppArgs(this IAmbientServices ambientServices, IEnumerable<string>? args = null)
+        public static IAmbientServices AddAppArgs(this IAmbientServices ambientServices, IEnumerable<string>? args = null) =>
+            AddAppArgs(ambientServices, args == null ? null : new AppArgs(args));
+
+        /// <summary>
+        /// Add the application arguments as <see cref="IAppArgs"/> service.
+        /// </summary>
+        /// <param name="servicesBuilder">The ambient services.</param>
+        /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments, if not already registered.</param>
+        /// <returns>The provided ambient services.</returns>
+        public static IAppServiceCollectionBuilder AddAppArgs(this IAppServiceCollectionBuilder servicesBuilder, IAppArgs? args = null)
         {
-            return AddAppArgs(ambientServices, args == null ? null : new AppArgs(args));
+            servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
+
+            AddAppArgs(servicesBuilder.AmbientServices, args);
+
+            return servicesBuilder;
         }
+
+        /// <summary>
+        /// Add the application arguments as <see cref="IAppArgs"/> service.
+        /// </summary>
+        /// <param name="servicesBuilder">The services builder.</param>
+        /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments.</param>
+        /// <returns>The provided ambient services.</returns>
+        public static IAppServiceCollectionBuilder AddAppArgs(this IAppServiceCollectionBuilder servicesBuilder, IEnumerable<string>? args = null) =>
+            AddAppArgs(servicesBuilder, args == null ? null : new AppArgs(args));
     }
 }

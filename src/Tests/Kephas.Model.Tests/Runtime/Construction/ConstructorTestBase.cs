@@ -19,6 +19,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Runtime;
+    using Kephas.Services.Builder;
     using Kephas.Testing;
     using NSubstitute;
 
@@ -36,7 +37,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace? modelSpace = null,
             IRuntimeModelElementFactory? factory = null)
         {
-            var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime();
+            var ambientServices = new AppServiceCollectionBuilder(this.CreateAmbientServices())
+                .WithStaticAppRuntime()
+                .AmbientServices;
             var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             return new ModelConstructionContext(injector)

@@ -22,6 +22,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Services.Reflection;
     using Kephas.Testing;
     using Kephas.Testing.Services;
@@ -90,8 +91,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_with_default_filter()
         {
-            var ambientServices = this.CreateAmbientServices()
-                .WithStaticAppRuntime(config: rt => rt.OnIsAppAssembly(asm => asm.Name.StartsWith("Kephas")));
+            var ambientServices = new AppServiceCollectionBuilder(this.CreateAmbientServices())
+                .WithStaticAppRuntime(config: rt => rt.OnIsAppAssembly(asm => asm.Name.StartsWith("Kephas")))
+                .AmbientServices;
             var appServicesInfos = new List<ContractDeclaration>
             {
                 new (typeof(int), Substitute.For<IAppServiceInfo>()),

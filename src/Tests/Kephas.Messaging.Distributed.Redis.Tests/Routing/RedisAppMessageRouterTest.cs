@@ -58,15 +58,13 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
+                b => b.WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
+                b => b.WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -96,7 +94,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithDebugLogManager(sbMaster)
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, config: rt => rt.OnIsAppAssembly(this.IsNotTestAssembly)));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
@@ -105,7 +103,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithDebugLogManager(sbSlave)
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, config: rt => rt.OnIsAppAssembly(this.IsNotTestAssembly)));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
@@ -140,14 +138,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
@@ -177,14 +175,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.BuildServiceProvider(
-                this.CreateAmbientServices()
+                b => b
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 

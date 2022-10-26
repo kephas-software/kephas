@@ -14,11 +14,13 @@ namespace Kephas.Services.Builder
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
+
+    using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Services.Configuration;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Configuration;
 
     /// <summary>
     /// A context for building the <see cref="IAmbientServices"/>.
@@ -28,13 +30,22 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceCollectionBuilder"/> class.
         /// </summary>
+        /// <param name="settings">Optional. The injection settings.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        public AppServiceCollectionBuilder(InjectionSettings? settings = null, ILogger? logger = null)
+            : this(new AmbientServices(), settings, logger)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceCollectionBuilder"/> class.
+        /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="settings">Optional. The injection settings.</param>
         /// <param name="logger">Optional. The logger.</param>
         public AppServiceCollectionBuilder(IAmbientServices ambientServices, InjectionSettings? settings = null, ILogger? logger = null)
         {
             this.AmbientServices = ambientServices;
-            this.Assemblies = ambientServices.GetAppRuntime().GetAppAssemblies().ToList();
             this.Settings = settings ?? new InjectionSettings();
             this.Logger = logger ?? ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
         }
@@ -55,7 +66,7 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Gets the list of assemblies used in injection.
         /// </summary>
-        public ICollection<Assembly> Assemblies { get; }
+        public ICollection<Assembly> Assemblies { get; } = new List<Assembly>();
 
         /// <summary>
         /// Gets the injection settings.
@@ -201,7 +212,9 @@ namespace Kephas.Services.Builder
 
             this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(GetBuildAssemblies), searchPattern);
 
-            var appAssemblies = this.Assemblies.Where(a => !a.IsSystemAssembly());
+            var assemblies = this.AmbientServices.TryGetServiceInstance<IAppRuntime>()?.GetAppAssemblies().ToList() ?? new List<Assembly>();
+            assemblies.AddRange(this.Assemblies);
+            var appAssemblies = assemblies.Where(a => !a.IsSystemAssembly());
 
             if (string.IsNullOrWhiteSpace(searchPattern))
             {

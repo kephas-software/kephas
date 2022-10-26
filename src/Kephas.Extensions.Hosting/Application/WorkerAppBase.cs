@@ -26,7 +26,7 @@ namespace Kephas.Extensions.Hosting.Application
     /// <summary>
     /// A worker application base.
     /// </summary>
-    public abstract class WorkerAppBase : AppBase<AmbientServices>
+    public abstract class WorkerAppBase : AppBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.

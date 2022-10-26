@@ -13,7 +13,7 @@ using Kephas.Threading.Tasks;
 /// <summary>
 /// App used for switching among multiple registered apps.
 /// </summary>
-public class SwitchApp : AppBase<AmbientServices>
+public class SwitchApp : AppBase
 {
     private readonly IList<AppEntry> appEntries = new List<AppEntry>();
 

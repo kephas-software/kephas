@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesPluginsExtensions.cs" company="Kephas Software SRL">
+// <copyright file="PluginsServicesExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,16 +17,17 @@ namespace Kephas
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Plugins.Application;
+    using Kephas.Services.Builder;
 
     /// <summary>
     /// The plugins ambient services builder extensions.
     /// </summary>
-    public static class AmbientServicesPluginsExtensions
+    public static class PluginsServicesExtensions
     {
         /// <summary>
         /// Sets the plugins-enabled application runtime to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="servicesBuilder">The ambient services.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the assembly
         ///                           location is used.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
@@ -42,8 +43,8 @@ namespace Kephas
         /// <returns>
         /// The provided ambient services.
         /// </returns>
-        public static IAmbientServices WithPluginsAppRuntime(
-            this IAmbientServices ambientServices,
+        public static IAppServiceCollectionBuilder WithPluginsAppRuntime(
+            this IAppServiceCollectionBuilder servicesBuilder,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
@@ -56,10 +57,10 @@ namespace Kephas
             string? pluginsFolder = null,
             Action<PluginsAppRuntime>? config = null)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
             var appRuntime = new PluginsAppRuntime(
-                name => ambientServices.GetServiceInstance<ILogManager>().GetLogger(name),
+                name => servicesBuilder.AmbientServices.GetServiceInstance<ILogManager>().GetLogger(name),
                 null,
                 appFolder,
                 configFolders,
@@ -72,7 +73,7 @@ namespace Kephas
                 enablePlugins,
                 pluginsFolder);
             config?.Invoke(appRuntime);
-            return ambientServices.WithAppRuntime(appRuntime);
+            return servicesBuilder.WithAppRuntime(appRuntime);
         }
     }
 }

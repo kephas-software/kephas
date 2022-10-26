@@ -18,48 +18,45 @@ namespace Kephas.Application
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Resources;
+    using Kephas.Services.Builder;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for the application's root.
     /// </summary>
-    /// <typeparam name="TAmbientServices">The actual class implementing <see cref="IAmbientServices"/>.</typeparam>
     /// <remarks>
     /// You should inherit this class and override at least the <see cref="Build"/> method.
     /// </remarks>
-    public abstract class AppBase<TAmbientServices> : IApp
-        where TAmbientServices : IAmbientServices, new()
+    public abstract class AppBase : IApp
     {
-        private readonly Func<IAmbientServices, IServiceProvider>? serviceProviderBuilder;
+        private readonly Action<IAppServiceCollectionBuilder>? servicesConfig;
         private bool isConfigured;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppBase{TAmbientServices}"/> class.
+        /// Initializes a new instance of the <see cref="AppBase"/> class.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services.</param>
+        /// <param name="servicesConfig">Optional. The services configuration.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
-        /// <param name="serviceProviderBuilder">Optional. The service provider builder.</param>
         protected AppBase(
-            IAmbientServices? ambientServices = null,
+            Action<IAppServiceCollectionBuilder>? servicesConfig = null,
             IAppArgs? appArgs = null,
-            CancellationTokenSource? appLifetimeTokenSource = null,
-            Func<IAmbientServices, IServiceProvider>? serviceProviderBuilder = null)
+            CancellationTokenSource? appLifetimeTokenSource = null)
         {
-            this.AmbientServices = ambientServices ?? new TAmbientServices();
+            this.servicesConfig = servicesConfig;
+            this.AmbientServices = new AmbientServices();
             this.AppArgs = appArgs ?? new AppArgs();
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
-            this.serviceProviderBuilder = serviceProviderBuilder;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
 
         /// <summary>
-        /// Gets or sets the ambient services.
+        /// Gets the ambient services.
         /// </summary>
         /// <value>
         /// The ambient services.
         /// </value>
-        public IAmbientServices AmbientServices { get; protected set; }
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the <see cref="IServiceProvider"/>.
@@ -260,6 +257,9 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_ConfiguringAmbientServices_Message);
 
+                var servicesBuilder = new AppServiceCollectionBuilder(this.AmbientServices);
+                this.servicesConfig?.Invoke(servicesBuilder);
+
                 this.Logger ??= this.AmbientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
@@ -268,13 +268,13 @@ namespace Kephas.Application
                 this.AppContext = this.CreateAppContext(this.AmbientServices, appArgs, this.Logger);
 
                 // require the AppContext to be computed each time, so that if it is called
-                // to early, to be able to still get it at a later time.
+                // too early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
                 this.AmbientServices.Add(this.AppContext);
 
                 this.AmbientServices.AddAppArgs(appArgs);
 
-                this.ServiceProvider = this.Build(this.AmbientServices);
+                this.ServiceProvider = this.Build(servicesBuilder);
 
                 this.Logger ??= this.ServiceProvider.GetRequiredService<ILogManager>().GetLogger(this.GetType());
 
@@ -371,9 +371,9 @@ namespace Kephas.Application
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="servicesBuilder">The ambient services.</param>
         /// <returns>The service provider.</returns>
-        protected virtual IServiceProvider Build(IAmbientServices ambientServices)
+        protected virtual IServiceProvider Build(IAppServiceCollectionBuilder servicesBuilder)
         {
             if (this.serviceProviderBuilder is null)
             {
@@ -385,7 +385,7 @@ namespace Kephas.Application
 
             this.Log(LogLevel.Debug, null, "Building the service provider by using the build callback.");
 
-            return this.serviceProviderBuilder(ambientServices);
+            return this.serviceProviderBuilder(servicesBuilder);
         }
 
         /// <summary>

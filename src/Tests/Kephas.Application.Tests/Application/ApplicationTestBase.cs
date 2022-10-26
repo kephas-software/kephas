@@ -27,7 +27,7 @@ namespace Kephas.Tests.Application
                 typeof(ITypeRegistry).Assembly,             // Kephas.Reflection
                 typeof(IOperation).Assembly,                // Kephas.Operations
                 typeof(IAppLifecycleBehavior).Assembly,     // Kephas.Application.Abstractions
-                typeof(AppBase<>).Assembly,                 // Kephas.Application
+                typeof(AppBase).Assembly,                 // Kephas.Application
             };
         }
     }
