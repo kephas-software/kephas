@@ -24,39 +24,32 @@ namespace Kephas.Application
     /// <summary>
     /// Base class for the application's root.
     /// </summary>
-    /// <remarks>
-    /// You should inherit this class and override at least the <see cref="Build"/> method.
-    /// </remarks>
     public abstract class AppBase : IApp
     {
-        private readonly Action<IAppServiceCollectionBuilder>? servicesConfig;
         private bool isConfigured;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppBase"/> class.
         /// </summary>
-        /// <param name="servicesConfig">Optional. The services configuration.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
         protected AppBase(
-            Action<IAppServiceCollectionBuilder>? servicesConfig = null,
             IAppArgs? appArgs = null,
             CancellationTokenSource? appLifetimeTokenSource = null)
         {
-            this.servicesConfig = servicesConfig;
-            this.AmbientServices = new AmbientServices();
+            this.ServicesBuilder = new AppServiceCollectionBuilder();
             this.AppArgs = appArgs ?? new AppArgs();
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets the application services builder.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The application services builder.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public IAppServiceCollectionBuilder ServicesBuilder { get; }
 
         /// <summary>
         /// Gets the <see cref="IServiceProvider"/>.
@@ -102,18 +95,11 @@ namespace Kephas.Application
         /// <summary>
         /// Runs the application asynchronously.
         /// </summary>
-        /// <param name="mainCallback">
-        ///     Optional. The callback for the main function.
-        ///     If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
-        ///     otherwise the application will end.
-        /// </param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<AppRunResult> RunAsync(
-            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
-            CancellationToken cancellationToken = default)
+        public virtual async Task<AppRunResult> RunAsync(CancellationToken cancellationToken = default)
         {
             if (this.IsRunning)
             {
@@ -133,7 +119,7 @@ namespace Kephas.Application
             this.AfterAppManagerInitialize();
 
             this.AppLifetimeTokenSource ??= new CancellationTokenSource();
-            var instruction = await this.Main(mainCallback, this.AppLifetimeTokenSource.Token).PreserveThreadContext();
+            var instruction = await this.RunMainLoop(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
 
             if (instruction != AppShutdownInstruction.Shutdown)
             {
@@ -221,6 +207,12 @@ namespace Kephas.Application
         }
 
         /// <summary>
+        /// Configures the services.
+        /// </summary>
+        /// <param name="servicesBuilder">The service builder.</param>
+        protected abstract void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder);
+
+        /// <summary>
         /// The <see cref="BeforeAppManagerFinalize"/> is called before the application manager starts finalization.
         /// </summary>
         protected virtual void BeforeAppManagerFinalize()
@@ -257,24 +249,24 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_ConfiguringAmbientServices_Message);
 
-                var servicesBuilder = new AppServiceCollectionBuilder(this.AmbientServices);
-                this.servicesConfig?.Invoke(servicesBuilder);
+                this.ConfigureServices(this.ServicesBuilder);
 
-                this.Logger ??= this.AmbientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
+                var ambientServices = this.ServicesBuilder.AmbientServices;
+                this.Logger ??= ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
                 // and after configuring the ambient services and the logger, as it may
                 // use registered services.
-                this.AppContext = this.CreateAppContext(this.AmbientServices, appArgs, this.Logger);
+                this.AppContext = this.CreateAppContext(ambientServices, appArgs, this.Logger);
 
                 // require the AppContext to be computed each time, so that if it is called
                 // too early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
-                this.AmbientServices.Add(this.AppContext);
+                ambientServices.Add(this.AppContext);
 
-                this.AmbientServices.AddAppArgs(appArgs);
+                ambientServices.AddAppArgs(appArgs);
 
-                this.ServiceProvider = this.Build(servicesBuilder);
+                this.ServiceProvider = this.BuildServiceProvider(this.ServicesBuilder);
 
                 this.Logger ??= this.ServiceProvider.GetRequiredService<ILogManager>().GetLogger(this.GetType());
 
@@ -282,9 +274,12 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                var bootstrapException = new BootstrapException(Strings.App_RunAsync_ErrorDuringConfiguration_Exception, ex)
+                var bootstrapException = new BootstrapException(
+                    Strings.App_RunAsync_ErrorDuringConfiguration_Exception,
+                    this.ServicesBuilder,
+                    ex)
                 {
-                    AmbientServices = this.AmbientServices,
+                    AppContext = this.AppContext,
                 };
                 this.Log((LogLevel)bootstrapException.Severity, bootstrapException);
                 throw;
@@ -303,29 +298,15 @@ namespace Kephas.Application
         /// <summary>
         /// Executes the application's main loop asynchronously.
         /// </summary>
-        /// <param name="mainCallback">The main callback.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown instruction.
         /// </returns>
-        protected virtual async Task<AppShutdownInstruction> Main(Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback,  CancellationToken cancellationToken)
+        protected virtual async Task<AppShutdownInstruction> RunMainLoop(CancellationToken cancellationToken)
         {
             try
             {
-                IOperationResult result = 0.ToOperationResult();
-                var instruction = AppShutdownInstruction.Shutdown;
-                if (mainCallback != null)
-                {
-                    (result, instruction) = await mainCallback(this.AppArgs).PreserveThreadContext();
-                }
-                else
-                {
-                    var mainLoop = this.ServiceProvider!.TryResolve<IAppMainLoop>();
-                    if (mainLoop != null)
-                    {
-                        (result, instruction) = await mainLoop.Main(cancellationToken).PreserveThreadContext();
-                    }
-                }
+                var (result, instruction) = await this.Main(cancellationToken);
 
                 this.AppContext!.AppResult = result;
 
@@ -344,6 +325,22 @@ namespace Kephas.Application
 
                 return AppShutdownInstruction.Shutdown;
             }
+        }
+
+        /// <summary>
+        /// The main loop.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A task yielding the <see cref="MainLoopResult"/>.</returns>
+        protected virtual async Task<MainLoopResult> Main(CancellationToken cancellationToken)
+        {
+            var mainLoop = this.ServiceProvider!.TryResolve<IAppMainLoop>();
+            if (mainLoop != null)
+            {
+                return await mainLoop.Main(cancellationToken).PreserveThreadContext();
+            }
+
+            return new MainLoopResult(0.ToOperationResult(), AppShutdownInstruction.Shutdown);
         }
 
         /// <summary>
@@ -371,22 +368,9 @@ namespace Kephas.Application
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
-        /// <param name="servicesBuilder">The ambient services.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <returns>The service provider.</returns>
-        protected virtual IServiceProvider Build(IAppServiceCollectionBuilder servicesBuilder)
-        {
-            if (this.serviceProviderBuilder is null)
-            {
-                var exception = new InvalidOperationException("Cannot build the service provider as the builder is not set.");
-                this.Log(LogLevel.Error, exception);
-
-                throw exception;
-            }
-
-            this.Log(LogLevel.Debug, null, "Building the service provider by using the build callback.");
-
-            return this.serviceProviderBuilder(servicesBuilder);
-        }
+        protected abstract IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder);
 
         /// <summary>
         /// Initializes the application manager asynchronously.
@@ -413,10 +397,12 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                var bootstrapException = new BootstrapException(Strings.App_RunAsync_ErrorDuringConfiguration_Exception, ex)
+                var bootstrapException = new BootstrapException(
+                    Strings.App_RunAsync_ErrorDuringConfiguration_Exception,
+                    this.ServicesBuilder,
+                    ex)
                 {
                     AppContext = appContext,
-                    AmbientServices = this.AmbientServices,
                 };
 
                 appContext.Exception = bootstrapException;
@@ -464,7 +450,7 @@ namespace Kephas.Application
             {
                 var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
                 {
-                    AmbientServices = this.AmbientServices,
+                    AmbientServices = this.ServicesBuilder.AmbientServices,
                     AppContext = appContext ?? this.AppContext,
                 };
                 this.Log(LogLevel.Fatal, shutdownException);

@@ -14,7 +14,6 @@ namespace Kephas.Services
     using System.Security.Principal;
 
     using Kephas.Dynamic;
-    using Kephas.Services;
     using Kephas.Logging;
 
     /// <summary>

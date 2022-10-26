@@ -76,11 +76,11 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public override async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken)
+        public override async Task<MainLoopResult> Main(CancellationToken cancellationToken)
         {
             return this.IsAttended
                 ? await base.Main(cancellationToken).PreserveThreadContext()
-                : (new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore);
+                : new MainLoopResult(new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore);
         }
 
         /// <summary>Handles the shutdown signal.</summary>

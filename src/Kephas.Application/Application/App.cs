@@ -12,7 +12,7 @@ namespace Kephas.Application
     /// <summary>
     /// Default implementation of <see cref="AppBase{TAmbientServices}"/>.
     /// </summary>
-    public class App : AppBase<AmbientServices>
+    public class App : AppBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.

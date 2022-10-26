@@ -13,7 +13,6 @@ namespace Kephas.Application
     using System;
     using System.Security.Principal;
 
-    using Kephas.Services;
     using Kephas.Resources;
     using Kephas.Services;
 

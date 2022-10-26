@@ -268,9 +268,9 @@ namespace Kephas.Tests.Application
                 this.initialized = true;
             }
 
-            public async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken = default)
+            public async Task<MainLoopResult> Main(CancellationToken cancellationToken = default)
             {
-                return (new OperationResult(), AppShutdownInstruction.Ignore);
+                return new MainLoopResult(new OperationResult(), AppShutdownInstruction.Ignore);
             }
         }
     }
