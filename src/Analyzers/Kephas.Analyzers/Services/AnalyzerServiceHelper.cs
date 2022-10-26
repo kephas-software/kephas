@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionHelper.cs" company="Kephas Software SRL">
+// <copyright file="AnalyzerServiceHelper.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,11 +7,10 @@
 
 #nullable enable
 
-namespace Kephas.Analyzers.Injection
+namespace Kephas.Analyzers.Services
 {
     using System;
     using System.Collections.Generic;
-
     using System.Linq;
     using System.Text;
 
@@ -21,13 +20,13 @@ namespace Kephas.Analyzers.Injection
     /// <summary>
     /// Helper class for injection source generators.
     /// </summary>
-    public static class InjectionHelper
+    public static class AnalyzerServiceHelper
     {
         private const string AttributeEnding = "Attribute";
         private static readonly List<string> ExcludedAttrs;
         private static readonly List<string> AppServiceContractAttrs;
 
-        static InjectionHelper()
+        static AnalyzerServiceHelper()
         {
             ExcludedAttrs = GetAttrNames("Kephas.Services.AttributedModel.ExcludeFromInjectionAttribute").ToList();
             AppServiceContractAttrs = new List<string>();
@@ -228,7 +227,7 @@ namespace Kephas.Analyzers.Injection
                 foreach (var typeSyntax in contractTypes)
                 {
                     var typeFullName = typeSyntax.GetTypeFullName(compilationContext);
-                    var metadataTypeSyntax = InjectionHelper.TryGetMetadataType(typeSyntax, metadataTypes);
+                    var metadataTypeSyntax = AnalyzerServiceHelper.TryGetMetadataType(typeSyntax, metadataTypes);
                     var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({metadataTypeSyntax.GetTypeFullName(compilationContext)})";
                     source.AppendLine($"            yield return new ContractDeclarationInfo(typeof({typeFullName}), {metadataTypeFullName});");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
@@ -264,7 +263,7 @@ namespace Kephas.Analyzers.Injection
                     var typeFullName = serviceDeclaration.ServiceType.GetTypeFullName(compilationContext);
                     try
                     {
-                        source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({InjectionHelper.GetTypeFullName(appServiceContract)}));");
+                        source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({AnalyzerServiceHelper.GetTypeFullName(appServiceContract)}));");
                     }
                     catch (Exception ex)
                     {

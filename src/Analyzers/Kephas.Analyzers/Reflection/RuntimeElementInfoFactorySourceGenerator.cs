@@ -46,7 +46,7 @@ public class RuntimeElementInfoFactorySourceGenerator : ISourceGenerator
         var syntaxReceiver = (SyntaxReceiver)context.SyntaxContextReceiver!;
 
         var factoryTypes = syntaxReceiver.FactoryTypes
-            .Where(t => ReflectionHelper.IsFactory(t, context))
+            .Where(t => AnalyzerReflectionHelper.IsFactory(t, context))
             .ToList();
         if (factoryTypes is { Count: 0 })
         {

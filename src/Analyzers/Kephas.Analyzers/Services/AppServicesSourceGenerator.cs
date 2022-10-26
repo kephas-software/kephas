@@ -5,12 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Analyzers.Injection;
+namespace Kephas.Analyzers.Services;
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -64,11 +63,11 @@ using Kephas.Services;
 [assembly: AppServices(typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}))]
 
 ");
-        var isProviderGenerated = InjectionHelper.AppendAppServicesProviderClass(
+        var isProviderGenerated = AnalyzerServiceHelper.AppendAppServicesProviderClass(
             serviceTypeProvider,
             source,
             context,
-            syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, InjectionHelper.TryGetAppServiceContract(t, context))).ToList(),
+            syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, AnalyzerServiceHelper.TryGetAppServiceContract(t, context))).ToList(),
             syntaxReceiver);
         if (isProviderGenerated)
         {
@@ -95,7 +94,7 @@ using Kephas.Services;
 
             // find all classes and interfaces marked with [AppServiceContract] attributes.
             if (context.Node is TypeDeclarationSyntax contract
-                && InjectionHelper.IsAppServiceContract(contract))
+                && AnalyzerServiceHelper.IsAppServiceContract(contract))
             {
                 this.ContractTypes.Add(contract);
             }
@@ -103,12 +102,12 @@ using Kephas.Services;
             // find all classes which are potentially application services.
             if (context.Node is ClassDeclarationSyntax type)
             {
-                if (InjectionHelper.CanBeAppService(type))
+                if (AnalyzerServiceHelper.CanBeAppService(type))
                 {
                     this.ServiceTypes.Add(type);
                 }
 
-                if (InjectionHelper.CanBeMetadataType(type))
+                if (AnalyzerServiceHelper.CanBeMetadataType(type))
                 {
                     this.MetadataTypes.Add(type);
                 }

@@ -3,24 +3,19 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-public static class ReflectionHelper
+public static class AnalyzerReflectionHelper
 {
-    private static IEnumerable<string> factoryInterfaceIdentifiers = new[]
-    {
-        "IRuntimeElementInfoFactory",
-        "IRuntimeTypeInfoFactory",
-        "Kephas.Runtime.Factories.IRuntimeElementInfoFactory",
-        "Kephas.Runtime.Factories.IRuntimeTypeInfoFactory",
-    };
+    private record FactoryTypeInfo(string Name, bool IsGeneric);
 
-    public static bool IsFactoryInterface(TypeDeclarationSyntax type)
+    private static IEnumerable<FactoryTypeInfo> factoryInterfaceIdentifiers = new FactoryTypeInfo[]
     {
-        return factoryInterfaceIdentifiers.Contains(type.Identifier.Text);
-    }
+        new ("IRuntimeElementInfoFactory", true),
+        new ("IRuntimeTypeInfoFactory", false),
+    };
 
     public static bool IsFactoryInterface(INamedTypeSymbol type)
     {
-        return factoryInterfaceIdentifiers.Contains(type.Name);
+        return factoryInterfaceIdentifiers.Any(i => i.Name == type.Name && (i.IsGeneric ? type.TypeParameters.Length > 0 : type.TypeParameters.Length == 0));
     }
 
     public static bool IsFactory(ClassDeclarationSyntax type, GeneratorExecutionContext context)

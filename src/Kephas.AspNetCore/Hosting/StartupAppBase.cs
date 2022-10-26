@@ -237,7 +237,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="ambientServices">The ambient services.</param>
         protected override IServiceProvider Build(IAmbientServices ambientServices)
         {
-            return this.Host.Services;
+            return this.ServiceProvider!;
         }
 
         private Action<IServiceCollection, IAmbientServices> GetServicesConfiguratorAction(IServicesConfigurator c)

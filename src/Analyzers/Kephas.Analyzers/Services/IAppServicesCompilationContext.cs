@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Analyzers.Injection;
+namespace Kephas.Analyzers.Services;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
