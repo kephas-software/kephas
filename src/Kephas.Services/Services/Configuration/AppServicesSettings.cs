@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionSettings.cs" company="Kephas Software SRL">
+// <copyright file="AppServicesSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -31,9 +31,9 @@ namespace Kephas.Services.Configuration
     }
 
     /// <summary>
-    /// Stores injection settings.
+    /// Stores application services related settings.
     /// </summary>
-    public class InjectionSettings : Expando
+    public class AppServicesSettings : Expando
     {
         /// <summary>
         /// Gets or sets the assembly file name pattern.

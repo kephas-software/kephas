@@ -64,7 +64,7 @@ public static class ModelExtensions
     public static IAppServiceCollectionBuilder WithModelElementConfigurator<TConfigurator>(this IAppServiceCollectionBuilder servicesBuilder)
         where TConfigurator : IRuntimeModelElementConfigurator
     {
-        servicesBuilder.ServiceInfoProviders.Add(new ConfiguratorAppServiceInfoProvider<TConfigurator>());
+        servicesBuilder.Providers.Add(new ConfiguratorAppServiceInfoProvider<TConfigurator>());
 
         return servicesBuilder;
     }

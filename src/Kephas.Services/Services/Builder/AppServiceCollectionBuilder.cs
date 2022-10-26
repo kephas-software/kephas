@@ -32,7 +32,7 @@ namespace Kephas.Services.Builder
         /// </summary>
         /// <param name="settings">Optional. The injection settings.</param>
         /// <param name="logger">Optional. The logger.</param>
-        public AppServiceCollectionBuilder(InjectionSettings? settings = null, ILogger? logger = null)
+        public AppServiceCollectionBuilder(AppServicesSettings? settings = null, ILogger? logger = null)
             : this(new AmbientServices(), settings, logger)
         {
         }
@@ -43,10 +43,10 @@ namespace Kephas.Services.Builder
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="settings">Optional. The injection settings.</param>
         /// <param name="logger">Optional. The logger.</param>
-        public AppServiceCollectionBuilder(IAmbientServices ambientServices, InjectionSettings? settings = null, ILogger? logger = null)
+        public AppServiceCollectionBuilder(IAmbientServices ambientServices, AppServicesSettings? settings = null, ILogger? logger = null)
         {
             this.AmbientServices = ambientServices;
-            this.Settings = settings ?? new InjectionSettings();
+            this.Settings = settings ?? new AppServicesSettings();
             this.Logger = logger ?? ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
         }
 
@@ -61,7 +61,7 @@ namespace Kephas.Services.Builder
         /// <value>
         /// The application service information providers.
         /// </value>
-        public ICollection<IAppServiceInfoProvider> ServiceInfoProviders { get; } = new List<IAppServiceInfoProvider>();
+        public ICollection<IAppServiceInfoProvider> Providers { get; } = new List<IAppServiceInfoProvider>();
 
         /// <summary>
         /// Gets the list of assemblies used in injection.
@@ -71,7 +71,7 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Gets the injection settings.
         /// </summary>
-        public InjectionSettings Settings { get; }
+        public AppServicesSettings Settings { get; }
 
         /// <summary>
         /// Gets the logger.
@@ -87,7 +87,7 @@ namespace Kephas.Services.Builder
         /// <returns>The provided ambient services.</returns>
         public IAmbientServices Build()
         {
-            var providers = this.GetServiceInfoProviders();
+            var providers = this.GetProviders();
             return this.AddAppServices(this.AmbientServices, providers, this.Settings.AmbiguousResolutionStrategy);
         }
 
@@ -162,7 +162,7 @@ namespace Kephas.Services.Builder
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        private IEnumerable<IAppServiceInfoProvider> GetServiceInfoProviders(IEnumerable<Assembly> appAssemblies)
+        private IEnumerable<IAppServiceInfoProvider> GetProviders(IEnumerable<Assembly> appAssemblies)
         {
             appAssemblies = appAssemblies ?? throw new ArgumentNullException(nameof(appAssemblies));
 
@@ -179,7 +179,7 @@ namespace Kephas.Services.Builder
         /// <returns>
         /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        private IEnumerable<IAppServiceInfoProvider> GetServiceInfoProviders()
+        private IEnumerable<IAppServiceInfoProvider> GetProviders()
         {
             var assemblies = this.GetBuildAssemblies();
 
@@ -195,8 +195,8 @@ namespace Kephas.Services.Builder
                 }
             }
 
-            var providers = this.GetServiceInfoProviders(assemblies)
-                .Union(this.ServiceInfoProviders)
+            var providers = this.GetProviders(assemblies)
+                .Union(this.Providers)
                 .ToList();
 
             return providers;

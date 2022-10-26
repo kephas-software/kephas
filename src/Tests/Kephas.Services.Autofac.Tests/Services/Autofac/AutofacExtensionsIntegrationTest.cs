@@ -345,7 +345,7 @@ namespace Kephas.Tests.Services.Autofac
                     (typeof(string), new AppServiceInfo(typeof(string), "123")),
                 });
 
-            var builder = this.CreateAutofacServicesBuilder(ctx => ctx.ServiceInfoProviders.Add(registrar));
+            var builder = this.CreateAutofacServicesBuilder(ctx => ctx.Providers.Add(registrar));
             var mockAppRuntime = builder.AmbientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies()
@@ -366,7 +366,7 @@ namespace Kephas.Tests.Services.Autofac
                     (typeof(string), new AppServiceInfo(typeof(string), injector => "123")),
                 });
 
-            var builder = this.CreateAutofacServicesBuilder(ctx => ctx.ServiceInfoProviders.Add(registrar));
+            var builder = this.CreateAutofacServicesBuilder(ctx => ctx.Providers.Add(registrar));
             var mockPlatformManager = builder.AmbientServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies()

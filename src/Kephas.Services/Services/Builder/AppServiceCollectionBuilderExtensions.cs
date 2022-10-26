@@ -49,7 +49,7 @@ public static class AppServiceCollectionBuilderExtensions
     {
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-        builder.ServiceInfoProviders.AddRange(serviceProviders);
+        builder.Providers.AddRange(serviceProviders);
 
         return builder;
     }

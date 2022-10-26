@@ -34,7 +34,7 @@ namespace Kephas.Services.Builder
         /// <value>
         /// The application service information providers.
         /// </value>
-        ICollection<IAppServiceInfoProvider> ServiceInfoProviders { get; }
+        ICollection<IAppServiceInfoProvider> Providers { get; }
 
         /// <summary>
         /// Gets the list of assemblies used in injection.
@@ -44,7 +44,7 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Gets the injection settings.
         /// </summary>
-        InjectionSettings Settings { get; }
+        AppServicesSettings Settings { get; }
 
         /// <summary>
         /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
