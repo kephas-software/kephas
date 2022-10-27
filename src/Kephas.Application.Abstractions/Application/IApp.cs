@@ -83,7 +83,7 @@ public static class AppExtensions
     {
         try
         {
-            await app.RunAsync(null, default).PreserveThreadContext();
+            await app.RunAsync(default).PreserveThreadContext();
             return 0;
         }
         catch (Exception ex)
