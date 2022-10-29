@@ -76,33 +76,23 @@ namespace Kephas
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="config">Optional. The application runtime configuration callback.</param>
+        /// <param name="settingsConfig">Optional. The settings configuration.</param>
         /// <returns>
         /// The <paramref name="servicesBuilder"/>.
         /// </returns>
         public static IAppServiceCollectionBuilder WithDynamicAppRuntime(
             this IAppServiceCollectionBuilder servicesBuilder,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            Action<DynamicAppRuntime>? config = null)
+            Action<AppRuntimeSettings>? settingsConfig = null,
+            Action<DynamicAppRuntime>? runtimeConfig = null)
         {
             servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
-            var appRuntime = new DynamicAppRuntime(
-                name => servicesBuilder.AmbientServices.GetServiceInstance<ILogManager>().GetLogger(name),
-                null,
-                appFolder,
-                configFolders,
-                licenseFolders,
-                isRoot,
-                appId,
-                appInstanceId,
-                appVersion);
-            config?.Invoke(appRuntime);
+            var settings = new AppRuntimeSettings();
+            settingsConfig?.Invoke(settings);
+
+            var appRuntime = new DynamicAppRuntime(settings);
+            runtimeConfig?.Invoke(appRuntime);
+
             return servicesBuilder.WithAppRuntime(appRuntime);
         }
 

@@ -11,7 +11,6 @@
 namespace Kephas.Application
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -33,14 +32,14 @@ namespace Kephas.Application
     public abstract class AppRuntimeBase : Expando, IAppRuntime, IInitializable, IDisposable
     {
         /// <summary>
-        /// A pattern specifying the assembly file search.
-        /// </summary>
-        protected static readonly string AssemblyFileSearchPattern = "*.dll";
-
-        /// <summary>
         /// The assembly file extension.
         /// </summary>
         protected static readonly string AssemblyFileExtension = ".dll";
+
+        /// <summary>
+        /// A pattern specifying the assembly file search.
+        /// </summary>
+        protected static readonly string AssemblyFileSearchPattern = $"*{AssemblyFileExtension}";
 
         private readonly Func<string, ILogger> getLogger;
 
@@ -55,54 +54,31 @@ namespace Kephas.Application
         private ILocations? licenseLocations;
         private bool isDisposed = false; // To detect redundant calls
 
+        private Func<AssemblyName, bool> isAppAssembly;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
-        /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
-        /// <param name="appFolder">Optional. The application folder. If not specified, the current
-        ///                           application location is considered.</param>
-        /// <param name="configFolders">Optional. The configuration folders relative to the application
-        ///                             location.</param>
-        /// <param name="licenseFolders">Optional. The license folders relative to the application
-        ///                              location.</param>
-        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="appArgs">Optional. The application arguments.</param>
-        protected AppRuntimeBase(
-            Func<string, ILogger>? getLogger = null,
-            IEnumerable<Assembly>? appAssemblies = null,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            IDynamic? appArgs = null)
+        /// <param name="settings">The runtime settings.</param>
+        protected AppRuntimeBase(AppRuntimeSettings settings)
             : base(isThreadSafe: true)
         {
-            this.AppArgs = appArgs == null
-                ? new AppArgs()
-                : appArgs as IAppArgs ?? new AppArgs(appArgs);
-            this.getLogger = getLogger ?? NullLogManager.GetNullLogger;
-            this.appAssemblies = appAssemblies;
-            this.appFolder = appFolder;
-            this.configFolders = configFolders;
-            this.licenseFolders = licenseFolders;
+            settings = settings ?? throw new ArgumentNullException(nameof(settings));
+
+            this.AppArgs = settings.AppArgs ?? new AppArgs();
+            this.getLogger = settings.GetLogger ?? NullLogManager.GetNullLogger;
+            this.appAssemblies = settings.AppAssemblies;
+            this.appFolder = settings.AppFolder;
+            this.configFolders = settings.ConfigFolders;
+            this.licenseFolders = settings.LicenseFolders;
+
+            this.isAppAssembly = settings.IsAppAssembly ?? (an => !an.IsSystemAssembly());
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
-            this.InitializeAppProperties(
-                Assembly.GetEntryAssembly()!,
-                isRoot ?? this.AppArgs.RunAsRoot,
-                appId ?? this.AppArgs.AppId,
-                appInstanceId ?? this.AppArgs.AppInstanceId,
-                appVersion,
-                this.AppArgs.Environment);
+            this.InitializeAppProperties(settings);
 
-            this[IAppRuntime.AppIdentityKey] = new AppIdentity((string)this[IAppRuntime.AppIdKey]!,
+            this[IAppRuntime.AppIdentityKey] = new AppIdentity(
+                (string)this[IAppRuntime.AppIdKey]!,
                 this[IAppRuntime.AppVersionKey] as string);
         }
 
@@ -219,7 +195,7 @@ namespace Kephas.Application
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            return this.assemblyCache ??= this.ComputeAppAssemblies(this.IsAppAssembly);
+            return this.assemblyCache ??= this.ComputeAppAssemblies(this.isAppAssembly);
         }
 
         /// <summary>
@@ -289,24 +265,20 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes the application properties: AppId, AppInstanceId, and AppVersion.
         /// </summary>
-        /// <param name="entryAssembly">The entry assembly.</param>
-        /// <param name="isRoot">Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Identifier for the application.</param>
-        /// <param name="appInstanceId">Identifier for the application instance.</param>
-        /// <param name="appVersion">The application version.</param>
-        /// <param name="environment">The environment.</param>
-        protected virtual void InitializeAppProperties(
-            Assembly entryAssembly,
-            bool? isRoot,
-            string? appId,
-            string? appInstanceId,
-            string? appVersion,
-            string? environment)
+        /// <param name="settings">The runtime settings.</param>
+        protected virtual void InitializeAppProperties(AppRuntimeSettings settings)
         {
-            this.IsRoot = isRoot ??= string.IsNullOrEmpty(appId);
+            var entryAssembly = settings.EntryAssembly ?? Assembly.GetEntryAssembly()!;
+            var isRoot = settings.IsRoot ?? this.AppArgs.RunAsRoot;
+            var appId = settings.AppId ?? this.AppArgs.AppId;
+            var appInstanceId = settings.AppInstanceId ?? this.AppArgs.AppInstanceId;
+            var appVersion = settings.AppVersion;
+            var environment = this.AppArgs.Environment;
+
+            this.IsRoot = isRoot;
             this[IAppRuntime.AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
             this[IAppRuntime.AppInstanceIdKey] = appInstanceId = string.IsNullOrEmpty(appInstanceId)
-                ? isRoot.Value
+                ? isRoot
                     ? appId
                     : $"{appId}-{Guid.NewGuid():N}"
                 : appInstanceId;
@@ -431,7 +403,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application identifier.
         /// </returns>
-        protected virtual string GetAppId(Assembly entryAssembly, string? appId)
+        protected virtual string GetAppId(Assembly? entryAssembly, string? appId)
         {
             if (!string.IsNullOrEmpty(appId))
             {

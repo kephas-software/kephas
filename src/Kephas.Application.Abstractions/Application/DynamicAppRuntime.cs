@@ -17,8 +17,6 @@ namespace Kephas.Application
     using System.Reflection;
 
     using Kephas.Collections;
-    using Kephas.Dynamic;
-    using Kephas.Logging;
 
     /// <summary>
     /// An application application runtime loading dynamically assemblies from the application location.
@@ -28,28 +26,9 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicAppRuntime"/> class.
         /// </summary>
-        /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
-        /// <param name="appFolder">Optional. The application location.</param>
-        /// <param name="configFolders">Optional. The configuration folders.</param>
-        /// <param name="licenseFolders">Optional. The license folders.</param>
-        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="appArgs">Optional. The application arguments.</param>
-        public DynamicAppRuntime(
-            Func<string, ILogger>? getLogger = null,
-            IEnumerable<Assembly>? appAssemblies = null,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            IDynamic? appArgs = null)
-            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
+        /// <param name="settings">Optional. The runtime settings.</param>
+        public DynamicAppRuntime(AppRuntimeSettings? settings = null)
+            : base(settings ?? new AppRuntimeSettings())
         {
         }
 

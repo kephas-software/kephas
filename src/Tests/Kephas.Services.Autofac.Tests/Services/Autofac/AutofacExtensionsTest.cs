@@ -26,7 +26,7 @@ namespace Kephas.Tests.Services.Autofac
         {
             var ambientServices = this.CreateAmbientServices();
             var injector = new AppServiceCollectionBuilder(ambientServices)
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test")))
+                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = (a => a.Name.Contains("Kephas") && !a.Name.Contains("Test")))
                 .BuildWithAutofac();
 
             Assert.IsInstanceOf<AutofacServiceProvider>(injector);
@@ -37,7 +37,7 @@ namespace Kephas.Tests.Services.Autofac
         {
             var ambientServices = this.CreateAmbientServices();
             var builder = new AppServiceCollectionBuilder(ambientServices)
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
+                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
             var injector = builder.BuildWithAutofac();
 
@@ -50,7 +50,7 @@ namespace Kephas.Tests.Services.Autofac
         {
             var ambientServices = this.CreateAmbientServices();
             var builder = new AppServiceCollectionBuilder(ambientServices)
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
+                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
             var injector = builder.BuildWithAutofac();
 

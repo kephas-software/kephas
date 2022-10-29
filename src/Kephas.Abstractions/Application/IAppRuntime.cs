@@ -145,6 +145,14 @@ namespace Kephas.Application
         AppIdentity? GetAppIdentity() => this[IAppRuntime.AppIdentityKey] as AppIdentity;
 
         /// <summary>
+        /// Gets the identifier of the application instance.
+        /// </summary>
+        /// <returns>
+        /// The identifier of the application instance.
+        /// </returns>
+        string? GetAppInstanceId() => this[IAppRuntime.AppInstanceIdKey] as string;
+
+        /// <summary>
         /// Gets the running environment.
         /// </summary>
         /// <returns>The running environment.</returns>
@@ -157,12 +165,22 @@ namespace Kephas.Application
         bool IsDevelopmentEnvironment() => string.Equals(EnvironmentName.Development, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets the identifier of the application instance.
+        /// Gets a value indicating whether the running environment is production.
         /// </summary>
-        /// <returns>
-        /// The identifier of the application instance.
-        /// </returns>
-        string? GetAppInstanceId() => this[IAppRuntime.AppInstanceIdKey] as string;
+        /// <returns>A value indicating whether the running environment is production.</returns>
+        bool IsProductionEnvironment() => string.Equals(EnvironmentName.Production, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Gets a value indicating whether the running environment is test.
+        /// </summary>
+        /// <returns>A value indicating whether the running environment is test.</returns>
+        bool IsTestEnvironment() => string.Equals(EnvironmentName.Test, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Gets a value indicating whether the running environment is staging.
+        /// </summary>
+        /// <returns>A value indicating whether the running environment is staging.</returns>
+        bool IsStagingEnvironment() => string.Equals(EnvironmentName.Staging, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets the full path of the file or folder. If the name is a relative path, it will be made relative to the application location.

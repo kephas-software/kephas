@@ -26,7 +26,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var ambientServices = this.CreateAmbientServices();
             var builder = new AppServiceCollectionBuilder(ambientServices);
             var injector = builder
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test")))
+                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
                 .BuildWithDependencyInjection();
 
             Assert.IsInstanceOf<ServiceProvider>(injector);
@@ -37,7 +37,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var ambientServices = this.CreateAmbientServices();
             var builder = new AppServiceCollectionBuilder(ambientServices)
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
+                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
             var injector = builder.BuildWithDependencyInjection();
 
@@ -50,7 +50,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var ambientServices = this.CreateAmbientServices();
             var builder = new AppServiceCollectionBuilder(ambientServices)
-                .WithDynamicAppRuntime(config: rt => rt.OnIsAppAssembly(a => !a.Name.Contains("Test")))
+                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
             var injector = builder.BuildWithDependencyInjection();
 
