@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkerAppBase.cs" company="Kephas Software SRL">
+// <copyright file="WorkerApp.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,39 +19,47 @@ namespace Kephas.Extensions.Hosting.Application
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
+    using Kephas.Services.Builder;
     using Kephas.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
     /// <summary>
-    /// A worker application base.
+    /// A worker application.
     /// </summary>
-    public abstract class WorkerAppBase : AppBase
+    public class WorkerApp : AppBase
     {
+        private readonly Action<IAppServiceCollectionBuilder>? servicesConfig;
+        private CancellationTokenSource? stoppingTokenSource;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
+        /// Initializes a new instance of the <see cref="WorkerApp"/> class.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="builderOptions">Optional. The host builder options.</param>
-        protected WorkerAppBase(
-            IAmbientServices? ambientServices = null,
+        /// <param name="hostConfig">Optional. The host configuration.</param>
+        /// <param name="servicesConfig">Optional. The services configuration.</param>
+        protected WorkerApp(
             IAppArgs? appArgs = null,
-            Action<IHostBuilder>? builderOptions = null)
-            : this(ambientServices, CreateBuilder(builderOptions, appArgs), appArgs)
+            Action<IHostBuilder>? hostConfig = null,
+            Action<IAppServiceCollectionBuilder>? servicesConfig = null)
+            : this(CreateBuilder(hostConfig, appArgs), servicesConfig, appArgs)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
+        /// Initializes a new instance of the <see cref="WorkerApp"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="builder">The host builder.</param>
+        /// <param name="servicesConfig">Optional. The services configuration.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        protected WorkerAppBase(IAmbientServices? ambientServices, IHostBuilder builder, IAppArgs? appArgs = null)
-            : base(ambientServices, appArgs)
+        protected WorkerApp(
+            IHostBuilder builder,
+            Action<IAppServiceCollectionBuilder>? servicesConfig = null,
+            IAppArgs? appArgs = null)
+            : base(appArgs)
         {
-            this.HostBuilder = builder;
+            this.HostBuilder = builder ?? throw new ArgumentNullException(nameof(builder));
+            this.servicesConfig = servicesConfig;
         }
 
         /// <summary>
@@ -73,16 +81,11 @@ namespace Kephas.Extensions.Hosting.Application
         /// <summary>
         /// Runs the application asynchronously.
         /// </summary>
-        /// <param name="mainCallback">Optional. The callback for the main function.
-        ///     If not provided, the service implementing <see cref="T:Kephas.Application.IAppMainLoop" /> will be invoked,
-        ///     otherwise the application will end.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public override Task<AppRunResult> RunAsync(
-            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
-            CancellationToken cancellationToken = default)
+        public override Task<AppRunResult> RunAsync(CancellationToken cancellationToken = default)
         {
             if (this.AppArgs.RunAsService)
             {
@@ -94,23 +97,47 @@ namespace Kephas.Extensions.Hosting.Application
 
             this.BeforeAppManagerInitialize(this.AppArgs);
 
-            var stoppingTokenSource = new CancellationTokenSource();
-            var eventHub = this.Host!.Services.GetRequiredService<IEventHub>();
-            eventHub.Subscribe<ShutdownSignal>((_, _) => stoppingTokenSource.Cancel());
+            this.stoppingTokenSource = new CancellationTokenSource();
+            var eventHub = this.ServiceProvider.GetRequiredService<IEventHub>();
+            eventHub.Subscribe<ShutdownSignal>((_, _) => this.stoppingTokenSource.Cancel());
 
-            return base.RunAsync(mainCallback ?? (args => RunHostAsync(this.Host, stoppingTokenSource.Token)), cancellationToken);
+            return base.RunAsync(cancellationToken);
         }
 
         /// <summary>
-        /// The building of the services container is the responsibility of the host.
+        /// Configures the services.
+        /// </summary>
+        /// <param name="servicesBuilder">The service builder.</param>
+        protected override void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder)
+        {
+            this.servicesConfig?.Invoke(servicesBuilder);
+        }
+
+        /// <summary>
+        /// The main loop.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A task yielding the <see cref="MainLoopResult"/>.</returns>
+        protected override Task<MainLoopResult> Main(CancellationToken cancellationToken)
+        {
+            return RunHostAsync(this.Host!, stoppingTokenSource!.Token);
+        }
+
+        /// <summary>
+        /// This is the last step in the app's configuration, when all the services are set up
+        /// and the container is built. For inheritors, this is the last place where services can
+        /// be added before calling. By default, it only builds the Lite container, but any other container adapter
+        /// can be used, like Autofac or System.Composition.
         /// </summary>
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <returns>The service provider.</returns>
-        protected override IServiceProvider Build(IAmbientServices ambientServices)
+        protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
         {
+            this.HostBuilder.ConfigureServices((context, services) => services.UseServicesBuilder(servicesBuilder));
+
             this.Host ??= this.HostBuilder.Build();
             return this.Host.Services;
         }
@@ -153,12 +180,12 @@ namespace Kephas.Extensions.Hosting.Application
             return builder;
         }
 
-        private static async Task<(IOperationResult result, AppShutdownInstruction instruction)> RunHostAsync(
+        private static async Task<MainLoopResult> RunHostAsync(
             IHost host, CancellationToken stoppingToken)
         {
             var opResult = new OperationResult<bool>(true);
             await host.RunAsync(stoppingToken).PreserveThreadContext();
-            return (opResult.Complete(), AppShutdownInstruction.Shutdown);
+            return new MainLoopResult(opResult.Complete(), AppShutdownInstruction.Shutdown);
         }
     }
 }

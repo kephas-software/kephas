@@ -37,21 +37,16 @@ public static class DependencyInjectionExtensions
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="builderOptions">Optional. The builder configuration.</param>
     /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(this IAppServiceCollectionBuilder servicesBuilder, Action<IServiceCollection>? builderOptions = null)
-        => BuildWithDependencyInjection(servicesBuilder.Build(), builderOptions);
-
-    /// <summary>
-    /// Builds the service provider using the service collection.
-    /// </summary>
-    /// <param name="ambientServices">The ambient services.</param>
-    /// <param name="builderOptions">Optional. The builder configuration.</param>
-    /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, Action<IServiceCollection>? builderOptions = null)
+    public static IServiceProvider BuildWithDependencyInjection(
+        this IAppServiceCollectionBuilder servicesBuilder,
+        Action<IServiceCollection>? builderOptions = null)
     {
+        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
+
         var services = new ServiceCollection();
         builderOptions?.Invoke(services);
 
-        return ambientServices.BuildWithDependencyInjection(services);
+        return servicesBuilder.BuildWithDependencyInjection(services);
     }
 
     /// <summary>
@@ -60,18 +55,11 @@ public static class DependencyInjectionExtensions
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="services">The service collection.</param>
     /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(this IAppServiceCollectionBuilder servicesBuilder, IServiceCollection services) =>
-        BuildWithDependencyInjection(servicesBuilder.Build(), services);
-
-    /// <summary>
-    /// Builds the service provider using the service collection.
-    /// </summary>
-    /// <param name="ambientServices">The ambient services.</param>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, IServiceCollection services)
+    public static IServiceProvider BuildWithDependencyInjection(this IAppServiceCollectionBuilder servicesBuilder, IServiceCollection services)
     {
-        services.UseServicesBuilder(ambientServices);
+        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
+
+        services.UseServicesBuilder(servicesBuilder);
 
         return services.BuildServiceProvider();
     }

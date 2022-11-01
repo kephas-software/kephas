@@ -121,7 +121,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     public class TestAppRuntime : AppRuntimeBase
     {
         public TestAppRuntime(string appId = "test")
-            : base(appId: appId)
+            : base(new AppRuntimeSettings { AppId = appId })
         {
         }
     }

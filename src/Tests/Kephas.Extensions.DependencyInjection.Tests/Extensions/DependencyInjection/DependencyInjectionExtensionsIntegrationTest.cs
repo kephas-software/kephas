@@ -33,7 +33,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public async Task CreateInjector_simple_ambient_services_exported()
         {
-            var builder = this.CreateAutofacServicesBuilder();
+            var builder = this.CreateServicesBuilder();
             var mockAppRuntime = builder.AmbientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies()
@@ -56,7 +56,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void CreateInjector_simple_ambient_services_exported_no_assemblies()
         {
-            var builder = this.CreateAutofacServicesBuilder();
+            var builder = this.CreateServicesBuilder();
             var container = builder
                 .WithAssemblies(typeof(AmbientServices).Assembly)
                 .BuildWithDependencyInjection();
@@ -342,13 +342,13 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                     (typeof(string), new AppServiceInfo(typeof(string), "123")),
                 });
 
-            var builder = this.CreateAutofacServicesBuilder(ctx => ctx.Providers.Add(registrar));
+            var builder = this.CreateServicesBuilder(ctx => ctx.Providers.Add(registrar));
             var mockAppRuntime = builder.AmbientServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies()
                 .Returns(new[] { typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly });
 
-            var container = builder.Build().BuildWithDependencyInjection();
+            var container = builder.BuildWithDependencyInjection();
 
             var instance = container.Resolve<string>();
             Assert.AreEqual("123", instance);
@@ -363,7 +363,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                     (typeof(string), new AppServiceInfo(typeof(string), injector => "123")),
                 });
 
-            var builder = this.CreateAutofacServicesBuilder(ctx => ctx.Providers.Add(registrar));
+            var builder = this.CreateServicesBuilder(ctx => ctx.Providers.Add(registrar));
             var mockPlatformManager = builder.AmbientServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies()
@@ -387,7 +387,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             public IEnumerable<ContractDeclaration> GetAppServiceContracts() => this.serviceInfos;
         }
 
-        private IAppServiceCollectionBuilder CreateAutofacServicesBuilder(Action<IAppServiceCollectionBuilder>? config = null)
+        private IAppServiceCollectionBuilder CreateServicesBuilder(Action<IAppServiceCollectionBuilder>? config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockAppRuntime = Substitute.For<IAppRuntime>();
@@ -402,7 +402,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 
         private IAppServiceCollectionBuilder CreateAutofacServicesBuilderWithStringLogger()
         {
-            var builder = this.CreateAutofacServicesBuilder();
+            var builder = this.CreateServicesBuilder();
 
             var mockLoggerManager = builder.AmbientServices.GetServiceInstance<ILogManager>();
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());

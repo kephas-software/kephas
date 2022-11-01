@@ -37,8 +37,9 @@ namespace Kephas.Application
             IAppArgs? appArgs = null,
             CancellationTokenSource? appLifetimeTokenSource = null)
         {
-            this.ServicesBuilder = new AppServiceCollectionBuilder();
             this.AppArgs = appArgs ?? new AppArgs();
+            this.ServicesBuilder = new AppServiceCollectionBuilder()
+                .AddAppArgs(this.AppArgs);
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
@@ -263,8 +264,6 @@ namespace Kephas.Application
                 // too early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
                 ambientServices.Add(this.AppContext);
-
-                ambientServices.AddAppArgs(appArgs);
 
                 this.ServiceProvider = this.BuildServiceProvider(this.ServicesBuilder);
 
