@@ -24,11 +24,13 @@ namespace Kephas.Application.Tests.Application
         [Test]
         public void Constructor_set_app_id_and_instance_id()
         {
-            IAppRuntime appRuntime = new StaticAppRuntime(
-                appArgs: new Expando
+            IAppRuntime appRuntime = new StaticAppRuntime(new AppRuntimeSettings
                 {
-                    [IAppRuntime.AppIdKey] = "test",
-                    [IAppRuntime.AppInstanceIdKey] = "test-2",
+                    AppArgs = new AppArgs
+                    {
+                        [IAppRuntime.AppIdKey] = "test",
+                        [IAppRuntime.AppInstanceIdKey] = "test-2",
+                    },
                 });
             Assert.AreEqual("test", appRuntime.GetAppId());
             Assert.AreEqual("test-2", appRuntime.GetAppInstanceId());
@@ -60,7 +62,7 @@ namespace Kephas.Application.Tests.Application
         [Test]
         public void GetAppId_and_version()
         {
-            IAppRuntime appRuntime = new StaticAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
+            IAppRuntime appRuntime = new StaticAppRuntime(new AppRuntimeSettings { AppId = "hello-app", AppVersion = "1.0.0-beta" });
 
             Assert.AreEqual("hello-app", appRuntime.GetAppId());
             Assert.AreEqual("1.0.0-beta", appRuntime.GetAppVersion());
@@ -69,7 +71,7 @@ namespace Kephas.Application.Tests.Application
         [Test]
         public void GetAppConfigLocations_default()
         {
-            var appRuntime = new StaticAppRuntime(appFolder: "/root");
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { AppFolder = "/root" });
             var configLocations = appRuntime.GetAppConfigLocations();
 
             Assert.AreEqual(1, configLocations.Count());
@@ -87,7 +89,7 @@ namespace Kephas.Application.Tests.Application
         [Test]
         public void GetAppConfigLocations_configured()
         {
-            var appRuntime = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "config" });
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { AppFolder = "/root", ConfigFolders = new[] { "../my/config", "config" } });
             var configLocations = appRuntime.GetAppConfigLocations();
 
             Assert.AreEqual(2, configLocations.Count());
@@ -107,7 +109,7 @@ namespace Kephas.Application.Tests.Application
         [Test]
         public void GetAppConfigLocations_configured_distinct()
         {
-            var appRuntime = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "../my/config", "config" });
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { AppFolder = "/root", ConfigFolders = new[] { "../my/config", "../my/config", "config" } });
             var configLocations = appRuntime.GetAppConfigLocations();
 
             Assert.AreEqual(2, configLocations.Count());
@@ -134,14 +136,14 @@ namespace Kephas.Application.Tests.Application
         [Test]
         public void IsRoot_true_with_appID()
         {
-            var appRuntime = new StaticAppRuntime(isRoot: true, appId: "root");
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { IsRoot = true, AppId = "root" });
             Assert.IsTrue(appRuntime.IsRoot);
         }
 
         [Test]
         public void IsRoot_false()
         {
-            var appRuntime = new StaticAppRuntime(isRoot: false);
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { IsRoot = false });
             Assert.IsFalse(appRuntime.IsRoot);
         }
     }

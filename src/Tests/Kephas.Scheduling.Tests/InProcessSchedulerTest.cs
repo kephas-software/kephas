@@ -86,7 +86,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
-            var appRuntime = new StaticAppRuntime(appId: "test", appInstanceId: "test-1");
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { AppId = "test", AppInstanceId = "test-1" });
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), appRuntime);
 
             await scheduler.InitializeAsync();

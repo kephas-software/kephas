@@ -42,7 +42,12 @@ namespace Kephas.Tests.Plugins
             Func<PluginData, IPluginContext, bool>? canDisable = null)
         {
             var pluginsDataStore = new TestPluginStore();
-            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
+            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
+            {
+                AppFolder = context.AppLocation,
+                PluginsFolder = context.PluginsFolder,
+                PluginRepository = pluginsDataStore,
+            });
             return new TestPluginManager(
                 context,
                 appRuntime,

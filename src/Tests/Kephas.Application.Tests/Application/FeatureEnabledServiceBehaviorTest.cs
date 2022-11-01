@@ -27,7 +27,7 @@ namespace Kephas.Tests.Application
             var enabledExportFactory = this.GetFeatureExportFactory("enabled", dependencies: new[] { "test" });
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "enabled" }),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory, enabledExportFactory });
@@ -40,7 +40,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "Test" }),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -53,7 +53,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "test" }),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -66,7 +66,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test", targetApps: new[] { "test-app" });
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -79,7 +79,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test", targetApps: new[] { "test-app" });
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "non-test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "non-test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -92,7 +92,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });

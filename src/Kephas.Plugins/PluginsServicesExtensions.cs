@@ -28,51 +28,24 @@ namespace Kephas
         /// Sets the plugins-enabled application runtime to the ambient services.
         /// </summary>
         /// <param name="servicesBuilder">The ambient services.</param>
-        /// <param name="appFolder">Optional. The application location. If not specified, the assembly
-        ///                           location is used.</param>
-        /// <param name="configFolders">Optional. The configuration folders.</param>
-        /// <param name="licenseFolders">Optional. The license folders.</param>
-        /// <param name="isRoot">Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="appArgs">Optional. the application arguments.</param>
-        /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
-        /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
-        /// <param name="config">Optional. The application runtime configuration callback.</param>
+        /// <param name="settingsConfig">Optional. The settings configuration.</param>
+        /// <param name="runtimeConfig">Optional. The post configuration for the <see cref="PluginsAppRuntime"/>.</param>
         /// <returns>
-        /// The provided ambient services.
+        /// The <paramref name="servicesBuilder"/>.
         /// </returns>
         public static IAppServiceCollectionBuilder WithPluginsAppRuntime(
             this IAppServiceCollectionBuilder servicesBuilder,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            IDynamic? appArgs = null,
-            bool? enablePlugins = null,
-            string? pluginsFolder = null,
-            Action<PluginsAppRuntime>? config = null)
+            Action<PluginsAppRuntimeSettings>? settingsConfig = null,
+            Action<PluginsAppRuntime>? runtimeConfig = null)
         {
             servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
-            var appRuntime = new PluginsAppRuntime(
-                name => servicesBuilder.AmbientServices.GetServiceInstance<ILogManager>().GetLogger(name),
-                null,
-                appFolder,
-                configFolders,
-                licenseFolders,
-                isRoot,
-                appId,
-                appInstanceId,
-                appVersion,
-                appArgs,
-                enablePlugins,
-                pluginsFolder);
-            config?.Invoke(appRuntime);
+            var settings = new PluginsAppRuntimeSettings();
+            settingsConfig?.Invoke(settings);
+
+            var appRuntime = new PluginsAppRuntime(settings);
+            runtimeConfig?.Invoke(appRuntime);
+
             return servicesBuilder.WithAppRuntime(appRuntime);
         }
     }

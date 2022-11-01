@@ -47,14 +47,13 @@ namespace Kephas.Application
         private readonly IEnumerable<string>? configFolders;
         private readonly IEnumerable<string>? licenseFolders;
         private readonly IEnumerable<Assembly>? appAssemblies;
+        private readonly Func<AssemblyName, bool> isAppAssembly;
 
         private IEnumerable<Assembly>? assemblyCache;
         private string? appLocation;
         private ILocations? configLocations;
         private ILocations? licenseLocations;
         private bool isDisposed = false; // To detect redundant calls
-
-        private Func<AssemblyName, bool> isAppAssembly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.

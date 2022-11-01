@@ -69,7 +69,7 @@ namespace Kephas
         /// </remarks>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
-        /// <param name="runtimeConfig">The post configuration for the <see cref="DynamicAppRuntime"/>.</param>
+        /// <param name="runtimeConfig">Optional. The post configuration for the <see cref="DynamicAppRuntime"/>.</param>
         /// <returns>
         /// The <paramref name="servicesBuilder"/>.
         /// </returns>
