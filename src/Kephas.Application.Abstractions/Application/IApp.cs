@@ -21,15 +21,12 @@ public interface IApp : IAsyncDisposable
     /// <value>
     /// The application services builder.
     /// </value>
-    public IAppServiceCollectionBuilder ServicesBuilder { get; }
+    IAppServiceCollectionBuilder ServicesBuilder { get; }
 
     /// <summary>
-    /// Gets the ambient services.
+    /// Gets the <see cref="IServiceProvider"/>.
     /// </summary>
-    /// <value>
-    /// The ambient services.
-    /// </value>
-    IAmbientServices AmbientServices => this.ServicesBuilder.AmbientServices;
+    IServiceProvider? ServiceProvider { get; }
 
     /// <summary>
     /// Gets a context for the application.

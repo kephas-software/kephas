@@ -38,5 +38,13 @@ namespace Kephas.Cryptography
             : base(contextCtor, ctx => Aes.Create())
         {
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
+        /// </summary>
+        protected AesEncryptionService()
+            : this(() => new EncryptionContext())
+        {
+        }
     }
 }

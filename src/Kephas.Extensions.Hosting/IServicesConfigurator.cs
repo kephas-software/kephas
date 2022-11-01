@@ -10,6 +10,7 @@ namespace Kephas
     using Kephas.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// Marker interface for configuring services of a <see cref="IServiceCollection"/>.

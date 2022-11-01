@@ -68,15 +68,8 @@ namespace Kephas
         /// properly configured before using this method.
         /// </remarks>
         /// <param name="servicesBuilder">The services builder.</param>
-        /// <param name="appFolder">Optional. The application location.</param>
-        /// <param name="configFolders">Optional. The configuration folders.</param>
-        /// <param name="licenseFolders">Optional. The license folders.</param>
-        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
+        /// <param name="runtimeConfig">The post configuration for the <see cref="DynamicAppRuntime"/>.</param>
         /// <returns>
         /// The <paramref name="servicesBuilder"/>.
         /// </returns>
@@ -105,41 +98,24 @@ namespace Kephas
         /// properly configured before using this method.
         /// </remarks>
         /// <param name="servicesBuilder">The services builder.</param>
-        /// <param name="appFolder">Optional. The application location.</param>
-        /// <param name="configFolders">Optional. The configuration folders.</param>
-        /// <param name="licenseFolders">Optional. The license folders.</param>
-        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="config">Optional. The application runtime configuration callback.</param>
+        /// <param name="settingsConfig">Optional. The settings configuration.</param>
+        /// <param name="runtimeConfig">The post configuration for the <see cref="StaticAppRuntime"/>.</param>
         /// <returns>
         /// The provided ambient services.
         /// </returns>
         public static IAppServiceCollectionBuilder WithStaticAppRuntime(
             this IAppServiceCollectionBuilder servicesBuilder,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            Action<StaticAppRuntime>? config = null)
+            Action<AppRuntimeSettings>? settingsConfig = null,
+            Action<StaticAppRuntime>? runtimeConfig = null)
         {
             servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
-            var appRuntime = new StaticAppRuntime(
-                name => servicesBuilder.AmbientServices.GetServiceInstance<ILogManager>().GetLogger(name),
-                null,
-                appFolder,
-                configFolders,
-                licenseFolders,
-                isRoot,
-                appId,
-                appInstanceId,
-                appVersion);
-            config?.Invoke(appRuntime);
+            var settings = new AppRuntimeSettings();
+            settingsConfig?.Invoke(settings);
+
+            var appRuntime = new StaticAppRuntime(settings);
+            runtimeConfig?.Invoke(appRuntime);
+
             return servicesBuilder.WithAppRuntime(appRuntime);
         }
     }

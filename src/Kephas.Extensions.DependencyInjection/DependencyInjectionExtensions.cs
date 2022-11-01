@@ -71,7 +71,7 @@ public static class DependencyInjectionExtensions
     /// <returns>The built service provider.</returns>
     public static IServiceProvider BuildWithDependencyInjection(this IAmbientServices ambientServices, IServiceCollection services)
     {
-        services.UseAmbientServices(ambientServices);
+        services.UseServicesBuilder(ambientServices);
 
         return services.BuildServiceProvider();
     }
@@ -80,19 +80,18 @@ public static class DependencyInjectionExtensions
     /// Includes the service collection in the composition.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="servicesBuilder">The services builder.</param>
     /// <returns>
-    /// An IServiceCollection.
+    /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection UseAmbientServices(this IServiceCollection services, IAmbientServices ambientServices)
+    public static IServiceCollection UseServicesBuilder(this IServiceCollection services, IAppServiceCollectionBuilder servicesBuilder)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
         services.AddGenericCollections();
 
-        var serviceBuilder = new AppServiceCollectionBuilder(ambientServices);
-        serviceBuilder.Build();
+        var ambientServices = servicesBuilder.Build();
 
         foreach (var appServiceInfo in ambientServices)
         {

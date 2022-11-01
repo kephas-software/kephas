@@ -84,16 +84,16 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="services">Collection of services.</param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var ambientServices = this.AmbientServices;
-            ambientServices.Replace(this.AppArgs);
+            var servicesBuilder = this.ServicesBuilder;
+            servicesBuilder.Replace(this.AppArgs);
 
-            services.UseAmbientServices(ambientServices);
+            services.UseServicesBuilder(servicesBuilder);
 
             try
             {
-                foreach (var configurator in this.GetServicesConfigurators(ambientServices))
+                foreach (var configurator in this.GetServicesConfigurators(servicesBuilder))
                 {
-                    configurator(services, ambientServices);
+                    configurator(services, servicesBuilder);
                 }
             }
             catch (Exception ex)
