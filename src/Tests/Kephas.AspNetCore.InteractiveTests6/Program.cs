@@ -3,6 +3,7 @@ using Kephas.Application;
 using Kephas.Application.AspNetCore;
 using Kephas.AspNetCore.InteractiveTests6.Extensions;
 using Kephas.Cryptography;
+using Kephas.Extensions.DependencyInjection;
 
 return await new SwitchApp(args)
     .AddApp((servicesBuilder, appArgs) =>
@@ -23,7 +24,8 @@ return await new SwitchApp(args)
                     {
                         servicesBuilder.WithSerilogManager(ctx.Configuration);
                         services.UseServicesBuilder(servicesBuilder);
-                    });
+                    })
+                    .UseServicesConfigurators(servicesBuilder);
             });
     }).RunAsync(1);
 

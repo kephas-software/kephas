@@ -14,7 +14,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Kephas.Extensions.DependencyInjection;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -88,19 +88,6 @@ namespace Kephas.Application.AspNetCore.Hosting
             servicesBuilder.Replace(this.AppArgs);
 
             services.UseServicesBuilder(servicesBuilder);
-
-            try
-            {
-                foreach (var configurator in this.GetServicesConfigurators(servicesBuilder))
-                {
-                    configurator(services, servicesBuilder);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log(LogLevel.Fatal, ex, Strings.App_RunAsync_ErrorDuringConfiguration_Exception);
-                throw;
-            }
 
             this.BeforeAppManagerInitialize(this.AppArgs);
         }
@@ -236,16 +223,6 @@ namespace Kephas.Application.AspNetCore.Hosting
         protected override IServiceProvider Build(IAmbientServices ambientServices)
         {
             return this.ServiceProvider!;
-        }
-
-        private Action<IServiceCollection, IAmbientServices> GetServicesConfiguratorAction(IServicesConfigurator c)
-        {
-            return (s, a) =>
-            {
-                this.Logger.Debug($"Configuring services by {s.GetType()}...");
-                c.ConfigureServices(s, this.Configuration, this.AmbientServices);
-                this.Logger.Debug($"Services configured by {s.GetType()}.");
-            };
         }
 
         private Action<IAspNetAppContext> GetMiddlewareConfiguratorAction(IMiddlewareConfigurator s)

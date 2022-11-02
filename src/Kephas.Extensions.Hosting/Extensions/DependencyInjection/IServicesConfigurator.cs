@@ -5,10 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas
+namespace Kephas.Extensions.DependencyInjection
 {
     using Kephas.Services;
-    using Microsoft.Extensions.Configuration;
+    using Kephas.Services.Builder;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
@@ -26,9 +27,9 @@ namespace Kephas
         /// <summary>
         /// Configure the services.
         /// </summary>
-        /// <param name="services">The services to configure.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices);
+        /// <param name="context">The host builder context.</param>
+        /// <param name="services">The service collection.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
+        void ConfigureServices(HostBuilderContext context, IServiceCollection services, IAppServiceCollectionBuilder servicesBuilder);
     }
 }

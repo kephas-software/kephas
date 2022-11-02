@@ -62,10 +62,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
                 b => b
-                    .WithStaticAppRuntime(
-                        isRoot: true,
-                        appId: masterId,
-                        appInstanceId: masterInstanceId));
+                    .WithStaticAppRuntime(settings =>
+                        {
+                            settings.IsRoot = true;
+                            settings.AppId = masterId;
+                            settings.AppInstanceId = masterInstanceId;
+                        }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
@@ -74,10 +76,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.BuildServiceProvider(
                 b => b
                     .AddAppArgs(slaveArgs)
-                    .WithStaticAppRuntime(
-                        isRoot: false,
-                        appId: slaveId,
-                        appInstanceId: slaveInstanceId));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -109,11 +113,13 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterContainer = this.BuildServiceProvider(
                 b => b
                     .WithDebugLogManager(sbMaster)
-                    .WithStaticAppRuntime(
-                        isRoot: true,
-                        appId: masterId,
-                        appInstanceId: masterInstanceId,
-                        config: rt => rt.OnIsAppAssembly(this.IsNotTestAssembly)));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = true;
+                        settings.AppId = masterId;
+                        settings.AppInstanceId = masterInstanceId;
+                        settings.IsAppAssembly = this.IsNotTestAssembly;
+                    }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
@@ -124,11 +130,13 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 b => b
                     .WithDebugLogManager(sbSlave)
                     .AddAppArgs(slaveArgs)
-                    .WithStaticAppRuntime(
-                        isRoot: false,
-                        appId: slaveId,
-                        appInstanceId: slaveInstanceId,
-                        config: rt => rt.OnIsAppAssembly(this.IsNotTestAssembly)));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                        settings.IsAppAssembly = this.IsNotTestAssembly;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -162,10 +170,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
                 b => b
-                    .WithStaticAppRuntime(
-                        isRoot: true,
-                        appId: masterId,
-                        appInstanceId: masterInstanceId));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = true;
+                        settings.AppId = masterId;
+                        settings.AppInstanceId = masterInstanceId;
+                    }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
@@ -174,10 +184,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.BuildServiceProvider(
                 b => b
                     .AddAppArgs(slaveArgs)
-                    .WithStaticAppRuntime(
-                        isRoot: false,
-                        appId: slaveId,
-                        appInstanceId: slaveInstanceId));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -207,10 +219,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.BuildServiceProvider(
                 b => b
-                    .WithStaticAppRuntime(
-                        isRoot: true,
-                        appId: masterId,
-                        appInstanceId: masterInstanceId));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = true;
+                        settings.AppId = masterId;
+                        settings.AppInstanceId = masterInstanceId;
+                    }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
@@ -219,10 +233,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.BuildServiceProvider(
                 b => b
                     .AddAppArgs(slaveArgs)
-                    .WithStaticAppRuntime(
-                        isRoot: false,
-                        appId: slaveId,
-                        appInstanceId: slaveInstanceId));
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });

@@ -96,6 +96,7 @@
         <ProjectReference Include="..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
         <ProjectReference Include="..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
         <ProjectReference Include="..\Kephas.Extensions.Logging\Kephas.Extensions.Logging.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />
     </ItemGroup>
 
