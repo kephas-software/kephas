@@ -16,7 +16,6 @@ namespace Kephas.Application
     /// </summary>
     public class App : AppBase
     {
-        private readonly Action<IAppServiceCollectionBuilder> servicesConfig;
         private readonly Func<IAppServiceCollectionBuilder, IServiceProvider> servicesProviderBuilder;
 
         /// <summary>
@@ -31,17 +30,8 @@ namespace Kephas.Application
             IAppArgs? appArgs = null)
             : base(appArgs)
         {
-            this.servicesConfig = servicesConfig ?? throw new ArgumentNullException(nameof(servicesConfig));
+            this.ServicesConfiguration = servicesConfig ?? throw new ArgumentNullException(nameof(servicesConfig));
             this.servicesProviderBuilder = servicesProviderBuilder ?? throw new ArgumentNullException(nameof(servicesProviderBuilder));
-        }
-
-        /// <summary>
-        /// Configures the services.
-        /// </summary>
-        /// <param name="servicesBuilder">The service builder.</param>
-        protected override void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder)
-        {
-            this.servicesConfig(servicesBuilder);
         }
 
         /// <summary>

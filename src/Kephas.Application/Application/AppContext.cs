@@ -14,36 +14,37 @@ namespace Kephas.Application
 
     using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Services.Builder;
 
     /// <summary>
     /// The default application context.
     /// </summary>
     public class AppContext : Expando, IAppContext
     {
-        private ILogger? logger;
+        private readonly ILogger? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AppContext(
-            IAmbientServices ambientServices,
+            IAppServiceCollectionBuilder servicesBuilder,
             IAppArgs? appArgs = null)
         {
-            this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            this.ServicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
             this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
-        /// Gets the service collection.
+        /// Gets the services builder.
         /// </summary>
-        public IAmbientServices AmbientServices { get; }
+        public IAppServiceCollectionBuilder ServicesBuilder { get; }
 
         /// <summary>
         /// Gets the application runtime.
         /// </summary>
-        public IAppRuntime AppRuntime => this.AmbientServices.GetAppRuntime();
+        public IAppRuntime AppRuntime => this.ServicesBuilder.AmbientServices.GetAppRuntime();
 
         /// <summary>
         /// Gets the application arguments passed typically as command line arguments.
@@ -77,7 +78,7 @@ namespace Kephas.Application
         /// </value>
         public ILogger? Logger
         {
-            get => this.logger ?? this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger();
+            get => this.logger ?? this.ServicesBuilder.Logger;
             init => this.logger = value;
         }
 

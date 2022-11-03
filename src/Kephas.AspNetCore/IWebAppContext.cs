@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAspNetAppContext.cs" company="Kephas Software SRL">
+// <copyright file="IWebAppContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAspNetAppContext interface.
+//   Declares the IWebAppContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,15 +18,12 @@ namespace Kephas.Application.AspNetCore
     /// <summary>
     /// Contract for the OWIN application context.
     /// </summary>
-    public interface IAspNetAppContext : IAppContext
+    public interface IWebAppContext : IAppContext
     {
         /// <summary>
-        /// Gets the application builder.
+        /// Gets or sets the application builder.
         /// </summary>
-        /// <value>
-        /// The application builder.
-        /// </value>
-        IApplicationBuilder AppBuilder { get; }
+        IApplicationBuilder App { get; set; }
 
         /// <summary>
         /// Gets the hosting environment.

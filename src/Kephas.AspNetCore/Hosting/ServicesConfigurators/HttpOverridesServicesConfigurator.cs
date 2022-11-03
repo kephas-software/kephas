@@ -7,12 +7,15 @@
 
 namespace Kephas.Application.AspNetCore.Hosting.ServicesConfigurators;
 
+using Kephas.Extensions.DependencyInjection;
 using Kephas.Logging;
 using Kephas.Services;
+using Kephas.Services.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 /// <summary>
 /// Services configurator for when the app is hosted in an Azure Linux App Service/Docker.
@@ -32,12 +35,15 @@ public class HttpOverridesServicesConfigurator : Loggable, IServicesConfigurator
     /// <summary>
     /// Configure the services.
     /// </summary>
-    /// <param name="services">The services to configure.</param>
-    /// <param name="configuration">The configuration.</param>
-    /// <param name="ambientServices">The ambient services.</param>
-    public void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices)
+    /// <param name="context">The host builder context.</param>
+    /// <param name="services">The service collection.</param>
+    /// <param name="servicesBuilder">The services builder.</param>
+    public void ConfigureServices(
+        HostBuilderContext context,
+        IServiceCollection services,
+        IAppServiceCollectionBuilder servicesBuilder)
     {
-        var forwardedHeadersEnabled = configuration.GetValue<bool>("ForwardedHeaders_Enabled", false);
+        var forwardedHeadersEnabled = context.Configuration.GetValue<bool>("ForwardedHeaders_Enabled", false);
         if (forwardedHeadersEnabled)
         {
             services.Configure<ForwardedHeadersOptions>(options =>

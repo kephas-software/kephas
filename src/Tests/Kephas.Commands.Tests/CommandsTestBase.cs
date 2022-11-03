@@ -32,7 +32,7 @@ namespace Kephas.Commands.Tests
             ambientServices = builder.AmbientServices;
             if (!ambientServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(builder));
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 

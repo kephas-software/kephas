@@ -15,6 +15,7 @@ namespace Kephas.Application
 
     using Kephas.Resources;
     using Kephas.Services;
+    using Kephas.Services.Builder;
 
     /// <summary>
     /// Contract for application contextual information.
@@ -22,9 +23,9 @@ namespace Kephas.Application
     public interface IAppContext : IContext
     {
         /// <summary>
-        /// Gets the service collection.
+        /// Gets the services builder.
         /// </summary>
-        IAmbientServices AmbientServices { get; }
+        public IAppServiceCollectionBuilder ServicesBuilder { get; }
 
         /// <summary>
         /// Gets the application runtime.

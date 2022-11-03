@@ -121,4 +121,7 @@
     <value>The provided context cannot be converted to a {0}.</value>
     <comment>The provided context cannot be converted to a {0}.</comment>
   </data>
+  <data name="AppBase_ConfigureSuccessful" xml:space="preserve">
+    <value>The application is successfully configured.</value>
+  </data>
 </root>

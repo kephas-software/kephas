@@ -51,7 +51,7 @@ namespace Kephas.Tests.Application
             var (appContext, instruction) = await app.RunAsync();
 
             Assert.AreSame(app.ServicesBuilder.AmbientServices, ambientServices);
-            Assert.AreSame(ambientServices, appContext.AmbientServices);
+            Assert.AreSame(app.ServicesBuilder, appContext.ServicesBuilder);
         }
 
         [Test]
@@ -273,10 +273,6 @@ namespace Kephas.Tests.Application
             }
 
             throw new InvalidOperationException("No config provided.");
-        }
-
-        protected override void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder)
-        {
         }
 
         protected override Task<MainLoopResult> Main(CancellationToken cancellationToken)

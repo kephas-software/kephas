@@ -28,10 +28,12 @@ namespace Kephas.Extensions.DependencyInjection
         /// <param name="hostBuilder">The host builder.</param>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <returns>The <paramref name="hostBuilder"/>.</returns>
-        public static IHostBuilder UseServicesConfigurators(this IHostBuilder hostBuilder, IAppServiceCollectionBuilder servicesBuilder)
+        public static IHostBuilder ConfigureServices(this IHostBuilder hostBuilder, IAppServiceCollectionBuilder servicesBuilder)
         {
             hostBuilder.ConfigureServices((context, services) =>
             {
+                services.UseServicesBuilder(servicesBuilder);
+
                 try
                 {
                     foreach (var configurator in GetServicesConfiguratorActions(servicesBuilder, context))

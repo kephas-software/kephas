@@ -13,22 +13,13 @@ return await new SwitchApp(args)
             builder =>
             {
                 builder.Host
-                    .ConfigureHostConfiguration(_ =>
-                    {
-                        servicesBuilder
-                            .WithDefaultLicensingManager(new EncryptionService())
-                            .WithDynamicAppRuntime()
-                            .AddAppArgs(appArgs);
-                    })
                     .ConfigureServices((ctx, services) =>
                     {
-                        servicesBuilder.WithSerilogManager(ctx.Configuration);
-                        services.UseServicesBuilder(servicesBuilder);
-                    })
-                    .UseServicesConfigurators(servicesBuilder);
+                        servicesBuilder
+                            .WithDefaultLicensingManager(new AesEncryptionService())
+                            .WithDynamicAppRuntime()
+                            .AddAppArgs(appArgs)
+                            .WithSerilogManager(ctx.Configuration);
+                    });
             });
     }).RunAsync(1);
-
-class EncryptionService : AesEncryptionService
-{
-}

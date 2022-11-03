@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspNetAppContext.cs" company="Kephas Software SRL">
+// <copyright file="WebAppContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,8 +10,8 @@
 
 namespace Kephas.Application.AspNetCore
 {
-    using Kephas;
     using Kephas.Application;
+    using Kephas.Services.Builder;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -19,34 +19,30 @@ namespace Kephas.Application.AspNetCore
     /// <summary>
     /// The ASP.NET application context.
     /// </summary>
-    public class AspNetAppContext : AppContext, IAspNetAppContext
+    public class WebAppContext : AppContext, IWebAppContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AspNetAppContext"/> class.
+        /// Initializes a new instance of the <see cref="WebAppContext"/> class.
         /// </summary>
         /// <param name="hostEnvironment">The host environment.</param>
         /// <param name="configuration">The ASP.NET configuration.</param>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided then
-        ///                               a new instance of <see cref="AmbientServices"/> will be created and used.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        public AspNetAppContext(
+        public WebAppContext(
             IWebHostEnvironment hostEnvironment,
             IConfiguration configuration,
-            IAmbientServices ambientServices,
+            IAppServiceCollectionBuilder servicesBuilder,
             IAppArgs? appArgs = null)
-            : base(ambientServices, appArgs)
+            : base(servicesBuilder, appArgs)
         {
             this.HostEnvironment = hostEnvironment;
             this.Configuration = configuration;
         }
 
         /// <summary>
-        /// Gets the application builder.
+        /// Gets or sets the application builder.
         /// </summary>
-        /// <value>
-        /// The application builder.
-        /// </value>
-        public IApplicationBuilder AppBuilder => this.AmbientServices.GetServiceInstance<IApplicationBuilder>();
+        public IApplicationBuilder App { get; set; }
 
         /// <summary>
         /// Gets the hosting environment.
