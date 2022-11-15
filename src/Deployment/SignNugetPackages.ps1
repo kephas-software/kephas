@@ -58,6 +58,7 @@ If ([string]::IsNullOrEmpty($singlePackage))
     "..\Kephas.Logging.Serilog",
     "..\Kephas.Mail",
     "..\Kephas.Mail.MailKit",
+    "..\Kephas.Mail.MailKit.ExchangeOnline",
     "..\Kephas.Messaging",
     "..\Kephas.Messaging.Distributed",
     "..\Kephas.Messaging.Distributed.Pipes",
