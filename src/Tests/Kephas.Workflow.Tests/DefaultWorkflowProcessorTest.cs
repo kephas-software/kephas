@@ -15,24 +15,25 @@ namespace Kephas.Workflow.Tests
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Runtime;
     using Kephas.Testing;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using Kephas.Workflow.Behaviors;
     using Kephas.Workflow.Reflection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultWorkflowProcessorTest : InjectionTestBase
+    public class DefaultWorkflowProcessorTest : TestBase
     {
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector(
-                typeof(IWorkflowProcessor).Assembly,
-                typeof(DefaultWorkflowProcessor).Assembly);
+            var container = this.CreateServicesBuilder()
+                .WithAssemblies(typeof(IWorkflowProcessor).Assembly, typeof(DefaultWorkflowProcessor).Assembly)
+                .BuildWithDependencyInjection();
             var workflowProcessor = container.Resolve<IWorkflowProcessor>();
             Assert.IsInstanceOf<DefaultWorkflowProcessor>(workflowProcessor);
         }
@@ -40,7 +41,7 @@ namespace Kephas.Workflow.Tests
         [Test]
         public async Task ExecuteAsync_basic_flow()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new ActivityContext(Substitute.For<IInjector>(), Substitute.For<IWorkflowProcessor>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new ActivityContext(Substitute.For<IServiceProvider>(), Substitute.For<IWorkflowProcessor>()));
             var processor = new DefaultWorkflowProcessor(ctxFactory, new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>(), new RuntimeTypeRegistry());
 
             var activityInfo = Substitute.For<IActivityInfo>();

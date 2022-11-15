@@ -10,17 +10,17 @@
 
 namespace Kephas.Orchestration.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
-    using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// A stop application message.
     /// </summary>
-    [DisplayInfo(Description = "Stops a worker application instance.")]
+    [Display(Description = "Stops a worker application instance.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class StopAppMessage : IMessage
     {
@@ -30,7 +30,7 @@ namespace Kephas.Orchestration.Endpoints
         /// <value>
         /// The identifier of the application.
         /// </value>
-        [DisplayInfo(Description = "Optional. The ID of the app to be stopped.")]
+        [Display(Description = "Optional. The ID of the app to be stopped.")]
         public string? AppId { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Kephas.Orchestration.Endpoints
         /// <value>
         /// The identifier of the application instance.
         /// </value>
-        [DisplayInfo(Description = "Optional. The ID of the app instance to be stopped.")]
+        [Display(Description = "Optional. The ID of the app instance to be stopped.")]
         public string? AppInstanceId { get; set; }
     }
 

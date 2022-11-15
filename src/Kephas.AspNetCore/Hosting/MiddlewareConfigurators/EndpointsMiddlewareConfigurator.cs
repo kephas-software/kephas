@@ -47,9 +47,9 @@ namespace Kephas.Application.AspNetCore.Hosting.MiddlewareConfigurators
         /// Configures the host using the given application context.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        public void Configure(IAspNetAppContext appContext)
+        public void Configure(IWebAppContext appContext)
         {
-            var app = appContext.AppBuilder;
+            var app = appContext.App;
             var env = appContext.HostEnvironment;
 
             var configurators = this.lazyConfigurators

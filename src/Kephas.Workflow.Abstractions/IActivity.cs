@@ -12,7 +12,7 @@ namespace Kephas.Workflow
 {
     using Kephas.Data;
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Operations;
     using Kephas.Workflow.Reflection;
 

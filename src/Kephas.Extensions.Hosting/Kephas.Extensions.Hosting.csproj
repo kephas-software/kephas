@@ -9,9 +9,9 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-        <Version>11.1.0</Version>
-        <AssemblyVersion>11.1.0.0</AssemblyVersion>
-        <FileVersion>11.1.0.0</FileVersion>
+        <Version>12.0.0-dev.1</Version>
+        <AssemblyVersion>12.0.0.0</AssemblyVersion>
+        <FileVersion>12.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -50,6 +50,8 @@
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        
+        <RootNamespace>Kephas</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -132,6 +134,10 @@
         <EmbeddedResource Update="Resources\Strings.resx">
             <LastGenOutput>Strings.Designer.cs</LastGenOutput>
             <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Extensions\Hosting\Resources\Strings.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 

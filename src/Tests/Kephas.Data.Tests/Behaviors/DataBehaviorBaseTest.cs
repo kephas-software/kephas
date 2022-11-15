@@ -16,8 +16,8 @@ namespace Kephas.Data.Tests.Behaviors
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
-    using Kephas.Data.Validation;
-
+    using Kephas.Operations;
+    using Kephas.Validation;
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,7 +26,7 @@ namespace Kephas.Data.Tests.Behaviors
         [Test]
         public async Task ValidateAsync_uses_Validate()
         {
-            var behavior = new StringDataBehavior((e, ei, ctx) => e == "123" ? DataValidationResult.Success : new DataValidationResult("bad param"));
+            var behavior = new StringDataBehavior((e, ei, ctx) => e == "123" ? ValidationResult.Success : new ValidationResult("bad param"));
 
             var result = await behavior.ValidateAsync("123", null, null, default);
             Assert.IsFalse(result.HasErrors());
@@ -39,10 +39,10 @@ namespace Kephas.Data.Tests.Behaviors
 
     public class StringDataBehavior : DataBehaviorBase<string>
     {
-        private readonly Func<string, IEntityEntry, IDataOperationContext, IDataValidationResult> validateFn;
+        private readonly Func<string, IEntityEntry, IDataOperationContext, IValidationResult> validateFn;
 
         public StringDataBehavior(
-            Func<string, IEntityEntry, IDataOperationContext, IDataValidationResult> validateFn = null)
+            Func<string, IEntityEntry, IDataOperationContext, IValidationResult> validateFn = null)
         {
             this.validateFn = validateFn;
         }
@@ -54,11 +54,11 @@ namespace Kephas.Data.Tests.Behaviors
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// An <see cref="IDataValidationResult"/>.
+        /// An <see cref="IValidationResult"/>.
         /// </returns>
-        public override IDataValidationResult Validate(string entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
+        public override IValidationResult Validate(string entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
-            return this.validateFn?.Invoke(entity, entityEntry, operationContext) ?? DataValidationResult.Success;
+            return this.validateFn?.Invoke(entity, entityEntry, operationContext) ?? ValidationResult.Success;
         }
     }
 }

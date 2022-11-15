@@ -43,7 +43,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>The response promise.</returns>
         public override async Task<ResponseMessage> ProcessAsync(DisableScheduledJobMessage message, IMessagingContext context, CancellationToken token)
         {
-            if (message.Job == null) throw new System.ArgumentNullException(nameof(message.Job));
+            if (message.Job == null) throw new ArgumentNullException(nameof(message.Job));
 
             var result = await this.scheduler.DisableScheduledJobAsync(message.Job!, cancellationToken: token)
                 .PreserveThreadContext();
@@ -56,10 +56,10 @@ namespace Kephas.Scheduling.Endpoints
                         ? SeverityLevel.Warning
                         : SeverityLevel.Info,
                 Message = result.HasErrors()
-                    ? string.Join(Environment.NewLine, result.Exceptions.Select(ex => ex.Message))
+                    ? string.Join(Environment.NewLine, result.Errors().Select(ex => ex.Message))
                     : result.HasWarnings()
                         ? string.Join(Environment.NewLine, result.Warnings().Select(ex => ex.Message))
-                        : string.Join(Environment.NewLine, result.Messages.Select(m => m.Message)),
+                        : string.Join(Environment.NewLine, result.Infos().Select(m => m.Message)),
             };
         }
     }

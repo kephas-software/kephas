@@ -23,6 +23,6 @@ public static class ContextTenantExtensions
     {
         context = context ?? throw new ArgumentNullException(nameof(context));
 
-        return context.Injector.Resolve<IAppArgs>().Tenant();
+        return context.ServiceProvider.Resolve<IAppArgs>().Tenant();
     }
 }

@@ -24,6 +24,14 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
         /// </summary>
+        public AesEncryptionService()
+            : this(() => new EncryptionContext())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
+        /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
         public AesEncryptionService(IInjectableFactory injectableFactory)
             : base(() => injectableFactory.Create<EncryptionContext>(), ctx => new AesManaged())

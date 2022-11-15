@@ -50,7 +50,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
         /// </summary>
         /// <param name="endpoints">The endpoints builder.</param>
         /// <param name="appContext">Context for the application.</param>
-        public virtual void Configure(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext)
+        public virtual void Configure(IEndpointRouteBuilder endpoints, IWebAppContext appContext)
         {
             var hubsMetadata = this.lazyHubs.Order().Select(l => l.Metadata).ToList();
             foreach (var hubMetadata in hubsMetadata)
@@ -68,7 +68,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
         /// <param name="metadata">The hub metadata.</param>
         /// <typeparam name="T">The hub type.</typeparam>
         /// <returns>The <see cref="HubEndpointConventionBuilder"/>.</returns>
-        protected virtual HubEndpointConventionBuilder MapHub<T>(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext, HubMetadata metadata)
+        protected virtual HubEndpointConventionBuilder MapHub<T>(IEndpointRouteBuilder endpoints, IWebAppContext appContext, HubMetadata metadata)
             where T : Hub
         {
             return endpoints.MapHub<T>(metadata.Pattern);

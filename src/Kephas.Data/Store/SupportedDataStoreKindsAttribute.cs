@@ -13,7 +13,7 @@ namespace Kephas.Data.Store
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Kephas.Injection;
+    using Kephas.Services;
 
     /// <summary>
     /// Metadata attribute for supported data store kinds.

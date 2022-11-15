@@ -8,39 +8,39 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.MongoDB.Application
+namespace Kephas.Data.MongoDB.Application;
+
+using System.Threading;
+using System.Threading.Tasks;
+
+using global::MongoDB.Bson;
+using Kephas.Application;
+using Kephas.Data;
+using Kephas.Operations;
+
+/// <summary>
+/// A MongoDB application lifecycle behavior.
+/// </summary>
+/// <remarks>
+/// Adds the <see cref="Id"/> temporary and empty values the ObjectId correspondents.
+/// </remarks>
+public class MongoAppLifecycleBehavior : IAppLifecycleBehavior
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using global::MongoDB.Bson;
-    using Kephas.Application;
-    using Kephas.Operations;
-
     /// <summary>
-    /// A MongoDB application lifecycle behavior.
+    /// Interceptor called before the application starts its asynchronous initialization.
     /// </summary>
-    /// <remarks>
-    /// Adds the <see cref="Id"/> temporary and empty values the ObjectId correspondents.
-    /// </remarks>
-    public class MongoAppLifecycleBehavior : IAppLifecycleBehavior
+    /// <param name="appContext">Context for the application.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// The asynchronous result.
+    /// </returns>
+    public Task<IOperationResult> BeforeAppInitializeAsync(
+        IAppContext appContext,
+        CancellationToken cancellationToken = default)
     {
-        /// <summary>
-        /// Interceptor called before the application starts its asynchronous initialization.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            Id.AddEmptyValue(ObjectId.Empty);
-            Id.AddTemporaryValueCheck(value => value is ObjectId id && id < ObjectId.Empty);
+        Id.AddEmptyValue(ObjectId.Empty);
+        Id.AddTemporaryValueCheck(value => value is ObjectId id && id < ObjectId.Empty);
 
-            return Task.FromResult((IOperationResult)true.ToOperationResult());
-        }
+        return Task.FromResult((IOperationResult)true.ToOperationResult());
     }
 }

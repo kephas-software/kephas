@@ -36,7 +36,7 @@ public class NpgsqlAppLifecycleBehavior : IAppLifecycleBehavior
         IAppContext appContext,
         CancellationToken cancellationToken = default)
     {
-        NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.Injector.Resolve<ILogManager>());
+        NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.ServiceProvider.Resolve<ILogManager>());
 
         return Task.FromResult((IOperationResult)true.ToOperationResult());
     }

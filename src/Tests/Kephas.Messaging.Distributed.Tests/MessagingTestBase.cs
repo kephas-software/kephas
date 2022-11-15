@@ -18,27 +18,21 @@ namespace Kephas.Messaging.Tests
     using Kephas.Behaviors;
     using Kephas.Configuration;
     using Kephas.Cryptography;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
     using Kephas.Serialization.Json;
     using Kephas.Services;
+    using Kephas.Testing;
     using Kephas.Testing.Application;
     using NSubstitute;
 
     public class MessagingTestBase : ApplicationTestBase
     {
-        public override IInjector CreateInjector(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
-            ILogManager? logManager = null,
-            IAppRuntime? appRuntime = null)
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
+            return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(IConfiguration<>).Assembly,              // Kephas.Configuration
                 typeof(IEncryptionService).Assembly,            // Kephas.Security
@@ -47,13 +41,11 @@ namespace Kephas.Messaging.Tests
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
-
-            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
-        protected virtual IInjector CreateMessagingContainerMock()
+        protected virtual IServiceProvider CreateMessagingContainerMock()
         {
-            var container = Substitute.For<IInjector>();
+            var container = Substitute.For<IServiceProvider>();
 
             Func<object[], DispatchingContext> ctxCreator = args =>
                                     new DispatchingContext(

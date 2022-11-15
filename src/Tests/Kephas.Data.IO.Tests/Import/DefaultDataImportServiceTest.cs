@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Data.IO.Tests.Import
 {
@@ -40,7 +40,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IServiceProvider>()));
 
             var changedTargetEntities = new List<IEntityEntry>();
 
@@ -58,10 +58,10 @@ namespace Kephas.Data.IO.Tests.Import
                     .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget(new StringBuilder("kitty"))));
 
                 var result = service.ImportDataAsync(dataStream, ctx => ctx.DataSpace(dataSpace));
-                await result;
+                await result.AsTask();
 
                 Assert.AreEqual(OperationState.Completed, result.OperationState);
-                Assert.AreEqual(0, result.Exceptions.Count);
+                Assert.IsFalse(result.Errors().Any());
                 Assert.AreEqual(1, result.Messages.Count);
             }
 
@@ -76,7 +76,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IServiceProvider>()));
 
             var changedTargetEntities = new List<IEntityEntry>();
 
@@ -94,10 +94,10 @@ namespace Kephas.Data.IO.Tests.Import
                     .Returns(ci => Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget((string)ci.Arg<IDataConversionContext>()["entity"] == "hello" ? new StringBuilder("mimi") : new StringBuilder("kitty"))));
 
                 var result = service.ImportDataAsync(dataStream, ctx => ctx.DataSpace(dataSpace).DataConversionConfig = (e, ctx) => ctx["entity"] = e);
-                await result;
+                await result.AsTask();
 
                 Assert.AreEqual(OperationState.Completed, result.OperationState);
-                Assert.AreEqual(0, result.Exceptions.Count);
+                Assert.IsFalse(result.Errors().Any());
                 Assert.AreEqual(1, result.Messages.Count);
             }
 
@@ -112,7 +112,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<IServiceProvider>()));
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext();
@@ -131,7 +131,7 @@ namespace Kephas.Data.IO.Tests.Import
                 conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
                     .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget(new StringBuilder("kitty"))));
 
-                var result = await service.ImportDataAsync(dataStream, ctx => ctx.DataSpace(dataSpace));
+                await service.ImportDataAsync(dataStream, ctx => ctx.DataSpace(dataSpace)).AsTask();
             }
 
             var flowResult = sb.ToString();

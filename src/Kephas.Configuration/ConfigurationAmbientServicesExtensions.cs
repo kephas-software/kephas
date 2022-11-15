@@ -17,24 +17,6 @@ namespace Kephas
     public static class ConfigurationAmbientServicesExtensions
     {
         /// <summary>
-        /// Configures the settings.
-        /// </summary>
-        /// <typeparam name="TSettings">Type of the settings.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="optionsConfig">The options configuration.</param>
-        /// <returns>
-        /// This <paramref name="ambientServices"/>.
-        /// </returns>
-        public static IAmbientServices Configure<TSettings>(this IAmbientServices ambientServices, Action<TSettings> optionsConfig)
-            where TSettings : class, new()
-        {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-
-            ambientServices.GetRequiredService<IConfigurationStore>().Configure(optionsConfig);
-            return ambientServices;
-        }
-
-        /// <summary>
         /// Sets the configuration store to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
@@ -42,12 +24,12 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithConfigurationStore(this IAmbientServices ambientServices, IConfigurationStore configurationStore)
+        public static IAmbientServices UseConfigurationStore(this IAmbientServices ambientServices, IConfigurationStore configurationStore)
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             configurationStore = configurationStore ?? throw new ArgumentNullException(nameof(configurationStore));
 
-            ambientServices.Register(configurationStore);
+            ambientServices.Add(configurationStore);
 
             return ambientServices;
         }

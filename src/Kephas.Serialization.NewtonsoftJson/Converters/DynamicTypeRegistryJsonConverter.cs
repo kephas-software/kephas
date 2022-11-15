@@ -39,9 +39,9 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
         /// <param name="existingValue">The existing value.</param>
         /// <returns>The newly created expando collector.</returns>
-        protected override IExpandoBase CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+        protected override IDynamic CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
         {
-            return existingValue == null ? new DynamicTypeRegistry(this.TypeRegistry, this.TypeResolver) : (IExpandoBase)existingValue;
+            return existingValue == null ? new DynamicTypeRegistry(this.TypeRegistry, this.TypeResolver) : (IDynamic)existingValue;
         }
     }
 }

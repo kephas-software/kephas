@@ -18,7 +18,6 @@ namespace Kephas.Data.Tests
     using Kephas.Data.Caching;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
-    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -27,34 +26,34 @@ namespace Kephas.Data.Tests
     public class TestDataContext : DataContextBase
     {
         public TestDataContext(
-            IInjector injector = null,
+            IServiceProvider serviceProvider = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
-            : base(GetTestInjector(injector, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
+            : base(GetTestInjector(serviceProvider, typeRegistry ?? new RuntimeTypeRegistry()), GetTestDataCommandProvider(dataCommandProvider), dataBehaviorProvider, localCache: localCache)
         {
         }
 
         public static TestDataContext CreateDataContext(
-            IInjector injector = null,
+            IServiceProvider serviceProvider = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
         {
-            return new TestDataContext(injector, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
+            return new TestDataContext(serviceProvider, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
         }
 
         public static TestDataContext InitializeDataContext(
             IContext initializationContext = null,
-            IInjector injector = null,
+            IServiceProvider serviceProvider = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null,
             IRuntimeTypeRegistry typeRegistry = null)
         {
-            var dataContext = new TestDataContext(injector, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
+            var dataContext = new TestDataContext(serviceProvider, dataCommandProvider, dataBehaviorProvider, localCache, typeRegistry);
             dataContext.Initialize(initializationContext ?? dataContext.CreateDataInitializationContext());
             return dataContext;
         }
@@ -113,12 +112,12 @@ namespace Kephas.Data.Tests
             return dataStore;
         }
 
-        private static IInjector GetTestInjector(IInjector injector, IRuntimeTypeRegistry typeRegistry)
-            => injector ?? CreateInjector(typeRegistry);
+        private static IServiceProvider GetTestInjector(IServiceProvider serviceProvider, IRuntimeTypeRegistry typeRegistry)
+            => serviceProvider ?? CreateInjector(typeRegistry);
 
-        private static IInjector CreateInjector(IRuntimeTypeRegistry typeRegistry)
+        private static IServiceProvider CreateInjector(IRuntimeTypeRegistry typeRegistry)
         {
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IRuntimeTypeRegistry>().Returns(typeRegistry);
             return injector;
         }

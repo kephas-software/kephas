@@ -19,7 +19,7 @@ namespace Kephas.Tests.Orchestration
 
     using Kephas.Application;
     using Kephas.Configuration;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
@@ -28,6 +28,7 @@ namespace Kephas.Tests.Orchestration
     using Kephas.Orchestration.Diagnostics;
     using Kephas.Orchestration.Interaction;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -39,7 +40,8 @@ namespace Kephas.Tests.Orchestration
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector(this.CreateAmbientServices());
+            var container = this.CreateServicesBuilder(this.CreateAmbientServices())
+                .BuildWithAutofac();
 
             var manager = container.Resolve<IOrchestrationManager>();
 
@@ -50,7 +52,8 @@ namespace Kephas.Tests.Orchestration
         public async Task InitializeAsync_Heartbeat_integration()
         {
             var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateInjector(ambientServices);
+            var builder = this.CreateServicesBuilder(ambientServices);
+            var container = builder.BuildWithAutofac();
 
             var appManager = container.Resolve<IAppManager>();
             var orchManager = (DefaultOrchestrationManager)container.Resolve<IOrchestrationManager>();
@@ -61,12 +64,12 @@ namespace Kephas.Tests.Orchestration
             AppHeartbeatEvent? heartbeat = null;
             registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => (heartbeat = e).ToEvent());
 
-            await appManager.InitializeAsync(new AppContext(ambientServices));
+            await appManager.InitializeAsync(new AppContext(builder));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
 
             Assert.NotNull(heartbeat);
 
-            await appManager.FinalizeAsync(new AppContext(ambientServices));
+            await appManager.FinalizeAsync(new AppContext(builder));
         }
 
         [Test]
@@ -83,9 +86,9 @@ namespace Kephas.Tests.Orchestration
 
             var eventHub = this.CreateEventHubMock();
 
-            var injector = Substitute.For<IInjector>();
-            ambientServices.WithAppRuntime(appRuntime).WithInjector(injector);
-            var appContext = new AppContext(ambientServices);
+            var injector = Substitute.For<IServiceProvider>();
+            var builder = new AppServiceCollectionBuilder(ambientServices).WithAppRuntime(appRuntime);
+            var appContext = new AppContext(builder);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
             config.GetSettings(Arg.Any<IContext>()).Returns(new OrchestrationSettings());

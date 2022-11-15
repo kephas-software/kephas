@@ -15,23 +15,21 @@ namespace Kephas.Messaging.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Messaging.AttributedModel;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageHandlerAutofacInjectionTest : AutofacInjectionTestBase
+    public class MessageHandlerAutofacInjectionTest : TestBase
     {
         [Test]
         public void Injection_single_handler()
         {
-            var container = this.CreateInjector(parts: new[]
-                                                            {
-                                                                typeof(IMessageHandler),
-                                                                typeof(IMessageHandler<>),
-                                                                typeof(HiTestHandler)
-                                                            });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(IMessageHandler), typeof(IMessageHandler<>), typeof(HiTestHandler))
+                .BuildWithAutofac();
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
@@ -48,13 +46,9 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void Injection_two_handlers()
         {
-            var container = this.CreateInjector(parts: new[]
-                                                            {
-                                                                typeof(IMessageHandler),
-                                                                typeof(IMessageHandler<>),
-                                                                typeof(HiTestHandler),
-                                                                typeof(ThereTestHandler),
-                                                            });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(IMessageHandler), typeof(IMessageHandler<>), typeof(HiTestHandler), typeof(ThereTestHandler))
+                .BuildWithAutofac();
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 

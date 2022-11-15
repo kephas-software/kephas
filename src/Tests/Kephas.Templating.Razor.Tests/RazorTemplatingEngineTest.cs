@@ -15,7 +15,7 @@ public class RazorTemplatingEngineTest : RazorTemplatingTestBase
     [Test]
     public void Injection()
     {
-        var container = this.CreateInjector();
+        var container = this.BuildServiceProvider();
         var engine = container.Resolve<ITemplatingEngine>("Razor");
         Assert.IsInstanceOf<RazorTemplatingEngine>(engine);
     }

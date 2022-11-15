@@ -7,16 +7,16 @@
 
 namespace Kephas.Orchestration.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
-    using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// Restarts the worker application instances.
     /// </summary>
-    [DisplayInfo(Description = "Restarts the worker application instances.")]
+    [Display(Description = "Restarts the worker application instances.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class RestartMessage : IMessage
     {

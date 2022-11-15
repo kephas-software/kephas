@@ -12,7 +12,7 @@ namespace Kephas.Behaviors
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
 
     /// <summary>
     /// Indicates an end rule.

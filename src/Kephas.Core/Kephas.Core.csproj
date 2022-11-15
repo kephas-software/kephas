@@ -8,9 +8,9 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-		<Version>11.1.0</Version>
-		<AssemblyVersion>11.1.0.0</AssemblyVersion>
-		<FileVersion>11.1.0.0</FileVersion>
+		<Version>12.0.0-dev.1</Version>
+		<AssemblyVersion>12.0.0.0</AssemblyVersion>
+		<FileVersion>12.0.0.0</FileVersion>
 		<Authors>Kephas Software SRL</Authors>
 		<Company>Kephas Software SRL</Company>
 		<Product>Kephas Framework</Product>
@@ -114,13 +114,7 @@
 		<ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
 		<ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
-		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
-		<ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
-		<ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
-		<ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
-		<ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
-		<ProjectReference Include="..\Kephas.Security\Kephas.Security.csproj" />
+		<ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
 	</ItemGroup>
 
 </Project>

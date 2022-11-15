@@ -23,7 +23,7 @@ namespace Kephas.Extensions.Logging
     /// </summary>
     public class ExtensionsLogManager : ILogManager, IDisposable
     {
-        private readonly ConcurrentDictionary<string, ILogger> loggers = new ConcurrentDictionary<string, ILogger>();
+        private readonly ConcurrentDictionary<string, ILogger> loggers = new ();
         private readonly ILoggerFactory loggerFactory;
 
         /// <summary>

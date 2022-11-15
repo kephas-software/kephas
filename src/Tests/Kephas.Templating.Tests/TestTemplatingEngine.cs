@@ -23,4 +23,14 @@ public class TestTemplatingEngine : ITemplatingEngine
         textWriter.Write("processed " + template.Name);
         return Task.FromResult<IOperationResult>(new OperationResult().Complete());
     }
+
+    public IOperationResult Process<T>(
+        ITemplate template,
+        T? model,
+        TextWriter textWriter,
+        ITemplateProcessingContext processingContext)
+    {
+        textWriter.Write("processed " + template.Name);
+        return new OperationResult().Complete();
+    }
 }

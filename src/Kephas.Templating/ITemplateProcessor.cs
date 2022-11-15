@@ -31,7 +31,10 @@ public interface ITemplateProcessor
         ITemplate template,
         T? model = default,
         Action<ITemplateProcessingContext>? optionsConfig = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(this.Process(template, model, optionsConfig));
+    }
 
     /// <summary>
     /// Processes the provided template synchronously returning the processed output.
@@ -46,8 +49,5 @@ public interface ITemplateProcessor
     object? Process<T>(
         ITemplate template,
         T? model = default,
-        Action<ITemplateProcessingContext>? optionsConfig = null)
-    {
-        return this.ProcessAsync(template, model, optionsConfig).GetResultNonLocking();
-    }
+        Action<ITemplateProcessingContext>? optionsConfig = null);
 }

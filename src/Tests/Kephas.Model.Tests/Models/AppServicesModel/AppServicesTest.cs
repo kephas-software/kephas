@@ -24,7 +24,9 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_simple_app_service()
         {
-            var container = this.CreateInjectorForModel(typeof(ISimpleService));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(ISimpleService))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -39,7 +41,9 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_simple_app_service_methods()
         {
-            var container = this.CreateInjectorForModel(typeof(ISimpleService), typeof(IDisposableService));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(ISimpleService), typeof(IDisposableService))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -62,7 +66,9 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_app_service_with_contract_type()
         {
-            var container = this.CreateInjectorForModel(typeof(IGenericDisposableService<>), typeof(IDisposable));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(IGenericDisposableService<>), typeof(IDisposable))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -77,7 +83,9 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_app_service_with_contract_type_multiple_bases()
         {
-            var container = this.CreateInjectorForModel(typeof(IGenericDisposableService<>), typeof(IDisposable), typeof(ICloneable));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(IGenericDisposableService<>), typeof(IDisposable), typeof(ICloneable))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -92,7 +100,9 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_open_generic_app_service()
         {
-            var container = this.CreateInjectorForModel(typeof(IOpenGenericService<>));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(IOpenGenericService<>))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -107,7 +117,9 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
         [Test]
         public async Task InitializeAsync_closed_generic_app_service()
         {
-            var container = this.CreateInjectorForModel(typeof(IClosedGenericService<>));
+            var container = this.CreateServicesBuilder()
+                .WithModelElements(typeof(IClosedGenericService<>))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

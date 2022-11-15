@@ -11,7 +11,7 @@
 namespace Kephas.Data
 {
     using System;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>
@@ -84,10 +84,10 @@ namespace Kephas.Data
         /// <returns>
         /// The injector.
         /// </returns>
-        protected virtual IInjector GetInjector()
+        protected virtual IServiceProvider GetInjector()
         {
             var dataContext = this.GetDataContext(this.GetContainerEntityEntry());
-            return dataContext.Injector;
+            return dataContext.ServiceProvider;
         }
     }
 }

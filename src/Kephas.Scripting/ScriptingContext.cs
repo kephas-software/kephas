@@ -13,7 +13,7 @@ namespace Kephas.Scripting
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>
@@ -24,9 +24,9 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public ScriptingContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public ScriptingContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 

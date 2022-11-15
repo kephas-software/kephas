@@ -79,50 +79,6 @@ namespace Kephas
             return this;
         }
 
-        internal HashCodeGenerator CombineSequence<T>(T[]? array)
-        {
-            if (array != null)
-            {
-                var count = array.Length;
-                for (var index = 0; index < count; ++index)
-                {
-                    this.CombineHashCode(array[index]?.GetHashCode() ?? 0);
-                }
-            }
-
-            return this;
-        }
-
-        internal HashCodeGenerator CombineSequence<T>(IList<T>? list)
-        {
-            if (list != null)
-            {
-                var count = list.Count;
-                for (var index = 0; index < count; ++index)
-                {
-                    this.CombineHashCode(list[index]?.GetHashCode() ?? 0);
-                }
-            }
-
-            return this;
-        }
-
-        internal HashCodeGenerator CombineSequence<T>(IReadOnlyList<T>? list)
-        {
-            if (list == null)
-            {
-                return this;
-            }
-
-            var count = list.Count;
-            for (var index = 0; index < count; ++index)
-            {
-                this.CombineHashCode(list[index]?.GetHashCode() ?? 0);
-            }
-
-            return this;
-        }
-
         internal HashCodeGenerator CombineDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? dictionary)
         {
             if (dictionary == null)

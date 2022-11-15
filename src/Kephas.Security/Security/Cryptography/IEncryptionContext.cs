@@ -11,13 +11,13 @@
 namespace Kephas.Cryptography
 {
     using System;
-
+    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
     /// Interface for encryption context.
     /// </summary>
-    public interface IEncryptionContext : IContext
+    public interface IEncryptionContext : IDynamic, IInjectable
     {
         /// <summary>
         /// Gets or sets the key for encryption/decryption.

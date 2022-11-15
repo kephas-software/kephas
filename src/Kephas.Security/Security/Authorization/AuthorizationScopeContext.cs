@@ -11,6 +11,7 @@
 namespace Kephas.Security.Authorization
 {
     using System;
+
     using Kephas.Services;
 
     /// <summary>
@@ -23,7 +24,7 @@ namespace Kephas.Security.Authorization
         /// </summary>
         /// <param name="callingContext">Context for the calling.</param>
         public AuthorizationScopeContext(IContext callingContext)
-            : base((callingContext ?? throw new ArgumentNullException(nameof(callingContext))).Injector)
+            : base((callingContext ?? throw new ArgumentNullException(nameof(callingContext))).ServiceProvider)
         {
             this.CallingContext = callingContext;
         }

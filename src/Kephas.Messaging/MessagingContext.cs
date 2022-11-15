@@ -12,7 +12,7 @@ namespace Kephas.Messaging
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>
@@ -42,14 +42,14 @@ namespace Kephas.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">Optional. The Message.</param>
         public MessagingContext(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             IMessageProcessor messageProcessor,
             IMessage? message = null)
-            : base(injector)
+            : base(serviceProvider)
         {
             messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
 

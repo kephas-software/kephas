@@ -9,7 +9,7 @@ namespace Kephas.Templating
 {
     using System;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Operations;
     using Kephas.Services;
 
@@ -21,9 +21,9 @@ namespace Kephas.Templating
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateProcessingContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public TemplateProcessingContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public TemplateProcessingContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 

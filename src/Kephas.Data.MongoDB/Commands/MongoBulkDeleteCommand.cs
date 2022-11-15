@@ -17,6 +17,7 @@ namespace Kephas.Data.MongoDB.Commands
 
     using Kephas.Data.Commands;
     using Kephas.Logging;
+    using Kephas.MongoDB;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;
 
@@ -60,7 +61,7 @@ namespace Kephas.Data.MongoDB.Commands
             // TODO make sure the T is the entity type, not an abstraction
             // then convert the criteria from abstraction to concrete.
             var dataContext = (MongoDataContext)bulkDeleteContext.DataContext;
-            var collectionName = this.namingStrategy.GetCollectionName(dataContext, typeof(T));
+            var collectionName = this.namingStrategy.GetCollectionName(typeof(T));
             var collection = dataContext.Database.GetCollection<T>(collectionName);
             var result = await collection.DeleteManyAsync(criteria, cancellationToken).PreserveThreadContext();
             return result.DeletedCount;

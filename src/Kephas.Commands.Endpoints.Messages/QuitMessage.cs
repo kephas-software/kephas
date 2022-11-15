@@ -10,7 +10,8 @@
 
 namespace Kephas.Commands.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
@@ -18,7 +19,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// A quit message.
     /// </summary>
-    [DisplayInfo(Description = "Quits the application.")]
+    [Display(Description = "Quits the application.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class QuitMessage : IMessage
     {

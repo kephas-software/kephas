@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Plugins
 {
@@ -23,9 +23,9 @@ namespace Kephas.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public SearchContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public SearchContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 

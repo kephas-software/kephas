@@ -8,7 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
 using Kephas.Runtime;
 
 namespace Kephas.Data.Model.Tests.Elements.Annotations
@@ -36,7 +35,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
         public void Configure()
         {
             var ambientServices = this.CreateAmbientServices();
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new ModelConstructionContext(injector);
             var modelSpace = new DefaultModelSpace(context);

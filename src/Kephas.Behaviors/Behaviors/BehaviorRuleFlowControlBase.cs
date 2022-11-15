@@ -14,7 +14,7 @@ namespace Kephas.Behaviors
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Services;
 

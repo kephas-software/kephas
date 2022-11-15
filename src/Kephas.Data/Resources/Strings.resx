@@ -147,10 +147,6 @@
   <data name="PersistChangesCommand_ResultMessage" xml:space="preserve">
     <value>Persisted {0} changes.</value>
   </data>
-  <data name="DataValidationException_Message" xml:space="preserve">
-    <value>Validation failed for {0}:
-{1}.</value>
-  </data>
   <data name="DataValidator_MismatchedEntityType_Exception" xml:space="preserve">
     <value>Expected an object of type '{0}', but received one of type '{1}'.</value>
   </data>

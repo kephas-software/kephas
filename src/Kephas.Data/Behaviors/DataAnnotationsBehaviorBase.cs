@@ -16,9 +16,9 @@ namespace Kephas.Data.Behaviors
     using System.Linq;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Data.Validation;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Validation;
 
     /// <summary>
     /// Base class for data behaviors resulting from property annotations, like any type of validations.
@@ -41,20 +41,20 @@ namespace Kephas.Data.Behaviors
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// An <see cref="IDataValidationResult"/>.
+        /// An <see cref="IValidationResult"/>.
         /// </returns>
-        public override IDataValidationResult Validate(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
+        public override IValidationResult Validate(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
             entity = entity ?? throw new ArgumentNullException(nameof(entity));
             entityEntry = entityEntry ?? throw new System.ArgumentNullException(nameof(entityEntry));
 
             if (entityEntry.ChangeState == ChangeState.Deleted)
             {
-                return DataValidationResult.Success;
+                return Kephas.Validation.ValidationResult.Success;
             }
 
             var typeInfo = entity.GetTypeInfo();
-            if (!(typeInfo[ValidationFnKey] is Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult> validationFn))
+            if (!(typeInfo[ValidationFnKey] is Func<object, IEntityEntry, IDataOperationContext, IValidationResult> validationFn))
             {
                 validationFn = this.CreateValidationFn(typeInfo);
                 typeInfo[ValidationFnKey] = validationFn;
@@ -70,9 +70,9 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// The new validation function.
         /// </returns>
-        protected virtual Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
+        protected virtual Func<object, IEntityEntry, IDataOperationContext, IValidationResult> CreateValidationFn(ITypeInfo typeInfo)
         {
-            var propValidations = new List<Func<object, IDataValidationResultItem?>>();
+            var propValidations = new List<Func<object, IValidationMessage?>>();
 
             foreach (var propInfo in typeInfo.Properties)
             {
@@ -86,13 +86,13 @@ namespace Kephas.Data.Behaviors
                 {
                     string nameAccessor() => propInfoLocalization.Name ?? propInfo.Name;
                     string messageAccessor() => propInfoValidation.FormatErrorMessage(nameAccessor());
-                    propValidations.Add(e => propInfoValidation.IsValid(propInfo.GetValue(e)) ? null : new DataValidationResultItem(messageAccessor(), nameAccessor()));
+                    propValidations.Add(e => propInfoValidation.IsValid(propInfo.GetValue(e)) ? null : new ValidationMessage(messageAccessor(), nameAccessor()));
                 }
             }
 
             if (propValidations.Count == 0)
             {
-                return (e, entityEntry, context) => DataValidationResult.Success;
+                return (e, entityEntry, context) => Kephas.Validation.ValidationResult.Success;
             }
 
             return (e, entityEntry, context) => this.GetDataValidationResult(e, propValidations);
@@ -106,15 +106,15 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// The data validation result.
         /// </returns>
-        private IDataValidationResult GetDataValidationResult(object entity, List<Func<object, IDataValidationResultItem?>> propValidations)
+        private IValidationResult GetDataValidationResult(object entity, List<Func<object, IValidationMessage?>> propValidations)
         {
             var propResults = propValidations
                 .Select(v => v(entity)!)
                 .Where(res => res != null)
                 .ToArray();
             return propResults.Length == 0
-                ? DataValidationResult.Success
-                : new DataValidationResult(propResults);
+                ? Kephas.Validation.ValidationResult.Success
+                : new Kephas.Validation.ValidationResult(propResults);
         }
     }
 }

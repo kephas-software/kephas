@@ -10,13 +10,14 @@
 
 namespace Kephas.Scheduling.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
 
     /// <summary>
     /// A disable trigger message.
     /// </summary>
-    [DisplayInfo(Description = "Disables the specified trigger.")]
+    [Display(Description = "Disables the specified trigger.")]
     public class DisableTriggerMessage : IMessage
     {
     }

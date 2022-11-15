@@ -15,7 +15,7 @@ namespace Kephas.Redis.Application
 
     using Kephas.Application;
     using Kephas.Connectivity;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Operations;
     using Kephas.Redis.Connectivity;
     using Kephas.Services;
@@ -32,10 +32,10 @@ namespace Kephas.Redis.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisClientAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public RedisClientAppLifecycleBehavior(IInjector injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public RedisClientAppLifecycleBehavior(IServiceProvider serviceProvider)
         {
-            this.redisConnectionFactory = injector.TryResolve<IConnectionFactory>(RedisConnectionFactory.ConnectionKind);
+            this.redisConnectionFactory = serviceProvider.TryResolve<IConnectionFactory>(RedisConnectionFactory.ConnectionKind);
         }
 
         /// <summary>

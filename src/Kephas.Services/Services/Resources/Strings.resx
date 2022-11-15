@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="OrderedServiceFactoryCollection_service_with_requested_criteria_not_found" xml:space="preserve">
+        <value>The service with the requested criteria was not found.</value>
+    </data>
+    <data name="ServiceInstanceNotRegistered" xml:space="preserve">
+        <value>The service {0} is either not registered or it is not registered with an instance.</value>
+    </data>
+    <data name="ServiceProviderIsBeingBuilt" xml:space="preserve">
+        <value>The service provider is not available, it is now being built.</value>
+    </data>
+    <data name="AppServiceInfoBuilderContractTypeMismatch" xml:space="preserve">
+        <value>The contract type {0} must be assignable from the declaration type {1}.</value>
+    </data>
+    <data name="AppServiceCollectionMultipleContractDeclarationsWithSameType" xml:space="preserve">
+        <value>Multiple contract declarations for {0}. {1} will be overwritten by {2}.</value>
+    </data>
+    <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
+        <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>
+    </data>
+    <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
+        <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
+    </data>
+    <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+        <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+    </data>
+    <data name="InjectorBuilder_RegisterService_InvalidContractType" xml:space="preserve">
+        <value>No contract type provided for {0}.</value>
+    </data>
+</root>

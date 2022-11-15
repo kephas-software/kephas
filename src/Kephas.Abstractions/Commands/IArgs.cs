@@ -17,7 +17,7 @@ namespace Kephas.Commands
     /// <summary>
     /// Interface for accessing arguments.
     /// </summary>
-    public interface IArgs : IExpandoBase
+    public interface IArgs : IDynamic
     {
         /// <summary>
         /// Converts this app arguments list to a list of string arguments for use in command lines.

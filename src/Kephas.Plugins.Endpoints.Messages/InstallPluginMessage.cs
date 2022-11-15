@@ -22,7 +22,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An install plugin message.
     /// </summary>
-    [DisplayInfo(Description = "Installs the indicated plugin.")]
+    [Display(Description = "Installs the indicated plugin.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class InstallPluginMessage : IMessage
     {

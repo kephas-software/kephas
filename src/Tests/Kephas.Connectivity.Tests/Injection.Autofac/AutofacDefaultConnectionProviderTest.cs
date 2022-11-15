@@ -7,35 +7,16 @@
 
 namespace Kephas.Connectivity.Tests.Injection.Autofac;
 
-using System.Threading.Tasks;
-using NSubstitute;
+using Kephas.Testing;
 using NUnit.Framework;
 
 [TestFixture]
-public class AutofacDefaultConnectionProviderTest : AutofacConnectivityTestBase
+public class AutofacDefaultConnectionProviderTest : DefaultConnectionProviderTestBase
 {
-    [Test]
-    public void DefaultConnectionProvider_Injection_success()
+    protected override IServiceProvider BuildServiceProvider(params Type[] parts)
     {
-        var container = this.CreateInjector();
-        var provider = container.Resolve<IConnectionProvider>();
-        Assert.IsInstanceOf<DefaultConnectionProvider>(provider);
-
-        var typedProvider = (DefaultConnectionProvider)provider;
-        Assert.IsNotNull(typedProvider.Logger);
-    }
-
-    [Test]
-    public async Task ProcessAsync_Injection_success()
-    {
-        var container = this.CreateInjector(parts: new[] { typeof(TestConnectionFactory) });
-        var provider = container.Resolve<IConnectionProvider>();
-
-        var expected = Substitute.For<IConnection>();
-        var actual = provider.CreateConnection(
-            "test://host:121",
-            options: ctx => { ctx["connection"] = expected; });
-
-        Assert.AreEqual(expected, actual);
+        return this.CreateServicesBuilder()
+            .WithParts(parts)
+            .BuildWithAutofac();
     }
 }

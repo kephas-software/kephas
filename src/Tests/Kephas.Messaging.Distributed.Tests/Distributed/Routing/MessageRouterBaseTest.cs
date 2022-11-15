@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using Kephas.Application;
 using Kephas.Configuration;
-using Kephas.Injection;
 using Kephas.Messaging.Distributed;
 using Kephas.Messaging.Distributed.Routing;
 using Kephas.Security.Authentication;
@@ -88,7 +87,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     {
         return this.CreateInjectableFactoryMock(
             args => new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -122,7 +121,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     public class TestAppRuntime : AppRuntimeBase
     {
         public TestAppRuntime(string appId = "test")
-            : base(appId: appId)
+            : base(new AppRuntimeSettings { AppId = appId })
         {
         }
     }

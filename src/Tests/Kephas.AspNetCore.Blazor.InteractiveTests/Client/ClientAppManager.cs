@@ -8,7 +8,6 @@
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
 {
     using Kephas.Application;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
 
@@ -26,11 +25,11 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         /// Initializes a new instance of the <see cref="ClientAppManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         public ClientAppManager(
             IAppRuntime appRuntime,
-            IInjector injector)
-            : base(appRuntime, injector)
+            IServiceProvider serviceProvider)
+            : base(appRuntime, serviceProvider)
         {
         }
     }

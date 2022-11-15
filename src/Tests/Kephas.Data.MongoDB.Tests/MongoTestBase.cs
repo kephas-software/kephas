@@ -15,13 +15,15 @@ namespace Kephas.Data.MongoDB.Tests
     using Kephas.Application;
     using Kephas.Data.MongoDB.Application;
     using Kephas.Data.Store;
+    using Kephas.MongoDB;
     using Kephas.Services;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using Kephas.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
 
-    public abstract class MongoTestBase : InjectionTestBase
+    public abstract class MongoTestBase : TestBase
     {
         private const string MongoTestDataStoreName = "mongotest";
 
@@ -38,7 +40,7 @@ namespace Kephas.Data.MongoDB.Tests
                 .WaitNonLocking();
         }
 
-        public override IEnumerable<Type> GetDefaultParts()
+        protected override IEnumerable<Type> GetDefaultParts()
         {
             return new List<Type>(base.GetDefaultParts())
             {
@@ -47,7 +49,7 @@ namespace Kephas.Data.MongoDB.Tests
             };
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
@@ -58,7 +60,7 @@ namespace Kephas.Data.MongoDB.Tests
 
         public class TestMongoNamingStrategy : IMongoNamingStrategy
         {
-            public string GetCollectionName(IDataContext dataContext, Type entityType)
+            public string GetCollectionName(Type entityType)
             {
                 var name = entityType.Name;
                 if (name.EndsWith("MongoEntity"))

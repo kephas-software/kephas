@@ -8,7 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
 using Kephas.Services;
 
 namespace Kephas.Messaging.Tests.Distributed
@@ -31,7 +30,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void OneWay()
         {
             var builder = new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -45,7 +44,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content()
         {
             var builder = new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -64,7 +63,7 @@ namespace Kephas.Messaging.Tests.Distributed
             appRuntime[IAppRuntime.AppInstanceIdKey].Returns("app-instance-id");
 
             var builder = new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 appRuntime,
@@ -83,7 +82,7 @@ namespace Kephas.Messaging.Tests.Distributed
             config.GetSettings(Arg.Any<IContext>()).Returns(ci => new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) });
 
             var builder = new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 config,
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -100,7 +99,7 @@ namespace Kephas.Messaging.Tests.Distributed
             config.GetSettings(Arg.Any<IContext>()).Returns(ci => null);
 
             var builder = new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 config,
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),

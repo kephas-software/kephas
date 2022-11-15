@@ -22,9 +22,9 @@ namespace Kephas.Application
     /// <code language="csharp">
     /// var appManager = injector.Resolve&lt;IAppManager&gt;();
     /// var appContext = new AppContext();
-    /// await appManager.InitializeAppManagerAsync(appContext);
+    /// await appManager.InitializeAsync(appContext);
     /// ...
-    /// await appManager.FinalizeAppAsync(appContext);
+    /// await appManager.FinalizeAsync(appContext);
     /// </code>
     /// </example>
     [SingletonAppServiceContract]

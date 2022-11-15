@@ -38,6 +38,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
         <ProjectReference Include="..\..\Kephas.Scripting.Python\Kephas.Scripting.Python.csproj" />
         <ProjectReference Include="..\..\Kephas.Scripting\Kephas.Scripting.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />

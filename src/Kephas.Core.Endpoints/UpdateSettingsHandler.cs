@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Core.Endpoints
 {
@@ -29,25 +29,25 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     public class UpdateSettingsHandler : MessageHandlerBase<UpdateSettingsMessage, ResponseMessage>
     {
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
         private readonly ITypeResolver typeResolver;
         private readonly ISerializationService serializationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSettingsHandler"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public UpdateSettingsHandler(
-            IInjector injector,
+            IServiceProvider serviceProvider,
             ITypeResolver typeResolver,
             ISerializationService serializationService,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.injector = injector;
+            this.serviceProvider = serviceProvider;
             this.typeResolver = typeResolver;
             this.serializationService = serializationService;
         }
@@ -103,14 +103,14 @@ namespace Kephas.Core.Endpoints
             }
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
-            var configuration = this.injector.Resolve(configurationType);
+            var configuration = this.serviceProvider.Resolve(configurationType);
             var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
                 .GetMember(nameof(IConfiguration<NullLogManager>.UpdateSettingsAsync));
             var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }).PreserveThreadContext());
             return new ResponseMessage
             {
                 Message = result.HasErrors()
-                    ? result.Exceptions.First().Message
+                    ? result.Errors().First().Message
                     : result.Value
                         ? "Update successful"
                         : (result.Messages.FirstOrDefault()?.Message ?? "Update did not complete successfully."),

@@ -7,7 +7,6 @@
 
 namespace Kephas.Templating.Tests.Interpolation;
 
-using Kephas.Injection;
 using Kephas.Templating.Interpolation;
 using NSubstitute;
 using NUnit.Framework;
@@ -25,6 +24,16 @@ public class InterpolationTemplatingEngineTest
         Assert.AreEqual(result, sbWriter.GetStringBuilder().ToString());
     }
 
+    [TestCaseSource(nameof(GetInterpolationCases))]
+    public void Process_success(string template, object? model, string result)
+    {
+        var engine = new InterpolationTemplatingEngine();
+        using var sbWriter = new StringWriter();
+        var opResult = engine.Process(new StringTemplate(template), model, sbWriter, CreateProcessingContext());
+
+        Assert.AreEqual(result, sbWriter.GetStringBuilder().ToString());
+    }
+
     [Test]
     public async Task ProcessAsync_null_model()
     {
@@ -35,12 +44,24 @@ public class InterpolationTemplatingEngineTest
         Assert.AreEqual("hello !", sbWriter.GetStringBuilder().ToString());
     }
 
+    [Test]
+    public void Process_null_model()
+    {
+        var engine = new InterpolationTemplatingEngine();
+        using var sbWriter = new StringWriter();
+        var opResult = engine.Process<object?>(new StringTemplate("hello {boy}!"), null, sbWriter, CreateProcessingContext());
+
+        Assert.AreEqual("hello !", sbWriter.GetStringBuilder().ToString());
+    }
+
     public static object[] GetInterpolationCases()
     {
         return new object[] {
             new object[] { "hello {there}, boy?", new { there = "John Doe" }, "hello John Doe, boy?" },
             new object[] { "{hello} there", new { hello = "hi" }, "hi there" },
+            new object[] { "{hello.Length} there", new { hello = "hi" }, "2 there" },
             new object[] { "hello {there}", new { there = 12 }, "hello 12" },
+            new object[] { "hello {there:X}", new { there = 12 }, "hello C" },
         };
     }
 

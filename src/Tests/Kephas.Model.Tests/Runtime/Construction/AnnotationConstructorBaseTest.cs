@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
@@ -28,7 +26,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Name_do_not_allow_multiple()
         {
             var constructor = new TestAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new NotMultipleAttribute());
             Assert.IsNotNull(annotation);
             Assert.AreEqual("@NotMultiple", annotation.Name);
@@ -38,7 +36,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Name_do_not_allow_multiple_implicit()
         {
             var constructor = new TestAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new NotMultipleImplicitAttribute());
             Assert.IsNotNull(annotation);
             Assert.AreEqual("@NotMultipleImplicit", annotation.Name);
@@ -48,7 +46,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Name_allow_multiple()
         {
             var constructor = new TestAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new MultipleAttribute());
             Assert.IsNotNull(annotation);
             Assert.IsTrue(annotation.Name.StartsWith("@Multiple_"));
@@ -58,7 +56,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Name_allow_multiple_different_names()
         {
             var constructor = new TestAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new MultipleAttribute());
             var annotation2 = constructor.TryCreateModelElement(context, new MultipleAttribute());
             Assert.AreNotEqual(annotation2.Name, annotation.Name);
@@ -68,7 +66,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Name_not_cannonical_name()
         {
             var constructor = new TestAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new NonCannonical());
             Assert.IsNotNull(annotation);
             Assert.AreEqual("@NonCannonical", annotation.Name);

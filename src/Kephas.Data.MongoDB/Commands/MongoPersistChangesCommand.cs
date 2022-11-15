@@ -24,6 +24,7 @@ namespace Kephas.Data.MongoDB.Commands
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Diagnostics;
     using Kephas.Logging;
+    using Kephas.MongoDB;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -80,7 +81,7 @@ namespace Kephas.Data.MongoDB.Commands
             var mongoDocTypes = modifiedMongoDocs.Select(e => e.GetType()).Distinct().ToList();
             foreach (var mongoDocType in mongoDocTypes)
             {
-                var collectionName = this.namingStrategy.GetCollectionName(dataContext, mongoDocType);
+                var collectionName = this.namingStrategy.GetCollectionName(mongoDocType);
                 var writeAsync = BulkWriteAsyncMethod.MakeGenericMethod(mongoDocType);
                 await ((Task)writeAsync.Call(
                      this,

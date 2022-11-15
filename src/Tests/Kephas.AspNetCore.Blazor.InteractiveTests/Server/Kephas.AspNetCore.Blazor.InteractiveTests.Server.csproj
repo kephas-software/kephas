@@ -20,7 +20,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-		<PackageReference Include="Serilog" Version="2.10.0" />
+		<PackageReference Include="Serilog" Version="2.11.0" />
 		<PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
 		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -31,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\Kephas.Licensing\Kephas.Licensing.csproj" />
 		<ProjectReference Include="..\Client\Kephas.AspNetCore.Blazor.InteractiveTests.Client.csproj" />
 		<ProjectReference Include="..\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj" />
 		<ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -38,7 +39,7 @@
 		<ProjectReference Include="..\..\..\Kephas.Application\Kephas.Application.csproj" />
 		<ProjectReference Include="..\..\..\Kephas.Commands\Kephas.Commands.csproj" />
 		<ProjectReference Include="..\..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
-		<ProjectReference Include="..\..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Services.Autofac\Kephas.Services.Autofac.csproj" />
 		<ProjectReference Include="..\..\..\Kephas.Core\Kephas.Core.csproj" />
 		<ProjectReference Include="..\..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
 		<ProjectReference Include="..\..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />

@@ -19,7 +19,6 @@ namespace Kephas.Plugins.Application
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Plugins.Resources;
     using Kephas.Services;
@@ -49,46 +48,14 @@ namespace Kephas.Plugins.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
-        /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="checkLicense">Optional. The check license delegate.</param>
-        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
-        /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
-        /// <param name="appFolder">Optional. The application location. If not specified, the current
-        ///                           application location is considered.</param>
-        /// <param name="configFolders">Optional. The configuration folders.</param>
-        /// <param name="licenseFolders">Optional. The license folders.</param>
-        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
-        /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
-        /// <param name="pluginRepository">Optional. The plugin repository.</param>
-        /// <param name="getLocations">Optional. Function for getting application locations.</param>
-        public PluginsAppRuntime(
-            Func<string, ILogger>? getLogger = null,
-            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
-            IEnumerable<Assembly>? appAssemblies = null,
-            Func<AssemblyName, bool>? assemblyFilter = null,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            IDynamic? appArgs = null,
-            bool? enablePlugins = null,
-            string? pluginsFolder = null,
-            IPluginRepository? pluginRepository = null,
-            Func<string, string, IEnumerable<string>, ILocations>? getLocations = null)
-            : base(getLogger, checkLicense, appAssemblies, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs, getLocations)
+        /// <param name="settings">Optional. The runtime settings.</param>
+        public PluginsAppRuntime(PluginsAppRuntimeSettings? settings = null)
+            : base(settings)
         {
-            this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
-            this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));
-            this.PluginRepository = pluginRepository ??
-                                    new PluginRepository(appIdentity =>
+            this.EnablePlugins = this.ComputeEnablePlugins(settings?.EnablePlugins, settings?.AppArgs);
+            this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(settings?.PluginsFolder, settings?.AppArgs));
+            this.PluginStore = settings?.PluginRepository ??
+                                    new PluginStore(appIdentity =>
                                         this.GetAppLocation(appIdentity, throwOnNotFound: false));
         }
 
@@ -114,7 +81,7 @@ namespace Kephas.Plugins.Application
         /// <value>
         /// The plugin repository.
         /// </value>
-        protected internal IPluginRepository PluginRepository { get; }
+        protected internal IPluginStore PluginStore { get; }
 
         /// <summary>
         /// Gets the location of the application with the indicated identity.
@@ -177,7 +144,7 @@ namespace Kephas.Plugins.Application
         public virtual IEnumerable<PluginData> GetInstalledPlugins()
         {
             return this.GetPluginsInstallationLocations()
-                .Select(pluginDirectory => this.PluginRepository.GetPluginData(
+                .Select(pluginDirectory => this.PluginStore.GetPluginData(
                     new AppIdentity(Path.GetFileName(pluginDirectory)),
                     throwOnInvalid: false));
         }
@@ -249,7 +216,7 @@ namespace Kephas.Plugins.Application
             var pluginIdentity = new AppIdentity(pluginId);
             try
             {
-                var pluginData = this.PluginRepository.GetPluginData(pluginIdentity, throwOnInvalid: false);
+                var pluginData = this.PluginStore.GetPluginData(pluginIdentity, throwOnInvalid: false);
                 pluginIdentity = pluginData.Identity;
 
                 var shouldLoadPlugin = (pluginData.State == PluginState.PendingInitialization
@@ -270,7 +237,7 @@ namespace Kephas.Plugins.Application
             try
             {
                 var licenseState = this.CheckLicense(pluginIdentity, null);
-                if (!licenseState.IsLicensed)
+                if (!licenseState.Value)
                 {
                     this.Logger.Warn(
                         "Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.",
@@ -278,7 +245,7 @@ namespace Kephas.Plugins.Application
                         licenseState.Messages.Select(m => m.Message).ToArray());
                 }
 
-                return licenseState.IsLicensed;
+                return licenseState.Value;
             }
             catch (Exception ex)
             {

@@ -13,8 +13,6 @@ namespace Kephas.Model.Tests.Elements
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
@@ -31,7 +29,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeDimensions_2_dims()
         {
-            var context = new ModelConstructionContext(Substitute.For<IInjector>());
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -61,7 +59,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeProjections_2_dims()
         {
-            var context = new ModelConstructionContext(Substitute.For<IInjector>());
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -94,7 +92,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_classifier_with_two_properties()
         {
-            var context = new ModelConstructionContext(Substitute.For<IInjector>());
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -161,7 +159,7 @@ namespace Kephas.Model.Tests.Elements
         private ModelConstructionContext CreateModelConstructionContext()
         {
             var ambientServices = this.CreateAmbientServices();
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             injector.Resolve<IAmbientServices>().Returns(ambientServices);
             var context = new ModelConstructionContext(injector);
             return context;

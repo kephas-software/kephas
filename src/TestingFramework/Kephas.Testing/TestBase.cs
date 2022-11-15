@@ -15,11 +15,13 @@ namespace Kephas.Testing
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Cryptography;
-    using Kephas.Injection;
+    using Kephas.Diagnostics.Logging;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -27,6 +29,7 @@ namespace Kephas.Testing
     using Kephas.Runtime;
     using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using NSubstitute;
     using NSubstitute.Core;
 
@@ -37,10 +40,66 @@ namespace Kephas.Testing
     /// It includes:
     /// * Creating mocks for:
     ///   * <see cref="Kephas.Services.IInjectableFactory"/>.
-    ///   * <see cref="ISerializationService"/>.
     /// </content>
     public class TestBase
     {
+        /// <summary>
+        /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        ///                               will be created as linked to the newly created container.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <returns>
+        /// A LiteInjectorBuilder.
+        /// </returns>
+        protected virtual IAppServiceCollectionBuilder CreateServicesBuilder(
+            IAmbientServices? ambientServices = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
+        {
+            var log = new StringBuilder();
+            logManager ??= ambientServices?.TryGetServiceInstance<ILogManager>() ?? new DebugLogManager(log);
+            appRuntime ??= this.CreateDefaultAppRuntime(logManager);
+
+            ambientServices = (ambientServices ?? new AmbientServices())
+                .Add(logManager)
+                .Add(log);
+
+            return new AppServiceCollectionBuilder(ambientServices)
+                .WithAppRuntime(appRuntime)
+                .WithAssemblies(this.GetAssemblies())
+                .WithParts(this.GetDefaultParts());
+        }
+
+        /// <summary>
+        /// Gets the default convention types to be considered when building the container. By default it includes Kephas.Core.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default convention types in
+        /// this collection.
+        /// </returns>
+        protected virtual IEnumerable<Assembly> GetAssemblies()
+        {
+            return new List<Assembly>
+                       {
+                           typeof(IAmbientServices).Assembly,       /* Kephas.Services */
+                           typeof(IEventHub).Assembly,              /* Kephas.Interaction */
+                           typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
+                       };
+        }
+
+        /// <summary>
+        /// Gets the default parts to be included in the container.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default parts in this collection.
+        /// </returns>
+        protected virtual IEnumerable<Type> GetDefaultParts()
+        {
+            return new List<Type>();
+        }
+
         /// <summary>
         /// Creates a new instance of <see cref="AmbientServices"/>
         /// with the provider <see cref="IRuntimeTypeRegistry"/> or a newly created one.
@@ -49,7 +108,8 @@ namespace Kephas.Testing
         /// <returns>The newly created <see cref="AmbientServices"/> instance.</returns>
         protected virtual IAmbientServices CreateAmbientServices(IRuntimeTypeRegistry? typeRegistry = null)
         {
-            return new AmbientServices(typeRegistry: typeRegistry);
+            return new AmbientServices()
+                .Add(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
         }
 
         /// <summary>
@@ -61,9 +121,12 @@ namespace Kephas.Testing
         /// </returns>
         protected virtual IAppRuntime CreateDefaultAppRuntime(ILogManager logManager)
         {
-            var appRuntime = new StaticAppRuntime(
-                                         logManager.GetLogger,
-                                         defaultAssemblyFilter: this.IsNotTestAssembly);
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings
+                {
+                    GetLogger = logManager.GetLogger,
+                    IsAppAssembly = this.IsNotTestAssembly,
+                });
+
             return appRuntime;
         }
 
@@ -153,7 +216,7 @@ namespace Kephas.Testing
         {
             var serializationService = Substitute.For<ISerializationService, IInjectableFactoryAware>(/*Behavior.Strict*/);
             var factoryMock = this.CreateInjectableFactoryMock(
-                () => new SerializationContext(Substitute.For<IInjector>(), serializationService));
+                () => new SerializationContext(Substitute.For<IServiceProvider>(), serializationService));
             ((IInjectableFactoryAware)serializationService).InjectableFactory.Returns(factoryMock);
             return serializationService;
         }
@@ -169,7 +232,7 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var factoryMock = this.CreateInjectableFactoryMock(() => new SerializationContext(Substitute.For<IInjector>(), Substitute.For<ISerializationService>()));
+            var factoryMock = this.CreateInjectableFactoryMock(() => new SerializationContext(Substitute.For<IServiceProvider>(), Substitute.For<ISerializationService>()));
             var serializationService = new DefaultSerializationService(
                 factoryMock,
                 new List<IExportFactory<ISerializer, SerializerMetadata>>
@@ -286,6 +349,9 @@ namespace Kephas.Testing
             outputStream.Write(outputArray, 0, outputArray.Length);
         }
 
-        public interface IInjectableFactoryAware { IInjectableFactory InjectableFactory { get; } }
+        public interface IInjectableFactoryAware
+        {
+            IInjectableFactory InjectableFactory { get; }
+        }
     }
 }

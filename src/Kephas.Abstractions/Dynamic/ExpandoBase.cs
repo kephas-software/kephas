@@ -19,6 +19,7 @@
 namespace Kephas.Dynamic
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Dynamic;
     using System.Reflection;
@@ -53,28 +54,29 @@ namespace Kephas.Dynamic
     /// </list>
     /// </para>
     /// </summary>
-    public abstract class ExpandoBase : DynamicObject, IExpando, IExpandoMixin
+    /// <typeparam name="T">The inner dictionary item type.</typeparam>
+    public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     {
-        private IDictionary<string, object?>? innerDictionary;
+        private IDictionary<string, T>? innerDictionary;
         private WeakReference<object>? innerObjectRef;
         private bool ignoreCase;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
+        /// Initializes a new instance of the <see cref="ExpandoBase{T}"/> class.
         /// This constructor just works off the internal dictionary.
         /// </summary>
         /// <param name="innerDictionary">
         /// Optional. The inner dictionary for holding dynamic values.
         /// If not provided, a new dictionary will be created.
         /// </param>
-        protected ExpandoBase(IDictionary<string, object?>? innerDictionary = null)
+        protected ExpandoBase(IDictionary<string, T>? innerDictionary = null)
         {
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.InitializeExpando(null, innerDictionary);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpandoBase"/> class. Allows passing in an
+        /// Initializes a new instance of the <see cref="ExpandoBase{T}"/> class. Allows passing in an
         /// existing instance variable to 'extend'.
         /// </summary>
         /// <param name="innerObject">The instance to be extended.</param>
@@ -82,31 +84,17 @@ namespace Kephas.Dynamic
         /// Optional. The inner dictionary for holding dynamic values.
         /// If not provided, a new dictionary will be created.
         /// </param>
-        protected ExpandoBase(object? innerObject, IDictionary<string, object?>? innerDictionary = null)
+        protected ExpandoBase(object innerObject, IDictionary<string, T>? innerDictionary = null)
         {
-            innerObject = innerObject ?? throw new ArgumentNullException(nameof(innerObject));
-
-            if (innerObject is IDictionary<string, object?> innerObjectDictionary)
-            {
-                if (innerDictionary == null)
-                {
-                    innerDictionary = innerObjectDictionary;
-                    innerObject = null;
-                }
-                else if (innerDictionary == innerObjectDictionary)
-                {
-                    innerObject = null;
-                }
-            }
-
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.InitializeExpando(innerObject, innerDictionary);
+            this.InitializeExpando(innerObject ?? throw new ArgumentNullException(nameof(innerObject)), innerDictionary);
         }
 
         /// <summary>
         /// Gets the inner dictionary.
         /// </summary>
-        IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.innerDictionary!;
+        IDictionary<string, object?> IExpandoMixin.InnerDictionary =>
+            this.innerDictionary as IDictionary<string, object?> ?? new ObjectDictionaryAdapter(this.innerDictionary!);
 
         /// <summary>
         /// Gets a weak reference to the inner object.
@@ -126,7 +114,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets the inner dictionary.
         /// </summary>
-        protected IDictionary<string, object?> InnerDictionary => this.innerDictionary!;
+        protected IDictionary<string, T> InnerDictionary => this.innerDictionary!;
 
         /// <summary>
         /// Gets or sets the binders to use when retrieving the expando members.
@@ -147,7 +135,7 @@ namespace Kephas.Dynamic
         /// <returns>The <see cref="object" />.</returns>
         public object? this[string key]
         {
-            get => this.TryGetValue(key, out var value) ? value : value;
+            get => this.TryGetValue(key, out var value) ? value : null;
             set => this.TrySetValue(key, value);
         }
 
@@ -420,6 +408,21 @@ namespace Kephas.Dynamic
             => type.GetProperty(key, GetBindingFlags(ignoreCase));
 
         /// <summary>
+        /// Tries to get the inner/adapted object.
+        /// </summary>
+        /// <returns>The inner object, or <c>null</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private object? TryGetInnerObject()
+        {
+            if (this.innerObjectRef == null)
+            {
+                return null;
+            }
+
+            return this.innerObjectRef.TryGetTarget(out var innerObject) ? innerObject : null;
+        }
+
+        /// <summary>
         /// Gets the binding flags for retrieving type members.
         /// </summary>
         /// <param name="ignoreCase">
@@ -433,26 +436,15 @@ namespace Kephas.Dynamic
             return IExpandoMixin.GetBindingFlags(ignoreCase);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private object? TryGetInnerObject()
-        {
-            if (this.innerObjectRef == null)
-            {
-                return null;
-            }
-
-            return this.innerObjectRef.TryGetTarget(out var innerObject) ? innerObject : null;
-        }
-
         /// <summary>
         /// Initializes the expando with the provided instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="dictionary">The inner dictionary.</param>
-        private void InitializeExpando(object? instance, IDictionary<string, object?>? dictionary)
+        private void InitializeExpando(object? instance, IDictionary<string, T>? dictionary)
         {
             this.innerObjectRef = instance == null ? null : new WeakReference<object>(instance);
-            this.innerDictionary = dictionary ?? new Dictionary<string, object?>();
+            this.innerDictionary = dictionary ?? new Dictionary<string, T>();
             if (this.innerDictionary is Dictionary<string, object?> dict)
             {
                 var comparer = dict.Comparer;
@@ -460,6 +452,100 @@ namespace Kephas.Dynamic
                                          || Equals(comparer, StringComparer.CurrentCultureIgnoreCase)
                                          || Equals(comparer, StringComparer.InvariantCultureIgnoreCase);
             }
+        }
+
+        private class ObjectDictionaryAdapter : IDictionary<string, object?>
+        {
+            private readonly IDictionary<string, T> dictionary;
+
+            public ObjectDictionaryAdapter(IDictionary<string, T> dictionary)
+            {
+                this.dictionary = dictionary;
+            }
+
+            public int Count => this.dictionary.Count;
+
+            public bool IsReadOnly => this.dictionary.IsReadOnly;
+
+            public ICollection<string> Keys => this.dictionary.Keys;
+
+            public ICollection<object?> Values => new ObjectCollectionAdapter(this.dictionary.Values);
+
+            public object? this[string key]
+            {
+                get => this.dictionary[key];
+                set => this.dictionary[key] = (T)value!;
+            }
+
+            public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
+            {
+                foreach (var (key, value) in this.dictionary)
+                {
+                    yield return new KeyValuePair<string, object?>(key, value);
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+            public void Add(KeyValuePair<string, object?> item) =>
+                this.dictionary.Add(new KeyValuePair<string, T>(item.Key, (T)item.Value!));
+
+            public void Clear() => this.dictionary.Clear();
+
+            public bool Contains(KeyValuePair<string, object?> item)
+                => this.dictionary.Contains(new KeyValuePair<string, T>(item.Key, (T)item.Value!));
+
+            public void CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
+            {
+                throw new NotSupportedException();
+            }
+
+            public bool Remove(KeyValuePair<string, object?> item) =>
+                this.dictionary.Remove(new KeyValuePair<string, T>(item.Key, (T)item.Value!));
+
+            public void Add(string key, object? value) => this.dictionary.Add(key, (T)value!);
+
+            public bool ContainsKey(string key) => this.dictionary.ContainsKey(key);
+
+            public bool Remove(string key) => this.dictionary.Remove(key);
+
+            public bool TryGetValue(string key, out object? value)
+            {
+                var result = this.dictionary.TryGetValue(key, out var typedValue);
+                value = typedValue;
+                return result;
+            }
+        }
+
+        private class ObjectCollectionAdapter : ICollection<object?>
+        {
+            private readonly ICollection<T> collection;
+
+            public ObjectCollectionAdapter(ICollection<T> collection)
+            {
+                this.collection = collection;
+            }
+
+            public int Count => this.collection.Count;
+
+            public bool IsReadOnly => this.collection.IsReadOnly;
+
+            public IEnumerator<object?> GetEnumerator() => this.collection.Cast<object?>().GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+            public void Add(object? item) => this.collection.Add((T)item!);
+
+            public void Clear() => this.collection.Clear();
+
+            public bool Contains(object? item) => this.collection.Contains((T)item!);
+
+            public void CopyTo(object?[] array, int arrayIndex)
+            {
+                throw new NotSupportedException();
+            }
+
+            public bool Remove(object? item) => this.collection.Remove((T)item!);
         }
     }
 }
