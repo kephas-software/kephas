@@ -89,9 +89,9 @@ namespace Kephas.Tests.Orchestration.Diagnostics
             Assert.Throws<InvalidOperationException>(() => builder.GetProcessStartInfo());
         }
 
-        private IAppRuntime CreateAppRuntime(string appLocation = null)
+        private IAppRuntime CreateAppRuntime(string? appLocation = null)
         {
-            var appRuntime = new DynamicAppRuntime(appFolder: appLocation);
+            var appRuntime = new DynamicAppRuntime(new AppRuntimeSettings { AppFolder = appLocation });
             return appRuntime;
         }
     }

@@ -44,6 +44,7 @@
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\..\Kephas.Orchestration\Kephas.Orchestration.csproj" />
+        <ProjectReference Include="..\..\Kephas.Services.Autofac\Kephas.Services.Autofac.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Application\Kephas.Testing.Application.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>

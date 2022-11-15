@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Tests.Reflection
 {
     using System;
@@ -111,7 +109,7 @@ namespace Kephas.Tests.Reflection
                 .Returns(ci =>
                 {
                     var dispContext = new DispatchingContext(
-                        Substitute.For<IInjector>(),
+                        Substitute.For<IServiceProvider>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),
@@ -163,7 +161,7 @@ namespace Kephas.Tests.Reflection
                 .Returns(ci =>
                 {
                     var dispContext = new DispatchingContext(
-                        Substitute.For<IInjector>(),
+                        Substitute.For<IServiceProvider>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),

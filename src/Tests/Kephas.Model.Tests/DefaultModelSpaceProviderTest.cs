@@ -15,13 +15,13 @@ namespace Kephas.Model.Tests
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using Kephas.Injection;
+    using Kephas.Services;
+    using Kephas.Services.Builder;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Testing.Model;
     using NSubstitute;
     using NUnit.Framework;
@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_Dimensions()
         {
-            var contextFactory = this.CreateInjectableFactoryMock(() => new ModelConstructionContext(Substitute.For<IInjector>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new ModelConstructionContext(Substitute.For<IServiceProvider>()));
             var provider = new DefaultModelSpaceProvider(
                 contextFactory,
                 Array.Empty<IModelInfoProvider>(),
@@ -48,7 +48,9 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_using_injection()
         {
-            var container = this.CreateInjector(typeof(IModelSpace).Assembly);
+            var container = this.CreateServicesBuilder()
+                .WithAssemblies(typeof(IModelSpace).Assembly)
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -58,7 +60,7 @@ namespace Kephas.Model.Tests
             Assert.IsTrue((modelSpace as IConstructibleElement)?.ConstructionState.IsCompleted);
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var baseAssemblies = base.GetAssemblies().ToList();
             baseAssemblies.Add(typeof(IModelSpace).Assembly);

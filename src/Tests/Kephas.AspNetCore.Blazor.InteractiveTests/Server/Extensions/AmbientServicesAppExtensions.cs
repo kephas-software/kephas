@@ -8,22 +8,23 @@
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions
 {
     using System;
-    using Kephas.Application;
+
     using Kephas.Cryptography;
     using Kephas.Logging.Serilog;
+    using Kephas.Services.Builder;
     using Microsoft.Extensions.Configuration;
     using Serilog;
     using Serilog.Events;
 
     public static class AmbientServicesAppExtensions
     {
-        public static IAmbientServices SetupAmbientServices(
-            this IAmbientServices ambientServices,
-            Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
+        public static IAppServiceCollectionBuilder SetupAmbientServices(
+            this IAppServiceCollectionBuilder servicesBuilder,
+            Func<IAppServiceCollectionBuilder, IEncryptionService> encryptionServiceFactory,
             IConfiguration? configuration)
         {
-            return ambientServices
-                .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
+            return servicesBuilder
+                .WithDefaultLicensingManager(encryptionServiceFactory(servicesBuilder))
                 .WithDynamicAppRuntime()
                 .WithSerilogManager(configuration);
         }
@@ -31,21 +32,21 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions
         /// <summary>
         /// Configures the Serilog logging infrastructure from the configuration.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns>
         /// The provided ambient services.
         /// </returns>
-        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration? configuration)
+        internal static IAppServiceCollectionBuilder WithSerilogManager(this IAppServiceCollectionBuilder servicesBuilder, IConfiguration? configuration)
         {
             var loggerConfig = new LoggerConfiguration();
             loggerConfig
                 .ReadFrom.Configuration(configuration)
-                .Enrich.With(new AppLogEventEnricher(ambientServices.GetAppRuntime()!));
+                .Enrich.With(new AppLogEventEnricher(servicesBuilder.AmbientServices.GetAppRuntime()!));
 
             var minimumLevel = configuration.GetValue<LogEventLevel?>("Serilog:MinimumLevel") ?? LogEventLevel.Information;
 
-            return ambientServices.WithSerilogManager(loggerConfig, minimumLevel, dynamicMinimumLevel: true);
+            return servicesBuilder.WithSerilogManager(loggerConfig, minimumLevel, dynamicMinimumLevel: true);
         }
     }
 }

@@ -8,7 +8,7 @@
 namespace Kephas.Scripting.Tests
 {
     using System.Threading.Tasks;
-
+    using Kephas.Testing;
     using NUnit.Framework;
 
     [TestFixture]
@@ -17,7 +17,8 @@ namespace Kephas.Scripting.Tests
         [Test]
         public void DefaultScriptProcessor_Injection_success()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder()
+                .BuildWithDependencyInjection();
             var scriptProcessor = container.Resolve<IScriptProcessor>();
             Assert.IsInstanceOf<DefaultScriptProcessor>(scriptProcessor);
 
@@ -28,7 +29,9 @@ namespace Kephas.Scripting.Tests
         [Test]
         public async Task ExecuteAsync_Injection_success()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(TestLanguageService) });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(TestLanguageService))
+                .BuildWithDependencyInjection();
             var scriptingEngine = container.Resolve<IScriptProcessor>();
 
             var script = new StringScript("dummy", "test");

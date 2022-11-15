@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActivatorBase_CannotGetImplementationType_Exception" xml:space="preserve">
-    <value>Der Implementierungstyp für die angegebenen abstrakten Typinformation '{0}' wurde nicht gefunden.</value>
-  </data>
-  <data name="ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception" xml:space="preserve">
-    <value>Der Typ '{0}' kann nicht instanziiert werden, da er nicht in einen Implementierungstyp aufgelöst werden konnte.</value>
-  </data>
   <data name="AmbientServices_AmbiguousConstructors_Exception" xml:space="preserve">
     <value>'{0}' hat mindestens zwei Konstruktoren mit derselben Länge, die durch Komposition aufgelöst werden können: ({1}) und ({2}).</value>
   </data>
@@ -141,47 +135,8 @@
   <data name="AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception" xml:space="preserve">
     <value>Der Servicetyp '{0}' muss ein Supertyp des Contract-Typs '{1}' sein.</value>
   </data>
-  <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
-    <value>Mehrere für den Contract {0} registrierte Anwendungsdienste und die Überschreibungspriorität ermöglichen keine ordnungsgemäße Dienstauflösung. Identifizierte mögliche Teile: {1}.</value>
-  </data>
-  <data name="App_RunAsync_Bootstrapping_Message" xml:space="preserve">
-    <value>Bootstrapping der Anwendung ...</value>
-  </data>
-  <data name="App_RunAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
-    <value>Umgebungsdienste konfigurieren ...</value>
-  </data>
-  <data name="App_RunAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
-    <value>Während des Anwendungskonfigurationsvorgangs sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_RunAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
-    <value>Während des erzwungenen Herunterfahrens der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_RunAsync_ErrorDuringInitialization_Exception" xml:space="preserve">
-    <value>Während des Bootstrap-Vorgangs der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_RunAsync_InitializingAppManager_Message" xml:space="preserve">
-    <value>App-Manager initialisieren ...</value>
-  </data>
-  <data name="App_RunAsync_StartComplete_Message" xml:space="preserve">
-    <value>Die Anwendung wurde erfolgreich gebootet.</value>
-  </data>
-  <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
-    <value>Die Anwendung wurde erfolgreich heruntergefahren. Auf Wiedersehen!</value>
-  </data>
-  <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
-    <value>Beim Herunterfahren der Anwendung sind Fehler aufgetreten. Weitere Informationen finden Sie in den Ausnahmedetails.</value>
-  </data>
-  <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
-    <value>Anwendung herunterfahren ...</value>
-  </data>
   <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
     <value>Assembly '{Assembly}' kann nicht geladen werden. Weitere Informationen finden Sie in der Ausnahme.</value>
-  </data>
-  <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
-    <value>Der angegebene Contract-Typ '{0}' kann nicht aus dem Service-Contract '{1}' zugewiesen werden.</value>
-  </data>
-  <data name="AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning" xml:space="preserve">
-    <value>Anwendungsservice-Contracts, die als offene Generics exportiert werden, unterstützen keine Metadatenattribute und werden ignoriert ('{contractType}'). Versuchen Sie stattdessen, Metadaten über generische Parametertypen zu übergeben.</value>
   </data>
   <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Mehrere mit {0} gekennzeichnete Konstruktoren werden für die Service-Implementierung '{1}' mit dem Contract '{2}' deklariert.</value>
@@ -189,20 +144,11 @@
   <data name="InjectorBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
     <value>Der erforderliche Dienst vom Typ '{0}' wurde nicht bereitgestellt.</value>
   </data>
-  <data name="CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
+  <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
     <value>Die Prioritäten des Dienstes '{0}' können für zwei Instanzen nicht aufgelöst werden: {1} und {2}.</value>
   </data>
   <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
     <value>Das Element {0} konnte nicht zur Concurrent-Collection hinzugefügt werden.</value>
-  </data>
-  <data name="ConfigurationBase_SettingValueNotSupported_Exception" xml:space="preserve">
-    <value>Das Festlegen eines Werts wird von der Standardimplementierung der Konfiguration nicht unterstützt. Überschreiben Sie dies in einer abgeleiteten Klasse, um eine Implementierung bereitzustellen.</value>
-  </data>
-  <data name="ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception" xml:space="preserve">
-    <value>Der gespeicherte Einstellungstyp '{0}' unterscheidet sich vom angeforderten Einstellungstyp '{1}'.</value>
-  </data>
-  <data name="Context_CannotChangeIdentity_Exception" xml:space="preserve">
-    <value>Die Identität im Kontext kann nicht geändert werden, sobald sie festgelegt wurde.</value>
   </data>
   <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
     <value>Der Kontexttyp '{0}' muss eine instanziierbare Klasse sein.</value>
@@ -233,9 +179,6 @@
   </data>
   <data name="DuplicateKeyException_Message" xml:space="preserve">
     <value>Ein Item mit demselben Schlüssel wurde bereits hinzugefügt.</value>
-  </data>
-  <data name="OperationResult_Merge_TaskNotCompleteException" xml:space="preserve">
-    <value>Das Task-Ergebnis kann nicht zusammengeführt werden, die Task ist nicht abgeschlossen.</value>
   </data>
   <data name="TaskNotCompletedException_Message" xml:space="preserve">
     <value>Die Task ist nicht abgeschlossen.</value>

@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+namespace Kephas.Connectivity;
+
+using Kephas.Services;
 using Kephas.Security.Authentication;
 using Kephas.Services;
-
-namespace Kephas.Connectivity;
 
 /// <summary>
 /// A context for creating connections.
@@ -21,9 +21,9 @@ public class ConnectionContext : Context, IConnectionContext
     /// <summary>
     /// Initializes a new instance of the <see cref="ConnectionContext"/> class.
     /// </summary>
-    /// <param name="injector">The injector.</param>
-    public ConnectionContext(IInjector injector)
-        : base(injector)
+    /// <param name="serviceProvider">The injector.</param>
+    public ConnectionContext(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
     }
 
@@ -50,4 +50,14 @@ public class ConnectionContext : Context, IConnectionContext
     /// The host to connect to.
     /// </value>
     public Uri? Host { get; set; }
+
+    /// <summary>
+    /// Gets or sets the connection.
+    /// </summary>
+    public IConnection? Connection { get; set; }
+
+    /// <summary>
+    /// Gets or sets the exception during connection creation.
+    /// </summary>
+    public Exception? Exception { get; set; }
 }

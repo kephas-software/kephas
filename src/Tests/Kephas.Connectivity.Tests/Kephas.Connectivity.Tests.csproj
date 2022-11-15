@@ -37,7 +37,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Kephas.Connectivity\Kephas.Connectivity.csproj" />
-		<ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.Autofac\Kephas.Testing.Injection.Autofac.csproj" />
+		<ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\Kephas.Services.Autofac\Kephas.Services.Autofac.csproj" />
 		<ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
 	</ItemGroup>
 

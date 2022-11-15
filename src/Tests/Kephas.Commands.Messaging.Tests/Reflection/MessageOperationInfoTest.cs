@@ -11,6 +11,7 @@
 namespace Kephas.Commands.Messaging.Tests.Reflection
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,7 +23,6 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     using Kephas.Messaging.Messages;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -152,7 +152,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
 
         public class UpdateMessage : IMessage
         {
-            [DisplayInfo(ShortName = "pre", Description = "Includes prerelease.")]
+            [Display(ShortName = "pre", Description = "Includes prerelease.")]
             public bool IncludePrerelease { get; set; }
         }
     }

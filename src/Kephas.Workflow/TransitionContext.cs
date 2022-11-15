@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Workflow
 {
@@ -24,10 +24,10 @@ namespace Kephas.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="TransitionContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="stateMachine">The state machine.</param>
-        public TransitionContext(IInjector injector, IStateMachine stateMachine)
-            : base(injector)
+        public TransitionContext(IServiceProvider serviceProvider, IStateMachine stateMachine)
+            : base(serviceProvider)
         {
             this.StateMachine = stateMachine;
         }

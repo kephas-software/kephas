@@ -10,21 +10,15 @@
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
         <WarningsAsErrors>nullable</WarningsAsErrors>
 
-        <Version>11.1.0</Version>
-        <AssemblyVersion>11.1.0.0</AssemblyVersion>
-        <FileVersion>11.1.0.0</FileVersion>
+        <Version>12.0.0-dev.1</Version>
+        <AssemblyVersion>12.0.0.0</AssemblyVersion>
+        <FileVersion>12.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>
-            Provides abstractions for the application infrastructure.
-            Typically used areas and classes/interfaces/services:
-            - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior, AppIdentity.
-
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+        <Description>Provides abstractions for applications based on Kephas Framework.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -34,10 +28,8 @@
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log.
-            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-        </PackageReleaseNotes>
+        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>kephas application abstractions</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -93,14 +85,21 @@
         </When>
     </Choose>
 
+
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>ILLink.Descriptors.xml</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppAbstractionStrings.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>AppAbstractionStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 
@@ -114,6 +113,11 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>ApplicationStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <Compile Update="Resources\AppAbstractionStrings.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>AppAbstractionStrings.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

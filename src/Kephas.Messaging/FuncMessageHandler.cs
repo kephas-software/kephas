@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection.AttributedModel;
+using Kephas.Services.AttributedModel;
 
 namespace Kephas.Messaging
 {

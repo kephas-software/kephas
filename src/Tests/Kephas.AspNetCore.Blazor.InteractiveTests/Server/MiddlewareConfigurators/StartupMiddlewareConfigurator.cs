@@ -16,7 +16,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.MiddlewareConfigurato
     [ProcessingPriority(Priority.Highest + 100)]
     public class StartupMiddlewareConfigurator : IMiddlewareConfigurator
     {
-        public void Configure(IAspNetAppContext appContext)
+        public void Configure(IWebAppContext appContext)
         {
             var app = appContext.AppBuilder;
             var env = appContext.HostEnvironment;

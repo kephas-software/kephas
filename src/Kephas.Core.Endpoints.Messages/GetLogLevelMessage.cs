@@ -10,13 +10,14 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
 
     /// <summary>
     /// A get log level message.
     /// </summary>
-    [DisplayInfo(Description = "Gets the application minimum log level.")]
+    [Display(Description = "Gets the application minimum log level.")]
     public class GetLogLevelMessage : IMessage
     {
     }

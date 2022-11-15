@@ -23,10 +23,21 @@ namespace Kephas.Operations
         /// Initializes a new instance of the <see cref="OperationMessage"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public OperationMessage(string message)
+        /// <param name="exception">Optional. The exception.</param>
+        public OperationMessage(string message, Exception? exception = null)
         {
             this.Message = message;
+            this.Exception = exception;
             this.Timestamp = DateTimeOffset.Now;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OperationMessage"/> class.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        public OperationMessage(Exception exception)
+            : this(exception?.Message ?? string.Empty, exception ?? throw new ArgumentNullException(nameof(exception)))
+        {
         }
 
         /// <summary>
@@ -36,6 +47,11 @@ namespace Kephas.Operations
         /// The message.
         /// </value>
         public string Message { get; }
+
+        /// <summary>
+        /// Gets the exception, if any.
+        /// </summary>
+        public Exception? Exception { get; }
 
         /// <summary>
         /// Gets the timestamp.
@@ -49,7 +65,8 @@ namespace Kephas.Operations
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"[{this.Timestamp:s}] {this.Message}";
+            var exceptionMessage = this.Exception is null ? null : $" ({this.Exception.GetType()})";
+            return $"[{this.Timestamp:s}] {this.Message}{exceptionMessage}";
         }
     }
 }

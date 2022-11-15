@@ -26,6 +26,7 @@ public class ExchangeOnlineImapConnection : IConnection, IAdapter<ImapClient>
 {
     private readonly IConnectionContext connectionContext;
     private readonly IEncryptionService encryptionService;
+    private readonly ISerializationService serializationService;
     private readonly IConfiguration<ExchangeOnlineConnectionSettings> connectionConfiguration;
     private readonly ILogger<ExchangeOnlineImapConnection>? logger;
     private readonly ImapClient imapClient;
@@ -39,16 +40,19 @@ public class ExchangeOnlineImapConnection : IConnection, IAdapter<ImapClient>
     /// </summary>
     /// <param name="connectionContext">The connection context.</param>
     /// <param name="encryptionService">The encryption service.</param>
+    /// <param name="serializationService">The serialization service.</param>
     /// <param name="connectionConfiguration">The connection configuration.</param>
     /// <param name="logger">Optional. The logger.</param>
     public ExchangeOnlineImapConnection(
         IConnectionContext connectionContext,
         IEncryptionService encryptionService,
+        ISerializationService serializationService,
         IConfiguration<ExchangeOnlineConnectionSettings> connectionConfiguration,
         ILogger<ExchangeOnlineImapConnection>? logger = null)
     {
         this.connectionContext = connectionContext;
         this.encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
+        this.serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
         this.connectionConfiguration = connectionConfiguration ?? throw new ArgumentNullException(nameof(connectionConfiguration));
         this.logger = logger;
         this.imapClient = new ImapClient

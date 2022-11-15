@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExchangeOnlineImapConnectionTest.cs" company="Kephas Software SRL">
-//   Copyright (c) Kephas Software SRL. All rights reserved.
-//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Kephas.Mail.Tests.Connectivity;
+﻿namespace Kephas.Mail.Tests.Connectivity;
 
 using Kephas.Configuration;
 using Kephas.Connectivity;
@@ -24,15 +17,16 @@ using NUnit.Framework;
 [TestFixture]
 public class ExchangeOnlineImapConnectionTest
 {
-    [Test]
-    [Ignore("Manual test, should provide connection settings/user name and password.")]
+    [Test, Ignore("Manual test, should provide connection settings/user name and password.")]
     public async Task OpenAsync()
     {
         var context = this.CreateConnectionContext();
+        var serializationService = this.CreateSerializationService();
         var configuration = this.CreateConfiguration();
         await using var connection = new ExchangeOnlineImapConnection(
             context,
             new NullEncryptionService(),
+            serializationService,
             configuration,
             Substitute.For<ILogger<ExchangeOnlineImapConnection>?>());
 
@@ -54,6 +48,18 @@ public class ExchangeOnlineImapConnectionTest
 
         configuration.GetSettings(Arg.Any<IContext>()).Returns(settings);
         return configuration;
+    }
+
+    private ISerializationService CreateSerializationService()
+    {
+        return new DefaultSerializationService(
+            Substitute.For<IInjectableFactory>(),
+            new List<IExportFactory<ISerializer, SerializerMetadata>>
+            {
+                new ExportFactory<ISerializer, SerializerMetadata>(
+                    () => new JsonSerializer(DefaultJsonSerializerSettingsProvider.Instance),
+                    new SerializerMetadata(typeof(JsonMediaType))),
+            });
     }
 
     private IConnectionContext CreateConnectionContext()

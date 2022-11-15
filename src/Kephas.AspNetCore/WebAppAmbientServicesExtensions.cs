@@ -25,13 +25,13 @@ namespace Kephas.Application.AspNetCore
         /// the given <see cref="IAmbientServices"/>.
         /// </summary>
         /// <param name="builder">The <see cref="IMvcBuilder"/>.</param>
-        /// <param name="ambientServices">The <see cref="IAmbientServices"/>.</param>
+        /// <param name="appRuntime">The <see cref="IAppRuntime"/>.</param>
         /// <returns>The provided <see cref="IMvcBuilder"/>.</returns>
         public static IMvcBuilder ConfigureApplicationPartManager(
             this IMvcBuilder builder,
-            IAmbientServices ambientServices)
+            IAppRuntime appRuntime)
         {
-            var appAssemblies = ambientServices.GetAppAssemblies();
+            var appAssemblies = appRuntime.GetAppAssemblies();
             var assemblyParts = appAssemblies.Select(asm => (ApplicationPart)new AssemblyPart(asm));
 
             return builder

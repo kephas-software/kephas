@@ -10,21 +10,15 @@
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
         <WarningsAsErrors>nullable</WarningsAsErrors>
 
-        <Version>11.1.0</Version>
-        <AssemblyVersion>11.1.0.0</AssemblyVersion>
-        <FileVersion>11.1.0.0</FileVersion>
+        <Version>12.0.0-dev.1</Version>
+        <AssemblyVersion>12.0.0.0</AssemblyVersion>
+        <FileVersion>12.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>
-            Provides abstractions for the dependency injection infrastructure.
-            Typically used areas and classes/interfaces/services:
-            - Reflection: DynamicTypeInfo, DynamicTypeRegistry.
-
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </Description>
+        <Description>Extends the reflection with dynamic metadata.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -34,11 +28,9 @@
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log.
-            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-        </PackageReleaseNotes>
-        <PackageTags>kephas reflection</PackageTags>
+        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>kephas reflection dynamic</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -87,6 +79,8 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>

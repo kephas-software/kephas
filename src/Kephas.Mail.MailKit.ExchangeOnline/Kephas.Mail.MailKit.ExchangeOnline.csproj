@@ -75,14 +75,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MailKit" Version="3.1.1" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
-        <ProjectReference Include="..\Kephas.Connectivity\Kephas.Connectivity.csproj" />
-        <ProjectReference Include="..\Kephas.Mail\Kephas.Mail.csproj" />
+        <ProjectReference Include="..\Kephas.Mail.MailKit\Kephas.Mail.MailKit.csproj" />
     </ItemGroup>
 
     <ItemGroup>

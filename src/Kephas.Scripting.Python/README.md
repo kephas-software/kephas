@@ -6,7 +6,7 @@ The Python scripting area in Kephas handles Python dynamic code execution using 
 
 Check the following packages for more information:
 * [Kephas.Scripting](https://www.nuget.org/packages/Kephas.Scripting)
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Configuration](https://www.nuget.org/packages/Kephas.Configuration)
 
 ## Usage

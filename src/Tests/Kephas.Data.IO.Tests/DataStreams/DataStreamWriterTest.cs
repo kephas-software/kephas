@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.IO.Tests.DataStreams
 {
     using System.Collections.Generic;
@@ -76,7 +74,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
-                await writer.WriteAsync(new[] { "abcd" }, dataStream, new DataIOContext(Substitute.For<IInjector>()).RootObjectType(typeof(bool)));
+                await writer.WriteAsync(new[] { "abcd" }, dataStream, new DataIOContext(Substitute.For<IServiceProvider>()).RootObjectType(typeof(bool)));
                 Assert.IsNotNull(serializationContext);
                 Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
             }

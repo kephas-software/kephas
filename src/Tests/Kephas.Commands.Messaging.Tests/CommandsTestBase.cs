@@ -16,34 +16,35 @@ namespace Kephas.Commands.Messaging.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging;
-    using Kephas.Testing.Injection;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
 
-    public abstract class CommandsTestBase : InjectionTestBase
+    public abstract class CommandsTestBase : TestBase
     {
-        public override IInjector CreateInjector(
+        protected IServiceProvider BuildServiceProvider()
+        {
+            return this.CreateServicesBuilder().BuildWithDependencyInjection();
+        }
+
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
             IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
-            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
+            ambientServices = builder.AmbientServices;
+            if (!ambientServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(builder));
+                ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config);
+            return builder;
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = base.GetAssemblies().ToList();
             assemblies.AddRange(new[]

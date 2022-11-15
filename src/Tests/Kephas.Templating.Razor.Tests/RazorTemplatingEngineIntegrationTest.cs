@@ -20,7 +20,7 @@ public class RazorTemplatingEngineIntegrationTest : RazorTemplatingTestBase
     [TestCase("functions.cshtml", "Hello!", "<div>@Hello!@</div>\r\n")]
     public async Task ProcessAsync(string templatePath, string model, string expected)
     {
-        var injector = this.CreateInjector();
+        var injector = this.BuildServiceProvider();
         var engine = injector.Resolve<ITemplatingEngine>("Razor");
 
         using var writer = new StringWriter();

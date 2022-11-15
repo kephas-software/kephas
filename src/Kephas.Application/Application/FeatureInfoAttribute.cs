@@ -13,7 +13,7 @@ namespace Kephas.Application
     using System;
 
     using Kephas.Application.Reflection;
-    using Kephas.Injection;
+    using Kephas.Services;
 
     /// <summary>
     /// Attribute providing feature information.

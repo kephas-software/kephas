@@ -17,7 +17,6 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Data;
     using Kephas.Messaging;
     using Kephas.Reflection;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -27,7 +26,7 @@ namespace Kephas.Core.Endpoints.Tests
         [Test]
         public async Task ProcessAsync()
         {
-            var appRuntime = Substitute.For<IAmbientServices>();
+            var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { typeof(CoreSettings).Assembly });

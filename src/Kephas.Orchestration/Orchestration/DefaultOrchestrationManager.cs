@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Orchestration
 {
@@ -167,7 +167,7 @@ namespace Kephas.Orchestration
         /// <value>
         /// The live apps cache.
         /// </value>
-        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ConcurrentDictionary<string, IAppEvent>();
+        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ();
 
         /// <summary>
         /// Initializes the service asynchronously.
@@ -607,7 +607,7 @@ namespace Kephas.Orchestration
         {
             this.EnsureInitialized();
 
-            if (this.AppRuntime.IsRoot())
+            if (this.AppRuntime.IsRoot)
             {
                 return this.AppRuntime.GetAppInstanceId()!;
             }

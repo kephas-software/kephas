@@ -98,16 +98,16 @@ namespace Kephas
         /// <returns>
         /// The plugin data service.
         /// </returns>
-        internal static IPluginRepository GetPluginRepository(this IAppRuntime appRuntime)
+        internal static IPluginStore GetPluginStore(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
-                return pluginsAppRuntime.PluginRepository;
+                return pluginsAppRuntime.PluginStore;
             }
 
-            if (!(appRuntime?[nameof(PluginsAppRuntime.PluginRepository)] is IPluginRepository pluginRepository))
+            if (!(appRuntime?[nameof(PluginsAppRuntime.PluginStore)] is IPluginStore pluginRepository))
             {
-                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginRepository)} from {appRuntime?.GetType()}.");
+                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginStore)} from {appRuntime?.GetType()}.");
             }
 
             return pluginRepository;

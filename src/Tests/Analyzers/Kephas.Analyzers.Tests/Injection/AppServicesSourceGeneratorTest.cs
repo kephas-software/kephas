@@ -27,7 +27,7 @@ namespace Kephas.Analyzers.Tests.Injection
             Assert.AreEqual(1, appServicesAttrs.Count);
 
             var serviceProviderType = appServicesAttrs[0].ProviderType;
-            Assert.AreEqual("Kephas.Injection.Generated.AppServices_Kephas_Analyzers_TestAssembly", serviceProviderType.FullName);
+            Assert.AreEqual("Kephas.Services.Generated.AppServices_Kephas_Analyzers_TestAssembly", serviceProviderType.FullName);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Kephas.Analyzers.Tests.Injection
             var appServicesAttr = testAssembly.GetCustomAttributes<AppServicesAttribute>().Single();
 
             var provider = Activator.CreateInstance(appServicesAttr.ProviderType)!;
-            var typesProvider = (IAppServiceInfosProvider)provider;
+            var typesProvider = (IAppServiceInfoProvider)provider;
             var services = typesProvider.GetAppServices();
 
             var expectedServices = new (Type serviceType, Type contractDeclarationType)[]
@@ -58,17 +58,18 @@ namespace Kephas.Analyzers.Tests.Injection
                     service => services.Any(
                         s => s.ServiceType == service.serviceType && s.ContractDeclarationType == service.contractDeclarationType)));
 
-            var contractsProvider = (IAppServiceInfosProvider)provider;
+            var contractsProvider = (IAppServiceInfoProvider)provider;
             CollectionAssert.AreEquivalent(
                 new[]
                 {
-                    typeof(ISingletonServiceContract),
-                    typeof(IFileScopedNsSingletonServiceContract),
-                    typeof(ServiceAndContract),
-                    typeof(ServiceBase),
-                    typeof(IOpenGenericContract<>),
-                    typeof(IGenericContract<>),
-                    typeof(IGenericContractDeclaration<,>),
+                    new ContractDeclarationInfo(typeof(ISingletonServiceContract), null),
+                    new ContractDeclarationInfo(typeof(IFileScopedNsSingletonServiceContract), null),
+                    new ContractDeclarationInfo(typeof(ServiceAndContract), null),
+                    new ContractDeclarationInfo(typeof(ServiceBase), null),
+                    new ContractDeclarationInfo(typeof(IOpenGenericContract<>), null),
+                    new ContractDeclarationInfo(typeof(IGenericContract<>), null),
+                    new ContractDeclarationInfo(typeof(IGenericContractDeclaration<,>), null),
+                    new ContractDeclarationInfo(typeof(IMetaService), typeof(MetaServiceMetadata)),
                 },
                 contractsProvider.GetContractDeclarationTypes());
         }

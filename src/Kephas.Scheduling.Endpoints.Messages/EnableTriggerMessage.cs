@@ -9,13 +9,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Kephas.Scheduling.Endpoints
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Messaging;
 
     /// <summary>
     /// An enable trigger message.
     /// </summary>
-    [DisplayInfo(Description = "Enables the specified trigger.")]
+    [Display(Description = "Enables the specified trigger.")]
     public class EnableTriggerMessage : IMessage
     {
     }

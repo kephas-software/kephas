@@ -42,21 +42,25 @@ namespace Kephas.Data.Store
         }
 
         /// <summary>
-        /// Parses the provided connection string to an <see cref="IExpandoBase"/>.
+        /// Parses the provided connection string to an <see cref="IDynamic"/>.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <returns>
-        /// An <see cref="IExpandoBase"/> containing the configuration parameters.
+        /// An <see cref="IDynamic"/> containing the configuration parameters.
         /// </returns>
-        public static IExpandoBase ToExpando(string connectionString)
+        public static IDynamic ToExpando(string connectionString)
         {
-            if (string.IsNullOrEmpty(connectionString)) throw new System.ArgumentException("Value must not be null or empty.", nameof(connectionString));
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentException("Value must not be null or empty.", nameof(connectionString));
+            }
 
-            var expando = new Expando(GetConnectionStringSplits(connectionString)
+            var expando = GetConnectionStringSplits(connectionString)
                                     .ToDictionary(
                                         kvp => kvp[0].Trim(),
                                         kvp => (object?)kvp[1].Trim(),
-                                        StringComparer.OrdinalIgnoreCase));
+                                        StringComparer.OrdinalIgnoreCase)
+                                    .ToDynamic();
 
             return expando;
         }

@@ -22,7 +22,7 @@ steps:
 - task: DotNetCoreInstaller@0
   inputs:
     packageType: 'sdk'
-    version: '2.2.105'
+    version: '6.0.400'
 
 - script: dotnet restore $(solution)
 - task: NuGetCommand@2
@@ -35,13 +35,14 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     msbuildArchitecture: 'x64'
+    msbuildArgs: '/p:Version=$(package.version) /p:AssemblyVersion=$(package.version).0 /p:FileVersion=$(package.version).$(build.number)'
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Framework 4.5'
+    testRunTitle: '.NET 6.0'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\net45\*Tests.dll
+      **\net6.0*\*Tests.dll
       !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**
@@ -50,43 +51,10 @@ steps:
     configuration: '$(buildConfiguration)'
     runInParallel: true
     codeCoverageEnabled: true
-    otherConsoleOptions: '/Framework:.NETFramework,Version=v4.5'
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Framework 4.5.2'
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\net452\*Tests.dll
-      !**\*InteractiveTests.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    runInParallel: true
-    codeCoverageEnabled: true
-    otherConsoleOptions: '/Framework:.NETFramework,Version=v4.5.2'
-
-- task: VSTest@2
-  inputs:
-    testRunTitle: '.NET Framework 4.6'
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\net46*\*Tests.dll
-      !**\*InteractiveTests.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    runInParallel: true
-    codeCoverageEnabled: true
-    otherConsoleOptions: '/Framework:.NETFramework,Version=v4.6'
-
-- task: VSTest@2
-  inputs:
-    testRunTitle: '.NET Core 2.2'
+    testRunTitle: '.NET Core 3.1'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
       **\netcoreapp*\*Tests.dll

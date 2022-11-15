@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Model.Runtime.Construction
 {
@@ -46,7 +46,7 @@ namespace Kephas.Model.Runtime.Construction
 
             this.modelElementConstructors = modelElementConstructors
                     .Order()
-                    .ToDictionary(e => e.CreateExport().Value, e => e.Metadata);
+                    .ToDictionary(e => e.CreateExportedValue(), e => e.Metadata);
 
             this.modelElementConfigurators =
                 (from cfg in modelElementConfigurators
@@ -54,7 +54,7 @@ namespace Kephas.Model.Runtime.Construction
                  into cfgGroup
                 select cfgGroup).ToDictionary(
                      g => typeRegistry.GetTypeInfo(g.Key),
-                     g => g.OrderBy(e => e.Metadata.ProcessingPriority).Select(e => e.CreateExport().Value).ToList());
+                     g => g.OrderBy(e => e.Metadata.ProcessingPriority).Select(e => e.CreateExportedValue()).ToList());
         }
 
         /// <summary>

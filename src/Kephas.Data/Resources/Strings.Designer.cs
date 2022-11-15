@@ -187,16 +187,6 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validation failed for {0}:
-        ///{1}..
-        /// </summary>
-        public static string DataValidationException_Message {
-            get {
-                return ResourceManager.GetString("DataValidationException_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Expected an object of type &apos;{0}&apos;, but received one of type &apos;{1}&apos;..
         /// </summary>
         public static string DataValidator_MismatchedEntityType_Exception {

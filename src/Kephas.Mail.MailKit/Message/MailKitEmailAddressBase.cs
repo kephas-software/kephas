@@ -19,7 +19,7 @@ namespace Kephas.Mail.Message
     /// <seealso cref="IEmailAddress" />
     /// <seealso cref="IExpandoMixin" />
     /// <seealso cref="IAdapter{T}" />
-    public abstract class MailKitEmailAddressBase<T> : Expando, IEmailAddress, IAdapter<T>
+    public abstract class MailKitEmailAddressBase<T> : ExpandoBase<object?>, IEmailAddress, IAdapter<T>
         where T : notnull, InternetAddress
     {
         /// <summary>

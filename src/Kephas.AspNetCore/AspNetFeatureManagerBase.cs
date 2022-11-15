@@ -45,7 +45,7 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task InitializeCoreAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
+        protected virtual Task InitializeCoreAsync(IWebAppContext appContext, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
@@ -71,21 +71,21 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task FinalizeCoreAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
+        protected virtual Task FinalizeCoreAsync(IWebAppContext appContext, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAspNetAppContext GetAspNetAppContext(IAppContext appContext)
+        private static IWebAppContext GetAspNetAppContext(IAppContext appContext)
         {
-            return appContext is IAspNetAppContext aspNetAppContext
+            return appContext is IWebAppContext aspNetAppContext
                 ? aspNetAppContext
                 : throw new InvalidOperationException(
                     string.Format(
                         Strings.AspNetFeatureManager_InvalidAppContext_Exception,
                         appContext?.GetType().FullName,
-                        typeof(IAspNetAppContext).FullName));
+                        typeof(IWebAppContext).FullName));
         }
     }
 }

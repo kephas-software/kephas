@@ -10,12 +10,12 @@
 
 namespace Kephas.Messaging.Messages
 {
-    using Kephas.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// The "ping" message.
     /// </summary>
-    [DisplayInfo(Description = "Sends a 'ping' message to the server.")]
+    [Display(Description = "Sends a 'ping' message to the server.")]
     public class PingMessage : IMessage
     {
     }

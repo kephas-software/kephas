@@ -126,7 +126,7 @@ namespace Kephas.Messaging.Pipes.Routing
             // make sure we have an out dummy channel to self.
             this.EnsureOutChannel(thisAppInstanceId);
 
-            if (!this.AppRuntime.IsRoot())
+            if (!this.AppRuntime.IsRoot)
             {
                 // then create an output channel to root.
                 // the root created the IN when starting the child process.

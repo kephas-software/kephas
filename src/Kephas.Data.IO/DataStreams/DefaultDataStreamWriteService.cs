@@ -16,7 +16,7 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading.Tasks;
 
     using Kephas.Data.IO.Resources;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Services;
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// The writer factories.
         /// </summary>
-        private readonly IOrderedServiceFactoryCollection<IDataStreamWriter, DataStreamWriterMetadata> writerFactories;
+        private readonly IFactoryEnumerable<IDataStreamWriter, DataStreamWriterMetadata> writerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataStreamWriteService"/> class.

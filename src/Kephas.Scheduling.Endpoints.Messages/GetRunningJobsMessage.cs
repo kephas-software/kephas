@@ -8,8 +8,8 @@
 namespace Kephas.Scheduling.Endpoints
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
-    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
@@ -17,7 +17,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message for getting the running jobs.
     /// </summary>
-    [DisplayInfo(Description = "Gets the running jobs.")]
+    [Display(Description = "Gets the running jobs.")]
     public class GetRunningJobsMessage : IMessage
     {
     }
