@@ -59,6 +59,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
+        <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
         <ProjectReference Include="..\Kephas.Licensing\Kephas.Licensing.csproj" />
         <ProjectReference Include="..\Kephas.Plugins.Abstractions\Kephas.Plugins.Abstractions.csproj" />
     </ItemGroup>

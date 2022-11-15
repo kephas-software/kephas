@@ -24,9 +24,6 @@ namespace Kephas.Model.Application
     [ProcessingPriority(Priority.High)]
     public class ModelAppLifecycleBehavior : IAppLifecycleBehavior
     {
-        /// <summary>
-        /// The model space provider.
-        /// </summary>
         private readonly IModelSpaceProvider modelSpaceProvider;
 
         /// <summary>
@@ -41,17 +38,14 @@ namespace Kephas.Model.Application
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
         {
             var result = new OperationResult(true);
-            await this.modelSpaceProvider.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+            await this.modelSpaceProvider.InitializeAsync(cancellationToken: cancellationToken).PreserveThreadContext();
             return result.Complete();
         }
     }

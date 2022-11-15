@@ -44,7 +44,7 @@ namespace Kephas.Tests.Orchestration.Application
 
             var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));
 
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+            await behavior.BeforeAppInitializeAsync();
 
             var signal = new ConfigurationChangedSignal("test")
             {
@@ -57,7 +57,7 @@ namespace Kephas.Tests.Orchestration.Application
             messageBroker.Received(0)
                 .DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>());
 
-            await behavior.AfterAppFinalizeAsync(Substitute.For<IAppContext>());
+            await behavior.AfterAppFinalizeAsync();
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Kephas.Tests.Orchestration.Application
 
             var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));
 
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+            await behavior.BeforeAppInitializeAsync();
 
             var signal = new ConfigurationChangedSignal("test")
             {
@@ -90,7 +90,7 @@ namespace Kephas.Tests.Orchestration.Application
             messageBroker.Received(0)
                 .DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>());
 
-            await behavior.AfterAppFinalizeAsync(Substitute.For<IAppContext>());
+            await behavior.AfterAppFinalizeAsync();
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Kephas.Tests.Orchestration.Application
 
             var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));
 
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+            await behavior.BeforeAppInitializeAsync();
 
             var signal = new ConfigurationChangedSignal("test")
             {
@@ -138,7 +138,7 @@ namespace Kephas.Tests.Orchestration.Application
             messageBroker.Received(1)
                 .DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>());
 
-            await behavior.AfterAppFinalizeAsync(Substitute.For<IAppContext>());
+            await behavior.AfterAppFinalizeAsync();
         }
 
         private IEnumerable<IRuntimeAppInfo> GetLiveApps(params string[] instanceIds)

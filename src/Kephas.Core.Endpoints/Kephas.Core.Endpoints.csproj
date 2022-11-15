@@ -69,6 +69,7 @@
         <ProjectReference Include="..\Kephas.Core.Endpoints.Messages\Kephas.Core.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
+        <ProjectReference Include="..\Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj" />
         <ProjectReference Include="..\Kephas.Serialization\Kephas.Serialization.csproj" />
     </ItemGroup>
 

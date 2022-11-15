@@ -35,8 +35,8 @@ namespace Kephas.Tests.Orchestration.Application
             var config = Substitute.For<IConfiguration<AppSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
 
-            var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>(), default);
+            var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry(), Substitute.For<IAppContext>());
+            await behavior.BeforeAppInitializeAsync(default);
 
             await eventHub.PublishAsync(new ScheduleStartupCommandSignal("hello"), Substitute.For<IContext>(), default);
             Assert.AreEqual(1, settings.SetupCommands.Length);
@@ -54,8 +54,8 @@ namespace Kephas.Tests.Orchestration.Application
             var config = Substitute.For<IConfiguration<AppSettings>>();
             config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
 
-            var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
-            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>(), default);
+            var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry(), Substitute.For<IAppContext>());
+            await behavior.BeforeAppInitializeAsync(default);
 
             await eventHub.PublishAsync(new ScheduleStartupCommandSignal(new HelloMessage { To = "gigi", Likes = 3 }), Substitute.For<IContext>(), default);
             Assert.AreEqual(1, settings.SetupCommands.Length);

@@ -32,27 +32,24 @@ namespace Kephas.Redis.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisClientAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public RedisClientAppLifecycleBehavior(IServiceProvider serviceProvider)
+        /// <param name="connectionFactories">The connection factories.</param>
+        public RedisClientAppLifecycleBehavior(ILazyEnumerable<IConnectionFactory, AppServiceMetadata> connectionFactories)
         {
-            this.redisConnectionFactory = serviceProvider.TryResolve<IConnectionFactory>(RedisConnectionFactory.ConnectionKind);
+            this.redisConnectionFactory = connectionFactories.TryGetService(m => m.ServiceName == RedisConnectionFactory.ConnectionKind);
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
         {
             if (this.redisConnectionFactory != null)
             {
-                await ServiceHelper.InitializeAsync(this.redisConnectionFactory, appContext, cancellationToken).PreserveThreadContext();
+                await ServiceHelper.InitializeAsync(this.redisConnectionFactory, cancellationToken: cancellationToken).PreserveThreadContext();
             }
 
             return true.ToOperationResult();
@@ -61,18 +58,15 @@ namespace Kephas.Redis.Application
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task<IOperationResult> AfterAppFinalizeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
         {
             if (this.redisConnectionFactory != null)
             {
-                await ServiceHelper.FinalizeAsync(this.redisConnectionFactory, appContext, cancellationToken).PreserveThreadContext();
+                await ServiceHelper.FinalizeAsync(this.redisConnectionFactory, cancellationToken: cancellationToken).PreserveThreadContext();
             }
 
             return true.ToOperationResult();

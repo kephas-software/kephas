@@ -15,3 +15,5 @@
 * Changed ```OperationMessage.ToString()``` to include the exception information, if provided.
 * Breaking change: ``IOperationResult.AsTask()`` returns ``Task<object?>`` instead of ``Task``.
 * NEW: ``IOperationResult`` and ``IOperationResult<TValue>`` can be deconstructed.
+* NEW: Moved `IAppLifecycleBehavior` here from `Kephas.Application`.
+* Breaking change: removed from `IAppLifecycleBehavior` methods the `IAppContext` parameter.

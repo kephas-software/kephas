@@ -19,36 +19,32 @@ namespace Kephas.Application
     /// Application lifecycle behavior for setting up the application.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class SetupAppLifecycleBehavior : AppLifecycleBehaviorBase
+    public class SetupAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IAppSetupService appSetupService;
+        private readonly IAppContext appContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SetupAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="appSetupService">The application setup service.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public SetupAppLifecycleBehavior(
-            IAppSetupService appSetupService,
-            ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="appContext">The application context.</param>
+        public SetupAppLifecycleBehavior(IAppSetupService appSetupService, IAppContext appContext)
         {
-            this.appSetupService = appSetupService;
+            this.appSetupService = appSetupService ?? throw new ArgumentNullException(nameof(appSetupService));
+            this.appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override Task<IOperationResult> AfterAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(CancellationToken cancellationToken = default)
         {
-            return this.appSetupService.SetupAsync(appContext, cancellationToken);
+            return this.appSetupService.SetupAsync(this.appContext, cancellationToken);
         }
     }
 }

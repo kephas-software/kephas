@@ -40,14 +40,11 @@ namespace Kephas.Messaging.Application
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result yielding the operation result.
         /// </returns>
-        public Task<IOperationResult> AfterAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(CancellationToken cancellationToken = default)
         {
             this.subscription.Dispose();
             return Task.FromResult((IOperationResult)true.ToOperationResult());

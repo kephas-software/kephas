@@ -8,17 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Tests.Events
+namespace Kephas.Messaging.Tests.Interaction
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Interaction;
     using Kephas.Messaging.Events;
+    using Kephas.Messaging.Interaction;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]

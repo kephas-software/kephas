@@ -8,17 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Events
+namespace Kephas.Messaging.Interaction
 {
     using System;
-    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Interaction;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Extension methods for <see cref="IEventHub"/>.

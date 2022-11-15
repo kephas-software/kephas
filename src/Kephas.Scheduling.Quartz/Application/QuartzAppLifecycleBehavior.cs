@@ -41,14 +41,11 @@ namespace Kephas.Scheduling.Quartz.Application
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
         {
             LogProvider.SetCurrentLogProvider(new QuartzLogProvider(this.logManager));
 

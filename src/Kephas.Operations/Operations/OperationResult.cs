@@ -25,7 +25,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Encapsulates the result of an operation.
     /// </summary>
-    public class OperationResult : Expando, IOperationResult, IDataFormattable
+    public class OperationResult : Expando, IOperationResult, IDataFormattable, INotifyPropertyChanged
     {
         private object? value;
         private OperationState operationState;

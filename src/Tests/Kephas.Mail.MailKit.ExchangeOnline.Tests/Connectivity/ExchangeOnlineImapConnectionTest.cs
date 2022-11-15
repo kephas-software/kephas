@@ -3,7 +3,6 @@
 using Kephas.Configuration;
 using Kephas.Connectivity;
 using Kephas.Cryptography;
-using Kephas.Injection;
 using Kephas.Logging;
 using Kephas.Mail.Connectivity;
 using Kephas.Net.Mime;
@@ -64,7 +63,7 @@ public class ExchangeOnlineImapConnectionTest
 
     private IConnectionContext CreateConnectionContext()
     {
-        return new ConnectionContext(Substitute.For<IInjector>())
+        return new ConnectionContext(Substitute.For<IServiceProvider>())
         {
             Credentials = new UserClearTextPasswordCredentials("<TODO>", "<TODO>"),
             Kind = "imap-ms365",

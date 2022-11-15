@@ -35,8 +35,9 @@ namespace Kephas.Orchestration.Application
     /// all the microservices in the system.
     /// </summary>
     [ProcessingPriority(Priority.Lowest)]
-    public class RootAppLifecycleBehavior : AppLifecycleBehaviorBase
+    public class RootAppLifecycleBehavior : IAppLifecycleBehavior
     {
+        private readonly IAppContext appContext;
         private Timer? supervisorTimer;
         private IEventSubscription? restartSubscription;
         private IEventSubscription? setupQuerySubscription;
@@ -47,25 +48,28 @@ namespace Kephas.Orchestration.Application
         /// Initializes a new instance of the <see cref="RootAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="appContext">The application context.</param>
         /// <param name="orchestrationManager">The orchestration manager.</param>
         /// <param name="systemConfiguration">The system configuration.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="appSetupService">The application setup service.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public RootAppLifecycleBehavior(
             IAppRuntime appRuntime,
+            IAppContext appContext,
             IOrchestrationManager orchestrationManager,
             IConfiguration<OrchestrationSettings> systemConfiguration,
             IEventHub eventHub,
             IAppSetupService appSetupService,
-            ILogManager? logManager = null)
-            : base(logManager)
+            ILogger<RootAppLifecycleBehavior>? logger = null)
         {
-            this.AppRuntime = appRuntime;
-            this.OrchestrationManager = orchestrationManager;
-            this.EventHub = eventHub;
-            this.AppSetupService = appSetupService;
-            this.SystemConfiguration = systemConfiguration;
+            this.appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+            this.AppRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            this.OrchestrationManager = orchestrationManager ?? throw new ArgumentNullException(nameof(orchestrationManager));
+            this.EventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
+            this.AppSetupService = appSetupService ?? throw new ArgumentNullException(nameof(appSetupService));
+            this.SystemConfiguration = systemConfiguration ?? throw new ArgumentNullException(nameof(systemConfiguration));
+            this.Logger = logger;
         }
 
         /// <summary>
@@ -89,6 +93,11 @@ namespace Kephas.Orchestration.Application
         protected IAppSetupService AppSetupService { get; }
 
         /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger<RootAppLifecycleBehavior>? Logger { get; }
+
+        /// <summary>
         /// Gets the system configuration.
         /// </summary>
         protected IConfiguration<OrchestrationSettings> SystemConfiguration { get; }
@@ -101,7 +110,6 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
@@ -109,28 +117,23 @@ namespace Kephas.Orchestration.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public override Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription = this.EventHub.Subscribe<AppSetupQueryEvent>((e, c) => e.SetupEnabled = e.SetupEnabled && this.enableAppSetup);
-            return base.BeforeAppInitializeAsync(appContext, cancellationToken);
+            return Task.FromResult<IOperationResult>(true.ToOperationResult());
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override async Task<IOperationResult> AfterAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppInitializeAsync(CancellationToken cancellationToken = default)
         {
-            await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
-            this.restartSubscription = this.EventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, appContext, token));
+            await this.StartWorkerProcessesAsync(this.appContext, cancellationToken).PreserveThreadContext();
+            this.restartSubscription = this.EventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, this.appContext, token));
             return true.ToOperationResult();
         }
 
@@ -141,38 +144,31 @@ namespace Kephas.Orchestration.Application
         /// To interrupt finalization, simply throw any appropriate exception.
         /// Caution! Interrupting the finalization may cause the application to remain in an undefined state.
         /// </remarks>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override async Task<IOperationResult> BeforeAppFinalizeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppFinalizeAsync(CancellationToken cancellationToken = default)
         {
             this.restartSubscription?.Dispose();
             this.restartSubscription = null;
 
-            await this.StopWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+            await this.StopWorkerProcessesAsync(this.appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public override async Task<IOperationResult> AfterAppFinalizeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription?.Dispose();
             this.setupQuerySubscription = null;
 
-            await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
@@ -231,7 +227,7 @@ namespace Kephas.Orchestration.Application
             }
 
             this.supervisorTimer = new Timer(
-                _ => this.SuperviseWorkerProcessesAsync(appContext, cancellationToken),
+                _ => this.SuperviseWorkerProcessesAsync(this.appContext, cancellationToken),
                 null,
                 TimeSpan.FromMinutes(1),
                 TimeSpan.FromSeconds(30));
@@ -277,7 +273,7 @@ namespace Kephas.Orchestration.Application
 
             var logger = appContext.Logger ?? this.Logger;
             var liveApps =
-                (await this.OrchestrationManager.GetLiveAppsAsync(ctx => ctx.Impersonate(appContext), cancellationToken)
+                (await this.OrchestrationManager.GetLiveAppsAsync(ctx => ctx.Impersonate(this.appContext), cancellationToken)
                     .PreserveThreadContext())
                 .ToList();
 
@@ -429,7 +425,7 @@ namespace Kephas.Orchestration.Application
             CancellationToken cancellationToken)
         {
             return (ProcessStartResult)await this.OrchestrationManager
-                .StartAppAsync(appInfo, appSettings?.Args ?? new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
+                .StartAppAsync(appInfo, appSettings?.Args ?? new Expando(), ctx => ctx.Merge(this.appContext), CancellationToken.None)
                 .PreserveThreadContext();
         }
 
@@ -456,7 +452,7 @@ namespace Kephas.Orchestration.Application
             }
 
             var result = await this.OrchestrationManager
-                .StopAppAsync(runtimeAppInfo, ctx => ctx.Impersonate(appContext), cancellationToken)
+                .StopAppAsync(runtimeAppInfo, ctx => ctx.Impersonate(this.appContext), cancellationToken)
                 .PreserveThreadContext();
 
             var message = result[nameof(StopAppResponseMessage)] as StopAppResponseMessage;
@@ -468,7 +464,7 @@ namespace Kephas.Orchestration.Application
             this.Logger.Warn("Restarting the worker application instances...");
             try
             {
-                await this.StopWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.StopWorkerProcessesAsync(this.appContext, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
@@ -477,7 +473,7 @@ namespace Kephas.Orchestration.Application
 
             try
             {
-                await this.AppSetupService.SetupAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.AppSetupService.SetupAsync(this.appContext, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
@@ -486,7 +482,7 @@ namespace Kephas.Orchestration.Application
 
             try
             {
-                await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.StartWorkerProcessesAsync(this.appContext, cancellationToken).PreserveThreadContext();
                 this.Logger.Info("Worker application instances restarted successfully.");
             }
             catch (Exception ex)

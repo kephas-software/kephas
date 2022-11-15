@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Events
+namespace Kephas.Messaging.Interaction
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Messaging.Events;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

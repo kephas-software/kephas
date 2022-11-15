@@ -22,11 +22,12 @@ namespace Kephas.Application
     /// <summary>
     /// Application service for scheduling startup commands.
     /// </summary>
-    public class StartupAppLifecycleBehavior : AppLifecycleBehaviorBase
+    public class StartupAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IEventHub eventHub;
         private readonly IConfiguration<AppSettings> appConfiguration;
         private readonly IRuntimeTypeRegistry typeRegistry;
+        private readonly IAppContext appContext;
         private IEventSubscription? scheduleCommandSubscription;
 
         /// <summary>
@@ -35,20 +36,22 @@ namespace Kephas.Application
         /// <param name="eventHub">The event hub.</param>
         /// <param name="appConfiguration">The application configuration.</param>
         /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="appContext">The application context.</param>
         public StartupAppLifecycleBehavior(
             IEventHub eventHub,
             IConfiguration<AppSettings> appConfiguration,
-            IRuntimeTypeRegistry typeRegistry)
+            IRuntimeTypeRegistry typeRegistry,
+            IAppContext appContext)
         {
             this.eventHub = eventHub;
             this.appConfiguration = appConfiguration;
             this.typeRegistry = typeRegistry;
+            this.appContext = appContext;
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
@@ -56,31 +59,26 @@ namespace Kephas.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public override Task<IOperationResult> BeforeAppInitializeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
         {
             this.scheduleCommandSubscription = this.eventHub.Subscribe<ScheduleStartupCommandSignal>(
                 (signal, ctx, token) =>
-                    this.HandleScheduleStartupCommandSignalAsync(signal, appContext, token));
-            return base.BeforeAppInitializeAsync(appContext, cancellationToken);
+                    this.HandleScheduleStartupCommandSignalAsync(signal, this.appContext, token));
+            return Task.FromResult<IOperationResult>(true.ToOperationResult());
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task<IOperationResult> AfterAppFinalizeAsync(
-            IAppContext appContext,
-            CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
         {
             this.scheduleCommandSubscription?.Dispose();
             this.scheduleCommandSubscription = null;
-            return base.AfterAppFinalizeAsync(appContext, cancellationToken);
+            return Task.FromResult<IOperationResult>(true.ToOperationResult());
         }
 
         /// <summary>
