@@ -20,7 +20,7 @@ namespace Kephas.TextProcessing.Tests
         [Test]
         public void Injection()
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateInjector();
             var tokenizer = container.Resolve<ITokenizer>();
 
             Assert.IsInstanceOf<Tokenizer>(tokenizer);
@@ -31,7 +31,7 @@ namespace Kephas.TextProcessing.Tests
         [TestCase("The \"stereotype\" is 'key'!", new[] { "stereotype", "key" })]
         public void Tokenize_simple(string text, string[] expectedTokens)
         {
-            var container = this.BuildServiceProvider();
+            var container = this.CreateInjector();
             var tokenizer = container.Resolve<ITokenizer>();
 
             var tokens = tokenizer.Tokenize(text).ToArray();

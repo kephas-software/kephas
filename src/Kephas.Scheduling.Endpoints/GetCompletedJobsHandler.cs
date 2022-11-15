@@ -46,7 +46,7 @@ namespace Kephas.Scheduling.Endpoints
         {
             await Task.Yield();
 
-            var completedJobsQuery = this.scheduler.GetCompletedJobs(ctx => ctx.Impersonate(context));
+            using var completedJobsQuery = this.scheduler.GetCompletedJobs(ctx => ctx.Impersonate(context));
             var totalCount = completedJobsQuery.Count();
             var jobsQuery = completedJobsQuery
                 .OrderByDescending(j => j.StartedAt)

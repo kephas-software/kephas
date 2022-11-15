@@ -64,7 +64,7 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
     {
         textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
 
-        IOperationResult result = new OperationResult();
+        var result = new OperationResult();
         var compiledPageResult = await this.pageCompiler
             .CompileTemplateAsync<T>(template, processingContext, cancellationToken).PreserveThreadContext();
         result.MergeMessages(compiledPageResult);
@@ -78,21 +78,5 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
         await compiledPage.RenderAsync(model, textWriter, cancellationToken).PreserveThreadContext();
 
         return result.Complete();
-    }
-
-    /// <summary>
-    /// Processes the provided template synchronously returning the processed output.
-    /// </summary>
-    /// <typeparam name="T">The type of the bound model.</typeparam>
-    /// <param name="template">The template to be interpreted/executed.</param>
-    /// <param name="model">Optional. The template model.</param>
-    /// <param name="textWriter">The text writer for the output.</param>
-    /// <param name="processingContext">The processing context.</param>
-    /// <returns>
-    /// A promise of the execution result.
-    /// </returns>
-    public IOperationResult Process<T>(ITemplate template, T? model, TextWriter textWriter, ITemplateProcessingContext processingContext)
-    {
-        return this.ProcessAsync(template, model, textWriter, processingContext).GetResultNonLocking();
     }
 }

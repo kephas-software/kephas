@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.InMemory
 {
@@ -50,14 +50,14 @@ namespace Kephas.Data.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public InMemoryDataContext(IServiceProvider serviceProvider, IDataCommandProvider dataCommandProvider, IDataBehaviorProvider dataBehaviorProvider, ISerializationService serializationService)
-            : base(serviceProvider, dataCommandProvider, dataBehaviorProvider)
+        public InMemoryDataContext(IInjector injector, IDataCommandProvider dataCommandProvider, IDataBehaviorProvider dataBehaviorProvider, ISerializationService serializationService)
+            : base(injector, dataCommandProvider, dataBehaviorProvider)
         {
-            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             dataCommandProvider = dataCommandProvider ?? throw new System.ArgumentNullException(nameof(dataCommandProvider));
             dataBehaviorProvider = dataBehaviorProvider ?? throw new System.ArgumentNullException(nameof(dataBehaviorProvider));
             serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));

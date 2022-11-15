@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Tests.Elements
 {
     using System;
@@ -32,7 +34,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success()
         {
             var modelSpace = Substitute.For<IModelSpace>();
-            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = modelSpace };
             var element = new TestNamedElement(context, "name");
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
@@ -44,7 +46,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success_WithDiscriminator()
         {
             var modelSpace = Substitute.For<IModelSpace>();
-            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = modelSpace };
 
             var element = new TestNamedElementWithDiscriminator(context, "name");
 
@@ -56,7 +58,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void Constructor_Failure_ModelSpace_not_set()
         {
-            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = null };
+            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = null };
             Assert.That(() => new TestNamedElement(context, "name"), Throws.InstanceOf<Exception>());
         }
 
@@ -64,7 +66,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Substitute.For<IModelSpace>();
-            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = modelSpace };
             Assert.That(() => new TestNamedElement(context, null), Throws.InstanceOf<Exception>());
         }
 

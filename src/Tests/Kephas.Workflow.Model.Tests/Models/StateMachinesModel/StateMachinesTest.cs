@@ -12,7 +12,6 @@ namespace Kephas.Workflow.Model.Tests.Models.StateMachinesModel
 
     using Kephas.Model;
     using Kephas.Runtime;
-    using Kephas.Testing.Model;
     using Kephas.Workflow.Model.Elements;
     using Kephas.Workflow.Runtime;
     using NUnit.Framework;
@@ -26,10 +25,9 @@ namespace Kephas.Workflow.Model.Tests.Models.StateMachinesModel
             var typeRegistry = new RuntimeTypeRegistry();
             typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
 
-            var container = this.CreateServicesBuilder(
-                    new AmbientServices().Add<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()))
-                .WithModelElements(typeof(IDocumentStateMachine))
-                .BuildWithDependencyInjection();
+            var container = this.CreateInjectorForModel(
+                new AmbientServices(typeRegistry: typeRegistry),
+                typeof(IDocumentStateMachine));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

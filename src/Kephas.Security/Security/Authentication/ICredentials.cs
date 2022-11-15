@@ -15,7 +15,7 @@ namespace Kephas.Security.Authentication
     /// <summary>
     /// Interface for credentials.
     /// </summary>
-    public interface ICredentials : IDynamic
+    public interface ICredentials : IExpandoBase
     {
     }
 }

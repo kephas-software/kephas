@@ -18,7 +18,6 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Operations;
-    using Kephas.Services.Builder;
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -28,23 +27,23 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
     /// The client application.
     /// </summary>
     /// <typeparam name="TApp">The type of the Razor entry point component (typically App).</typeparam>
-    /// <seealso cref="AppBase" />
-    public class ClientApp<TApp> : AppBase
+    /// <seealso cref="AppBase{TAmbientServices}" />
+    public class ClientApp<TApp> : AppBase<AmbientServices>
         where TApp : IComponent
     {
-        private readonly Action<IAmbientServices> servicesBuilder;
+        private readonly Action<IAmbientServices> containerBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientApp{TApp}"/> class.
         /// </summary>
-        /// <param name="servicesBuilder">The container builder.</param>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public ClientApp(
-            Action<IAppServiceCollectionBuilder> servicesBuilder,
+            Action<IAmbientServices> containerBuilder,
             IAppArgs? appArgs = null)
             : base(new AmbientServices(), appArgs: appArgs, appLifetimeTokenSource: null)
         {
-            this.servicesBuilder = servicesBuilder;
+            this.containerBuilder = containerBuilder;
         }
 
         /// <summary>
@@ -81,17 +80,13 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         {
             this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
-            var servicesBuilder = new App
-            
-            this.HostBuilder.Services
-            
-            this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices, this.servicesBuilder));
+            this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices, this.containerBuilder));
 
             this.ConfigureHost(this.HostBuilder);
 
-            this.HostBuilder.Services
-                .UseKephasLogging(this.AmbientServices.GetServiceInstance<ILogManager>())
-                .UseServicesBuilder(this.AmbientServices);
+            this.AmbientServices
+                .WithServiceCollection(this.HostBuilder.Services)
+                .ConfigureExtensionsLogging(this.HostBuilder.Services);
 
             return base.RunAsync(mainCallback ?? this.RunAsync, cancellationToken);
         }

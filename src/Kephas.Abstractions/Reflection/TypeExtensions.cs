@@ -86,7 +86,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is enumerable; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsEnumerable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+        public static bool IsEnumerable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return type != null
                    && typeof(IEnumerable).IsAssignableFrom(type);
@@ -99,7 +99,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsReadOnlyCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+        public static bool IsReadOnlyCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             if (type == null)
             {
@@ -107,7 +107,12 @@ namespace Kephas.Reflection
             }
 
             var collectionType = typeof(IReadOnlyCollection<>);
-            return type.IsConstructedGenericOf(collectionType) || type.GetInterfaces().Any(i => i.IsReadOnlyCollection());
+            if (type.IsConstructedGenericOf(collectionType))
+            {
+                return true;
+            }
+
+            return type.GetInterfaces().Any(i => i.IsReadOnlyCollection());
         }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+        public static bool IsCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             if (type == null)
             {
@@ -125,17 +130,22 @@ namespace Kephas.Reflection
             }
 
             var collectionType = typeof(ICollection<>);
-            return type.IsConstructedGenericOf(collectionType) || type.GetInterfaces().Any(i => i.IsCollection());
+            if (type.IsConstructedGenericOf(collectionType))
+            {
+                return true;
+            }
+
+            return type.GetInterfaces().Any(i => i.IsCollection());
         }
 
         /// <summary>
-        /// Gets a value indicating whether the type implements <see cref="IDictionary{TKey,TValue}"/>.
+        /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
         /// </summary>
         /// <param name="type">The type to check.</param>
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsDictionary([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+        public static bool IsDictionary([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             if (type == null)
             {
@@ -143,7 +153,12 @@ namespace Kephas.Reflection
             }
 
             var dictionaryType = typeof(IDictionary<,>);
-            return type.IsConstructedGenericOf(dictionaryType) || type.GetInterfaces().Any(i => i.IsDictionary());
+            if (type.IsConstructedGenericOf(dictionaryType))
+            {
+                return true;
+            }
+
+            return type.GetInterfaces().Any(i => i.IsDictionary());
         }
 
         /// <summary>
@@ -153,7 +168,7 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is enumerable; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsQueryable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+        public static bool IsQueryable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
         {
             return type != null
                    && typeof(IQueryable).IsAssignableFrom(type);
@@ -250,7 +265,9 @@ namespace Kephas.Reflection
                                      ? type
                                      : type.GetInterfaces().SingleOrDefault(IsRequestedEnumerable);
 
-            return enumerableType?.GenericTypeArguments[0];
+            return enumerableType == null
+                       ? null
+                       : enumerableType.GenericTypeArguments[0];
         }
 
         /// <summary>
@@ -261,7 +278,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// <c>true</c> if the type is a constructed generic of the provided open generic type, <c>false</c> otherwise.
         /// </returns>
-        public static bool IsConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
+        public static bool IsConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
@@ -340,7 +357,7 @@ namespace Kephas.Reflection
 
                 if (index > 0)
                 {
-                    qualifiedFullName = qualifiedFullName[..index];
+                    qualifiedFullName = qualifiedFullName.Substring(0, index);
                 }
             }
 

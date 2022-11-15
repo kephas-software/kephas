@@ -17,14 +17,16 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -32,28 +34,25 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     /// Tests for <see cref="ModelAssemblyRegistry"/>.
     /// </summary>
     [TestFixture]
-    public class ModelAssemblyRegistryTest : TestBase
+    public class ModelAssemblyRegistryTest : InjectionTestBase
     {
-        /// <summary>
-        /// Gets the default convention types to be considered when building the container. By default it includes Kephas.Core.
-        /// </summary>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process the default convention types in
-        /// this collection.
-        /// </returns>
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IInjector CreateInjector(
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<IInjectorBuilder>? config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
-            return new List<Assembly>(base.GetAssemblies())
-            {
-                typeof(ModelAssemblyRegistry).Assembly, /* Kephas.Model */
-            };
+            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
+            assemblyList.Add(typeof(ModelAssemblyRegistry).Assembly); /* Kephas.Model */
+            return base.CreateInjector(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
         public void ModelAssemblyRegistry_Injection_success()
         {
-            var container = this.CreateServicesBuilder()
-                .BuildWithDependencyInjection();
+            var container = this.CreateInjector();
             var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<ModelAssemblyRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }
@@ -61,7 +60,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { typeof(ModelAssemblyRegistry).Assembly });
@@ -75,7 +74,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_exclude_from_model()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { typeof(ModelAssemblyRegistryTest).Assembly });

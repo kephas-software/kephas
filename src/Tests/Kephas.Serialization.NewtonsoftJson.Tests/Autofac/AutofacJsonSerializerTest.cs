@@ -10,10 +10,12 @@
 
 namespace Kephas.Serialization.Json.Tests.Autofac
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Threading.Tasks;
+    using Kephas.Dynamic;
     using Kephas.Serialization.Json;
-    using Kephas.Services.Builder;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -21,11 +23,35 @@ namespace Kephas.Serialization.Json.Tests.Autofac
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacJsonSerializerTest : JsonSerializerIntegrationTestBase
+    public class AutofacJsonSerializerTest : AutofacSerializationTestBase
     {
-        protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
+        [Test]
+        public async Task SerializeAsync_injection()
         {
-            return servicesBuilder.BuildWithAutofac();
+            var container = this.CreateInjector();
+            var serializationService = container.Resolve<ISerializationService>();
+
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+
+            var serializedObj = await serializationService.JsonSerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Autofac.AutofacJsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+        }
+
+        public class TestEntity
+        {
+            public string Name { get; set; }
+
+            public Uri PersonalSite { get; set; }
+        }
+
+        public class ExpandoEntity : Expando
+        {
+            public string Description { get; set; }
         }
     }
 }

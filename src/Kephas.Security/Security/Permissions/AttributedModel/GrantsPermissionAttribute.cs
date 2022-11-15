@@ -12,7 +12,7 @@ namespace Kephas.Security.Permissions.AttributedModel
 {
     using System;
 
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute indicating that the permission to access/execute/use the decorated element is granted.

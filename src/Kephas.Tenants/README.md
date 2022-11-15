@@ -20,7 +20,7 @@ What is the immediate effect:
   * The folder locations (config, licenses, plugins) are found in the ```{tenant}``` subdirectory of the original folder locations.
 
 Check the following packages for more information:
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 * [Kephas.Configuration](https://www.nuget.org/packages/Kephas.Configuration)
 * [Kephas.Application.Abstractions](https://www.nuget.org/packages/Kephas.Application.Abstractions)
 * [Kephas.Application](https://www.nuget.org/packages/Kephas.Application)

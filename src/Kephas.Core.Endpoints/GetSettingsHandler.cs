@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Core.Endpoints
 {
@@ -25,17 +25,17 @@ namespace Kephas.Core.Endpoints
     {
         private const string SettingsEnding = "Settings";
 
-        private readonly IServiceProvider serviceProvider;
+        private readonly IInjector injector;
         private readonly ITypeResolver typeResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSettingsHandler"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        public GetSettingsHandler(IServiceProvider serviceProvider, ITypeResolver typeResolver)
+        public GetSettingsHandler(IInjector injector, ITypeResolver typeResolver)
         {
-            this.serviceProvider = serviceProvider;
+            this.injector = injector;
             this.typeResolver = typeResolver;
         }
 
@@ -76,7 +76,7 @@ namespace Kephas.Core.Endpoints
             }
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
-            var configuration = this.serviceProvider.Resolve(configurationType);
+            var configuration = this.injector.Resolve(configurationType);
             var getSettings = configurationType.GetMethod(nameof(IConfiguration<NullLogManager>.GetSettings));
             var settings = getSettings?.Call(configuration, context);
             return new GetSettingsResponseMessage

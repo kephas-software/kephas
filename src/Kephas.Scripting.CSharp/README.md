@@ -6,7 +6,7 @@ The C# scripting area in Kephas handles C# dynamic code execution using [Microso
 
 Check the following packages for more information:
 * [Kephas.Scripting](https://www.nuget.org/packages/Kephas.Scripting)
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 
 ## Usage
 

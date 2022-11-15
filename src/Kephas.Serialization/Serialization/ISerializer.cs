@@ -110,7 +110,7 @@ namespace Kephas.Serialization
             object? obj,
             ISerializationContext? context = null)
         {
-            return this.SerializeAsync(obj, context).GetResultNonLocking();
+            return this.SerializeAsync(obj, context).GetResultNonLocking()!;
         }
 
         /// <summary>

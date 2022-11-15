@@ -1,0 +1,699 @@
+﻿<Methods>
+  <!--
+		AutoDoc rules
+		=============
+
+		For each documentation entry that needs to be generated, Atomineer executes an appropriate
+		section of the rules in this AutoDoc section (e.g. for a parameter, the <Parameters> section
+		is executed). Execution stops when a match is found and a documentation result is returned.
+
+		Full documentation can be found here:
+			http://www.atomineerutils.com/rulesguide.php
+		-->
+			<!-- Rules for auto-documentation of method/property/indexer names
+
+				 Full documentation can be found here:
+					http://www.atomineerutils.com/rulesguide.php
+
+				 Note that you can delete all the examples, and as long as this section does not
+				 end with a <Set> command, Atomineer will "fall through" your custom rules and 
+				 use its defaults if your rules do not supply any documentation text.
+
+				 Additional values that can be used for filtering/documenting include:
+					name			The name of the method
+					methodName		The name of the method
+					sName			The name of the method, converted to sentence (space separated words) format, with abbreviated words expanded
+					rawMethodName	The name of the method, including generic type parameters (e.g. name<A,B>)
+					methodType		The type of the method (one of: method, property, indexer, delegate, eventhandler)
+					specialType		Extra info on the method: normal, static, inline, abstract, virtual, override
+					access			For .net languages and Java, the access (private, protected, internal, public)
+					retType			The return type for this method (const int*)
+					retTypeBase		The core return type for this method, without modifiers (int)
+					numWordsInName	The number of words detected in 'name'
+					numArgs			The number of arguments for this method
+					argTypeX		Argument type, where X is the 1-based index of the argument (e.g. argType1, argType2)
+					argTypeBaseX	Core argument type (without modifiers), where X is the 1-based index of the argument (e.g. argType1, argType2)
+					argNameX		Argument name, where X is the 1-based index of the argument (e.g. argName1, argName2)
+					signature		The argument signature of the method in a cref-compatible form, e.g. 'int,List{string},double'
+					classType		If known, one of "class", "struct" or "interface" indicating the type of the code element containing this method
+					baseClass		"unknown", or where possible for an override method/property, the fully qualified name of the base
+									class/interface being overridden
+					baseClassRef	baseClass, in a form suitable for use in a cref (generic <> are replaced with {})
+
+					getSet			(For methodType="property" or "indexer") the appropriate "Gets", "Sets", or "Gets or sets" text for this property/indexer
+					eventSender		(For methodType="eventhandler" only) the sender of the event
+					eventType		(For methodType="eventhandler" only) the type of the event
+			 -->
+
+			<!-- Don't generate documentation for Machine Generated Code -->
+			<If defined="attr-GeneratedCode" abortComment="y" />
+
+			<!-- If this is an overide and the special 'docOverridesWithSee' flag is set, we don't use
+				 the standard documentation generation approach, but instead substitute a <see> reference.
+				 Note that you also need to disable duplication of base documentation in the preferences to
+				 allow this rule to be applied for overrides.
+			-->
+			<If specialType="override" docOverridesWithSee="true">
+				<IfNot baseClass="unknown">
+					<If methodType="property" desc="See &lt;see cref=&quot;%baseClass%.%methodName%&quot;/&gt;" />
+					<If numArgs="0" desc="See &lt;see cref=&quot;%baseClass%.%methodName%()&quot;/&gt;" />
+					<Set desc="See &lt;see cref=&quot;%baseClass%.%methodName%(%signature%)&quot;/&gt;" />
+				</IfNot>
+			</If>
+			
+			<If methodType="def">
+				<Set desc="A macro that defines %sname%" />
+			</If>
+
+			<!-- Add descriptions or description prefixes for any attributes applied to the method -->
+			<If defined="attr-description" desc="%attr-description%" />
+			<If defined="attr-webdescription" desc="%attr-webdescription%" />
+			<If defined="attr-settingsdescription" desc="%attr-settingsdescription%" />
+			<If docUseAttributes="true">
+				<If defined="attr-obsolete" continue="y" desc="(This %methodType% is obsolete) " />
+				<If defined="attr-conditional" continue="y" desc="(Only available in %attr-conditional% builds) " />
+				<If defined="attr-testmethod" continue="y" desc="(Unit Test Method) " />
+				<If defined="attr-securitycritical" continue="y" desc="(Security-critical) " />
+				<If defined="attr-comvisible">
+					<If attr-comvisible="false" continue="y" desc="(Not COM visible)" />
+					<Set continue="y" desc="(COM visible)" />
+				</If>
+
+				<If defined="attr-httpget" continue="y" desc="(An Action that handles HTTP GET requests) " />
+				<If defined="attr-httppost" continue="y" desc="(An Action that handles HTTP POST requests) " />
+				<If defined="attr-authorize">
+					<If defined="attr-allowanonymous" continue="y" desc="(Restricted to Anonymous and %attr-authorize%) " />
+					<IfNot defined="attr-allowanonymous" continue="y" desc="(Restricted to %attr-authorize%) " />
+				</If>
+				<If defined="attr-actionname" continue="y" desc="(Defines the %attr-actionname% Action) " />
+				<If defined="attr-outputcache" continue="y" desc="(Cached) " />
+			</If>
+
+			<!-- Rules for various types of constructors -->
+			<If methodType="constructor">
+				<If stylecop="true">
+					<If specialType="static" desc="Initializes static members of the &lt;see cref=&quot;%containingclass:leaf%&quot;/&gt; %classType%." />
+					<If numArgs="0" access="private" desc="Prevents a default instance of the &lt;see cref=&quot;%containingclass:leaf%&quot;/&gt; %classType% from being created." />
+					<Set desc="Initializes a new instance of the &lt;see cref=&quot;%containingclass:leaf%&quot;/&gt; %classType%." />
+				</If>
+
+				<If specialType="static" desc="Static constructor" />
+				<If numArgs="0">
+					<If access="private" desc="Constructor that prevents a default instance of this %classType% from being created" />
+					<If access="protected" desc="Specialised default constructor for use only by derived %classType:Plural%" />
+					<Set desc="Default constructor" />
+				</If>
+				<If numArgs="1">
+					<If argType1="%containingclass%,%containingclass% #,# %containingclass%,# %containingclass% #,%containingclass%*,%containingclass%*#,# %containingclass%*#,%containingclass%&amp;,%containingclass%&amp;#,# %containingclass%&amp;,# %containingclass%&amp;#">
+						<If argType1="#&amp;&amp;" desc="Move constructor" />
+						<Set desc="Copy constructor" />
+					</If>
+				</If>
+
+				<If access="protected" desc="Specialised constructor for use only by derived %classType:Plural%" />
+				<Set desc="Constructor" />
+			</If>
+
+			<If methodType="destructor">
+				<If stylecop="true" desc="Finalizes an instance of the %containingclass% %classType%" />
+				<Set desc="Destructor" />
+			</If>
+			<If methodType="finaliser">
+				<If stylecop="true" desc="Finalizes an instance of the %containingclass% %classType%" />
+				<Set desc="Finaliser" />
+			</If>
+
+			<If methodType="indexer">
+				<Set desc="Indexer to %getSet% items within this collection using array index syntax" />
+			</If>
+
+			<If methodType="property" desc="%getSet% ">
+				<If retType="bool,boolean,system.boolean" desc="a value indicating whether ">
+					<If sname="is # registered,is # active,is # inactive,is # enabled,is # disabled,is # empty,is # open,is # closed,is # available,is # online,is # offline" desc="a %match:LCase% is %name:lastWord:LCase%" />
+
+					<If sname="is #,has #,contains #,use #,uses #" desc="this %object% %sname:LCase%" />
+					<If sname="are #,can #,should #,allow #,allows #" desc="we %sname:LCase%" />
+
+					<If sname="show,shown" desc="this %object% is shown" />
+					<If sname="visible" desc="this %object% is visible" />
+					<If sname="show #" desc="the %match:Sentence:LCase% is shown" />
+					<If sname="perform #" desc="the %match:Sentence:LCase% is performed" />
+					<If sname="# visible" desc="the %match:Sentence:LCase% is visible" />
+					<If sname="hide,hidden" desc="this %object% is hidden" />
+					<If sname="hide #,# hidden" desc="the %match:Sentence:LCase% is hidden" />
+
+					<If sname="enable,enabled" desc="this %object% is enabled" />
+					<If sname="enable #,# enabled" desc="the %match:Sentence:LCase% is enabled" />
+					<If sname="disable,disabled" desc="this %object% is disabled" />
+					<If sname="disable #,# disabled" desc="the %match:Sentence:LCase% is disabled" />
+
+					<If sname="lock,locked" desc="this %object% is locked" />
+					<If sname="# lock,lock #,# locked" desc="the %match:Sentence:LCase% is locked" />
+					<If sname="unlock,unlocked" desc="this %object% is unlocked" />
+					<If sname="unlock #,# unlocked" desc="the %match:Sentence:LCase% is unlocked" />
+
+					<If sname="allow #,# allowed" desc="%match:Sentence:LCase% is allowed" />
+					<If sname="grant #,# granted" desc="%match:Sentence:LCase% is granted" />
+					<If sname="deny #,# denied" desc="%match:Sentence:LCase% is denied" />
+
+					<If sname="overwrite" desc="this %object% will overwrite" />
+					<If sname="overwrite all #,overwrite #" desc="the %match:Sentence:LCase% will be overwritten" />
+
+					<If sname="delete all #,delete #,destroy all #destroy #" desc="the %match:Sentence:LCase% wil be deleted" />
+
+					<If sname="recurse,recursive,recurse #,recursive #,# recursively" desc="processing will act recursively" />
+
+					<If sname="saved,written,changed,modified,updated,clean,dirty" desc="this %object% is %sName:LCase%" />
+					<If sname="# loaded,# saved,# written,# read,# changed,# modified,# updated" desc="the %match:sentence:LCase% was %name:LastWord:LCase%" />
+
+					<If sname="load #,save #,import #,export #,refresh #,render #,attach #,flush #,clear #,open #,connect #" desc="the %match:sentence:LCase% should be %namenp:FirstWord:LCase%ed" />
+					<If sname="include #,calculate #,recalculate #" desc="the %match:sentence:LCase% should be %namenp:FirstWord:LCase%d" />
+					<If sname="force #,compute #,close #,change #" desc="the %match:sentence:LCase% should be %namenp:FirstWord:LCase%d" />
+					<If sname="redraw #,draw #" desc="the %match:sentence:LCase% should be %namenp:FirstWord:LCase%n" />
+					<If sname="read #,set #" desc="the %match:sentence:LCase% should be %namenp:FirstWord:LCase%" />
+					<If sname="modify #" desc="the %match:sentence:LCase% should be modified" />
+					<If sname="write #" desc="the %match:sentence:LCase% should be written" />
+					<If sname="get #,update #,validate #" desc="or not to %namenp:FirstWord:LCase% the %match:sentence:LCase%" />
+
+					<If name="#able,#ible">	<!-- catch names like "editable" -->
+						<IfNot sName="# table" desc="this %object% is %sName:LCase%" />
+					</If>
+
+					<Set desc="the %sname:LCase%" />
+				</If>
+
+				<If sName="default #" desc="the default %match:Sentence:LCase%" />
+				<If sName="number of #,number #,# count" desc="the number of %match:Sentence:LCase:Plural%" />
+				<If sName="Total Of #,Total #,Count Of #,Count #" desc="the total number of %match:Sentence:LCase%" />
+				<If sName="size of #,# size" desc="the size of the %match:Sentence:LCase%" />
+				<If sName="type of #,# type" desc="the type of the %match:Sentence:LCase%" />
+				<If sName="filename,file name" desc="the filename of the file" />
+				<If sName="# filename,# file name" desc="the filename of the %match:Sentence:LCase% file" />
+				<If sName="leafname,leaf name" desc="the leafname of the file" />
+				<If sName="# leafname,# leaf name" desc="the leafname of the %match:Sentence:LCase% file" />
+				<If sName="directory name,directory,dir name,dirname,dir path,dirpath" desc="the pathname of the directory" />
+				<If sName="folder name,foldername,folder" desc="the pathname of the folder" />
+				<If sName="# folder name,# folder" desc="the pathname of the %match:Sentence:LCase% folder" />
+				<If sName="# directory name,# directory,# dir name,# dirname" desc="the pathname of the %match:Sentence:LCase% directory" />
+				<If sName="path,pathname,path name,file path, filepath" desc="the full pathname of the file" />
+				<If sName="# pathname,# path name,#file path,# path" desc="the full pathname of the %match:Sentence:LCase% file" />
+				<If sName="# uri,# url" desc="%name:LastWord:UCase% of the %match:Sentence:LCase%" />
+				<If sName="uri,url" desc="%namenp:UCase% of the document" />
+				<If sName="# owner,owner #" desc="the %match:Sentence:LCase% that owns this item" />
+				<If sName="# manager" desc="the manager for %match:Sentence:LCase%" />
+				<If sName="# information,# description,# data" desc="information describing the %match:Sentence:LCase%" />
+				<If sName="# manifest" desc="a list of %match:Sentence:LCase:Plural%" />
+				<If sName="# message" desc="a message describing the %match:Sentence:LCase%" />
+				<If sName="# context" desc="a context for the %match:Sentence:LCase%" />
+				<If sName="# count" desc="the number of %match:Sentence:LCase:Plural%" />
+				<If sName="number,count,total,sum" desc="the number of " />
+				<If sName="# by">
+					<If rettype="string" desc="who %match:Sentence:LCase% this %object%" />
+					<Set desc="the amount to %match:Sentence:LCase% by" />
+				</If>
+				<If sName="step,increment,by" desc="the amount to increment by" />
+				<If sName="# options,# parameters,# preferences, settings" desc="options for controlling the %match:Sentence:LCase%" />
+				<If sName="options,parameters,preferences,settings" desc="options for controlling the operation" />
+				<If sName="unique identifier" desc="a unique identifier" />
+				<If sName="# unique identifier" desc="a unique identifier of the %match:Sentence:LCase%" />
+				<If sName="current #,active #,selected #" desc="The %sname:LCase%" />
+
+				<If sName="first name,last name,surname,mid name,middle name,nee,maiden name,christian name" desc="The person's %sName:LCase%" />
+
+				<If sName="date of #,# date,time of #,# time" desc="the %sName:LCase%" />
+				<If sName="# identifier,# length,# width,# height,# depth,# size,# extent,# extents,# name,# type,# color,# colour,# duration,# state" desc="the %sname:LastWord:LCase% of the %match:Sentence:LCase%" />
+				<If sName="# identifiers,# lengths,# widths,# heights,# depths,# sizes,# names,# types,# colors,# colours,# dates,# times,# durations,# states" desc="a list of %sname:LastWord:LCase% of the %match:Sentence:LCase:Plural%" />
+
+				<If sName="# category,# group,# set,# categories,# groups,# sets" desc="the %sname:LastWord:LCase% the %match:Sentence:LCase% belongs to" />
+
+				<If sName="length of #,width of #,height of #,depth of #,size of #,extent of #,extents of #,name of #,type of #,color of #,colour of #" desc="the %sname:FirstWord:LCase% of the %match:Sentence:LCase%" />
+				<If sName="# buffer" desc="the %sname:LastWord:LCase% for %match:Sentence:LCase% data" />
+				<If sName="# list,# queue,# stack,# collection,# array,# dictionary" desc="a %sname:LastWord:LCase% of %match:Sentence:LCase:Plural%" />
+				<If retType="XmlElement">
+					<If sName="element" desc="an element describing the " />
+					<If sName="# element" desc="an element describing the %match:Sentence:LCase%" />
+					<Set desc="an element describing the %sName:LCase%" />
+				</If>
+				
+				<If sName="# Date" desc="the %sName:LCase%" />
+				<If retType="DateTime,DateTime?" desc="the Date/Time of the %sName:LCase%" />
+				<If retType="#Exception" desc="details of the exception" />
+
+				<!-- Look for common lowercase prefixes -->
+				<If sName="# index" desc="the zero-based index of the %match:Sentence:LCase%" />
+				<If sName="index" desc="the zero-based index of this %object%" />
+				<If sName="# handle" desc="the handle of the %match:Sentence:LCase%" />
+
+				<If sName="source #,destination #,target #" desc="%sname:LCase%" />
+				<If sName="source,from" desc="the source for the" />
+				<If sName="destination,target" desc="the %sName:SCase% for the" />
+				<If sName="format" desc="the format to use" />
+				<If sName="message,# message,text,# text,string,# string,question,# question,label,# label,title,# title" desc="the %sname:LCase%" />
+				<If type="button,checkbox,checkedlistbox,# combo,# combobox,# combo box,datetimepicker,label,linklabel,listbox,listview,maskedtextbox,monthcalendar,notifyicon,numericupdown,picturebox,progressbar,radiobutton,richtextbox,textbox,tooltip,treeview,webbrowser">
+					<If sName="# button,# check box,# checkbox,# checkedlistbox,# checked list box,# combo,# combobox,# combo box,# datetimepicker,# date time picker,# linklabel,# link label,# listbox,# list box,# list view,# listview,# maskedtextbox,# masked text box,# monthcalendar,# month calendar,# notifyicon,# notify icon,# numericupdown,# numeric up down,# picturebox,# picture box,# progressbar,# progress bar,# radiobutton,# radio button,# richtextbox,# rich text box,# rich text,# textbox,# text box,# tooltip,# tool tip,# treeview,# tree view,# webbrowser,# web browser" desc="the %match:LCase% control" />
+					<Set desc="the %sname:LCase% control" />
+				</If>
+
+				<Set desc="the %sname:LCase%" />
+			</If>	<!-- Properties -->
+
+			<If methodType="operator">
+				<If specialType="explicit" continue="y" desc="Explicit " />
+				<If specialType="implicit" continue="y" desc="Implicit " />
+
+				<If name="operator+=,+=" desc="Addition assignment operator" />
+				<If name="operator-=,-=" desc="Subtraction assignment operator" />
+				<If name="operator*=,*=" desc="Multiplication assignment operator" />
+				<If name="operator/=,/=" desc="Division assignment operator" />
+				<If name="operator%%=,%%=" desc="Modulus assignment operator" />
+
+				<If name="operator~=,~=" desc="Bitwise 'ones complement' assignment operator" />
+				<If name="operator^=,^=" desc="Bitwise 'exclusive or' assignment operator" />
+				<If name="operator&amp;=,&amp;=" desc="Bitwise 'and' assignment operator" />
+				<If name="operator|=,|=" desc="Bitwise 'or' assignment operator" />
+				<If name="operator&lt;&lt;=,&lt;&lt;=" desc="Bitwise left shift assignment operator" />
+				<If name="operator&gt;&gt;=,&gt;&gt;=" desc="Bitwise right shift assignment operator" />
+
+				<If numArgs="0">
+					<If name="operator-&gt;,-&gt;" desc="Member dereference operator" />
+					<If name="operator-&gt;*,-&gt;*" desc="Indirect member dereference operator" />
+					<If name="operator&amp;,&amp;" desc="Reference operator" />
+					<If name="operator*,*" desc="Indirection operator" />
+					<If name="operator#*,#*" desc="%name% casting operator" />
+					<If name="operator.,." desc="Member access operator" />
+				</If>
+
+				<If name="operator++,++" desc="Increment operator" />
+				<If name="operator+,+" desc="Addition operator" />
+				<If name="operator--,--" desc="Decrement operator" />
+				<If name="operator*,*" desc="Multiplication operator" />
+				<If name="operator/,/" desc="Division operator" />
+				<If name="operator%,%" desc="Modulus operator" />
+
+				<!-- static (C#) operators require one more parameter than non-static (C++) ones -->
+				<If specialType="static">
+					<If name="operator-,-" numArgs="1" desc="Negation operator" />
+					<If name="operator-,-" desc="Subtraction operator" />
+				</If>
+				<If name="operator-,-" numArgs="0" desc="Negation operator" />
+				<If name="operator-,-" desc="Subtraction operator" />
+
+				<If name="operator~,~" desc="Bitwise 'ones complement' operator" />
+				<If name="operator^,^" desc="Bitwise 'exclusive or' operator" />
+				<If name="operator&amp;,&amp;" desc="Bitwise 'and' operator" />
+				<If name="operator|,|" desc="Bitwise 'or' operator" />
+				<If name="operator&lt;&lt;,&lt;&lt;">
+					<If rettype="#stream#" desc="Stream insertion operator" />
+					<Set desc="Bitwise left shift operator" />
+				</If>
+				<If name="operator&gt;&gt;,&gt;&gt;">
+					<If rettype="#stream#" desc="Stream extraction operator" />
+					<Set desc="Bitwise right shift operator" />
+				</If>
+
+				<If name="operator!,!" desc="Logical negation operator" />
+				<If name="operator&amp;&amp;,&amp;&amp;" desc="Logical 'and' operator" />
+				<If name="operator||,||" desc="Logical 'or' operator" />
+
+				<If name="true" desc="Boolean '%true%' operator" />
+				<If name="false" desc="Boolean '%false%' operator" />
+				<If sname="operator true" desc="Boolean '%true%' operator" />
+				<If sname="operator false" desc="Boolean '%false%' operator" />
+
+				<If name="operator==,==" desc="Equality operator" />
+				<If name="operator!=,!=" desc="Inequality operator" />
+				<If name="operator&lt;,&lt;" desc="Less-than comparison operator" />
+				<If name="operator&lt;=,&lt;=" desc="Less-than-or-equal comparison operator" />
+				<If name="operator&gt;,&gt;" desc="Greater-than comparison operator" />
+				<If name="operator&gt;=,&gt;=" desc="Greater-than-or-equal comparison operator" />
+
+				<If name="operator=,=">
+					<If argType1="#&amp;&amp;" desc="Move assignment operator" />
+					<Set desc="Assignment operator" />
+				</If>
+
+				<If name="operator[],[]" desc="Array indexer operator" />
+				<If name="operator(),()" desc="Function call operator" />
+				<If name="operator," desc="Comma operator" />
+				<If name="," desc="Comma operator" />
+
+				<If name="operator new,new" desc="Object allocation operator" />
+				<If name="operator delete,delete" desc="Object de-allocation operator" />
+
+				<If name="operator new[],operator new [],new[],new []" desc="Array allocation operator" />
+				<If name="operator delete[],operator delete [],delete[],delete []" desc="Array de-allocation operator" />
+
+				<If name="operator#" desc="Cast that converts the given %argType1% to a %match%" />
+				<Set desc="Cast that converts the given %argType1% to a %name%" />
+			</If>
+
+			<If name="main,tmain,_main,_tmain" desc="Main entry-point for this application" />
+
+			<If retType="IEnumerable#">
+				<If sname="Get By #,Get #,Fetch #,List #,Enumerate #,Scan #,Traverse #,Find By #,Find On #,Find #,Search By #,Search On #,Search For #,Search #">
+					<If sname="# All" desc="%namenp:FirstWord:Plural:SCase% all items in this collection" />
+					<If sname="# All #" desc="%namenp:FirstWord:Plural:SCase% all %match2:StripGen:Sentence:Plural:LCase% in this collection" />
+					<Set desc="%namenp:FirstWord:Plural:SCase% the %match:StripGen:Sentence:Plural:LCase% in this collection" />
+				</If>
+				<If sname="Get,Fetch,List,Enumerate,Scan,Traverse,Find,Search" desc="Enumerates the items in this collection that meet given criteria" />
+				<Set desc="Enumerates %sname:StripGen:LCase% in this collection" />
+			</If>
+
+			<If methodType="eventHandler" desc="Event handler. Called by %eventSender% for %eventType:Sentence:LCase% events" />
+			<If methodType="delegate" name="#EventHandler" desc="Delegate for handling %match% events" />
+
+			<!-- Qt support -->
+			<If retType="void">
+				<If sname="signal #">
+					<If numArgs="0" desc="Raises a %match:Sentence:SCase% signal" />
+					<If numArgs="1" desc="Raises a %match:Sentence:SCase% signal" />
+				</If>
+
+				<If name="on_#">
+					<If numArgs="0" desc="Handles %match:Sentence:LCase% signals" />
+					<If numArgs="1" desc="Handles %match:Sentence:LCase% signals" />
+				</If>
+			</If>
+
+			<If sName="first name,last name,surname,mid name,middle name,nee,maiden name,christian name" desc="The person's %sName:LCase%" />
+			<If sName="# surname,# nee" desc="%match:SCase% the %sName:LastWord:LCase%" />
+			<If sName="# first name,# last name,# mid name,# middle name,# maiden name,# christian name" desc="%match:SCase% the %sName:StripLastWord:LastWord:LCase% name" />
+
+			<If argType1="this #" continue="y" desc="A %match% extension method that " />
+
+			<If numArgs="0">
+				<If sName="Add #" desc="Adds %match:Sentence:LCase%" />
+				<If sName="Minimum,Maximum,Average,Median,Mean" desc="Determines the %sname:LCase% value" />
+			</If>
+
+			<!-- ReadSizeOf(Buffer DataBuffer) = "Read size of the data buffer" -->
+			<If numArgs="1">
+				<If sName="# Of" desc="%sName:SCase% the given %argName1:Sentence:LCase%" />
+				<If sName="Authentication" desc="Authenticates the given %argName1:Sentence:LCase%" />
+			</If>
+
+			<If rettype="bool,boolean,system.boolean">
+				<If sname="check if #,test if #,query if #" desc="Determine if %match:Sentence:LCase%" />
+				<If sname="are #,can #,should #,allow #" desc="Determine if we %sname:LCase%" />
+				<If name="try#" desc="Attempts to %match:Sentence:LCase% from the given data" />
+			</If>
+
+			<If numArgs="1,2,3">
+				<If rettype="bool,boolean,system.boolean">
+					<If sname="is # registered,is # active,is # inactive,is # enabled,is # disabled,is # empty,is # open,is # closed,is # available,is # online,is # offline" desc="Queries if a %match:LCase% is %name:lastWord:LCase%" />
+					<If name="exists" desc="Determine if '%argName1%' exists" />
+					<If name="Are#" desc="Query if %match:Sentence:LCase% in '%argName1%'" />
+					<If name="Should#,Can#" desc="Queries if we %sName:LCase% '%argName1%'" />
+					<If name="Is#,Contains#,Has#,Includes#,Does#" desc="Query if '%argName1%' %sName:LCase%" />
+				</If>
+
+				<If sname="Add #">
+					<If sname="Add To #" desc="Adds to the %match:Sentence:LCase%" />
+					<If sname="Add #" numArgs="1" desc="Adds a %match:Sentence:LCase%" />
+					<If sname="Add #" numArgs="2" desc="Adds a %match:Sentence:LCase% to '%argName2%'" />
+				</If>
+
+				<If sName="Clamp" desc="%sName:SCase% the given %argName1:Sentence:LCase%" />
+				<If sName="Minimum,Maximum,Average,Median,Mean" desc="Determines the %sname:LCase% of the given parameters" />
+				<If sName="Recalculate #,Calculate #,Get #">
+					<If sName="# Minimum,# Maximum,# Average,# Median,# Mean,# Range,# Standard deviation" desc="Finds the %namenp:StripFirstWord:LCase% of the given arguments" />
+				</If>
+			</If>
+
+			<If retType="bool,boolean,system.boolean">
+				<If sname="is # registered,is # active,is # inactive,is # enabled,is # disabled,is # empty,is # open,is # closed,is # available,is # online,is # offline" desc="Queries if a %match:LCase% is %name:lastWord:LCase%" />
+
+				<If name="Are#" desc="Query if %match:Sentence:LCase%" />
+				<If name="Should#,Can#" desc="Queries if we %sName:LCase%" />
+				<If name="Is#,Contains#,Has#,Includes#" desc="Query if this %object% %sName:LCase%" />
+
+				<If sname="Overlaps,Intersects,Covers,Hides,Collides#,Contains,Owns,Controls" desc="Query if this %object% %namenp:Sentence:LCase% the given %argName1%" />
+			</If>
+
+			<If name="GetHashCode">
+				<If stylecop="true" desc="Returns a hash code for this %object%." />
+				<Set desc="Calculates a hash code for this %object%" />
+			</If>
+
+			<!-- MVC support -->
+			<If name="ExecuteResult" desc="Executes this action result using the specified controller context" />
+			<If argType1="RequestContext" name="BeginExecute,BeginExecuteCore" desc="Begins asynchronous execution of the specified request context" />
+			<If name="EndExecute,EndExecuteCore" desc="Ends execution of an asynchronous action" />
+			<If name="Content" retType="ContentResult" desc="Creates a content result" />
+			<If retType="#Result">
+				<If retType="FileContentResult,FileStreamResult,FilePathResult,ContentResult" desc="Creates a %retType% with the given content" />
+				<If retType="HttpNotFoundResult" desc="Creates an 'HTTP Not Found' result with the given status description as its content" />
+				<If retType="JavaScriptResult" desc="Creates a JavaScript result with the given script as its content" />
+				<If retType="JsonResult" desc="Creates a JSON result with the given data as its content" />
+				<If retType="ViewResult" desc="Creates a result that renders a view to the response" />
+				<If retType="PartialViewResult" desc="Creates a result that renders a partial view to the response" />
+				<If retType="RedirectResult" desc="Creates a result that redirects to the given URL" />
+				<If retType="RedirectToRouteResult" desc="Creates a result that redirects to the given route" />
+			</If>
+			<!-- MVC support -->
+
+			<If sname="On #">
+				<If sName="On Update #" desc="Updates the user interface for the %match:Sentence:LCase% action" />
+				<If name="OnCreate" argType1="LPCREATESTRUCT" desc="Called when this window is created" />
+				<If name="OnCommand" argType1="WPARAM" desc="Handles windows WM_COMMAND messages" />
+				<If name="OnNotify" argType1="WPARAM" desc="Handles windows WM_NOTIFY messages" />
+				<If name="OnPaint" desc="Paints this window" />
+				<If name="OnInitDialog" desc="Initialises this dialog and the controls within it" />
+				<If argtype1="EventArgs,#EventArgs" desc="Raises the %match:Sentence:LCase% event" />
+				<If argtype2="EventArgs,#EventArgs" desc="Raises the %match:Sentence:LCase% event" />
+				<If sName="On #" desc="Executes the %match:Sentence:LCase% action" />
+			</If>
+			<If name="Create,CreateEx" argType1="CWnd*" desc="Creates the Window instance that will be represented by this %object%" />
+			<If name="DoDataExchange" desc="Exchanges data to/from the controls in this dialog" />
+			<If name="PreTranslate#" desc="Translates all %match:Sentence:LCase:Plural% before they are processed by the main message loop" />
+
+			<If sName="Calculate Number #,Compute Number #" desc="Calculates the number of %match:Sentence:LCase%" />
+			<If sName="Recalculate #,Calculate #,Compute #" desc="Calculates the %match:Sentence:LCase%" />
+			<If sName="Generate #" desc="Generates a %match:Sentence:LCase%" />
+
+			<If sName="Execute #,Run #">
+				<If sName="Execute action,Run action,Execute operation,Run operation" desc="Executes the %sname:LastWord:LCase%" />
+				<If sName="Execute calculation,Run calculation" desc="Executes the calculation" />
+				<If sName="Execute test, Run test" desc="Executes the test" />
+				<If sName="Execute tests,Run tests" desc="Executes the tests" />
+				<If sName="Execute # test,Run # tests" desc="Executes the %match:Sentence:LCase% %sname:LastWord:LCase%" />
+				<If sName="Execute # action,Run # action" desc="Executes the %match:Sentence:LCase% action" />
+				<If sName="Execute #,Run #" desc="Executes the %match:Sentence:LCase% operation" />
+			</If>
+
+			<If sName="Do #,Launch #, Fork #" desc="Executes the %match:Sentence:LCase% operation" />
+			<If sName="Perform #">
+				<If sName="perform action,perform calculation,perform test,perform tests" desc="Performs the %sname:LastWord:LCase%" />
+				<If sName="perform # action" desc="Performs the %match:Sentence:LCase% action" />
+				<If sName="perform #" desc="Performs the %match:Sentence:LCase% action" />
+			</If>
+
+			<If sName="Ensure #" desc="Ensures that %match:Sentence:LCase%" />
+			<If sName="# Helper" desc="Helper method that %match:Sentence:LCase%" />
+
+			<If numArgs="1" argType1="#EventArgs,EventArgs">
+				<If sName="On#Event,Raise#Event,Fire#Event,Signal#Event" desc="Raises the %match:Sentence:LCase% event" />
+				<If sName="On #,Raise #,Fire #,Signal #" desc="Raises the %match:Sentence:LCase% event" />
+			</If>
+			<If sName="On#Event,Raise#Event,Fire#Event,Signal#Event" desc="Raises the %match:Sentence:LCase% event" />
+			<If sName="Raise #,Signal #" desc="Raises the %match:Sentence:LCase% event" />
+			<If sName="Thread Pool Raise #" desc="Raises the %match:Sentence:LCase% event on a thread-pool thread" />
+
+			<If sName="Invoke" desc="Executes the given operation on a different thread, and waits for the result" />
+			<If sName="Invoke #" desc="Executes the %match:Sentence:LCase% on a different thread, and waits for the result" />
+			<If sName="Begin Invoke" desc="Executes the given operation on a different thread, asynchronously" />
+			<If sName="Begin Invoke #" desc="Executes the %match:Sentence:LCase% on a different thread, asynchronously" />
+
+			<If name="Equals">
+				<If numArgs="1" desc="Tests if this %argType1% is considered equal to another" />
+				<If numArgs="2" desc="Tests if two %argType1% objects are considered equal" />
+				<Set desc="Tests if objects are considered equal" />
+			</If>
+
+			<If sName="Compare,Compare To,Difference">
+				<If numArgs="1" desc="Compares this %argType1% object to another to determine their relative ordering" />
+				<If numArgs="2" desc="Compares two %argType1% objects to determine their relative ordering" />
+				<Set desc="Compares objects" />
+			</If>
+
+			<If sName="Enqueue,En Queue,Add To Queue" desc="Adds an object onto the end of this queue" />
+			<If sName="Dequeue,De Queue,Get head" desc="Removes the head object from this queue" />
+			<If sName="Get #,Find #,Read #,Write #,Load #,Save #,Serialise #,Serialize #">
+				<If sName="# Parent" desc="%match:FirstWord:SCase:Plural% the parent of this item" />
+				<If sName="# Owner" desc="%match:FirstWord:SCase:Plural% the owner of this item" />
+				<If sName="# Previous" desc="%match:FirstWord:SCase:Plural% the previous item" />
+				<If sName="# Next" desc="%match:FirstWord:SCase:Plural% the next item" />
+				<If sName="# First Child" desc="%match:FirstWord:SCase:Plural% the first child of this item" />
+				<If sName="# Last Child" desc="%match:FirstWord:SCase:Plural% the last child of this item" />
+				<If sName="# Child" desc="%match:FirstWord:SCase:Plural% a child of this item" />
+				<If sName="# Children,# Subtree,# Sub Tree" desc="%match:FirstWord:SCase:Plural% the children of this item" />
+
+				<If sName="Get Parent #" desc="Gets the parent %match:LCase%" />
+				<If sName="Get Owner #" desc="Gets the owner %match:LCase%" />
+				<If sName="Get Previous #" desc="Gets the previous %match:LCase%" />
+				<If sName="Get Next #" desc="Gets the next %match:LCase%" />
+				<If sName="Get Child #" desc="Gets a child %match:LCase%" />
+				<If sName="Get First #" desc="Gets the first %match:LCase%" />
+				<If sName="Get Last #" desc="Gets the last %match:LCase%" />
+			</If>
+
+			<If sName="Add Range" desc="Adds a collection of objects to the end of this collection" />
+
+			<If name="StartUp" desc="Prepares this %object% for use" />
+			<If name="ShutDown" desc="Shuts down this %object% and frees any resources it is using" />
+
+			<If name="Serialise,Serialize,Deserialise,Deserialize" desc="%name% this %object% to the given stream" />
+
+			<If sName="Register for #" desc="Registers this %object% for %match:LCase%" />
+			<If sName="Deregister for #,Unregister for #" desc="Deregisters this %object% for %match:LCase%" />
+
+			<If sName="To #">
+				<If name="ToString" desc="Convert this %object% into a string representation" />
+				<If name="ToArray" desc="Convert this %object% into an array representation" />
+				<If name="ToBinary" desc="Convert this %object% into a binary representation" />
+			</If>
+			<If sName="To #,As #,Convert to #,Cast to #">
+				<If numArgs="1" desc="Converts a %argName1% to a %match:Sentence:LCase%" />
+				<Set desc="Converts this %object% to a %match:Sentence:LCase%" />
+			</If>
+			<If numArgs="1" sName="From #,Convert from #,Cast from #,Initialise From #,Initialize From #,Copy From #" desc="Initializes this %object% from the given %sName:LCase%" />
+
+			<If sName="Delete #,Destroy #,Clear #,Reset #,Remove #,Unlink #,Delink #,Disconnect #,Pull #,Pop #,Extract #,Decompress #,Download #,Install #,Flush #,Apply #,Activate #,Update #,Validate #,Copy #,Synchronize #,Synchronise #,Render #,Process #,Acquire #,Release #,Register #,Deregister #,Unregister #,Handle #,Paint #,Render #,Paste #,Pick #">
+				<If numArgs="1" desc="%sName:FirstWord:SCase:Plural% the %sName:StripFirstWord:LCase% described by %argName1%" />
+				<Set desc="%sName:FirstWord:SCase:Plural% the %sName:StripFirstWord:Sentence:LCase%" />
+			</If>
+			<If sName="Display #,Insert #">
+				<If numArgs="1" desc="%sName:FirstWord:SCase%s a %sName:StripFirstWord:LCase% described by %argName1%" />
+				<Set desc="%sName:FirstWord:SCase%s a %sName:StripFirstWord:Sentence:LCase%" />
+			</If>
+
+			<If sName="Prepend #,Append #,Add #,Push #,Upload #,Link #,Connect #,Write #,Save #,Dump #,Inform #,Notify #,Broadcast #,Send #,Post #">
+				<If numArgs="0" desc="%sName:FirstWord:SCase:Plural% the %sName:StripFirstWord:Sentence:LCase%" />
+				<Set desc="%sName:FirstWord:SCase:Plural% a %sName:StripFirstWord:Sentence:LCase%" />
+			</If>
+
+			<If sName="Find,Search,Index Of">
+				<If numArgs="1">
+					<If argType1="int,Int32,unsigned int,UInt32,short,Int16,long,long long,Int64,guid,Guid" desc="Searches for the first match for the given %argName1:Sentence:LCase%" />
+					<Set desc="Searches for the first match for the given %argType1:Sentence:LCase%" />
+				</If>
+				<Set desc="Searches for the first match" />
+			</If>
+			<If sName="Find All #,Index Of All #" desc="Searches for all %match:Sentence:LCase%" />
+			<If sName="Find Any,Index Of Any" desc="Searches for any matches from the given list" />
+			<If sName="Find Any #,Index Of Any #" desc="Searches for any %match:Sentence:LCase%" />
+			<If sName="Find First #,Index Of First #" desc="Searches for the first %match:Sentence:LCase%" />
+			<If sName="Find Next #,Index Of Next #" desc="Searches for the next %match:Sentence:LCase%" />
+			<If sName="Find Previous #,Index Of Previous #" desc="Searches for the next %match:Sentence:LCase%" />
+			<If sName="Find Last #,Index Of Last #" desc="Searches for the last %match:Sentence:LCase%" />
+			<If sName="Find Nearest #,Find Closest #" desc="Searches for the nearest %match:Sentence:LCase%" />
+			<If sName="Find Furthest #,Find Farthest #" desc="Searches for the furthest %match:Sentence:LCase%" />
+			<If sName="Find Newest #" desc="Searches for the newest %match:Sentence:LCase%" />
+			<If sName="Find Oldest #" desc="Searches for the oldest %match:Sentence:LCase%" />
+			<If sName="Find Largest #,Find Biggest #" desc="Searches for the largest %match:Sentence:LCase%" />
+			<If sName="Find Smallest #" desc="Searches for the smallest %match:Sentence:LCase%" />
+			<If sName="Find On #,Find By #,Find #,Search For #,Search By #,Search On #,Search #,Index Of #" desc="Searches for the first %match:Sentence:LCase%" />
+
+			<If sName="Reverse Find,Reverse Search,Last Index Of">
+				<If numArgs="1" desc="Searches for the last match for the given %argType1:Sentence:LCase%" />
+				<Set desc="Searches for the last match" />
+			</If>
+			<If sName="Reverse Find By #,Reverse Find #,Reverse Search On #,Reverse Search #,Last Index Of #" desc="Searches for the last %match:Sentence:LCase%" />
+
+			<If sName="Lookup,Look Up" desc="Looks up a given key to find its associated value" />
+			<If sName="Lookup #,Look Up #" desc="Looks up a given key to find its associated %match:Sentence:LCase%" />
+
+			<If sName="For,For Each,For All" desc="Applies an operation to all items in this collection" />
+
+			<If sName="Initialise #,Initialize #" desc="%sName:FirstWord:SCase:Plural% the %namenp:StripFirstWord:Sentence:LCase%" />
+			<If sName="Set up #,Setup #" desc="Sets up the %match:Sentence:LCase%" />
+			<If sName="Reinitialise #,Reinitialize #" desc="%namenp:FirstWord:SCase:Plural% the %namenp:StripFirstWord:Sentence:LCase%" />
+			<If sName="Declare #" desc="Declares the %match:Sentence:LCase%" />
+			<If sName="Connect to #,Connect #" desc="Connect to the %match:Sentence:LCase%" />
+			<If sName="Disconnect from#,Disconnect#" desc="Disconnect from the %match:Sentence:LCase%" />
+			<If name="#Callback,#Upcall,#Handler" desc="%name:LastWord:SCase%, called when the %match:Sentence:LCase%" />
+			<If sName="Test if #" desc="Tests if the %match:Sentence:LCase%" />
+			<If sName="Hit Test" desc="Determines which item (if any) has been hit" />
+			<If sName="# Test,Test #" desc="Tests %match:Sentence:LCase%" />
+			<If sName="Ready to #" desc="Query if we are ready to %match:Sentence:LCase%" />
+
+			<If sName="Log#">
+				<If sName="Log in,Log on,Log off,Log out,Login,Logon,Logoff,Logout" desc="%sName:SCase%" />
+			</If>
+
+			<If sName="Get#">
+				<If sName="Get X #,Get Y #,Get Z #" desc="%sName:SCase%" />
+			</If>
+
+			<If numArgs="0" sName="Build #,Create #,Make #,Open #,Close #,Write #,Save #,Read #,Load #,Dump #,Scan #,Report #,Log #,Get #,Put #,Set #,Fetch #,Store #,Return #,Retrieve #,Locate #,Query #,Download #,# Down Load,Upload #">
+				<If numwordsinname="2" desc="%namenp:FirstWord:SCase:Plural% the %match:Sentence:LCase%" />
+				<Set desc="%namenp:FirstWord:SCase:Plural% %match:Sentence:LCase%" />
+			</If>
+			<If sName="Rollback #,Roll Back #" desc="Rolls back a %match:Sentence:LCase%" />
+			<If sName="Build #,Create #,Make #,Open #,Close #,Write #,Save #,Read #,Load #,Dump #,Scan #,Report #,Log #,Get #,Put #,Set #,Fetch #,Store #,Return #,Retrieve #,Locate #,Query #,Commit #,Download #,# Down Load,Upload #,Start #,Stop #,End #,Begin #,Finish #,Split #">
+				<If numwordsinname="2" desc="%namenp:FirstWord:SCase:Plural% a %match:Sentence:LCase%" />
+				<Set desc="%namenp:FirstWord:SCase:Plural% %match:Sentence:LCase%" />
+			</If>
+			<If sName="New #" desc="Creates a %sName:LCase%" />
+
+			<If sName="show #,hide #,enable #,disable #,lock #,unlock #,promote #,demote #" desc="%namenp:FirstWord:Plural:SCase% the %match:Sentence:LCase%" />
+			<If sName="grant #,deny #" desc="%namenp:FirstWord:Plural:SCase% %match:Sentence:LCase%" />
+
+			<If sName="# exists,# is writable,# is readable,# open" desc="Queries if a given %sName:LCase%" />
+			<If numWordsInName="1">
+				<If name="Deinitialise,Deinitialize" desc="De-initialises this %object% and frees any resources it is using" />
+				<If name="Register" desc="Registers this %object%" />
+				<If name="Deregister,Unregister" desc="Deregisters this %object%" />
+				<If sName="Add" desc="Adds %argName1%" />
+				<If sName="Prepend,Append">
+					<If numArgs="0" desc="%namenp:SCase:Plural%" />
+					<Set desc="%namenp:SCase:Plural% a %argName1%" />
+				</If>
+				<If sName="Clear" desc="Clears this %object% to its blank/initial state" />
+				<If sName="Clone,Duplicate" desc="Makes a deep copy of this %object%" />
+				<If sName="Contains" desc="Determines if this collection contains a given object" />
+				<If sName="Dispose">
+					<If numArgs="0" desc="Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources" />
+					<Set desc="Releases the unmanaged resources used by the %containingClass% and optionally releases the managed resources." />
+				</If>
+				<If sName="Peek" desc="Returns the top-of-stack object without removing it" />
+				<If sName="Pop" desc="Removes and returns the top-of-stack object" />
+				<If sName="Push" desc="Pushes an object onto this stack" />
+				<If sName="Initialise,Initialize" desc="%sName:FirstWord:SCase:Plural% this %object%" />
+				<If sName="Create">
+					<If retType="void" desc="Creates this %object%" />
+					<Set desc="Creates a new %retType%" />
+				</If>
+				<If sName="Delete,Destroy,Clear,Reset,Remove,Unlink,Delink,Disconnect,Pull,Pop,Extract,Decompress,Download,Install,Flush,Apply,Activate,Update,Copy,Synchronize,Synchronise,Render,Process">
+					<If numArgs="1" desc="%sName:SCase:Plural% the given %argName1%" />
+					<Set desc="%sName:SCase:Plural% this %object%" />
+				</If>
+				<If sName="Send,Post" desc="%namenp:SCase% this message" />
+				<If sName="Display">
+					<If numArgs="1" desc="%sName:SCase%s the given %argName1%" />
+					<Set desc="%sName:SCase%s this %object%" />
+				</If>
+
+				<If numArgs="0">
+					<If retType="bool,boolean,system.boolean" desc="%namenp:Plural:Sentence:SCase% this %object%" />
+					<IfNot retType="void,unknown" desc="Gets the %SName:LCase%" />
+					<Set desc="%namenp:Plural:Sentence:SCase% this %object%" />
+				</If>
+
+				<If argName1="file,fname,path,file#,path#" desc="%sName:Plural:SCase% the given file" />
+				<If argName1="uri,url" desc="%sName:Plural:SCase% the given document" />
+
+				<If numArgs="1">
+					<If argType1="bool,boolean,int,float,double,string,#Exception" desc="%namenp:Plural:Sentence:SCase%" />
+					<Set desc="%sName:Plural:SCase% the given %argName1:Sentence:LCase%" />
+				</If>
+
+				<Set desc="%namenp:Plural:Sentence:SCase%" />
+			</If>
+
+			<If numArgs="0">
+				<If retType="bool,boolean,system.boolean" desc="Determines if we can %namenp:Sentence:LCase%" />
+			</If>
+
+			<Set desc="%sName:SCase%" />
+		</Methods>

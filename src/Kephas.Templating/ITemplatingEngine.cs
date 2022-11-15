@@ -38,10 +38,7 @@ public interface ITemplatingEngine
         T? model,
         TextWriter textWriter,
         ITemplateProcessingContext processingContext,
-        CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(this.Process(template, model, textWriter, processingContext));
-    }
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Processes the provided template synchronously returning the processed output.
@@ -58,5 +55,8 @@ public interface ITemplatingEngine
         ITemplate template,
         T? model,
         TextWriter textWriter,
-        ITemplateProcessingContext processingContext);
+        ITemplateProcessingContext processingContext)
+    {
+        return this.ProcessAsync(template, model, textWriter, processingContext).GetResultNonLocking()!;
+    }
 }

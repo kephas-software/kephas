@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.DataSources
 {
@@ -38,7 +38,7 @@ namespace Kephas.Data.DataSources
         {
             providerFactories = providerFactories ?? throw new System.ArgumentNullException(nameof(providerFactories));
 
-            this.providers = providerFactories.Order().SelectServices().ToList();
+            this.providers = providerFactories.Order().GetServices().ToList();
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace Kephas.Configuration
     using System;
     using System.Collections.Concurrent;
 
+    using Kephas.Dynamic;
     using Kephas.Runtime;
     using Kephas.Services;
 
@@ -27,7 +28,7 @@ namespace Kephas.Configuration
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         public DefaultConfigurationStore(IRuntimeTypeRegistry typeRegistry)
-            : base(new ConcurrentDictionary<string, object?>(StringComparer.OrdinalIgnoreCase).ToDynamic(), typeRegistry)
+            : base(new Expando(new ConcurrentDictionary<string, object?>(StringComparer.OrdinalIgnoreCase)), typeRegistry)
         {
         }
     }

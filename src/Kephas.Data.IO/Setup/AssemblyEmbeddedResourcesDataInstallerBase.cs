@@ -18,7 +18,7 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Resources;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Net.Mime;
     using Kephas.Services;
 

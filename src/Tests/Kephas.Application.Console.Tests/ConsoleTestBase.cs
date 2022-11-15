@@ -16,47 +16,33 @@ namespace Kephas.Application.Console.Tests
     using System.Reflection;
 
     using Kephas.Commands;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
-    using Kephas.Services.Builder;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
 
-    public abstract class ConsoleTestBase : TestBase
+    public abstract class ConsoleTestBase : InjectionTestBase
     {
-        /// <summary>
-        /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
-        /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
-        ///                               will be created as linked to the newly created container.</param>
-        /// <param name="logManager">Optional. Manager for log.</param>
-        /// <param name="appRuntime">Optional. The application runtime.</param>
-        /// <returns>
-        /// A LiteInjectorBuilder.
-        /// </returns>
-        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
-            ambientServices = builder.AmbientServices;
-            if (!ambientServices.Contains(typeof(IAppContext)))
+            ambientServices ??= this.CreateAmbientServices();
+            if (!ambientServices.IsRegistered(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(builder));
-                ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
+                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return builder;
+            return base.CreateInjector(ambientServices, assemblies, parts, config);
         }
 
-        /// <summary>
-        /// Gets the default convention types to be considered when building the container. By default it includes Kephas.Core.
-        /// </summary>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process the default convention types in
-        /// this collection.
-        /// </returns>
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = base.GetAssemblies().ToList();
             assemblies.AddRange(new[]

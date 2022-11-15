@@ -7,7 +7,7 @@
 
 namespace Kephas.Configuration;
 
-using Kephas.Services;
+using Kephas.Injection;
 
 /// <summary>
 /// Attribute for indicating global settings, not tenant-specific.

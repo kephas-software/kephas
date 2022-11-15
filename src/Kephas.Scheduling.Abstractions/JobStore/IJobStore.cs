@@ -10,7 +10,7 @@ namespace Kephas.Scheduling.JobStore
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Linq;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
@@ -112,18 +112,18 @@ namespace Kephas.Scheduling.JobStore
         /// Gets the scheduled jobs.
         /// </summary>
         /// <returns>A query over the scheduled jobs.</returns>
-        IQueryable<IJobInfo> GetScheduledJobs();
+        IDisposableQueryable<IJobInfo> GetScheduledJobs();
 
         /// <summary>
         /// Gets the completed jobs.
         /// </summary>
         /// <returns>A query over the completed jobs.</returns>
-        IQueryable<IJobResult> GetCompletedJobs();
+        IDisposableQueryable<IJobResult> GetCompletedJobs();
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
         /// <returns>A query over the running jobs.</returns>
-        IQueryable<IJobResult> GetRunningJobs();
+        IDisposableQueryable<IJobResult> GetRunningJobs();
     }
 }

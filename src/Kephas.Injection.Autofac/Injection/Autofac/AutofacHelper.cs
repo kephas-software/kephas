@@ -1,0 +1,42 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AutofacHelper.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the autofac helper class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Injection.Autofac
+{
+    using System;
+    using global::Autofac;
+    using global::Autofac.Core.Resolving.Pipeline;
+    using Kephas.Injection.Autofac.Resources;
+
+    /// <summary>
+    /// Helper class for Autofac.
+    /// </summary>
+    public static class AutofacHelper
+    {
+        /// <summary>
+        /// Gets the lifetime scope from a component context.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="c">An IComponentContext to process.</param>
+        /// <returns>
+        /// The lifetime scope.
+        /// </returns>
+        public static ILifetimeScope GetLifetimeScope(this IComponentContext c)
+        {
+            return c switch
+            {
+                ILifetimeScope lifetimeScope => lifetimeScope,
+                ResolveRequestContext resolveRequestContext => resolveRequestContext.ActivationScope,
+                _ => throw new InvalidOperationException(
+                    string.Format(Strings.AutofacInjector_MismatchedLifetimeScope_Exception, c))
+            };
+        }
+    }
+}

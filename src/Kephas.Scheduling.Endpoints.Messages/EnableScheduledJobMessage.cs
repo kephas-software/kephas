@@ -7,20 +7,19 @@
 
 namespace Kephas.Scheduling.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
 
     /// <summary>
     /// Message for enabling a scheduled job.
     /// </summary>
-    [Display(Description = "Enables the specified scheduled job.")]
+    [DisplayInfo(Description = "Enables the specified scheduled job.")]
     public class EnableScheduledJobMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the ID of the scheduled job to be enabled.
         /// </summary>
-        [Display(Description = "The job or the ID of the scheduled job to be enabled.")]
+        [DisplayInfo(Description = "The job or the ID of the scheduled job to be enabled.")]
         public object? Job { get; set; }
     }
 }

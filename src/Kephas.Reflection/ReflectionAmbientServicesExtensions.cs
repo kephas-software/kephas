@@ -27,6 +27,6 @@ namespace Kephas
         /// The runtime type registry.
         /// </returns>
         public static IRuntimeTypeRegistry GetTypeRegistry(this IAmbientServices ambientServices) =>
-            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetServiceInstance<IRuntimeTypeRegistry>();
+            (ambientServices ?? throw new ArgumentNullException(nameof(ambientServices))).GetRequiredService<IRuntimeTypeRegistry>();
     }
 }

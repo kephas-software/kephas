@@ -6,9 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
-
-        <RootNamespace>Kephas.Tests</RootNamespace>
-        <SignAssembly>True</SignAssembly>
+        <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
@@ -18,6 +16,9 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -35,9 +36,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
     <ItemGroup>

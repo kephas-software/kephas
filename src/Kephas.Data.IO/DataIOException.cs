@@ -18,7 +18,7 @@ namespace Kephas.Data.IO
     /// <summary>
     /// Exception for signaling data I/O errors.
     /// </summary>
-    public class DataIOException : DataException, IDataFormattable
+    public class DataIOException : DataException, IOperationMessage, IDataFormattable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOException"/> class.

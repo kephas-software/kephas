@@ -30,17 +30,17 @@ namespace Kephas.Model.Runtime
         /// Initializes a new instance of the <see cref="ConventionsRuntimeModelRegistryBase"/> class.
         /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="options">Optional. The configuration options.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         protected ConventionsRuntimeModelRegistryBase(
             IInjectableFactory injectableFactory,
-            IAppRuntime appRuntime,
+            IAmbientServices ambientServices,
             ITypeLoader? typeLoader = null,
             Action<ModelRegistryConventions>? options = null,
             ILogManager? logManager = null)
-            : this(injectableFactory, () => ResolveTypes(appRuntime, typeLoader ?? DefaultTypeLoader.Instance), options, logManager)
+            : this(injectableFactory, () => ResolveTypes(ambientServices, typeLoader ?? DefaultTypeLoader.Instance), options, logManager)
         {
         }
 
@@ -131,12 +131,12 @@ namespace Kephas.Model.Runtime
         private static bool HasAttributeOfType(Type type, Type attrType)
             => type.GetCustomAttributes().Any(attrType.IsInstanceOfType);
 
-        private static IEnumerable<Type> ResolveTypes(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        private static IEnumerable<Type> ResolveTypes(IAmbientServices ambientServices, ITypeLoader typeLoader)
         {
-            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-            typeLoader = typeLoader ?? throw new ArgumentNullException(nameof(typeLoader));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            typeLoader = typeLoader ?? throw new System.ArgumentNullException(nameof(typeLoader));
 
-            var assemblies = appRuntime.GetAppAssemblies();
+            var assemblies = ambientServices.GetAppAssemblies();
             foreach (var assembly in assemblies)
             {
                 foreach (var type in typeLoader.GetExportedTypes(assembly))

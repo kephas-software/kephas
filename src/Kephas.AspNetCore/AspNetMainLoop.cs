@@ -25,7 +25,7 @@ namespace Kephas.Application.AspNetCore
     /// </summary>
     [Override]
     [ProcessingPriority(Priority.AboveNormal - 100)]
-    public class AspNetMainLoop : IAppMainLoop
+    public class AspNetMainLoop : WorkerAppMainLoop
     {
         private readonly IEventSubscription? shutdownSubscription;
 
@@ -35,18 +35,29 @@ namespace Kephas.Application.AspNetCore
         /// <param name="eventHub">The event hub.</param>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="appLifetime">Optional. The application lifetime.</param>
-        /// <param name="logger">Optional. The logger.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         public AspNetMainLoop(
             IEventHub eventHub,
             IAppArgs appArgs,
             IHostApplicationLifetime? appLifetime = null,
-            ILogger<AspNetMainLoop>? logger = null)
+            ILogManager? logManager = null)
+            : base(eventHub, null, logManager)
         {
             this.AppArgs = appArgs;
             this.AppLifetime = appLifetime;
-            this.Logger = logger;
-            this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>(this.HandleShutdownSignal);
+            if (this.IsAttended)
+            {
+                this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>((e, ctx) => this.HandleShutdownSignal());
+            }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the application is attended/interactive.
+        /// </summary>
+        /// <value>
+        /// True if the application is attended/interactive, false if not.
+        /// </value>
+        public override bool IsAttended => false;
 
         /// <summary>
         /// Gets the application arguments.
@@ -59,27 +70,28 @@ namespace Kephas.Application.AspNetCore
         protected IHostApplicationLifetime? AppLifetime { get; }
 
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        protected ILogger<AspNetMainLoop>? Logger { get; }
-
-        /// <summary>
         /// Executes the application's main loop asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public Task<MainLoopResult> Main(CancellationToken cancellationToken)
+        public override async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken)
         {
-            return Task.FromResult(new MainLoopResult(new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore));
+            return this.IsAttended
+                ? await base.Main(cancellationToken).PreserveThreadContext()
+                : (new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore);
         }
 
         /// <summary>Handles the shutdown signal.</summary>
-        /// <param name="signal">The shutdown signal.</param>
-        /// <param name="context">The context.</param>
-        protected virtual void HandleShutdownSignal(ShutdownSignal signal, IContext? context)
+        protected override void HandleShutdownSignal()
         {
+            if (this.IsAttended)
+            {
+                base.HandleShutdownSignal();
+                return;
+            }
+
             try
             {
                 this.AppLifetime!.StopApplication();

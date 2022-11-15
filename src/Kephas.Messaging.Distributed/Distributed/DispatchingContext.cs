@@ -12,7 +12,7 @@ namespace Kephas.Messaging.Distributed
 {
     using Kephas.Application;
     using Kephas.Configuration;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Security.Authentication;
     using Kephas.Services;
@@ -25,14 +25,14 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="DispatchingContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        public DispatchingContext(IServiceProvider serviceProvider, IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
-            : base(serviceProvider)
+        public DispatchingContext(IInjector injector, IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
+            : base(injector)
         {
             this.MessageBroker = messageBroker;
             this.AppRuntime = appRuntime;

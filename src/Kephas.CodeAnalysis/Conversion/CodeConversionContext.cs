@@ -12,7 +12,7 @@ namespace Kephas.CodeAnalysis.Conversion
 {
     using System;
 
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -23,12 +23,12 @@ namespace Kephas.CodeAnalysis.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeConversionContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="codeConverter">The code converter.</param>
         public CodeConversionContext(
-            IServiceProvider serviceProvider,
+            IInjector injector,
             ICodeConverter codeConverter)
-            : base(serviceProvider)
+            : base(injector)
         {
             codeConverter = codeConverter ?? throw new ArgumentNullException(nameof(codeConverter));
 

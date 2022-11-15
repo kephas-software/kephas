@@ -13,7 +13,7 @@ namespace Kephas.Workflow
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -38,11 +38,11 @@ namespace Kephas.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivityContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
-        public ActivityContext(IServiceProvider serviceProvider, IWorkflowProcessor workflowProcessor, bool isThreadSafe = false)
-            : base(serviceProvider, isThreadSafe)
+        public ActivityContext(IInjector injector, IWorkflowProcessor workflowProcessor, bool isThreadSafe = false)
+            : base(injector, isThreadSafe)
         {
             workflowProcessor = workflowProcessor ?? throw new System.ArgumentNullException(nameof(workflowProcessor));
 

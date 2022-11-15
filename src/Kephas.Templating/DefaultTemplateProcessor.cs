@@ -10,9 +10,9 @@ namespace Kephas.Templating
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Collections;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -70,19 +70,20 @@ namespace Kephas.Templating
                 .Where(f => f.Metadata.TemplateKind != null)
                 .SelectMany(f => f.Metadata.TemplateKind)
                 .Distinct()
-                .ForEach(l => this.behaviorFactories.Add(l, new List<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>()));
+                .ForEach(l => this.behaviorFactories.Add(l,
+                    new List<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>>()));
 
             behaviorFactories
                 .Order()
                 .ForEach(f =>
                 {
-                    if (f.Metadata.TemplateKind is { Length: not 0 })
+                    if (f.Metadata.TemplateKind == null || f.Metadata.TemplateKind.Length == 0)
                     {
-                        f.Metadata.TemplateKind.ForEach(l => this.behaviorFactories.TryGetValue(l)?.Add(f));
+                        this.behaviorFactories.Values.ForEach(list => list.Add(f));
                     }
                     else
                     {
-                        this.behaviorFactories.Values.ForEach(list => list.Add(f));
+                        f.Metadata.TemplateKind.ForEach(l => this.behaviorFactories.TryGetValue(l)?.Add(f));
                     }
                 });
         }
@@ -172,10 +173,10 @@ namespace Kephas.Templating
                 }
             }
 
-            if (processingContext.Exception is not null || processingContext.Result?.HasErrors() is true)
+            if (processingContext.Exception != null || (processingContext.Result?.HasErrors() ?? false))
             {
                 var innerException = processingContext.Exception
-                                     ?? processingContext.Result?.TryGetException()!;
+                                     ?? new AggregateException(processingContext.Result!.Exceptions);
                 throw new TemplatingException(
                     Strings.DefaultTemplateProcessor_ProcessAsync_Exception.FormatWith(template.Name),
                     innerException,
@@ -187,30 +188,19 @@ namespace Kephas.Templating
         }
 
         /// <summary>
-        /// Processes the provided template synchronously returning the processed output.
-        /// </summary>
-        /// <typeparam name="T">The type of the bound model.</typeparam>
-        /// <param name="template">The template to be interpreted/executed.</param>
-        /// <param name="model">Optional. The template model.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        /// <returns>
-        /// A promise of the execution result.
-        /// </returns>
-        public object? Process<T>(ITemplate template, T? model = default, Action<ITemplateProcessingContext>? optionsConfig = null) =>
-            this.ProcessAsync(template, model, optionsConfig).GetResultNonLocking();
-
-        /// <summary>
         /// Selects the engine factory based on the arguments set in the processing context.
         /// </summary>
         /// <param name="processingContext">The processing context.</param>
         /// <returns>The <see cref="ITemplatingEngine"/> together with its metadata, or <c>null</c> if not found.</returns>
-        protected virtual Lazy<ITemplatingEngine, TemplatingEngineMetadata> SelectEngineFactory(ITemplateProcessingContext processingContext)
+        protected virtual Lazy<ITemplatingEngine, TemplatingEngineMetadata> SelectEngineFactory(
+            ITemplateProcessingContext processingContext)
         {
             var template = processingContext.Template!;
             var engineFactory = this.engineFactories.TryGetValue(template.Kind);
             return engineFactory
                    ?? throw new TemplatingException(
-                       Strings.DefaultTemplateProcessor_ProcessAsync_MissingEngine.FormatWith(template.Kind, template.Name), template);
+                       Strings.DefaultTemplateProcessor_ProcessAsync_MissingEngine.FormatWith(template.Kind,
+                           template.Name), template);
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get installed plugins message.
     /// </summary>
-    [Display(Description = "Gets the installed plugins.")]
+    [DisplayInfo(Description = "Gets the installed plugins.")]
     public class GetInstalledPluginsMessage : IMessage
     {
         /// <summary>

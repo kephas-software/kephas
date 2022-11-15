@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -30,7 +32,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -39,7 +41,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(IStateMachine), typeof(IStateMachineType), typeof(ActivityBase), typeof(string), typeof(TestActivity), typeof(TestStateMachine) });
 
             var injectableFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new WorkflowModelRegistry(injectableFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
@@ -51,7 +53,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_ExcludeFromModel()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -60,7 +62,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(ActivityBase), typeof(string), typeof(ExcludedActivity) });
 
             var injectableFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new WorkflowModelRegistry(injectableFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();

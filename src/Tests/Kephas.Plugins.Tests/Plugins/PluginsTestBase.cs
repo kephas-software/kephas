@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using Kephas.Injection;
 using Kephas.Plugins.Application;
 using Kephas.Plugins.Reflection;
 
@@ -25,11 +26,10 @@ namespace Kephas.Tests.Plugins
     using Kephas.Operations;
     using Kephas.Plugins;
     using Kephas.Services;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public abstract class PluginsTestBase : TestBase
+    public abstract class PluginsTestBase : InjectionTestBase
     {
         protected TestPluginManager CreatePluginManager(
             PluginsTestContext context,
@@ -41,17 +41,12 @@ namespace Kephas.Tests.Plugins
             Func<PluginData, IPluginContext, bool>? canEnable = null,
             Func<PluginData, IPluginContext, bool>? canDisable = null)
         {
-            var pluginsDataStore = new TestPluginStore();
-            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
-            {
-                AppFolder = context.AppLocation,
-                PluginsFolder = context.PluginsFolder,
-                PluginRepository = pluginsDataStore,
-            });
+            var pluginsDataStore = new TestPluginRepository();
+            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
             return new TestPluginManager(
                 context,
                 appRuntime,
-                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IServiceProvider>())),
+                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IInjector>())),
                 this.CreateEventHubMock(),
                 pluginsDataStore,
                 onInstall: onInstall,
@@ -63,7 +58,7 @@ namespace Kephas.Tests.Plugins
                 canDisable: canDisable);
         }
 
-        public class TestPluginStore : IPluginStore
+        public class TestPluginRepository : IPluginRepository
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 
@@ -106,7 +101,7 @@ namespace Kephas.Tests.Plugins
                 IAppRuntime appRuntime,
                 IInjectableFactory injectableFactory,
                 IEventHub eventHub,
-                IPluginStore pluginStore,
+                IPluginRepository pluginRepository,
                 ILogManager? logManager = null,
                 Action<IPlugin, IPluginContext>? onInstall = null,
                 Func<PluginData, IPluginContext, bool>? canInstall = null,
@@ -115,7 +110,7 @@ namespace Kephas.Tests.Plugins
                 Func<PluginData, IPluginContext, bool>? canUninitialize = null,
                 Func<PluginData, IPluginContext, bool>? canEnable = null,
                 Func<PluginData, IPluginContext, bool>? canDisable = null)
-                : base(appRuntime, injectableFactory, eventHub, pluginStore, logManager)
+                : base(appRuntime, injectableFactory, eventHub, pluginRepository, logManager)
             {
                 this.ctx = ctx;
                 this.onInstall = onInstall;
@@ -129,7 +124,7 @@ namespace Kephas.Tests.Plugins
 
             public override IEnumerable<IPlugin> GetInstalledPlugins()
             {
-                var repo = this.PluginStore as TestPluginStore;
+                var repo = this.PluginRepository as TestPluginRepository;
                 if (repo == null)
                 {
                     return base.GetInstalledPlugins();

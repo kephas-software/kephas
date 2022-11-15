@@ -8,22 +8,16 @@
 namespace Kephas.Templating.Razor.Tests;
 
 using System.Reflection;
-using Kephas.Testing;
-using Kephas.Testing.Services;
+using Kephas.Testing.Injection;
 
-public abstract class RazorTemplatingTestBase : TestBase
+public abstract class RazorTemplatingTestBase : InjectionTestBase
 {
-    protected override IEnumerable<Assembly> GetAssemblies()
+    public override IEnumerable<Assembly> GetAssemblies()
     {
         return new List<Assembly>(base.GetAssemblies())
         {
             typeof(ITemplatingEngine).Assembly, // Kephas.Templating
             typeof(RazorTemplatingEngine).Assembly, // Kephas.Templating.Razor
         };
-    }
-
-    protected virtual IServiceProvider BuildServiceProvider()
-    {
-        return this.CreateServicesBuilder().BuildWithDependencyInjection();
     }
 }

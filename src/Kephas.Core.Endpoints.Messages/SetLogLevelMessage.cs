@@ -22,7 +22,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A set log level message.
     /// </summary>
-    [Display(Description = "Sets the application minimum log level.")]
+    [DisplayInfo(Description = "Sets the application minimum log level.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class SetLogLevelMessage : IMessage
     {

@@ -15,7 +15,7 @@ namespace Kephas.Model.Elements
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Model.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -28,7 +28,7 @@ namespace Kephas.Model.Elements
     public class AppServiceType : ClassifierBase<IAppServiceType>, IAppServiceType
     {
         private readonly IAppServiceInfo appServiceInfo;
-        private readonly IServiceProvider serviceProvider;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceType" /> class.
@@ -45,9 +45,8 @@ namespace Kephas.Model.Elements
             appServiceInfo = appServiceInfo ?? throw new System.ArgumentNullException(nameof(appServiceInfo));
 
             this.appServiceInfo = appServiceInfo;
-            this.serviceProvider = constructionContext.ServiceProvider;
+            this.injector = constructionContext.Injector;
             this.ContractType = this.appServiceInfo.ContractType;
-            this.MetadataType = this.appServiceInfo.MetadataType;
         }
 
         /// <summary>
@@ -73,14 +72,6 @@ namespace Kephas.Model.Elements
         /// The type of the contract.
         /// </value>
         public Type? ContractType { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the supported metadata type.
-        /// </summary>
-        /// <value>
-        /// The supported metadata type.
-        /// </value>
-        public Type? MetadataType { get; set; }
 
         /// <summary>
         /// Gets the instancing strategy: factory, type, or instance.
@@ -132,7 +123,7 @@ namespace Kephas.Model.Elements
             }
 
             // TODO resolve or exception for generic services
-            return this.serviceProvider.Resolve(this.ContractType);
+            return this.injector.Resolve(this.ContractType);
         }
 
         /// <summary>Adds a part to the aggregated element.</summary>

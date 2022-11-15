@@ -31,6 +31,6 @@ namespace Kephas.Messaging.Messages
         /// <value>
         /// The informational message.
         /// </value>
-        string? Message { get; set; }
+        string Message { get; set; }
     }
 }

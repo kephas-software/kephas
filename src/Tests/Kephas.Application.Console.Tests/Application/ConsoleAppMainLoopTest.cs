@@ -30,7 +30,7 @@ namespace Kephas.Application.Console.Tests.Application
         [Test]
         public void Injection()
         {
-            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
+            var container = this.CreateInjector();
             var awaiter = container.Resolve<IAppMainLoop>();
 
             Assert.IsInstanceOf<ConsoleAppMainLoop>(awaiter);
@@ -58,8 +58,8 @@ namespace Kephas.Application.Console.Tests.Application
                 awaiterTask,
                 callback(new ShutdownSignal("hello"), Substitute.For<IContext>(), default));
 
-            Assert.AreEqual(AppShutdownInstruction.Shutdown, awaiterTask.Result.Instruction);
-            Assert.AreEqual(OperationState.Canceled, awaiterTask.Result.Result.OperationState);
+            Assert.AreEqual(AppShutdownInstruction.Shutdown, awaiterTask.Result.instruction);
+            Assert.AreEqual(OperationState.Canceled, awaiterTask.Result.result.OperationState);
         }
 
         [Test]
@@ -80,8 +80,8 @@ namespace Kephas.Application.Console.Tests.Application
             var awaiterTask = awaiter.Main(default);
             await awaiterTask;
 
-            Assert.AreEqual(AppShutdownInstruction.Shutdown, awaiterTask.Result.Instruction);
-            Assert.AreEqual(OperationState.Completed, awaiterTask.Result.Result.OperationState);
+            Assert.AreEqual(AppShutdownInstruction.Shutdown, awaiterTask.Result.instruction);
+            Assert.AreEqual(OperationState.Completed, awaiterTask.Result.result.OperationState);
         }
     }
 }

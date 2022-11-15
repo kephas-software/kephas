@@ -15,7 +15,7 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Data.IO.Resources;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -27,7 +27,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// The reader factories.
         /// </summary>
-        private readonly IFactoryEnumerable<IDataStreamReader, DataStreamReaderMetadata> readerFactories;
+        private readonly IOrderedServiceFactoryCollection<IDataStreamReader, DataStreamReaderMetadata> readerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataStreamReadService"/> class.

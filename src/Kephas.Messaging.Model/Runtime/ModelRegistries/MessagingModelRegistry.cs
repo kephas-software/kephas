@@ -28,17 +28,17 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
         /// Initializes a new instance of the <see cref="MessagingModelRegistry"/> class.
         /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">optional. The log manager.</param>
         public MessagingModelRegistry(
             IInjectableFactory injectableFactory,
-            IAppRuntime appRuntime,
+            IAmbientServices ambientServices,
             ITypeLoader? typeLoader = null,
             ILogManager? logManager = null)
             : base(
                 injectableFactory,
-                appRuntime,
+                ambientServices,
                 typeLoader,
                 conventions =>
                 {

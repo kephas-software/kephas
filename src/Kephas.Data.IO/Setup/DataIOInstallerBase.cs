@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.IO.Setup
 {
@@ -227,25 +227,15 @@ namespace Kephas.Data.IO.Setup
                     .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken);
                 try
                 {
-                    await importResult.AsTask();
+                    await importResult;
                 }
                 catch (Exception innerEx)
                 {
                     importResult.MergeException(innerEx);
                 }
 
-                importResult.Messages.ForEach(m =>
-                {
-                    var logLevel = m.IsError() ? LogLevel.Error : m.IsWarning() ? LogLevel.Warning : LogLevel.Info;
-                    if (m.Exception is null)
-                    {
-                        this.Logger.Log(logLevel, $"{logLevel} while importing {{file}}.", dataFilePath);
-                    }
-                    else
-                    {
-                        this.Logger.Log(logLevel, m.Exception, $"{logLevel} while importing {{file}}.", dataFilePath);
-                    }
-                });
+                importResult.Messages.ForEach(m => this.Logger.Info($"{{timestamp}}: {m.Message}", m.Timestamp));
+                importResult.Exceptions.ForEach(e => this.Logger.Error(e, "Exception while importing {file}.", dataFilePath));
                 return importResult;
             }
             catch (Exception ex)

@@ -7,10 +7,8 @@
 
 namespace Kephas.AspNetCore.InteractiveTests6.ServicesConfigurators
 {
-    using Kephas.Extensions.DependencyInjection;
     using Kephas.Serialization.Json;
     using Kephas.Services;
-    using Kephas.Services.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -22,18 +20,17 @@ namespace Kephas.AspNetCore.InteractiveTests6.ServicesConfigurators
         /// <summary>
         /// Configure the services.
         /// </summary>
-        /// <param name="context">The host builder context.</param>
-        /// <param name="services">The service collection.</param>
-        /// <param name="servicesBuilder">The services builder.</param>
-        public void ConfigureServices(HostBuilderContext context, IServiceCollection services, IAppServiceCollectionBuilder servicesBuilder)
+        /// <param name="services">The services to configure.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        public void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
         {
             services
                 .AddControllersWithViews()
                 .AddNewtonsoftJson(
                     options =>
                     {
-                        var container = services.BuildServiceProvider();
-                        var jsonSettingsProvider = container.GetRequiredService<IJsonSerializerSettingsProvider>();
+                        var jsonSettingsProvider = ambientServices.Injector
+                            .Resolve<IJsonSerializerSettingsProvider>();
                         jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
                     });
         }

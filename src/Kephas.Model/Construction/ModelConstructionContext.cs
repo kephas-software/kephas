@@ -8,11 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Construction
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
@@ -32,19 +33,19 @@ namespace Kephas.Model.Construction
         {
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
 
-            this.Logger = parentContext.ServiceProvider.GetLogger(this.GetType());
+            this.Logger = parentContext.AmbientServices.GetLogger(this.GetType());
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public ModelConstructionContext(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        /// <param name="injector">The injector.</param>
+        public ModelConstructionContext(IInjector injector)
+            : base(injector)
         {
-            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
-            this.Logger = serviceProvider.GetLogger(this.GetType());
+            this.Logger = injector.GetLogger(this.GetType());
         }
 
         /// <summary>

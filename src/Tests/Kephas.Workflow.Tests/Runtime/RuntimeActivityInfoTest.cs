@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Workflow.Tests.Runtime
 {
     using System;
@@ -85,7 +87,7 @@ namespace Kephas.Workflow.Tests.Runtime
         {
             var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
             Assert.ThrowsAsync<NotImplementedException>(
-                () => activityInfo.ExecuteAsync(new TestActivity(), null, null, new ActivityContext(Substitute.For<IServiceProvider>(), Substitute.For<IWorkflowProcessor>())));
+                () => activityInfo.ExecuteAsync(new TestActivity(), null, null, new ActivityContext(Substitute.For<IInjector>(), Substitute.For<IWorkflowProcessor>())));
         }
 
         [Test]
@@ -96,7 +98,7 @@ namespace Kephas.Workflow.Tests.Runtime
 
             (activity as IOperation).ExecuteAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<object>("success"));
 
-            Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext(Substitute.For<IServiceProvider>(), Substitute.For<IWorkflowProcessor>())));
+            Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext(Substitute.For<IInjector>(), Substitute.For<IWorkflowProcessor>())));
         }
 
         public interface ITestActivity : IActivity

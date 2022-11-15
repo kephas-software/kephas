@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Client.Tests.Queries.Conversion
 {

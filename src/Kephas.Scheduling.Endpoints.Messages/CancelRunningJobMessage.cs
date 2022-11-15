@@ -7,8 +7,7 @@
 
 namespace Kephas.Scheduling.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
@@ -17,13 +16,13 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message for canceling running jobs.
     /// </summary>
-    [Display(Description = "Cancels the running job with the given ID.")]
+    [DisplayInfo(Description = "Cancels the running job with the given ID.")]
     public class CancelRunningJobMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the identifier of the running job to be canceled.
         /// </summary>
-        [Display(Description = "The ID of the running job.")]
+        [DisplayInfo(Description = "The ID of the running job.")]
         public object? RunningJobId { get; set; }
 
         /// <summary>

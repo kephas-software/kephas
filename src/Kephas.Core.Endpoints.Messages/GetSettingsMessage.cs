@@ -7,23 +7,23 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Reflection;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// A get settings message.
     /// </summary>
-    [Display(Description = "Gets the settings for the provided type.")]
+    [DisplayInfo(Description = "Gets the settings for the provided type.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class GetSettingsMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the settings type.
         /// </summary>
-        [Display(Description = "The name of the settings type to retrieve. The 'Settings' ending may be left out.")]
+        [DisplayInfo(Description = "The name of the settings type to retrieve. The 'Settings' ending may be left out.")]
         public string? SettingsType { get; set; }
     }
 }

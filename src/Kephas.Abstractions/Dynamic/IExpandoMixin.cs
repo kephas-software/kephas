@@ -16,9 +16,9 @@ namespace Kephas.Dynamic
     using Kephas.Reflection;
 
     /// <summary>
-    /// Mixin for providing a default implementation of an <see cref="IDynamic"/>.
+    /// Mixin for providing a default implementation of an <see cref="IExpandoBase"/>.
     /// </summary>
-    public interface IExpandoMixin : IDynamic
+    public interface IExpandoMixin : IExpandoBase
     {
         /// <summary>
         /// Gets the inner dictionary.
@@ -67,7 +67,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        IDictionary<string, object?> IDynamic.ToDictionary(
+        IDictionary<string, object?> IExpandoBase.ToDictionary(
             Func<string, string>? keyFunc,
             Func<object?, object?>? valueFunc)
             => ToDictionary(this, keyFunc, valueFunc);
@@ -79,7 +79,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        bool IDynamic.HasDynamicMember(string memberName)
+        bool IExpandoBase.HasDynamicMember(string memberName)
             => HasDynamicMember(this, memberName);
 
         /// <summary>

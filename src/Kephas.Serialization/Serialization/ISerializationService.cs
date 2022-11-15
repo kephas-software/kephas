@@ -65,7 +65,7 @@ namespace Kephas.Serialization
             TextReader textReader,
             Action<ISerializationContext>? optionsConfig = null)
         {
-            return this.DeserializeAsync(textReader, optionsConfig).GetResultNonLocking();
+            return this.DeserializeAsync(textReader, optionsConfig).GetResultNonLocking()!;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Kephas.Serialization
         /// </returns>
         object? Deserialize(string serializedObj, Action<ISerializationContext>? optionsConfig = null)
         {
-            return this.DeserializeAsync(serializedObj, optionsConfig).GetResultNonLocking();
+            return this.DeserializeAsync(serializedObj, optionsConfig).GetResultNonLocking()!;
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace Kephas.Serialization
         /// </returns>
         string Serialize(object? obj, Action<ISerializationContext>? optionsConfig = null)
         {
-            return this.SerializeAsync(obj ?? throw new ArgumentNullException(nameof(obj)), optionsConfig).GetResultNonLocking();
+            return this.SerializeAsync(obj ?? throw new ArgumentNullException(nameof(obj)), optionsConfig).GetResultNonLocking()!;
         }
 
         /// <summary>

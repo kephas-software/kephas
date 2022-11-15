@@ -43,7 +43,7 @@
         <ProjectReference Include="..\..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
         <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
+        <ProjectReference Include="..\..\Kephas.Injection\Kephas.Injection.csproj" />
     </ItemGroup>
 
     <ItemGroup>

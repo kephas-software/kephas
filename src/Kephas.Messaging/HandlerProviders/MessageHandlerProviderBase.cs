@@ -14,7 +14,7 @@ namespace Kephas.Messaging.HandlerProviders
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Messaging;
     using Kephas.Services;
 

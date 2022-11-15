@@ -50,7 +50,7 @@ namespace Kephas.Plugins
             IInjectableFactory injectableFactory,
             IEventHub eventHub,
             ILogManager? logManager = null)
-            : this(appRuntime, injectableFactory, eventHub, appRuntime.GetPluginStore(), logManager)
+            : this(appRuntime, injectableFactory, eventHub, appRuntime.GetPluginRepository(), logManager)
         {
         }
 
@@ -60,20 +60,20 @@ namespace Kephas.Plugins
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="pluginStore">The plugin data store.</param>
+        /// <param name="pluginRepository">The plugin data store.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         protected PluginManagerBase(
             IAppRuntime appRuntime,
             IInjectableFactory injectableFactory,
             IEventHub eventHub,
-            IPluginStore pluginStore,
+            IPluginRepository pluginRepository,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
             this.InjectableFactory = injectableFactory;
             this.EventHub = eventHub;
-            this.PluginStore = pluginStore;
+            this.PluginRepository = pluginRepository;
         }
 
         /// <summary>
@@ -101,12 +101,12 @@ namespace Kephas.Plugins
         protected IEventHub EventHub { get; }
 
         /// <summary>
-        /// Gets the plugin store.
+        /// Gets the plugin repository.
         /// </summary>
         /// <value>
-        /// The plugin store.
+        /// The plugin repository.
         /// </value>
-        protected IPluginStore PluginStore { get; }
+        protected IPluginRepository PluginRepository { get; }
 
         /// <summary>
         /// Gets the available plugins asynchronously.
@@ -138,7 +138,7 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual PluginState GetPluginState(AppIdentity pluginIdentity)
         {
-            return this.PluginStore.GetPluginData(pluginIdentity, throwOnInvalid: false).State;
+            return this.PluginRepository.GetPluginData(pluginIdentity, throwOnInvalid: false).State;
         }
 
         /// <summary>
@@ -841,7 +841,7 @@ namespace Kephas.Plugins
                     return instResult.Value;
                 }).PreserveThreadContext();
 
-            this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.\n{messages}", pluginIdentity, opResult.Elapsed, result.Messages);
+            this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
 
             return result
                 .MergeAll(opResult)
@@ -859,7 +859,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual IPlugin ToPlugin(PluginData pluginData, bool offline = false)
         {
-            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginStore, pluginData.Identity);
+            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginData.Identity);
             return (Plugin)pluginInfo.CreateInstance(new object?[] { offline ? pluginData : null });
         }
 
@@ -1011,7 +1011,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual PluginData GetInstalledPluginData(AppIdentity pluginIdentity)
         {
-            var pluginData = this.PluginStore.GetPluginData(pluginIdentity);
+            var pluginData = this.PluginRepository.GetPluginData(pluginIdentity);
             return pluginData;
         }
 
@@ -1171,17 +1171,17 @@ namespace Kephas.Plugins
 
             if (state == PluginState.None)
             {
-                this.PluginStore.RemovePluginData(pluginData.ChangeState(state));
+                this.PluginRepository.RemovePluginData(pluginData.ChangeState(state));
             }
             else
             {
-                this.PluginStore.StorePluginData(pluginData.ChangeState(state));
+                this.PluginRepository.StorePluginData(pluginData.ChangeState(state));
             }
         }
 
         private void SetUpdatingToVersion(PluginData pluginData, SemanticVersion version)
         {
-            this.PluginStore.StorePluginData(pluginData.ChangeUpdatingToVersion(version));
+            this.PluginRepository.StorePluginData(pluginData.ChangeUpdatingToVersion(version));
         }
     }
 }

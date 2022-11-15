@@ -13,7 +13,7 @@ namespace Kephas.Messaging.HandlerProviders
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>

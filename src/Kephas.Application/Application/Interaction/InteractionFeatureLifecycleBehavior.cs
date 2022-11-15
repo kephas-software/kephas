@@ -15,7 +15,6 @@ namespace Kephas.Application.Interaction
 
     using Kephas.Application;
     using Kephas.Interaction;
-    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -33,9 +32,7 @@ namespace Kephas.Application.Interaction
         /// class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logger">The behavior logger.</param>
-        public InteractionFeatureLifecycleBehavior(IEventHub eventHub, ILogger<InteractionFeatureLifecycleBehavior> logger)
-            : base(logger)
+        public InteractionFeatureLifecycleBehavior(IEventHub eventHub)
         {
             this.eventHub = eventHub;
         }

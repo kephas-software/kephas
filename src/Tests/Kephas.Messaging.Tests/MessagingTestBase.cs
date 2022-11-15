@@ -15,27 +15,38 @@ namespace Kephas.Messaging.Tests
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Security.Authorization;
-    using Kephas.Testing;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class MessagingTestBase : TestBase
+    public class MessagingTestBase : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IInjector CreateInjector(
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<IInjectorBuilder>? config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
-            return new List<Assembly>(base.GetAssemblies())
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(IMessageProcessor).Assembly,       /* Kephas.Messaging */
                 typeof(IAppLifecycleBehavior).Assembly,   /* Kephas.Application.Abstractions */
                 typeof(IAuthorizationService).Assembly,   /* Kephas.Security */
                 typeof(IEventHub).Assembly,               /* Kephas.Interaction */
             };
+
+            return base.CreateInjector(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
-        protected virtual IServiceProvider CreateMessagingContainerMock()
+        protected virtual IInjector CreateMessagingContainerMock()
         {
-            var container = Substitute.For<IServiceProvider>();
+            var container = Substitute.For<IInjector>();
 
             return container;
         }

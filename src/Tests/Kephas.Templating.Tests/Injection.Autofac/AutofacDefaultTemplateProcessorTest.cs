@@ -8,15 +8,33 @@
 namespace Kephas.Templating.Tests.Injection.Autofac
 {
     using System.Threading.Tasks;
-    using Kephas.Testing;
+
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutofacDefaultTemplateProcessorTest : DefaultTemplateProcessorTestBase
+    public class AutofacDefaultTemplateProcessorTest : AutofacTemplatingTestBase
     {
-        protected override IServiceProvider BuildServiceProvider(params Type[] parts)
+        [Test]
+        public void DefaultTemplateProcessor_Injection_success()
         {
-            return this.CreateServicesBuilder().WithParts(parts).BuildWithAutofac();
+            var container = this.CreateInjector();
+            var templateProcessor = container.Resolve<ITemplateProcessor>();
+            Assert.IsInstanceOf<DefaultTemplateProcessor>(templateProcessor);
+
+            var typedTemplateProcessor = (DefaultTemplateProcessor)templateProcessor;
+            Assert.IsNotNull(typedTemplateProcessor.Logger);
+        }
+
+        [Test]
+        public async Task ProcessAsync_Injection_success()
+        {
+            var container = this.CreateInjector(parts: new[] { typeof(TestTemplatingEngine) });
+            var templateProcessor = container.Resolve<ITemplateProcessor>();
+
+            var template = new StringTemplate("dummy", "test", "test-template");
+            var result = await templateProcessor.ProcessAsync<object>(template);
+
+            Assert.AreEqual("processed test-template", result);
         }
     }
 }

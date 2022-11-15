@@ -9,6 +9,7 @@ namespace Kephas.Messaging.Tests.Application.Behaviors;
 
 using Kephas.Application;
 using Kephas.Application.Reflection;
+using Kephas.Injection;
 using Kephas.Messaging.Application.Behaviors;
 using NSubstitute;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ public class EnsureRequiredFeatureMessageProcessingBehaviorTest
         // this should not crash, no required permissions
         await behavior.BeforeProcessAsync(
             message,
-            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
             default);
     }
 
@@ -37,7 +38,7 @@ public class EnsureRequiredFeatureMessageProcessingBehaviorTest
         var message = new NonFreeMessage();
         Assert.ThrowsAsync<MessagingException>(() => behavior.BeforeProcessAsync(
             message,
-            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
             default), "Should be called with test!");
     }
 
@@ -50,7 +51,7 @@ public class EnsureRequiredFeatureMessageProcessingBehaviorTest
         var message = new NonFreeMessage();
         await behavior.BeforeProcessAsync(
             message,
-            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
             default);
     }
 
@@ -63,7 +64,7 @@ public class EnsureRequiredFeatureMessageProcessingBehaviorTest
         var message = new NonFree();
         await behavior.BeforeProcessAsync(
             message.ToMessage(),
-            new MessagingContext(Substitute.For<IServiceProvider>(), Substitute.For<IMessageProcessor>()),
+            new MessagingContext(Substitute.For<IInjector>(), Substitute.For<IMessageProcessor>()),
             default);
     }
 

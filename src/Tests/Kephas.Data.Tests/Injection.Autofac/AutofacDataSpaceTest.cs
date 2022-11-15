@@ -13,11 +13,15 @@ namespace Kephas.Data.Tests.Injection.Autofac
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutofacDataSpaceTest : DataSpaceTestBase
+    public class AutofacDataSpaceTest : AutofacDataTestBase
     {
-        protected override IServiceProvider BuildServiceProvider()
+        [Test]
+        public void Injection_success()
         {
-            return this.CreateServicesBuilder().BuildWithAutofac();
+            var container = this.CreateInjector();
+            var dataSpace = container.Resolve<IDataSpace>();
+
+            Assert.IsInstanceOf<DataSpace>(dataSpace);
         }
     }
 }

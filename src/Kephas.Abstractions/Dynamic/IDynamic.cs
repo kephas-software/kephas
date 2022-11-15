@@ -30,39 +30,5 @@ namespace Kephas.Dynamic
         /// <param name="key">The key identifying the member name.</param>
         /// <returns>The requested member value.</returns>
         object? this[string key] { get; set; }
-
-        /// <summary>
-        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
-        /// </summary>
-        /// <param name="memberName">Name of the member.</param>
-        /// <returns>
-        /// True if defined, false if not.
-        /// </returns>
-        bool HasDynamicMember(string memberName)
-        {
-            try
-            {
-                var _ = this[memberName];
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the expando to a dictionary having as keys the property names and as values the
-        /// respective properties' values.
-        /// </summary>
-        /// <param name="keyFunc">Optional. The key transformation function.</param>
-        /// <param name="valueFunc">Optional. The value transformation function.</param>
-        /// <returns>
-        /// A dictionary of property values with their associated names.
-        /// </returns>
-        IDictionary<string, object?> ToDictionary(
-            Func<string, string>? keyFunc = null,
-            Func<object?, object?>? valueFunc = null) => new Dictionary<string, object?>();
     }
 }

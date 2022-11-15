@@ -12,7 +12,9 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using Kephas.Dynamic;
     using Kephas.IO;
@@ -58,12 +60,9 @@ namespace Kephas.Application
         public static readonly string AppVersionKey = "AppVersion";
 
         /// <summary>
-        /// Gets a value indicating whether the application is the root of an application hierarchy.
+        /// The root application identifier key.
         /// </summary>
-        /// <returns>
-        /// A value indicating whether the application is the root of an application hierarchy.
-        /// </returns>
-        bool IsRoot { get; }
+        public static readonly string IsRootKey = "IsRoot";
 
         /// <summary>
         /// Gets the application arguments.
@@ -115,80 +114,109 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
+        /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
-        IEnumerable<Assembly> GetAppAssemblies();
+        IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool>? assemblyFilter = null);
+
+        /// <summary>
+        /// Attempts to load an assembly from its given assembly name.
+        /// </summary>
+        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
+        /// <returns>
+        /// The resolved assembly reference.
+        /// </returns>
+        Assembly LoadAssemblyFromName(AssemblyName assemblyName);
+
+        /// <summary>
+        /// Attempts to load an assembly.
+        /// </summary>
+        /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
+        /// <returns>
+        /// The resolved assembly reference.
+        /// </returns>
+        Assembly LoadAssemblyFromPath(string assemblyFilePath);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IAppRuntime"/>.
+    /// </summary>
+    public static class AppRuntimeExtensions
+    {
+        /// <summary>
+        /// Gets the identifier of the application.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The identifier of the application.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsRoot(this IAppRuntime appRuntime) => appRuntime?[IAppRuntime.IsRootKey] as bool? ?? false;
 
         /// <summary>
         /// Gets the identifier of the application.
         /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
         /// <returns>
         /// The identifier of the application.
         /// </returns>
-        string? GetAppId() => this[AppIdKey] as string;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string? GetAppId(this IAppRuntime appRuntime) => appRuntime?[IAppRuntime.AppIdKey] as string;
 
         /// <summary>
         /// Gets the version of the application.
         /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
         /// <returns>
         /// The version of the application.
         /// </returns>
-        string? GetAppVersion() => this[IAppRuntime.AppVersionKey] as string;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string? GetAppVersion(this IAppRuntime appRuntime) => appRuntime?[IAppRuntime.AppVersionKey] as string;
 
         /// <summary>
         /// Gets the application identity.
         /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
         /// <returns>
         /// The application identity.
         /// </returns>
-        AppIdentity? GetAppIdentity() => this[IAppRuntime.AppIdentityKey] as AppIdentity;
-
-        /// <summary>
-        /// Gets the identifier of the application instance.
-        /// </summary>
-        /// <returns>
-        /// The identifier of the application instance.
-        /// </returns>
-        string? GetAppInstanceId() => this[IAppRuntime.AppInstanceIdKey] as string;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AppIdentity? GetAppIdentity(this IAppRuntime appRuntime) => appRuntime?[IAppRuntime.AppIdentityKey] as AppIdentity;
 
         /// <summary>
         /// Gets the running environment.
         /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <returns>The running environment.</returns>
-        string? GetEnvironment() => this[IAppRuntime.EnvKey] as string;
+        public static string? GetEnvironment(this IAppRuntime appRuntime) => appRuntime?[IAppRuntime.EnvKey] as string;
 
         /// <summary>
         /// Gets a value indicating whether the running environment is development.
         /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <returns>A value indicating whether the running environment is development.</returns>
-        bool IsDevelopmentEnvironment() => string.Equals(EnvironmentName.Development, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
+        public static bool IsDevelopment(this IAppRuntime appRuntime) => string.Equals(EnvironmentName.Development, appRuntime.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets a value indicating whether the running environment is production.
+        /// Gets the identifier of the application instance.
         /// </summary>
-        /// <returns>A value indicating whether the running environment is production.</returns>
-        bool IsProductionEnvironment() => string.Equals(EnvironmentName.Production, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
-
-        /// <summary>
-        /// Gets a value indicating whether the running environment is test.
-        /// </summary>
-        /// <returns>A value indicating whether the running environment is test.</returns>
-        bool IsTestEnvironment() => string.Equals(EnvironmentName.Test, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
-
-        /// <summary>
-        /// Gets a value indicating whether the running environment is staging.
-        /// </summary>
-        /// <returns>A value indicating whether the running environment is staging.</returns>
-        bool IsStagingEnvironment() => string.Equals(EnvironmentName.Staging, this.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The identifier of the application instance.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string? GetAppInstanceId(this IAppRuntime appRuntime) => appRuntime?[IAppRuntime.AppInstanceIdKey] as string;
 
         /// <summary>
         /// Gets the full path of the file or folder. If the name is a relative path, it will be made relative to the application location.
         /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
         /// <param name="path">Relative or absolute path of the file or folder.</param>
         /// <returns>
         /// The full path of the file or folder.
         /// </returns>
-        string GetFullPath(string? path) => FileSystem.GetFullPath(path, this.GetAppLocation());
+        public static string GetFullPath(this IAppRuntime appRuntime, string? path)
+            => FileSystem.GetFullPath(path, appRuntime.GetAppLocation());
     }
 }

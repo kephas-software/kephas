@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivatorBase_CannotGetImplementationType_Exception" xml:space="preserve">
+    <value>Cannot get the implementation type for the provided abstract type info '{0}'.</value>
+    <comment>Cannot get the implementation type for the provided abstract type info '{0}'.</comment>
+  </data>
+  <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
+    <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
+    <comment>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</comment>
+  </data>
+  <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
+    <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>
+    <comment>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</comment>
+  </data>
   <data name="DefaultAppManager_InitializeCanceled_Exception" xml:space="preserve">
     <value>The application's initialize procedure was canceled, at {0:s}.</value>
   </data>
@@ -162,6 +174,10 @@
   <data name="DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all exported types from {assembly}. Only the loadable types will be considered.</value>
   </data>
+  <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+    <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+    <comment>The specified contract type '{0}' is not assignable from the service contract '{1}'.</comment>
+  </data>
   <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
     <comment>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</comment>
@@ -189,12 +205,20 @@
     <value>Argument '{0}' must not be null nor empty.</value>
     <comment>Argument '{0}' must not be null nor empty.</comment>
   </data>
+  <data name="ConfigurationBase_SettingValueNotSupported_Exception" xml:space="preserve">
+    <value>Setting a value is not supported by the default implementation of the configuration. Override this in a derived class to provide an implementation.</value>
+    <comment>Setting a value is not supported by the default implementation of the configuration. Override this in a derived class to provide an implementation.</comment>
+  </data>
   <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
     <value>Could not add the item {0} to the concurrent collection.</value>
     <comment>Could not add the item {0} to the concurrent collection.</comment>
   </data>
   <data name="RuntimeTypeInfo_NoPublicConstructorDefined_Exception" xml:space="preserve">
     <value>No public constructor defined for '{0}', cannot create instances.</value>
+  </data>
+  <data name="AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning" xml:space="preserve">
+    <value>Application service contracts exported as open generics do not support metadata attributes and they will be ignored ('{contractType}'). Instead, try to pass metadata through generic parameter types.</value>
+    <comment>Application service contracts exported as open generics do not support metadata attributes and they will be ignored ('{contractType}'). Instead, try to pass metadata through generic parameter types.</comment>
   </data>
   <data name="RuntimeTypeInfo_PropertyNotFound_Exception" xml:space="preserve">
     <value>Property {0} not found or is not accessible in {1}.</value>
@@ -209,8 +233,21 @@
   <data name="RuntimeTypeInfo_MemberNotFound_Exception" xml:space="preserve">
     <value>Member {0} not found in {1}.</value>
   </data>
+  <data name="ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception" xml:space="preserve">
+    <value>Cannot instantiate the type '{0}' because it could not be resolved to an implementation type.</value>
+    <comment>Cannot instantiate the type '{0}' because it could not be resolved to an implementation type.</comment>
+  </data>
   <data name="RuntimeTypeInfo_AmbiguousMember_Exception" xml:space="preserve">
     <value>There are multiple members with the name '{0}' in '{1}'. Please use {2} to disambiguate between them.</value>
+  </data>
+  <data name="DynamicTypeInfo_AddMember_Duplicate_Exception" xml:space="preserve">
+    <value>Duplicate member with name '{0}' in '{1}'.</value>
+  </data>
+  <data name="DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception" xml:space="preserve">
+    <value>The type '{0}' cannot be a base of itself.</value>
+  </data>
+  <data name="DynamicAssemblyInfo_AddType_Duplicate_Exception" xml:space="preserve">
+    <value>Duplicate type with full name '{0}' in '{1}'.</value>
   </data>
   <data name="RuntimePropertyInfo_GetValue_Exception" xml:space="preserve">
     <value>No get accessor for property '{0}' in '{1}'.</value>
@@ -221,6 +258,18 @@
   <data name="DefaultMediaTypeProvider_NotFound_Exception" xml:space="preserve">
     <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
   </data>
+  <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
+    <value>Shutting down the application...</value>
+    <comment>Shutting down the application...</comment>
+  </data>
+  <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
+    <value>Errors occurred during the application shutdown procedure, please check the exception details for more information.</value>
+    <comment>Errors occurred during the application shutdown procedure, please check the exception details for more information.</comment>
+  </data>
+  <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
+    <value>The application shut down successfully. Goodbye!</value>
+    <comment>The application shut down successfully. Good bye!</comment>
+  </data>
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{type}'.</value>
   </data>
@@ -229,6 +278,14 @@
   </data>
   <data name="DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception" xml:space="preserve">
     <value>Multiple services found for {0}/{1}.</value>
+  </data>
+  <data name="Context_CannotChangeIdentity_Exception" xml:space="preserve">
+    <value>Cannot change the identity in the context once it has been set.</value>
+    <comment>Cannot change the identity in the context once it has been set.</comment>
+  </data>
+  <data name="OperationResult_Merge_TaskNotCompleteException" xml:space="preserve">
+    <value>Cannot merge the task result, the task is not completed.</value>
+    <comment>Cannot merge the task result, the task is not completed.</comment>
   </data>
   <data name="UnhandledException_InProcess_Message" xml:space="preserve">
     <value>Unhandled exception in process.</value>
@@ -252,7 +309,7 @@
     <value>An item with the same key is already added.</value>
     <comment>An item with the same key is already added.</comment>
   </data>
-  <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
+  <data name="CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
     <value>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</value>
     <comment>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</comment>
   </data>
@@ -289,8 +346,15 @@
   <data name="LiteRegistrationBuilder_InvalidRegistration_Exception" xml:space="preserve">
     <value>One of {0} or {1} must be set in service registration.</value>
   </data>
+  <data name="LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception" xml:space="preserve">
+    <value>Cannot identify the constructed service type of {0} from {1}.</value>
+  </data>
   <data name="SettingsProviderSelector_NoProviderFoundForSettingsType" xml:space="preserve">
     <value>No provider found for settings type '{settingsType}'.</value>
+  </data>
+  <data name="ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception" xml:space="preserve">
+    <value>The stored settings type '{0}' differs from the requested settings type '{1}'.</value>
+    <comment>The stored settings type '{0}' differs from the requested settings type '{1}'.</comment>
   </data>
   <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
     <value>The injectable type '{0}' must be an instantiable class.</value>

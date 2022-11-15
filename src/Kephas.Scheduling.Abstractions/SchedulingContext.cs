@@ -10,7 +10,7 @@ namespace Kephas.Scheduling
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
     using Kephas.Workflow;
@@ -33,9 +33,9 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulingContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public SchedulingContext(IServiceProvider serviceProvider)
-            : base(serviceProvider, isThreadSafe: false)
+        /// <param name="injector">The injector.</param>
+        public SchedulingContext(IInjector injector)
+            : base(injector, isThreadSafe: false)
         {
         }
 

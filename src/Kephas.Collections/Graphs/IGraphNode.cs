@@ -17,7 +17,7 @@ namespace Kephas.Graphs
     /// <summary>
     /// Defines the contract for a graph node.
     /// </summary>
-    public interface IGraphNode : IDynamic
+    public interface IGraphNode : IExpandoBase
     {
         /// <summary>
         /// Gets the incoming nodes from this node.

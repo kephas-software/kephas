@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Tests.Setup
 {
@@ -29,7 +29,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task InstallDataAsync_proper_order()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -43,7 +43,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task InstallDataAsync_filtered()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -56,7 +56,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task UninstallDataAsync_proper_order()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -70,7 +70,7 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task UninstallDataAsync_filtered()
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
@@ -80,7 +80,7 @@ namespace Kephas.Data.Tests.Setup
             Assert.AreEqual("u-2", list[0]);
         }
 
-        private IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> GetInstallerFactories(List<string> list)
+        private List<IExportFactory<IDataInstaller, DataInstallerMetadata>> GetInstallerFactories(List<string> list)
         {
             var installer1 = Substitute.For<IDataInstaller>();
             installer1.InstallDataAsync(Arg.Any<Action<IDataSetupContext>>(), Arg.Any<CancellationToken>()).Returns(
@@ -119,7 +119,7 @@ namespace Kephas.Data.Tests.Setup
                                                  () => installer2,
                                                  new DataInstallerMetadata("2", processingPriority: (Priority)1))
                                          };
-            return new FactoryEnumerable<IDataInstaller, DataInstallerMetadata>(installerFactories);
+            return installerFactories;
         }
     }
 }

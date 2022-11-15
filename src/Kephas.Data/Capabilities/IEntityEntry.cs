@@ -18,7 +18,7 @@ namespace Kephas.Data.Capabilities
     /// <summary>
     /// Provides extended entity entry like the <see cref="ChangeState"/>.
     /// </summary>
-    public interface IEntityEntry : IDynamic, IChangeStateTrackableEntityEntry, IIdentifiable, IAggregatable, IDisposable
+    public interface IEntityEntry : IExpandoBase, IChangeStateTrackableEntityEntry, IIdentifiable, IAggregatable, IDisposable
     {
         /// <summary>
         /// Gets a copy of the original entity, before any changes occurred.
@@ -26,7 +26,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The original entity.
         /// </value>
-        IDynamic OriginalEntity { get; }
+        IExpandoBase OriginalEntity { get; }
 
         /// <summary>
         /// Gets the identifier of the entity.

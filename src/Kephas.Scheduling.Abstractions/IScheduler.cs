@@ -14,6 +14,7 @@ namespace Kephas.Scheduling
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Linq;
     using Kephas.Operations;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
@@ -31,21 +32,21 @@ namespace Kephas.Scheduling
         /// </summary>
         /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the scheduled jobs.</returns>
-        IQueryable<IJobInfo> GetScheduledJobs(Action<ISchedulingContext>? options = null);
+        IDisposableQueryable<IJobInfo> GetScheduledJobs(Action<ISchedulingContext>? options = null);
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
         /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the running jobs.</returns>
-        IQueryable<IJobResult> GetRunningJobs(Action<ISchedulingContext>? options = null);
+        IDisposableQueryable<IJobResult> GetRunningJobs(Action<ISchedulingContext>? options = null);
 
         /// <summary>
         /// Gets the completed jobs.
         /// </summary>
         /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the completed jobs.</returns>
-        IQueryable<IJobResult> GetCompletedJobs(Action<ISchedulingContext>? options = null);
+        IDisposableQueryable<IJobResult> GetCompletedJobs(Action<ISchedulingContext>? options = null);
 
         /// <summary>
         /// Enqueues a new job using a scheduled job or its ID.

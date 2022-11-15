@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Plugins
 {
@@ -27,9 +27,9 @@ namespace Kephas.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public PluginContext(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        /// <param name="injector">The injector.</param>
+        public PluginContext(IInjector injector)
+            : base(injector)
         {
         }
 

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Security.Authorization
 {
     using System;
@@ -15,9 +17,7 @@ namespace Kephas.Security.Authorization
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Dynamic;
-    using Kephas.Services;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -36,7 +36,7 @@ namespace Kephas.Security.Authorization
         public DefaultAuthorizationScopeService(
             ICollection<IExportFactory<IAuthorizationScopeProvider, AppServiceMetadata>> providerFactories)
         {
-            this.providers = providerFactories.Order().SelectServices().ToList();
+            this.providers = providerFactories.Order().GetServices().ToList();
         }
 
         /// <summary>

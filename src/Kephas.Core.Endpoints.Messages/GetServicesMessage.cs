@@ -7,26 +7,25 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
 
     /// <summary>
     /// Message for retrieving metadata of the application services.
     /// </summary>
-    [Display(Description = "Gets the metadata of the application services.")]
+    [DisplayInfo(Description = "Gets the metadata of the application services.")]
     public class GetServicesMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the contract type.
         /// </summary>
-        [Display(Description = "Filter on the contract type.")]
+        [DisplayInfo(Description = "Filter on the contract type.")]
         public string? ContractType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the ordering behavior should be applied on the services.
         /// </summary>
-        [Display(Description = "Indicates whether the ordering behavior should be applied on the services.")]
+        [DisplayInfo(Description = "Indicates whether the ordering behavior should be applied on the services.")]
         public bool Ordered { get; set; }
     }
 }

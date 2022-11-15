@@ -1,0 +1,69 @@
+﻿<Preprocess>
+		<!--
+			Macro-based preprocessing rules
+			===============================
+
+			[Please note: Macros are not supported by Visual Studio from version 11 (2012) onwards]
+
+			When replacing an existing DocComment, Atomineer can optionally call a user-defined
+			Visual Studio macro to allow the comment to be pre-processed. This allows legacy comments
+			to be parsed and converted into a DocXml or Doxygen format to allow Atomineer to
+			read the old documentation and convert it into the configured format. In addition, a
+			conversion process can be executed on any code following the comment (for example,
+			extracting end-of-line parameter comments and inserting them into the existing comment
+			block).
+			
+			To use this preprocessor, set up the Alternate separator and line-header preferences
+			to match the legacy comment style, and enter the full name of the macro you wish to
+			execute here.
+			
+			When Atomineer finds an existing comment during execution of 'Add Doc Comment', it
+			will set the ActiveDocument's selection to the comment text (including the top and bottom
+			separators) and then call this macro before it processes the comment text. You Macro can
+			therefore parse and update the comment to be in a roughly Atomineer-compatible format,
+			so that Atomineer can complete the conversion to your currently configured format.
+			
+			Note: It is recommended that you only enable this feature while converting old comments,
+			and then disable it in normal use, as it slows down comment processing and causes a
+			flashing effect in your document as the text is selected and deselected.
+		-->
+		<!-- <ConvertComment macro="Macros.AtomineerUtils.Custom.ConvertExistingComment"/> -->
+
+
+		<!--
+			Regular expression preprocessing rules
+			======================================
+
+			In certain circumstances, Atomineer will apply a list of .Net regular expression
+			replacements to text strings as a preprocessing step. This can be used to "tidy up"
+			text before the auto-doc engine acts on it, to help Atomineer parse it better
+			(a typical use is to replace in-house types, typedefs or Macros that Atomineer
+			doesn't understand with something simpler, so that Atomineer handles them better)
+			
+			Each <Replace> element should supply pattern="" and replacement="" attributes, which
+			will be processed as the parameters to the .Net RegEx.Replace() method. If any change
+			is caused by the regex, then an option attribute continue="true|false" can be used
+			to allow or stop further regex replacements being made.
+		-->
+		<MethodDecl>
+			<!--
+				Preprocessing rules for Method declarations. The entire declaration
+					e.g. "static int MyMethod(int parameter)"
+				is passed through any .Net regular expression replacements specified below.
+			
+				Examples: Replace a typedef/macro return type or parameter with a simple type.
+					<Replace pattern="OurTrueFalseType" replacement="bool" continue="true"/>
+					<Replace pattern="OUR_TYPE\(bool\)" replacement="bool" continue="true"/>
+			-->
+		</MethodDecl>
+		<ClassDecl>
+			<!-- Preprocessing rules for Class/Struct/Interface declarations. The entire declaration
+					e.g. "class MyClass"
+				is passed through any .Net regular expression replacements specified below.
+			
+				Examples: Replace a typedef/macro return type or parameter with a simple type.
+					<Replace pattern="OurTrueFalseType" replacement="bool" continue="true"/>
+					<Replace pattern="OUR_TYPE\(bool\)" replacement="bool" continue="true"/>
+			-->
+		</ClassDecl>
+	</Preprocess>

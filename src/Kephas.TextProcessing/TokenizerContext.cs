@@ -12,7 +12,7 @@ namespace Kephas.TextProcessing;
 
 using System;
 
-using Kephas.Services;
+using Kephas.Injection;
 using Kephas.Services;
 
 /// <summary>
@@ -23,9 +23,9 @@ public class TokenizerContext : Context, ITokenizerContext
     /// <summary>
     /// Initializes a new instance of the <see cref="TokenizerContext"/> class.
     /// </summary>
-    /// <param name="serviceProvider">The injector.</param>
-    public TokenizerContext(IServiceProvider serviceProvider)
-        : base(serviceProvider)
+    /// <param name="injector">The injector.</param>
+    public TokenizerContext(IInjector injector)
+        : base(injector)
     {
     }
 

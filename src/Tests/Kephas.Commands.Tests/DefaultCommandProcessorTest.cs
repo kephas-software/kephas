@@ -26,7 +26,7 @@ namespace Kephas.Commands.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
+            var container = this.CreateInjector();
             var processor = container.Resolve<ICommandProcessor>();
 
             Assert.IsInstanceOf<DefaultCommandProcessor>(processor);
@@ -35,12 +35,12 @@ namespace Kephas.Commands.Tests
         [Test]
         public async Task ProcessAsync_return_object()
         {
-            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IServiceProvider>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IAmbientServices>()));
             var cmdInfo = Substitute.For<IOperationInfo>();
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
                 .Returns(ci => ((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!");
             var resolver = Substitute.For<ICommandResolver>();
-            resolver.ResolveCommand("help", Arg.Any<IDynamic>(), throwOnNotFound: true)
+            resolver.ResolveCommand("help", Arg.Any<IExpandoBase>(), throwOnNotFound: true)
                 .Returns(cmdInfo);
             var processor = new DefaultCommandProcessor(resolver, Substitute.For<ICommandIdentityResolver>(), contextFactory);
 
@@ -52,12 +52,12 @@ namespace Kephas.Commands.Tests
         [Test]
         public async Task ProcessAsync_return_task()
         {
-            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IServiceProvider>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IAmbientServices>()));
             var cmdInfo = Substitute.For<IOperationInfo>();
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
                 .Returns(ci => Task.FromResult<object?>(((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!"));
             var resolver = Substitute.For<ICommandResolver>();
-            resolver.ResolveCommand("help", Arg.Any<IDynamic>(), throwOnNotFound: true)
+            resolver.ResolveCommand("help", Arg.Any<IExpandoBase>(), throwOnNotFound: true)
                 .Returns(cmdInfo);
             var processor = new DefaultCommandProcessor(resolver, Substitute.For<ICommandIdentityResolver>(), contextFactory);
 

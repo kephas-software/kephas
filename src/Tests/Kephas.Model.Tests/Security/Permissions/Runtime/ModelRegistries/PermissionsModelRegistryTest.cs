@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
 {
     using System;
@@ -22,18 +24,17 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class PermissionsModelRegistryTest : TestBase
+    public class PermissionsModelRegistryTest : InjectionTestBase
     {
         [Test]
         public async Task GetRuntimeElementsAsync()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -53,7 +54,7 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
                 });
 
             var contextFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new PermissionsModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
@@ -68,7 +69,7 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_ExcludeFromModel()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -77,7 +78,7 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IPermissionType), typeof(PermissionType), typeof(string), typeof(ExcludedPermission) });
 
             var contextFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new PermissionsModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();

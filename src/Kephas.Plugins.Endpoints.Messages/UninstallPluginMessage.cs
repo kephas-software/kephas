@@ -21,7 +21,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An uninstall plugin message.
     /// </summary>
-    [Display(Description = "Uninstalls the indicated plugin.")]
+    [DisplayInfo(Description = "Uninstalls the indicated plugin.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class UninstallPluginMessage : IMessage
     {

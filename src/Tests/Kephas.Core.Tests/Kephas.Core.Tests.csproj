@@ -11,6 +11,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Properties\**" />
+      <EmbeddedResource Remove="Properties\**" />
+      <None Remove="Properties\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     </ItemGroup>
 
@@ -39,10 +45,6 @@
 
     <ItemGroup>
         <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>

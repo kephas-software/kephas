@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.IO.Tests.Setup
 {
@@ -75,7 +75,7 @@ namespace Kephas.Data.IO.Tests.Setup
 
         private IInjectableFactory GetInjectableFactory()
         {
-            return this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
+            return this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IInjector>()));
         }
 
         public class TestAssemblyEmbeddedResourcesDataInstaller : AssemblyEmbeddedResourcesDataInstallerBase

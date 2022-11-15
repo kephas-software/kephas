@@ -72,7 +72,7 @@ namespace Kephas.Plugins.Endpoints
             if (pluginData is LicensePluginData licensePluginData)
             {
                 var licenceCheckResult = this.licensingManager.CheckLicense(plugin.Identity, context);
-                licensePluginData.IsLicensed = licenceCheckResult.Value;
+                licensePluginData.IsLicensed = licenceCheckResult.IsLicensed;
                 licensePluginData.LicenseCheckMessage = licenceCheckResult.Messages?.FirstOrDefault()?.Message;
                 licensePluginData.License = this.licensingManager.GetLicense(plugin.Identity, context);
             }

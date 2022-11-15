@@ -6,14 +6,11 @@ The purpose of this library is to provide abstractions for connections to variou
 
 Check the following packages for more information:
 * [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 * [Kephas.Security](https://www.nuget.org/packages/Kephas.Security)
 
 Packages providing connections:
 * [Kephas.Mail.MailKit](https://www.nuget.org/packages/Kephas.Mail.MailKit)
-
-Typically used areas and classes/interfaces/services:
-* ```IConnection```, ```IConnectionProvider```, ```IConnectionFactory```.
 
 ## Usage
 

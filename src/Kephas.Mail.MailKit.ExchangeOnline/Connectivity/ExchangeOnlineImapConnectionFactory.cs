@@ -15,7 +15,7 @@ using Kephas.Logging;
 using Kephas.Serialization;
 
 /// <summary>
-/// Connection factory for <see cref="MailKitImapConnection"/>.
+/// Connection factory for <see cref="ExchangeOnlineImapConnection"/>.
 /// </summary>
 /// <seealso cref="IConnectionFactory" />
 [ConnectionKind(ConnectionKind)]
@@ -27,7 +27,6 @@ public class ExchangeOnlineImapConnectionFactory : IConnectionFactory
     public const string ConnectionKind = "imap-ms365";
 
     private readonly IEncryptionService encryptionService;
-    private readonly ISerializationService serializationService;
     private readonly IConfiguration<ExchangeOnlineConnectionSettings> connectionConfiguration;
     private readonly ILogger<ExchangeOnlineImapConnection>? logger;
 
@@ -35,17 +34,14 @@ public class ExchangeOnlineImapConnectionFactory : IConnectionFactory
     /// Initializes a new instance of the <see cref="ExchangeOnlineImapConnectionFactory"/> class.
     /// </summary>
     /// <param name="encryptionService">The encryption service.</param>
-    /// <param name="serializationService">The serialization service.</param>
     /// <param name="connectionConfiguration">The connection configuration.</param>
     /// <param name="logger">Optional. The logger.</param>
     public ExchangeOnlineImapConnectionFactory(
         IEncryptionService encryptionService,
-        ISerializationService serializationService,
         IConfiguration<ExchangeOnlineConnectionSettings> connectionConfiguration,
         ILogger<ExchangeOnlineImapConnection>? logger = null)
     {
         this.encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
-        this.serializationService = serializationService ?? throw new ArgumentNullException(nameof(serializationService));
         this.connectionConfiguration = connectionConfiguration ?? throw new ArgumentNullException(nameof(connectionConfiguration));
         this.logger = logger;
     }
@@ -59,6 +55,6 @@ public class ExchangeOnlineImapConnectionFactory : IConnectionFactory
     /// </returns>
     public IConnection CreateConnection(IConnectionContext context)
     {
-        return new ExchangeOnlineImapConnection(context, this.encryptionService, this.serializationService, this.connectionConfiguration, this.logger);
+        return new ExchangeOnlineImapConnection(context, this.encryptionService, this.connectionConfiguration, this.logger);
     }
 }

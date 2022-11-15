@@ -14,10 +14,10 @@ namespace Kephas.Data.Model.Behaviors
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
+    using Kephas.Data.Validation;
     using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Validation;
 
     /// <summary>
     /// An entity validation behavior using the model space classifier, if applicable, for validating the entity using annotations.
@@ -44,7 +44,7 @@ namespace Kephas.Data.Model.Behaviors
         /// <summary>Creates the validation function.</summary>
         /// <param name="typeInfo">Information describing the type.</param>
         /// <returns>The new validation function.</returns>
-        protected override Func<object, IEntityEntry, IDataOperationContext, IValidationResult> CreateValidationFn(ITypeInfo typeInfo)
+        protected override Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
         {
             var modelSpace = this.modelSpaceProvider.GetModelSpace();
             var entityClassifier = modelSpace.TryGetClassifier(typeInfo);

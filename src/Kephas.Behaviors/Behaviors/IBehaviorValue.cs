@@ -15,7 +15,7 @@ namespace Kephas.Behaviors
     /// <summary>
     /// Generic contract for behavior values.
     /// </summary>
-    public interface IBehaviorValue : IDynamic
+    public interface IBehaviorValue : IExpandoBase
     {
         /// <summary>
         /// Gets the behavior value.

@@ -7,13 +7,13 @@
 
 namespace Kephas.Application;
 
-using Kephas.Services.Builder;
+using Kephas.Operations;
 using Kephas.Threading.Tasks;
 
 /// <summary>
 /// App used for switching among multiple registered apps.
 /// </summary>
-public class SwitchApp : AppBase
+public class SwitchApp : AppBase<AmbientServices>
 {
     private readonly IList<AppEntry> appEntries = new List<AppEntry>();
 
@@ -22,7 +22,7 @@ public class SwitchApp : AppBase
     /// </summary>
     /// <param name="appArgs">The application arguments.</param>
     public SwitchApp(IAppArgs appArgs)
-        : base(appArgs)
+        : this(new AmbientServices(), appArgs)
     {
     }
 
@@ -31,7 +31,27 @@ public class SwitchApp : AppBase
     /// </summary>
     /// <param name="appArgs">The application arguments.</param>
     public SwitchApp(IEnumerable<string> appArgs)
-        : this(new AppArgs(appArgs))
+        : this(new AmbientServices(), new AppArgs(appArgs))
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SwitchApp"/> class.
+    /// </summary>
+    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="appArgs">The application arguments.</param>
+    public SwitchApp(IAmbientServices ambientServices, IEnumerable<string> appArgs)
+        : this(ambientServices, new AppArgs(appArgs))
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SwitchApp"/> class.
+    /// </summary>
+    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="appArgs">The application arguments.</param>
+    public SwitchApp(IAmbientServices ambientServices, IAppArgs appArgs)
+        : base(ambientServices, appArgs)
     {
     }
 
@@ -64,7 +84,7 @@ public class SwitchApp : AppBase
     /// <param name="appFactory">The <see cref="IApp"/> factory.</param>
     /// <param name="condition">Optional. Function indicating when the application should be considered.</param>
     /// <returns>This instance.</returns>
-    public virtual SwitchApp AddApp(Func<IAppServiceCollectionBuilder, IAppArgs, IApp> appFactory, Func<IAppServiceCollectionBuilder, IAppArgs, bool>? condition = null)
+    public virtual SwitchApp AddApp(Func<IAmbientServices, IAppArgs, IApp> appFactory, Func<IAmbientServices, IAppArgs, bool>? condition = null)
     {
         this.appEntries.Add(new AppEntry(condition, appFactory));
 
@@ -74,11 +94,16 @@ public class SwitchApp : AppBase
     /// <summary>
     /// Runs the application asynchronously.
     /// </summary>
+    /// <param name="mainCallback">
+    ///     Optional. The callback for the main function.
+    ///     If not provided, the service implementing <see cref="IAppMainLoop"/> will be invoked,
+    ///     otherwise the application will end.
+    /// </param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>
     /// The asynchronous result that yields the <see cref="IAppContext"/>.
     /// </returns>
-    public override async Task<AppRunResult> RunAsync(CancellationToken cancellationToken = default)
+    public override async Task<AppRunResult> RunAsync(Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null, CancellationToken cancellationToken = default)
     {
         if (this.RunningApp?.IsRunning ?? false)
         {
@@ -93,10 +118,10 @@ public class SwitchApp : AppBase
 
         foreach (var appEntry in this.appEntries)
         {
-            if (appEntry.Condition?.Invoke(this.ServicesBuilder, this.AppArgs) ?? true)
+            if (appEntry.Condition?.Invoke(this.AmbientServices, this.AppArgs) ?? true)
             {
-                this.RunningApp = appEntry.AppFactory(this.ServicesBuilder, this.AppArgs);
-                return await this.RunningApp.RunAsync(cancellationToken).PreserveThreadContext();
+                this.RunningApp = appEntry.AppFactory(this.AmbientServices, this.AppArgs);
+                return await this.RunningApp.RunAsync(mainCallback, cancellationToken).PreserveThreadContext();
             }
         }
 
@@ -120,28 +145,7 @@ public class SwitchApp : AppBase
         await this.RunningApp.ShutdownAsync(cancellationToken).PreserveThreadContext();
     }
 
-    /// <summary>
-    /// This is the last step in the app's configuration, when all the services are set up
-    /// and the container is built. For inheritors, this is the last place where services can
-    /// be added before calling. By default, it only builds the Lite container, but any other container adapter
-    /// can be used, like Autofac or System.Composition.
-    /// </summary>
-    /// <remarks>
-    /// Override this method to initialize the startup services, like log manager and configuration manager.
-    /// </remarks>
-    /// <param name="servicesBuilder">The services builder.</param>
-    /// <returns>The service provider.</returns>
-    protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
-    {
-        if (this.RunningApp is not { IsRunning: true })
-        {
-            throw new InvalidOperationException("The selected app is not running yet.");
-        }
-
-        return this.RunningApp.ServiceProvider!;
-    }
-
     private record AppEntry(
-        Func<IAppServiceCollectionBuilder, IAppArgs, bool>? Condition,
-        Func<IAppServiceCollectionBuilder, IAppArgs, IApp> AppFactory);
+        Func<IAmbientServices, IAppArgs, bool>? Condition,
+        Func<IAmbientServices, IAppArgs, IApp> AppFactory);
 }

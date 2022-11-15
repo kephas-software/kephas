@@ -19,7 +19,7 @@ namespace Kephas.Model.Tests
     [TestFixture]
     public class ModelAmbientServicesExtensionsTest : ModelTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
@@ -30,8 +30,7 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task WithModel_EnsureModelSpaceRegistered()
         {
-            var container = this.CreateServicesBuilder()
-                .BuildWithDependencyInjection();
+            var container = this.CreateInjector();
             var provider = container.Resolve<IModelSpaceProvider>();
             await provider.InitializeAsync(new Context(container));
             var modelSpace = container.Resolve<IModelSpace>();

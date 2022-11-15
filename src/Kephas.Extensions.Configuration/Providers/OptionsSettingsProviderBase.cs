@@ -16,7 +16,7 @@ namespace Kephas.Extensions.Configuration.Providers
 
     using Kephas;
     using Kephas.Configuration.Providers;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.Extensions.Options;
@@ -26,16 +26,16 @@ namespace Kephas.Extensions.Configuration.Providers
     /// </summary>
     public abstract class OptionsSettingsProviderBase : ISettingsProvider
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IInjector injector;
         private readonly Lazy<ISettingsProvider> lazyFileSettingsProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsSettingsProviderBase"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        protected OptionsSettingsProviderBase(IServiceProvider serviceProvider)
+        /// <param name="injector">The injector.</param>
+        protected OptionsSettingsProviderBase(IInjector injector)
         {
-            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this.injector = injector ?? throw new ArgumentNullException(nameof(injector));
 
             this.lazyFileSettingsProvider = new Lazy<ISettingsProvider>(this.CreateFileSettingsProvider);
         }
@@ -50,7 +50,7 @@ namespace Kephas.Extensions.Configuration.Providers
         /// </returns>
         public virtual object? GetSettings(Type settingsType, IContext? context)
         {
-            var options = this.serviceProvider.TryResolve(typeof(IOptions<>).MakeGenericType(settingsType));
+            var options = this.injector.TryResolve(typeof(IOptions<>).MakeGenericType(settingsType));
             return options?.GetPropertyValue(nameof(IOptions<NullLogManager>.Value));
         }
 
@@ -72,7 +72,7 @@ namespace Kephas.Extensions.Configuration.Providers
         /// <returns>The newly created <see cref="FileSettingsProvider"/> instance.</returns>
         protected virtual ISettingsProvider CreateFileSettingsProvider()
         {
-            return this.serviceProvider.Resolve<ISettingsProvider>(FileSettingsProvider.ServiceName);
+            return this.injector.Resolve<ISettingsProvider>(FileSettingsProvider.ServiceName);
         }
     }
 }

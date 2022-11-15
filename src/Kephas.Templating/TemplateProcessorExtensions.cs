@@ -23,7 +23,7 @@ public static class TemplateProcessorExtensions
     /// <param name="template">The template.</param>
     /// <param name="model">The model.</param>
     /// <returns>The interpolated string.</returns>
-    public static string? Process<T>([DisallowNull] this ITemplateProcessor processor, string template, T model)
+    public static string? Interpolate<T>([DisallowNull] this ITemplateProcessor processor, string template, T model)
     {
         processor = processor ?? throw new ArgumentNullException(nameof(processor));
         var result = processor.Process(new StringTemplate(template, InterpolationTemplatingEngine.Interpolation), model);
@@ -38,7 +38,7 @@ public static class TemplateProcessorExtensions
     /// <param name="templatePath">The template path.</param>
     /// <param name="model">The model.</param>
     /// <returns>The interpolated string.</returns>
-    public static string? ProcessFile<T>([DisallowNull] this ITemplateProcessor processor, string templatePath, T model)
+    public static string? ProcessWithFile<T>([DisallowNull] this ITemplateProcessor processor, string templatePath, T model)
     {
         processor = processor ?? throw new ArgumentNullException(nameof(processor));
         var result = processor.Process(new FileTemplate(templatePath), model);
