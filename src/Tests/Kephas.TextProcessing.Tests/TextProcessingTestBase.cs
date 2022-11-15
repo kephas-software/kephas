@@ -12,21 +12,15 @@ namespace Kephas.TextProcessing.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
 
-    public abstract class TextProcessingTestBase : TestBase
+    public abstract class TextProcessingTestBase : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies()) {
                 typeof(ITokenizer).Assembly,            // Kephas.TextProcessing
             };
-        }
-
-        protected IServiceProvider BuildServiceProvider()
-        {
-            return this.CreateServicesBuilder().BuildWithDependencyInjection();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// A help message.
     /// </summary>
-    [Display(Description = "Displays the available commands. Use 'help <command>' to display information about the requested command.")]
+    [DisplayInfo(Description = "Displays the available commands. Use 'help <command>' to display information about the requested command.")]
     [ReturnType(typeof(HelpResponseMessage))]
     public class HelpMessage : IMessage
     {

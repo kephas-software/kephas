@@ -17,7 +17,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Contract for message matching criteria.
     /// </summary>
-    public interface IMessageMatch : IDynamic
+    public interface IMessageMatch : IExpandoBase
     {
         /// <summary>
         /// Gets the type of the message.

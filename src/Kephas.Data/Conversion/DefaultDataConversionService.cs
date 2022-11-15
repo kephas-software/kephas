@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Conversion
 {
@@ -58,20 +58,20 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
         /// <param name="targetResolverFactories">The target resolver factories.</param>
         public DefaultDataConversionService(
-            IServiceProvider serviceProvider,
+            IInjector injector,
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories,
             ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
-            : base(serviceProvider)
+            : base(injector)
         {
-            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            injector = injector ?? throw new ArgumentNullException(nameof(injector));
             converterExportFactories = converterExportFactories ?? throw new System.ArgumentNullException(nameof(converterExportFactories));
             targetResolverFactories = targetResolverFactories ?? throw new System.ArgumentNullException(nameof(targetResolverFactories));
 
-            this.ServiceProvider = serviceProvider;
+            this.Injector = injector;
             this.converterExportFactories = converterExportFactories;
             this.targetResolverFactories = targetResolverFactories;
         }
@@ -82,7 +82,7 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The injector.
         /// </value>
-        public IServiceProvider ServiceProvider { get; }
+        public IInjector Injector { get; }
 
         /// <summary>
         /// Converts the source object to the target object asynchronously.

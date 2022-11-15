@@ -45,7 +45,7 @@ namespace Kephas.Messaging.Distributed
                 TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary = new ();
 
         private readonly IInjectableFactory injectableFactory;
-        private readonly ILazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories;
+        private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<RouterEntry>? routerMap;
 
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Distributed
         public DefaultMessageBroker(
             IInjectableFactory injectableFactory,
             IAppRuntime appRuntime,
-            IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories)
+            IEnabledLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories)
             : base(injectableFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());

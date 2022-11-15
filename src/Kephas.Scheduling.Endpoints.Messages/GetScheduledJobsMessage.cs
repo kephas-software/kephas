@@ -7,15 +7,14 @@
 
 namespace Kephas.Scheduling.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
 
     /// <summary>
     /// Message for getting the scheduled jobs.
     /// </summary>
-    [Display(Description = "Gets the scheduled jobs.")]
+    [DisplayInfo(Description = "Gets the scheduled jobs.")]
     public class GetScheduledJobsMessage : IMessage
     {
     }

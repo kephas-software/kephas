@@ -12,7 +12,7 @@ namespace Kephas.CodeAnalysis.Generation
 {
     using System;
 
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -23,14 +23,14 @@ namespace Kephas.CodeAnalysis.Generation
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeGenerationContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="codeGenerator">The code generator.</param>
         /// <param name="codeFormatter">Optional. The code formatter.</param>
         public CodeGenerationContext(
-            IServiceProvider serviceProvider,
+            IInjector injector,
             ICodeGenerator codeGenerator,
             ICodeFormatter? codeFormatter = null)
-            : base(serviceProvider)
+            : base(injector)
         {
             codeGenerator = codeGenerator ?? throw new ArgumentNullException(nameof(codeGenerator));
 

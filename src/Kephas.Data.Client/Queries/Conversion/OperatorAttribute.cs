@@ -11,7 +11,7 @@
 namespace Kephas.Data.Client.Queries.Conversion
 {
     using System;
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Metadata attribute providing the operator.

@@ -7,17 +7,17 @@
 
 namespace Kephas.Orchestration.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
+    using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// Message for getting the live application instances.
     /// </summary>
-    [Display(Description = "Gets the live application instances.")]
+    [DisplayInfo(Description = "Gets the live application instances.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class GetLiveAppsMessage : IMessage
     {

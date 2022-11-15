@@ -20,7 +20,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Contract for operation results.
     /// </summary>
-    public interface IOperationResult : IDynamic, INotifyPropertyChanged
+    public interface IOperationResult : IExpandoBase, INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the return value.
@@ -73,23 +73,28 @@ namespace Kephas.Operations
         ICollection<IOperationMessage> Messages { get; }
 
         /// <summary>
+        /// Gets the exceptions.
+        /// </summary>
+        /// <value>
+        /// The exceptions.
+        /// </value>
+        ICollection<Exception> Exceptions { get; }
+
+        /// <summary>
+        /// Gets the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        OperationResultAwaiter GetAwaiter();
+
+        /// <summary>
         /// Converts this object to a task.
         /// </summary>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task<object?> AsTask();
-
-        /// <summary>
-        /// Deconstructs this instance.
-        /// </summary>
-        /// <param name="value">The result value.</param>
-        /// <param name="state">The result state.</param>
-        void Deconstruct(out object? value, out OperationState state)
-        {
-            value = this.Value;
-            state = this.OperationState;
-        }
+        Task AsTask();
     }
 
     /// <summary>
@@ -107,34 +112,19 @@ namespace Kephas.Operations
         new TValue Value { get; set; }
 
         /// <summary>
+        /// Gets the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        new OperationResultAwaiter<TValue> GetAwaiter();
+
+        /// <summary>
         /// Converts this object to a task.
         /// </summary>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
         new Task<TValue> AsTask();
-
-        /// <summary>
-        /// Converts this object to a task.
-        /// </summary>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        Task<object?> IOperationResult.AsTask()
-        {
-            var task = this.AsTask();
-            return task as Task<object?> ?? task.ContinueWith(t => (object?)t.Result);
-        }
-
-        /// <summary>
-        /// Deconstructs this instance.
-        /// </summary>
-        /// <param name="value">The result value.</param>
-        /// <param name="state">The result state.</param>
-        void Deconstruct(out TValue value, out OperationState state)
-        {
-            value = this.Value;
-            state = this.OperationState;
-        }
     }
 }

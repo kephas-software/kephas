@@ -13,7 +13,7 @@ namespace Kephas.Messaging.AttributedModel
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Adds message matching criteria for <see cref="IMessageHandler"/> services.

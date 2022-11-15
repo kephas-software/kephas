@@ -31,7 +31,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// </summary>
     public class ModelAssemblyRegistry : Loggable, IRuntimeModelRegistry
     {
-        private readonly IAppRuntime appRuntime;
+        private readonly IAmbientServices ambientServices;
         private readonly ITypeLoader typeLoader;
         private readonly IModelAssemblyAttributeProvider modelAssemblyAttributeProvider;
         private readonly IRuntimeTypeRegistry typeRegistry;
@@ -39,22 +39,26 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="ambientServices">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
         /// <param name="modelAssemblyAttributeProvider">The model assembly attribute provider.</param>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public ModelAssemblyRegistry(
-            IAppRuntime appRuntime,
+            IAmbientServices ambientServices,
             ITypeLoader typeLoader,
             IModelAssemblyAttributeProvider modelAssemblyAttributeProvider,
             IRuntimeTypeRegistry typeRegistry,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));;
-            this.typeLoader = typeLoader ?? throw new ArgumentNullException(nameof(typeLoader));
-            this.modelAssemblyAttributeProvider = modelAssemblyAttributeProvider ?? throw new ArgumentNullException(nameof(modelAssemblyAttributeProvider));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            typeLoader = typeLoader ?? throw new System.ArgumentNullException(nameof(typeLoader));
+            modelAssemblyAttributeProvider = modelAssemblyAttributeProvider ?? throw new System.ArgumentNullException(nameof(modelAssemblyAttributeProvider));
+
+            this.ambientServices = ambientServices;
+            this.typeLoader = typeLoader;
+            this.modelAssemblyAttributeProvider = modelAssemblyAttributeProvider;
             this.typeRegistry = typeRegistry;
         }
 
@@ -67,7 +71,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// </returns>
         public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
-            var assemblies = this.appRuntime.GetAppAssemblies();
+            var assemblies = this.ambientServices.GetAppAssemblies();
             var eligibleAssemblyPairs = (from kv in from a in assemblies
                                                     select
                                                     new KeyValuePair<Assembly, IList<ModelAssemblyAttribute>>(
@@ -77,22 +81,25 @@ namespace Kephas.Model.Runtime.ModelRegistries
                                          select kv).ToList();
 
             var types = new HashSet<Type>();
-            foreach (var (assembly, attrs) in eligibleAssemblyPairs)
+            foreach (var kv in eligibleAssemblyPairs)
             {
+                var assembly = kv.Key;
+
+                var attrs = kv.Value;
                 var assemblyTypes = this.typeLoader.GetExportedTypes(assembly).ToList();
                 foreach (var attr in attrs)
                 {
                     var filterSet = false;
 
                     // first of all process all explicitly provided model types.
-                    if (attr.ModelTypes is { Length: > 0 })
+                    if (attr.ModelTypes != null && attr.ModelTypes.Length > 0)
                     {
                         this.AddModelTypes(types, attr.ModelTypes, attr);
                         filterSet = true;
                     }
 
                     // then add the types indicated by their namespace.
-                    if (attr.ModelNamespaces is { Length: > 0 })
+                    if (attr.ModelNamespaces != null && attr.ModelNamespaces.Length > 0)
                     {
                         var namespaceFilter = ModelAssemblyAttribute.GetModelAssemblyNamespaceFilter(new[] { attr });
                         IEnumerable<Type> eligibleTypes = assemblyTypes;

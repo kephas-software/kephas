@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data
 {
@@ -45,26 +45,26 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataCommandProvider">Optional. The data command provider. If not
         ///                                   provided, the <see cref="DefaultDataCommandProvider"/>
         ///                                   will be used.</param>
         /// <param name="dataBehaviorProvider">Optional. The data behavior provider.</param>
         /// <param name="localCache">Optional. The local cache. If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
-            IServiceProvider serviceProvider,
+            IInjector injector,
             IDataCommandProvider? dataCommandProvider = null,
             IDataBehaviorProvider? dataBehaviorProvider = null,
             IDataContextCache? localCache = null)
-            : base(serviceProvider)
+            : base(injector)
         {
             this.dataBehaviorProvider = dataBehaviorProvider;
-            this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(serviceProvider);
+            this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(injector);
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
-            this.Logger = serviceProvider.GetLogger(this.GetType());
-            this.typeRegistry = serviceProvider.Resolve<IRuntimeTypeRegistry>();
+            this.Logger = this.AmbientServices.GetLogger(this.GetType());
+            this.typeRegistry = injector.Resolve<IRuntimeTypeRegistry>();
         }
 
         /// <summary>

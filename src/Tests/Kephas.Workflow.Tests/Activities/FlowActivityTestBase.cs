@@ -9,11 +9,10 @@ namespace Kephas.Workflow.Tests.Activities;
 
 using Kephas.Dynamic;
 using Kephas.Operations;
-using Kephas.Testing;
-using Kephas.Testing.Services;
+using Kephas.Testing.Injection;
 using NSubstitute;
 
-public abstract class FlowActivityTestBase : TestBase
+public abstract class FlowActivityTestBase : InjectionTestBase
 {
     protected IActivityContext CreateActivityContext(IDynamic? scope = null)
     {

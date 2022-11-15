@@ -43,10 +43,9 @@
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
     <ProjectReference Include="..\..\Kephas.Data.Model\Kephas.Data.Model.csproj" />
     <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
-    <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj" />
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Model\Kephas.Testing.Model.csproj" />
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.Autofac\Kephas.Testing.Injection.Autofac.csproj" />
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Injection.SystemComposition\Kephas.Testing.Injection.SystemComposition.csproj" />
   </ItemGroup>
 
 </Project>

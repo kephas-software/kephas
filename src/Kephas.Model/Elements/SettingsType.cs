@@ -8,7 +8,7 @@
 namespace Kephas.Model.Elements
 {
     using Kephas.Configuration.Reflection;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Model.Construction;
 
     /// <summary>
@@ -17,7 +17,7 @@ namespace Kephas.Model.Elements
     public class SettingsType : ClassifierBase<ISettingsType>, ISettingsType
     {
         private readonly ISettingsInfo settingsInfo;
-        private readonly IServiceProvider serviceProvider;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsType" /> class.
@@ -34,7 +34,7 @@ namespace Kephas.Model.Elements
             settingsInfo = settingsInfo ?? throw new System.ArgumentNullException(nameof(settingsInfo));
 
             this.settingsInfo = settingsInfo;
-            this.serviceProvider = constructionContext.ServiceProvider;
+            this.injector = constructionContext.Injector;
         }
     }
 }

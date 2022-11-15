@@ -17,7 +17,7 @@ namespace Kephas.Core.Tests.Reflection
     /// <summary>
     /// The localizable test entity.
     /// </summary>
-    [Display(Name = "LocalizableTestEntity-Name", Description = "LocalizableTestEntity-Description")]
+    [DisplayInfo(Name = "LocalizableTestEntity-Name", Description = "LocalizableTestEntity-Description")]
     public class LocalizableTestEntityWithOverloads : LocalizableTestEntity
     {
         [Display(Name = "New-Id-Name", ShortName = "New-Id-ShortName", Prompt = "New-Id-Prompt", Description = "New-Id-Description")]

@@ -17,13 +17,6 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// The result of a main loop operation.
-    /// </summary>
-    /// <param name="Result">The operation result.</param>
-    /// <param name="Instruction">The shutdown instruction.</param>
-    public record MainLoopResult(IOperationResult Result, AppShutdownInstruction Instruction);
-
-    /// <summary>
     /// Singleton application service contract for the service executing the application's main loop.
     /// </summary>
     [SingletonAppServiceContract]
@@ -36,6 +29,6 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        Task<MainLoopResult> Main(CancellationToken cancellationToken);
+        Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken);
     }
 }

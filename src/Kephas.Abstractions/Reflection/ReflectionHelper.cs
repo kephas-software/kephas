@@ -11,27 +11,17 @@
 namespace Kephas.Reflection
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Dynamic;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
-
-    using Microsoft.CSharp.RuntimeBinder;
-
-    using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
     /// <summary>
     /// Helper class for reflection.
     /// </summary>
     public static class ReflectionHelper
     {
-        private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object>>> Getters = new ();
-        private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object?, object>>> Setters = new ();
-
         private static readonly Func<AssemblyName, bool> IsSystemAssemblyFuncValue = assemblyName =>
             {
                 var assemblyFullName = assemblyName.FullName;
@@ -43,16 +33,13 @@ namespace Kephas.Reflection
                     || assemblyFullName.StartsWith("Mono");
             };
 
-        private static Func<AssemblyName, bool>? isSystemAssemblyFunc = IsSystemAssemblyFuncValue;
-
         /// <summary>
-        /// Sets the callback invoked when <see cref="IsSystemAssembly(System.Reflection.Assembly)"/> is called.
+        /// Gets or sets the function to check whether an assembly is a system assembly.
         /// </summary>
-        /// <param name="callback">The callback. If <c>null</c>, no check is performed and all assemblies are considered as being not system.</param>
-        public static void OnIsSystemAssembly(Func<AssemblyName, bool>? callback)
-        {
-            isSystemAssemblyFunc = callback;
-        }
+        /// <value>
+        /// A function delegate that yields a bool.
+        /// </value>
+        public static Func<AssemblyName, bool> IsSystemAssemblyFunc { get; set; } = IsSystemAssemblyFuncValue;
 
         /// <summary>
         /// Indicates whether the identifier is private.
@@ -217,7 +204,7 @@ namespace Kephas.Reflection
                 return fullName;
             }
 
-            fullName = fullName[..fullName.IndexOf('`')];
+            fullName = fullName.Substring(0, fullName.IndexOf('`'));
             return fullName;
         }
 
@@ -257,7 +244,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this Assembly assembly)
         {
-            return isSystemAssemblyFunc?.Invoke(assembly.GetName()) ?? false;
+            return IsSystemAssemblyFunc?.Invoke(assembly.GetName()) ?? false;
         }
 
         /// <summary>
@@ -269,7 +256,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this AssemblyName assemblyName)
         {
-            return isSystemAssemblyFunc?.Invoke(assemblyName) ?? false;
+            return IsSystemAssemblyFunc?.Invoke(assemblyName) ?? false;
         }
 
         /// <summary>
@@ -320,73 +307,6 @@ namespace Kephas.Reflection
             return type.GetRuntimeProperties()
                 .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
                             && p.GetIndexParameters().Length == 0);
-        }
-
-        /// <summary>
-        /// Gets the value of the property identified by its name.
-        /// </summary>
-        /// <param name="target">The target object.</param>
-        /// <param name="name">The property name.</param>
-        /// <returns>The property value.</returns>
-        public static object? GetValue(object target, string name)
-        {
-            target = target ?? throw new ArgumentNullException(nameof(target));
-
-            var callSite = Getters.GetOrAdd(name, _ =>
-            {
-                return CallSite<Func<CallSite, object, object>>.Create(
-                    Binder.GetMember(
-                        CSharpBinderFlags.None,
-                        name,
-                        typeof(ReflectionHelper),
-                        new[]
-                        {
-                            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
-                        }));
-            });
-
-            return callSite.Target(callSite, target);
-        }
-
-        /// <summary>
-        /// Sets the value of the property identified by its name.
-        /// </summary>
-        /// <param name="target">The target object.</param>
-        /// <param name="name">The property name.</param>
-        /// <param name="value">The value to be set.</param>
-        public static void SetValue(object target, string name, object? value)
-        {
-            target = target ?? throw new ArgumentNullException(nameof(target));
-
-            if (target is not IDynamicMetaObjectProvider)
-            {
-                // TODO optimize
-                // workaround for non dynamic targets.
-                var propertyInfo = target.GetType().GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
-                if (propertyInfo is null)
-                {
-                    throw new InvalidOperationException($"Property {name} was not found.");
-                }
-
-                propertyInfo.SetValue(target, value);
-                return;
-            }
-
-            var callSite = Setters.GetOrAdd(name, _ =>
-            {
-                return CallSite<Func<CallSite, object, object?, object>>.Create(
-                    Binder.SetMember(
-                        CSharpBinderFlags.None,
-                        name,
-                        typeof(ReflectionHelper),
-                        new []
-                        {
-                            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
-                            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null),
-                        }));
-            });
-
-            callSite.Target(callSite, target, value);
         }
     }
 }

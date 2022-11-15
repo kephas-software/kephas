@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Client.Queries
 {
@@ -25,9 +25,9 @@ namespace Kephas.Data.Client.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryExecutionContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public ClientQueryExecutionContext(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        /// <param name="injector">The injector.</param>
+        public ClientQueryExecutionContext(IInjector injector)
+            : base(injector)
         {
         }
 

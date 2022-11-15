@@ -18,15 +18,10 @@ using NUnit.Framework;
 [TestFixture]
 public class MessagingEventHubTest : MessagingTestBase
 {
-    protected IServiceProvider BuildServiceProvider()
-    {
-        return this.CreateServicesBuilder().BuildWithDependencyInjection();
-    }
-
     [Test]
     public async Task Subscribe_integration_subscription_called()
     {
-        var container = this.BuildServiceProvider();
+        var container = this.CreateInjector();
         var hub = container.Resolve<IEventHub>();
         var broker = container.Resolve<IMessageBroker>();
         await (broker as IAsyncInitializable).InitializeAsync(new Context(container));

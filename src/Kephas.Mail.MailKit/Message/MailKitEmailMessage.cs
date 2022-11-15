@@ -22,12 +22,10 @@ namespace Kephas.Mail.Message
     /// </summary>
     public class MailKitEmailMessage : MimeMessage, IEmailMessage, IExpandoMixin
     {
-        private IDictionary<string, object?>? innerDictionary;
-
         /// <summary>
         /// Gets the inner dictionary.
         /// </summary>
-        IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.innerDictionary ??= new Dictionary<string, object?>();
+        IDictionary<string, object?> IExpandoMixin.InnerDictionary { get; } = new Dictionary<string, object?>();
 
         /// <summary>
         /// Gets the 'on behalf' sender of the email.

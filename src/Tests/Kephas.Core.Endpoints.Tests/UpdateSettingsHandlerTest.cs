@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Core.Endpoints.Tests
 {
     using System;
@@ -39,7 +41,7 @@ namespace Kephas.Core.Endpoints.Tests
                         new OperationResult<bool>(success)
                         .Complete(operationState: success ? OperationState.Completed : OperationState.Warning));
                 });
-            var container = Substitute.For<IServiceProvider>();
+            var container = Substitute.For<IInjector>();
             container.Resolve(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });
@@ -67,7 +69,7 @@ namespace Kephas.Core.Endpoints.Tests
                         new OperationResult<bool>(success)
                             .Complete(operationState: success ? OperationState.Completed : OperationState.Warning));
                 });
-            var container = Substitute.For<IServiceProvider>();
+            var container = Substitute.For<IInjector>();
             container.Resolve(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });

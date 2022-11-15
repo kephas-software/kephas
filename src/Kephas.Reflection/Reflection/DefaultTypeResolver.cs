@@ -16,8 +16,7 @@ namespace Kephas.Reflection
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Application;
-    using Kephas.Services.AttributedModel;
+    using Kephas.Injection.AttributedModel;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
@@ -35,19 +34,17 @@ namespace Kephas.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeResolver"/> class.
         /// </summary>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public DefaultTypeResolver(
-            IAppRuntime appRuntime,
-            ITypeLoader? typeLoader = null,
-            ILogManager? logManager = null)
+        [InjectConstructor]
+        public DefaultTypeResolver(IAmbientServices ambientServices, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
             : base(logManager)
         {
-            appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
             this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
-            this.getAppAssemblies = () => appRuntime.GetAppAssemblies();
+            this.getAppAssemblies = () => ambientServices.GetAppAssemblies();
         }
 
         /// <summary>

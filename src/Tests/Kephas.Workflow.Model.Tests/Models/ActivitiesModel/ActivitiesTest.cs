@@ -12,7 +12,6 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
 
     using Kephas.Model;
     using Kephas.Runtime;
-    using Kephas.Testing.Model;
     using Kephas.Workflow.Model.Elements;
     using Kephas.Workflow.Runtime;
     using NUnit.Framework;
@@ -26,10 +25,10 @@ namespace Kephas.Workflow.Model.Tests.Models.ActivitiesModel
             var typeRegistry = new RuntimeTypeRegistry();
             typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory());
 
-            var container = this.CreateServicesBuilder(
-                    new AmbientServices().Add<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()))
-                .WithModelElements(typeof(ILaughActivity), typeof(IEnjoyActivity))
-                .BuildWithDependencyInjection();
+            var container = this.CreateInjectorForModel(
+                new AmbientServices(typeRegistry: typeRegistry),
+                typeof(ILaughActivity),
+                typeof(IEnjoyActivity));
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

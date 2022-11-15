@@ -41,7 +41,7 @@ namespace Kephas.Scheduling.Endpoints
         {
             await Task.Yield();
 
-            var runningJobsQuery = this.scheduler.GetRunningJobs(ctx => ctx.Impersonate(context));
+            using var runningJobsQuery = this.scheduler.GetRunningJobs(ctx => ctx.Impersonate(context)); 
 
             return new GetRunningJobsResponseMessage
             {

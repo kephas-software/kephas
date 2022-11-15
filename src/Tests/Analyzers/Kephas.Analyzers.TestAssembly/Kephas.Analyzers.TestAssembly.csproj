@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\..\Kephas.Services\Kephas.Services.csproj" />
+        <ProjectReference Include="..\..\..\Kephas.Injection\Kephas.Injection.csproj" />
         <ProjectReference Include="..\..\..\Kephas.Reflection\Kephas.Reflection.csproj" />
     </ItemGroup>
 

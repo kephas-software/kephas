@@ -16,6 +16,7 @@ namespace Kephas.Tests.Orchestration.Application
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
+    using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
@@ -63,7 +64,7 @@ namespace Kephas.Tests.Orchestration.Application
         [Test]
         public async Task BeforeAppInitializeAsync_from_this_appinstance_only()
         {
-            IAppRuntime appRuntime = new StaticAppRuntime();
+            var appRuntime = new StaticAppRuntime();
             var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();
@@ -96,7 +97,7 @@ namespace Kephas.Tests.Orchestration.Application
         [Test]
         public async Task BeforeAppInitializeAsync_from_this_appinstance()
         {
-            IAppRuntime appRuntime = new StaticAppRuntime();
+            var appRuntime = new StaticAppRuntime();
             var eventHub = this.CreateEventHub();
             var messageBroker = Substitute.For<IMessageBroker>();
             var orchManager = Substitute.For<IOrchestrationManager>();
@@ -109,7 +110,7 @@ namespace Kephas.Tests.Orchestration.Application
                 .Returns(ci =>
                 {
                     var ctx = new DispatchingContext(
-                        Substitute.For<IServiceProvider>(),
+                        Substitute.For<IInjector>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         Substitute.For<IMessageBroker>(),
                         appRuntime,

@@ -15,7 +15,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Application;
+
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     public class AppServicesModelRegistry : IRuntimeModelRegistry
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
-        private readonly Func<IAppServiceInfo, IAppRuntime, bool>? filter;
+        private readonly Func<ContractDeclaration, IAmbientServices, bool>? filter;
 
         /// <summary>
         /// The key for the app service metadata.
@@ -37,10 +37,9 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// Initializes a new instance of the <see cref="AppServicesModelRegistry"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
-        public AppServicesModelRegistry(IAmbientServices ambientServices, IAppRuntime appRuntime, IRuntimeTypeRegistry typeRegistry)
-            : this(ambientServices, appRuntime, typeRegistry, IsNotThirdParty)
+        public AppServicesModelRegistry(IAmbientServices ambientServices, IRuntimeTypeRegistry typeRegistry)
+            : this(ambientServices, typeRegistry, IsNotThirdParty)
         {
         }
 
@@ -48,17 +47,16 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// Initializes a new instance of the <see cref="AppServicesModelRegistry"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="filter">Optional. Sets the filter for eligible service contracts.</param>
         protected internal AppServicesModelRegistry(
             IAmbientServices ambientServices,
-            IAppRuntime appRuntime,
             IRuntimeTypeRegistry typeRegistry,
-            Func<IAppServiceInfo, IAppRuntime, bool>? filter)
+            Func<ContractDeclaration, IAmbientServices, bool>? filter)
         {
-            this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
-            this.AppRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
+            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+
+            this.AmbientServices = ambientServices;
             this.typeRegistry = typeRegistry;
             this.filter = filter;
         }
@@ -69,11 +67,6 @@ namespace Kephas.Model.Runtime.ModelRegistries
         protected IAmbientServices AmbientServices { get; }
 
         /// <summary>
-        /// Gets the application runtime.
-        /// </summary>
-        protected IAppRuntime AppRuntime { get; }
-
-        /// <summary>
         /// Gets the runtime elements.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -82,18 +75,16 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// </returns>
         public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<IAppServiceInfo> appServiceInfos = this.AmbientServices;
+            var appServiceInfos = this.AmbientServices.GetAppServiceInfos();
             if (this.filter != null)
             {
-                appServiceInfos = appServiceInfos.Where(sc => this.filter(sc, this.AppRuntime));
+                appServiceInfos = appServiceInfos.Where(sc => this.filter(sc, this.AmbientServices));
             }
 
-            var types = new HashSet<IRuntimeTypeInfo>(appServiceInfos
-                .Where(i => i.ContractDeclarationType is not null && i.InstancingStrategy is null)
-                .Select(i =>
+            var types = new HashSet<IRuntimeTypeInfo>(appServiceInfos.Select(i =>
                 {
-                    var typeInfo = this.typeRegistry.GetTypeInfo(i.ContractDeclarationType!);
-                    typeInfo[AppServiceKey] = i;
+                    var typeInfo = this.typeRegistry.GetTypeInfo(i.ContractDeclarationType);
+                    typeInfo[AppServiceKey] = i.AppServiceInfo;
                     return typeInfo;
                 }));
 
@@ -103,10 +94,10 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <summary>
         /// Gets a value indicating whether the service contract is not part of a third party assembly.
         /// </summary>
-        /// <param name="appServiceInfo">The service contract to be tested.</param>
-        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="contractDeclaration">The service contract to be tested.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>A value indicating whether the service contract is not part of a third party assembly.</returns>
-        protected static bool IsNotThirdParty(IAppServiceInfo appServiceInfo, IAppRuntime appRuntime)
-            => appServiceInfo.ContractDeclarationType != null && appRuntime.GetAppAssemblies().Contains(appServiceInfo.ContractDeclarationType.Assembly);
+        protected static bool IsNotThirdParty(ContractDeclaration contractDeclaration, IAmbientServices ambientServices)
+            => ambientServices.GetAppAssemblies().Contains(contractDeclaration.ContractDeclarationType.Assembly);
     }
 }

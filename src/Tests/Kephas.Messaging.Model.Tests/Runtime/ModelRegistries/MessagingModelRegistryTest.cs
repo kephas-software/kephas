@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -35,7 +37,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -44,7 +46,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(PingMessage) });
 
             var contextFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
@@ -55,7 +57,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_ExcludeFromModel()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
+            var appRuntime = Substitute.For<IAmbientServices>();
             appRuntime
                 .GetAppAssemblies()
                 .Returns(new[] { this.GetType().Assembly });
@@ -64,7 +66,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(ExcludedMessage) });
 
             var contextFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
+                new ModelRegistryConventions(Substitute.For<IInjector>()));
 
             var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();

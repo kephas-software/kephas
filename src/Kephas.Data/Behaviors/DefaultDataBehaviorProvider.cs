@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Behaviors
 {
@@ -84,7 +84,7 @@ namespace Kephas.Data.Behaviors
                                      entityType.IsAssignableFrom(type)
                                      && behaviorType.IsAssignableFrom(serviceType)
                                  orderby f.Metadata.ProcessingPriority
-                                 select f.CreateExportedValue())
+                                 select f.CreateExport().Value)
                              .Cast<TBehavior>()
                              .ToList();
             return behaviors;

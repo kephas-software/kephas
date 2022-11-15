@@ -41,7 +41,8 @@ namespace Kephas.Configuration.Providers
         public const string ServiceName = "File";
 
         private readonly ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes;
-        private readonly ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)> fileInfos = new ();
+        private readonly ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)> fileInfos =
+            new ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSettingsProvider"/> class.
@@ -93,7 +94,7 @@ namespace Kephas.Configuration.Providers
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
-                this.Logger.Info(result.Errors().First().Message);
+                this.Logger.Info(result.Exceptions.First().Message);
                 return null;
             }
 
@@ -121,7 +122,7 @@ namespace Kephas.Configuration.Providers
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
-                this.Logger.Warn(result.Errors().First().Message);
+                this.Logger.Warn(result.Exceptions.First().Message);
                 return;
             }
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnabledServiceCollectionTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultServiceBehaviorProviderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,9 +13,8 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Kephas.Behaviors;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using Kephas.Testing;
@@ -26,91 +25,87 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
     public class EnabledServiceCollectionTest : TestBase
     {
         [Test]
-        public void GetEnumerator_no_behaviors()
+        public void WhereEnabled_no_behaviors()
         {
             var ambientServicesMock = this.CreateInjectorWithFactories();
-            var services = new LazyEnumerable<ITestService, AppServiceMetadata>(
-                new Lazy<ITestService, AppServiceMetadata>[]
-                {
-                    new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
-                });
+            var services = new List<Lazy<ITestService, AppServiceMetadata>>
+            {
+                new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
+            };
 
-            var provider = new EnabledLazyEnumerable<ITestService, AppServiceMetadata>(
+            var provider = new EnabledLazyServiceCollection<ITestService, AppServiceMetadata>(
                 services,
                 ambientServicesMock.Resolve<IInjectableFactory>(),
-                new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>());
+                new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
             var filteredServices = provider.ToList();
-
-            CollectionAssert.AreEqual(services, filteredServices);
+            Assert.AreEqual(services.Count, filteredServices.Count);
+            Assert.AreEqual(services[0], filteredServices[0]);
         }
 
         [Test]
-        public void GetEnumerator_exclude_all_behaviors()
+        public void WhereEnabled_exclude_all_behaviors()
         {
             var excludeAllBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false);
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeAllBehaviorMock);
-            var services = new LazyEnumerable<ITestService, AppServiceMetadata>(
-                new Lazy<ITestService, AppServiceMetadata>[]
-                {
-                    new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
-                });
+            var services = new List<Lazy<ITestService, AppServiceMetadata>>
+            {
+                new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
+            };
 
-            var provider = new EnabledEnumerable<ITestService>(
+            var provider = new EnabledServiceCollection<ITestService>(
                 services,
                 ambientServicesMock.Resolve<IInjectableFactory>(),
-                new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(new[] { excludeAllBehaviorMock }));
+                new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeAllBehaviorMock });
 
             var filteredServices = provider.ToList();
-            CollectionAssert.IsEmpty(filteredServices);
+            Assert.AreEqual(0, filteredServices.Count);
         }
 
         [Test]
-        public void GetEnumerator_priority_with_end_rule()
+        public void WhereEnabled_priority_with_end_rule()
         {
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: (Priority)1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: true, value: true, processingPriority: 0);
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
-            var services = new FactoryEnumerable<ITestService, AppServiceMetadata>(
-                new IExportFactory<ITestService, AppServiceMetadata>[]
-                {
-                    new ExportFactory<ITestService, AppServiceMetadata>(() => Substitute.For<ITestService>(), new AppServiceMetadata()),
-                });
+            var services = new List<IExportFactory<ITestService, AppServiceMetadata>>
+            {
+                new ExportFactory<ITestService, AppServiceMetadata>(() => Substitute.For<ITestService>(), new AppServiceMetadata()),
+            };
 
-            var provider = new EnabledFactoryEnumerable<ITestService, AppServiceMetadata>(
+            var provider = new EnabledServiceFactoryCollection<ITestService, AppServiceMetadata>(
                 services,
                 ambientServicesMock.Resolve<IInjectableFactory>(),
-                new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(new[] { excludeBehaviorMock, includeBehaviorMock }));
+                new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
 
             var filteredServices = provider.ToList();
-
-            CollectionAssert.AreEqual(services, filteredServices);
+            Assert.AreEqual(services.Count, filteredServices.Count);
+            Assert.AreEqual(services[0], filteredServices[0]);
         }
 
         [Test]
-        public void GetEnumerator_priority_without_end_rule()
+        public void WhereEnabled_priority_without_end_rule()
         {
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: false, processingPriority: (Priority)1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRuleFactory(canApply: true, isEndRule: false, value: true, processingPriority: 0);
             var ambientServicesMock = this.CreateInjectorWithFactories(excludeBehaviorMock, includeBehaviorMock);
-            var services = new LazyEnumerable<ITestService, AppServiceMetadata>(
-                new Lazy<ITestService, AppServiceMetadata>[]
-                {
-                    new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
-                });
+            var services = new List<Lazy<ITestService, AppServiceMetadata>>
+            {
+                new (() => Substitute.For<ITestService>(), new AppServiceMetadata()),
+            };
 
-            var provider = new EnabledEnumerable<ITestService>(
+            var provider = new EnabledServiceCollection<ITestService>(
                 services,
                 ambientServicesMock.Resolve<IInjectableFactory>(),
-                new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(new[] { excludeBehaviorMock, includeBehaviorMock }));
+                new List<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> { excludeBehaviorMock, includeBehaviorMock });
 
             var filteredServices = provider.ToList();
-            CollectionAssert.IsEmpty(filteredServices);
+            Assert.AreEqual(0, filteredServices.Count);
         }
 
 
-        private IServiceProvider CreateInjectorWithFactories(params Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[] ruleFactories)
+        private IInjector CreateInjectorWithFactories(params Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>[] ruleFactories)
         {
-            var injector = Substitute.For<IServiceProvider>();
+            var injector = Substitute.For<IInjector>();
             injector.Resolve(typeof(ICollection<Lazy<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>))
                 .Returns(ruleFactories);
 

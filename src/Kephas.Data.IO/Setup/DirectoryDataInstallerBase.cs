@@ -16,7 +16,7 @@ namespace Kephas.Data.IO.Setup
     using System.Linq;
 
     using Kephas.Data.IO.Import;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.IO.Export
 {
@@ -27,9 +27,9 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Initializes a new instance of the <see cref="DataExportContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public DataExportContext(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        /// <param name="injector">The injector.</param>
+        public DataExportContext(IInjector injector)
+            : base(injector)
         {
         }
 

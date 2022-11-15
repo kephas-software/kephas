@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Distributed.Routing
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for message router.

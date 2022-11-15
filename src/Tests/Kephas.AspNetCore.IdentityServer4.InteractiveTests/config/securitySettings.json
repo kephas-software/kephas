@@ -1,0 +1,9 @@
+﻿{
+  "certificates": {
+    "web-server": {
+      "storeLocation": "CurrentUser",
+      "storeName": "My",
+      "thumbprint": "81f5622d5d0663afd2246a1dec3c6d4d7ca2f584"
+    }
+  }
+}

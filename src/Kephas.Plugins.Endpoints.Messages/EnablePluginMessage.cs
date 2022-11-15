@@ -21,7 +21,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An enable plugin message.
     /// </summary>
-    [Display(Description = "Enables the indicated plugin.")]
+    [DisplayInfo(Description = "Enables the indicated plugin.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class EnablePluginMessage : IMessage
     {

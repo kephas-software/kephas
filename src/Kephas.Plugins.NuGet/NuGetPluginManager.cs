@@ -245,7 +245,7 @@ namespace Kephas.Plugins.NuGet
                     .PreserveThreadContext();
             pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
-            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginStore, pluginIdentity);
+            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
             context.PluginIdentity(pluginIdentity);
             var pluginData = context.PluginData ?? this.GetInstalledPluginData(pluginIdentity);
             pluginData.ChangeIdentity(pluginIdentity);
@@ -605,7 +605,7 @@ namespace Kephas.Plugins.NuGet
         {
             return new PluginInfo(
                 this.AppRuntime,
-                this.PluginStore,
+                this.PluginRepository,
                 new AppIdentity(searchMetadata.Identity.Id, searchMetadata.Identity.Version.ToString()),
                 searchMetadata.Description,
                 searchMetadata.Tags?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
@@ -623,7 +623,7 @@ namespace Kephas.Plugins.NuGet
         {
             return new PluginInfo(
                 this.AppRuntime,
-                this.PluginStore,
+                this.PluginRepository,
                 new AppIdentity(pluginIdentity.Id, version.ToString()));
         }
 

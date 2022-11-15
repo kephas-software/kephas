@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Core.Endpoints
 {
@@ -28,17 +28,17 @@ namespace Kephas.Core.Endpoints
             ReflectionHelper.GetGenericMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
 
         private readonly ITypeResolver typeResolver;
-        private readonly IServiceProvider serviceProvider;
+        private readonly IInjector injector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetServicesHandler"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="serviceProvider">The injector.</param>
-        public GetServicesHandler(ITypeResolver typeResolver, IServiceProvider serviceProvider)
+        /// <param name="injector">The injector.</param>
+        public GetServicesHandler(ITypeResolver typeResolver, IInjector injector)
         {
             this.typeResolver = typeResolver;
-            this.serviceProvider = serviceProvider;
+            this.injector = injector;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Kephas.Core.Endpoints
 
         private IEnumerable<AppServiceMetadata> GetServicesMetadata<TContract>(bool ordered)
         {
-            var factories = this.serviceProvider.ResolveMany<Lazy<TContract, AppServiceMetadata>>();
+            var factories = this.injector.ResolveMany<Lazy<TContract, AppServiceMetadata>>();
             return ordered
                 ? factories.Order().Select(f => f.Metadata)
                 : factories.Select(f => f.Metadata);

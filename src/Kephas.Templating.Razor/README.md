@@ -6,7 +6,7 @@ The ```cshtml``` template kind is handled by the ```RazorTemplatingEngine```.
 
 Check the following packages for more information:
 * [Kephas.Templating](https://www.nuget.org/packages/Kephas.Templating)
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 
 ## Usage
 

@@ -17,7 +17,7 @@ namespace Kephas.Logging
     /// </summary>
     /// <typeparam name="TContract">The type of the service contract.</typeparam>
     [SingletonAppServiceContract(AsOpenGeneric = true)]
-    public interface ILogger<out TContract> : ILogger
+    public interface ILogger<TContract> : ILogger
     {
     }
 }

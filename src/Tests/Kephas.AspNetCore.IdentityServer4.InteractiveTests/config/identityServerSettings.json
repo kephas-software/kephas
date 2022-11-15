@@ -1,0 +1,10 @@
+﻿{
+    "key": {
+        "certificate": "web-server"
+    },
+    "clients": {
+        "my-id-server-test": {
+            "profile": "IdentityServerSPA"
+        }
+    }
+}

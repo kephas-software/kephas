@@ -14,7 +14,7 @@ namespace Kephas.Testing.Application
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
 
     /// <summary>
     /// Base class for application tests using dependency injection.
@@ -25,7 +25,7 @@ namespace Kephas.Testing.Application
     ///   * Kephas.Core
     ///   * Kephas.Application
     /// </content>
-    public class ApplicationTestBase : TestBase
+    public class ApplicationTestBase : InjectionTestBase
     {
         /// <summary>
         /// Gets the default convention assemblies to be considered when building the container. By
@@ -35,7 +35,7 @@ namespace Kephas.Testing.Application
         /// An enumerator that allows foreach to be used to process the default convention assemblies in
         /// this collection.
         /// </returns>
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
                        {

@@ -12,7 +12,7 @@ namespace Kephas.Net.Mime
 {
     using System;
 
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Indicates the supported file extensions for the annotated media type.

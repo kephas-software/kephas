@@ -42,11 +42,13 @@ namespace Kephas.Core.Endpoints
         /// </returns>
         public override Task<GetServiceContractsResponseMessage> ProcessAsync(GetServiceContractsMessage message, IMessagingContext context, CancellationToken token)
         {
-            IEnumerable<IAppServiceInfo> appServiceInfos = this.ambientServices;
+            var appServiceInfos = this.ambientServices
+                .GetAppServiceInfos()
+                .Select(i => (IAppServiceInfo)new AppServiceInfo(i.AppServiceInfo, i.ContractDeclarationType));
 
             if (!string.IsNullOrEmpty(message.ContractType))
             {
-                appServiceInfos = appServiceInfos.Where(i => i.ContractType?.FullName?.Contains(message.ContractType) is true);
+                appServiceInfos = appServiceInfos.Where(i => i.ContractType.FullName.Contains(message.ContractType));
             }
 
             if (message.AllowMultiple != null)

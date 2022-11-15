@@ -33,7 +33,7 @@ namespace Kephas.Extensions.Configuration
         {
             ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
 
-            ambientServices.Add<IConfigurationStore>(new ConfigurationStore(configuration, ambientServices.GetTypeRegistry()));
+            ambientServices.Register<IConfigurationStore>(new ConfigurationStore(configuration, ambientServices.GetTypeRegistry()));
 
             return ambientServices;
         }

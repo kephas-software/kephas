@@ -54,7 +54,7 @@ namespace Kephas.Cryptography
         /// </returns>
         public virtual byte[] GenerateKey(Action<IEncryptionContext>? optionsConfig = null)
         {
-            var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
             var keySize = encryptionContext?.KeySize;
             if (keySize != null)
@@ -85,7 +85,7 @@ namespace Kephas.Cryptography
             input = input ?? throw new ArgumentNullException(nameof(input));
             output = output ?? throw new ArgumentNullException(nameof(output));
 
-            var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
             return this.EncryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
         }
@@ -109,7 +109,7 @@ namespace Kephas.Cryptography
             input = input ?? throw new ArgumentNullException(nameof(input));
             output = output ?? throw new ArgumentNullException(nameof(output));
 
-            var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
             return this.DecryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
         }
@@ -125,7 +125,7 @@ namespace Kephas.Cryptography
             input = input ?? throw new ArgumentNullException(nameof(input));
             output = output ?? throw new ArgumentNullException(nameof(output));
 
-            var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
             this.Encrypt(input, output, algorithm, encryptionContext);
         }
@@ -141,7 +141,7 @@ namespace Kephas.Cryptography
             input = input ?? throw new ArgumentNullException(nameof(input));
             output = output ?? throw new ArgumentNullException(nameof(output));
 
-            var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
             using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
             this.Decrypt(input, output, algorithm, encryptionContext);
         }

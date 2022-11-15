@@ -17,7 +17,7 @@ namespace Kephas.Data.Setup
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -29,14 +29,14 @@ namespace Kephas.Data.Setup
     public class DefaultDataSetupManager : IDataSetupManager
     {
         private readonly IInjectableFactory injectableFactory;
-        private readonly IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> dataInstallerFactories;
+        private readonly ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataSetupManager"/> class.
         /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="dataInstallerFactories">The data installer factories.</param>
-        public DefaultDataSetupManager(IInjectableFactory injectableFactory, IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> dataInstallerFactories)
+        public DefaultDataSetupManager(IInjectableFactory injectableFactory, ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories)
         {
             injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
             dataInstallerFactories = dataInstallerFactories ?? throw new System.ArgumentNullException(nameof(dataInstallerFactories));
@@ -130,7 +130,8 @@ namespace Kephas.Data.Setup
         {
             var targets = this.GetTargets(dataSetupContext);
             var dataInstallers = this.dataInstallerFactories
-                .SelectServices(f => targets == null || targets.Contains(f.Metadata.Target))
+                .Order()
+                .GetServices(f => targets == null || targets.Contains(f.Metadata.Target))
                 .ToList();
             return dataInstallers;
         }

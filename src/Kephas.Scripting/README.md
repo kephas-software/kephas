@@ -6,7 +6,7 @@ The scripting area in Kephas handles dynamic code execution.
 The entry point is the ```IScriptProcessor``` singleton service, which returns a result through the ```ExecuteAsync``` method, provided with a script, execution arguments, and globals.
 
 Check the following packages for more information:
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
 
 Packages providing scripting implementations:
 * [Kephas.Scripting.CSharp](https://www.nuget.org/packages/Kephas.Scripting.CSharp)

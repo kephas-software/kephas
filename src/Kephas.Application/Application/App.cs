@@ -9,45 +9,21 @@ namespace Kephas.Application
 {
     using System;
 
-    using Kephas.Services.Builder;
-
     /// <summary>
-    /// Default implementation of <see cref="AppBase"/>.
+    /// Default implementation of <see cref="AppBase{TAmbientServices}"/>.
     /// </summary>
-    public class App : AppBase
+    public class App : AppBase<AmbientServices>
     {
-        private readonly Func<IAppServiceCollectionBuilder, IServiceProvider> servicesProviderBuilder;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
         /// </summary>
-        /// <param name="servicesConfig">The services configuration.</param>
-        /// <param name="servicesProviderBuilder">The services provider builder.</param>
+        /// <param name="containerBuilder">Optional. The container builder.</param>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided then
+        ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        public App(
-            Action<IAppServiceCollectionBuilder> servicesConfig,
-            Func<IAppServiceCollectionBuilder, IServiceProvider> servicesProviderBuilder,
-            IAppArgs? appArgs = null)
-            : base(appArgs)
+        public App(Action<IAmbientServices>? containerBuilder = null, IAmbientServices? ambientServices = null, IAppArgs? appArgs = null)
+            : base(ambientServices, appArgs: appArgs, builder: containerBuilder)
         {
-            this.ServicesConfiguration = servicesConfig ?? throw new ArgumentNullException(nameof(servicesConfig));
-            this.servicesProviderBuilder = servicesProviderBuilder ?? throw new ArgumentNullException(nameof(servicesProviderBuilder));
-        }
-
-        /// <summary>
-        /// This is the last step in the app's configuration, when all the services are set up
-        /// and the container is built. For inheritors, this is the last place where services can
-        /// be added before calling. By default, it only builds the Lite container, but any other container adapter
-        /// can be used, like Autofac or System.Composition.
-        /// </summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration manager.
-        /// </remarks>
-        /// <param name="servicesBuilder">The services builder.</param>
-        /// <returns>The service provider.</returns>
-        protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
-        {
-            return this.servicesProviderBuilder(servicesBuilder);
         }
     }
 }

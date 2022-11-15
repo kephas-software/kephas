@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Setup
 {
@@ -23,10 +23,10 @@ namespace Kephas.Data.Setup
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSetupContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
-        public DataSetupContext(IServiceProvider serviceProvider, bool isThreadSafe = false)
-            : base(serviceProvider, isThreadSafe)
+        public DataSetupContext(IInjector injector, bool isThreadSafe = false)
+            : base(injector, isThreadSafe)
         {
         }
 

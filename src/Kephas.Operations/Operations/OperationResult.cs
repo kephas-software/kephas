@@ -21,6 +21,7 @@ namespace Kephas.Operations
     using Kephas.Collections;
     using Kephas.Data.Formatting;
     using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
     /// Encapsulates the result of an operation.
@@ -174,16 +175,20 @@ namespace Kephas.Operations
         public ICollection<Exception> Exceptions { get; }
 
         /// <summary>
+        /// Gets the awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        public OperationResultAwaiter GetAwaiter() => this.awaiter ?? this.CreateAwaiter();
+
+        /// <summary>
         /// Converts this object to a task.
         /// </summary>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public Task<object?> AsTask()
-        {
-            var task = this.GetUnderlyingTask();
-            return task as Task<object?> ?? task.ContinueWith(t => this.Value);
-        }
+        public Task AsTask() => this.awaiter?.GetTask() ?? this.CreateTask();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -217,12 +222,6 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Gets the underlying task.
-        /// </summary>
-        /// <returns>The underlying task.</returns>
-        protected Task GetUnderlyingTask() => this.awaiter?.GetTask() ?? this.CreateTask();
-
-        /// <summary>
         /// Called when a property changed.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
@@ -230,6 +229,17 @@ namespace Kephas.Operations
         {
             var handler = this.PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Creates the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The operation result awaiter.
+        /// </returns>
+        protected virtual OperationResultAwaiter CreateAwaiter()
+        {
+            return new OperationResultAwaiter<object?>(Task.FromResult(this.Value));
         }
 
         /// <summary>
@@ -388,15 +398,30 @@ namespace Kephas.Operations
         }
 
         /// <summary>
+        /// Gets the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        public new OperationResultAwaiter<TValue> GetAwaiter() => (OperationResultAwaiter<TValue>)base.GetAwaiter();
+
+        /// <summary>
         /// Converts this object to a task.
         /// </summary>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public new Task<TValue> AsTask()
+        public new Task<TValue> AsTask() => (Task<TValue>)base.AsTask();
+
+        /// <summary>
+        /// Gets the default operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The default operation result awaiter.
+        /// </returns>
+        protected override OperationResultAwaiter CreateAwaiter()
         {
-            var task = this.GetUnderlyingTask();
-            return task as Task<TValue> ?? task.ContinueWith(t => this.Value);
+            return new OperationResultAwaiter<TValue>(Task.FromResult(this.Value));
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Kephas.IO
         /// Prefix character for marking a hidden location.
         /// </summary>
         public const char HiddenLocationPrefixChar = '.';
-
+        
         /// <summary>
         /// Copies the directory.
         /// </summary>
@@ -36,7 +36,7 @@ namespace Kephas.IO
         public static void CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs = true)
         {
             // Get the subdirectories for the specified directory.
-            var dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
 
             if (!dir.Exists)
             {

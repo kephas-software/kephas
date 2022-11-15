@@ -15,7 +15,7 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
@@ -26,7 +26,7 @@ namespace Kephas.Configuration.Providers
     [OverridePriority(Priority.Low)]
     public class DefaultSettingsProviderSelector : Loggable, ISettingsProviderSelector
     {
-        private readonly IFactoryEnumerable<ISettingsProvider, SettingsProviderMetadata> providerFactories;
+        private readonly IOrderedServiceFactoryCollection<ISettingsProvider, SettingsProviderMetadata> providerFactories;
         private readonly ConcurrentDictionary<Type, IEnumerable<ISettingsProvider>> providersMap = new ConcurrentDictionary<Type, IEnumerable<ISettingsProvider>>();
 
         /// <summary>

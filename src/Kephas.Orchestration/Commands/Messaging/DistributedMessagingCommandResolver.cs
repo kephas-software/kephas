@@ -58,7 +58,7 @@ namespace Kephas.Commands.Messaging
 
         private (IDynamic? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IDynamic? args)
         {
-            var expandoArgs = args?.ToDynamic();
+            var expandoArgs = args?.ToExpando();
             if (args == null || expandoArgs == null || !expandoArgs.HasDynamicMember(RunAtOperationInfo.RunAtArg))
             {
                 return (args, null, false);

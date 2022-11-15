@@ -184,7 +184,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>An asynchronous result.</returns>
         protected virtual async Task StartWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (!this.AppRuntime.IsRoot)
+            if (!this.AppRuntime.IsRoot())
             {
                 return;
             }
@@ -258,7 +258,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>An asynchronous result.</returns>
         protected virtual async Task StopWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (!this.AppRuntime.IsRoot)
+            if (!this.AppRuntime.IsRoot())
             {
                 return;
             }
@@ -353,7 +353,7 @@ namespace Kephas.Orchestration.Application
             IContext? context)
         {
             var appInstanceEntries = this.SystemConfiguration.GetSettings(context).Instances;
-            if (!this.AppRuntime.IsRoot || appInstanceEntries == null || appInstanceEntries.Count == 0)
+            if (!this.AppRuntime.IsRoot() || appInstanceEntries == null || appInstanceEntries.Count == 0)
             {
                 return Enumerable.Empty<KeyValuePair<string, AppSettings>>();
             }

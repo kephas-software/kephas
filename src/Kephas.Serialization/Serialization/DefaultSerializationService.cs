@@ -17,7 +17,7 @@ namespace Kephas.Serialization
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Net.Mime;
     using Kephas.Resources;
     using Kephas.Services;
@@ -242,7 +242,7 @@ namespace Kephas.Serialization
                 throw new KeyNotFoundException(string.Format(AbstractionStrings.DefaultSerializationService_SerializerNotFound_Exception, mediaType));
             }
 
-            return serializer.CreateExportedValue();
+            return serializer.CreateExport().Value;
         }
     }
 }

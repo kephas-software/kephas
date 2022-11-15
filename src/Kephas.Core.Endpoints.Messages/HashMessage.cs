@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A hash message.
     /// </summary>
-    [Display(Description = "Hashes the provided value, using an optional salt.")]
+    [DisplayInfo(Description = "Hashes the provided value, using an optional salt.")]
     public class HashMessage : IMessage
     {
         /// <summary>

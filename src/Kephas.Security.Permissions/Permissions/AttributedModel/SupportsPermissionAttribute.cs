@@ -12,7 +12,7 @@ namespace Kephas.Security.Permissions.AttributedModel
 {
     using System;
 
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute indicating that the decorated element supports the enumerated permissions.

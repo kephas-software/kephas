@@ -15,21 +15,23 @@ namespace Kephas.Messaging.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Messaging.AttributedModel;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageHandlerAutofacInjectionTest : TestBase
+    public class MessageHandlerAutofacInjectionTest : AutofacInjectionTestBase
     {
         [Test]
         public void Injection_single_handler()
         {
-            var container = this.CreateServicesBuilder()
-                .WithParts(typeof(IMessageHandler), typeof(IMessageHandler<>), typeof(HiTestHandler))
-                .BuildWithAutofac();
+            var container = this.CreateInjector(parts: new[]
+                                                            {
+                                                                typeof(IMessageHandler),
+                                                                typeof(IMessageHandler<>),
+                                                                typeof(HiTestHandler)
+                                                            });
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
@@ -46,9 +48,13 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void Injection_two_handlers()
         {
-            var container = this.CreateServicesBuilder()
-                .WithParts(typeof(IMessageHandler), typeof(IMessageHandler<>), typeof(HiTestHandler), typeof(ThereTestHandler))
-                .BuildWithAutofac();
+            var container = this.CreateInjector(parts: new[]
+                                                            {
+                                                                typeof(IMessageHandler),
+                                                                typeof(IMessageHandler<>),
+                                                                typeof(HiTestHandler),
+                                                                typeof(ThereTestHandler),
+                                                            });
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 

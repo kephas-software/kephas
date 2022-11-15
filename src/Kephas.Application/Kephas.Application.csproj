@@ -10,15 +10,25 @@
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 		<IsTrimmable>false</IsTrimmable>
 
-        <Version>12.0.0-dev.1</Version>
-        <AssemblyVersion>12.0.0.0</AssemblyVersion>
-        <FileVersion>12.0.0.0</FileVersion>
+        <Version>11.1.0</Version>
+        <AssemblyVersion>11.1.0.0</AssemblyVersion>
+        <FileVersion>11.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides an abstract infrastructure for applications based on Kephas Framework.</Description>
+        <Description>
+            Provides an abstract infrastructure for applications based on Kephas Framework.
+            Typically used areas and classes/interfaces/services:
+            - AppBase, IAppContext.
+            - IAppManager, DefaultAppManager.
+            - IFeatureManager, FeatureManagerBase.
+            - Interaction: FeatureStartedEvent, FeatureStartingEvent, FeatureStoppedEvent, FeatureStoppingEvent.
+            - Configuration: SystemSettings, AppSettings, HostSettings.
+
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -59,6 +69,9 @@
 
     <ItemGroup>
         <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -110,8 +123,6 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

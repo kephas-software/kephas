@@ -16,9 +16,9 @@ namespace Kephas.AspNetCore.InteractiveTests6.MiddlewareConfigurators
     [ProcessingPriority(Priority.Highest + 100)]
     public class StartupMiddlewareConfigurator : IMiddlewareConfigurator
     {
-        public void Configure(IWebAppContext appContext)
+        public void Configure(IAspNetAppContext appContext)
         {
-            var app = appContext.App;
+            var app = appContext.AppBuilder;
             var env = appContext.HostEnvironment;
 
             // Configure the HTTP request pipeline.

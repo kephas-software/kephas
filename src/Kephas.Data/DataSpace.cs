@@ -17,7 +17,7 @@ namespace Kephas.Data
 
     using Kephas.Collections;
     using Kephas.Data.Store;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -34,30 +34,30 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
         public DataSpace(
-            IServiceProvider serviceProvider,
+            IInjector injector,
             IDataContextFactory dataContextFactory,
             IDataStoreProvider dataStoreProvider)
-            : this(serviceProvider, dataContextFactory, dataStoreProvider, false)
+            : this(injector, dataContextFactory, dataStoreProvider, false)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
         /// <param name="isThreadSafe">True if this object is thread safe.</param>
         protected DataSpace(
-            IServiceProvider serviceProvider,
+            IInjector injector,
             IDataContextFactory dataContextFactory,
             IDataStoreProvider dataStoreProvider,
             bool isThreadSafe)
-            : base(serviceProvider, isThreadSafe)
+            : base(injector, isThreadSafe)
         {
             dataContextFactory = dataContextFactory ?? throw new System.ArgumentNullException(nameof(dataContextFactory));
             dataStoreProvider = dataStoreProvider ?? throw new ArgumentNullException(nameof(dataStoreProvider));
@@ -124,7 +124,7 @@ namespace Kephas.Data
                                               g => g.Key,
                                               g =>
                                                   {
-                                                      var initContext = new Context(this.ServiceProvider)
+                                                      var initContext = new Context(this.Injector)
                                                                                       {
                                                                                           Identity = this.Identity,
                                                                                       }.InitialData(g);

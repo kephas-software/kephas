@@ -17,7 +17,7 @@ namespace Kephas.Data.Endpoints
 
     using Kephas.Data.DataSources;
     using Kephas.Dynamic;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Messaging;
     using Kephas.Model;
     using Kephas.Reflection;

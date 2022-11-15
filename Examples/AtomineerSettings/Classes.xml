@@ -1,0 +1,114 @@
+﻿<Classes prefix="" suffix=".%ip%">
+  <!--
+		AutoDoc rules
+		=============
+
+		For each documentation entry that needs to be generated, Atomineer executes an appropriate
+		section of the rules in this AutoDoc section (e.g. for a parameter, the <Parameters> section
+		is executed). Execution stops when a match is found and a documentation result is returned.
+
+		Full documentation can be found here:
+			http://www.atomineerutils.com/rulesguide.php
+		-->
+			<!-- Rules for auto-documentation of classes
+
+				 Full documentation can be found here:
+					http://www.atomineerutils.com/rulesguide.php
+
+				 Note that you can delete all the examples, and as long as this section does not
+				 end with a <Set> command, Atomineer will "fall through" your custom rules and 
+				 use its defaults if your rules do not supply any documentation text.
+
+				 Additional values that can be used for filtering/documenting include:
+					name			The name of the class
+					sName			The name of the class, converted to sentence (space separated words) format, with abbreviated words expanded
+					sNameRaw		The name of the class without any prefix letters removed, converted to sentence
+					numBases		The number of base classes/interfaces this class inherits from/implements
+					baseNameX		Base class/interface name, where X is the 1-based index of the base (e.g. baseName1, baseName2)
+					baseClass		The main base class that this class inherits from, or "unknown" if none/unknown
+					baseClassRef	As %baseClass%, in a form suitable for use in a cref (generic <> are replaced with {})
+					isStatic		"y" or "n", indicating if this class is static	
+					isPartial		"y" or "n", indicating if this class is partial
+					isSealed		"y" or "n", indicating if this class is sealed
+					isAbstract		"y" or "n", indicating if this class is abstract
+					isGeneric		"y" or "n", indicating if this class is generic
+					isTemplate		"y" or "n", indicating if this class is a template
+			 -->
+
+			<!-- Don't generate documentation for Machine Generated Code -->
+			<If defined="attr-GeneratedCode" abortComment="y" />
+
+			<!-- If this is an override and the special 'docPrimaryBaseWithSee' or 'docBasesWithSee' flag is set, we
+				 don't use the standard documentation generation approach, but instead substitute one or many <see>
+				 references. Note that you also need to disable duplication of base documentation in the preferences
+				 to allow this rule to be applied for overrides.
+			-->
+			<If docBasesWithSee="true">
+				<IfNot seeAllBases="unknown">
+					<Set desc="%seeAllBases%" />
+				</IfNot>
+			</If>
+
+			<If docPrimaryBaseWithSee="true">
+				<IfNot baseClass="unknown">
+					<Set desc="See &lt;see cref=&quot;%baseClassRef%&quot;/&gt;" />
+				</IfNot>
+			</If>
+
+			<If isSealed="y">
+				<Set continue="y" suffix=". This class cannot be inherited." />
+			</If>
+				
+			<!-- Add descriptions or description prefixes for any attributes applied to the class -->
+			<If defined="attr-description" desc="%attr-description%" />
+			<If docUseAttributes="true">
+				<If defined="attr-obsolete" continue="y" desc="(This class is obsolete) " />
+				<If defined="attr-conditional" continue="y" desc="(Only available in %attr-conditional% builds) " />
+				<If defined="attr-testclass" continue="y" desc="(Unit Test Class) " />
+				<If defined="attr-comvisible">
+					<If attr-comvisible="false" continue="y" desc="(Not COM visible)" />
+					<Set continue="y" desc="(COM visible)" />
+				</If>
+				<If defined="attr-serializable" continue="y" desc="(Serializable)" />
+			</If>
+
+			<If sName="main form,main window" desc="The application's main form" />
+			<If sName="# editing form,# editor form,# editing dialog,# editor dialog,# editing window,# editor window,# editing pane,# editor pane" desc="%name:LastWord:SCase% for editing the %match%%suffix%" />
+			<If sName="# editor,# designer" desc="%name:LastWord:SCase% for %match%%suffix%" />
+			<If sName="# form,# dialog,# window,# pane,# panel,# wizard">
+				<If sName="Set #" desc="%name:LastWord:SCase% for setting the %match:StripLastWord:Sentence:LCase%%suffix%" />
+				<If sName="Create #" desc="%name:LastWord:SCase% for creating %match:StripLastWord:Sentence:Plural:LCase%%suffix%" />
+				<If sName="Edit #" desc="%name:LastWord:SCase% for editing the %match:StripLastWord:Sentence:LCase%%suffix%" />
+				<If sName="Manage #" desc="%name:LastWord:SCase% for managing the %match:StripLastWord:Sentence:LCase%%suffix%" />
+				<If sName="Report #,Display #,Show #" desc="%name:LastWord:SCase% for reporting information to the user%suffix%" />
+				<If sName="Error #,Problem #" desc="%name:LastWord:SCase% for reporting errors to the user%suffix%" />
+				<If sName="Warning #" desc="%name:LastWord:SCase% for reporting warnings to the user%suffix%" />
+				<If sName="Progress #" desc="%name:LastWord:SCase% for reporting task progress%suffix%" />
+			</If>
+			<If name="#Form,#Window" desc="Form for viewing the %match:Sentence:LCase%%suffix%" />
+			<If sName="# Dialog,# Wizard" desc="%name:LastWord:SCase% for setting the %match:Sentence:LCase%%suffix%" />
+			<If name="#Pane,#Panel" desc="%name:LastWord:SCase% for editing the %match:Sentence:LCase%%suffix%" />
+			<If name="#EventArgs" desc="Additional information for %match:Sentence:LCase% events%suffix%" />
+			<If sName="# Arguments" desc="Arguments for %match:Sentence:LCase%%suffix%" />
+			<If sName="# Attribute" desc="Attribute for %match:Sentence:LCase%%suffix%" />
+			<If sName="# Exception" desc="Exception for signalling %match:Sentence:LCase% errors%suffix%" />
+			<If name="#Permission" desc="%match:Sentence:LCase% permission descriptor%suffix%" />
+			<If sName="# Collection" desc="Collection of %match:Sentence:LCase:Plural%%suffix%" />
+			<If name="#List" desc="List of %match:Sentence:LCase:Plural%%suffix%" />
+			<If name="#Queue" desc="Queue of %match:Sentence:LCase:Plural%%suffix%" />
+			<If name="#Stack" desc="Stack of %match:Sentence:LCase:Plural%%suffix%" />
+			<If sName="# Dictionary" desc="Dictionary of %match:Sentence:LCase:Plural%%suffix%" />
+			<If sName="# Manager" desc="Manager for %match:Sentence:LCase:Plural%%suffix%" />
+			<If sName="# Information,# Record" desc="Information about the %match:Sentence:LCase%%suffix%" />
+			<If sName="# Manifest" desc="A list of the %match:Sentence:LCase%%suffix%" />
+			<If sName="# Description" desc="Description of the %match:Sentence:LCase%%suffix%" />
+			<If sName="# Buffer" desc="Buffer for %match:Sentence:LCase%%suffix%" />
+			<If sName="# Result" desc="Encapsulates the result of a %match:Sentence:LCase%%suffix%" />
+			<If sName="# Controller" desc="A controller for handling %match:Sentence:LCase:Plural%%suffix%" />
+			<If sName="# View Model" desc="A ViewModel for the %match:Sentence:LCase%%suffix%" />
+			<If sName="# Model" desc="A data Model for the %match:Sentence:LCase%%suffix%" />
+			<If sName="# Persistence" desc="An object for persisting %match:Sentence:LCase% data%suffix%" />
+
+			<!-- Catch-all. Just converts the element name into a sentence format -->
+			<Set desc="A %sname:LCase%%suffix%" />
+		</Classes>

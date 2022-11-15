@@ -8,15 +8,15 @@
 namespace Kephas.Scheduling.Endpoints
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
 
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
 
     /// <summary>
     /// Message for getting the completed jobs.
     /// </summary>
-    [Display(Description = "Gets the completed jobs.")]
+    [DisplayInfo(Description = "Gets the completed jobs.")]
     public class GetCompletedJobsMessage : IMessage
     {
         /// <summary>
@@ -25,7 +25,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <value>
         /// The number of packages to skip.
         /// </value>
-        [Display(Description = "Optional. Value indicating the number of jobs to skip (default: 0).")]
+        [DisplayInfo(Description = "Optional. Value indicating the number of jobs to skip (default: 0).")]
         public int Skip { get; set; } = 0;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <value>
         /// The number of packages to take.
         /// </value>
-        [Display(Description = "Optional. Value indicating the number of jobs to take (default: 20).")]
+        [DisplayInfo(Description = "Optional. Value indicating the number of jobs to take (default: 20).")]
         public int Take { get; set; } = 20;
     }
 

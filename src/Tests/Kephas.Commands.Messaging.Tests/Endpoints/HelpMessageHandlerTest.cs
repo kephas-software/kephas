@@ -12,7 +12,6 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
     using Kephas.Commands.Endpoints;
     using Kephas.Commands.Messaging.Reflection;
@@ -95,7 +94,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
 
         public class LongParamMessage : IMessage
         {
-            [Display(ShortName = "pre", Description = "Includes prerelease.")]
+            [DisplayInfo(ShortName = "pre", Description = "Includes prerelease.")]
             public bool IncludePrerelease { get; set; }
         }
     }

@@ -16,6 +16,7 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Resources;
+    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
 
@@ -29,19 +30,19 @@ namespace Kephas.Application.AspNetCore
         /// Initializes a new instance of the <see cref="AspNetAppManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="injector">The injector.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public AspNetAppManager(
             IAppRuntime appRuntime,
-            IServiceProvider serviceProvider,
-            IEnabledLazyEnumerable<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
-            IEnabledLazyEnumerable<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
-            IEnabledLazyEnumerable<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
+            IInjector injector,
+            IEnabledServiceFactoryCollection<IAppLifecycleBehavior, AppServiceMetadata>? appLifecycleBehaviorFactories = null,
+            IEnabledServiceFactoryCollection<IFeatureManager, FeatureManagerMetadata>? featureManagerFactories = null,
+            IEnabledServiceFactoryCollection<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>? featureLifecycleBehaviorFactories = null)
             : base(
                 appRuntime,
-                serviceProvider,
+                injector,
                 appLifecycleBehaviorFactories,
                 featureManagerFactories,
                 featureLifecycleBehaviorFactories)
@@ -56,11 +57,11 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task InitializeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
+        public override Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            if (appContext is not IWebAppContext)
+            if (appContext is not IAspNetAppContext)
             {
-                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IWebAppContext).FullName));
+                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
             }
 
             return base.InitializeAsync(appContext, cancellationToken);
@@ -74,11 +75,11 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task FinalizeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
+        public override Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            if (appContext is not IWebAppContext)
+            if (appContext is not IAspNetAppContext)
             {
-                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IWebAppContext).FullName));
+                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
             }
 
             return base.FinalizeAsync(appContext, cancellationToken);

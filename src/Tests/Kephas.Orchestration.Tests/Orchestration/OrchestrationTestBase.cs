@@ -17,17 +17,19 @@ namespace Kephas.Tests.Orchestration
     using Kephas.Application;
     using Kephas.Commands;
     using Kephas.Configuration;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
+    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration;
-    using Kephas.Services.Builder;
     using Kephas.Testing.Application;
     using NSubstitute;
 
     public abstract class OrchestrationTestBase : ApplicationTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
@@ -40,26 +42,22 @@ namespace Kephas.Tests.Orchestration
             return assemblies;
         }
 
-        /// <summary>
-        /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
-        /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
-        ///                               will be created as linked to the newly created container.</param>
-        /// <param name="logManager">Optional. Manager for log.</param>
-        /// <param name="appRuntime">Optional. The application runtime.</param>
-        /// <returns>
-        /// A LiteInjectorBuilder.
-        /// </returns>
-        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
+        public override IInjector CreateInjector(
             IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<IInjectorBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
-            ambientServices = builder.AmbientServices;
-            var appContext = Substitute.For<IAppContext>();
-            ambientServices.Add<IAppContext>(_ => appContext);
-            return builder;
+            var oldConfig = config;
+            config = b =>
+            {
+                var appContext = Substitute.For<IAppContext>();
+                b.ForFactory(_ => appContext);
+                oldConfig?.Invoke(b);
+            };
+            return base.CreateInjector(ambientServices, assemblies, parts, config, logManager, appRuntime);
         }
     }
 }

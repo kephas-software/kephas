@@ -208,7 +208,7 @@ namespace Kephas.Interaction
             }
 
             var resultList = new List<object?>();
-            IOperationResult<IEnumerable<object?>> result = new OperationResult<IEnumerable<object?>>
+            var result = new OperationResult<IEnumerable<object?>>
             {
                 OperationState = OperationState.Completed,
                 Value = resultList,

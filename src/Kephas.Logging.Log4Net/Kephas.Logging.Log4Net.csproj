@@ -9,15 +9,21 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-        <Version>12.0.0-dev.1</Version>
-        <AssemblyVersion>12.0.0.0</AssemblyVersion>
-        <FileVersion>12.0.0.0</FileVersion>
+        <Version>11.1.0</Version>
+        <AssemblyVersion>11.1.0.0</AssemblyVersion>
+        <FileVersion>11.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides the log4net 2 (and later) logging services implementation.</Description>
+        <Description>
+            Provides the log4net 2 (and later) logging services implementation.
+            Typically used areas and classes/interfaces/services:
+            - IAmbientServices.WithLog4NetManager().
+
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -27,8 +33,10 @@
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes>
+            Please check https://github.com/kephas-software/kephas/releases for the change log.
+            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+        </PackageReleaseNotes>
         <PackageTags>kephas logging log4net</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -54,6 +62,9 @@
 
     <ItemGroup>
       <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
@@ -66,7 +77,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="log4net" Version="2.0.15" />
+        <PackageReference Include="log4net" Version="2.0.14" />
     </ItemGroup>
 
     <ItemGroup>
@@ -84,8 +95,6 @@
 
     <ItemGroup>
         <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

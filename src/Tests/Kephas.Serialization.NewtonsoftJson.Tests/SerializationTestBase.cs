@@ -15,20 +15,20 @@ namespace Kephas.Serialization.Json.Tests
     using System.IO;
     using System.Reflection;
 
+    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Testing;
+    using Kephas.Testing.Injection;
     using NSubstitute;
 
-    public class SerializationTestBase : TestBase
+    public class SerializationTestBase : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {
-                                    typeof(ISerializationService).Assembly,
                                     typeof(DefaultTypeResolver).Assembly,   // Kephas.Reflection
                                     typeof(JsonSerializer).Assembly,        // Kephas.Serialization.NewtonsoftJson
                                 };
@@ -38,7 +38,7 @@ namespace Kephas.Serialization.Json.Tests
         public virtual ISerializationContext GetSerializationContext(Type? rootObjectType = null, Action<ISerializationContext>? options = null)
         {
             var context = new SerializationContext(
-                    Substitute.For<IServiceProvider>(),
+                    Substitute.For<IInjector>(),
                     Substitute.For<ISerializationService>())
             {
                 RootObjectType = rootObjectType,

@@ -15,7 +15,7 @@ namespace Kephas.Data.Endpoints.Tests
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Data.DataSources;
-    using Kephas.Services;
+    using Kephas.Injection;
     using Kephas.Messaging;
     using Kephas.Model;
     using Kephas.Reflection;

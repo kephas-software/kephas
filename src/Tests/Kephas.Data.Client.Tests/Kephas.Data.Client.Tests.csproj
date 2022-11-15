@@ -37,7 +37,6 @@
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
         <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
-        <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 

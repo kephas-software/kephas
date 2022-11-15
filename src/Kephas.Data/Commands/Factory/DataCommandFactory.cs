@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.Commands.Factory
 {
@@ -29,7 +29,7 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// The command factories.
         /// </summary>
-        private readonly IFactoryEnumerable<TCommand, DataCommandMetadata> commandFactories;
+        private readonly IOrderedServiceFactoryCollection<TCommand, DataCommandMetadata> commandFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandFactory{TCommand}"/> class.
@@ -78,7 +78,7 @@ namespace Kephas.Data.Commands.Factory
                 }
             }
 
-            return () => commandFactory.CreateExportedValue();
+            return () => commandFactory.CreateExport().Value;
         }
     }
 }

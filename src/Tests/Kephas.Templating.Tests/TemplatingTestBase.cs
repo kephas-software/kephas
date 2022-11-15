@@ -9,12 +9,12 @@ namespace Kephas.Templating.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
 
-    public class TemplatingTestBase : TestBase
+    using Kephas.Testing.Injection;
+
+    public class TemplatingTestBase : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

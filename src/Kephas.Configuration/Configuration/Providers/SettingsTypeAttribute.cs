@@ -12,7 +12,7 @@ namespace Kephas.Configuration.Providers
 {
     using System;
 
-    using Kephas.Services;
+    using Kephas.Injection;
 
     /// <summary>
     /// Attribute for settings type.

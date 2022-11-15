@@ -8,33 +8,45 @@
 namespace Kephas.AspNetCore.InteractiveTests6.Extensions
 {
     using System;
+
+    using Kephas.Application;
     using Kephas.Cryptography;
     using Kephas.Logging.Serilog;
-    using Kephas.Services.Builder;
     using Microsoft.Extensions.Configuration;
     using Serilog;
     using Serilog.Events;
 
     public static class AmbientServicesAppExtensions
     {
+        public static void SetupAmbientServices(
+            this IAmbientServices ambientServices,
+            Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
+            IConfiguration? configuration)
+        {
+            ambientServices
+                .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
+                .WithDynamicAppRuntime()
+                .WithSerilogManager(configuration);
+        }
+
         /// <summary>
         /// Configures the Serilog logging infrastructure from the configuration.
         /// </summary>
-        /// <param name="servicesBuilder">The services builder.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns>
-        /// The <paramref name="servicesBuilder"/>.
+        /// The provided ambient services.
         /// </returns>
-        internal static IAppServiceCollectionBuilder WithSerilogManager(this IAppServiceCollectionBuilder servicesBuilder, IConfiguration? configuration)
+        internal static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, IConfiguration? configuration)
         {
             var loggerConfig = new LoggerConfiguration();
             loggerConfig
                 .ReadFrom.Configuration(configuration)
-                .Enrich.With(new AppLogEventEnricher(servicesBuilder.AmbientServices.GetAppRuntime()!));
+                .Enrich.With(new AppLogEventEnricher(ambientServices.GetAppRuntime()!));
 
             var minimumLevel = configuration.GetValue<LogEventLevel?>("Serilog:MinimumLevel") ?? LogEventLevel.Information;
 
-            return servicesBuilder.WithSerilogManager(loggerConfig, minimumLevel, dynamicMinimumLevel: true);
+            return ambientServices.WithSerilogManager(loggerConfig, minimumLevel, dynamicMinimumLevel: true);
         }
     }
 }

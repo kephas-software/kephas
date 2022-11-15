@@ -12,12 +12,11 @@ namespace Kephas.Data.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
 
-    public abstract class DataTestBase : TestBase
+    public abstract class DataTestBase : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
                                 {

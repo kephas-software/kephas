@@ -12,12 +12,11 @@ namespace Kephas.Scripting.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
 
-    public class ScriptingTestBase : TestBase
+    public class ScriptingTestBase : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {

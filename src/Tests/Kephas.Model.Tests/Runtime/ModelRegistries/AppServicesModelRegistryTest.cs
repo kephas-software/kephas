@@ -17,34 +17,40 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Injection;
+    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Builder;
     using Kephas.Services.Reflection;
-    using Kephas.Testing;
-    using Kephas.Testing.Services;
+    using Kephas.Testing.Injection;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesModelRegistryTest : TestBase
+    public class AppServicesModelRegistryTest : InjectionTestBase
     {
-        protected override IEnumerable<Assembly> GetAssemblies()
+        public override IInjector CreateInjector(
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<IInjectorBuilder>? config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
-            return new List<Assembly>(base.GetAssemblies())
+            var assemblyList = new List<Assembly>(assemblies ?? Array.Empty<Assembly>())
             {
                 typeof(AppServicesModelRegistry).Assembly, /* Kephas.Model */
             };
+            return base.CreateInjector(ambientServices, assemblyList, parts, config);
         }
 
         [Test]
         public void AppServicesRegistry_Injection_success()
         {
-            var container = this.CreateServicesBuilder()
-                .BuildWithDependencyInjection();
+            var container = this.CreateInjector();
             var registry = container.ResolveMany<IRuntimeModelRegistry>().OfType<AppServicesModelRegistry>().SingleOrDefault();
             Assert.IsNotNull(registry);
         }
@@ -60,7 +66,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
                    new (typeof(bool), Substitute.For<IAppServiceInfo>()),
             };
 
-            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetAppRuntime(), ambientServices.GetTypeRegistry(), (sc, amb) => true);
+            ambientServices.SetAppServiceInfos(appServicesInfos);
+
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetTypeRegistry(), (sc, amb) => true);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
@@ -80,7 +88,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
                 new (typeof(bool), Substitute.For<IAppServiceInfo>()),
             };
 
-            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetAppRuntime(), ambientServices.GetTypeRegistry(), (sc, amb) => sc.ContractDeclarationType == typeof(int));
+            ambientServices.SetAppServiceInfos(appServicesInfos);
+
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetTypeRegistry(), (sc, amb) => sc.ContractDeclarationType == typeof(int));
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 
@@ -91,9 +101,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_with_default_filter()
         {
-            var ambientServices = new AppServiceCollectionBuilder(this.CreateAmbientServices())
-                .WithStaticAppRuntime(settings => settings.IsAppAssembly = asm => asm.Name!.StartsWith("Kephas"))
-                .AmbientServices;
+            var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime(assemblyFilter: asm => asm.Name.StartsWith("Kephas"));
             var appServicesInfos = new List<ContractDeclaration>
             {
                 new (typeof(int), Substitute.For<IAppServiceInfo>()),
@@ -103,7 +111,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
                 new (typeof(IModelSpace), Substitute.For<IAppServiceInfo>()),
             };
 
-            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetAppRuntime(), ambientServices.GetTypeRegistry());
+            ambientServices.SetAppServiceInfos(appServicesInfos);
+
+            var registry = new AppServicesModelRegistry(ambientServices, ambientServices.GetTypeRegistry());
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<IRuntimeTypeInfo>().ToList();
 

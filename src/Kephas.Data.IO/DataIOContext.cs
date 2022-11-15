@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Injection;
 
 namespace Kephas.Data.IO
 {
@@ -24,9 +24,9 @@ namespace Kephas.Data.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The injector.</param>
-        public DataIOContext(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        /// <param name="injector">The injector.</param>
+        public DataIOContext(IInjector injector)
+            : base(injector)
         {
         }
 

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Injection;
+
 namespace Kephas.Workflow.Tests
 {
     using System.Threading;
@@ -34,7 +36,7 @@ namespace Kephas.Workflow.Tests
         public async Task TransitionAsync_changes_state_on_success()
         {
             var stateMachine = new TestStateMachine(new TestEntity(), this.TypeRegistry);
-            var context = new TransitionContext(Substitute.For<IServiceProvider>(), stateMachine)
+            var context = new TransitionContext(Substitute.For<IInjector>(), stateMachine)
             {
                 To = TestState.Valid,
             };

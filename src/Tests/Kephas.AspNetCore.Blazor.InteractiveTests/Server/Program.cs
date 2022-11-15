@@ -9,13 +9,12 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
 {
     using System;
     using System.Threading.Tasks;
-
     using Kephas.Application;
     using Kephas.AspNetCore.Blazor.InteractiveTests.Server.Extensions;
     using Kephas.Cryptography;
     using Kephas.Extensions.Hosting;
-    using Kephas.Services.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
 
     public class Program
@@ -26,23 +25,23 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             var appArgs = new AppArgs(args);
-            var builder = Host.CreateDefaultBuilder(args);
-
-            var servicesBuilder = new AppServiceCollectionBuilder();
-
-            return builder.ConfigureAppServices(
-                    servicesBuilder,
+            var ambientServices = new AmbientServices();
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureAmbientServices(
+                    ambientServices,
                     appArgs,
-                    (context, services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService, context.Configuration))
+                    ambient => ambient.BuildWithAutofac(),
+                    (services, ambient) => ambient.SetupAmbientServices(CreateEncryptionService,
+                        services.TryGetStartupService<IConfiguration>()))
                 .ConfigureWebHostDefaults(
                     webBuilder => webBuilder
                         .UseKestrel()
                         .UseStartup<Startup>());
         }
 
-        private static IEncryptionService CreateEncryptionService(IAppServiceCollectionBuilder servicesBuilder)
+        private static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
         {
-            return new EncryptionService(() => new EncryptionContext(servicesBuilder.Injector));
+            return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
         }
 
         private class EncryptionService : AesEncryptionService

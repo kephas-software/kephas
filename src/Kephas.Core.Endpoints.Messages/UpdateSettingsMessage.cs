@@ -7,28 +7,27 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
     /// <summary>
     /// Message for updating the settings.
     /// </summary>
-    [Display(Description = "Gets the provided settings.")]
+    [DisplayInfo(Description = "Gets the provided settings.")]
     [RequiresPermission(typeof(AppAdminPermission))]
     public class UpdateSettingsMessage
     {
         /// <summary>
         /// Gets or sets the settings type.
         /// </summary>
-        [Display(Description = "The name of the settings type to update. The 'Settings' ending may be left out. If not provided, the Settings must contain an already formed settings instance.")]
+        [DisplayInfo(Description = "The name of the settings type to update. The 'Settings' ending may be left out. If not provided, the Settings must contain an already formed settings instance.")]
         public string? SettingsType { get; set; }
 
         /// <summary>
         /// Gets or sets the settings.
         /// </summary>
-        [Display(Description = "The settings value to update. If it contains an already formed settings instance, the settings type may not be provided. If it is a string value, it contains the serialized value of the settings.")]
+        [DisplayInfo(Description = "The settings value to update. If it contains an already formed settings instance, the settings type may not be provided. If it is a string value, it contains the serialized value of the settings.")]
         public object? Settings { get; set; }
     }
 }

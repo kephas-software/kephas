@@ -63,7 +63,7 @@ public class DefaultRazorPageCompiler : IRazorPageCompiler
         ITemplateProcessingContext context,
         CancellationToken cancellationToken = default)
     {
-        IOperationResult<ICompiledRazorPage> compileResult = new OperationResult<ICompiledRazorPage>();
+        var compileResult = new OperationResult<ICompiledRazorPage>();
 
         string? tempProjectPath = null;
         try
