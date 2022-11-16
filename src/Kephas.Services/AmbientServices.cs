@@ -23,7 +23,7 @@ namespace Kephas
     /// <summary>
     /// Provides the global ambient services.
     /// </summary>
-    [ExcludeFromInjection]
+    [ExcludeFromServices]
     public class AmbientServices : Expando, IAmbientServices
     {
         private readonly IList<IAppServiceInfo> registry = new List<IAppServiceInfo>();

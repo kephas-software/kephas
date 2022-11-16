@@ -46,7 +46,7 @@ namespace Kephas.Data.Client.DTO
         /// <summary>
         /// A none data behavior provider.
         /// </summary>
-        [ExcludeFromInjection]
+        [ExcludeFromServices]
         internal class NoneDataBehaviorProvider : IDataBehaviorProvider
         {
             /// <summary>

@@ -50,7 +50,7 @@ namespace Kephas.Testing.Services
         {
             return
                 from serviceType in this.parts
-                where serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsNestedPrivate && serviceType.GetCustomAttribute<ExcludeFromInjectionAttribute>() == null
+                where serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsNestedPrivate && serviceType.GetCustomAttribute<ExcludeFromServicesAttribute>() == null
                 let contractDeclarationType = this.TryGetAppServiceContract(serviceType)
                 where contractDeclarationType != null
                 select new ServiceDeclaration(serviceType, contractDeclarationType!);

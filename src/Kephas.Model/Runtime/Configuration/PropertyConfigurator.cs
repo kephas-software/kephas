@@ -17,7 +17,7 @@ namespace Kephas.Model.Runtime.Configuration
     /// <summary>
     /// A property configurator.
     /// </summary>
-    [ExcludeFromInjection]
+    [ExcludeFromServices]
     public class PropertyConfigurator : RuntimeModelElementConfiguratorBase<IProperty, IPropertyInfo, PropertyConfigurator>
     {
     }
@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime.Configuration
     /// A property configurator.
     /// </summary>
     /// <typeparam name="TPropertyType">The property type.</typeparam>
-    [ExcludeFromInjection]
+    [ExcludeFromServices]
     public class PropertyConfigurator<TPropertyType> : PropertyConfigurator
     {
     }
