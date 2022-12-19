@@ -11,6 +11,7 @@
 namespace Kephas.Tests.ExceptionHandling
 {
     using System;
+
     using Kephas.Data;
     using Kephas.ExceptionHandling;
     using NUnit.Framework;
