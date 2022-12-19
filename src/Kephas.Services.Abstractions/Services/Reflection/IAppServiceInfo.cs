@@ -13,7 +13,6 @@ namespace Kephas.Services.Reflection
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.CompilerServices;
     using System.Text;
 
     using Kephas.Services;
@@ -63,7 +62,10 @@ namespace Kephas.Services.Reflection
         /// </value>
         Type? ContractType
         {
+#if NETSTANDARD2_1
+#else
             [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
             get;
         }
 
@@ -72,14 +74,17 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <remarks>
         /// This is the type annotated with the [AppServiceContract] attribute, but which declares a base contract type.
-        /// Typically this is a generic type used for collecting metadata, redirecting to the non-generic contract type. 
+        /// Typically this is a generic type used for collecting metadata, redirecting to the non-generic contract type.
         /// </remarks>
         /// <value>
         /// The type declaring the contract type.
         /// </value>
         Type? ContractDeclarationType
         {
+#if NETSTANDARD2_1
+#else
             [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
             get => this.ContractType;
         }
 
@@ -91,7 +96,10 @@ namespace Kephas.Services.Reflection
         /// </value>
         Type? MetadataType
         {
+#if NETSTANDARD2_1
+#else
             [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
             get;
             set;
         }
@@ -117,7 +125,10 @@ namespace Kephas.Services.Reflection
         /// </value>
         Type? InstanceType
         {
+#if NETSTANDARD2_1
+#else
             [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
             get => this.InstancingStrategy as Type;
         }
 

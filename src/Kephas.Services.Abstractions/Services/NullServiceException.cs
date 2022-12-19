@@ -12,7 +12,7 @@ namespace Kephas.Services
 {
     using System;
 
-    using Kephas.Resources;
+    using Kephas.Services.Resources;
 
     /// <summary>
     /// Exception thrown by null services.
@@ -24,7 +24,7 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="serviceType">The service type.</param>
         public NullServiceException(Type serviceType)
-            : base(string.Format(AbstractionStrings.NullServiceExceptionMessage, serviceType.FullName))
+            : base(string.Format(AbstractionsStrings.NullServiceExceptionMessage, serviceType.FullName))
         {
             serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         }
@@ -35,7 +35,7 @@ namespace Kephas.Services
         /// <param name="serviceType">The service type.</param>
         /// <param name="inner">The inner exception.</param>
         public NullServiceException(Type serviceType, Exception inner)
-            : base(string.Format(AbstractionStrings.NullServiceExceptionMessage, serviceType.FullName), inner)
+            : base(string.Format(AbstractionsStrings.NullServiceExceptionMessage, serviceType.FullName), inner)
         {
             serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         }
@@ -46,7 +46,7 @@ namespace Kephas.Services
         /// <param name="serviceInstance">The service instance.</param>
         public NullServiceException(object serviceInstance)
             : base(string.Format(
-                AbstractionStrings.NullServiceExceptionMessage,
+                AbstractionsStrings.NullServiceExceptionMessage,
                 (serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance))).GetType().FullName))
         {
         }
@@ -59,7 +59,7 @@ namespace Kephas.Services
         public NullServiceException(object serviceInstance, Exception inner)
             : base(
                 string.Format(
-                    AbstractionStrings.NullServiceExceptionMessage,
+                    AbstractionsStrings.NullServiceExceptionMessage,
                     (serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance))).GetType().FullName),
                 inner)
         {
