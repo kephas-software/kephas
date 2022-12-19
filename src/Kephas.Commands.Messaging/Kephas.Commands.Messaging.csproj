@@ -17,7 +17,14 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides the implementation of a command processor using messaging integration.</Description>
+        <Description>
+            Provides the implementation of a command processor using Kephas.Messaging.
+            Typically used areas and classes/interfaces/services:
+            - MessagingCommandRegistry, MessageOperation.
+            - Reflection: MessageOperationInfo.
+
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -27,8 +34,10 @@
         <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes>
+            Please check https://github.com/kephas-software/kephas/releases for the change log.
+            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+        </PackageReleaseNotes>
         <PackageTags>kephas command messaging</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -57,6 +66,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Commands.Endpoints.Messages\Kephas.Commands.Endpoints.Messages.csproj" />
         <ProjectReference Include="..\Kephas.Commands\Kephas.Commands.csproj" />
@@ -76,7 +86,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Messaging\Resources\Strings.Designer.cs">
+      <Compile Update="Resources\Strings.Designer.cs">
         <DependentUpon>Strings.resx</DependentUpon>
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -84,6 +94,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Update="Resources\Strings.resx">
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
       <EmbeddedResource Update="Messaging\Resources\Strings.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
@@ -91,9 +105,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
+        <None Remove="LinkerConfig.xml" />
+        <EmbeddedResource Include="LinkerConfig.xml">
+            <LogicalName>ILLink.Descriptors.xml</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
