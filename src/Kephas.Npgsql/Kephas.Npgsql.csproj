@@ -80,12 +80,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Connectivity\Kephas.Connectivity.csproj" />
-        <ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 

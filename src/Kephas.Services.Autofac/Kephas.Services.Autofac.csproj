@@ -113,7 +113,7 @@
 
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
