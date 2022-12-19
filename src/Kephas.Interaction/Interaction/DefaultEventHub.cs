@@ -28,7 +28,7 @@ namespace Kephas.Interaction
     /// The default implementation of the <see cref="IEventHub"/> service.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultEventHub : Loggable, IEventHub, IDisposable
+    public class DefaultEventHub : IEventHub, IDisposable
     {
         private readonly IInjectableFactory injectableFactory;
         private readonly IList<EventSubscription> subscriptions = new List<EventSubscription>();
@@ -37,12 +37,17 @@ namespace Kephas.Interaction
         /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
         /// </summary>
         /// <param name="injectableFactory">The injectable factory.</param>
-        /// <param name="logManager">Optional. Manager for log.</param>
-        public DefaultEventHub(IInjectableFactory injectableFactory, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public DefaultEventHub(IInjectableFactory injectableFactory, ILogger<DefaultEventHub>? logger = null)
         {
             this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            this.Logger = logger;
         }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger<DefaultEventHub>? Logger { get; }
 
         /// <summary>
         /// Publishes the event asynchronously to its subscribers.
@@ -242,7 +247,7 @@ namespace Kephas.Interaction
                             break;
                         default:
                             result.Fail(interruption.InnerException ?? interruption, operationState: OperationState.Aborted);
-                            this.Logger.Log(
+                            this.Logger?.Log(
                                 (LogLevel)interruption.Severity,
                                 interruption.InnerException ?? interruption,
                                 AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback,

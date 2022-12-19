@@ -26,7 +26,7 @@ namespace Kephas.Reflection
     /// A default service implementation of the <see cref="ITypeResolver"/> service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultTypeResolver : Loggable, ITypeResolver
+    public class DefaultTypeResolver : ITypeResolver
     {
         private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
         private readonly ConcurrentDictionary<string, Type?> typeCache = new();
@@ -37,17 +37,17 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public DefaultTypeResolver(
             IAppRuntime appRuntime,
             ITypeLoader? typeLoader = null,
-            ILogManager? logManager = null)
-            : base(logManager)
+            ILogger<DefaultTypeResolver>? logger = null)
         {
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
-            this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
+            this.typeLoader = typeLoader ?? new DefaultTypeLoader(logger);
             this.getAppAssemblies = () => appRuntime.GetAppAssemblies();
+            Logger = logger;
         }
 
         /// <summary>
@@ -55,15 +55,23 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="getAppAssemblies">The get application assemblies.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public DefaultTypeResolver(
+            Func<IEnumerable<Assembly>> getAppAssemblies,
+            ITypeLoader? typeLoader = null,
+            ILogger<DefaultTypeResolver>? logger = null)
         {
             getAppAssemblies = getAppAssemblies ?? throw new ArgumentNullException(nameof(getAppAssemblies));
 
-            this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
+            this.typeLoader = typeLoader ?? new DefaultTypeLoader(logger);
             this.getAppAssemblies = getAppAssemblies;
+            Logger = logger;
         }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger<DefaultTypeResolver>? Logger { get; }
 
         /// <summary>
         /// Resolves a type based on the provided type name.

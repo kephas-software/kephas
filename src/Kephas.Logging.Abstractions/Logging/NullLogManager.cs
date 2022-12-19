@@ -12,8 +12,6 @@ namespace Kephas.Logging
 {
     using System;
 
-    using Kephas.Services;
-
     /// <summary>
     /// A log manager service which does not log anything.
     /// </summary>

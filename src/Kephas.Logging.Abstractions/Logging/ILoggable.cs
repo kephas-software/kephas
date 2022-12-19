@@ -16,11 +16,9 @@ namespace Kephas.Logging
     public interface ILoggable
     {
         /// <summary>
-        /// Gets the logger.
+        /// Gets the log level of the loggable instance.
         /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        ILogger? Logger { get; }
+        /// <returns>The log level.</returns>
+        LogLevel GetLogLevel() => LogLevel.Info;
     }
 }

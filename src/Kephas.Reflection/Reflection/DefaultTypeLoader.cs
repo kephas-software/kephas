@@ -22,9 +22,9 @@ namespace Kephas.Reflection
     /// <summary>
     /// The default type loader.
     /// </summary>
-    public class DefaultTypeLoader : ILoggable, ITypeLoader
+    public class DefaultTypeLoader : ITypeLoader
     {
-        private static readonly Lazy<ITypeLoader> LazyInstance = new (() => new DefaultTypeLoader());
+        private static readonly Lazy<ITypeLoader> LazyInstance = new (() => new DefaultTypeLoader(null as ILogger));
         private readonly ConcurrentDictionary<Assembly, IEnumerable<Type>> assemblyCache = new ();
 
         private readonly Lazy<ILogger> lazyLogger;
@@ -34,9 +34,18 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
         public DefaultTypeLoader(ILogManager? logManager = null)
+            : this((logManager ?? LoggingHelper.DefaultLogManager).GetLogger<DefaultTypeLoader>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        internal DefaultTypeLoader(ILogger? logger = null)
         {
             this.lazyLogger = new Lazy<ILogger>(
-                () => (logManager ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType()));
+                () => logger ?? LoggingHelper.DefaultLogManager.GetLogger(this.GetType()));
         }
 
         /// <summary>

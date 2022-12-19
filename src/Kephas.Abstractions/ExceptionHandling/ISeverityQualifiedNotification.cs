@@ -10,10 +10,12 @@
 
 namespace Kephas.ExceptionHandling
 {
+    using Kephas.Logging;
+
     /// <summary>
     /// Interface for severity qualified notification.
     /// </summary>
-    public interface ISeverityQualifiedNotification
+    public interface ISeverityQualifiedNotification : ILoggable
     {
         /// <summary>
         /// Gets the message.
@@ -30,5 +32,11 @@ namespace Kephas.ExceptionHandling
         /// The severity.
         /// </value>
         SeverityLevel Severity { get; }
+
+        /// <summary>
+        /// Gets the log level of the loggable instance.
+        /// </summary>
+        /// <returns>The log level.</returns>
+        LogLevel ILoggable.GetLogLevel() => (LogLevel)this.Severity;
     }
 }

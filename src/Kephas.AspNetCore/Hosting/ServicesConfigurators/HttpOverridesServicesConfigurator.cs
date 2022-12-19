@@ -30,8 +30,22 @@ using Microsoft.Extensions.Hosting;
 /// https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-6.0#forward-the-scheme-for-linux-and-non-iis-reverse-proxies.
 /// </remarks>
 [ProcessingPriority(Priority.Highest)]
-public class HttpOverridesServicesConfigurator : Loggable, IServicesConfigurator
+public class HttpOverridesServicesConfigurator : IServicesConfigurator
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HttpOverridesServicesConfigurator"/> class.
+    /// </summary>
+    /// <param name="logger">Optional. The logger.</param>
+    public HttpOverridesServicesConfigurator(ILogger<HttpOverridesServicesConfigurator>? logger = null)
+    {
+        this.Logger = logger;
+    }
+
+    /// <summary>
+    /// Gets the logger.
+    /// </summary>
+    protected ILogger<HttpOverridesServicesConfigurator>? Logger { get; }
+
     /// <summary>
     /// Configure the services.
     /// </summary>

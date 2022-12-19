@@ -19,7 +19,7 @@ namespace Kephas.Services
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IDynamic, ILoggable, IDisposable, IInjectable
+    public interface IContext : IDynamic, IDisposable, IInjectable
     {
         /// <summary>
         /// Gets a context for the dependency injection/composition.
@@ -36,5 +36,10 @@ namespace Kephas.Services
         /// The authenticated identity.
         /// </value>
         IIdentity? Identity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        ILogger? Logger { get; set; }
     }
 }

@@ -10,8 +10,6 @@ namespace Kephas.Logging
     using System;
     using System.Linq;
 
-    using Kephas.ExceptionHandling;
-
     /// <summary>
     /// Extension methods for <see cref="ILogger"/>.
     /// </summary>
@@ -53,9 +51,9 @@ namespace Kephas.Logging
         /// </returns>
         public static LogLevel GetLogLevel(this Exception? exception)
         {
-            if (exception is ISeverityQualifiedNotification severityQualifiedException)
+            if (exception is ILoggable loggableException)
             {
-                return (LogLevel)severityQualifiedException.Severity;
+                return loggableException.GetLogLevel();
             }
 
             return LogLevel.Error;
