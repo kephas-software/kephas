@@ -24,9 +24,7 @@ namespace Kephas.Dynamic
     using System.Dynamic;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-
-    using Kephas.Reflection;
-    using Kephas.Resources;
+    using Kephas.Dynamic.Resources;
 
     /// <summary>
     /// <para>
@@ -55,7 +53,7 @@ namespace Kephas.Dynamic
     /// </para>
     /// </summary>
     /// <typeparam name="T">The inner dictionary item type.</typeparam>
-    public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
+    public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin, IDynamic
     {
         private IDictionary<string, T>? innerDictionary;
         private WeakReference<object>? innerObjectRef;
@@ -156,7 +154,7 @@ namespace Kephas.Dynamic
                 && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var type = this.GetType();
-                foreach (var property in ReflectionHelper.GetTypeProperties(type))
+                foreach (var property in DynamicHelper.GetTypeProperties(type))
                 {
                     var propName = property.Name;
                     if (!hashSet.Contains(propName))
@@ -172,7 +170,7 @@ namespace Kephas.Dynamic
                 && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var type = innerObject.GetType();
-                foreach (var property in ReflectionHelper.GetTypeProperties(type!))
+                foreach (var property in DynamicHelper.GetTypeProperties(type!))
                 {
                     var propName = property.Name;
                     if (!hashSet.Contains(propName))
@@ -244,7 +242,7 @@ namespace Kephas.Dynamic
             var innerObject = this.TryGetInnerObject();
             throw new MemberAccessException(
                 string.Format(
-                    AbstractionStrings.RuntimePropertyInfo_SetValue_Exception,
+                    Strings.ExpandoBase_TrySetMember_Exception,
                     binder.Name,
                     innerObject != null ? innerObject.GetType() : this.GetType()));
         }
@@ -273,7 +271,7 @@ namespace Kephas.Dynamic
                 if (delegateValue is not Delegate invokable)
                 {
                     throw new MemberAccessException(string.Format(
-                        AbstractionStrings.ExpandoBase_CannotInvokeNonDelegate_Exception,
+                        Strings.ExpandoBase_CannotInvokeNonDelegate_Exception,
                         binder.Name,
                         delegateValue?.GetType()));
                 }

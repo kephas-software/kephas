@@ -10,8 +10,7 @@ namespace Kephas.Dynamic;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using Kephas.Reflection;
+using Kephas.Dynamic.Resources;
 
 /// <summary>
 /// Extension methods for <see cref="IExpando"/>.
@@ -124,12 +123,16 @@ public static class ExpandoExtensions
     public static T? GetLaxValue<T>(this IDynamic expando, string member, T? defaultValue = default)
     {
         expando = expando ?? throw new ArgumentNullException(nameof(expando));
+        if (string.IsNullOrEmpty(member))
+        {
+            throw new ArgumentException(Strings.ExpandoExtensions_GetLaxValue_NonEmptyMemberName, nameof(member));
+        }
 
-        var pascalName = member.ToPascalCase();
+        var pascalName = $"{char.ToUpper(member[0])}{member[1..]}"; // Pascal case
         var value = expando[pascalName];
         if (value == null)
         {
-            var camelName = member.ToCamelCase();
+            var camelName = $"{char.ToLower(member[0])}{member[1..]}"; // Camel case
             value = expando[camelName];
         }
 
@@ -141,5 +144,21 @@ public static class ExpandoExtensions
                 (T?)(parser(stringValue) ?? defaultValue),
             _ => defaultValue
         };
+    }
+
+    private static Type? TryGetEnumerableItemType(this Type type)
+    {
+        var enumerableGenericType = typeof(IEnumerable<>);
+
+        bool IsRequestedEnumerable(Type t)
+        {
+            return t.IsGenericType && t.GetGenericTypeDefinition() == enumerableGenericType;
+        }
+
+        var enumerableType = IsRequestedEnumerable(type)
+            ? type
+            : type.GetInterfaces().SingleOrDefault(IsRequestedEnumerable);
+
+        return enumerableType?.GenericTypeArguments[0];
     }
 }

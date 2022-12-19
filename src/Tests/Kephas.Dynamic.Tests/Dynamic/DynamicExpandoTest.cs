@@ -21,4 +21,13 @@ public class DynamicExpandoTest
 
         Assert.AreEqual("John Doe", expando["name"]);
     }
+
+    [Test]
+    public void GetDynamicMemberNames()
+    {
+        dynamic obj = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
+        var expando = new DynamicExpando(obj);
+
+        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
+    }
 }

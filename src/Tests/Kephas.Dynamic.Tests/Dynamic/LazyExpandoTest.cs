@@ -11,8 +11,8 @@
 namespace Kephas.Tests.Dynamic
 {
     using System;
+
     using Kephas.Dynamic;
-    using Kephas.Reflection;
     using NUnit.Framework;
 
     [TestFixture]
@@ -39,7 +39,7 @@ namespace Kephas.Tests.Dynamic
             expando.ValueResolver = s => s == "a" ? expando["b"] :
                                          s == "b" ? expando["a"] : null;
 
-            Assert.Throws<CircularDependencyException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
                 {
                     var x = expando["a"];
                 });
@@ -52,7 +52,7 @@ namespace Kephas.Tests.Dynamic
             expando.ValueResolver = s => s == "a" ? expando["b"] :
                                          s == "b" ? expando["a"] : null;
 
-            Assert.Throws<CircularDependencyException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
                 {
                     var x = expando["a"];
                 });

@@ -42,4 +42,12 @@ public class DictionaryExpandoTest
 
         Assert.AreEqual("there", expando.Hi);
     }
+
+    [Test]
+    public void GetDynamicMemberNames()
+    {
+        IDynamic expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
+
+        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
+    }
 }

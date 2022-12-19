@@ -7,7 +7,6 @@
 
 namespace Kephas.Tests.Dynamic;
 
-using Kephas.Data;
 using Kephas.Dynamic;
 using NSubstitute;
 using NUnit.Framework;
@@ -94,14 +93,14 @@ public class ObjectExpandoTest
     [Test]
     public void HasDynamicMember_Property_existing_in_object()
     {
-        var expando = new ObjectExpando(Substitute.For<IIdentifiable>());
-        Assert.IsTrue(expando.HasDynamicMember(nameof(IIdentifiable.Id)));
+        var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
+        Assert.IsTrue(expando.HasDynamicMember(nameof(ITestIdentifiable.Id)));
     }
 
     [Test]
     public void HasDynamicMember_Property_existing_in_dictionary_not_object()
     {
-        var expando = new ObjectExpando(Substitute.For<IIdentifiable>());
+        var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
         expando["Age"] = 12;
         Assert.IsTrue(expando.HasDynamicMember("Age"));
     }
@@ -109,7 +108,7 @@ public class ObjectExpandoTest
     [Test]
     public void HasDynamicMember_Property_non_existing_in_object()
     {
-        var expando = new ObjectExpando(Substitute.For<IIdentifiable>());
+        var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
         Assert.IsFalse(expando.HasDynamicMember("Age"));
     }
 
@@ -123,5 +122,19 @@ public class ObjectExpandoTest
 
         var isOld = expando.IsOld();
         return isOld;
+    }
+
+    [Test]
+    public void GetDynamicMemberNames()
+    {
+        var instance = new ExpandoTest.AgedPerson { Age = 12 };
+        IDynamic expando = new ObjectExpando(instance);
+
+        CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetDynamicMemberNames());
+    }
+
+    public interface ITestIdentifiable
+    {
+        object Id { get; }
     }
 }

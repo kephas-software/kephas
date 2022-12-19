@@ -64,5 +64,11 @@ namespace Kephas.Dynamic
         IDictionary<string, object?> ToDictionary(
             Func<string, string>? keyFunc = null,
             Func<object?, object?>? valueFunc = null) => new Dictionary<string, object?>();
+
+        /// <summary>
+        /// Gets the dynamic member names of this instance.
+        /// </summary>
+        /// <returns>An enumeration of member names.</returns>
+        IEnumerable<string> GetDynamicMemberNames() => Array.Empty<string>();
     }
 }

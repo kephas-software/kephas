@@ -13,8 +13,6 @@ namespace Kephas.Dynamic
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Reflection;
-
     /// <summary>
     /// Expando class for evaluating the internal values on demand, based on a value resolver function.
     /// </summary>
@@ -105,7 +103,7 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual bool HandleCircularDependency(string key, out object? value)
         {
-            throw new CircularDependencyException($"Circular dependency among values involving '{key}'.");
+            throw new InvalidOperationException($"Circular dependency among values involving '{key}'.");
         }
     }
 }
