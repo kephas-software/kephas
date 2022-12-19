@@ -27,8 +27,9 @@ public static class DynamicHelper
     private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object?, object>>> Setters =
         new();
 
-    private static readonly MethodInfo ToDictionaryExpandoMethod =
-        typeof(DynamicHelper).GetMethod(nameof(ToDictionaryExpando))!;
+    private static readonly MethodInfo ToDictionaryExpandoMethod = typeof(DynamicHelper)
+            .GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
+            .Single(m => m.Name == nameof(ToDictionaryExpando));
 
     /// <summary>
     /// Converts the provided instance to a dictionary.
