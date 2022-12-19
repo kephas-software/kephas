@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Operations
     using System.Threading.Tasks;
 
     using Kephas.Operations;
-    using Kephas.Threading.Tasks;
     using NUnit.Framework;
 
     [TestFixture]

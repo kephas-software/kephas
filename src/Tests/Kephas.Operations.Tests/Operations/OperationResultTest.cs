@@ -112,7 +112,7 @@ namespace Kephas.Core.Tests.Operations
             var opResult = new OperationResult().MergeException(new InvalidOperationException());
 
             CollectionAssert.IsNotEmpty(opResult.Exceptions);
-            opResult.Exceptions.Clear();
+            opResult.Messages.Clear();
             CollectionAssert.IsEmpty(opResult.Exceptions);
         }
 

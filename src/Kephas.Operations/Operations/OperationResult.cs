@@ -25,8 +25,9 @@ namespace Kephas.Operations
     /// <summary>
     /// Encapsulates the result of an operation.
     /// </summary>
-    public class OperationResult : Expando, IOperationResult, IDataFormattable, INotifyPropertyChanged
+    public record OperationResult : IExpandoMixin, IOperationResult, IDataFormattable
     {
+        private ConcurrentDictionary<string, object?>? dynamicData;
         private object? value;
         private OperationState operationState;
         private float percentCompleted;
@@ -40,7 +41,6 @@ namespace Kephas.Operations
         /// </summary>
         public OperationResult()
         {
-            this.Exceptions = new ConcurrentCollection<Exception>();
             this.Messages = new ConcurrentCollection<IOperationMessage>();
             this.startedAt = DateTimeOffset.Now;
         }
@@ -171,7 +171,8 @@ namespace Kephas.Operations
         /// <value>
         /// The exceptions.
         /// </value>
-        public ICollection<Exception> Exceptions { get; }
+        public IEnumerable<Exception> Exceptions =>
+            this.Messages.Where(m => m.Exception is not null).Select(m => m.Exception!).ToList();
 
         /// <summary>
         /// Converts this object to a task.
@@ -209,12 +210,16 @@ namespace Kephas.Operations
                 [nameof(this.Elapsed)] = this.Elapsed,
                 [nameof(this.PercentCompleted)] = this.PercentCompleted,
                 [nameof(this.Messages)] = this.Messages.Count == 0 ? null : this.Messages.Select(m => m.ToData(context)).ToArray(),
-                [nameof(this.Exceptions)] = this.Exceptions.Count == 0 ? null : this.Exceptions.Select(e => e.ToData(context)).ToArray(),
                 [nameof(this.Value)] = this.OperationState == OperationState.Completed
                     ? this.Value.ToData(context)
                     : null,
             };
         }
+
+        /// <summary>
+        /// Gets the inner dictionary.
+        /// </summary>
+        IDictionary<string, object?> IExpandoMixin.InnerDictionary => this.dynamicData ??= new();
 
         /// <summary>
         /// Gets the underlying task.
@@ -346,7 +351,7 @@ namespace Kephas.Operations
     /// Encapsulates the result of an operation.
     /// </summary>
     /// <typeparam name="TValue">Type of the value.</typeparam>
-    public class OperationResult<TValue> : OperationResult, IOperationResult<TValue>
+    public record OperationResult<TValue> : OperationResult, IOperationResult<TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationResult{TValue}"/> class.
