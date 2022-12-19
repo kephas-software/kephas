@@ -7,7 +7,7 @@
 
 namespace Kephas.Threading.Tasks;
 
-using Kephas.Application;
+using Kephas.Runtime;
 
 /// <summary>
 /// Assembly initializer for the thread context.

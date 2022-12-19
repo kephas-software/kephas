@@ -13,7 +13,7 @@ namespace Kephas.Tests.Threading.Tasks
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Services;
+
     using Kephas.Threading.Tasks;
     using NUnit.Framework;
 
@@ -252,13 +252,13 @@ namespace Kephas.Tests.Threading.Tasks
         [Test]
         public void EnsureCompletedSuccessfully_throws_custom_exception()
         {
-            var task = Task.Run(() => throw new ServiceException());
+            var task = Task.Run(() => throw new NotSupportedException());
             while (!task.IsCompleted)
             {
                 Thread.Sleep(50);
             }
 
-            Assert.Throws<ServiceException>(() => TaskHelper.EnsureCompletedSuccessfully(task));
+            Assert.Throws<NotSupportedException>(() => TaskHelper.EnsureCompletedSuccessfully(task));
         }
 
         [Test]

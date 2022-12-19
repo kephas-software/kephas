@@ -56,6 +56,5 @@ namespace Kephas.Threading.Tasks
         /// The task that is not completed.
         /// </value>
         public Task Task { get; }
-
     }
 }

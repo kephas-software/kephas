@@ -82,7 +82,6 @@ namespace Kephas.Threading
             }
         }
 
-
         /// <summary>
         /// Enters the lock and ensures that the action is executed within the lock.
         /// </summary>

@@ -8,6 +8,7 @@
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
 
         <Version>12.0.0-dev.1</Version>
         <AssemblyVersion>12.0.0.0</AssemblyVersion>
@@ -17,7 +18,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides integration with the interaction infrastructure, redirecting the events through the messaging infrastructure.</Description>
+        <Description>Provides thread-related infrastructure.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -29,7 +30,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas messaging interaction</PackageTags>
+        <PackageTags>kephas threading</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -45,7 +46,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <RootNamespace>Kephas.Messaging</RootNamespace>
+        <RootNamespace>Kephas</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -59,12 +60,6 @@
     <ItemGroup>
         <None Remove="stylecop.json" />
         <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
-        <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -83,9 +78,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
+        <ProjectReference Include="..\Kephas.Runtime\Kephas.Runtime.csproj" />
     </ItemGroup>
 
 </Project>
