@@ -67,7 +67,7 @@ using System.Runtime.CompilerServices;
 using Kephas.Application;
 using Kephas.Runtime;
 
-[assembly: Kephas.CodeAnalysis.AssemblyInitializer(typeof({initializerNamespace}.{initializerName}))]
+[assembly: AssemblyInitializer(typeof({initializerNamespace}.{initializerName}))]
 
 namespace {initializerNamespace}
 {{
