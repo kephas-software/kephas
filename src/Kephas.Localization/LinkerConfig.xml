@@ -7,5 +7,5 @@
     <assembly fullname="System.Linq" />
     <assembly fullname="System.Linq.Expressions" />
     <assembly fullname="System.Linq.Queryable" />
-    <assembly fullname="Kephas.Abstractions" />
+    <assembly fullname="Kephas.Localization" />
 </linker>

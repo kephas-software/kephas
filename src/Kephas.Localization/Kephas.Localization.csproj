@@ -67,7 +67,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -78,48 +77,14 @@
         </PackageReference>
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='netstandard2.1'">
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-            </ItemGroup>
-        </When>
-		<Otherwise>
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>    
-
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="LinkerConfig.xml" />
-        <EmbeddedResource Include="LinkerConfig.xml">
-            <LogicalName>ILLink.Descriptors.xml</LogicalName>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources\AbstractionStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>AbstractionStrings.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Update="Resources\AbstractionStrings.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>AbstractionStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Versioning\Kephas.Versioning.csproj" />
+        <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
     </ItemGroup>
 
 </Project>
