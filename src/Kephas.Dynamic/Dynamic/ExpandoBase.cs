@@ -143,57 +143,8 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A sequence that contains dynamic member names.
         /// </returns>
-        public override IEnumerable<string> GetDynamicMemberNames()
-        {
-            var binders = this.MemberBinders;
-            var hashSet = this.ignoreCase ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) : new HashSet<string>();
-
-            // First check for public properties via reflection in this type
-            var innerObject = this.TryGetInnerObject();
-            if (this != innerObject
-                && binders.HasFlag(ExpandoMemberBinderKind.This))
-            {
-                var type = this.GetType();
-                foreach (var property in DynamicHelper.GetTypeProperties(type))
-                {
-                    var propName = property.Name;
-                    if (!hashSet.Contains(propName))
-                    {
-                        hashSet.Add(propName);
-                        yield return propName;
-                    }
-                }
-            }
-
-            // then, check for the properties in the inner object
-            if (innerObject != null
-                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
-            {
-                var type = innerObject.GetType();
-                foreach (var property in DynamicHelper.GetTypeProperties(type!))
-                {
-                    var propName = property.Name;
-                    if (!hashSet.Contains(propName))
-                    {
-                        hashSet.Add(propName);
-                        yield return propName;
-                    }
-                }
-            }
-
-            // last, check the dictionary for members.
-            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
-            {
-                foreach (var propName in this.innerDictionary!.Keys)
-                {
-                    if (!hashSet.Contains(propName))
-                    {
-                        hashSet.Add(propName);
-                        yield return propName;
-                    }
-                }
-            }
-        }
+        public override IEnumerable<string> GetDynamicMemberNames() =>
+            IExpandoMixin.GetDynamicMemberNames(this);
 
         /// <summary>
         /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
@@ -202,10 +153,8 @@ namespace Kephas.Dynamic
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        public virtual bool HasDynamicMember(string memberName)
-        {
-            return IExpandoMixin.HasDynamicMember(this, memberName);
-        }
+        public virtual bool HasDynamicMember(string memberName) =>
+            IExpandoMixin.HasDynamicMember(this, memberName);
 
         /// <summary>
         /// Try to retrieve a member by name first from instance properties

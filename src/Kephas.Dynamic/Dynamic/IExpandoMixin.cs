@@ -81,6 +81,13 @@ namespace Kephas.Dynamic
             => HasDynamicMember(this, memberName);
 
         /// <summary>
+        /// Gets the dynamic member names of this instance.
+        /// </summary>
+        /// <returns>An enumeration of member names.</returns>
+        IEnumerable<string> IDynamic.GetDynamicMemberNames()
+            => GetDynamicMemberNames(this);
+
+        /// <summary>
         /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
         /// </summary>
         /// <param name="self">The expando.</param>
@@ -116,6 +123,65 @@ namespace Kephas.Dynamic
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns the enumeration of all dynamic member names.
+        /// </summary>
+        /// <param name="self">The expando.</param>
+        /// <returns>
+        /// A sequence that contains dynamic member names.
+        /// </returns>
+        protected internal static IEnumerable<string> GetDynamicMemberNames(IExpandoMixin self)
+        {
+            var binders = self.MemberBinders;
+            var hashSet = self.IgnoreCase ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) : new HashSet<string>();
+
+            // First check for public properties via reflection in this type
+            var innerObject = self.InnerObject;
+            if (self != innerObject
+                && binders.HasFlag(ExpandoMemberBinderKind.This))
+            {
+                var type = self.GetType();
+                foreach (var property in DynamicHelper.GetTypeProperties(type))
+                {
+                    var propName = property.Name;
+                    if (!hashSet.Contains(propName))
+                    {
+                        hashSet.Add(propName);
+                        yield return propName;
+                    }
+                }
+            }
+
+            // then, check for the properties in the inner object
+            if (innerObject != null
+                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
+            {
+                var type = innerObject.GetType();
+                foreach (var property in DynamicHelper.GetTypeProperties(type!))
+                {
+                    var propName = property.Name;
+                    if (!hashSet.Contains(propName))
+                    {
+                        hashSet.Add(propName);
+                        yield return propName;
+                    }
+                }
+            }
+
+            // last, check the dictionary for members.
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
+            {
+                foreach (var propName in self.InnerDictionary!.Keys)
+                {
+                    if (!hashSet.Contains(propName))
+                    {
+                        hashSet.Add(propName);
+                        yield return propName;
+                    }
+                }
+            }
         }
 
         /// <summary>
