@@ -7,7 +7,7 @@
 
 namespace Kephas.Configuration;
 
-using Kephas.Application;
+using Kephas.Runtime;
 
 /// <summary>
 /// Assembly initializer for configuration.

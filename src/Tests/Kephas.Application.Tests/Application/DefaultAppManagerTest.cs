@@ -69,18 +69,18 @@ namespace Kephas.Tests.Application
                 .AndDoes(_ => order.Add(2));
 
             var behavior1 = Substitute.For<IAppLifecycleBehavior>();
-            behavior1.BeforeAppInitializeAsync(Arg.Any<CancellationToken>())
+            behavior1.BeforeAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult((IOperationResult)true.ToOperationResult()))
                 .AndDoes(_ => order.Add(11));
-            behavior1.AfterAppInitializeAsync(Arg.Any<CancellationToken>())
+            behavior1.AfterAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(21));
 
             var behavior2 = Substitute.For<IAppLifecycleBehavior>();
-            behavior2.BeforeAppInitializeAsync(Arg.Any<CancellationToken>())
+            behavior2.BeforeAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(12));
-            behavior2.AfterAppInitializeAsync(Arg.Any<CancellationToken>())
+            behavior2.AfterAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(22));
 
@@ -445,18 +445,18 @@ namespace Kephas.Tests.Application
                 .AndDoes(_ => order.Add(2));
 
             var behavior1 = Substitute.For<IAppLifecycleBehavior>();
-            behavior1.BeforeAppFinalizeAsync(Arg.Any<CancellationToken>())
+            behavior1.BeforeAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(11));
-            behavior1.AfterAppFinalizeAsync(Arg.Any<CancellationToken>())
+            behavior1.AfterAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(21));
 
             var behavior2 = Substitute.For<IAppLifecycleBehavior>();
-            behavior2.BeforeAppFinalizeAsync(Arg.Any<CancellationToken>())
+            behavior2.BeforeAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(12));
-            behavior2.AfterAppFinalizeAsync(Arg.Any<CancellationToken>())
+            behavior2.AfterAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(22));
 

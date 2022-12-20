@@ -3,6 +3,10 @@
 ## Introduction
 This package provides thread-related infrastructure.
 
+Typically used areas and classes/interfaces/services:
+* `PreserveThreadContext` extension method.
+* `Lock`.
+
 ## Other resources
 
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)

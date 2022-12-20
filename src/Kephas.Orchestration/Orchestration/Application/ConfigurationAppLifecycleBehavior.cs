@@ -24,7 +24,7 @@ namespace Kephas.Orchestration.Application
     /// <summary>
     /// Application lifecycle behavior for configuration.
     /// </summary>
-    public class ConfigurationAppLifecycleBehavior : IAppLifecycleBehavior
+    public class ConfigurationAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
@@ -39,15 +39,15 @@ namespace Kephas.Orchestration.Application
         /// <param name="eventHub">The event hub.</param>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="lazyOrchestrationManager">The lazy orchestration manager.</param>
-        /// <param name="logger">Optional. The logger.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         public ConfigurationAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IEventHub eventHub,
             IMessageBroker messageBroker,
             Lazy<IOrchestrationManager> lazyOrchestrationManager,
-            ILogger<ConfigurationAppLifecycleBehavior>? logger = null)
+            ILogManager? logManager = null)
+            : base(logManager)
         {
-            this.Logger = logger;
             this.appRuntime = appRuntime;
             this.eventHub = eventHub;
             this.messageBroker = messageBroker;
@@ -55,13 +55,9 @@ namespace Kephas.Orchestration.Application
         }
 
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        protected ILogger<ConfigurationAppLifecycleBehavior>? Logger { get; }
-
-        /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
@@ -69,23 +65,29 @@ namespace Kephas.Orchestration.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+        public override Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.configChangedSubscription = this.eventHub.Subscribe<ConfigurationChangedSignal>(this.HandleConfigurationChangedAsync);
-            return Task.FromResult<IOperationResult>(true.ToOperationResult());
+            return base.BeforeAppInitializeAsync(appContext, cancellationToken);
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
+            var baseResult = await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
             this.configChangedSubscription?.Dispose();
-            return Task.FromResult<IOperationResult>(true.ToOperationResult());
+            return baseResult;
         }
 
         /// <summary>

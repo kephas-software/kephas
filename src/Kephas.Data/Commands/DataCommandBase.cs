@@ -81,7 +81,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        async Task<object?> IOperation.ExecuteAsync(IContext? context, CancellationToken cancellationToken)
+        async Task<object?> IOperation.ExecuteAsync(IContextBase? context, CancellationToken cancellationToken)
         {
             if (context is not TOperationContext typedOperationContext)
             {
@@ -102,7 +102,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        object? IOperation.Execute(IContext? context)
+        object? IOperation.Execute(IContextBase? context)
         {
             if (context is not TOperationContext typedOperationContext)
             {
@@ -152,7 +152,7 @@ namespace Kephas.Data.Commands
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void EnsureInitialized(IContext context)
+        private void EnsureInitialized(IContextBase context)
         {
             if (!this.isInitialized)
             {

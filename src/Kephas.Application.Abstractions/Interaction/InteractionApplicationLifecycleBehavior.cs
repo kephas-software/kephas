@@ -25,43 +25,46 @@ namespace Kephas.Interaction
     public class InteractionApplicationLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IEventHub eventHub;
-        private readonly IAppContext appContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractionApplicationLifecycleBehavior"/>
         /// class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="appContext">The application context.</param>
-        public InteractionApplicationLifecycleBehavior(IEventHub eventHub, IAppContext appContext)
+        public InteractionApplicationLifecycleBehavior(IEventHub eventHub)
         {
-            this.eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
-            this.appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+            this.eventHub = eventHub;
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.eventHub, this.appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.eventHub, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.eventHub, this.appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.eventHub, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
     }

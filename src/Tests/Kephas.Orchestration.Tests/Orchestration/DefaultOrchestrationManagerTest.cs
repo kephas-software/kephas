@@ -52,8 +52,8 @@ namespace Kephas.Tests.Orchestration
         public async Task InitializeAsync_Heartbeat_integration()
         {
             var ambientServices = this.CreateAmbientServices();
-            var builder = this.CreateServicesBuilder(ambientServices);
-            var container = builder.BuildWithAutofac();
+            var container = this.CreateServicesBuilder(ambientServices)
+                .BuildWithAutofac();
 
             var appManager = container.Resolve<IAppManager>();
             var orchManager = (DefaultOrchestrationManager)container.Resolve<IOrchestrationManager>();
@@ -64,12 +64,12 @@ namespace Kephas.Tests.Orchestration
             AppHeartbeatEvent? heartbeat = null;
             registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => (heartbeat = e).ToEvent());
 
-            await appManager.InitializeAsync(new AppContext(builder));
+            await appManager.InitializeAsync(new AppContext(ambientServices));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
 
             Assert.NotNull(heartbeat);
 
-            await appManager.FinalizeAsync(new AppContext(builder));
+            await appManager.FinalizeAsync(new AppContext(ambientServices));
         }
 
         [Test]
@@ -87,8 +87,8 @@ namespace Kephas.Tests.Orchestration
             var eventHub = this.CreateEventHubMock();
 
             var injector = Substitute.For<IServiceProvider>();
-            var builder = new AppServiceCollectionBuilder(ambientServices).WithAppRuntime(appRuntime);
-            var appContext = new AppContext(builder);
+            new AppServiceCollectionBuilder(ambientServices).WithAppRuntime(appRuntime);
+            var appContext = new AppContext(ambientServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
             config.GetSettings(Arg.Any<IContext>()).Returns(new OrchestrationSettings());

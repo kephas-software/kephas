@@ -12,6 +12,7 @@ namespace Kephas.Data.MongoDB.Tests
     using System.Reflection;
 
     using global::MongoDB.Bson.Serialization.Conventions;
+    using Kephas.Application;
     using Kephas.Data.MongoDB.Application;
     using Kephas.Data.Store;
     using Kephas.MongoDB;
@@ -20,6 +21,7 @@ namespace Kephas.Data.MongoDB.Tests
     using Kephas.Testing.Services;
     using Kephas.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
+    using NSubstitute;
 
     public abstract class MongoTestBase : TestBase
     {
@@ -34,7 +36,7 @@ namespace Kephas.Data.MongoDB.Tests
         protected MongoTestBase()
         {
             new MongoAppLifecycleBehavior()
-                .BeforeAppInitializeAsync()
+                .BeforeAppInitializeAsync(Substitute.For<IAppContext>())
                 .WaitNonLocking();
         }
 

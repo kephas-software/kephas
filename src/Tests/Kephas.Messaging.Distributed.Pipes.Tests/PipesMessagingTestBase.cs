@@ -56,7 +56,7 @@ namespace Kephas.Messaging.Pipes.Tests
             ambientServices = builder.AmbientServices;
             if (!ambientServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(builder));
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
                 ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 

@@ -52,7 +52,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using Kephas.Application;
-using Kephas.CodeAnalysis;
+using Kephas.Runtime;
 
 namespace {initializerNamespace}
 {{

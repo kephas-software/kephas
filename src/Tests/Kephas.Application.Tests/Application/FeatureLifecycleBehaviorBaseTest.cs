@@ -17,7 +17,6 @@ namespace Kephas.Tests.Application
     using Kephas.Application;
     using Kephas.Logging;
     using Kephas.Operations;
-    using Kephas.Services.Builder;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -30,7 +29,7 @@ namespace Kephas.Tests.Application
             var logger = Substitute.For<ILogger<TestFeatureLifecycleBehavior>>();
             var ambientServices = Substitute.For<IAmbientServices>();
             var appContext = Substitute.For<IAppContext>();
-            appContext.ServicesBuilder.Returns(new AppServiceCollectionBuilder(ambientServices));
+            appContext.AmbientServices.Returns(ambientServices);
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
 
             var sb = new StringBuilder();

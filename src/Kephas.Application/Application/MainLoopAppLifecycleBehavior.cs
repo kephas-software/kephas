@@ -25,45 +25,48 @@ namespace Kephas.Application
     /// Sometimes the features and the behaviors order a shutdown (like a setup routine).
     /// </remarks>
     [ProcessingPriority(Priority.Highest)]
-    public class MainLoopAppLifecycleBehavior : IAppLifecycleBehavior
+    public class MainLoopAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IAppMainLoop mainLoop;
-        private readonly IAppContext appContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainLoopAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="mainLoop">The application's main loop.</param>
-        /// <param name="appContext">The application context.</param>
-        public MainLoopAppLifecycleBehavior(IAppMainLoop mainLoop, IAppContext appContext)
+        public MainLoopAppLifecycleBehavior(IAppMainLoop mainLoop)
         {
-            this.mainLoop = mainLoop ?? throw new ArgumentNullException(nameof(mainLoop));
-            this.appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+            this.mainLoop = mainLoop;
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.mainLoop, this.appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.mainLoop, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.mainLoop, this.appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.mainLoop, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
     }

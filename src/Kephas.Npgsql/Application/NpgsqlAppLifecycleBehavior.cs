@@ -24,27 +24,19 @@ using Kephas.Operations;
 /// </summary>
 public class NpgsqlAppLifecycleBehavior : IAppLifecycleBehavior
 {
-    private readonly ILogManager logManager;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NpgsqlAppLifecycleBehavior"/> class.
-    /// </summary>
-    /// <param name="logManager">The log manager.</param>
-    public NpgsqlAppLifecycleBehavior(ILogManager logManager)
-    {
-        this.logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
-    }
-
     /// <summary>
     /// Interceptor called before the application starts its asynchronous initialization.
     /// </summary>
+    /// <param name="appContext">Context for the application.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>
     /// The asynchronous result.
     /// </returns>
-    public Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+    public Task<IOperationResult> BeforeAppInitializeAsync(
+        IAppContext appContext,
+        CancellationToken cancellationToken = default)
     {
-        NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(this.logManager);
+        NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.ServiceProvider.Resolve<ILogManager>());
 
         return Task.FromResult((IOperationResult)true.ToOperationResult());
     }

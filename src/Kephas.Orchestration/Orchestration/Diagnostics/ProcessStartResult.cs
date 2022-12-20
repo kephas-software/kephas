@@ -19,7 +19,7 @@ namespace Kephas.Orchestration.Diagnostics
     /// <summary>
     /// Encapsulates the result of the process start.
     /// </summary>
-    public class ProcessStartResult : OperationResult<Process>, IDisposable
+    public record ProcessStartResult : OperationResult<Process>, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessStartResult"/> class.

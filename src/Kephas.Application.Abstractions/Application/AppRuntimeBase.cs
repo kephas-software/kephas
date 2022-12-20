@@ -198,6 +198,15 @@ namespace Kephas.Application
         }
 
         /// <summary>
+        /// Gets the full path of the file or folder. If the name is a relative path, it will be made relative to the application location.
+        /// </summary>
+        /// <param name="path">Relative or absolute path of the file or folder.</param>
+        /// <returns>
+        /// The full path of the file or folder.
+        /// </returns>
+        public string GetFullPath(string? path) => FileSystem.GetFullPath(path, this.GetAppLocation());
+
+        /// <summary>
         /// Attempts to load an assembly.
         /// </summary>
         /// <param name="assemblyName">The name of the assembly to be loaded.</param>

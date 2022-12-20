@@ -96,7 +96,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
         <ProjectReference Include="..\Kephas.Logging\Kephas.Logging.csproj" />
     </ItemGroup>
@@ -124,7 +123,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>

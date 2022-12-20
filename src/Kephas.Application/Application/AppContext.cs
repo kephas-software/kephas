@@ -14,37 +14,36 @@ namespace Kephas.Application
 
     using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Services.Builder;
 
     /// <summary>
     /// The default application context.
     /// </summary>
     public class AppContext : Expando, IAppContext
     {
-        private readonly ILogger? logger;
+        private ILogger? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
         /// </summary>
-        /// <param name="servicesBuilder">The services builder.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AppContext(
-            IAppServiceCollectionBuilder servicesBuilder,
+            IAmbientServices ambientServices,
             IAppArgs? appArgs = null)
         {
-            this.ServicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
+            this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
             this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
-        /// Gets the services builder.
+        /// Gets the service collection.
         /// </summary>
-        public IAppServiceCollectionBuilder ServicesBuilder { get; }
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the application runtime.
         /// </summary>
-        public IAppRuntime AppRuntime => this.ServicesBuilder.AmbientServices.GetAppRuntime();
+        public IAppRuntime AppRuntime => this.AmbientServices.GetAppRuntime();
 
         /// <summary>
         /// Gets the application arguments passed typically as command line arguments.
@@ -78,7 +77,7 @@ namespace Kephas.Application
         /// </value>
         public ILogger? Logger
         {
-            get => this.logger ?? this.ServicesBuilder.Logger;
+            get => this.logger ?? this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger();
             init => this.logger = value;
         }
 

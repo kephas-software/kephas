@@ -17,7 +17,7 @@ namespace Kephas.Data.Conversion
     /// <summary>
     /// Encapsulates the result of a data conversion.
     /// </summary>
-    public class DataConversionResult : OperationResult, IDataConversionResult
+    public record DataConversionResult : OperationResult, IDataConversionResult
     {
         /// <summary>
         /// Gets or sets the target object as the result of the conversion.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrchestrationStartupAppLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="StartupAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -37,15 +37,13 @@ namespace Kephas.Orchestration.Application
         /// <param name="orchestrationConfiguration">The orchestration configuration.</param>
         /// <param name="lazyOrchestrator">The lazy orchestration manager.</param>
         /// <param name="typeRegistry">The type registry.</param>
-        /// <param name="appContext">The application context.</param>
         public OrchestrationStartupAppLifecycleBehavior(
             IEventHub eventHub,
             IConfiguration<AppSettings> appConfiguration,
             IConfiguration<OrchestrationSettings> orchestrationConfiguration,
             Lazy<IOrchestrationManager> lazyOrchestrator,
-            IRuntimeTypeRegistry typeRegistry,
-            IAppContext appContext)
-        : base(eventHub, appConfiguration, typeRegistry, appContext)
+            IRuntimeTypeRegistry typeRegistry)
+        : base(eventHub, appConfiguration, typeRegistry)
         {
             this.orchestrationConfiguration = orchestrationConfiguration;
             this.lazyOrchestrator = lazyOrchestrator;

@@ -121,6 +121,14 @@ public class SwitchApp : AppBase
     }
 
     /// <summary>
+    /// Configures the services.
+    /// </summary>
+    /// <param name="servicesBuilder">The service builder.</param>
+    protected override void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder)
+    {
+    }
+
+    /// <summary>
     /// This is the last step in the app's configuration, when all the services are set up
     /// and the container is built. For inheritors, this is the last place where services can
     /// be added before calling. By default, it only builds the Lite container, but any other container adapter

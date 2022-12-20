@@ -27,7 +27,6 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using Kephas.Messaging.Redis.Configuration;
     using Kephas.Messaging.Redis.Routing;
     using Kephas.Services;
-    using Kephas.Services.Builder;
     using NUnit.Framework;
 
     using AppContext = Kephas.Application.AppContext;
@@ -251,22 +250,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.InitializeAsync(
-                new AppContext(this.GetServicesBuilder(container)));
+                new AppContext(container.Resolve<IAmbientServices>()));
         }
 
         private async Task FinalizeAppAsync(IServiceProvider container)
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(
-                new AppContext(this.GetServicesBuilder(container)));
-        }
-
-        private IAppServiceCollectionBuilder GetServicesBuilder(IServiceProvider serviceProvider)
-        {
-            var ambientServices = serviceProvider.Resolve<IAmbientServices>();
-            return new AppServiceCollectionBuilder(
-                ambientServices,
-                logger: serviceProvider.GetLogger<IAppServiceCollectionBuilder>());
+                new AppContext(container.Resolve<IAmbientServices>()));
         }
 
         public class RedisSettingsProvider : ISettingsProvider

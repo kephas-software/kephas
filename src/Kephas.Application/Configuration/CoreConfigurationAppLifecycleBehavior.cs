@@ -27,33 +27,31 @@ namespace Kephas.Configuration
     public class CoreConfigurationAppLifecycleBehavior : Loggable, IAppLifecycleBehavior
     {
         private readonly IConfiguration<CoreSettings> coreConfiguration;
-        private readonly IAppContext appContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreConfigurationAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="coreConfiguration">The core configuration.</param>
-        /// <param name="appContext">The application context.</param>
-        public CoreConfigurationAppLifecycleBehavior(
-            IConfiguration<CoreSettings> coreConfiguration,
-            IAppContext appContext)
+        public CoreConfigurationAppLifecycleBehavior(IConfiguration<CoreSettings> coreConfiguration)
         {
-            this.coreConfiguration = coreConfiguration ?? throw new ArgumentNullException(nameof(coreConfiguration));
-            this.appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+            this.coreConfiguration = coreConfiguration;
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             try
             {
-                var settings = this.coreConfiguration.GetSettings(this.appContext);
+                var settings = this.coreConfiguration.GetSettings(appContext);
                 if (settings == null)
                 {
                     return Task.FromResult((IOperationResult)true.ToOperationResult());

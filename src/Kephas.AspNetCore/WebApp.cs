@@ -16,9 +16,7 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Hosting;
-    using Kephas.Extensions.DependencyInjection;
     using Kephas.Operations;
-    using Kephas.Services.Builder;
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
 
@@ -28,7 +26,6 @@ namespace Kephas.Application.AspNetCore
     public class WebApp : StartupAppBase
     {
         private readonly WebApplicationBuilder builder;
-        private WebApplication? app;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApp"/> class.
@@ -52,34 +49,27 @@ namespace Kephas.Application.AspNetCore
         }
 
         /// <summary>
-        /// The main loop.
+        /// Runs the application asynchronously.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task yielding the <see cref="MainLoopResult"/>.</returns>
-        protected override async Task<MainLoopResult> Main(CancellationToken cancellationToken)
+        /// <param name="mainCallback">Not used. Preserved only to hide the base method.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result that yields the <see cref="IAppContext"/>.
+        /// </returns>
+        public override async Task<AppRunResult> RunAsync(
+            Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
+            CancellationToken cancellationToken = default)
         {
-            await this.app!.RunAsync().PreserveThreadContext();
-            return new MainLoopResult(true.ToOperationResult(), AppShutdownInstruction.Shutdown);
-        }
+            this.ConfigureServices(this.builder.Services);
 
-        /// <summary>
-        /// This is the last step in the app's configuration, when all the services are set up
-        /// and the container is built. For inheritors, this is the last place where services can
-        /// be added before calling. By default, it only builds the Lite container, but any other container adapter
-        /// can be used, like Autofac or System.Composition.
-        /// </summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration manager.
-        /// </remarks>
-        /// <param name="servicesBuilder">The services builder.</param>
-        /// <returns>The service provider.</returns>
-        protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
-        {
-            this.app = this.builder.Build();
+            this.BeforeAppManagerInitialize(this.AppArgs);
 
-            this.Configure(this.app, this.app.Lifetime);
+            var app = this.builder.Build();
 
-            return this.app.Services;
+            this.Configure(app, app.Lifetime);
+
+            await app.RunAsync().PreserveThreadContext();
+            return new AppRunResult(this.AppContext, AppShutdownInstruction.Shutdown);
         }
 
         /// <summary>
@@ -90,9 +80,7 @@ namespace Kephas.Application.AspNetCore
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
         protected override Task<AppRunResult> RunServiceAsync(CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(new AppRunResult(this.AppContext, AppShutdownInstruction.Shutdown));
-        }
+            => base.RunAsync(null, cancellationToken);
 
         private static WebApplicationBuilder CreateBuilder(Action<WebApplicationBuilder>? builderOptions, IAppArgs appArgs)
         {

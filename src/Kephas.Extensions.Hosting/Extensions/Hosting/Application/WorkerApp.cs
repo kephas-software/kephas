@@ -16,7 +16,6 @@ namespace Kephas.Extensions.Hosting.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Extensions.DependencyInjection;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -30,6 +29,7 @@ namespace Kephas.Extensions.Hosting.Application
     /// </summary>
     public class WorkerApp : AppBase
     {
+        private readonly Action<IAppServiceCollectionBuilder>? servicesConfig;
         private CancellationTokenSource? stoppingTokenSource;
 
         /// <summary>
@@ -59,18 +59,7 @@ namespace Kephas.Extensions.Hosting.Application
             : base(appArgs)
         {
             this.HostBuilder = builder ?? throw new ArgumentNullException(nameof(builder));
-            this.ServicesConfiguration = b =>
-            {
-                servicesConfig?.Invoke(b);
-
-                if (this.AppArgs.RunAsService)
-                {
-                    this.HostBuilder.UseWindowsService();
-                    this.HostBuilder.UseSystemd();
-                }
-
-                this.HostBuilder.ConfigureServices(this.AddBackgroundWorker);
-            };
+            this.servicesConfig = servicesConfig;
         }
 
         /// <summary>
@@ -90,13 +79,48 @@ namespace Kephas.Extensions.Hosting.Application
         protected IHost? Host { get; private set; }
 
         /// <summary>
+        /// Runs the application asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
+        /// </returns>
+        public override Task<AppRunResult> RunAsync(CancellationToken cancellationToken = default)
+        {
+            if (this.AppArgs.RunAsService)
+            {
+                this.HostBuilder.UseWindowsService();
+                this.HostBuilder.UseSystemd();
+            }
+
+            this.HostBuilder.ConfigureServices(this.AddBackgroundWorker);
+
+            this.BeforeAppManagerInitialize(this.AppArgs);
+
+            this.stoppingTokenSource = new CancellationTokenSource();
+            var eventHub = this.ServiceProvider.GetRequiredService<IEventHub>();
+            eventHub.Subscribe<ShutdownSignal>((_, _) => this.stoppingTokenSource.Cancel());
+
+            return base.RunAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Configures the services.
+        /// </summary>
+        /// <param name="servicesBuilder">The service builder.</param>
+        protected override void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder)
+        {
+            this.servicesConfig?.Invoke(servicesBuilder);
+        }
+
+        /// <summary>
         /// The main loop.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task yielding the <see cref="MainLoopResult"/>.</returns>
         protected override Task<MainLoopResult> Main(CancellationToken cancellationToken)
         {
-            return RunHostAsync(this.Host!, this.stoppingTokenSource!.Token);
+            return RunHostAsync(this.Host!, stoppingTokenSource!.Token);
         }
 
         /// <summary>
@@ -112,14 +136,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>The service provider.</returns>
         protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
         {
-            this.HostBuilder.ConfigureServices(servicesBuilder);
+            this.HostBuilder.ConfigureServices((context, services) => services.UseServicesBuilder(servicesBuilder));
 
             this.Host ??= this.HostBuilder.Build();
-
-            this.stoppingTokenSource = new CancellationTokenSource();
-            var eventHub = this.ServiceProvider.GetRequiredService<IEventHub>();
-            eventHub.Subscribe<ShutdownSignal>((_, _) => this.stoppingTokenSource.Cancel());
-
             return this.Host.Services;
         }
 
@@ -161,7 +180,8 @@ namespace Kephas.Extensions.Hosting.Application
             return builder;
         }
 
-        private static async Task<MainLoopResult> RunHostAsync(IHost host, CancellationToken stoppingToken)
+        private static async Task<MainLoopResult> RunHostAsync(
+            IHost host, CancellationToken stoppingToken)
         {
             var opResult = new OperationResult<bool>(true);
             await host.RunAsync(stoppingToken).PreserveThreadContext();

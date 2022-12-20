@@ -10,25 +10,15 @@
 
 namespace Kephas.Services
 {
-    using System;
     using System.Security.Principal;
 
-    using Kephas.Dynamic;
     using Kephas.Logging;
 
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IDynamic, IDisposable, IInjectable
+    public interface IContext : IContextBase, IInjectable
     {
-        /// <summary>
-        /// Gets a context for the dependency injection/composition.
-        /// </summary>
-        /// <value>
-        /// The injector.
-        /// </value>
-        IServiceProvider ServiceProvider { get; }
-
         /// <summary>
         /// Gets or sets the authenticated identity.
         /// </summary>
@@ -38,8 +28,11 @@ namespace Kephas.Services
         IIdentity? Identity { get; set; }
 
         /// <summary>
-        /// Gets or sets the logger.
+        /// Gets the logger.
         /// </summary>
-        ILogger? Logger { get; set; }
+        /// <value>
+        /// The logger.
+        /// </value>
+        ILogger? Logger { get; }
     }
 }

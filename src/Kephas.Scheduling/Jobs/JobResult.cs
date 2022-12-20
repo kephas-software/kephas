@@ -22,7 +22,7 @@ namespace Kephas.Scheduling.Jobs
     /// <summary>
     /// Encapsulates the result of a job.
     /// </summary>
-    public class JobResult : OperationResult<object?>, IJobResult
+    public record JobResult : OperationResult<object?>, IJobResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JobResult"/> class.

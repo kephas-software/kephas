@@ -44,11 +44,14 @@ namespace Kephas.Plugins.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription = this.eventHub.Subscribe<AppSetupQueryEvent>((e, c) => e.SetupEnabled = e.SetupEnabled && !this.appRuntime.PluginsEnabled());
             return Task.FromResult((IOperationResult)true.ToOperationResult());
@@ -57,11 +60,14 @@ namespace Kephas.Plugins.Application
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription?.Dispose();
             this.setupQuerySubscription = null;

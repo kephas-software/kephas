@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of an execute.
     /// </summary>
-    public class ExecuteResult : DataCommandResult, IExecuteResult
+    public record ExecuteResult : DataCommandResult, IExecuteResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExecuteResult"/> class.

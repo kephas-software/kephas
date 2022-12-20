@@ -98,7 +98,15 @@ namespace Kephas.Services
             where TContext : class, IContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
-            context.Logger = contextLogger;
+
+            if (context is Context loggableContext)
+            {
+                loggableContext.Logger = contextLogger;
+            }
+            else
+            {
+                context[nameof(ILoggable.Logger)] = contextLogger;
+            }
 
             return context;
         }

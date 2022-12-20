@@ -58,9 +58,9 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         public override Task InitializeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
         {
-            if (appContext is not IWebAppContext)
+            if (appContext is not IAspNetAppContext)
             {
-                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IWebAppContext).FullName));
+                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
             }
 
             return base.InitializeAsync(appContext, cancellationToken);
@@ -76,9 +76,9 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         public override Task FinalizeAsync(IAppContext? appContext, CancellationToken cancellationToken = default)
         {
-            if (appContext is not IWebAppContext)
+            if (appContext is not IAspNetAppContext)
             {
-                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IWebAppContext).FullName));
+                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
             }
 
             return base.FinalizeAsync(appContext, cancellationToken);

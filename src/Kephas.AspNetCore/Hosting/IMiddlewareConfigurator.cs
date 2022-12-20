@@ -23,6 +23,6 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// Configures a specific middleware using the given application context.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        void Configure(IWebAppContext appContext);
+        void Configure(IAspNetAppContext appContext);
     }
 }

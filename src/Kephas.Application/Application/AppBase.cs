@@ -26,6 +26,8 @@ namespace Kephas.Application
     /// </summary>
     public abstract class AppBase : IApp
     {
+        private bool isConfigured;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppBase"/> class.
         /// </summary>
@@ -79,11 +81,6 @@ namespace Kephas.Application
         protected IAppArgs AppArgs { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the application is configured.
-        /// </summary>
-        protected bool IsConfigured { get; private set; }
-
-        /// <summary>
         /// Gets or sets the cancellation token source used to stop the application.
         /// </summary>
         protected CancellationTokenSource? AppLifetimeTokenSource { get; set; }
@@ -95,11 +92,6 @@ namespace Kephas.Application
         /// The logger.
         /// </value>
         protected ILogger? Logger { get; set; }
-
-        /// <summary>
-        /// Gets or sets the callback for the services configuration.
-        /// </summary>
-        protected Action<IAppServiceCollectionBuilder>? ServicesConfiguration { get; set; }
 
         /// <summary>
         /// Runs the application asynchronously.
@@ -121,13 +113,11 @@ namespace Kephas.Application
 
             await Task.Yield();
 
-            this.ConfigureServices();
-
-            this.ServiceProvider = this.BuildServiceProvider(this.ServicesBuilder);
-
-            this.Logger ??= this.ServiceProvider.GetRequiredService<ILogManager>().GetLogger(this.GetType());
+            this.BeforeAppManagerInitialize(this.AppArgs);
 
             await this.InitializeAppManagerAsync(this.AppContext!, cancellationToken).PreserveThreadContext();
+
+            this.AfterAppManagerInitialize();
 
             this.AppLifetimeTokenSource ??= new CancellationTokenSource();
             var instruction = await this.RunMainLoop(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
@@ -175,6 +165,8 @@ namespace Kephas.Application
 
                 this.IsShuttingDown = true;
 
+                this.BeforeAppManagerFinalize();
+
                 var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
                 appContext.Dispose();
 
@@ -186,6 +178,18 @@ namespace Kephas.Application
             }
             finally
             {
+                try
+                {
+                    this.AfterAppManagerFinalize();
+                }
+                catch
+                {
+                    // At this moment the loggers are disposed, do nothing
+#if DEBUG
+                    Debug.Assert(false, "Should not fail in finalizing prerequisites.");
+#endif
+                }
+
                 this.IsShuttingDown = false;
                 this.IsRunning = false;
             }
@@ -204,17 +208,39 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// The <see cref="ConfigureServices"/> is called before the application manager is initialized.
+        /// Configures the services.
+        /// </summary>
+        /// <param name="servicesBuilder">The service builder.</param>
+        protected abstract void ConfigureServices(IAppServiceCollectionBuilder servicesBuilder);
+
+        /// <summary>
+        /// The <see cref="BeforeAppManagerFinalize"/> is called before the application manager starts finalization.
+        /// </summary>
+        protected virtual void BeforeAppManagerFinalize()
+        {
+        }
+
+        /// <summary>
+        /// The <see cref="AfterAppManagerFinalize"/> is called after the application manager completed finalization.
+        /// It disposes the injector and the ambient services.
+        /// </summary>
+        protected virtual void AfterAppManagerFinalize()
+        {
+        }
+
+        /// <summary>
+        /// The <see cref="BeforeAppManagerInitialize"/> is called before the application manager is initialized.
         /// Initializes the application prerequisites: the ambient services, the application context
-        /// registration, its own logger, and other. In the end, the <see cref="BuildServiceProvider"/> method is called
+        /// registration, its own logger, and other. In the end, the <see cref="Build"/> method is called
         /// to complete the service registration and build the injector.
         /// </summary>
+        /// <param name="appArgs">The application arguments.</param>
         /// <returns>
         /// True if the initialization was performed, false if it was ignored because of subsequent calls.
         /// </returns>
-        protected virtual bool ConfigureServices()
+        protected virtual bool BeforeAppManagerInitialize(IAppArgs? appArgs)
         {
-            if (this.IsConfigured)
+            if (this.isConfigured)
             {
                 this.Log(LogLevel.Info, null, "Already configured, skipping configuration.");
                 return false;
@@ -224,23 +250,26 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_ConfiguringAmbientServices_Message);
 
-                this.ServicesConfiguration?.Invoke(this.ServicesBuilder);
+                this.ConfigureServices(this.ServicesBuilder);
 
                 var ambientServices = this.ServicesBuilder.AmbientServices;
-                this.Logger ??= this.ServicesBuilder.Logger
-                                ?? ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
+                this.Logger ??= ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
                 // and after configuring the ambient services and the logger, as it may
                 // use registered services.
-                this.AppContext = this.CreateAppContext();
+                this.AppContext = this.CreateAppContext(ambientServices, appArgs, this.Logger);
 
                 // require the AppContext to be computed each time, so that if it is called
                 // too early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
                 ambientServices.Add(this.AppContext);
 
-                this.Log(LogLevel.Info, null, Resources.Strings.AppBase_ConfigureSuccessful);
+                this.ServiceProvider = this.BuildServiceProvider(this.ServicesBuilder);
+
+                this.Logger ??= this.ServiceProvider.GetRequiredService<ILogManager>().GetLogger(this.GetType());
+
+                this.Log(LogLevel.Info, null, "The ambient services are successfully configured.");
             }
             catch (Exception ex)
             {
@@ -255,7 +284,14 @@ namespace Kephas.Application
                 throw;
             }
 
-            return this.IsConfigured = true;
+            return this.isConfigured = true;
+        }
+
+        /// <summary>
+        /// The <see cref="AfterAppManagerInitialize"/> is called after the application manager completed initialization.
+        /// </summary>
+        protected virtual void AfterAppManagerInitialize()
+        {
         }
 
         /// <summary>
@@ -424,14 +460,17 @@ namespace Kephas.Application
         /// <summary>
         /// Creates the application context.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="logger">The logger.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAppContext CreateAppContext()
+        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs, ILogger? logger)
         {
-            var appContext = new AppContext(this.ServicesBuilder, this.AppArgs)
+            var appContext = new AppContext(ambientServices, appArgs: appArgs)
             {
-                Logger = this.Logger,
+                Logger = logger,
             };
             return appContext;
         }

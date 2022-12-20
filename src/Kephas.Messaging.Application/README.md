@@ -1,1 +1,0 @@
-﻿# Messaging - Application integration

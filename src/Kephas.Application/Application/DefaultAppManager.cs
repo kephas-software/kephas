@@ -228,7 +228,7 @@ public class DefaultAppManager : Loggable, IAppManager
         foreach (var behavior in behaviors)
         {
             await Profiler.WithTraceStopwatchAsync(
-                () => behavior.Value.BeforeAppInitializeAsync(cancellationToken),
+                () => behavior.Value.BeforeAppInitializeAsync(appContext, cancellationToken),
                 this.Logger,
                 this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
         }
@@ -251,7 +251,7 @@ public class DefaultAppManager : Loggable, IAppManager
         foreach (var behavior in behaviors)
         {
             await Profiler.WithTraceStopwatchAsync(
-                () => behavior.Value.AfterAppInitializeAsync(cancellationToken),
+                () => behavior.Value.AfterAppInitializeAsync(appContext, cancellationToken),
                 this.Logger,
                 this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
         }
@@ -412,7 +412,7 @@ public class DefaultAppManager : Loggable, IAppManager
         foreach (var behavior in behaviors)
         {
             await Profiler.WithTraceStopwatchAsync(
-                () => behavior.Value.BeforeAppFinalizeAsync(cancellationToken),
+                () => behavior.Value.BeforeAppFinalizeAsync(appContext, cancellationToken),
                 this.Logger,
                 this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
         }
@@ -435,7 +435,7 @@ public class DefaultAppManager : Loggable, IAppManager
         foreach (var behavior in behaviors)
         {
             await Profiler.WithTraceStopwatchAsync(
-                () => behavior.Value.AfterAppFinalizeAsync(cancellationToken),
+                () => behavior.Value.AfterAppFinalizeAsync(appContext, cancellationToken),
                 this.Logger,
                 this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
         }

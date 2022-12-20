@@ -42,7 +42,7 @@ namespace Kephas.Logging
 
         /// <summary>
         /// Gets the log level for an exception.
-        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedNotification"/>,
+        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="IHasLogLevel"/>,
         /// otherwise the level indicated by the severity level.
         /// </summary>
         /// <param name="exception">The exception.</param>
@@ -51,9 +51,9 @@ namespace Kephas.Logging
         /// </returns>
         public static LogLevel GetLogLevel(this Exception? exception)
         {
-            if (exception is ILoggable loggableException)
+            if (exception is IHasLogLevel loggableException)
             {
-                return loggableException.GetLogLevel();
+                return loggableException.LogLevel;
             }
 
             return LogLevel.Error;
@@ -76,7 +76,7 @@ namespace Kephas.Logging
 
         /// <summary>
         /// Logs the exception at the log level indicated be the exception's severity level.
-        /// This is calculated to be <see cref="SeverityLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedNotification"/>,
+        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="IHasLogLevel"/>,
         /// otherwise the level indicated by the severity level.
         /// </summary>
         /// <param name="logger">The logger.</param>
@@ -92,7 +92,7 @@ namespace Kephas.Logging
 
         /// <summary>
         /// Logs the exception with a formatted message at the log level indicated be the exception's severity level.
-        /// This is calculated to be <see cref="SeverityLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedNotification"/>,
+        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="IHasLogLevel"/>,
         /// otherwise the level indicated by the severity level.
         /// </summary>
         /// <param name="logger">The logger.</param>

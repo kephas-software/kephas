@@ -30,7 +30,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     using Kephas.Orchestration;
     using Kephas.Orchestration.Interaction;
     using Kephas.Services;
-    using Kephas.Services.Builder;
     using NUnit.Framework;
 
     using AppContext = Kephas.Application.AppContext;
@@ -270,7 +269,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var appManager = container.Resolve<IAppManager>();
             var appContext = new AppContext(
-                this.GetServicesBuilder(container),
+                container.Resolve<IAmbientServices>(),
                 appArgs);
             await appManager.InitializeAsync(appContext);
 
@@ -285,15 +284,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(
-                new AppContext(this.GetServicesBuilder(container)));
-        }
-
-        private IAppServiceCollectionBuilder GetServicesBuilder(IServiceProvider serviceProvider)
-        {
-            var ambientServices = serviceProvider.Resolve<IAmbientServices>();
-            return new AppServiceCollectionBuilder(
-                ambientServices,
-                logger: serviceProvider.GetLogger<IAppServiceCollectionBuilder>());
+                new AppContext(container.Resolve<IAmbientServices>()));
         }
 
         public class PipesSettingsProvider : ISettingsProvider

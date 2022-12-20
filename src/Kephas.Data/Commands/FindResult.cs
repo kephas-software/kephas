@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of a find command.
     /// </summary>
-    public class FindResult : DataCommandResult, IFindResult
+    public record FindResult : DataCommandResult, IFindResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FindResult"/> class.

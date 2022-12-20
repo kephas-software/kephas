@@ -19,7 +19,7 @@ namespace Kephas.Validation
     /// <summary>
     /// Encapsulates the result of a data validation.
     /// </summary>
-    public class ValidationResult : OperationResult, IValidationResult
+    public record ValidationResult : OperationResult, IValidationResult
     {
         /// <summary>
         /// The validation result indicating that the validation succeeded without any issues.

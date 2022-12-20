@@ -81,6 +81,10 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         {
             this.HostBuilder = this.CreateHostBuilder(this.AppArgs);
 
+            var servicesBuilder = new App
+            
+            this.HostBuilder.Services
+            
             this.HostBuilder.ConfigureContainer(new InjectionServiceProviderFactory(this.AmbientServices, this.servicesBuilder));
 
             this.ConfigureHost(this.HostBuilder);

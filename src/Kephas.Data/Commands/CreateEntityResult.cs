@@ -17,7 +17,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of a create entity command.
     /// </summary>
-    public class CreateEntityResult : DataCommandResult, ICreateEntityResult
+    public record CreateEntityResult : DataCommandResult, ICreateEntityResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateEntityResult"/> class.

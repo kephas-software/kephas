@@ -47,7 +47,7 @@ namespace Kephas.Logging
         /// <returns>
         /// The logger.
         /// </returns>
-        public static ILogger GetLogger(this object obj, IContext? context = null)
+        public static ILogger GetLogger(this object obj, IContextBase? context = null)
         {
             obj = obj ?? throw new ArgumentNullException(nameof(obj));
 

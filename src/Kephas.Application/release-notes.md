@@ -8,4 +8,3 @@
 * NEW: Added ```README.md``` and ```release-notes.md```.
 * Breaking change: ```DefaultAppManager``` works now with lazy feature managers and behaviors.
   * Behavior change: the behaviors at both application and feature level can now store state between calls.
-* Breaking change: removed `AppLifecycleBehaviorBase`, should use only the interface `IAppLifecycleBehavior` with default method implementations.

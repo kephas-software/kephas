@@ -36,47 +36,54 @@ namespace Kephas.Messaging.Distributed.Application
         /// </summary>
         /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
-        public DistributedMessagingAppLifecycleBehavior(
-            IConfiguration<DistributedMessagingSettings> messagingConfig,
-            IMessageBroker messageBroker)
+        public DistributedMessagingAppLifecycleBehavior(IConfiguration<DistributedMessagingSettings> messagingConfig, IMessageBroker messageBroker)
         {
-            this.messagingConfig = messagingConfig ?? throw new ArgumentNullException(nameof(messagingConfig));
-            this.messageBroker = messageBroker ?? throw new ArgumentNullException(nameof(messageBroker));
+            messagingConfig = messagingConfig ?? throw new System.ArgumentNullException(nameof(messagingConfig));
+            messageBroker = messageBroker ?? throw new System.ArgumentNullException(nameof(messageBroker));
+
+            this.messagingConfig = messagingConfig;
+            this.messageBroker = messageBroker;
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppInitializeAsync(CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            this.InitializeConfig(null);
+            this.InitializeConfig(appContext);
 
-            await ServiceHelper.InitializeAsync(this.messageBroker, cancellationToken: cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task<IOperationResult> AfterAppFinalizeAsync(CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.messageBroker, cancellationToken: cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
-        private void InitializeConfig(IContext? context)
+        private void InitializeConfig(IContext? appContext)
         {
             try
             {
-                var settings = this.messagingConfig.GetSettings(context);
+                var settings = this.messagingConfig.GetSettings(appContext);
 
                 BrokeredMessage.DefaultTimeout = settings.DefaultTimeout ?? BrokeredMessage.DefaultTimeout;
             }

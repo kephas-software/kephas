@@ -32,32 +32,38 @@ namespace Kephas.Scheduling.Application
         /// <param name="scheduler">The scheduler.</param>
         public SchedulingApplicationLifecycleBehavior(IScheduler scheduler)
         {
-            this.scheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+            this.scheduler = scheduler;
         }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<IOperationResult> AfterAppInitializeAsync(CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.scheduler, cancellationToken: cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous finalization.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task<IOperationResult> BeforeAppFinalizeAsync(CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.scheduler, cancellationToken: cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
         }
     }

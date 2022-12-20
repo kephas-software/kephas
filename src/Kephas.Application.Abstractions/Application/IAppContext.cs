@@ -15,7 +15,6 @@ namespace Kephas.Application
 
     using Kephas.Resources;
     using Kephas.Services;
-    using Kephas.Services.Builder;
 
     /// <summary>
     /// Contract for application contextual information.
@@ -23,9 +22,9 @@ namespace Kephas.Application
     public interface IAppContext : IContext
     {
         /// <summary>
-        /// Gets the services builder.
+        /// Gets the service collection.
         /// </summary>
-        public IAppServiceCollectionBuilder ServicesBuilder { get; }
+        IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -65,7 +64,7 @@ namespace Kephas.Application
         /// <value>
         /// The injector.
         /// </value>
-        IServiceProvider IContext.ServiceProvider
+        IServiceProvider IContextBase.ServiceProvider
             => throw new ServiceException(AppAbstractionStrings.AppContextInjector_InjectorNotAvailable);
 
         /// <summary>

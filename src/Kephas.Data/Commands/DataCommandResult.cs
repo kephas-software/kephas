@@ -18,7 +18,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of a data command.
     /// </summary>
-    public class DataCommandResult : OperationResult
+    public record DataCommandResult : OperationResult
     {
         /// <summary>
         /// The result representing a successful operation.

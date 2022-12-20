@@ -24,7 +24,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.EndpointConfigurators
         /// </summary>
         /// <param name="endpoints">The endpoints builder.</param>
         /// <param name="appContext">Context for the application.</param>
-        public void Configure(IEndpointRouteBuilder endpoints, IWebAppContext appContext)
+        public void Configure(IEndpointRouteBuilder endpoints, IAspNetAppContext appContext)
         {
             endpoints.MapRazorPages();
             endpoints.MapControllers();
