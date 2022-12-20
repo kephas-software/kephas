@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <RootNamespace>Kephas.Application.Tests</RootNamespace>
+        <RootNamespace>Kephas.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -37,8 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+        <ProjectReference Include="..\..\Kephas.Runtime.Abstractions\Kephas.Runtime.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
