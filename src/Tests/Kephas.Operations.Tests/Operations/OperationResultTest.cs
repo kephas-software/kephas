@@ -107,13 +107,13 @@ namespace Kephas.Core.Tests.Operations
         }
 
         [Test]
-        public void Exceptions_Clear()
+        public void Messages_Clear()
         {
             var opResult = new OperationResult().MergeException(new InvalidOperationException());
 
-            CollectionAssert.IsNotEmpty(opResult.Exceptions);
+            CollectionAssert.IsNotEmpty(opResult.Messages);
             opResult.Messages.Clear();
-            CollectionAssert.IsEmpty(opResult.Exceptions);
+            CollectionAssert.IsEmpty(opResult.Messages);
         }
 
         [Test]

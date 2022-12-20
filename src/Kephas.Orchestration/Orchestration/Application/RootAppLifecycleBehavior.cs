@@ -96,7 +96,7 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// Gets or sets the worker processes.
         /// </summary>
-        protected IList<ProcessStartResult>? WorkerProcesses { get; set; }
+        protected IList<IProcessStartResult>? WorkerProcesses { get; set; }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
@@ -193,7 +193,7 @@ namespace Kephas.Orchestration.Application
                 (await this.OrchestrationManager.GetLiveAppsAsync(cancellationToken: cancellationToken)
                     .PreserveThreadContext())
                 .ToList();
-            var startTasks = new List<Task<ProcessStartResult>>();
+            var startTasks = new List<Task<IProcessStartResult>>();
             this.Logger.Info("Starting worker application instances...");
 
             foreach (var appInstanceEntry in this.GetWorkerSettings(liveApps, appContext))
@@ -422,13 +422,13 @@ namespace Kephas.Orchestration.Application
         /// <param name="appContext">The application context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result yielding the <see cref="ProcessStartResult"/>.</returns>
-        protected virtual async Task<ProcessStartResult> StartWorkerProcessAsync(
+        protected virtual async Task<IProcessStartResult> StartWorkerProcessAsync(
             IAppInfo appInfo,
             AppSettings? appSettings,
             IAppContext appContext,
             CancellationToken cancellationToken)
         {
-            return (ProcessStartResult)await this.OrchestrationManager
+            return (IProcessStartResult)await this.OrchestrationManager
                 .StartAppAsync(appInfo, appSettings?.Args ?? new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
                 .PreserveThreadContext();
         }
@@ -508,7 +508,7 @@ namespace Kephas.Orchestration.Application
             return secondsToWait;
         }
 
-        private int? TryGetProcessId(ProcessStartResult processStartResult)
+        private int? TryGetProcessId(IProcessStartResult processStartResult)
         {
             try
             {

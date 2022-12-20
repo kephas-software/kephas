@@ -32,7 +32,7 @@ namespace Kephas.Operations
         private object? value;
         private OperationState operationState;
         private float percentCompleted;
-        private DateTimeOffset? startedAt;
+        private DateTimeOffset? startedAt = DateTimeOffset.Now;
         private DateTimeOffset? endedAt;
         private TimeSpan? elapsed;
         private OperationResultAwaiter? awaiter;
@@ -42,8 +42,6 @@ namespace Kephas.Operations
         /// </summary>
         public OperationResult()
         {
-            this.Messages = new ConcurrentCollection<IOperationMessage>();
-            this.startedAt = DateTimeOffset.Now;
         }
 
         /// <summary>
@@ -51,7 +49,6 @@ namespace Kephas.Operations
         /// </summary>
         /// <param name="value">The return value.</param>
         public OperationResult(object value)
-            : this()
         {
             this.Value = value;
         }
@@ -61,7 +58,6 @@ namespace Kephas.Operations
         /// </summary>
         /// <param name="task">The task.</param>
         public OperationResult(Task task)
-            : this()
         {
             this.SetAwaiter(OperationResultAwaiter.Create(task, this.UpdateInternalState));
         }
@@ -164,16 +160,7 @@ namespace Kephas.Operations
         /// <value>
         /// The message.
         /// </value>
-        public ICollection<IOperationMessage> Messages { get; set; }
-
-        /// <summary>
-        /// Gets the exceptions.
-        /// </summary>
-        /// <value>
-        /// The exceptions.
-        /// </value>
-        public IEnumerable<Exception> Exceptions =>
-            this.Messages.Where(m => m.Exception is not null).Select(m => m.Exception!).ToList();
+        public ICollection<IOperationMessage> Messages { get; set; } = new ConcurrentCollection<IOperationMessage>();
 
         /// <summary>
         /// Converts this object to a task.

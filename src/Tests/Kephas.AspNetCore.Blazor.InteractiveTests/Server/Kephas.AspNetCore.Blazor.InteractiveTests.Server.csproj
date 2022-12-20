@@ -32,6 +32,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Kephas.Licensing\Kephas.Licensing.csproj" />
+		<ProjectReference Include="..\..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
 		<ProjectReference Include="..\Client\Kephas.AspNetCore.Blazor.InteractiveTests.Client.csproj" />
 		<ProjectReference Include="..\Shared\Kephas.AspNetCore.Blazor.InteractiveTests.Shared.csproj" />
 		<ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

@@ -7,10 +7,13 @@
 
 namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.ServicesConfigurators
 {
+    using Kephas.Extensions.DependencyInjection;
     using Kephas.Serialization.Json;
     using Kephas.Services;
+    using Kephas.Services.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// Configuration for Razor services.
@@ -21,10 +24,13 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.ServicesConfigurators
         /// <summary>
         /// Configure the services.
         /// </summary>
-        /// <param name="services">The services to configure.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        public void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices)
+        /// <param name="context">The host builder context.</param>
+        /// <param name="services">The service collection.</param>
+        /// <param name="servicesBuilder">The services builder.</param>
+        public void ConfigureServices(
+            HostBuilderContext context,
+            IServiceCollection services,
+            IAppServiceCollectionBuilder servicesBuilder)
         {
             services.AddControllersWithViews();
             services
@@ -32,7 +38,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Server.ServicesConfigurators
                 .AddNewtonsoftJson(
                     options =>
                     {
-                        var jsonSettingsProvider = ambientServices.Injector
+                        var jsonSettingsProvider = services.BuildServiceProvider()
                             .Resolve<IJsonSerializerSettingsProvider>();
                         jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
                     });

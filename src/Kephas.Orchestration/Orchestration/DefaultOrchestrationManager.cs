@@ -51,11 +51,11 @@ namespace Kephas.Orchestration
     {
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
         private readonly IHostInfoProvider hostInfoProvider;
-        private Timer heartbeatTimer;
+        private readonly Lazy<string> lazyRootAppInstanceId;
+        private Timer? heartbeatTimer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
         private IEventSubscription appHeartbeatSubscription;
-        private readonly Lazy<string> lazyRootAppInstanceId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
@@ -312,11 +312,9 @@ namespace Kephas.Orchestration
                         stopMessage,
                         ctx => ctx.Merge(optionsConfig),
                         cancellationToken).PreserveThreadContext();
-                    return new OperationResult
-                    {
-                        OperationState = OperationState.Completed,
-                        [nameof(StopAppResponseMessage)] = response,
-                    };
+                    IOperationResult result = new OperationResult().Complete();
+                    result[nameof(StopAppResponseMessage)] = response;
+                    return result;
                 }
                 else
                 {
@@ -342,21 +340,19 @@ namespace Kephas.Orchestration
                         }
                     }
 
-                    return new OperationResult
+                    IOperationResult result = new OperationResult
                     {
                         OperationState = stopped ? OperationState.Completed : OperationState.InProgress,
-                        [nameof(StopAppResponseMessage)] = stopped ? new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId } : null,
                     };
+                    result[nameof(StopAppResponseMessage)] = stopped ? new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId } : null;
+                    return result;
                 }
             }
             catch (Exception ex)
             {
                 // TODO localization
                 this.Logger.Error(ex, $"Error while trying to stop application {runtimeAppInfo}.");
-                return new OperationResult
-                {
-                    OperationState = OperationState.Failed,
-                }.MergeException(ex);
+                return new OperationResult().Fail(ex);
             }
         }
 
