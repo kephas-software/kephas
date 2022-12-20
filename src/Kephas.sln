@@ -322,7 +322,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Tests", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Tests", "Tests\Kephas.Serialization.Tests\Kephas.Serialization.Tests.csproj", "{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Abstractions.Tests", "Tests\Kephas.Application.Abstractions.Tests\Kephas.Application.Abstractions.Tests.csproj", "{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime.Tests", "Tests\Kephas.Runtime.Tests\Kephas.Runtime.Tests.csproj", "{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Validation", "Kephas.Validation\Kephas.Validation.csproj", "{20A030B6-4BFE-4FB8-BA92-3750E347144E}"
 EndProject
@@ -378,7 +378,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Exceptions", "Kephas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Threading", "Kephas.Threading\Kephas.Threading.csproj", "{647D064F-5BDD-42EC-AFC9-AF7E93704A32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime", "Kephas.Runtime\Kephas.Runtime.csproj", "{25282E44-CF63-4128-8D1C-7DA8B96ED492}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime.Abstractions", "Kephas.Runtime.Abstractions\Kephas.Runtime.Abstractions.csproj", "{25282E44-CF63-4128-8D1C-7DA8B96ED492}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.IO", "Kephas.IO\Kephas.IO.csproj", "{9F651CB5-3086-4EE2-8678-2FA6DF571DE7}"
 EndProject
@@ -390,7 +390,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Tests", "Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Commands.Abstractions", "Kephas.Commands.Abstractions\Kephas.Commands.Abstractions.csproj", "{CD455AE5-CCD7-41A0-8599-BBBE3AF59637}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime.Tests", "Tests\Kephas.Runtime.Tests\Kephas.Runtime.Tests.csproj", "{A5FA1469-B8CD-42DD-8CC6-C616FA50B3A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime.Abstractions.Tests", "Tests\Kephas.Runtime.Abstractions.Tests\Kephas.Runtime.Abstractions.Tests.csproj", "{A5FA1469-B8CD-42DD-8CC6-C616FA50B3A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime", "Kephas.Runtime\Kephas.Runtime.csproj", "{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1054,6 +1056,10 @@ Global
 		{A5FA1469-B8CD-42DD-8CC6-C616FA50B3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5FA1469-B8CD-42DD-8CC6-C616FA50B3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5FA1469-B8CD-42DD-8CC6-C616FA50B3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1096,7 +1102,6 @@ Global
 		{2EF9F22F-FDB0-45BB-AC4C-CE8905475CE0} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{CDE95E8A-2D58-444A-B2F1-3238BC0088C5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{CA358ABA-6CC6-431B-86A9-CD5EC7C4F7F1} = {816692E7-24DC-46B5-97FB-D314B52D815D}
-		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{9327D807-5842-4C1D-827C-28C100143038} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
 		{8DFA3160-88B7-4332-B75F-F3628E6FE3D0} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
 		{8D4BF87E-E60E-436D-9C55-BA3E9F0D46C7} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
@@ -1190,6 +1195,8 @@ Global
 		{CD455AE5-CCD7-41A0-8599-BBBE3AF59637} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
 		{A5FA1469-B8CD-42DD-8CC6-C616FA50B3A0} = {9DB7D8D3-1EEB-429E-B9C9-0816CAC6E94C}
 		{A02D0A02-A204-46A8-BD0E-7432390557EF} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
+		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
+		{9D1DC619-0774-4D40-8A9C-79A3DE5B01ED} = {9DB7D8D3-1EEB-429E-B9C9-0816CAC6E94C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
