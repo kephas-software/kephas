@@ -239,19 +239,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// A string extension method that creates a safe substring from the given index.
-        /// </summary>
-        /// <param name="value">The value to act on.</param>
-        /// <param name="startIndex">The start index.</param>
-        /// <returns>
-        /// A string.
-        /// </returns>
-        public static string SafeSubstring(this string value, int startIndex)
-        {
-            return SafeSubstring(value, startIndex, value.Length);
-        }
-
-        /// <summary>
         /// A string extension method that safe substring from the given index with the given length.
         /// </summary>
         /// <param name="value">The value to act on.</param>
@@ -260,7 +247,7 @@ namespace Kephas
         /// <returns>
         /// A string.
         /// </returns>
-        public static string SafeSubstring(this string value, int startIndex, int length)
+        private static string SafeSubstring(this string value, int startIndex, int length)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -278,7 +265,7 @@ namespace Kephas
         /// <summary>
         /// Use separate cache internally to avoid reallocations and cache misses.
         /// </summary>
-        internal static class StringBuilderThreadStatic
+        private static class StringBuilderThreadStatic
         {
             /// <summary>
             /// The cache.

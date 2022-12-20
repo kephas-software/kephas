@@ -13,7 +13,7 @@ namespace Kephas
     using Kephas.Resources;
 
     /// <summary>
-    /// Extension methods for <see cref="IServiceProvider"/>
+    /// Extension methods for <see cref="IServiceProvider"/>.
     /// </summary>
     public static class ServiceProviderExtensions
     {
