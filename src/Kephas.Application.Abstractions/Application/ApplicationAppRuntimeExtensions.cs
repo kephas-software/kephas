@@ -18,7 +18,6 @@ using Kephas.IO;
 /// </summary>
 public static class ApplicationAppRuntimeExtensions
 {
-    private const string GetLocationsToken = $"__{nameof(GetLocationsToken)}";
     internal const string FeaturesToken = $"__{nameof(FeaturesToken)}";
 
     /// <summary>
@@ -51,44 +50,6 @@ public static class ApplicationAppRuntimeExtensions
         }
 
         return appRuntime.GetFeatures().Any(f => string.Equals(f.Name, featureName, StringComparison.OrdinalIgnoreCase));
-    }
-
-    /// <summary>
-    /// Sets the callback for filtering the assemblies.
-    /// </summary>
-    /// <typeparam name="T">The <see cref="IAppRuntime"/> type.</typeparam>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="getLocations">The callback for getting the locations.</param>
-    /// <returns>The provided application runtime.</returns>
-    public static T OnGetLocations<T>(this T appRuntime, Func<string, string, IEnumerable<string>, ILocations> getLocations)
-        where T : IAppRuntime
-    {
-        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-        getLocations = getLocations ?? throw new ArgumentNullException(nameof(getLocations));
-
-        appRuntime[GetLocationsToken] = getLocations;
-
-        return appRuntime;
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether the assembly with the provided name is an application-specific assembly.
-    /// </summary>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="logicalName">The logical name of the locations.</param>
-    /// <param name="basePath">The base path.</param>
-    /// <param name="relativePaths">The relative paths.</param>
-    /// <returns>The assembly filter.</returns>
-    public static ILocations GetLocations(this IAppRuntime appRuntime, string logicalName, string basePath, IEnumerable<string> relativePaths)
-    {
-        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-
-        if (appRuntime[GetLocationsToken] is Func<string, string, IEnumerable<string>, ILocations> getLocations)
-        {
-            return getLocations(logicalName, basePath, relativePaths);
-        }
-
-        return new FolderLocations(relativePaths, basePath, logicalName);
     }
 
     /// <summary>

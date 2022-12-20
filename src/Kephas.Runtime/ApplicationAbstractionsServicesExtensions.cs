@@ -62,11 +62,6 @@ namespace Kephas
         /// <summary>
         /// Adds the dynamic application runtime to the ambient services.
         /// </summary>
-        /// <remarks>
-        /// It uses the <see cref="ITypeLoader"/> and <see cref="ILogManager"/> services from the
-        /// ambient services to configure the application runtime. Make sure that these services are
-        /// properly configured before using this method.
-        /// </remarks>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
         /// <param name="runtimeConfig">Optional. The post configuration for the <see cref="DynamicAppRuntime"/>.</param>
@@ -92,11 +87,6 @@ namespace Kephas
         /// <summary>
         /// Adds the static application runtime to the ambient services.
         /// </summary>
-        /// <remarks>
-        /// It uses the <see cref="ITypeLoader"/> and <see cref="ILogManager"/> services from the
-        /// ambient services to configure the application runtime. Make sure that these services are
-        /// properly configured before using this method.
-        /// </remarks>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
         /// <param name="runtimeConfig">The post configuration for the <see cref="StaticAppRuntime"/>.</param>
