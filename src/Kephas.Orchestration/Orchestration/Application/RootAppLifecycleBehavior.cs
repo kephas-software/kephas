@@ -378,7 +378,7 @@ namespace Kephas.Orchestration.Application
             foreach (var processStartResult in this.WorkerProcesses.ToList()
                 .Where(processStartResult => processStartResult.Process.HasExited))
             {
-                if (!(processStartResult[nameof(AppInfo)] is IAppInfo appInfo))
+                if (processStartResult[nameof(AppInfo)] is not IAppInfo appInfo)
                 {
                     continue;
                 }

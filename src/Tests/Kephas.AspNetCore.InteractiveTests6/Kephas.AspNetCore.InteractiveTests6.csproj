@@ -36,6 +36,7 @@
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
         <ProjectReference Include="..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
+        <ProjectReference Include="..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
         <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
         <ProjectReference Include="..\..\Kephas.Services.Autofac\Kephas.Services.Autofac.csproj" />
         <ProjectReference Include="..\..\Kephas.Licensing\Kephas.Licensing.csproj" />

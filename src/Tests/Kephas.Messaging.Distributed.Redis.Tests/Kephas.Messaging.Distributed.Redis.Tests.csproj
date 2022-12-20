@@ -39,6 +39,7 @@
         <ProjectReference Include="..\..\Kephas.Messaging.Distributed.Redis\Kephas.Messaging.Distributed.Redis.csproj" />
         <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\..\Kephas.Redis\Kephas.Redis.csproj" />
+        <ProjectReference Include="..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
         <ProjectReference Include="..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Application\Kephas.Testing.Application.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />

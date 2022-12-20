@@ -31,6 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
         <ProjectReference Include="..\..\Kephas.Tenants\Kephas.Tenants.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
