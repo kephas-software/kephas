@@ -60,6 +60,6 @@ namespace Kephas.Graphs
         /// <summary>
         /// Gets or sets the value of the edge.
         /// </summary>
-        TEdgeValue? Value { get; set; }
+        TEdgeValue Value { get; set; }
     }
 }

@@ -100,6 +100,6 @@ namespace Kephas.Graphs
         /// <summary>
         /// Gets or sets the value of the edge.
         /// </summary>
-        public TEdgeValue? Value { get; set; }
+        public TEdgeValue Value { get; set; } = default!;
     }
 }

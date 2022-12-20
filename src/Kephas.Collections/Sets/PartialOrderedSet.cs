@@ -32,7 +32,7 @@ namespace Kephas.Sets
         /// <summary>
         /// The ordered values.
         /// </summary>
-        private List<TValue> orderedValues;
+        private List<TValue>? orderedValues;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PartialOrderedSet{TValue}"/> class.
@@ -60,7 +60,8 @@ namespace Kephas.Sets
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<TValue> GetEnumerator()
         {
-            return this.orderedValues.GetEnumerator();
+            return this.orderedValues?.GetEnumerator()
+                   ?? new List<TValue>().GetEnumerator();
         }
 
         /// <summary>
