@@ -37,8 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+        <ProjectReference Include="..\..\Kephas.Commands.Abstractions\Kephas.Commands.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
