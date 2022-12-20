@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas
+namespace Kephas.Plugins
 {
     using System.Collections.Generic;
     using System.Linq;

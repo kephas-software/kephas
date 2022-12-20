@@ -7,7 +7,7 @@
 
 namespace Kephas.Licensing;
 
-using Kephas.Application;
+using Kephas.Runtime;
 
 /// <summary>
 /// Assembly initializer for Kephas.Licensing.
