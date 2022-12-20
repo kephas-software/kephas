@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.CodeAnalysis;
+namespace Kephas.Runtime;
 
 /// <summary>
 /// Attribute indicating assembly initializer attributes.
@@ -27,7 +27,7 @@ public class AssemblyInitializerAttribute : Attribute
     }
 
     /// <summary>
-    /// Gets the initializer types;
+    /// Gets the initializer types.
     /// </summary>
     public Type[] InitializerTypes { get; }
 }

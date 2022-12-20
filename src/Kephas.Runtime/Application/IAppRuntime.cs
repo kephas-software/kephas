@@ -15,7 +15,6 @@ namespace Kephas.Application
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.IO;
 
     /// <summary>
     /// Interface for abstracting away the runtime for the application.
@@ -189,6 +188,6 @@ namespace Kephas.Application
         /// <returns>
         /// The full path of the file or folder.
         /// </returns>
-        string GetFullPath(string? path) => FileSystem.GetFullPath(path, this.GetAppLocation());
+        string GetFullPath(string? path);
     }
 }

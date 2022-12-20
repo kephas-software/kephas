@@ -11,16 +11,16 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <RootNamespace>Kephas.Messaging.Tests</RootNamespace>
+        <RootNamespace>Kephas.Tests</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    </ItemGroup>
 
     <ItemGroup>
         <None Remove="stylecop.json" />
         <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -37,9 +37,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
-        <ProjectReference Include="..\..\Kephas.Messaging.Application\Kephas.Messaging.Application.csproj" />
-        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+        <ProjectReference Include="..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
 </Project>

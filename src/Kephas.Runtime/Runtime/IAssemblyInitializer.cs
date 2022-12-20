@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application;
+namespace Kephas.Runtime;
 
 using System.Reflection;
 
@@ -75,13 +75,13 @@ public interface IAssemblyInitializer
                         initializer.Initialize();
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // do not log anything, during initialization we don't have a proper way of notification.
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // do not log anything, during initialization we don't have a proper way of notification.
         }
