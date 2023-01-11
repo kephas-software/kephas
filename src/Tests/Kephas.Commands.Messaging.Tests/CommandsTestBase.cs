@@ -29,16 +29,16 @@ namespace Kephas.Commands.Messaging.Tests
         }
 
         protected override IAppServiceCollectionBuilder CreateServicesBuilder(
-            IAmbientServices? ambientServices = null,
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
-            ambientServices = builder.AmbientServices;
-            if (!ambientServices.Contains(typeof(IAppContext)))
+            var builder = base.CreateServicesBuilder(appServices, logManager, appRuntime);
+            appServices = builder.AppServices;
+            if (!appServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(appServices));
+                appServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
             return builder;

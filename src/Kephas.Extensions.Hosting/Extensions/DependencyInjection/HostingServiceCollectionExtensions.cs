@@ -56,7 +56,7 @@ namespace Kephas.Extensions.DependencyInjection
         /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
         private static IEnumerable<IServicesConfigurator> GetServicesConfigurators(this IAppServiceCollectionBuilder servicesBuilder)
         {
-            var configuratorTypes = servicesBuilder.AmbientServices
+            var configuratorTypes = servicesBuilder.AppServices
                 .Where(t => t.ContractDeclarationType == typeof(IServicesConfigurator) || t.ContractType == typeof(IServicesConfigurator))
                 .Select(t => t.InstanceType)
                 .Where(t => t is not null)

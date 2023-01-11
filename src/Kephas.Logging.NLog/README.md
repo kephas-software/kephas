@@ -7,7 +7,7 @@ Provides the [NLog](https://www.nuget.org/packages/NLog) logging services implem
 ## Usage
 
 ```csharp
-ambientServices.WithNLogManager();
+appServices.WithNLogManager();
 ```
 
 ## Other resources

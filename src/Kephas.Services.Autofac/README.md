@@ -4,12 +4,12 @@
 Provides a dependency injection implementation based on the ```Autofac``` infrastructure.
 
 Typically used areas and classes/interfaces/services:
-* ```IAmbientServices.BuildWithAutofac()```.
+* `IAppServiceCollection.BuildWithAutofac()`.
 
 ## Usage
 
 ```csharp
-var ambientServices = new AmbientServices().BuildWithAutofac();
+var serviceProvider = new AppServiceCollection().BuildWithAutofac();
 ```
 
 ## Other resources

@@ -24,7 +24,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the service collection.
         /// </summary>
-        IAmbientServices AmbientServices { get; }
+        IAppServiceCollection AppServices { get; }
 
         /// <summary>
         /// Gets the application runtime.

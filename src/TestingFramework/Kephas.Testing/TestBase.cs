@@ -46,7 +46,7 @@ namespace Kephas.Testing
         /// <summary>
         /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        /// <param name="appServices">Optional. The application services. If not provided, a new instance
         ///                               will be created as linked to the newly created container.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
@@ -54,19 +54,19 @@ namespace Kephas.Testing
         /// A LiteInjectorBuilder.
         /// </returns>
         protected virtual IAppServiceCollectionBuilder CreateServicesBuilder(
-            IAmbientServices? ambientServices = null,
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
             var log = new StringBuilder();
-            logManager ??= ambientServices?.TryGetServiceInstance<ILogManager>() ?? new DebugLogManager(log);
+            logManager ??= appServices?.TryGetServiceInstance<ILogManager>() ?? new DebugLogManager(log);
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices = (ambientServices ?? new AppServiceCollection())
+            appServices = (appServices ?? new AppServiceCollection())
                 .Add(logManager)
                 .Add(log);
 
-            return new AppServiceCollectionBuilder(ambientServices)
+            return new AppServiceCollectionBuilder(appServices)
                 .WithAppRuntime(appRuntime)
                 .WithAssemblies(this.GetAssemblies())
                 .WithParts(this.GetDefaultParts());
@@ -83,7 +83,7 @@ namespace Kephas.Testing
         {
             return new List<Assembly>
                        {
-                           typeof(IAmbientServices).Assembly,       /* Kephas.Services */
+                           typeof(IAppServiceCollection).Assembly,       /* Kephas.Services */
                            typeof(IEventHub).Assembly,              /* Kephas.Interaction */
                            typeof(ISerializationService).Assembly,  /* Kephas.Serialization */
                        };
@@ -106,7 +106,7 @@ namespace Kephas.Testing
         /// </summary>
         /// <param name="typeRegistry">Optional. The type registry.</param>
         /// <returns>The newly created <see cref="AppServiceCollection"/> instance.</returns>
-        protected virtual IAmbientServices CreateAmbientServices(IRuntimeTypeRegistry? typeRegistry = null)
+        protected virtual IAppServiceCollection CreateAppServices(IRuntimeTypeRegistry? typeRegistry = null)
         {
             return new AppServiceCollection()
                 .Add(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());

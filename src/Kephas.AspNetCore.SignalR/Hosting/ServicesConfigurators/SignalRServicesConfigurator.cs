@@ -28,8 +28,8 @@ namespace Kephas.AspNetCore.SignalR.Hosting.ServicesConfigurators
         /// </summary>
         /// <param name="services">The services to configure.</param>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAmbientServices ambientServices)
+        /// <param name="appServices">The application services.</param>
+        public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAppServiceCollection appServices)
         {
             services.AddSignalR();
         }

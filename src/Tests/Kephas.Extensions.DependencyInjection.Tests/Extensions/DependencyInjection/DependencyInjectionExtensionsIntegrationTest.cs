@@ -34,7 +34,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public async Task CreateInjector_simple_ambient_services_exported()
         {
             var builder = this.CreateServicesBuilder();
-            var mockAppRuntime = builder.AmbientServices.GetAppRuntime();
+            var mockAppRuntime = builder.AppServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies()
                 .Returns(ci => new[]
@@ -47,7 +47,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var container = builder.BuildWithDependencyInjection();
 
             var loggerManager = container.Resolve<ILogManager>();
-            Assert.AreEqual(builder.AmbientServices.GetServiceInstance<ILogManager>(), loggerManager);
+            Assert.AreEqual(builder.AppServices.GetServiceInstance<ILogManager>(), loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
             Assert.AreEqual(mockAppRuntime, platformManager);
@@ -62,10 +62,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 .BuildWithDependencyInjection();
 
             var loggerManager = container.Resolve<ILogManager>();
-            Assert.AreEqual(builder.AmbientServices.GetServiceInstance<ILogManager>(), loggerManager);
+            Assert.AreEqual(builder.AppServices.GetServiceInstance<ILogManager>(), loggerManager);
 
             var platformManager = container.Resolve<IAppRuntime>();
-            Assert.AreEqual(builder.AmbientServices.GetAppRuntime(), platformManager);
+            Assert.AreEqual(builder.AppServices.GetAppRuntime(), platformManager);
         }
 
         [Test]
@@ -161,10 +161,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = this.CreateAutofacServicesBuilderWithStringLogger()
                 .WithAssemblies(typeof(IInjectableFactory).Assembly);
-            var ambientServices = builder.AmbientServices;
-            ambientServices.Add(typeof(ITestMultiAppService), _ => new TestMultiAppService1(), b => b.Transient());
-            ambientServices.Add(Substitute.For<ITestMultiAppService>());
-            ambientServices.Add(typeof(ITestMultiAppService), typeof(TestMultiAppService2));
+            var appServices = builder.AppServices;
+            appServices.Add(typeof(ITestMultiAppService), _ => new TestMultiAppService1(), b => b.Transient());
+            appServices.Add(Substitute.For<ITestMultiAppService>());
+            appServices.Add(typeof(ITestMultiAppService), typeof(TestMultiAppService2));
             var container = builder.BuildWithDependencyInjection();
 
             var exports = container.ResolveMany<ITestMultiAppService>().ToList();
@@ -220,8 +220,8 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void Resolve_AppService_with_injection_constructor()
         {
             var builder = this.CreateAutofacServicesBuilderWithStringLogger();
-            builder.AmbientServices.Add(new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
-            builder.AmbientServices.Add(new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
+            builder.AppServices.Add(new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
+            builder.AppServices.Add(new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
 
             var container = builder
                 .WithAssemblies(typeof(IInjectableFactory).Assembly)
@@ -343,7 +343,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 });
 
             var builder = this.CreateServicesBuilder(ctx => ctx.Providers.Add(registrar));
-            var mockAppRuntime = builder.AmbientServices.GetAppRuntime();
+            var mockAppRuntime = builder.AppServices.GetAppRuntime();
 
             mockAppRuntime.GetAppAssemblies()
                 .Returns(new[] { typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly });
@@ -364,7 +364,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 });
 
             var builder = this.CreateServicesBuilder(ctx => ctx.Providers.Add(registrar));
-            var mockPlatformManager = builder.AmbientServices.GetAppRuntime();
+            var mockPlatformManager = builder.AppServices.GetAppRuntime();
 
             mockPlatformManager.GetAppAssemblies()
                 .Returns(new[] { typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly });
@@ -392,10 +392,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockAppRuntime = Substitute.For<IAppRuntime>();
 
-            var ambientServices = this.CreateAmbientServices()
+            var appServices = this.CreateAppServices()
                 .Add(mockLoggerManager)
                 .Add(mockAppRuntime);
-            var builder = new AppServiceCollectionBuilder(ambientServices);
+            var builder = new AppServiceCollectionBuilder(appServices);
             config?.Invoke(builder);
             return builder;
         }
@@ -404,7 +404,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = this.CreateServicesBuilder();
 
-            var mockLoggerManager = builder.AmbientServices.GetServiceInstance<ILogManager>();
+            var mockLoggerManager = builder.AppServices.GetServiceInstance<ILogManager>();
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
 
             return builder;
@@ -519,7 +519,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 
         public class AmbiguousInjectConstructorAppService : IConstructorAppService
         {
-            public AmbiguousInjectConstructorAppService(IAmbientServices ambientServices)
+            public AmbiguousInjectConstructorAppService(IAppServiceCollection appServices)
             {
             }
 

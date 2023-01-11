@@ -24,8 +24,8 @@ public class InjectableFactoryTest
     [Test]
     public void Create_Context()
     {
-        var (ambientServices, injector) = this.GetServices();
-        IInjectableFactory factory = new InjectableFactory(injector, ambientServices, Substitute.For<ILogManager>());
+        var (appServices, injector) = this.GetServices();
+        IInjectableFactory factory = new InjectableFactory(injector, appServices, Substitute.For<ILogManager>());
         var context = factory.Create<Context>();
 
         Assert.AreSame(injector, context.ServiceProvider);
@@ -34,8 +34,8 @@ public class InjectableFactoryTest
     [Test]
     public void Create_TestContext()
     {
-        var (ambientServices, injector) = this.GetServices();
-        IInjectableFactory factory = new InjectableFactory(injector, ambientServices, Substitute.For<ILogManager>());
+        var (appServices, injector) = this.GetServices();
+        IInjectableFactory factory = new InjectableFactory(injector, appServices, Substitute.For<ILogManager>());
         var context = factory.Create<TestContext>();
 
         Assert.AreSame(injector, context.ServiceProvider);
@@ -46,9 +46,9 @@ public class InjectableFactoryTest
     {
         var testService = Substitute.For<ITestService>();
 
-        var (ambientServices, injector) = this.GetServices(new AppServiceInfo(typeof(ITestService), testService));
+        var (appServices, injector) = this.GetServices(new AppServiceInfo(typeof(ITestService), testService));
         injector.Resolve(typeof(ITestService)).Returns(testService);
-        IInjectableFactory factory = new InjectableFactory(injector, ambientServices, Substitute.For<ILogManager>());
+        IInjectableFactory factory = new InjectableFactory(injector, appServices, Substitute.For<ILogManager>());
         var context = factory.Create<TestContext>(typeof(string));
 
         Assert.AreSame(injector, context.ServiceProvider);
@@ -56,19 +56,19 @@ public class InjectableFactoryTest
         Assert.AreSame(typeof(string), context.MediaType);
     }
 
-    private (IAmbientServices ambientServices, IServiceProvider injector) GetServices(params IAppServiceInfo[] appServiceInfos)
+    private (IAppServiceCollection appServices, IServiceProvider injector) GetServices(params IAppServiceInfo[] appServiceInfos)
     {
-        var ambientServices = Substitute.For<IAmbientServices>();
+        var appServices = Substitute.For<IAppServiceCollection>();
         var injector = Substitute.For<IServiceProvider>();
 
-        ambientServices.GetEnumerator().Returns(appServiceInfos.GetEnumerator());
+        appServices.GetEnumerator().Returns(appServiceInfos.GetEnumerator());
 
-        injector.Resolve(typeof(IAmbientServices)).Returns(ambientServices);
-        injector.Resolve<IAmbientServices>().Returns(ambientServices);
+        injector.Resolve(typeof(IAppServiceCollection)).Returns(appServices);
+        injector.Resolve<IAppServiceCollection>().Returns(appServices);
         injector.Resolve(typeof(IServiceProvider)).Returns(injector);
         injector.Resolve<IServiceProvider>().Returns(injector);
 
-        return (ambientServices, injector);
+        return (appServices, injector);
     }
 
     public class TestContext : Context

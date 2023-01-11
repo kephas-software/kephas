@@ -23,7 +23,7 @@ namespace Kephas.Services.Builder
     using Kephas.Services.Configuration;
 
     /// <summary>
-    /// A context for building the <see cref="IAmbientServices"/>.
+    /// A context for building the <see cref="IAppServiceCollection"/>.
     /// </summary>
     public class AppServiceCollectionBuilder : Expando, IAppServiceCollectionBuilder
     {
@@ -40,20 +40,20 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceCollectionBuilder"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="settings">Optional. The injection settings.</param>
         /// <param name="logger">Optional. The logger.</param>
-        public AppServiceCollectionBuilder(IAmbientServices ambientServices, AppServicesSettings? settings = null, ILogger? logger = null)
+        public AppServiceCollectionBuilder(IAppServiceCollection appServices, AppServicesSettings? settings = null, ILogger? logger = null)
         {
-            this.AmbientServices = ambientServices;
+            this.AppServices = appServices;
             this.Settings = settings ?? new AppServicesSettings();
-            this.Logger = logger ?? ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
+            this.Logger = logger ?? appServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets The application services.
         /// </summary>
-        public IAmbientServices AmbientServices { get; }
+        public IAppServiceCollection AppServices { get; }
 
         /// <summary>
         /// Gets the application service information providers.
@@ -85,14 +85,14 @@ namespace Kephas.Services.Builder
         /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
         /// </summary>
         /// <returns>The provided ambient services.</returns>
-        public IAmbientServices Build()
+        public IAppServiceCollection Build()
         {
             var providers = this.GetProviders();
-            return this.AddAppServices(this.AmbientServices, providers, this.Settings.AmbiguousResolutionStrategy);
+            return this.AddAppServices(this.AppServices, providers, this.Settings.AmbiguousResolutionStrategy);
         }
 
-        private IAmbientServices AddAppServices(
-            IAmbientServices ambientServices,
+        private IAppServiceCollection AddAppServices(
+            IAppServiceCollection appServices,
             IEnumerable<IAppServiceInfoProvider> appServiceInfoProviders,
             AmbiguousServiceResolutionStrategy resolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority)
         {
@@ -124,14 +124,14 @@ namespace Kephas.Services.Builder
                     logger.Debug("Getting the app services from provider {provider}...", appServiceInfoProvider);
                 }
 
-                var appServices = appServiceInfoProvider.GetAppServices();
+                var providerAppServices = appServiceInfoProvider.GetAppServices();
 
                 if (logger.IsTraceEnabled())
                 {
                     logger.Trace("Getting the app services from provider {provider} succeeded.", appServiceInfoProvider);
                 }
 
-                return appServices;
+                return providerAppServices;
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -152,7 +152,7 @@ namespace Kephas.Services.Builder
                 .Select(NormalizeAppService)
                 .ToList();
 
-            return ambientServices.AddAppServices(appServiceInfoList, serviceTypes, resolutionStrategy, logger);
+            return appServices.AddAppServices(appServiceInfoList, serviceTypes, resolutionStrategy, logger);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Kephas.Services.Builder
 
             this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(GetBuildAssemblies), searchPattern);
 
-            var assemblies = this.AmbientServices.TryGetServiceInstance<IAppRuntime>()?.GetAppAssemblies().ToList() ?? new List<Assembly>();
+            var assemblies = this.AppServices.TryGetServiceInstance<IAppRuntime>()?.GetAppAssemblies().ToList() ?? new List<Assembly>();
             assemblies.AddRange(this.Assemblies);
             var appAssemblies = assemblies.Where(a => !a.IsSystemAssembly());
 

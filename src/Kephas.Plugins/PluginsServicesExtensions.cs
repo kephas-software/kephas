@@ -25,9 +25,9 @@ namespace Kephas
     public static class PluginsServicesExtensions
     {
         /// <summary>
-        /// Sets the plugins-enabled application runtime to the ambient services.
+        /// Sets the plugins-enabled application runtime to The application services.
         /// </summary>
-        /// <param name="servicesBuilder">The ambient services.</param>
+        /// <param name="servicesBuilder">The application services.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
         /// <param name="runtimeConfig">Optional. The post configuration for the <see cref="PluginsAppRuntime"/>.</param>
         /// <returns>

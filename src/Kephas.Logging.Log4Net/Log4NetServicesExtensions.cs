@@ -22,7 +22,7 @@ namespace Kephas
     public static class Log4NetServicesExtensions
     {
         /// <summary>
-        /// Sets the NLog log manager to the ambient services.
+        /// Sets the NLog log manager to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>

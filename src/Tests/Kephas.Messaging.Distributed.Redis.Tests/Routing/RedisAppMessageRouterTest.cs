@@ -250,14 +250,14 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.InitializeAsync(
-                new AppContext(container.Resolve<IAmbientServices>()));
+                new AppContext(container.Resolve<IAppServiceCollection>()));
         }
 
         private async Task FinalizeAppAsync(IServiceProvider container)
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(
-                new AppContext(container.Resolve<IAmbientServices>()));
+                new AppContext(container.Resolve<IAppServiceCollection>()));
         }
 
         public class RedisSettingsProvider : ISettingsProvider

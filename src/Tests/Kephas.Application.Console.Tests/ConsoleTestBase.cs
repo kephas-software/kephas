@@ -26,7 +26,7 @@ namespace Kephas.Application.Console.Tests
         /// <summary>
         /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        /// <param name="appServices">Optional. The application services. If not provided, a new instance
         ///                               will be created as linked to the newly created container.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
@@ -34,16 +34,16 @@ namespace Kephas.Application.Console.Tests
         /// A LiteInjectorBuilder.
         /// </returns>
         protected override IAppServiceCollectionBuilder CreateServicesBuilder(
-            IAmbientServices? ambientServices = null,
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
-            ambientServices = builder.AmbientServices;
-            if (!ambientServices.Contains(typeof(IAppContext)))
+            var builder = base.CreateServicesBuilder(appServices, logManager, appRuntime);
+            appServices = builder.AppServices;
+            if (!appServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Add<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(appServices));
+                appServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
             return builder;

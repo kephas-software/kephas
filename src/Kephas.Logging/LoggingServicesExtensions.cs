@@ -20,7 +20,7 @@ namespace Kephas
     public static class LoggingServicesExtensions
     {
         /// <summary>
-        /// Sets the log manager to the ambient services.
+        /// Sets the log manager to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="logManager">The log manager.</param>
@@ -38,13 +38,13 @@ namespace Kephas
                 LoggingHelper.DefaultLogManager = logManager;
             }
 
-            servicesBuilder.AmbientServices.Add<ILogManager>(logManager);
+            servicesBuilder.AppServices.Add<ILogManager>(logManager);
 
             return servicesBuilder;
         }
 
         /// <summary>
-        /// Sets the debug log manager to the ambient services.
+        /// Sets the debug log manager to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="logCallback">Optional. The log callback.</param>
@@ -60,7 +60,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Sets the debug log manager to the ambient services.
+        /// Sets the debug log manager to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="stringBuilder">The string builder.</param>

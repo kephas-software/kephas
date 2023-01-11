@@ -7,7 +7,7 @@ Provides the [log4net](https://www.nuget.org/packages/log4net) logging services 
 ## Usage
 
 ```csharp
-ambientServices.WithLog4NetManager();
+appServices.WithLog4NetManager();
 ```
 
 ## Other resources

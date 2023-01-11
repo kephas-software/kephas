@@ -25,25 +25,25 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AppContext(
-            IAmbientServices ambientServices,
+            IAppServiceCollection appServices,
             IAppArgs? appArgs = null)
         {
-            this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            this.AppServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
             this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
         /// Gets the service collection.
         /// </summary>
-        public IAmbientServices AmbientServices { get; }
+        public IAppServiceCollection AppServices { get; }
 
         /// <summary>
         /// Gets the application runtime.
         /// </summary>
-        public IAppRuntime AppRuntime => this.AmbientServices.GetAppRuntime();
+        public IAppRuntime AppRuntime => this.AppServices.GetAppRuntime();
 
         /// <summary>
         /// Gets the application arguments passed typically as command line arguments.
@@ -77,7 +77,7 @@ namespace Kephas.Application
         /// </value>
         public ILogger? Logger
         {
-            get => this.logger ?? this.AmbientServices.GetServiceInstance<ILogManager>().GetLogger();
+            get => this.logger ?? this.AppServices.GetServiceInstance<ILogManager>().GetLogger();
             init => this.logger = value;
         }
 

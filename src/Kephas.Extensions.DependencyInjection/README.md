@@ -4,7 +4,7 @@
 Provides a dependency injection implementation based on the ```Microsoft.Extensions.DependencyInjection``` infrastructure.
 
 Typically used areas and classes/interfaces/services:
-* ```IAmbientServices.BuildWithDependencyInjection()```.
+* `IAppServiceCollection.BuildWithDependencyInjection()`.
 
 ## Other resources
 

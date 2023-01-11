@@ -19,14 +19,14 @@ namespace Kephas.Services.Builder
     using Kephas.Services.Configuration;
 
     /// <summary>
-    /// Contract interface for <see cref="IAmbientServices"/> builders.
+    /// Contract interface for <see cref="IAppServiceCollection"/> builders.
     /// </summary>
     public interface IAppServiceCollectionBuilder : IDynamic, ILoggable
     {
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets The application services.
         /// </summary>
-        IAmbientServices AmbientServices { get; }
+        IAppServiceCollection AppServices { get; }
 
         /// <summary>
         /// Gets the application service information providers.
@@ -50,6 +50,6 @@ namespace Kephas.Services.Builder
         /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
         /// </summary>
         /// <returns>The provided ambient services.</returns>
-        IAmbientServices Build();
+        IAppServiceCollection Build();
     }
 }

@@ -7,7 +7,7 @@ Provides the [Serilog](https://www.nuget.org/packages/Serilog) logging services 
 ## Usage
 
 ```csharp
-ambientServices.WithSerilogManager();
+appServices.WithSerilogManager();
 ```
 
 ## Other resources

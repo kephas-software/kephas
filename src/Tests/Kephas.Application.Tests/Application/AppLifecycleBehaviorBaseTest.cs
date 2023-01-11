@@ -29,9 +29,9 @@ namespace Kephas.Tests.Application
         {
             var logger = Substitute.For<ILogger>();
             var logManager = Substitute.For<ILogManager>();
-            var ambientServices = Substitute.For<IAmbientServices>();
+            var ambientServices = Substitute.For<IAppServiceCollection>();
             var appContext = Substitute.For<IAppContext>();
-            appContext.AmbientServices.Returns(ambientServices);
+            appContext.AppServices.Returns(ambientServices);
             logManager.GetLogger(Arg.Any<string>()).Returns(logger);
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
 

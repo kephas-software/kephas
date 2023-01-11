@@ -20,6 +20,6 @@ public class LoggingAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.AddCollector(ambient => ambient.Add<ILogManager, NullLogManager>());
+        IAppServiceCollection.AddCollector(ambient => ambient.Add<ILogManager, NullLogManager>());
     }
 }

@@ -14,7 +14,7 @@ using Kephas.IO;
 using Kephas.Services.Builder;
 
 /// <summary>
-/// Tenant related <see cref="IAmbientServices"/> extensions.
+/// Tenant related <see cref="IAppServiceCollection"/> extensions.
 /// </summary>
 public static class TenantServicesExtensions
 {
@@ -34,7 +34,7 @@ public static class TenantServicesExtensions
             return servicesBuilder;
         }
 
-        servicesBuilder.AmbientServices.Add<ILocationsManager>(new TenantFolderLocationsManager(tenant));
+        servicesBuilder.AppServices.Add<ILocationsManager>(new TenantFolderLocationsManager(tenant));
         return servicesBuilder;
     }
 }

@@ -61,11 +61,11 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var ambientServices = new AppServiceCollection()
+                var appServices = new AppServiceCollection()
                     .Add<ISettingsProvider>(
                         _ => new PluginsSettingsProvider("tags:kephas"),
                         b => b.Singleton().AllowMultiple());
-                var container = this.CreateServicesBuilder(ambientServices)
+                var container = this.CreateServicesBuilder(appServices)
                     .WithAppRuntime(this.CreateAppRuntime(new DebugLogManager(), pluginsFolder))
                     .BuildWithDependencyInjection();
                 var manager = container.Resolve<IPluginManager>();
@@ -97,11 +97,11 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var ambientServices = new AppServiceCollection()
+                var appServices = new AppServiceCollection()
                     .Add<ISettingsProvider>(
                         _ => new PluginsSettingsProvider("tags:kismsspplugin"),
                         b => b.Singleton().AllowMultiple());
-                var container = this.CreateServicesBuilder(ambientServices)
+                var container = this.CreateServicesBuilder(appServices)
                     .WithAppRuntime(this.CreateAppRuntime(new DebugLogManager(), pluginsFolder))
                     .BuildWithDependencyInjection();
                 var manager = container.Resolve<IPluginManager>();

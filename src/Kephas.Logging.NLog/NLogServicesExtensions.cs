@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Extension methods for the AmbientServicesBuilder.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas
@@ -23,7 +20,7 @@ namespace Kephas
     public static class NLogServicesExtensions
     {
         /// <summary>
-        /// Sets the NLog log manager to the ambient services.
+        /// Sets the NLog log manager to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="configuration">Optional. The logging configuration.</param>

@@ -20,15 +20,15 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     public class GetServiceContractsHandler : MessageHandlerBase<GetServiceContractsMessage, GetServiceContractsResponseMessage>
     {
-        private readonly IAmbientServices ambientServices;
+        private readonly IAppServiceCollection appServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetServiceContractsHandler"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public GetServiceContractsHandler(IAmbientServices ambientServices)
+        /// <param name="appServices">The application services.</param>
+        public GetServiceContractsHandler(IAppServiceCollection appServices)
         {
-            this.ambientServices = ambientServices;
+            this.appServices = appServices;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Kephas.Core.Endpoints
         /// </returns>
         public override Task<GetServiceContractsResponseMessage> ProcessAsync(GetServiceContractsMessage message, IMessagingContext context, CancellationToken token)
         {
-            IEnumerable<IAppServiceInfo> appServiceInfos = this.ambientServices;
+            IEnumerable<IAppServiceInfo> appServiceInfos = this.appServices;
 
             if (!string.IsNullOrEmpty(message.ContractType))
             {

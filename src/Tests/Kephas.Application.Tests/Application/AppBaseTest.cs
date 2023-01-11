@@ -38,20 +38,20 @@ namespace Kephas.Tests.Application
         }
 
         [Test]
-        public async Task ConfigureAmbientServicesAsync()
+        public async Task ConfigureAppServicesAsync()
         {
             var injector = Substitute.For<IServiceProvider>();
 
-            IAmbientServices? ambientServices = null;
+            IAppServiceCollection? appServices = null;
             var app = new TestApp(b =>
             {
-                ambientServices = b.AmbientServices;
+                appServices = b.AppServices;
                 return injector;
             });
             var (appContext, instruction) = await app.RunAsync();
 
-            Assert.AreSame(app.ServicesBuilder.AmbientServices, ambientServices);
-            Assert.AreSame(ambientServices, appContext.AmbientServices);
+            Assert.AreSame(app.ServicesBuilder.AppServices, appServices);
+            Assert.AreSame(appServices, appContext.AppServices);
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace Kephas.Tests.Application
                 : base.Main(cancellationToken);
         }
 
-        private static IAmbientServices CreateAmbientServices() =>
+        private static IAppServiceCollection CreateAppServices() =>
             new AppServiceCollection().Add<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
     }
 }

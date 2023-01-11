@@ -25,7 +25,7 @@ namespace Kephas
     /// Provides the global ambient services.
     /// </summary>
     [ExcludeFromServices]
-    public class AppServiceCollection : Expando, IAmbientServices
+    public class AppServiceCollection : Expando, IAppServiceCollection
     {
         private readonly IList<IAppServiceInfo> registry = new List<IAppServiceInfo>();
 
@@ -49,10 +49,10 @@ namespace Kephas
 #endif
             if (registerDefaultServices)
             {
-                IAmbientServices.Initialize(this);
+                IAppServiceCollection.Initialize(this);
             }
 
-            this.Add<IAmbientServices>(this, b => b.ExternallyOwned());
+            this.Add<IAppServiceCollection>(this, b => b.ExternallyOwned());
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -68,9 +68,9 @@ namespace Kephas
         /// </summary>
         /// <param name="appServiceInfo">The application service registration.</param>
         /// <returns>
-        /// This <see cref="IAmbientServices"/>.
+        /// This <see cref="IAppServiceCollection"/>.
         /// </returns>
-        public IAmbientServices Add(IAppServiceInfo appServiceInfo)
+        public IAppServiceCollection Add(IAppServiceInfo appServiceInfo)
         {
             this.registry.Add(appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo)));
 
@@ -82,9 +82,9 @@ namespace Kephas
         /// </summary>
         /// <param name="appServiceInfo">The application service registration.</param>
         /// <returns>
-        /// This <see cref="IAmbientServices"/>.
+        /// This <see cref="IAppServiceCollection"/>.
         /// </returns>
-        public IAmbientServices Replace(IAppServiceInfo appServiceInfo)
+        public IAppServiceCollection Replace(IAppServiceInfo appServiceInfo)
         {
             var toDelete = this.registry
                 .Select((i, idx) => (appServiceInfo: i, index: idx))

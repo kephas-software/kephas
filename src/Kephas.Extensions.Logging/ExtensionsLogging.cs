@@ -56,7 +56,7 @@ namespace Kephas.Extensions.Logging
         }
 
         /// <summary>
-        /// Sets the Extensions log manager to the ambient services.
+        /// Sets the Extensions log manager to The application services.
         /// </summary>
         /// <remarks>
         /// Use this method if you plan to configure the logging outside of Kephas.

@@ -28,7 +28,7 @@ using Kephas.Services.Reflection;
 public static class AutofacExtensions
 {
     /// <summary>
-    /// Builds the injector with Autofac and adds it to the ambient services.
+    /// Builds the injector with Autofac and adds it to The application services.
     /// </summary>
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="containerBuilder">The container builder.</param>
@@ -39,40 +39,40 @@ public static class AutofacExtensions
         BuildWithAutofac(servicesBuilder.Build(), containerBuilder, preserveRegistrationOrder, logger);
 
     /// <summary>
-    /// Builds the injector with Autofac and adds it to the ambient services.
+    /// Builds the injector with Autofac and adds it to the application services.
     /// </summary>
-    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="appServices">The application services.</param>
     /// <param name="containerBuilder">The container builder.</param>
     /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
     /// <param name="logger">Optional. The logger.</param>
     /// <returns>The provided ambient services.</returns>
-    public static IServiceProvider BuildWithAutofac(this IAmbientServices ambientServices, ContainerBuilder? containerBuilder = null, bool preserveRegistrationOrder = true, ILogger? logger = null)
+    public static IServiceProvider BuildWithAutofac(this IAppServiceCollection appServices, ContainerBuilder? containerBuilder = null, bool preserveRegistrationOrder = true, ILogger? logger = null)
     {
-        ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
 
         containerBuilder ??= new ContainerBuilder();
-        containerBuilder.UseAmbientServices(ambientServices, preserveRegistrationOrder);
+        containerBuilder.UseAppServices(appServices, preserveRegistrationOrder);
 
         return new AutofacServiceProvider(containerBuilder, logger);
     }
 
     /// <summary>
-    /// Builds the injector with Autofac and adds it to the ambient services.
+    /// Builds the injector with Autofac and adds it to the application services.
     /// </summary>
     /// <param name="containerBuilder">The container builder.</param>
-    /// <param name="ambientServices">The ambient services.</param>
+    /// <param name="appServices">The application services.</param>
     /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
     /// <param name="logger">Optional. The logger.</param>
     /// <returns>The provided ambient services.</returns>
-    public static ContainerBuilder UseAmbientServices(this ContainerBuilder containerBuilder, IAmbientServices ambientServices, bool preserveRegistrationOrder = true, ILogger? logger = null)
+    public static ContainerBuilder UseAppServices(this ContainerBuilder containerBuilder, IAppServiceCollection appServices, bool preserveRegistrationOrder = true, ILogger? logger = null)
     {
         containerBuilder = containerBuilder ?? throw new ArgumentNullException(nameof(containerBuilder));
-        ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
 
-        var servicesBuilder = new AppServiceCollectionBuilder(ambientServices);
+        var servicesBuilder = new AppServiceCollectionBuilder(appServices);
         servicesBuilder.Build();
 
-        foreach (var appServiceInfo in ambientServices)
+        foreach (var appServiceInfo in appServices)
         {
             containerBuilder.AddAppServiceInfo(appServiceInfo, preserveRegistrationOrder);
         }

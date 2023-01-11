@@ -18,7 +18,7 @@ using Kephas.Services.Builder;
 public static class LicensingServicesExtensions
 {
     /// <summary>
-    /// Sets the licensing manager to the ambient services.
+    /// Sets the licensing manager to The application services.
     /// </summary>
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="licensingManager">The licensing manager.</param>
@@ -32,16 +32,16 @@ public static class LicensingServicesExtensions
         servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
         licensingManager = licensingManager ?? throw new ArgumentNullException(nameof(licensingManager));
 
-        var ambientServices = servicesBuilder.AmbientServices;
-        ambientServices.Add(licensingManager);
-        ambientServices.GetAppRuntime()
+        var appServices = servicesBuilder.AppServices;
+        appServices.Add(licensingManager);
+        appServices.GetAppRuntime()
             .OnCheckLicense((appid, context) => licensingManager.CheckLicense(appid, context));
 
         return servicesBuilder;
     }
 
     /// <summary>
-    /// Sets the default licensing manager to the ambient services.
+    /// Sets the default licensing manager to The application services.
     /// </summary>
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="encryptionService">The encryption service.</param>
@@ -56,10 +56,10 @@ public static class LicensingServicesExtensions
         encryptionService = encryptionService ?? throw new ArgumentNullException(nameof(encryptionService));
 
         const string LicenseRepositoryKey = "__LicenseRepository";
-        var ambientServices = servicesBuilder.AmbientServices;
-        var licenseRepository = (ambientServices[LicenseRepositoryKey] as ILicenseStore)
-                                ?? (ILicenseStore)(ambientServices[LicenseRepositoryKey] =
-                                    new LicenseStore(ambientServices.GetAppRuntime(), encryptionService));
+        var appServices = servicesBuilder.AppServices;
+        var licenseRepository = (appServices[LicenseRepositoryKey] as ILicenseStore)
+                                ?? (ILicenseStore)(appServices[LicenseRepositoryKey] =
+                                    new LicenseStore(appServices.GetAppRuntime(), encryptionService));
         var licenseManager = new DefaultLicensingManager(appid => licenseRepository.GetLicenseData(appid));
 
         return WithLicensingManager(servicesBuilder, licenseManager);

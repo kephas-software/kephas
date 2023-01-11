@@ -17,12 +17,12 @@ public class TenantServicesExtensionsTest
     [Test]
     public void WithTenantSupport_no_tenant()
     {
-        var ambientServices = new AppServiceCollectionBuilder(new AppServiceCollection())
+        var appServices = new AppServiceCollectionBuilder(new AppServiceCollection())
             .WithTenantSupport(new AppArgs("--no tenant"))
             .WithStaticAppRuntime()
-            .AmbientServices;
-        var configLocations = ambientServices.GetAppRuntime()!.GetAppConfigLocations();
-        var licenseLocations = ambientServices.GetAppRuntime()!.GetAppLicenseLocations();
+            .AppServices;
+        var configLocations = appServices.GetAppRuntime()!.GetAppConfigLocations();
+        var licenseLocations = appServices.GetAppRuntime()!.GetAppLicenseLocations();
 
         Assert.IsTrue(configLocations.All(l => l.EndsWith("config")));
         Assert.IsTrue(licenseLocations.All(l => l.EndsWith("licenses")));
@@ -31,12 +31,12 @@ public class TenantServicesExtensionsTest
     [Test]
     public void WithTenantSupport_with_tenant()
     {
-        var ambientServices = new AppServiceCollectionBuilder(new AppServiceCollection())
+        var appServices = new AppServiceCollectionBuilder(new AppServiceCollection())
             .WithTenantSupport(new AppArgs("--tenant my"))
             .WithStaticAppRuntime()
-            .AmbientServices;
-        var configLocations = ambientServices.GetAppRuntime()!.GetAppConfigLocations();
-        var licenseLocations = ambientServices.GetAppRuntime()!.GetAppLicenseLocations();
+            .AppServices;
+        var configLocations = appServices.GetAppRuntime()!.GetAppConfigLocations();
+        var licenseLocations = appServices.GetAppRuntime()!.GetAppLicenseLocations();
 
         Assert.IsTrue(configLocations.All(l => l.EndsWith(Path.Combine("config", ".my"))));
         Assert.IsTrue(licenseLocations.All(l => l.EndsWith(Path.Combine("licenses", ".my"))));

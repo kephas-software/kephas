@@ -80,9 +80,9 @@ public static class DependencyInjectionExtensions
 
         services.AddGenericCollections();
 
-        var ambientServices = servicesBuilder.Build();
+        var appServices = servicesBuilder.Build();
 
-        foreach (var appServiceInfo in ambientServices)
+        foreach (var appServiceInfo in appServices)
         {
             services.AddAppServiceInfo(appServiceInfo);
         }

@@ -36,37 +36,37 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesModelRegistry"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
-        public AppServicesModelRegistry(IAmbientServices ambientServices, IAppRuntime appRuntime, IRuntimeTypeRegistry typeRegistry)
-            : this(ambientServices, appRuntime, typeRegistry, IsNotThirdParty)
+        public AppServicesModelRegistry(IAppServiceCollection appServices, IAppRuntime appRuntime, IRuntimeTypeRegistry typeRegistry)
+            : this(appServices, appRuntime, typeRegistry, IsNotThirdParty)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServicesModelRegistry"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="filter">Optional. Sets the filter for eligible service contracts.</param>
         protected internal AppServicesModelRegistry(
-            IAmbientServices ambientServices,
+            IAppServiceCollection appServices,
             IAppRuntime appRuntime,
             IRuntimeTypeRegistry typeRegistry,
             Func<IAppServiceInfo, IAppRuntime, bool>? filter)
         {
-            this.AmbientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            this.AppServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
             this.AppRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
             this.typeRegistry = typeRegistry;
             this.filter = filter;
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets The application services.
         /// </summary>
-        protected IAmbientServices AmbientServices { get; }
+        protected IAppServiceCollection AppServices { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -82,7 +82,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// </returns>
         public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<IAppServiceInfo> appServiceInfos = this.AmbientServices;
+            IEnumerable<IAppServiceInfo> appServiceInfos = this.AppServices;
             if (this.filter != null)
             {
                 appServiceInfos = appServiceInfos.Where(sc => this.filter(sc, this.AppRuntime));

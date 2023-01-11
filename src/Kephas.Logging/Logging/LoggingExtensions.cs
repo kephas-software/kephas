@@ -52,9 +52,9 @@ namespace Kephas.Logging
             obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             var objType = obj as Type ?? obj.GetType();
-            if (obj is IAmbientServices ambientServices)
+            if (obj is IAppServiceCollection appServices)
             {
-                return ambientServices.GetServiceInstance<ILogManager>().GetLogger(objType);
+                return appServices.GetServiceInstance<ILogManager>().GetLogger(objType);
             }
 
             if (obj is IServiceProvider injector)

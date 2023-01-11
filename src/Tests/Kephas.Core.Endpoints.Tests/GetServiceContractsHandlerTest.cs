@@ -35,7 +35,7 @@ namespace Kephas.Core.Endpoints.Tests
     public async Task ProcessAsync_all()
     {
         var container = this.BuildServiceProvider();
-        var handler = new GetServiceContractsHandler(container.Resolve<IAmbientServices>());
+        var handler = new GetServiceContractsHandler(container.Resolve<IAppServiceCollection>());
 
         var result = await handler.ProcessAsync(
             new GetServiceContractsMessage(),
@@ -55,7 +55,7 @@ namespace Kephas.Core.Endpoints.Tests
     public async Task ProcessAsync_filter_asopengeneric()
     {
         var container = this.BuildServiceProvider();
-        var handler = new GetServiceContractsHandler(container.Resolve<IAmbientServices>());
+        var handler = new GetServiceContractsHandler(container.Resolve<IAppServiceCollection>());
 
         var result = await handler.ProcessAsync(
             new GetServiceContractsMessage

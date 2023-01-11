@@ -26,12 +26,12 @@ namespace Kephas.Services
     [OverridePriority(Priority.Low)]
     public class InjectableFactory : IInjectableFactory
     {
-        private const int AmbientServicesIndex = -1;
+        private const int AppServicesIndex = -1;
         private const int InjectorIndex = -2;
         private const int LogManagerIndex = -3;
 
         private readonly IServiceProvider serviceProvider;
-        private readonly IAmbientServices ambientServices;
+        private readonly IAppServiceCollection appServices;
         private readonly ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>> typeCache = new ();
 
         private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>> signatureCache = new ();
@@ -40,12 +40,12 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="Kephas.Services.InjectableFactory"/> class.
         /// </summary>
         /// <param name="serviceProvider">The injector.</param>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="logManager">Manager for log.</param>
-        public InjectableFactory(IServiceProvider serviceProvider, IAmbientServices ambientServices, ILogManager logManager)
+        public InjectableFactory(IServiceProvider serviceProvider, IAppServiceCollection appServices, ILogManager logManager)
         {
             this.serviceProvider = serviceProvider;
-            this.ambientServices = ambientServices;
+            this.appServices = appServices;
             this.LogManager = logManager;
         }
 
@@ -114,7 +114,7 @@ namespace Kephas.Services
             var argResolverMap = new List<Func<object?>?>
                 {
                     null,
-                    () => this.ambientServices,
+                    () => this.appServices,
                     () => this.serviceProvider,
                     () => this.LogManager,
                 };
@@ -128,11 +128,11 @@ namespace Kephas.Services
                 }
                 else
                 {
-                    var appServiceInfo = this.ambientServices.FirstOrDefault(i => i.ContractDeclarationType == paramType);
+                    var appServiceInfo = this.appServices.FirstOrDefault(i => i.ContractDeclarationType == paramType);
                     if (appServiceInfo == null && paramType.IsGenericType)
                     {
                         var genericDefParamType = paramType.GetGenericTypeDefinition();
-                        appServiceInfo = this.ambientServices.FirstOrDefault(i => i.ContractDeclarationType == genericDefParamType);
+                        appServiceInfo = this.appServices.FirstOrDefault(i => i.ContractDeclarationType == genericDefParamType);
                     }
 
                     if (appServiceInfo != null && !appServiceInfo.AllowMultiple)
@@ -158,9 +158,9 @@ namespace Kephas.Services
 
         private int? GetArgIndex(Signature signature, Type paramType)
         {
-            if (paramType == typeof(IAmbientServices))
+            if (paramType == typeof(IAppServiceCollection))
             {
-                return AmbientServicesIndex;
+                return AppServicesIndex;
             }
 
             if (paramType == typeof(IServiceProvider))

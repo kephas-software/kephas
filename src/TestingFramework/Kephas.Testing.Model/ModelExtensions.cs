@@ -34,20 +34,20 @@ public static class ModelExtensions
     }
 
     /// <summary>
-    /// Adds the model elements to the <see cref="IAmbientServices"/> as a new <see cref="IRuntimeModelRegistry"/>.
+    /// Adds the model elements to the <see cref="IAppServiceCollection"/> as a new <see cref="IRuntimeModelRegistry"/>.
     /// </summary>
     /// <param name="servicesBuilder">The service collection builder.</param>
     /// <param name="elements">The elements.</param>
     /// <returns>The provided service collection builder.</returns>
     public static IAppServiceCollectionBuilder WithModelElements(this IAppServiceCollectionBuilder servicesBuilder, IEnumerable<Type> elements)
     {
-        servicesBuilder.AmbientServices.Add(_ => elements.GetModelRegistry(), b => b.Singleton().AllowMultiple());
+        servicesBuilder.AppServices.Add(_ => elements.GetModelRegistry(), b => b.Singleton().AllowMultiple());
 
         return servicesBuilder;
     }
 
     /// <summary>
-    /// Adds the model elements to the <see cref="IAmbientServices"/> as a new <see cref="IRuntimeModelRegistry"/>.
+    /// Adds the model elements to the <see cref="IAppServiceCollection"/> as a new <see cref="IRuntimeModelRegistry"/>.
     /// </summary>
     /// <param name="servicesBuilder">The service collection builder.</param>
     /// <param name="elements">The elements.</param>
@@ -56,7 +56,7 @@ public static class ModelExtensions
         => WithModelElements(servicesBuilder, (IEnumerable<Type>)elements);
 
     /// <summary>
-    /// Adds the model element configurator to the <see cref="IAmbientServices"/>.
+    /// Adds the model element configurator to the <see cref="IAppServiceCollection"/>.
     /// </summary>
     /// <typeparam name="TConfigurator">The configurator type.</typeparam>
     /// <param name="servicesBuilder">The service collection builder.</param>

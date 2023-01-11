@@ -176,10 +176,10 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <summary>
         /// Gets the services configurators.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <returns>An enumeration of services configurator callbacks.</returns>
-        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
-            => ambientServices.GetServicesConfigurators()
+        protected virtual IEnumerable<Action<IServiceCollection, IAppServiceCollection>> GetServicesConfigurators(IAppServiceCollection appServices)
+            => appServices.GetServicesConfigurators()
                 .Select(this.GetServicesConfiguratorAction);
 
         /// <summary>
@@ -194,13 +194,13 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <summary>
         /// Creates the application context.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="logger">The logger.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected override IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs, ILogger? logger)
+        protected override IAppContext CreateAppContext(IAppServiceCollection appServices, IAppArgs? appArgs, ILogger? logger)
         {
             var appContext = new AspNetAppContext(
                 this.HostEnvironment,
@@ -219,8 +219,8 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected override IServiceProvider Build(IAmbientServices ambientServices)
+        /// <param name="appServices">The application services.</param>
+        protected override IServiceProvider Build(IAppServiceCollection appServices)
         {
             return this.ServiceProvider!;
         }

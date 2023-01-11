@@ -37,11 +37,11 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace? modelSpace = null,
             IRuntimeModelElementFactory? factory = null)
         {
-            var ambientServices = new AppServiceCollectionBuilder(this.CreateAmbientServices())
+            var appServices = new AppServiceCollectionBuilder(this.CreateAppServices())
                 .WithStaticAppRuntime()
-                .AmbientServices;
+                .AppServices;
             var injector = Substitute.For<IServiceProvider>();
-            injector.Resolve<IAmbientServices>().Returns(ambientServices);
+            injector.Resolve<IAppServiceCollection>().Returns(appServices);
             return new ModelConstructionContext(injector)
             {
                 ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),

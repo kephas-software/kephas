@@ -222,7 +222,7 @@ namespace Kephas.Application
 
         /// <summary>
         /// The <see cref="AfterAppManagerFinalize"/> is called after the application manager completed finalization.
-        /// It disposes the injector and the ambient services.
+        /// It disposes the injector and The application services.
         /// </summary>
         protected virtual void AfterAppManagerFinalize()
         {
@@ -252,18 +252,18 @@ namespace Kephas.Application
 
                 this.ConfigureServices(this.ServicesBuilder);
 
-                var ambientServices = this.ServicesBuilder.AmbientServices;
-                this.Logger ??= ambientServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
+                var appServices = this.ServicesBuilder.AppServices;
+                this.Logger ??= appServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
                 // and after configuring the ambient services and the logger, as it may
                 // use registered services.
-                this.AppContext = this.CreateAppContext(ambientServices, appArgs, this.Logger);
+                this.AppContext = this.CreateAppContext(appServices, appArgs, this.Logger);
 
                 // require the AppContext to be computed each time, so that if it is called
                 // too early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
-                ambientServices.Add(this.AppContext);
+                appServices.Add(this.AppContext);
 
                 this.ServiceProvider = this.BuildServiceProvider(this.ServicesBuilder);
 
@@ -449,7 +449,7 @@ namespace Kephas.Application
             {
                 var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
                 {
-                    AmbientServices = this.ServicesBuilder.AmbientServices,
+                    AppServices = this.ServicesBuilder.AppServices,
                     AppContext = appContext ?? this.AppContext,
                 };
                 this.Log(LogLevel.Fatal, shutdownException);
@@ -460,15 +460,15 @@ namespace Kephas.Application
         /// <summary>
         /// Creates the application context.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appServices">The application services.</param>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="logger">The logger.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices, IAppArgs? appArgs, ILogger? logger)
+        protected virtual IAppContext CreateAppContext(IAppServiceCollection appServices, IAppArgs? appArgs, ILogger? logger)
         {
-            var appContext = new AppContext(ambientServices, appArgs: appArgs)
+            var appContext = new AppContext(appServices, appArgs: appArgs)
             {
                 Logger = logger,
             };

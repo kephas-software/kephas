@@ -41,7 +41,7 @@ public class DefaultAppManager : Loggable, IAppManager
     /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
     /// </summary>
     /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="serviceProvider">The ambient services.</param>
+    /// <param name="serviceProvider">The application services.</param>
     /// <param name="appLifecycleBehaviorFactories">Optional. The application lifecycle behavior factories.</param>
     /// <param name="featureManagerFactories">Optional. The feature manager factories.</param>
     /// <param name="featureLifecycleBehaviorFactories">Optional. The feature lifecycle behavior factories.</param>

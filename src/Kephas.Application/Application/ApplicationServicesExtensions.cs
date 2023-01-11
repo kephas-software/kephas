@@ -26,7 +26,7 @@ namespace Kephas.Application
         /// <summary>
         /// Add the application arguments as <see cref="IAppArgs"/> service.
         /// </summary>
-        /// <param name="servicesBuilder">The ambient services.</param>
+        /// <param name="servicesBuilder">The application services.</param>
         /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments, if not already registered.</param>
         /// <returns>The provided ambient services.</returns>
         public static IAppServiceCollectionBuilder AddAppArgs(this IAppServiceCollectionBuilder servicesBuilder, IAppArgs? args = null)
@@ -34,7 +34,7 @@ namespace Kephas.Application
             servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
             // register the app args if not already registered or the raw args are provided
-            var ambientServices = servicesBuilder.AmbientServices;
+            var ambientServices = servicesBuilder.AppServices;
             if (args != null)
             {
                 ambientServices.Add<IAppArgs>(args);

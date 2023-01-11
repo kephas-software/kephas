@@ -40,7 +40,7 @@ namespace Kephas.Tests.Orchestration
         [Test]
         public void Injection()
         {
-            var container = this.CreateServicesBuilder(this.CreateAmbientServices())
+            var container = this.CreateServicesBuilder(this.CreateAppServices())
                 .BuildWithAutofac();
 
             var manager = container.Resolve<IOrchestrationManager>();
@@ -51,8 +51,8 @@ namespace Kephas.Tests.Orchestration
         [Test]
         public async Task InitializeAsync_Heartbeat_integration()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateServicesBuilder(ambientServices)
+            var appServices = this.CreateAppServices();
+            var container = this.CreateServicesBuilder(appServices)
                 .BuildWithAutofac();
 
             var appManager = container.Resolve<IAppManager>();
@@ -64,18 +64,18 @@ namespace Kephas.Tests.Orchestration
             AppHeartbeatEvent? heartbeat = null;
             registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => (heartbeat = e).ToEvent());
 
-            await appManager.InitializeAsync(new AppContext(ambientServices));
+            await appManager.InitializeAsync(new AppContext(appServices));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
 
             Assert.NotNull(heartbeat);
 
-            await appManager.FinalizeAsync(new AppContext(ambientServices));
+            await appManager.FinalizeAsync(new AppContext(appServices));
         }
 
         [Test]
         public async Task InitializeAsync_Heartbeat()
         {
-            var ambientServices = this.CreateAmbientServices();
+            var appServices = this.CreateAppServices();
             var messageBroker = Substitute.For<IMessageBroker>();
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime[IAppRuntime.AppIdKey].Returns("hi");
@@ -87,8 +87,8 @@ namespace Kephas.Tests.Orchestration
             var eventHub = this.CreateEventHubMock();
 
             var injector = Substitute.For<IServiceProvider>();
-            new AppServiceCollectionBuilder(ambientServices).WithAppRuntime(appRuntime);
-            var appContext = new AppContext(ambientServices);
+            new AppServiceCollectionBuilder(appServices).WithAppRuntime(appRuntime);
+            var appContext = new AppContext(appServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
             config.GetSettings(Arg.Any<IContext>()).Returns(new OrchestrationSettings());

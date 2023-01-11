@@ -43,7 +43,7 @@ namespace Kephas.Tests.Orchestration
         /// <summary>
         /// Creates a <see cref="IAppServiceCollectionBuilder"/> for further configuration.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        /// <param name="appServices">Optional. The application services. If not provided, a new instance
         ///                               will be created as linked to the newly created container.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
@@ -51,14 +51,14 @@ namespace Kephas.Tests.Orchestration
         /// A LiteInjectorBuilder.
         /// </returns>
         protected override IAppServiceCollectionBuilder CreateServicesBuilder(
-            IAmbientServices? ambientServices = null,
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var builder = base.CreateServicesBuilder(ambientServices, logManager, appRuntime);
-            ambientServices = builder.AmbientServices;
+            var builder = base.CreateServicesBuilder(appServices, logManager, appRuntime);
+            appServices = builder.AppServices;
             var appContext = Substitute.For<IAppContext>();
-            ambientServices.Add<IAppContext>(_ => appContext);
+            appServices.Add<IAppContext>(_ => appContext);
             return builder;
         }
     }

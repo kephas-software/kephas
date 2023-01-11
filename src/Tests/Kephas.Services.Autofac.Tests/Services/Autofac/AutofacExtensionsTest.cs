@@ -24,8 +24,8 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void BuildWithAutofac_defaults()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var injector = new AppServiceCollectionBuilder(ambientServices)
+            var appServices = this.CreateAppServices();
+            var injector = new AppServiceCollectionBuilder(appServices)
                 .WithDynamicAppRuntime(rt => rt.IsAppAssembly = (a => a.Name.Contains("Kephas") && !a.Name.Contains("Test")))
                 .BuildWithAutofac();
 
@@ -35,8 +35,8 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void BuildWithAutofac_with_open_generic_override()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var builder = new AppServiceCollectionBuilder(ambientServices)
+            var appServices = this.CreateAppServices();
+            var builder = new AppServiceCollectionBuilder(appServices)
                 .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
             var injector = builder.BuildWithAutofac();
@@ -48,8 +48,8 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void BuildWithAutofac_with_open_generic_override_and_dependency()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var builder = new AppServiceCollectionBuilder(ambientServices)
+            var appServices = this.CreateAppServices();
+            var builder = new AppServiceCollectionBuilder(appServices)
                 .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
             var injector = builder.BuildWithAutofac();

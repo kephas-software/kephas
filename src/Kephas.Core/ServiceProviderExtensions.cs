@@ -21,17 +21,17 @@ namespace Kephas
         /// Gets the service with the provided type.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <returns>
         /// A service object of type <typeparamref name="TContract"/>.-or- <c>null</c> if there is no
         /// service object of type <typeparamref name="TContract"/>.
         /// </returns>
-        public static TContract? GetService<TContract>(this IServiceProvider ambientServices)
+        public static TContract? GetService<TContract>(this IServiceProvider serviceProvider)
             where TContract : class
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            return (TContract?)ambientServices.GetService(typeof(TContract));
+            return (TContract?)serviceProvider.GetService(typeof(TContract));
         }
 
         /// <summary>

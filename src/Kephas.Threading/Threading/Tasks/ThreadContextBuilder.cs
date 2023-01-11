@@ -46,7 +46,7 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
-        /// Adds the store action to the ambient services. This method is not thread safe, use it with caution and only when initializing the server.
+        /// Adds the store action to The application services. This method is not thread safe, use it with caution and only when initializing the server.
         /// </summary>
         /// <param name="storeAction">The store action.</param>
         /// <returns>
@@ -63,7 +63,7 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
-        /// Adds the restore action to the ambient services. This method is not thread safe, use it with caution and only when initializing the server.
+        /// Adds the restore action to The application services. This method is not thread safe, use it with caution and only when initializing the server.
         /// </summary>
         /// <param name="restoreAction">The restore action.</param>
         /// <returns>

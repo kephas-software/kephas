@@ -158,9 +158,9 @@ namespace Kephas.Model.Tests.Elements
 
         private ModelConstructionContext CreateModelConstructionContext()
         {
-            var ambientServices = this.CreateAmbientServices();
+            var appServices = this.CreateAppServices();
             var injector = Substitute.For<IServiceProvider>();
-            injector.Resolve<IAmbientServices>().Returns(ambientServices);
+            injector.Resolve<IAppServiceCollection>().Returns(appServices);
             var context = new ModelConstructionContext(injector);
             return context;
         }

@@ -25,7 +25,7 @@ namespace Kephas.Tests.Services.Autofac
         public void CreateScopedInjector_NestedScopes()
         {
             var builder = this.CreateServicesBuilder();
-            builder.AmbientServices.Add(new AppServiceInfo(
+            builder.AppServices.Add(new AppServiceInfo(
                 typeof(AutofacServiceProviderTest.ScopeExportedClass),
                 typeof(AutofacServiceProviderTest.ScopeExportedClass),
                 AppServiceLifetime.Scoped));
@@ -62,7 +62,7 @@ namespace Kephas.Tests.Services.Autofac
         public void CreateScopedInjector_Injector_registration_scope_consumers()
         {
             var builder = this.CreateServicesBuilder();
-            builder.AmbientServices.Add(new AppServiceInfo(
+            builder.AppServices.Add(new AppServiceInfo(
                 typeof(AutofacServiceProviderTest.ScopeExportedClass),
                 typeof(AutofacServiceProviderTest.ScopeExportedClass),
                 AppServiceLifetime.Scoped));

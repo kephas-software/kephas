@@ -287,7 +287,7 @@ namespace Kephas.Tests.Services
                 typeof(TypedLogger<>),
             };
             var builder = this.CreateAppServiceCollectionBuilder(
-                this.GetTestAmbientServices(m => log.AppendLine(m)));
+                this.GetTestAppServices(m => log.AppendLine(m)));
             var services = builder.WithParts(parts).Build();
 
             var testBuilder = services.Single(s => s.InstanceType is not null);
@@ -415,13 +415,13 @@ namespace Kephas.Tests.Services
             Assert.Throws<InjectionException>(() => builder.WithParts(parts).Build());
         }
 
-        private AppServiceCollectionBuilder CreateAppServiceCollectionBuilder(IAmbientServices? ambientServices = null)
+        private AppServiceCollectionBuilder CreateAppServiceCollectionBuilder(IAppServiceCollection? appServices = null)
         {
-            var builder = new AppServiceCollectionBuilder(ambientServices ?? this.CreateAmbientServices());
+            var builder = new AppServiceCollectionBuilder(appServices ?? this.CreateAppServices());
             return builder;
         }
 
-        private IAmbientServices GetTestAmbientServices(Action<string>? logAction = null)
+        private IAppServiceCollection GetTestAppServices(Action<string>? logAction = null)
         {
             var logger = Substitute.For<ILogger>();
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
@@ -434,10 +434,10 @@ namespace Kephas.Tests.Services
             var logManager = Substitute.For<ILogManager>();
             logManager.GetLogger(Arg.Any<string>()).Returns(logger);
 
-            var ambientServices = this.CreateAmbientServices();
-            ambientServices.Add(logManager);
+            var appServices = this.CreateAppServices();
+            appServices.Add(logManager);
 
-            return ambientServices;
+            return appServices;
         }
 
         [SingletonAppServiceContract(AllowMultiple = false)]

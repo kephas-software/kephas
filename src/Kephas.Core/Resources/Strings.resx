@@ -263,8 +263,8 @@
     <comment>Bootstrapping the application...</comment>
   </data>
   <data name="App_RunAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
-    <value>Configuring the ambient services...</value>
-    <comment>Configuring the ambient services...</comment>
+    <value>Configuring The application services...</value>
+    <comment>Configuring The application services...</comment>
   </data>
   <data name="App_RunAsync_InitializingAppManager_Message" xml:space="preserve">
     <value>Initializing the app manager...</value>

@@ -17,12 +17,12 @@ namespace Kephas
     using Kephas.Services.Builder;
 
     /// <summary>
-    /// Extensions for <see cref="IAmbientServices"/> for applications.
+    /// Extensions for <see cref="IAppServiceCollection"/> for applications.
     /// </summary>
     public static class ApplicationAbstractionsServicesExtensions
     {
         /// <summary>
-        /// Sets the application runtime to the ambient services.
+        /// Sets the application runtime to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="appRuntime">The application runtime.</param>
@@ -36,8 +36,8 @@ namespace Kephas
             servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
             appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
 
-            var ambientServices = servicesBuilder.AmbientServices;
-            var existingAppRuntime = ambientServices.TryGetServiceInstance<IAppRuntime>();
+            var appServices = servicesBuilder.AppServices;
+            var existingAppRuntime = appServices.TryGetServiceInstance<IAppRuntime>();
             if (existingAppRuntime != null && existingAppRuntime != appRuntime)
             {
                 ServiceHelper.Finalize(existingAppRuntime);
@@ -48,11 +48,11 @@ namespace Kephas
                 ServiceHelper.Initialize(appRuntime);
                 if (existingAppRuntime != null)
                 {
-                    ambientServices.Replace(appRuntime);
+                    appServices.Replace(appRuntime);
                 }
                 else
                 {
-                    ambientServices.Add(appRuntime);
+                    appServices.Add(appRuntime);
                 }
             }
 
@@ -60,7 +60,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Adds the dynamic application runtime to the ambient services.
+        /// Adds the dynamic application runtime to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
@@ -85,7 +85,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Adds the static application runtime to the ambient services.
+        /// Adds the static application runtime to The application services.
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="settingsConfig">Optional. The settings configuration.</param>

@@ -12,7 +12,7 @@ Typically used areas and classes/interfaces/services:
 #### Example with the default licensing manager
 
 ```csharp
-ambientServices.WithDefaultLicensingManager();
+appServices.WithDefaultLicensingManager();
 ```
 
 #### Example with a custom licensing manager
@@ -23,7 +23,7 @@ public class CustomLicensingManager : ILicensingManager
     // ...
 }
 
-ambientServices.WithLicensingManager(new CustomLicensingManager());
+appServices.WithLicensingManager(new CustomLicensingManager());
 ```
 
 #### Example registering a custom license check callback

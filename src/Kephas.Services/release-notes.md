@@ -8,7 +8,7 @@
 ## Ambient services
 * Breaking change: Removed `IAmbientServicesMixin`.
 * Breaking change: Removed `IAmbientServices.WithInjector(injector)`.
-* Breaking change: Renamed `IAmbientServices.WithInjector<TInjectorBuilder>(builderOptions)` to `IAmbientServices.BuildWith<TInjectorBuilder>(builderOptions)`.
+* Breaking change: Renamed `IAmbientServices.WithInjector<TInjectorBuilder>(builderOptions)` to `IAppServiceCollection.BuildWith<TInjectorBuilder>(builderOptions)`.
 * Breaking change: Renamed `IAmbientServices` to `IAppServiceCollection` and `AmbientServices` to `AppServiceCollection`.
 Also, their semantic was changed to only hold the collection of services, not cumulate also the service provider functionality.
 * Breaking change: Removed `IAmbientServices.GetAppAssemblies()`. Use instead `IAppServiceCollection.GetAppRuntime().GetAppAssemblies()`.
@@ -17,7 +17,7 @@ Also, their semantic was changed to only hold the collection of services, not cu
 * Breaking change: Removed the constructors of `AppServiceCollection` (former `AmbientServices`) accepting `IRuntimeTypeRegistry`. Instead, register the runtime type registry after creating the instance.
 * Breaking change: `IAmbientServices.RegisterService` renamed to `IAppServiceCollection.Add`.
 * Breaking change: `IAmbientServices.IsRegistered` renamed to `IAppServiceCollection.Contains`.
-* NEW: Added `IAmbientServices.Replace`.
+* NEW: Added `IAppServiceCollection.Replace`.
 * Breaking change: removed `SetAppServiceInfos` and `GetAppServiceInfos`. Instead, `IAppServiceCollection` is now the service enumeration.
 
 OLD code
@@ -29,8 +29,8 @@ NEW code
 new AppServiceCollection().Register<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
 ```
 
-* Breaking change: removed `Injector` and `LogManager` properties from `IAmbientServices`. There is no replacement, as the injector/service provider is built at a later time and is not registered in the service collection.
-* Breaking change: removed `LogManager` property from `IAmbientServices`. Instead, use one of the new `TryGetServiceInstance`/`GetServiceInstance` extension methods. 
+* Breaking change: removed `Injector` and `LogManager` properties from `IAppServiceCollection`. There is no replacement, as the injector/service provider is built at a later time and is not registered in the service collection.
+* Breaking change: removed `LogManager` property from `IAppServiceCollection`. Instead, use one of the new `TryGetServiceInstance`/`GetServiceInstance` extension methods. 
 
 OLD code
 ```csharp
@@ -40,8 +40,6 @@ NEW code
 ```csharp
 var logManager = AppServiceCollection.TryGetServiceInstance<ILogManager>();
 ```
-
-* Breaking change: renamed `AmbientServices` to `AppServiceCollection`.
 
 ## Export factory
 * Breaking change: Removed `ExportFactory(Func<Tuple<TContract, Action>> factory)` constructor.

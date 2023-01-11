@@ -42,21 +42,21 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_from_ambient_services_self()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
-            var containerExport = container.Resolve(typeof(IAmbientServices));
-            var ambientExport = container.Resolve(typeof(IAmbientServices));
+            var appServices = this.CreateAppServices();
+            var container = this.CreateServicesBuilder(appServices).BuildWithDependencyInjection();
+            var containerExport = container.Resolve(typeof(IAppServiceCollection));
+            var ambientExport = container.Resolve(typeof(IAppServiceCollection));
 
             Assert.IsNotNull(containerExport);
             Assert.AreSame(ambientExport, containerExport);
-            Assert.AreSame(ambientServices, containerExport);
+            Assert.AreSame(appServices, containerExport);
         }
 
         [Test]
         public void Resolve_from_ambient_services_instance()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
+            var appServices = this.CreateAppServices();
+            var container = this.CreateServicesBuilder(appServices).BuildWithDependencyInjection();
             var containerExport = container.Resolve(typeof(ILogManager));
             var ambientExport = container.Resolve(typeof(ILogManager));
 
@@ -67,8 +67,8 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_from_ambient_services_instance_type()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
+            var appServices = this.CreateAppServices();
+            var container = this.CreateServicesBuilder(appServices).BuildWithDependencyInjection();
             var containerExport = container.Resolve(typeof(ITypeLoader));
             var ambientExport = container.Resolve(typeof(ITypeLoader));
 
@@ -213,7 +213,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void CreateScopedInjector_ScopeExportedClass()
         {
             var builder = this.CreateServicesBuilder();
-            builder.AmbientServices.Add(
+            builder.AppServices.Add(
                 new AppServiceInfo(
                     typeof(ScopeExportedClass),
                     typeof(ScopeExportedClass),
@@ -234,11 +234,11 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_ambient_services()
         {
-            var ambientServices = this.CreateAmbientServices();
+            var appServices = this.CreateAppServices();
             var service = Substitute.For<IAsyncInitializable>();
-            ambientServices.Add(typeof(IAsyncInitializable), service);
+            appServices.Add(typeof(IAsyncInitializable), service);
 
-            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
+            var container = this.CreateServicesBuilder(appServices).BuildWithDependencyInjection();
 
             var actualService = container.Resolve<IAsyncInitializable>();
             Assert.AreSame(service, actualService);
@@ -247,10 +247,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_ambient_services_factory()
         {
-            var ambientServices = this.CreateAmbientServices();
-            ambientServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
+            var appServices = this.CreateAppServices();
+            appServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
-            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
+            var container = this.CreateServicesBuilder(appServices).BuildWithDependencyInjection();
 
             var service1 = container.Resolve<IAsyncInitializable>();
             var service2 = container.Resolve<IAsyncInitializable>();
@@ -260,13 +260,13 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_ambient_services_not_available_after_first_failed_request()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var container = this.CreateServicesBuilder(ambientServices).BuildWithDependencyInjection();
+            var appServices = this.CreateAppServices();
+            var container = this.CreateServicesBuilder(appServices).BuildWithDependencyInjection();
 
             var service = container.TryResolve<IAsyncInitializable>();
             Assert.IsNull(service);
 
-            ambientServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+            appServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             // This is null because the injector caches the export providers, and after a first request
             // when the export was not available, will cache the empty export providers.

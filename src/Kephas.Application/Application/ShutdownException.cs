@@ -57,11 +57,11 @@ namespace Kephas.Application
         public IAppContext? AppContext { get; set; }
 
         /// <summary>
-        /// Gets or sets the ambient services.
+        /// Gets or sets The application services.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The application services.
         /// </value>
-        public IAmbientServices? AmbientServices { get; set; }
+        public IAppServiceCollection? AppServices { get; set; }
     }
 }

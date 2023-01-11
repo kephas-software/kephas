@@ -23,8 +23,8 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void BuildWithDependencyInjection_defaults()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var builder = new AppServiceCollectionBuilder(ambientServices);
+            var appServices = this.CreateAppServices();
+            var builder = new AppServiceCollectionBuilder(appServices);
             var injector = builder
                 .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
                 .BuildWithDependencyInjection();
@@ -35,8 +35,8 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void BuildWithDependencyInjection_with_open_generic_override()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var builder = new AppServiceCollectionBuilder(ambientServices)
+            var appServices = this.CreateAppServices();
+            var builder = new AppServiceCollectionBuilder(appServices)
                 .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
             var injector = builder.BuildWithDependencyInjection();
@@ -48,8 +48,8 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void BuildWithDependencyInjection_with_open_generic_override_and_dependency()
         {
-            var ambientServices = this.CreateAmbientServices();
-            var builder = new AppServiceCollectionBuilder(ambientServices)
+            var appServices = this.CreateAppServices();
+            var builder = new AppServiceCollectionBuilder(appServices)
                 .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
                 .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
             var injector = builder.BuildWithDependencyInjection();

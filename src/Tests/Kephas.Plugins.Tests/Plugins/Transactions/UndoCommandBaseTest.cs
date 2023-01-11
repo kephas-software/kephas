@@ -59,7 +59,7 @@ namespace Kephas.Tests.Plugins.Transactions
 
         private IPluginContext CreatePluginContext()
         {
-            var builder = this.CreateServicesBuilder(this.CreateAmbientServices());
+            var builder = this.CreateServicesBuilder(this.CreateAppServices());
             var container = builder.BuildWithAutofac();
             var context = new PluginContext(container);
             return context;
