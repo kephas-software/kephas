@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServices.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceCollection.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,23 +25,23 @@ namespace Kephas
     /// Provides the global ambient services.
     /// </summary>
     [ExcludeFromServices]
-    public class AmbientServices : Expando, IAmbientServices
+    public class AppServiceCollection : Expando, IAmbientServices
     {
         private readonly IList<IAppServiceInfo> registry = new List<IAppServiceInfo>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AmbientServices"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceCollection"/> class.
         /// </summary>
-        public AmbientServices()
+        public AppServiceCollection()
             : this(registerDefaultServices: true)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AmbientServices"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceCollection"/> class.
         /// </summary>
         /// <param name="registerDefaultServices">Optional. True to register default services.</param>
-        protected internal AmbientServices(bool registerDefaultServices)
+        protected internal AppServiceCollection(bool registerDefaultServices)
         {
 #if NETSTANDARD2_1
             // for versions prior to .NET 6.0 make sure that the assemblies are initialized.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesExtensions.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceCollectionExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,22 +10,20 @@ namespace Kephas
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.CompilerServices;
+
     using Kephas.Application;
     using Kephas.Collections;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Builder;
     using Kephas.Services.Configuration;
-    using Kephas.Services.Resources;
-    using Kephas.Logging;
-    using Kephas.Reflection;
-    using Kephas.Services;
     using Kephas.Services.Reflection;
+    using Kephas.Services.Resources;
 
     /// <summary>
     /// Extensions for <see cref="IAmbientServices"/> for the injection subsystem.
     /// </summary>
-    public static class AmbientServicesExtensions
+    public static class AppServiceCollectionExtensions
     {
         internal const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
 

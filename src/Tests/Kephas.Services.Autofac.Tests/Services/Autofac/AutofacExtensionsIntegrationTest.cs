@@ -43,7 +43,7 @@ namespace Kephas.Tests.Services.Autofac
                 .Returns(ci => new[]
                 {
                     typeof(ILogger).Assembly,
-                    typeof(AmbientServices).Assembly,
+                    typeof(AppServiceCollection).Assembly,
                     typeof(AutofacServiceProvider).Assembly,
                 });
 
@@ -61,7 +61,7 @@ namespace Kephas.Tests.Services.Autofac
         {
             var builder = this.CreateAutofacServicesBuilder();
             var container = builder
-                .WithAssemblies(typeof(AmbientServices).Assembly)
+                .WithAssemblies(typeof(AppServiceCollection).Assembly)
                 .BuildWithAutofac();
 
             var loggerManager = container.Resolve<ILogManager>();

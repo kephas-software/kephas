@@ -62,7 +62,7 @@ namespace Kephas.Testing
             logManager ??= ambientServices?.TryGetServiceInstance<ILogManager>() ?? new DebugLogManager(log);
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices = (ambientServices ?? new AmbientServices())
+            ambientServices = (ambientServices ?? new AppServiceCollection())
                 .Add(logManager)
                 .Add(log);
 
@@ -101,14 +101,14 @@ namespace Kephas.Testing
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="AmbientServices"/>
+        /// Creates a new instance of <see cref="AppServiceCollection"/>
         /// with the provider <see cref="IRuntimeTypeRegistry"/> or a newly created one.
         /// </summary>
         /// <param name="typeRegistry">Optional. The type registry.</param>
-        /// <returns>The newly created <see cref="AmbientServices"/> instance.</returns>
+        /// <returns>The newly created <see cref="AppServiceCollection"/> instance.</returns>
         protected virtual IAmbientServices CreateAmbientServices(IRuntimeTypeRegistry? typeRegistry = null)
         {
-            return new AmbientServices()
+            return new AppServiceCollection()
                 .Add(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
         }
 

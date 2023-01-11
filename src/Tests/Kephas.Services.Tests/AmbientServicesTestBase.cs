@@ -469,7 +469,7 @@ public abstract class AmbientServicesTestBase : TestBase
     [Test]
     public void GetAppServiceInfos_no_default_services()
     {
-        IAmbientServices ambientServices = new AmbientServices(registerDefaultServices: false);
+        IAmbientServices ambientServices = new AppServiceCollection(registerDefaultServices: false);
         ambientServices = new AppServiceCollectionBuilder(ambientServices).Build();
         var contracts = ambientServices.GetServiceInstance<IContractDeclarationCollection>();
 

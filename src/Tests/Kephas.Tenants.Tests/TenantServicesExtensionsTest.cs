@@ -17,7 +17,7 @@ public class TenantServicesExtensionsTest
     [Test]
     public void WithTenantSupport_no_tenant()
     {
-        var ambientServices = new AppServiceCollectionBuilder(new AmbientServices())
+        var ambientServices = new AppServiceCollectionBuilder(new AppServiceCollection())
             .WithTenantSupport(new AppArgs("--no tenant"))
             .WithStaticAppRuntime()
             .AmbientServices;
@@ -31,7 +31,7 @@ public class TenantServicesExtensionsTest
     [Test]
     public void WithTenantSupport_with_tenant()
     {
-        var ambientServices = new AppServiceCollectionBuilder(new AmbientServices())
+        var ambientServices = new AppServiceCollectionBuilder(new AppServiceCollection())
             .WithTenantSupport(new AppArgs("--tenant my"))
             .WithStaticAppRuntime()
             .AmbientServices;

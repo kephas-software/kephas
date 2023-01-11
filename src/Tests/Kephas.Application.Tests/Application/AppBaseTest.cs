@@ -287,6 +287,6 @@ namespace Kephas.Tests.Application
         }
 
         private static IAmbientServices CreateAmbientServices() =>
-            new AmbientServices().Add<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
+            new AppServiceCollection().Add<IRuntimeTypeRegistry>(new RuntimeTypeRegistry(), b => b.ExternallyOwned());
     }
 }

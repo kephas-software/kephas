@@ -33,7 +33,7 @@ namespace Kephas.Services.Builder
         /// <param name="settings">Optional. The injection settings.</param>
         /// <param name="logger">Optional. The logger.</param>
         public AppServiceCollectionBuilder(AppServicesSettings? settings = null, ILogger? logger = null)
-            : this(new AmbientServices(), settings, logger)
+            : this(new AppServiceCollection(), settings, logger)
         {
         }
 

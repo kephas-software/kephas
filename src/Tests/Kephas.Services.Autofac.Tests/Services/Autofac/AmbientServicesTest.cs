@@ -22,7 +22,7 @@ namespace Kephas.Tests.Services.Autofac
         [Test]
         public void CustomAmbientServices_singleton()
         {
-            var ambientServices = CustomAmbientServices.CreateAmbientServices();
+            var ambientServices = CustomAppServiceCollection.CreateAmbientServices();
             var container = new AppServiceCollectionBuilder(ambientServices)
                 .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
                 .BuildWithAutofac();
@@ -31,13 +31,13 @@ namespace Kephas.Tests.Services.Autofac
             Assert.AreSame(ambientServices, otherAmbientServices);
         }
 
-        public class CustomAmbientServices : AmbientServices
+        public class CustomAppServiceCollection : AppServiceCollection
         {
-            private CustomAmbientServices()
+            private CustomAppServiceCollection()
             {
             }
 
-            public static CustomAmbientServices CreateAmbientServices() => new CustomAmbientServices();
+            public static CustomAppServiceCollection CreateAmbientServices() => new CustomAppServiceCollection();
         }
     }
 }

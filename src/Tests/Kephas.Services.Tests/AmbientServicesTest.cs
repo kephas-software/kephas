@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Test class for <see cref="AmbientServices" />.
+//   Test class for <see cref="AppServiceCollection" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace Kephas.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="AmbientServices"/>.
+    /// Test class for <see cref="AppServiceCollection"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]

@@ -56,18 +56,18 @@ public class InjectionAssemblyInitializer : IAssemblyInitializer
 }
 ```
 
-## `AmbientServices` implementation
+## `AppServiceCollection` implementation
 
-When an `AmbientServices` instance is created, the initializer callbacks are invoked to add the default services.
+When an `AppServiceCollection` instance is created, the initializer callbacks are invoked to add the default services.
 
 > Note: there is no guarantee about the order in which these services are added.
 
 #### Example
 ```csharp
-var ambientServices = new AmbientServices()
+var appServices = new AppServiceCollection()
     .BuildWithAutofac();
 
-var logger = ambientServices.Injector.Resolve<ILogger<MyComponent>>();
+var logger = appServices.Resolve<ILogger<MyComponent>>();
 ```
 
 ## Aims of application services design
@@ -120,12 +120,12 @@ There are cases when only the injector is known and, starting from it, some serv
 In this case, the injector's `Resolve`/`TryResolve` or `ResolveMany` methods may be used. Such cases are static contexts or class' code not included in injection.
 
 ```C#
-var ambientServices = new AmbientServices()
+var appServices = new AppServiceCollection()
         .WithSerilogManager()
         .WithDynamicAppRuntime()
         .BuildWithAutofac();
 
-var logManager = ambientServices.Injector.Resolve<ILogManager>();
+var logManager = appServices.Resolve<ILogManager>();
 ```
 
 > This is not a recommended approach because the methods using service location are not easily testable.

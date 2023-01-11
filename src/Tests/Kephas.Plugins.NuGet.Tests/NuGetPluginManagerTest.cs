@@ -61,7 +61,7 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var ambientServices = new AmbientServices()
+                var ambientServices = new AppServiceCollection()
                     .Add<ISettingsProvider>(
                         _ => new PluginsSettingsProvider("tags:kephas"),
                         b => b.Singleton().AllowMultiple());
@@ -97,7 +97,7 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var ambientServices = new AmbientServices()
+                var ambientServices = new AppServiceCollection()
                     .Add<ISettingsProvider>(
                         _ => new PluginsSettingsProvider("tags:kismsspplugin"),
                         b => b.Singleton().AllowMultiple());

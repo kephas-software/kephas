@@ -40,7 +40,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 .Returns(ci => new[]
                 {
                     typeof(ILogger).Assembly,
-                    typeof(AmbientServices).Assembly,
+                    typeof(AppServiceCollection).Assembly,
                     typeof(FactoryService<,>).Assembly,
                 });
 
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = this.CreateServicesBuilder();
             var container = builder
-                .WithAssemblies(typeof(AmbientServices).Assembly)
+                .WithAssemblies(typeof(AppServiceCollection).Assembly)
                 .BuildWithDependencyInjection();
 
             var loggerManager = container.Resolve<ILogManager>();

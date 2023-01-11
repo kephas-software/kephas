@@ -42,7 +42,7 @@ namespace Kephas.AspNetCore.Blazor.InteractiveTests.Client
         public ClientApp(
             Action<IAppServiceCollectionBuilder> servicesBuilder,
             IAppArgs? appArgs = null)
-            : base(new AmbientServices(), appArgs: appArgs, appLifetimeTokenSource: null)
+            : base(new AppServiceCollection(), appArgs: appArgs, appLifetimeTokenSource: null)
         {
             this.servicesBuilder = servicesBuilder;
         }
