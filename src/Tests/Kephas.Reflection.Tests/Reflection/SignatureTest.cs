@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using Kephas.Reflection;
-
     using NUnit.Framework;
 
     [TestFixture]

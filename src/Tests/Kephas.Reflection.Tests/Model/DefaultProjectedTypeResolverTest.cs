@@ -8,14 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Model
+namespace Kephas.Tests.Model
 {
     using Kephas.Model;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]

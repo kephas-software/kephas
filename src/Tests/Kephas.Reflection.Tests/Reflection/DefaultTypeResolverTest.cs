@@ -8,18 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text;
-
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]

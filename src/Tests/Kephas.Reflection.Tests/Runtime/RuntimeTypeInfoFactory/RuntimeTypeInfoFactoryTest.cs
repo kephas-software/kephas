@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
+namespace Kephas.Tests.Runtime.RuntimeTypeInfoFactory
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-
     using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Runtime.Factories;

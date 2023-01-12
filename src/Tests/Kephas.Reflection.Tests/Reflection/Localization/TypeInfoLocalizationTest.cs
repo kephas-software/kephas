@@ -1,10 +1,8 @@
-﻿namespace Kephas.Core.Tests.Reflection.Localization
+﻿namespace Kephas.Tests.Reflection.Localization
 {
     using System.Linq;
-
     using Kephas.Reflection;
     using Kephas.Reflection.Localization;
-    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Runtime
+namespace Kephas.Tests.Runtime
 {
     using System;
     using System.Collections;
@@ -16,12 +16,9 @@ namespace Kephas.Core.Tests.Runtime
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-
     using Kephas.Activation;
-    using Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory;
     using Kephas.Reflection;
     using Kephas.Runtime;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -77,7 +74,7 @@ namespace Kephas.Core.Tests.Runtime
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
-            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass", runtimeTypeInfo.FullName);
+            Assert.AreEqual("Kephas.Tests.Runtime.RuntimeTypeInfoTest+TestClass", runtimeTypeInfo.FullName);
         }
 
         [Test]
@@ -85,7 +82,7 @@ namespace Kephas.Core.Tests.Runtime
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
-            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Reflection.Tests", runtimeTypeInfo.QualifiedFullName);
+            Assert.AreEqual("Kephas.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Reflection.Tests", runtimeTypeInfo.QualifiedFullName);
         }
 
         [Test]

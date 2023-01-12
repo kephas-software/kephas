@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using Kephas.Reflection;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,23 +49,27 @@ namespace Kephas.Core.Tests.Reflection
             Assert.AreEqual("Full.Type", qname.Namespace);
         }
 
-        [Test]
-        public void QualifiedFullName_generic_without_assembly_type_param_with_assembly_no_namespace()
+        [TestCase(
+            "Generic`1[[Full.Type.Name, AssemblyName]]",
+            "Generic`1[[Full.Type.Name, AssemblyName]]",
+            "Generic`1[[Full.Type.Name, AssemblyName]]")]
+        public void QualifiedFullName_generic_without_assembly_type_param_with_assembly_no_namespace(string qualifiedName, string typeName, string name)
         {
-            var qname = new QualifiedFullName("Generic`1[[Full.Type.Name, AssemblyName]]");
+            var qname = new QualifiedFullName(qualifiedName);
 
             Assert.IsNull(qname.AssemblyName);
-            Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.TypeName);
-            Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.Name);
+            Assert.AreEqual(typeName, qname.TypeName);
+            Assert.AreEqual(name, qname.Name);
             Assert.IsNull(qname.Namespace);
         }
 
-        [Test]
-        public void GetGenericTypeArguments_fail()
+        [TestCase("My.Type", typeof(InvalidOperationException))]
+        [TestCase("My.Type+OtherType", typeof(InvalidOperationException))]
+        public void GetGenericTypeArguments_fail_non_generic(string qualifiedName, Type exceptionType)
         {
-            var qname = new QualifiedFullName("My.Type");
+            var qname = new QualifiedFullName(qualifiedName);
 
-            Assert.Throws<InvalidOperationException>(() => qname.GetGenericTypeArguments());
+            Assert.Throws(exceptionType, () => qname.GetGenericTypeArguments());
         }
 
         [TestCase("Generic`1[[Full.Type.Name, AssemblyName],[Another.Type]]", 2, "Full.Type.Name", "Another.Type")]

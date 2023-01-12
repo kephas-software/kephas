@@ -14,6 +14,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Logging;
     using Kephas.Services;

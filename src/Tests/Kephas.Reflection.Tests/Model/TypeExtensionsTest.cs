@@ -8,11 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Model
+namespace Kephas.Tests.Model
 {
     using Kephas.Activation;
     using Kephas.Model;
-    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]

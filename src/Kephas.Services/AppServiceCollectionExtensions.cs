@@ -25,10 +25,34 @@ namespace Kephas
     /// </summary>
     public static class AppServiceCollectionExtensions
     {
-        internal const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
+        /// <summary>
+        /// Registers the provided service instance as singleton, if not previously registered.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="serviceInstance">The service instance.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, TContract serviceInstance, Action<IAppServiceInfoBuilder>? builder = null)
+            where TContract : class
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
+
+            return appServices.TryAddService(
+                typeof(TContract),
+                serviceInstance,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
 
         /// <summary>
-        /// Registers the provided service instance.
+        /// Registers the provided service instance as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -43,11 +67,18 @@ namespace Kephas
             appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
             serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            return appServices.AddService(typeof(TContract), serviceInstance, builder);
+            return appServices.AddService(
+                typeof(TContract),
+                serviceInstance,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
-        /// Replaces the provided service instance.
+        /// Replaces the provided service instance, registering it as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -62,11 +93,43 @@ namespace Kephas
             appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
             serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            return appServices.ReplaceService(typeof(TContract), serviceInstance, builder);
+            return appServices.ReplaceService(
+                typeof(TContract),
+                serviceInstance,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
         }
 
         /// <summary>
-        /// Registers the provided service with implementation type as singleton.
+        /// Registers the provided service with implementation type, by default as singleton, if not previously registered.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <typeparam name="TService">Type of the service implementation.</typeparam>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAppServiceCollection appServices, Action<IAppServiceInfoBuilder>? builder = null)
+            where TContract : class
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+
+            return appServices.TryAddService(
+                typeof(TContract),
+                typeof(TService),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Registers the provided service with implementation type, by default as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <typeparam name="TService">Type of the service implementation.</typeparam>
@@ -91,7 +154,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service with implementation type as singleton.
+        /// Replaces the provided service with implementation type, registering it by default as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <typeparam name="TService">Type of the service implementation.</typeparam>
@@ -116,7 +179,33 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service with implementation type as singleton.
+        /// Registers the provided service with implementation type, by default as singleton, if not previously registered.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<IAppServiceInfoBuilder>? builder = null)
+            where TContract : class
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+
+            return appServices.TryAddService(
+                typeof(TContract),
+                serviceType,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Registers the provided service with implementation type, by default as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -142,7 +231,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service with implementation type as singleton.
+        /// Replaces the provided service with implementation type, registering it by default as singleton.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -168,7 +257,36 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service as singleton factory.
+        /// Registers the provided service, by default as singleton factory, if not previously registered.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+            this IAppServiceCollection appServices,
+            Func<TContract> serviceFactory,
+            Action<IAppServiceInfoBuilder>? builder = null)
+            where TContract : class
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return appServices.TryAddService(
+                typeof(TContract),
+                (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Registers the provided service, by default as singleton factory.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -197,7 +315,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service as singleton factory.
+        /// Replaces the provided service, registering it by default as singleton factory.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -226,7 +344,36 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service as singleton factory.
+        /// Registers the provided service, by default as singleton factory, if not previously registered.
+        /// </summary>
+        /// <typeparam name="TContract">Type of the service contract.</typeparam>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+            this IAppServiceCollection appServices,
+            Func<IServiceProvider, TContract> serviceFactory,
+            Action<IAppServiceInfoBuilder>? builder = null)
+            where TContract : class
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return appServices.TryAddService(
+                typeof(TContract),
+                (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Registers the provided service, by default as singleton factory.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -255,7 +402,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service as singleton factory.
+        /// Replaces the provided service, registering it by default as singleton factory.
         /// </summary>
         /// <typeparam name="TContract">Type of the service contract.</typeparam>
         /// <param name="appServices">The application services.</param>
@@ -284,7 +431,37 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service as singleton factory.
+        /// Registers the provided service, by default as singleton factory, if not previously registered.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd(
+            this IAppServiceCollection appServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            Func<object> serviceFactory,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return appServices.TryAddService(
+                contractType,
+                (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Registers the provided service, by default as singleton factory.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -314,7 +491,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service as singleton factory.
+        /// Replaces the provided service, registering it by default as singleton factory.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -344,7 +521,37 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service as singleton factory.
+        /// Registers the provided service, by default as singleton factory, if not previously registered.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd(
+            this IAppServiceCollection appServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            Func<IServiceProvider, object> serviceFactory,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+
+            return appServices.TryAddService(
+                contractType,
+                (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+        }
+
+        /// <summary>
+        /// Registers the provided service, by default as singleton factory.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -374,7 +581,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service as singleton factory.
+        /// Replaces the provided service, registering it by default as singleton factory.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -404,7 +611,38 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service as singleton.
+        /// Registers the provided service, by default as singleton, if not previously registered.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceType">The service implementation type.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd(
+            this IAppServiceCollection appServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+
+            appServices.TryAddService(
+                contractType,
+                serviceType,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+            return appServices;
+        }
+
+        /// <summary>
+        /// Registers the provided service, by default as singleton.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -435,7 +673,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service as singleton.
+        /// Replaces the provided service, registering it by default as singleton.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -466,7 +704,38 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service instance as singleton.
+        /// Registers the provided service instance, by default as singleton, if not previously registered.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractType">Type of the service contract.</param>
+        /// <param name="serviceInstance">The service instance.</param>
+        /// <param name="builder">Optional. The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="appServices"/>.
+        /// </returns>
+        public static IAppServiceCollection TryAdd(
+            this IAppServiceCollection appServices,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+            object serviceInstance,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+            serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
+
+            appServices.TryAddService(
+                contractType,
+                serviceInstance,
+                b =>
+                {
+                    b.Singleton();
+                    builder?.Invoke(b);
+                });
+            return appServices;
+        }
+
+        /// <summary>
+        /// Registers the provided service instance, by default as singleton.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -497,7 +766,7 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Replaces the provided service instance as singleton.
+        /// Replaces the provided service instance, registering it by default as singleton.
         /// </summary>
         /// <param name="appServices">The application services.</param>
         /// <param name="contractType">Type of the service contract.</param>
@@ -524,60 +793,6 @@ namespace Kephas
                     b.Singleton();
                     builder?.Invoke(b);
                 });
-            return appServices;
-        }
-
-        /// <summary>
-        /// Registers the provided service using a registration builder.
-        /// </summary>
-        /// <param name="appServices">The application services.</param>
-        /// <param name="contractDeclarationType">The contract declaration type.</param>
-        /// <param name="instancingStrategy">The instancing strategy.</param>
-        /// <param name="builder">The builder.</param>
-        /// <returns>
-        /// This <see cref="IAppServiceCollection"/>.
-        /// </returns>
-        internal static IAppServiceCollection AddService(
-            this IAppServiceCollection appServices,
-            Type contractDeclarationType,
-            object instancingStrategy,
-            Action<IAppServiceInfoBuilder>? builder = null)
-        {
-            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
-            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
-            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
-
-            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
-            builder?.Invoke(serviceBuilder);
-            appServices.Add(serviceBuilder.Build());
-
-            return appServices;
-        }
-
-        /// <summary>
-        /// Replaces the service with the same contract type, adding the provided service.
-        /// </summary>
-        /// <param name="appServices">The application services.</param>
-        /// <param name="contractDeclarationType">The contract declaration type.</param>
-        /// <param name="instancingStrategy">The instancing strategy.</param>
-        /// <param name="builder">The registration builder.</param>
-        /// <returns>
-        /// This <see cref="IAppServiceCollection"/>.
-        /// </returns>
-        internal static IAppServiceCollection ReplaceService(
-            this IAppServiceCollection appServices,
-            Type contractDeclarationType,
-            object instancingStrategy,
-            Action<IAppServiceInfoBuilder>? builder = null)
-        {
-            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
-            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
-            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
-
-            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
-            builder?.Invoke(serviceBuilder);
-            appServices.Replace(serviceBuilder.Build());
-
             return appServices;
         }
 
@@ -730,6 +945,92 @@ namespace Kephas
                     }
                 }
             }
+
+            return appServices;
+        }
+
+        /// <summary>
+        /// Registers the provided service using a registration builder, if not previously registered.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        /// <param name="builder">The builder.</param>
+        /// <returns>
+        /// This <see cref="IAppServiceCollection"/>.
+        /// </returns>
+        internal static IAppServiceCollection TryAddService(
+            this IAppServiceCollection appServices,
+            Type contractDeclarationType,
+            object instancingStrategy,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
+
+            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
+            builder?.Invoke(serviceBuilder);
+            var appServiceInfo = serviceBuilder.Build();
+
+            if (appServiceInfo.ContractType is not null && !appServices.Contains(appServiceInfo.ContractType))
+            {
+                appServices.Add(appServiceInfo);
+            }
+
+            return appServices;
+        }
+
+        /// <summary>
+        /// Registers the provided service using a registration builder.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        /// <param name="builder">The builder.</param>
+        /// <returns>
+        /// This <see cref="IAppServiceCollection"/>.
+        /// </returns>
+        internal static IAppServiceCollection AddService(
+            this IAppServiceCollection appServices,
+            Type contractDeclarationType,
+            object instancingStrategy,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
+
+            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
+            builder?.Invoke(serviceBuilder);
+            appServices.Add(serviceBuilder.Build());
+
+            return appServices;
+        }
+
+        /// <summary>
+        /// Replaces the service with the same contract type, adding the provided service.
+        /// </summary>
+        /// <param name="appServices">The application services.</param>
+        /// <param name="contractDeclarationType">The contract declaration type.</param>
+        /// <param name="instancingStrategy">The instancing strategy.</param>
+        /// <param name="builder">The registration builder.</param>
+        /// <returns>
+        /// This <see cref="IAppServiceCollection"/>.
+        /// </returns>
+        internal static IAppServiceCollection ReplaceService(
+            this IAppServiceCollection appServices,
+            Type contractDeclarationType,
+            object instancingStrategy,
+            Action<IAppServiceInfoBuilder>? builder = null)
+        {
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+            contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+            instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
+
+            var serviceBuilder = new AppServiceInfoBuilder(contractDeclarationType, instancingStrategy);
+            builder?.Invoke(serviceBuilder);
+            appServices.Replace(serviceBuilder.Build());
 
             return appServices;
         }

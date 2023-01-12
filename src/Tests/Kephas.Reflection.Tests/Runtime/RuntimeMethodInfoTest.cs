@@ -8,12 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Runtime
+namespace Kephas.Tests.Runtime
 {
-    using System.Collections.Generic;
-
     using Kephas.Runtime;
-
     using NUnit.Framework;
 
     [TestFixture]
