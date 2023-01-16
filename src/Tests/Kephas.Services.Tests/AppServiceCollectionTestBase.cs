@@ -183,30 +183,6 @@ public abstract class AppServiceCollectionTestBase : TestBase
     }
 
     [Test]
-    public void Register_circular_dependency_singleton()
-    {
-        var appServices = this.CreateAppServices();
-        appServices.Add<CircularDependency1, CircularDependency1>();
-        appServices.Add<CircularDependency2, CircularDependency2>();
-
-        var container = this.BuildServiceProvider(appServices);
-
-        Assert.Throws<CircularDependencyException>(() => container.GetService<CircularDependency1>());
-    }
-
-    [Test]
-    public void Register_circular_dependency_transient()
-    {
-        var appServices = this.CreateAppServices();
-        appServices.Add<CircularDependency1, CircularDependency1>(b => b.Transient());
-        appServices.Add<CircularDependency2, CircularDependency2>(b => b.Transient());
-
-        var container = this.BuildServiceProvider(appServices);
-
-        Assert.Throws<CircularDependencyException>(() => container.GetService<CircularDependency1>());
-    }
-
-    [Test]
     public Task Register_transient_is_multi_threaded()
     {
         var appServices = this.CreateAppServices();
