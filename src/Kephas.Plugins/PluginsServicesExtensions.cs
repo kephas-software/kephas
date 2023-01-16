@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the ambient services plugins extensions class.
+//   Implements the app services plugins extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas
     using Kephas.Services.Builder;
 
     /// <summary>
-    /// The plugins ambient services builder extensions.
+    /// The plugins app services builder extensions.
     /// </summary>
     public static class PluginsServicesExtensions
     {

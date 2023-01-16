@@ -91,7 +91,7 @@ namespace Kephas
         /// <param name="settingsConfig">Optional. The settings configuration.</param>
         /// <param name="runtimeConfig">The post configuration for the <see cref="StaticAppRuntime"/>.</param>
         /// <returns>
-        /// The provided ambient services.
+        /// The provided app services.
         /// </returns>
         public static IAppServiceCollectionBuilder WithStaticAppRuntime(
             this IAppServiceCollectionBuilder servicesBuilder,

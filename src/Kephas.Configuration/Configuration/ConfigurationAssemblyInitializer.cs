@@ -19,6 +19,6 @@ public class ConfigurationAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAppServiceCollection.AddCollector(ambient => ambient.Add<IConfigurationStore, DefaultConfigurationStore>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.Add<IConfigurationStore, DefaultConfigurationStore>());
     }
 }

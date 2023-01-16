@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Provides the global ambient services.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas
@@ -14,15 +11,12 @@ namespace Kephas
     using System.Collections;
     using System.Collections.Generic;
 
-    using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Services.AttributedModel;
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Provides the global ambient services.
+    /// Collection of application service registrations.
     /// </summary>
     [ExcludeFromServices]
     public class AppServiceCollection : Expando, IAppServiceCollection
@@ -33,25 +27,7 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AppServiceCollection"/> class.
         /// </summary>
         public AppServiceCollection()
-            : this(registerDefaultServices: true)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceCollection"/> class.
-        /// </summary>
-        /// <param name="registerDefaultServices">Optional. True to register default services.</param>
-        protected internal AppServiceCollection(bool registerDefaultServices)
-        {
-#if NETSTANDARD2_1
-            // for versions prior to .NET 6.0 make sure that the assemblies are initialized.
-            IAssemblyInitializer.InitializeAssemblies();
-#endif
-            if (registerDefaultServices)
-            {
-                IAppServiceCollection.Initialize(this);
-            }
-
             this.Add<IAppServiceCollection>(this, b => b.ExternallyOwned());
         }
 
@@ -97,6 +73,8 @@ namespace Kephas
             {
                 this.registry.RemoveAt(i + (delta--));
             }
+
+            this.Add(appServiceInfo);
 
             return this;
         }

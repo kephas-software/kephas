@@ -16,7 +16,7 @@ Packages providing specific logging implementations:
 * [Kephas.Logging.Log4Net](https://www.nuget.org/packages/Kephas.Logging.Log4Net)
 
 ### The ```ILogManager``` singleton service
-The log manager is a service registered in the [ambient services](https://www.nuget.org/packages/Kephas.Services#ambient-services). It provides the following method:
+The log manager is a service registered in the [app services](https://www.nuget.org/packages/Kephas.Services#ambient-services). It provides the following method:
 * `GetLogger(loggerName): ILogger`: retrieves the logger with the provided name.
 * `GetLogger<T>(): ILogger` (extension): retrieves the logger having the same name with the generic type's argument full name.
 

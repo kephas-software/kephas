@@ -36,7 +36,7 @@ after that, the `IServiceProvider` will be built.
 ```
 
 ### Registering default services
-The `IAppServiceCollection.AddCollector` static method registers a callback to be invoked when initializing the app services collection.
+The `IAppServiceCollection.AddAppServicesCollector` static method registers a callback to be invoked when initializing the app services collection.
 Typically, app services collectors are registered in [assembly initializers](https://www.nuget.org/packages/Kephas.Abstractions#assembly-initialization).
 
 ```csharp
@@ -50,8 +50,8 @@ public class InjectionAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAppServiceCollection.AddCollector(ambient => ambient.Register<ILogManager, NullLogManager>());
-        IAppServiceCollection.AddCollector(ambient => ambient.Register<ILocationsManager, FolderLocationsManager>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.Register<ILogManager, NullLogManager>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.Register<ILocationsManager, FolderLocationsManager>());
     }
 }
 ```

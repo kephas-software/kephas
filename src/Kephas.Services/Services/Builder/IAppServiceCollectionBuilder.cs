@@ -49,7 +49,7 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
         /// </summary>
-        /// <returns>The provided ambient services.</returns>
+        /// <returns>The provided app services.</returns>
         IAppServiceCollection Build();
     }
 }

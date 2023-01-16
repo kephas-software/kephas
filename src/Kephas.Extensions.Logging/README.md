@@ -16,7 +16,7 @@ This scenario should be considered when the logging in configured in the service
 * Disadvantage: Kephas will log only to its own configured logger, will ignore the logger configured with `Microsoft.Extensions.Logging`.
 
 ```csharp
-// 1. configure in ambient services
+// 1. configure in app services
 appServiceCollection.WithSerilogManager();
 
 // 2. use in Microsoft.Extensions.Logging

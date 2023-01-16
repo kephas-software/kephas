@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the log 4 net ambient services builder extensions class.
+//   Implements the log 4 net app services builder extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

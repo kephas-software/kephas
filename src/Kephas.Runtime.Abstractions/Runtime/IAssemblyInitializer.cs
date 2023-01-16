@@ -22,17 +22,17 @@ public interface IAssemblyInitializer
 
 #if NETSTANDARD2_1
 
-    private static readonly object SyncObject = new object();
+    private static readonly object SyncObject = new ();
     private static bool initialized = false;
 
     /// <summary>
-    /// Initializes the assemblies by identifying the <see cref="IAssemblyInitializer"/>s and invoking their <see cref="Initialize"/> method.
+    /// Ensures that the assemblies are initialized by identifying the <see cref="IAssemblyInitializer"/>s and invoking their <see cref="Initialize"/> method.
     /// </summary>
     /// <remarks>
     /// This method is not required for .NET 6.0 and newer, because the initializers are automatically called upon assembly load.
     /// Make sure to reference Kephas.Analyzers to get this automatic behavior.
     /// </remarks>
-    public static void InitializeAssemblies()
+    public static void EnsureAssembliesInitialized()
     {
         if (initialized)
         {
@@ -59,6 +59,11 @@ public interface IAssemblyInitializer
 
     private static void InitializeAssembly(Assembly assembly)
     {
+        if (assembly.IsDynamic)
+        {
+            return;
+        }
+
         try
         {
             foreach (var type in assembly.ExportedTypes)

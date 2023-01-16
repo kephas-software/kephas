@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the autofac ambient services builder extensions class.
+//   Implements the autofac app services builder extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ using Kephas.Services;
 using Kephas.Services.Reflection;
 
 /// <summary>
-/// Autofac related ambient services builder extensions.
+/// Autofac related app services builder extensions.
 /// </summary>
 public static class AutofacExtensions
 {
@@ -34,7 +34,7 @@ public static class AutofacExtensions
     /// <param name="containerBuilder">The container builder.</param>
     /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
     /// <param name="logger">Optional. The logger.</param>
-    /// <returns>The provided ambient services.</returns>
+    /// <returns>The provided app services.</returns>
     public static IServiceProvider BuildWithAutofac(this IAppServiceCollectionBuilder servicesBuilder, ContainerBuilder? containerBuilder = null, bool preserveRegistrationOrder = true, ILogger? logger = null) =>
         BuildWithAutofac(servicesBuilder.Build(), containerBuilder, preserveRegistrationOrder, logger);
 
@@ -45,7 +45,7 @@ public static class AutofacExtensions
     /// <param name="containerBuilder">The container builder.</param>
     /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
     /// <param name="logger">Optional. The logger.</param>
-    /// <returns>The provided ambient services.</returns>
+    /// <returns>The provided app services.</returns>
     public static IServiceProvider BuildWithAutofac(this IAppServiceCollection appServices, ContainerBuilder? containerBuilder = null, bool preserveRegistrationOrder = true, ILogger? logger = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -63,7 +63,7 @@ public static class AutofacExtensions
     /// <param name="appServices">The application services.</param>
     /// <param name="preserveRegistrationOrder">Optional. Indicates whether to preserve the registration order. Relevant for integration with ASP.NET Core.</param>
     /// <param name="logger">Optional. The logger.</param>
-    /// <returns>The provided ambient services.</returns>
+    /// <returns>The provided app services.</returns>
     public static ContainerBuilder UseAppServices(this ContainerBuilder containerBuilder, IAppServiceCollection appServices, bool preserveRegistrationOrder = true, ILogger? logger = null)
     {
         containerBuilder = containerBuilder ?? throw new ArgumentNullException(nameof(containerBuilder));

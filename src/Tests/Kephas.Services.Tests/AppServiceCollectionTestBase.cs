@@ -407,6 +407,20 @@ public abstract class AppServiceCollectionTestBase : TestBase
     public void GetService_lazy_with_metadata()
     {
         var appServices = this.CreateAppServices();
+        appServices.Add(typeof(IService), typeof(DependentService));
+        appServices.Add<IDependency>(Substitute.For<IDependency>());
+
+        var container = this.BuildServiceProvider(appServices);
+        var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
+        Assert.IsNotNull(service.Metadata);
+        Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
+        Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
+    }
+
+    [Test]
+    public void GetService_lazy_with_metadata_generic()
+    {
+        var appServices = this.CreateAppServices();
         appServices.Add<IService, DependentService>();
         appServices.Add<IDependency>(Substitute.For<IDependency>());
 
@@ -464,19 +478,16 @@ public abstract class AppServiceCollectionTestBase : TestBase
             .Build();
         var contracts = appServices.GetServiceInstance<IContractDeclarationCollection>();
 
-        var (c, info) = contracts.SingleOrDefault(i => i.ContractDeclarationType == typeof(ILogManager));
+        var (c, info) = contracts.Single(i => i.ContractDeclarationType == typeof(IInjectableFactory));
         Assert.IsNotNull(info);
-        Assert.IsNotNull(info.InstanceFactory);
-
-        (c, info) = contracts.SingleOrDefault(i => i.ContractDeclarationType == typeof(IAppRuntime));
-        Assert.IsNotNull(info);
-        Assert.IsNotNull(info.InstanceFactory);
+        Assert.IsNull(info.ContractType);
+        Assert.IsNull(info.Metadata);
     }
 
     [Test]
     public void GetAppServiceInfos_no_default_services()
     {
-        IAppServiceCollection appServices = new AppServiceCollection(registerDefaultServices: false);
+        IAppServiceCollection appServices = new AppServiceCollection();
         appServices = new AppServiceCollectionBuilder(appServices).Build();
         var contracts = appServices.GetServiceInstance<IContractDeclarationCollection>();
 

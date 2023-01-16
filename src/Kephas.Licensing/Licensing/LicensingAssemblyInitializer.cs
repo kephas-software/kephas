@@ -19,6 +19,6 @@ public class LicensingAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAppServiceCollection.AddCollector(ambient => ambient.TryAdd<ILicensingManager, NullLicensingManager>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<ILicensingManager, NullLicensingManager>());
     }
 }

@@ -52,7 +52,7 @@ namespace Kephas
         /// Adds an collector for <see cref="IAppServiceCollection"/>.
         /// </summary>
         /// <param name="collect">The collect callback function.</param>
-        public static void AddCollector(Action<IAppServiceCollection> collect)
+        public static void AddAppServicesCollector(Action<IAppServiceCollection> collect)
         {
             lock (Collectors)
             {
@@ -61,10 +61,10 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Initializes the ambient services with the registered initializers.
+        /// Initializes the app services with the registered collectors.
         /// </summary>
         /// <param name="appServices">The application services.</param>
-        public static void Initialize(IAppServiceCollection appServices)
+        public static void RegisterCollectedAppServices(IAppServiceCollection appServices)
         {
             lock (Collectors)
             {

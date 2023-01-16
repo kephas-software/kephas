@@ -34,7 +34,7 @@ The _data context_ is the entry point in regard to data operations. Its main res
 
 Apart from these, the data context:
 
-* _is a contextual object_: the consumers may access the [[ambient services|Application-Environment-and-Lifetime-Management#ambient-services]] and use the data context as an [[expando|Dynamic-expandable-objects-(expandos)]] object, dynamically adding and accessing values to it/from it.
+* _is a contextual object_: the consumers may access the [[app services|Application-Environment-and-Lifetime-Management#ambient-services]] and use the data context as an [[expando|Dynamic-expandable-objects-(expandos)]] object, dynamically adding and accessing values to it/from it.
 
 * _is initializable and disposable_: implements the `IInitializable` and `IDisposable` interfaces to control its lifetime.
 

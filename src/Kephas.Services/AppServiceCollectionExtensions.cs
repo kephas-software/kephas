@@ -661,7 +661,7 @@ namespace Kephas
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-            appServices.AddService(
+            return appServices.AddService(
                 contractType,
                 serviceType,
                 b =>
@@ -669,7 +669,6 @@ namespace Kephas
                     b.Singleton();
                     builder?.Invoke(b);
                 });
-            return appServices;
         }
 
         /// <summary>
@@ -754,7 +753,7 @@ namespace Kephas
             contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
             serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-            appServices.AddService(
+            return appServices.AddService(
                 contractType,
                 serviceInstance,
                 b =>
@@ -762,7 +761,6 @@ namespace Kephas
                     b.Singleton();
                     builder?.Invoke(b);
                 });
-            return appServices;
         }
 
         /// <summary>
@@ -866,7 +864,7 @@ namespace Kephas
         /// <param name="services">The service declarations.</param>
         /// <param name="resolutionStrategy">The resolution strategy for ambiguous registrations.</param>
         /// <param name="logger">Optional. The logger.</param>
-        /// <returns>The provided ambient services.</returns>
+        /// <returns>The provided app services.</returns>
         public static IAppServiceCollection AddAppServices(
             this IAppServiceCollection appServices,
             IEnumerable<ContractDeclaration> contracts,

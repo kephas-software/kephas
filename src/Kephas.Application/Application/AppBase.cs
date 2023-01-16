@@ -230,7 +230,7 @@ namespace Kephas.Application
 
         /// <summary>
         /// The <see cref="BeforeAppManagerInitialize"/> is called before the application manager is initialized.
-        /// Initializes the application prerequisites: the ambient services, the application context
+        /// Initializes the application prerequisites: the app services, the application context
         /// registration, its own logger, and other. In the end, the <see cref="Build"/> method is called
         /// to complete the service registration and build the injector.
         /// </summary>
@@ -256,7 +256,7 @@ namespace Kephas.Application
                 this.Logger ??= appServices.TryGetServiceInstance<ILogManager>()?.GetLogger(this.GetType());
 
                 // it is important to create the app context before initializing the application manager
-                // and after configuring the ambient services and the logger, as it may
+                // and after configuring the app services and the logger, as it may
                 // use registered services.
                 this.AppContext = this.CreateAppContext(appServices, appArgs, this.Logger);
 
@@ -269,7 +269,7 @@ namespace Kephas.Application
 
                 this.Logger ??= this.ServiceProvider.GetRequiredService<ILogManager>().GetLogger(this.GetType());
 
-                this.Log(LogLevel.Info, null, "The ambient services are successfully configured.");
+                this.Log(LogLevel.Info, null, "The app services are successfully configured.");
             }
             catch (Exception ex)
             {

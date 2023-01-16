@@ -6,4 +6,4 @@
 # 12.0.0
 
 * Added `README.md` and `release-notes.md`.
-* Added `ConfigurationAssemblyInitializer` to register the `DefaultConfigurationStore` in the ambient services initializers.
+* Added `ConfigurationAssemblyInitializer` to register the `DefaultConfigurationStore` in the app services initializers.

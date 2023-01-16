@@ -59,7 +59,12 @@ namespace Kephas.Services.Autofac
         /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.IServiceProvider.GetService?view=netstandard-2.1">`IServiceProvider.GetService` on docs.microsoft.com</a></footer>
         object? IServiceProvider.GetService(Type serviceType)
         {
-            return this.TryResolve(serviceType);
+            if (this.innerContainer is null)
+            {
+                throw new InvalidOperationException("Provider not initialized.");
+            }
+
+            return this.innerContainer.TryResolve(serviceType, out var service) ? service : null;
         }
 
         /// <summary>

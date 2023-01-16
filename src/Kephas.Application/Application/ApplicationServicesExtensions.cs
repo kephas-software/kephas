@@ -28,7 +28,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="servicesBuilder">The application services.</param>
         /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments, if not already registered.</param>
-        /// <returns>The provided ambient services.</returns>
+        /// <returns>The provided app services.</returns>
         public static IAppServiceCollectionBuilder AddAppArgs(this IAppServiceCollectionBuilder servicesBuilder, IAppArgs? args = null)
         {
             servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
@@ -52,7 +52,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="servicesBuilder">The services builder.</param>
         /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments.</param>
-        /// <returns>The provided ambient services.</returns>
+        /// <returns>The provided app services.</returns>
         public static IAppServiceCollectionBuilder AddAppArgs(this IAppServiceCollectionBuilder servicesBuilder, IEnumerable<string>? args = null) =>
             AddAppArgs(servicesBuilder, args == null ? null : new AppArgs(args));
     }

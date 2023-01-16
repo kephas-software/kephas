@@ -109,7 +109,7 @@ namespace Kephas.Testing
         protected virtual IAppServiceCollection CreateAppServices(IRuntimeTypeRegistry? typeRegistry = null)
         {
             return new AppServiceCollection()
-                .Add(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
+                .TryAdd(typeRegistry ?? RuntimeTypeRegistry.Instance, b => b.ExternallyOwned());
         }
 
         /// <summary>

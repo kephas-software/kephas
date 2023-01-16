@@ -23,7 +23,7 @@ public static class TenantServicesExtensions
     /// </summary>
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="appArgs">The application arguments.</param>
-    /// <typeparam name="T">The ambient services type.</typeparam>
+    /// <typeparam name="T">The app services type.</typeparam>
     /// <returns>The provided <paramref name="servicesBuilder"/>.</returns>
     [return: NotNull]
     public static IAppServiceCollectionBuilder WithTenantSupport(this IAppServiceCollectionBuilder servicesBuilder, IAppArgs appArgs)

@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the ambient services extensions class.
+//   Implements the app services extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

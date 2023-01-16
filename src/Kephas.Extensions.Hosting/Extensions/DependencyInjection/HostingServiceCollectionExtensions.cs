@@ -18,7 +18,7 @@ namespace Kephas.Extensions.DependencyInjection
     using Microsoft.Extensions.Hosting;
 
     /// <summary>
-    /// Microsoft.Extensions.DependencyInjection related ambient services extensions.
+    /// Microsoft.Extensions.DependencyInjection related app services extensions.
     /// </summary>
     public static class HostingServiceCollectionExtensions
     {

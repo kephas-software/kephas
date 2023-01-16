@@ -24,10 +24,10 @@ namespace Kephas.Extensions.Configuration
         /// <summary>
         /// Uses the extensions configuration.
         /// </summary>
-        /// <param name="appServices">The ambient services to act on.</param>
+        /// <param name="appServices">The app services to act on.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns>
-        /// The provided ambient services.
+        /// The provided app services.
         /// </returns>
         public static IAppServiceCollection UseConfiguration(this IAppServiceCollection appServices, IConfiguration configuration)
         {

@@ -19,6 +19,7 @@ namespace Kephas.Services.Builder
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Configuration;
 
@@ -84,10 +85,15 @@ namespace Kephas.Services.Builder
         /// <summary>
         /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
         /// </summary>
-        /// <returns>The provided ambient services.</returns>
+        /// <returns>The provided app services.</returns>
         public IAppServiceCollection Build()
         {
             var providers = this.GetProviders();
+#if NETSTANDARD2_1
+            // for versions prior to .NET 6.0 make sure that the assemblies are initialized.
+            IAssemblyInitializer.EnsureAssembliesInitialized();
+#endif
+            IAppServiceCollection.RegisterCollectedAppServices(this.AppServices);
             return this.AddAppServices(this.AppServices, providers, this.Settings.AmbiguousResolutionStrategy);
         }
 
