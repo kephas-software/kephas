@@ -8,7 +8,6 @@
 namespace Kephas.Tests;
 
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 using Kephas.Services;
 using Kephas.Testing;
@@ -34,8 +33,8 @@ public class AppServiceCollectionExtensionsTest : TestBase
     {
         var appServices = new AppServiceCollection();
         var service = new Service();
-        appServices.TryAdd(new Service());
-        appServices.TryAdd(service, b => b.AddMetadata("test", "value"));
+        appServices.TryAdd<IService>(new Service());
+        appServices.TryAdd<IService>(service, b => b.AddMetadata("test", "value"));
 
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreNotSame(service, serviceInfo.Instance);
@@ -47,7 +46,7 @@ public class AppServiceCollectionExtensionsTest : TestBase
     {
         var appServices = new AppServiceCollection();
         var service = new Service();
-        appServices.TryAdd(service, b => b.AddMetadata("test", "value"));
+        appServices.TryAdd<IService>(service, b => b.AddMetadata("test", "value"));
 
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(service, serviceInfo.Instance);
@@ -133,12 +132,11 @@ public class AppServiceCollectionExtensionsTest : TestBase
     public void TryAdd_existing_type()
     {
         var appServices = new AppServiceCollection();
-        var service = new Service();
-        appServices.TryAdd(typeof(IService), type);
-        appServices.TryAdd(typeof(StringBuilder), service, b => b.AddMetadata("test", "value"));
+        appServices.TryAdd(typeof(IService), typeof(Service));
+        appServices.TryAdd(typeof(IService), typeof(OtherService), b => b.AddMetadata("test", "value"));
 
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.AreNotSame(service, serviceInfo.Instance);
+        Assert.AreSame(typeof(Service), serviceInfo.InstanceType);
         Assert.IsNull(serviceInfo.Metadata?["test"]);
     }
 
@@ -146,13 +144,11 @@ public class AppServiceCollectionExtensionsTest : TestBase
     public void TryAdd_non_existing_type()
     {
         var appServices = new AppServiceCollection();
-        var service = new Service();
-        appServices.TryAdd(typeof(StringBuilder), service, b => b.AddMetadata("test", "value"));
+        appServices.TryAdd(typeof(IService), typeof(Service));
 
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.AreSame(service, serviceInfo.Instance);
-        Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreSame(typeof(Service), serviceInfo.InstanceType);
+        Assert.IsNull(serviceInfo.Metadata?["test"]);
     }
 
     private interface IService {}

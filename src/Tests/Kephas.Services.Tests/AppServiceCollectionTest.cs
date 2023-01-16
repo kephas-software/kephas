@@ -12,6 +12,7 @@ namespace Kephas.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas;
     using NUnit.Framework;
 

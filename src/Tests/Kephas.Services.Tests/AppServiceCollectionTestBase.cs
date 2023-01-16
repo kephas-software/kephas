@@ -9,7 +9,7 @@ namespace Kephas.Tests;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Kephas.Application;
+
 using Kephas.Logging;
 using Kephas.Reflection;
 using Kephas.Runtime;

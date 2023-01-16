@@ -13,14 +13,12 @@ namespace Kephas;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-
+using System.Runtime.CompilerServices;
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Extensions.DependencyInjection.Resources;
-using Kephas.Logging;
 using Kephas.Services;
 using Kephas.Services.Builder;
 using Kephas.Reflection;
-using Kephas.Services;
 using Kephas.Services.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,6 +29,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 public static class DependencyInjectionExtensions
 {
     private static MethodInfo AddServiceFactoriesWithFactoryMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactoriesOfObject<string, string>(null!, null!, null));
+    private static MethodInfo AddServiceFactoriesWithoutMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!));
+    private static MethodInfo AddServiceFactoriesWithMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!, null!));
 
     /// <summary>
     /// Builds the service provider using the service collection.
@@ -141,8 +141,7 @@ public static class DependencyInjectionExtensions
             { InstanceFactory: not null } =>
                 services.AddTransient(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
             { InstancingStrategy: not null } =>
-                services.AddSingleton(contractType, appServiceInfo.InstancingStrategy)
-                    .AddServiceFactories(contractType, provider => appServiceInfo.InstancingStrategy, metadataType, appServiceInfo.Metadata),
+                services.AddSingleton(contractType, appServiceInfo.InstancingStrategy, metadataType, appServiceInfo.Metadata),
             _ => services
         };
     }
@@ -168,10 +167,17 @@ public static class DependencyInjectionExtensions
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         metadataType ??= typeof(AppServiceMetadata);
 
-        services.AddSingleton(serviceType);
-        if (contractType != serviceType)
+        if (contractType.IsGenericTypeDefinition)
         {
-            services.AddSingleton(contractType, provider => provider.GetRequiredService(serviceType));
+            ServiceCollectionServiceExtensions.AddSingleton(services, contractType, serviceType);
+        }
+        else
+        {
+            ServiceCollectionServiceExtensions.AddSingleton(services, serviceType);
+            if (contractType != serviceType)
+            {
+                ServiceCollectionServiceExtensions.AddSingleton(services, contractType, provider => provider.GetRequiredService(serviceType));
+            }
         }
 
         return metadata is null
@@ -216,10 +222,17 @@ public static class DependencyInjectionExtensions
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        services.AddSingleton(typeof(TService));
-        if (typeof(TContract) != typeof(TService))
+        if (typeof(TContract).IsGenericTypeDefinition)
         {
-            services.AddSingleton(typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TContract), typeof(TService));
+        }
+        else
+        {
+            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService));
+            if (typeof(TContract) != typeof(TService))
+            {
+                ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+            }
         }
 
         return metadata is null
@@ -248,8 +261,8 @@ public static class DependencyInjectionExtensions
         instance = instance ?? throw new ArgumentNullException(nameof(instance));
         metadataType ??= typeof(AppServiceMetadata);
 
-        return services
-            .AddSingleton(contractType, instance)
+        return ServiceCollectionServiceExtensions
+            .AddSingleton(services, contractType, instance)
             .AddServiceFactories(contractType, _ => instance, metadataType, metadata);
     }
 
@@ -272,8 +285,8 @@ public static class DependencyInjectionExtensions
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        return services
-            .AddSingleton(instance)
+        return ServiceCollectionServiceExtensions
+            .AddSingleton(services, instance)
             .AddServiceFactories<TContract, TMetadata>(_ => instance, metadata);
     }
 
@@ -298,10 +311,17 @@ public static class DependencyInjectionExtensions
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         metadataType ??= typeof(AppServiceMetadata);
 
-        services.AddTransient(serviceType);
-        if (contractType != serviceType)
+        if (contractType.IsGenericTypeDefinition)
         {
-            services.AddTransient(contractType, provider => provider.GetRequiredService(serviceType));
+            ServiceCollectionServiceExtensions.AddTransient(services, contractType, serviceType);
+        }
+        else
+        {
+            ServiceCollectionServiceExtensions.AddTransient(services, serviceType);
+            if (contractType != serviceType)
+            {
+                ServiceCollectionServiceExtensions.AddTransient(services, contractType, provider => provider.GetRequiredService(serviceType));
+            }
         }
 
         return metadata is null
@@ -346,10 +366,17 @@ public static class DependencyInjectionExtensions
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        services.AddTransient(typeof(TService));
-        if (typeof(TContract) != typeof(TService))
+        if (typeof(TContract).IsGenericTypeDefinition)
         {
-            services.AddTransient(typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TContract), typeof(TService));
+        }
+        else
+        {
+            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService));
+            if (typeof(TContract) != typeof(TService))
+            {
+                ServiceCollectionServiceExtensions.AddTransient(services, typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+            }
         }
 
         return metadata is null
@@ -378,10 +405,17 @@ public static class DependencyInjectionExtensions
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         metadataType ??= typeof(AppServiceMetadata);
 
-        services.AddScoped(serviceType);
-        if (contractType != serviceType)
+        if (contractType.IsGenericTypeDefinition)
         {
-            services.AddScoped(contractType, provider => provider.GetRequiredService(serviceType));
+            ServiceCollectionServiceExtensions.AddScoped(services, contractType, serviceType);
+        }
+        else
+        {
+            ServiceCollectionServiceExtensions.AddScoped(services, serviceType);
+            if (contractType != serviceType)
+            {
+                ServiceCollectionServiceExtensions.AddScoped(services, contractType, provider => provider.GetRequiredService(serviceType));
+            }
         }
 
         return metadata is null
@@ -426,10 +460,17 @@ public static class DependencyInjectionExtensions
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        services.AddScoped(typeof(TService));
-        if (typeof(TContract) != typeof(TService))
+        if (typeof(TContract).IsGenericTypeDefinition)
         {
-            services.AddScoped(typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TContract), typeof(TService));
+        }
+        else
+        {
+            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService));
+            if (typeof(TContract) != typeof(TService))
+            {
+                ServiceCollectionServiceExtensions.AddScoped(services, typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+            }
         }
 
         return metadata is null
@@ -458,8 +499,8 @@ public static class DependencyInjectionExtensions
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         metadataType ??= typeof(AppServiceMetadata);
 
-        return services
-            .AddSingleton(contractType, serviceFactory)
+        return ServiceCollectionServiceExtensions
+            .AddSingleton(services, contractType, serviceFactory)
             .AddServiceFactories(contractType, serviceFactory, metadataType, metadata);
     }
 
@@ -483,8 +524,8 @@ public static class DependencyInjectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return services
-            .AddSingleton(serviceFactory)
+        return ServiceCollectionServiceExtensions
+            .AddSingleton(services, serviceFactory)
             .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
     }
 
@@ -509,8 +550,8 @@ public static class DependencyInjectionExtensions
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         metadataType ??= typeof(AppServiceMetadata);
 
-        return services
-            .AddTransient(contractType, serviceFactory)
+        return ServiceCollectionServiceExtensions
+            .AddTransient(services, contractType, serviceFactory)
             .AddServiceFactories(contractType, serviceFactory, metadataType, metadata);
     }
 
@@ -534,8 +575,8 @@ public static class DependencyInjectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return services
-            .AddTransient(serviceFactory)
+        return ServiceCollectionServiceExtensions
+            .AddTransient(services, serviceFactory)
             .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
     }
 
@@ -560,8 +601,8 @@ public static class DependencyInjectionExtensions
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         metadataType ??= typeof(AppServiceMetadata);
 
-        return services
-            .AddScoped(contractType, serviceFactory)
+        return ServiceCollectionServiceExtensions
+            .AddScoped(services, contractType, serviceFactory)
             .AddServiceFactories(contractType, serviceFactory, metadataType, metadata);
     }
 
@@ -585,8 +626,8 @@ public static class DependencyInjectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return services
-            .AddScoped(serviceFactory)
+        return ServiceCollectionServiceExtensions
+            .AddScoped(services, serviceFactory)
             .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
     }
 
@@ -598,17 +639,17 @@ public static class DependencyInjectionExtensions
         where TService : class, T
     {
         services
-            .AddTransient<T>(provider => provider.GetRequiredService<TService>())
-            .AddTransient<Lazy<T>, LazyService<T, TService>>()
-            .AddTransient<Lazy<T, TMetadata>, LazyService<T, TService, TMetadata>>()
-            .AddTransient<IExportFactory<T>, FactoryService<T, TService>>()
-            .AddTransient<IExportFactory<T, TMetadata>, FactoryService<T, TService, TMetadata>>();
+            .AddTransientRaw<T>(provider => provider.GetRequiredService<TService>())
+            .AddTransientRaw<Lazy<T>, LazyService<T, TService>>()
+            .AddTransientRaw<Lazy<T, TMetadata>, LazyService<T, TService, TMetadata>>()
+            .AddTransientRaw<IExportFactory<T>, FactoryService<T, TService>>()
+            .AddTransientRaw<IExportFactory<T, TMetadata>, FactoryService<T, TService, TMetadata>>();
 
         if (typeof(TMetadata) != typeof(AppServiceMetadata))
         {
             services
-                .AddTransient<Lazy<T, AppServiceMetadata>, LazyService<T, TService, AppServiceMetadata>>()
-                .AddTransient<IExportFactory<T, AppServiceMetadata>, FactoryService<T, TService, AppServiceMetadata>>();
+                .AddTransientRaw<Lazy<T, AppServiceMetadata>, LazyService<T, TService, AppServiceMetadata>>()
+                .AddTransientRaw<IExportFactory<T, AppServiceMetadata>, FactoryService<T, TService, AppServiceMetadata>>();
         }
 
         return services;
@@ -624,21 +665,40 @@ public static class DependencyInjectionExtensions
         where TService : class, T
     {
         services
-            .AddTransient<T>(provider => provider.GetRequiredService<TService>())
-            .AddTransient<Lazy<T>, LazyService<T, TService>>()
-            .AddTransient<Lazy<T, TMetadata>>(provider => new LazyService<T, TService, TMetadata>(provider, metadata))
-            .AddTransient<IExportFactory<T>, FactoryService<T, TService>>()
-            .AddTransient<IExportFactory<T, TMetadata>>(provider => new FactoryService<T, TService, TMetadata>(provider, metadata));
+            .AddTransientRaw<T>(provider => provider.GetRequiredService<TService>())
+            .AddTransientRaw<Lazy<T>, LazyService<T, TService>>()
+            .AddTransientRaw<Lazy<T, TMetadata>>(provider => new LazyService<T, TService, TMetadata>(provider, metadata))
+            .AddTransientRaw<IExportFactory<T>, FactoryService<T, TService>>()
+            .AddTransientRaw<IExportFactory<T, TMetadata>>(provider => new FactoryService<T, TService, TMetadata>(provider, metadata));
 
         if (typeof(TMetadata) != typeof(AppServiceMetadata))
         {
             services
-                .AddTransient<Lazy<T, AppServiceMetadata>>(provider => new LazyService<T, TService, AppServiceMetadata>(provider, metadata))
-                .AddTransient<IExportFactory<T, AppServiceMetadata>>(provider => new FactoryService<T, TService, AppServiceMetadata>(provider, metadata));
+                .AddTransientRaw<Lazy<T, AppServiceMetadata>>(provider => new LazyService<T, TService, AppServiceMetadata>(provider, metadata))
+                .AddTransientRaw<IExportFactory<T, AppServiceMetadata>>(provider => new FactoryService<T, TService, AppServiceMetadata>(provider, metadata));
         }
 
         return services;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddTransientRaw<T, TService>(this IServiceCollection services)
+        where TService : class, T
+        where T : class
+        => ServiceCollectionServiceExtensions.AddTransient<T, TService>(services);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddTransientRaw<T>(this IServiceCollection services, Func<IServiceProvider, T> factory)
+        where T : class
+        => ServiceCollectionServiceExtensions.AddTransient<T>(services, factory);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type contractType, Type serviceType)
+        => ServiceCollectionServiceExtensions.AddTransient(services, contractType, serviceType);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type contractType, Func<IServiceProvider, object> factory)
+        => ServiceCollectionServiceExtensions.AddTransient(services, contractType, factory);
 
     private static IServiceCollection AddServiceFactoriesOfObject<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
@@ -658,16 +718,16 @@ public static class DependencyInjectionExtensions
         where T : class
     {
         services
-            .AddTransient<Lazy<T>>(provider => new Lazy<T>(() => factory(provider)))
-            .AddTransient<Lazy<T, TMetadata>>(provider => new Lazy<T, TMetadata>(() => factory(provider), ServiceHelper.GetServiceMetadata<TMetadata>(metadata)))
-            .AddTransient<IExportFactory<T>>(provider => new ExportFactory<T>(() => factory(provider)))
-            .AddTransient<IExportFactory<T, TMetadata>>(provider => new ExportFactory<T, TMetadata>(() => factory(provider), metadata));
+            .AddTransientRaw<Lazy<T>>(provider => new Lazy<T>(() => factory(provider)))
+            .AddTransientRaw<Lazy<T, TMetadata>>(provider => new Lazy<T, TMetadata>(() => factory(provider), ServiceHelper.GetServiceMetadata<TMetadata>(metadata)))
+            .AddTransientRaw<IExportFactory<T>>(provider => new ExportFactory<T>(() => factory(provider)))
+            .AddTransientRaw<IExportFactory<T, TMetadata>>(provider => new ExportFactory<T, TMetadata>(() => factory(provider), metadata));
 
         if (typeof(TMetadata) != typeof(AppServiceMetadata))
         {
             services
-                .AddTransient<Lazy<T, AppServiceMetadata>>(provider => new Lazy<T, AppServiceMetadata>(() => factory(provider), new AppServiceMetadata(metadata)))
-                .AddTransient<IExportFactory<T, AppServiceMetadata>>(provider => new ExportFactory<T, AppServiceMetadata>(() => factory(provider), metadata));
+                .AddTransientRaw<Lazy<T, AppServiceMetadata>>(provider => new Lazy<T, AppServiceMetadata>(() => factory(provider), new AppServiceMetadata(metadata)))
+                .AddTransientRaw<IExportFactory<T, AppServiceMetadata>>(provider => new ExportFactory<T, AppServiceMetadata>(() => factory(provider), metadata));
         }
 
         return services;
@@ -682,20 +742,26 @@ public static class DependencyInjectionExtensions
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type metadataType)
     {
-        services
-            .AddTransient(typeof(Lazy<>).MakeGenericType(contractType), typeof(LazyService<,>).MakeGenericType(contractType, serviceType))
-            .AddTransient(typeof(Lazy<,>).MakeGenericType(contractType, metadataType), typeof(LazyService<,,>).MakeGenericType(contractType, serviceType, metadataType))
-            .AddTransient(typeof(IExportFactory<>).MakeGenericType(contractType), typeof(FactoryService<,>).MakeGenericType(contractType, serviceType))
-            .AddTransient(typeof(IExportFactory<,>).MakeGenericType(contractType, metadataType), typeof(FactoryService<,,>).MakeGenericType(contractType, serviceType, metadataType));
-
-        if (metadataType != typeof(AppServiceMetadata))
+        if (contractType.IsGenericTypeDefinition)
         {
             services
-                .AddTransient(typeof(Lazy<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), typeof(LazyService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)))
-                .AddTransient(typeof(IExportFactory<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), typeof(FactoryService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)));
+                .AddTransientRaw(typeof(Lazy<>).MakeGenericType(contractType), typeof(OpenGenericLazyService<>).MakeGenericType(contractType))
+                .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, metadataType), typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, metadataType))
+                .AddTransientRaw(typeof(IExportFactory<>).MakeGenericType(contractType), typeof(OpenGenericFactoryService<>).MakeGenericType(contractType))
+                .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, metadataType), typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, metadataType));
+
+            if (metadataType != typeof(AppServiceMetadata))
+            {
+                services
+                    .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)))
+                    .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)));
+            }
+
+            return services;
         }
 
-        return services;
+        var addServiceFactories = AddServiceFactoriesWithoutMetadataMethod.MakeGenericMethod(contractType, serviceType, metadataType);
+        return addServiceFactories.Call<IServiceCollection>(null, services);
     }
 
     private static IServiceCollection AddServiceFactories(
@@ -708,20 +774,26 @@ public static class DependencyInjectionExtensions
         Type metadataType,
         IDictionary<string, object?> metadata)
     {
-        services
-            .AddTransient(typeof(Lazy<>).MakeGenericType(contractType), typeof(LazyService<,>).MakeGenericType(contractType, serviceType))
-            .AddTransient(typeof(Lazy<,>).MakeGenericType(contractType, metadataType), provider => Activator.CreateInstance(typeof(LazyService<,,>).MakeGenericType(contractType, serviceType, metadataType), provider, metadata)!)
-            .AddTransient(typeof(IExportFactory<>).MakeGenericType(contractType), typeof(FactoryService<,>).MakeGenericType(contractType, serviceType))
-            .AddTransient(typeof(IExportFactory<,>).MakeGenericType(contractType, metadataType), provider => Activator.CreateInstance(typeof(FactoryService<,,>).MakeGenericType(contractType, serviceType, metadataType), provider, metadata)!);
-
-        if (metadataType != typeof(AppServiceMetadata))
+        if (contractType.IsGenericTypeDefinition)
         {
             services
-                .AddTransient(typeof(Lazy<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), provider => Activator.CreateInstance(typeof(LazyService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)), provider, metadata)!)
-                .AddTransient(typeof(IExportFactory<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), provider => Activator.CreateInstance(typeof(FactoryService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)), provider, metadata)!);
+                .AddTransientRaw(typeof(Lazy<>).MakeGenericType(contractType), typeof(OpenGenericLazyService<>).MakeGenericType(contractType))
+                .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, metadataType), provider => Activator.CreateInstance(typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, metadataType), provider, metadata)!)
+                .AddTransientRaw(typeof(IExportFactory<>).MakeGenericType(contractType), typeof(OpenGenericFactoryService<>).MakeGenericType(contractType))
+                .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, metadataType), provider => Activator.CreateInstance(typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, metadataType), provider, metadata)!);
+
+            if (metadataType != typeof(AppServiceMetadata))
+            {
+                services
+                    .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), provider => Activator.CreateInstance(typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)), provider, metadata)!)
+                    .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), provider => Activator.CreateInstance(typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)), provider, metadata)!);
+            }
+
+            return services;
         }
 
-        return services;
+        var addServiceFactories = AddServiceFactoriesWithMetadataMethod.MakeGenericMethod(contractType, serviceType, metadataType);
+        return addServiceFactories.Call<IServiceCollection>(null, services, metadata);
     }
 
     private static IServiceCollection AddServiceFactories(
@@ -734,7 +806,7 @@ public static class DependencyInjectionExtensions
         IDictionary<string, object?>? metadata)
     {
         var addServiceFactories = AddServiceFactoriesWithFactoryMethod.MakeGenericMethod(contractType, metadataType);
-        addServiceFactories.Call(services, serviceFactory, metadata);
+        addServiceFactories.Call(null, services, serviceFactory, metadata);
         return services;
     }
 }
