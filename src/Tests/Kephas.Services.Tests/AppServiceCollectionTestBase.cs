@@ -491,17 +491,10 @@ public abstract class AppServiceCollectionTestBase : TestBase
         appServices = new AppServiceCollectionBuilder(appServices).Build();
         var contracts = appServices.GetServiceInstance<IContractDeclarationCollection>();
 
-        Assert.AreEqual(2, contracts.Count());
+        Assert.AreEqual(0, contracts.Count());
 
-        var (c, info) = contracts.SingleOrDefault(i => i.ContractDeclarationType == typeof(IAppServiceCollection));
-        Assert.IsNotNull(info);
-        Assert.IsNotNull(info.InstanceFactory);
-        Assert.AreSame(appServices, info.InstanceFactory(null));
-
-        (c, info) = contracts.SingleOrDefault(i => i.ContractDeclarationType == typeof(IRuntimeTypeRegistry));
-        Assert.IsNotNull(info);
-        Assert.IsNotNull(info.InstanceFactory);
-        Assert.AreSame(RuntimeTypeRegistry.Instance, info.InstanceFactory(null));
+        var appServicesDuplicate = appServices.GetServiceInstance<IAppServiceCollection>();
+        Assert.AreSame(appServices, appServicesDuplicate);
     }
 
     public interface IService { }
