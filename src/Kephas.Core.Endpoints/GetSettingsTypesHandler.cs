@@ -24,7 +24,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Handler for <see cref="GetSettingsTypesMessage"/>.
     /// </summary>
-    public class GetSettingsTypesHandler : MessageHandlerBase<GetSettingsTypesMessage, GetSettingsTypesResponseMessage>
+    public class GetSettingsTypesHandler : MessageHandlerBase<GetSettingsTypesMessage, GetSettingsTypesResponse>
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
@@ -49,7 +49,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetSettingsTypesResponseMessage> ProcessAsync(GetSettingsTypesMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<GetSettingsTypesResponse> ProcessAsync(GetSettingsTypesMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 
@@ -60,7 +60,7 @@ namespace Kephas.Core.Endpoints
 
             var dynTypeRegistry = new DynamicTypeRegistry();
             settingsTypes.ForEach(t => dynTypeRegistry.Types.Add(GetDynamicTypeInfo(t)));
-            return new GetSettingsTypesResponseMessage
+            return new GetSettingsTypesResponse
             {
                 SettingsTypes = dynTypeRegistry.Types.ToArray(),
             };

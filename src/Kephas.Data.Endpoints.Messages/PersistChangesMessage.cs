@@ -32,7 +32,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A persist changes response message.
     /// </summary>
-    public class PersistChangesResponseMessage : DataResponseMessage
+    public class PersistChangesResponse : DataResponse
     {
     }
 }

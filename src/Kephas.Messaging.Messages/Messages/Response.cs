@@ -1,31 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AggregateMessage.cs" company="Kephas Software SRL">
+// <copyright file="Response.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the aggregate message class.
+//   Implements the information response message class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Messaging.Messages
 {
-    using System.Collections.Generic;
-
-    using Kephas.Model.AttributedModel;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
-    /// An aggregate message.
+    /// A simple response message.
     /// </summary>
-    [ExcludeFromModel]
-    public class AggregateMessage : IMessage
+    public class Response : IResponse
     {
         /// <summary>
-        /// Gets or sets the messages.
+        /// Gets or sets the severity.
         /// </summary>
         /// <value>
-        /// The messages.
+        /// The severity.
         /// </value>
-        public IEnumerable<IMessage> Messages { get; set; }
+        public SeverityLevel Severity { get; set; } = SeverityLevel.Info;
+
+        /// <summary>
+        /// Gets or sets the informational message.
+        /// </summary>
+        /// <value>
+        /// The informational message.
+        /// </value>
+        public string? Message { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Kephas.Orchestration.Endpoints
     /// <summary>
     /// Handler for the <see cref="GetLiveAppsMessage"/>.
     /// </summary>
-    public class GetLiveAppsHandler : MessageHandlerBase<GetLiveAppsMessage, GetLiveAppsResponseMessage>
+    public class GetLiveAppsHandler : MessageHandlerBase<GetLiveAppsMessage, GetLiveAppsResponse>
     {
         private readonly IOrchestrationManager orchestrationManager;
 
@@ -39,11 +39,11 @@ namespace Kephas.Orchestration.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetLiveAppsResponseMessage> ProcessAsync(GetLiveAppsMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<GetLiveAppsResponse> ProcessAsync(GetLiveAppsMessage message, IMessagingContext context, CancellationToken token)
         {
             var liveApps = await this.orchestrationManager.GetLiveAppsAsync(cancellationToken: token)
                 .PreserveThreadContext();
-            return new GetLiveAppsResponseMessage
+            return new GetLiveAppsResponse
             {
                 Apps = liveApps.ToArray(),
             };

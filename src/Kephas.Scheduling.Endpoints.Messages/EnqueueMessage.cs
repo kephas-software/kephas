@@ -58,7 +58,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Response for <see cref="EnqueueMessage"/>.
     /// </summary>
-    public class EnqueueResponseMessage : ResponseMessage
+    public class EnqueueResponse : Response
     {
         /// <summary>
         /// Gets or sets the result of the enqueue operation.

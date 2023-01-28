@@ -20,7 +20,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A set log level handler.
     /// </summary>
-    public class SetLogLevelHandler : MessageHandlerBase<SetLogLevelMessage, ResponseMessage>
+    public class SetLogLevelHandler : MessageHandlerBase<SetLogLevelMessage, Response>
     {
         private readonly ILogManager logManager;
 
@@ -29,7 +29,6 @@ namespace Kephas.Core.Endpoints
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
         public SetLogLevelHandler(ILogManager logManager)
-            : base(logManager)
         {
             this.logManager = logManager;
         }
@@ -43,13 +42,13 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(SetLogLevelMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(SetLogLevelMessage message, IMessagingContext context, CancellationToken token)
         {
             this.Logger.Warn("Changing the minimum log level from {oldLogLevel} to {logLevel} by '{user}'.", this.logManager.MinimumLevel, message.MinimumLevel, context.Identity?.Name);
             this.logManager.MinimumLevel = message.MinimumLevel;
             this.Logger.Warn("The minimum log level changed to {logLevel} by '{user}'.", this.logManager.MinimumLevel, context.Identity?.Name);
 
-            return new ResponseMessage
+            return new Response
             {
                 Message = $"The application's minimum log level was set to {this.logManager.MinimumLevel}.",
             };

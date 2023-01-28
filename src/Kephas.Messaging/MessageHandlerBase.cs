@@ -24,18 +24,23 @@ namespace Kephas.Messaging
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
-    public abstract class MessageHandlerBase<TMessage, TResponse> : Loggable, IMessageHandler<TMessage>
+    public abstract class MessageHandlerBase<TMessage, TResponse> : IMessageHandler<TMessage>
         where TMessage : class
         where TResponse : class?
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerBase{TMessage, TResponse}"/> class.
         /// </summary>
-        /// <param name="logManager">Manager for log.</param>
-        protected MessageHandlerBase(ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        protected MessageHandlerBase(ILogger<MessageHandlerBase<TMessage, TResponse>>? logger = null)
         {
+            this.Logger = logger;
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        protected ILogger? Logger { get; set; }
 
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
@@ -57,55 +62,14 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        async Task<IMessage?> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
+        async Task<object?> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
             context = context ?? throw new ArgumentNullException(nameof(context));
 
-            this.Logger = this.GetLogger(context);
+            this.Logger ??= this.GetLogger(context);
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
-            return response.ToMessage();
-        }
-
-        /// <summary>
-        /// Processes the provided message asynchronously and returns a response promise.
-        /// </summary>
-        /// <param name="message">The message to be handled.</param>
-        /// <param name="context">The processing context.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// The response promise.
-        /// </returns>
-        async Task<IMessage?> IMessageHandler.ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
-        {
-            // typed message handlers register themselves for a message type which may not implement IMessage
-            // therefore the actual processed message is the message content.
-            var content = message.GetContent();
-            if (!(content is TMessage typedMessage))
-            {
-                throw new ArgumentException(Strings.MessageHandler_BadMessageType_Exception.FormatWith(typeof(TMessage), content?.GetType()), nameof(message));
-            }
-
-            this.Logger = this.GetLogger(context);
-            var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
-            return response.ToMessage();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
+            return response;
         }
     }
 }

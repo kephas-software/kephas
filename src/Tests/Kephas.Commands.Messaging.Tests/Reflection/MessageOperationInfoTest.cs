@@ -112,7 +112,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         {
             var messageProcessor = Substitute.For<IMessageProcessor>();
             messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => new ResponseMessage { Message = $"Start time: {ci.Arg<NullableParamMessage>().StartTime:s}" });
+                .Returns(ci => new Response { Message = $"Start time: {ci.Arg<NullableParamMessage>().StartTime:s}" });
             var operationInfo = new MessageOperationInfo(
                     this.typeRegistry,
                     this.typeRegistry.GetTypeInfo(typeof(NullableParamMessage)),
@@ -120,9 +120,9 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
 
             var result = await operationInfo.InvokeAsync(null, new object?[] { new Expando { ["starttime"] = "2020-04-19" } });
 
-            Assert.IsInstanceOf<ResponseMessage>(result);
+            Assert.IsInstanceOf<Response>(result);
 
-            var response = (ResponseMessage)result;
+            var response = (Response)result;
             Assert.AreEqual("Start time: 2020-04-19T00:00:00", response.Message);
         }
 

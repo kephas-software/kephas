@@ -14,7 +14,6 @@ namespace Kephas.Scheduling.Jobs
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Formatting;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Reflection;
@@ -22,12 +21,13 @@ namespace Kephas.Scheduling.Jobs
     /// <summary>
     /// Encapsulates the result of a job.
     /// </summary>
-    public record JobResult : OperationResult<object?>, IJobResult
+    public record JobResult : AsyncOperationResult<object?>, IJobResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JobResult"/> class.
         /// </summary>
         public JobResult()
+            : base(Task.FromResult<object?>(null))
         {
         }
 
@@ -47,6 +47,7 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="triggerId">The trigger identifier.</param>
         public JobResult(object triggerId)
+            : base(Task.FromResult<object?>(null))
         {
             this.TriggerId = triggerId;
         }
@@ -163,10 +164,10 @@ namespace Kephas.Scheduling.Jobs
         /// Cancels the background job.
         /// </summary>
         /// <returns>An operation result to await.</returns>
-        public virtual IOperationResult Cancel()
+        public virtual IAsyncOperationResult Cancel()
         {
             this.CancellationTokenSource?.Cancel();
-            return true.ToOperationResult();
+            return true.ToAsyncOperationResult();
         }
     }
 }

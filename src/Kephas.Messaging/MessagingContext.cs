@@ -87,7 +87,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The response.
         /// </value>
-        public IMessage? Response { get; set; }
+        public object? Response { get; set; }
 
         /// <summary>
         /// Gets or sets the exception.

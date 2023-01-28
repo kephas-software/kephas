@@ -34,58 +34,47 @@ namespace Kephas.Messaging
         IMessageHandlerRegistry RegisterHandler(IMessageHandler handler, MessageHandlerMetadata metadata);
 
         /// <summary>
+        /// Registers the handler.
+        /// </summary>
+        /// <typeparam name="TMessage">Type of the message.</typeparam>
+        /// <param name="handlerFunction">The handler function.</param>
+        /// <returns>
+        /// This message handler registry.
+        /// </returns>
+        IMessageHandlerRegistry RegisterHandler<TMessage>(
+            Func<TMessage, IMessagingContext, CancellationToken, Task<object?>> handlerFunction)
+            where TMessage : class
+        {
+            this.RegisterHandler(
+                new FuncMessageHandler<TMessage>(handlerFunction),
+                new MessageHandlerMetadata(typeof(TMessage)));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the handler.
+        /// </summary>
+        /// <typeparam name="TMessage">Type of the message.</typeparam>
+        /// <param name="handlerFunction">The synchronous handler function.</param>
+        /// <returns>
+        /// This message handler registry.
+        /// </returns>
+        IMessageHandlerRegistry RegisterHandler<TMessage>(Func<TMessage, IMessagingContext, object?> handlerFunction)
+            where TMessage : class
+        {
+            this.RegisterHandler(
+                new FuncMessageHandler<TMessage>((msg, ctx, _) => Task.FromResult(handlerFunction(msg, ctx))),
+                new MessageHandlerMetadata(typeof(TMessage)));
+
+            return this;
+        }
+
+        /// <summary>
         /// Resolves the message handlers for the provided message.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>The matching message handlers.</returns>
         IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message);
-    }
-
-    /// <summary>
-    /// A message handler registry extensions.
-    /// </summary>
-    public static class MessageHandlerRegistryExtensions
-    {
-        /// <summary>
-        /// Registers the handler.
-        /// </summary>
-        /// <typeparam name="TMessage">Type of the message.</typeparam>
-        /// <param name="this">The registry to act on.</param>
-        /// <param name="handlerFunction">The handler function.</param>
-        /// <returns>
-        /// This message handler registry.
-        /// </returns>
-        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage?>> handlerFunction)
-            where TMessage : class
-        {
-            @this = @this ?? throw new System.ArgumentNullException(nameof(@this));
-
-            @this.RegisterHandler(
-                new FuncMessageHandler<TMessage>(handlerFunction),
-                new MessageHandlerMetadata(typeof(TMessage)));
-
-            return @this;
-        }
-
-        /// <summary>
-        /// Registers the handler.
-        /// </summary>
-        /// <typeparam name="TMessage">Type of the message.</typeparam>
-        /// <param name="this">The registry to act on.</param>
-        /// <param name="handlerFunction">The synchronous handler function.</param>
-        /// <returns>
-        /// This message handler registry.
-        /// </returns>
-        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, IMessage?> handlerFunction)
-            where TMessage : class
-        {
-            @this = @this ?? throw new System.ArgumentNullException(nameof(@this));
-
-            @this.RegisterHandler(
-                new FuncMessageHandler<TMessage>((msg, ctx, token) => Task.FromResult(handlerFunction(msg, ctx))),
-                new MessageHandlerMetadata(typeof(TMessage)));
-
-            return @this;
-        }
     }
 }

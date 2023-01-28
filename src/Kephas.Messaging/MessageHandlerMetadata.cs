@@ -13,6 +13,7 @@ namespace Kephas.Messaging
     using System;
     using System.Collections.Generic;
     using Kephas.Collections;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace Kephas.Messaging
                 return;
             }
 
-            this.MessageType = (Type?)metadata.TryGetValue(nameof(this.MessageType));
+            this.SetMessageType((Type?)metadata.TryGetValue(nameof(this.MessageType)));
             this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? default;
             this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
             this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? default;
@@ -65,7 +66,7 @@ namespace Kephas.Messaging
         public MessageHandlerMetadata(Type? messageType = null, MessageTypeMatching messageTypeMatching = default, object? messageId = null, MessageIdMatching messageIdMatching = default, Type? envelopeType = null, MessageTypeMatching envelopeTypeMatching = default, Priority processingPriority = 0, Priority overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            this.MessageType = messageType;
+            this.SetMessageType(messageType);
             this.MessageTypeMatching = messageTypeMatching;
             this.MessageId = messageId;
             this.MessageIdMatching = messageIdMatching;
@@ -89,7 +90,15 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the message.
         /// </value>
-        public Type? MessageType { get; }
+        public Type? MessageType { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the response.
+        /// </summary>
+        /// <value>
+        /// The type of the response.
+        /// </value>
+        public Type? ResponseType { get; private set; }
 
         /// <summary>
         /// Gets the message type matching.
@@ -138,5 +147,16 @@ namespace Kephas.Messaging
         /// The message match.
         /// </value>
         public IMessageMatch MessageMatch { get; }
+
+        private void SetMessageType(Type? messageType)
+        {
+            this.MessageType = messageType;
+
+            if (messageType is not null)
+            {
+                var closedMessageType = messageType.GetBaseConstructedGenericOf(typeof(IMessage<>));
+                this.ResponseType = closedMessageType?.GenericTypeArguments[0];
+            }
+        }
     }
 }

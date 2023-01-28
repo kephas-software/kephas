@@ -42,7 +42,7 @@ public abstract class DefaultAppMessageRouterTestBase : MessagingTestBase
                 Assert.Fail(exMessage.Exception.ToString());
             }
 
-            Assert.IsInstanceOf<PingBackMessage>(eventArgs.Message.Content);
+            Assert.IsInstanceOf<PingBack>(eventArgs.Message.Content);
         }
     }
 
@@ -58,7 +58,7 @@ public abstract class DefaultAppMessageRouterTestBase : MessagingTestBase
             ReplyReceivedEventArgs eventArgs = null;
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
             var context = Substitute.For<IDispatchingContext>();
-            var reply = new BrokeredMessage { Content = new PingBackMessage(), ReplyToMessageId = "hello" };
+            var reply = new BrokeredMessage(new PingBack()) { ReplyToMessageId = "hello" };
             var result = await inProcessRouter.DispatchAsync(reply, context, default);
 
             Thread.Sleep(100);

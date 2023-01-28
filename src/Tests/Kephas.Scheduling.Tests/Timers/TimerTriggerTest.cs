@@ -69,7 +69,7 @@ namespace Kephas.Scheduling.Tests.Timers
             {
                 fired++;
                 fires.Add(DateTimeOffset.Now.Ticks);
-                var opResult = new OperationResult(Task.Delay(30));
+                var opResult = new AsyncOperationResult(Task.Delay(30));
                 if (e.CompleteCallback != null)
                 {
                     opResult.AsTask().ContinueWith(t => e.CompleteCallback.Invoke(opResult));

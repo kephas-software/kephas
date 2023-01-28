@@ -313,7 +313,7 @@ namespace Kephas.Orchestration
                         ctx => ctx.Merge(optionsConfig),
                         cancellationToken).PreserveThreadContext();
                     IOperationResult result = new OperationResult().Complete();
-                    result[nameof(StopAppResponseMessage)] = response;
+                    result[nameof(StopAppResponse)] = response;
                     return result;
                 }
                 else
@@ -344,7 +344,7 @@ namespace Kephas.Orchestration
                     {
                         OperationState = stopped ? OperationState.Completed : OperationState.InProgress,
                     };
-                    result[nameof(StopAppResponseMessage)] = stopped ? new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId } : null;
+                    result[nameof(StopAppResponse)] = stopped ? new StopAppResponse { ProcessId = runtimeAppInfo.ProcessId } : null;
                     return result;
                 }
             }

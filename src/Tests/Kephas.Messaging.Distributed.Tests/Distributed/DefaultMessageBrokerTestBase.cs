@@ -166,7 +166,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             });
 
-        Assert.IsInstanceOf<PingBackMessage>(pingBack);
+        Assert.IsInstanceOf<PingBack>(pingBack);
     }
 
     [Test]
@@ -180,14 +180,14 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         var appRuntime = container.Resolve<IAppRuntime>();
         var messageBroker = await this.GetMessageBrokerAsync(container);
 
-        var pingBack1 = (PingBackMessage?)await messageBroker.DispatchAsync(
+        var pingBack1 = (PingBack?)await messageBroker.DispatchAsync(
             new BrokeredMessage
             {
                 Content = new PingMessage(),
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             });
 
-        var pingBack2 = (PingBackMessage?)await messageBroker.DispatchAsync(
+        var pingBack2 = (PingBack?)await messageBroker.DispatchAsync(
             new BrokeredMessage
             {
                 Content = new PingMessage(),
@@ -245,7 +245,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
 
         var pingBack = await messageBroker.DispatchAsync(new PingMessage(), ctx => ctx.To(Endpoint.CreateAppInstanceEndpoint(appRuntime)));
 
-        Assert.IsInstanceOf<PingBackMessage>(pingBack);
+        Assert.IsInstanceOf<PingBack>(pingBack);
     }
 
     [Test]
@@ -257,7 +257,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
 
         var pingBack = await messageBroker.DispatchAsync(new PingMessage(), ctx => ctx.To(Endpoint.CreateAppInstanceEndpoint(appRuntime)));
 
-        Assert.IsInstanceOf<PingBackMessage>(pingBack);
+        Assert.IsInstanceOf<PingBack>(pingBack);
     }
 
     [Test]
@@ -331,9 +331,9 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
     }
 
     [OverridePriority(Priority.High)]
-    public class ExceptionEventHandler : MessageHandlerBase<PingMessage, PingBackMessage>
+    public class ExceptionEventHandler : MessageHandlerBase<PingMessage, PingBack>
     {
-        public override async Task<PingBackMessage> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<PingBack> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {
             throw new ArgumentException();
         }
@@ -423,10 +423,11 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
 
         public bool Enabled { get; private set; } = false;
 
-        protected override async Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected override async Task<object?> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context,
+            CancellationToken cancellationToken)
         {
             var message = await base.ProcessAsync(brokeredMessage, context, cancellationToken);
-            if (message is PingBackMessage pingBack)
+            if (message is PingBack pingBack)
             {
                 pingBack.Message = $"CanDisable " + pingBack.Message;
                 lock (this.sync)
@@ -467,7 +468,8 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
             throw new NotImplementedException();
         }
 
-        public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        public Task<(RoutingInstruction action, object? reply)> DispatchAsync(IBrokeredMessage brokeredMessage,
+            IDispatchingContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -483,7 +485,8 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
             throw new NotImplementedException();
         }
 
-        public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        public Task<(RoutingInstruction action, object? reply)> DispatchAsync(IBrokeredMessage brokeredMessage,
+            IDispatchingContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -494,7 +497,8 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
     {
         public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 
-        public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        public Task<(RoutingInstruction action, object? reply)> DispatchAsync(IBrokeredMessage brokeredMessage,
+            IDispatchingContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -505,7 +509,8 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
     {
         public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 
-        public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        public Task<(RoutingInstruction action, object? reply)> DispatchAsync(IBrokeredMessage brokeredMessage,
+            IDispatchingContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

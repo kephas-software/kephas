@@ -17,7 +17,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// Message handler for <see cref="ExecuteCommandMessage"/>.
     /// </summary>
-    public class ExecuteCommandMessageHandler : MessageHandlerBase<ExecuteCommandMessage, ExecuteCommandResponseMessage>
+    public class ExecuteCommandMessageHandler : MessageHandlerBase<ExecuteCommandMessage, ExecuteCommandResponse>
     {
         private readonly Lazy<ICommandProcessor> lazyCommandProcessor;
 
@@ -25,9 +25,9 @@ namespace Kephas.Commands.Endpoints
         /// Initializes a new instance of the <see cref="ExecuteCommandMessageHandler"/> class.
         /// </summary>
         /// <param name="lazyCommandProcessor">The lazy command processor.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public ExecuteCommandMessageHandler(Lazy<ICommandProcessor> lazyCommandProcessor, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public ExecuteCommandMessageHandler(Lazy<ICommandProcessor> lazyCommandProcessor, ILogger<ExecuteCommandMessageHandler>? logger = null)
+            : base(logger)
         {
             this.lazyCommandProcessor = lazyCommandProcessor;
         }
@@ -41,7 +41,7 @@ namespace Kephas.Commands.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ExecuteCommandResponseMessage> ProcessAsync(
+        public override async Task<ExecuteCommandResponse> ProcessAsync(
             ExecuteCommandMessage message,
             IMessagingContext context,
             CancellationToken token)
@@ -51,7 +51,7 @@ namespace Kephas.Commands.Endpoints
             var result = await this.lazyCommandProcessor.Value
                 .ProcessAsync(message.Command!, message.Args, context, token).PreserveThreadContext();
 
-            return new ExecuteCommandResponseMessage
+            return new ExecuteCommandResponse
             {
                 ReturnValue = result,
             };

@@ -218,25 +218,25 @@ namespace Kephas.Orchestration.Application
             return opResult;
         }
 
-        private async Task<IMessage?> HandleAppStartedEventAsync(AppStartedEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        private async Task<object?> HandleAppStartedEventAsync(AppStartedEvent message, IMessagingContext context, CancellationToken cancellationToken)
         {
             await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
             return null;
         }
 
-        private async Task<IMessage?> HandleAppStoppedEventAsync(AppStoppedEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        private async Task<object?> HandleAppStoppedEventAsync(AppStoppedEvent message, IMessagingContext context, CancellationToken cancellationToken)
         {
             await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
             return null;
         }
 
-        private async Task<IMessage?> HandleAppStartingEventAsync(AppStartingEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        private async Task<object?> HandleAppStartingEventAsync(AppStartingEvent message, IMessagingContext context, CancellationToken cancellationToken)
         {
             await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
             return null;
         }
 
-        private async Task<IMessage?> HandleAppStoppingEventAsync(AppStoppingEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        private async Task<object?> HandleAppStoppingEventAsync(AppStoppingEvent message, IMessagingContext context, CancellationToken cancellationToken)
         {
             await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
             return null;

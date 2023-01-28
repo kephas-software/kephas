@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OperationResultAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="AsyncOperationResultAwaiter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,7 +21,7 @@ namespace Kephas.Operations
     /// <summary>
     /// An operation result awaiter.
     /// </summary>
-    public class OperationResultAwaiter : ICriticalNotifyCompletion, INotifyCompletion
+    public class AsyncOperationResultAwaiter : ICriticalNotifyCompletion, INotifyCompletion
     {
         private static readonly MethodInfo CreateMethodInfo = ReflectionHelper.GetGenericMethodOf(_ => Create<int>(null!, null!));
 
@@ -29,10 +29,10 @@ namespace Kephas.Operations
         private object? awaiter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OperationResultAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="AsyncOperationResultAwaiter"/> class.
         /// </summary>
         /// <param name="task">The task.</param>
-        public OperationResultAwaiter(Task task)
+        public AsyncOperationResultAwaiter(Task task)
         {
             task = task ?? throw new ArgumentNullException(nameof(task));
 
@@ -82,16 +82,16 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Creates a new <see cref="OperationResultAwaiter"/> from the provided task. If the task
-        /// returns a result, the appropriate <see cref="OperationResultAwaiter{TResult}"/> is created
+        /// Creates a new <see cref="AsyncOperationResultAwaiter"/> from the provided task. If the task
+        /// returns a result, the appropriate <see cref="AsyncOperationResultAwaiter{TResult}"/> is created
         /// and returned.
         /// </summary>
         /// <param name="task">The task.</param>
         /// <param name="updateState">The action to invoke when the operation completes.</param>
         /// <returns>
-        /// An OperationResultAwaiter.
+        /// An AsyncOperationResultAwaiter.
         /// </returns>
-        internal static OperationResultAwaiter Create(Task task, Action<Task> updateState)
+        internal static AsyncOperationResultAwaiter Create(Task task, Action<Task> updateState)
         {
             task = task ?? throw new ArgumentNullException(nameof(task));
 
@@ -99,7 +99,7 @@ namespace Kephas.Operations
             if (taskResultType == null)
             {
                 updateState(task);
-                return new OperationResultAwaiter(
+                return new AsyncOperationResultAwaiter(
                     task.ContinueWith(
                         t =>
                         {
@@ -109,26 +109,26 @@ namespace Kephas.Operations
             }
 
             var createMethodInfo = CreateMethodInfo.MakeGenericMethod(taskResultType);
-            return (OperationResultAwaiter)createMethodInfo.Call(null, task, updateState)!;
+            return (AsyncOperationResultAwaiter)createMethodInfo.Call(null, task, updateState)!;
         }
 
         /// <summary>
-        /// Creates a new <see cref="OperationResultAwaiter"/> from the provided task. If the task
-        /// returns a result, the appropriate <see cref="OperationResultAwaiter{TResult}"/> is created
+        /// Creates a new <see cref="AsyncOperationResultAwaiter"/> from the provided task. If the task
+        /// returns a result, the appropriate <see cref="AsyncAsyncOperationResultAwaiter{TResult}"/> is created
         /// and returned.
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="task">The task.</param>
         /// <param name="updateState">The action to invoke when the operation completes.</param>
         /// <returns>
-        /// An OperationResultAwaiter.
+        /// An AsyncOperationResultAwaiter.
         /// </returns>
-        internal static OperationResultAwaiter<TResult> Create<TResult>(Task<TResult> task, Action<Task> updateState)
+        internal static AsyncOperationResultAwaiter<TResult> Create<TResult>(Task<TResult> task, Action<Task> updateState)
         {
             task = task ?? throw new ArgumentNullException(nameof(task));
 
             updateState(task);
-            return new OperationResultAwaiter<TResult>(
+            return new AsyncOperationResultAwaiter<TResult>(
                     task.ContinueWith(
                         t =>
                         {
@@ -178,14 +178,14 @@ namespace Kephas.Operations
     /// An operation result awaiter.
     /// </summary>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public class OperationResultAwaiter<TResult> : OperationResultAwaiter
+    public class AsyncOperationResultAwaiter<TResult> : AsyncOperationResultAwaiter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OperationResultAwaiter{TResult}"/>
+        /// Initializes a new instance of the <see cref="AsyncOperationResultAwaiter{TResult}"/>
         /// class.
         /// </summary>
         /// <param name="task">The task.</param>
-        public OperationResultAwaiter(Task<TResult> task)
+        public AsyncOperationResultAwaiter(Task<TResult> task)
             : base(task)
         {
         }

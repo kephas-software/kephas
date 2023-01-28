@@ -27,7 +27,7 @@ namespace Kephas.Orchestration.Endpoints
     /// A stop application message handler.
     /// </summary>
     [MessageHandler(MessageTypeMatching.TypeOrHierarchy)]
-    public class StopAppHandler : MessageHandlerBase<StopAppMessage, StopAppResponseMessage>
+    public class StopAppHandler : MessageHandlerBase<StopAppMessage, StopAppResponse>
     {
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
@@ -55,7 +55,7 @@ namespace Kephas.Orchestration.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<StopAppResponseMessage> ProcessAsync(StopAppMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<StopAppResponse> ProcessAsync(StopAppMessage message, IMessagingContext context, CancellationToken token)
         {
             if (string.IsNullOrEmpty(message.AppId) && string.IsNullOrEmpty(message.AppInstanceId))
             {
@@ -63,7 +63,7 @@ namespace Kephas.Orchestration.Endpoints
                 throw new InvalidOperationException($"Either the {nameof(message.AppId)} or the {nameof(message.AppInstanceId)} mut be set.");
             }
 
-            var response = new StopAppResponseMessage
+            var response = new StopAppResponse
             {
                 ProcessId = Process.GetCurrentProcess().Id,
             };

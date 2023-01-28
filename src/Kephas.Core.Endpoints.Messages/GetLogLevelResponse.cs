@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetSettingsTypesResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="GetLogLevelResponse.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,19 +7,20 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using System;
-
+    using Kephas.Logging;
     using Kephas.Messaging.Messages;
-    using Kephas.Reflection;
 
     /// <summary>
-    /// Response to the <see cref="GetSettingsTypesMessage"/>.
+    /// A get log level response message.
     /// </summary>
-    public class GetSettingsTypesResponseMessage : ResponseMessage
+    public class GetLogLevelResponse : Response
     {
         /// <summary>
-        /// Gets or sets the settings types.
+        /// Gets or sets the minimum log level.
         /// </summary>
-        public ITypeInfo[] SettingsTypes { get; set; } = Array.Empty<ITypeInfo>();
+        /// <value>
+        /// The minimum log level.
+        /// </value>
+        public LogLevel MinimumLevel { get; set; }
     }
 }

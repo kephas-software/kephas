@@ -73,7 +73,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get available plugins response message.
     /// </summary>
-    public class GetAvailablePluginsResponseMessage : ResponseMessage
+    public class GetAvailablePluginsResponse : Response
     {
         /// <summary>
         /// Gets or sets the plugins.

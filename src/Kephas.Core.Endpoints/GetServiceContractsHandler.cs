@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message handler for <see cref="GetServiceContractsMessage"/>.
     /// </summary>
-    public class GetServiceContractsHandler : MessageHandlerBase<GetServiceContractsMessage, GetServiceContractsResponseMessage>
+    public class GetServiceContractsHandler : MessageHandlerBase<GetServiceContractsMessage, GetServiceContractsResponse>
     {
         private readonly IAppServiceCollection appServices;
 
@@ -40,7 +40,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<GetServiceContractsResponseMessage> ProcessAsync(GetServiceContractsMessage message, IMessagingContext context, CancellationToken token)
+        public override Task<GetServiceContractsResponse> ProcessAsync(GetServiceContractsMessage message, IMessagingContext context, CancellationToken token)
         {
             IEnumerable<IAppServiceInfo> appServiceInfos = this.appServices;
 
@@ -59,7 +59,7 @@ namespace Kephas.Core.Endpoints
                 appServiceInfos = appServiceInfos.Where(i => i.AsOpenGeneric == message.AsOpenGeneric);
             }
 
-            return Task.FromResult(new GetServiceContractsResponseMessage
+            return Task.FromResult(new GetServiceContractsResponse
             {
                 ServiceInfos = appServiceInfos.ToArray(),
             });

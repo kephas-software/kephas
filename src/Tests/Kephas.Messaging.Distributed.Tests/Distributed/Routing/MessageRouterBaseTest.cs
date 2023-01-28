@@ -111,7 +111,8 @@ public class MessageRouterBaseTest : MessagingTestBase
             this.RouteInputAsync(message, context, default).WaitNonLocking();
         }
 
-        protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        protected override async Task<(RoutingInstruction action, object? reply)> RouteOutputAsync(
+            IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.Out.Enqueue(brokeredMessage);
             return (RoutingInstruction.None, null);

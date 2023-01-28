@@ -37,7 +37,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// A help response message.
     /// </summary>
-    public class HelpResponseMessage : IResponse
+    public class HelpResponseMessage
     {
         /// <summary>
         /// Gets or sets the command.

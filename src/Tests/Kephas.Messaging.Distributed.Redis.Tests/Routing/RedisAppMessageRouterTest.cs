@@ -87,8 +87,8 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 var pingBack = await masterMessageBroker.DispatchAsync(
                     new PingMessage(),
                     ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                              .Timeout(TimeSpan.FromSeconds(2)));
-                Assert.IsInstanceOf<PingBackMessage>(pingBack);
+                        .Timeout(TimeSpan.FromSeconds(2)));
+                Assert.IsInstanceOf<PingBack>(pingBack);
             }
             finally
             {
@@ -140,10 +140,10 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                         masterMessageBroker.DispatchAsync(
                             new PingMessage(),
                             ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                                      .Timeout(TimeSpan.FromSeconds(2))));
+                                .Timeout(TimeSpan.FromSeconds(2))));
 
                 var pingBacks = await Task.WhenAll(pingBackTasks);
-                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBackMessage));
+                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBack));
             }
             finally
             {
@@ -187,8 +187,8 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 var pingBack = await masterMessageBroker.DispatchAsync(
                     new PingMessage(),
                     ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                              .Timeout(TimeSpan.FromSeconds(2)));
-                Assert.IsInstanceOf<PingBackMessage>(pingBack);
+                        .Timeout(TimeSpan.FromSeconds(2)));
+                Assert.IsInstanceOf<PingBack>(pingBack);
             }
             finally
             {
@@ -234,10 +234,10 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                         masterMessageBroker.DispatchAsync(
                             new PingMessage(),
                             ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                                      .Timeout(TimeSpan.FromSeconds(2))));
+                                .Timeout(TimeSpan.FromSeconds(2))));
 
                 var pingBacks = await Task.WhenAll(pingBackTasks);
-                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBackMessage));
+                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBack));
             }
             finally
             {

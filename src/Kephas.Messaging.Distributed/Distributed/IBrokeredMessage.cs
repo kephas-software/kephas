@@ -38,7 +38,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message sender.
         /// </value>
-        IEndpoint Sender { get; set; }
+        IEndpoint? Sender { get; set; }
 
         /// <summary>
         /// Gets or sets the message to send.
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message.
         /// </value>
-        IMessage Content { get; set; }
+        IMessage? Content { get; set; }
 
         /// <summary>
         /// Gets or sets the recipients.
@@ -83,7 +83,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the reply to message.
         /// </value>
-        string ReplyToMessageId { get; set; }
+        string? ReplyToMessageId { get; set; }
 
         /// <summary>
         /// Gets or sets the bearer token.
@@ -91,7 +91,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The bearer token.
         /// </value>
-        string BearerToken { get; set; }
+        string? BearerToken { get; set; }
 
         /// <summary>
         /// Gets or sets the custom properties of the brokered message.
@@ -115,7 +115,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The trace.
         /// </value>
-        string Trace { get; set; }
+        string? Trace { get; set; }
 
         /// <summary>
         /// Makes a deep copy of this object, optionally replacing the existing recipients with the provided ones.

@@ -10,6 +10,7 @@ namespace Kephas.Core.Endpoints
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
@@ -18,7 +19,7 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     [RequiresPermission(typeof(AppAdminPermission))]
     [Display(Description = "Adds a license to the license folder. If a license with the same name already exists, it will be replaced and the old one will be renamed.")]
-    public class AddLicenseMessage : IMessage
+    public class AddLicenseMessage : IMessage<Response>
     {
         /// <summary>
         /// Gets or sets the license name.

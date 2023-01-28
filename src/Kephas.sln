@@ -392,6 +392,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{356AB34D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflow", "Workflow", "{60298086-813A-484A-B538-265D788E7D71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Contracts", "Kephas.Messaging.Contracts\Kephas.Messaging.Contracts.csproj", "{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1046,6 +1048,10 @@ Global
 		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09DF5FDC-3EBA-423E-B3A0-5B05ECEAC212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1196,6 +1202,7 @@ Global
 		{478DCC86-FBBA-4061-AD44-E917A77512B5} = {60298086-813A-484A-B538-265D788E7D71}
 		{CB129196-D2F7-4E60-ADD1-53884BCD5B9E} = {60298086-813A-484A-B538-265D788E7D71}
 		{245220CB-AC60-477F-AC7F-A27CF03EE42B} = {60298086-813A-484A-B538-265D788E7D71}
+		{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7} = {782CA23D-0760-49AA-90DA-CB89C484D664}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

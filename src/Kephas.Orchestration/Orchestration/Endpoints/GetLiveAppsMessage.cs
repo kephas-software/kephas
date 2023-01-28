@@ -26,7 +26,7 @@ namespace Kephas.Orchestration.Endpoints
     /// <summary>
     /// Response message for <see cref="GetLiveAppsMessage"/>.
     /// </summary>
-    public class GetLiveAppsResponseMessage : ResponseMessage
+    public class GetLiveAppsResponse : Response
     {
         /// <summary>
         /// Gets or sets the live apps.

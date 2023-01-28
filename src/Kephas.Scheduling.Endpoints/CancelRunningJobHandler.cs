@@ -20,7 +20,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="CancelRunningJobMessage"/>.
     /// </summary>
-    public class CancelRunningJobHandler : MessageHandlerBase<CancelRunningJobMessage, CancelRunningJobResponseMessage>
+    public class CancelRunningJobHandler : MessageHandlerBase<CancelRunningJobMessage, CancelRunningJobResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -28,9 +28,9 @@ namespace Kephas.Scheduling.Endpoints
         /// Initializes a new instance of the <see cref="CancelRunningJobHandler"/> class.
         /// </summary>
         /// <param name="scheduler">The scheduler.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public CancelRunningJobHandler(IScheduler scheduler, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public CancelRunningJobHandler(IScheduler scheduler, ILogger<CancelRunningJobHandler>? logger = null)
+            : base(logger)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +44,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<CancelRunningJobResponseMessage> ProcessAsync(CancelRunningJobMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<CancelRunningJobResponse> ProcessAsync(CancelRunningJobMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.RunningJob == null || message.RunningJobId == null)
             {
@@ -60,7 +60,7 @@ namespace Kephas.Scheduling.Endpoints
 
             result.ThrowIfHasErrors();
 
-            return new CancelRunningJobResponseMessage
+            return new CancelRunningJobResponse
             {
                 Result = result,
             };

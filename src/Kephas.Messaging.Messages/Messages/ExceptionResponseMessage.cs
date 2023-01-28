@@ -15,7 +15,7 @@ namespace Kephas.Messaging.Messages
     /// <summary>
     /// An exception message.
     /// </summary>
-    public class ExceptionResponseMessage : IResponse
+    public class ExceptionResponseMessage
     {
         /// <summary>
         /// Gets or sets the exception.

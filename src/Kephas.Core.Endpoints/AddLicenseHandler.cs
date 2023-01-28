@@ -22,7 +22,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Handler for the <see cref="AddLicenseMessage"/>.
     /// </summary>
-    public class AddLicenseHandler : MessageHandlerBase<AddLicenseMessage, ResponseMessage>
+    public class AddLicenseHandler : MessageHandlerBase<AddLicenseMessage, Response>
     {
         private readonly IAppRuntime appRuntime;
 
@@ -44,7 +44,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(AddLicenseMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(AddLicenseMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 
@@ -76,7 +76,7 @@ namespace Kephas.Core.Endpoints
             if (oldFileRename == null)
             {
                 this.Logger.Info($"License saved to '{message.Name}' at the license location.");
-                return new ResponseMessage
+                return new Response
                 {
                     Message = $"License saved to '{message.Name}' at the license location.",
                     Severity = SeverityLevel.Info,
@@ -84,7 +84,7 @@ namespace Kephas.Core.Endpoints
             }
 
             this.Logger.Warn($"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.");
-            return new ResponseMessage
+            return new Response
             {
                 Message = $"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.",
                 Severity = SeverityLevel.Warning,

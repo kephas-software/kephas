@@ -46,7 +46,7 @@ namespace Kephas.Orchestration.Endpoints
     /// <summary>
     /// A stop application response message.
     /// </summary>
-    public class StopAppResponseMessage : ResponseMessage
+    public class StopAppResponse : Response
     {
         /// <summary>
         /// Gets or sets the identifier of the process.

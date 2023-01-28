@@ -28,7 +28,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An install plugin message handler.
     /// </summary>
-    public class InstallPluginHandler : PluginHandlerBase<InstallPluginMessage, ResponseMessage>
+    public class InstallPluginHandler : PluginHandlerBase<InstallPluginMessage, Response>
     {
         private readonly IAppContext appContext;
         private readonly IAppRuntime appRuntime;
@@ -40,14 +40,14 @@ namespace Kephas.Plugins.Endpoints
         /// <param name="appContext">Context for the application.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public InstallPluginHandler(
             IPluginManager pluginManager,
             IAppContext appContext,
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            ILogManager? logManager = null)
-            : base(pluginManager, eventHub, logManager)
+            ILogger<InstallPluginHandler>? logger = null)
+            : base(pluginManager, eventHub, logger)
         {
             this.appContext = appContext;
             this.appRuntime = appRuntime;
@@ -62,14 +62,14 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(InstallPluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(InstallPluginMessage message, IMessagingContext context, CancellationToken token)
         {
             if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
             {
                 var signal = new ScheduleStartupCommandSignal(message);
                 await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
-                return new ResponseMessage
+                return new Response
                 {
                     Message = $"The {nameof(InstallPluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
                     Severity = SeverityLevel.Warning,
@@ -98,7 +98,7 @@ namespace Kephas.Plugins.Endpoints
                     "No plugin {plugin} {version} could be found.",
                     message.Id,
                     message.Version);
-                return new ResponseMessage
+                return new Response
                 {
                     Message = $"No plugin {message.Id} {message.Version} could be found.",
                 };
@@ -119,7 +119,7 @@ namespace Kephas.Plugins.Endpoints
                 plugin?.Location,
                 result.Elapsed);
 
-            return new ResponseMessage
+            return new Response
                 {
                     Message = $"Plugin {pluginId} {pluginVersion} ({plugin?.State}) installed in {plugin?.Location}. Elapsed: {result.Elapsed:c}.",
                 };

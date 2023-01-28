@@ -50,7 +50,7 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
         Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
         var result = await requestProcessor.ProcessAsync(new PingMessage(), null, CancellationToken.None);
-        Assert.IsInstanceOf<PingBackMessage>(result);
+        Assert.IsInstanceOf<PingBack>(result);
     }
 
     [Test]
@@ -58,13 +58,13 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
     {
         var container = this.BuildServiceProvider();
         var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
-        handlerRegistry.RegisterHandler<string>((s, c, token) => Task.FromResult<IMessage>(new ResponseMessage { Message = s + " handled" }));
+        handlerRegistry.RegisterHandler<string>((s, c, token) => Task.FromResult<object?>(new Response { Message = s + " handled" }));
         var requestProcessor = container.Resolve<IMessageProcessor>();
         Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
         var result = await requestProcessor.ProcessAsync("hello", null, CancellationToken.None);
-        Assert.IsInstanceOf<ResponseMessage>(result);
-        Assert.AreEqual("hello handled", ((ResponseMessage)result).Message);
+        Assert.IsInstanceOf<Response>(result);
+        Assert.AreEqual("hello handled", ((Response)result).Message);
     }
 
     [Test]
@@ -72,13 +72,13 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
     {
         var container = this.BuildServiceProvider();
         var handlerRegistry = container.Resolve<IMessageHandlerRegistry>();
-        handlerRegistry.RegisterHandler<string>((s, c) => new ResponseMessage { Message = s + " handled" });
+        handlerRegistry.RegisterHandler<string>((s, c) => new Response { Message = s + " handled" });
         var requestProcessor = container.Resolve<IMessageProcessor>();
         Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
 
         var result = await requestProcessor.ProcessAsync("hello", null, CancellationToken.None);
-        Assert.IsInstanceOf<ResponseMessage>(result);
-        Assert.AreEqual("hello handled", ((ResponseMessage)result).Message);
+        Assert.IsInstanceOf<Response>(result);
+        Assert.AreEqual("hello handled", ((Response)result).Message);
     }
 
     [Test]

@@ -42,7 +42,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         private readonly
             ConcurrentDictionary<string, (CancellationTokenSource? cancellationTokenSource,
-                TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary = new ();
+                TaskCompletionSource<object?> taskCompletionSource)> messageSyncDictionary = new ();
 
         private readonly IInjectableFactory injectableFactory;
         private readonly ILazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories;
@@ -84,8 +84,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields the response message.
         /// </returns>
-        public Task<IMessage?> DispatchAsync(
-            object message,
+        public Task<object?> DispatchAsync(object message,
             Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
@@ -124,7 +123,7 @@ namespace Kephas.Messaging.Distributed
                     .ContinueWith(
                         t => this.Logger.Error(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                         TaskContinuationOptions.OnlyOnFaulted);
-                return Task.FromResult<IMessage?>(null);
+                return Task.FromResult<object?>(null);
             }
 
             var completionSource = this.GetTaskCompletionSource(brokeredMessage);
@@ -220,7 +219,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new dispatching context.
         /// </returns>
-        protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext>? optionsConfig = null)
+        protected virtual IDispatchingContext CreateDispatchingContext(object? message, Action<IDispatchingContext>? optionsConfig = null)
         {
             var context = this.injectableFactory.Create<DispatchingContext>(message).Merge(optionsConfig);
             return context;
@@ -267,7 +266,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         protected virtual async Task RouterDispatchReplyAsync(
-            IMessage reply,
+            object? reply,
             IBrokeredMessage message,
             IDispatchingContext sendingContext,
             CancellationToken cancellationToken)
@@ -412,10 +411,11 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields the action, reply, and router.
         /// </returns>
-        private async Task<ICollection<(RoutingInstruction action, IMessage? reply, IMessageRouter router)>> CollectRouterDispatchResultsAsync(
-            IBrokeredMessage brokeredMessage,
-            IDispatchingContext context,
-            CancellationToken cancellationToken)
+        private async Task<ICollection<(RoutingInstruction action, object? reply, IMessageRouter router)>>
+            CollectRouterDispatchResultsAsync(
+                IBrokeredMessage brokeredMessage,
+                IDispatchingContext context,
+                CancellationToken cancellationToken)
         {
             if (brokeredMessage.Recipients == null || !brokeredMessage.Recipients.Any())
             {
@@ -460,7 +460,7 @@ namespace Kephas.Messaging.Distributed
             return routerTasks.Select(rt => (rt.task.Result.action, rt.task.Result.reply, rt.router!)).ToArray();
         }
 
-        private async Task<(RoutingInstruction action, IMessage? reply)> GetRouterDispatchResultAsync(
+        private async Task<(RoutingInstruction action, object? reply)> GetRouterDispatchResultAsync(
             IBrokeredMessage brokeredMessage,
             IDispatchingContext context,
             IMessageRouter router,
@@ -483,9 +483,9 @@ namespace Kephas.Messaging.Distributed
             return await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
         }
 
-        private TaskCompletionSource<IMessage?> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
+        private TaskCompletionSource<object?> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
         {
-            var taskCompletionSource = new TaskCompletionSource<IMessage?>();
+            var taskCompletionSource = new TaskCompletionSource<object?>();
 
             var brokeredMessageId = brokeredMessage.Id;
             var cancellationTokenSource = brokeredMessage.Timeout.HasValue

@@ -21,7 +21,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Handler for disabling a scheduled job.
     /// </summary>
-    public class DisableScheduledJobHandler : MessageHandlerBase<DisableScheduledJobMessage, ResponseMessage>
+    public class DisableScheduledJobHandler : MessageHandlerBase<DisableScheduledJobMessage, Response>
     {
         private readonly IScheduler scheduler;
 
@@ -41,14 +41,14 @@ namespace Kephas.Scheduling.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<ResponseMessage> ProcessAsync(DisableScheduledJobMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(DisableScheduledJobMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.Job == null) throw new ArgumentNullException(nameof(message.Job));
 
             var result = await this.scheduler.DisableScheduledJobAsync(message.Job!, cancellationToken: token)
                 .PreserveThreadContext();
 
-            return new ResponseMessage
+            return new Response
             {
                 Severity = result.HasErrors()
                     ? SeverityLevel.Error

@@ -120,7 +120,7 @@ namespace Kephas.Tests.Reflection
                     Assert.AreSame(identity, dispContext.Identity);
                     Assert.IsFalse(dispContext.BrokeredMessage.IsOneWay);
 
-                    return Task.FromResult<IMessage>(new ExecuteCommandResponseMessage
+                    return Task.FromResult<object?>(new ExecuteCommandResponse
                     {
                         ReturnValue = $"result for {msg.Command}({string.Join(" ", msg.Args.ToCommandArgs())})",
                     });

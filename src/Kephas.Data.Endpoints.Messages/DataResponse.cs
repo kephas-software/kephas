@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="DataResponse.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A data response message.
     /// </summary>
-    public class DataResponseMessage : ResponseMessage, IDataResponseMessage
+    public class DataResponse : Response, IDataResponseMessage
     {
         /// <summary>
         /// Gets or sets the entity entries after a data operation.

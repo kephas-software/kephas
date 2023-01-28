@@ -1,19 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponse.cs" company="Kephas Software SRL">
+// <copyright file="GetServicesResponse.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Declares the IMessageResponse interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging
+namespace Kephas.Core.Endpoints
 {
+    using Kephas.Messaging.Messages;
+    using Kephas.Services;
+
     /// <summary>
-    /// Marker interface for message responses.
+    /// The response message for <see cref="GetServicesMessage"/>.
     /// </summary>
-    public interface IResponse : IMessage
+    public class GetServicesResponse : Response
     {
+        /// <summary>
+        /// Gets or sets the services.
+        /// </summary>
+        public AppServiceMetadata[]? Services { get; set; }
     }
 }

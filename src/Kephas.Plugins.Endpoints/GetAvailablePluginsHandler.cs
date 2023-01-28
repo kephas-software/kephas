@@ -23,7 +23,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get available plugins handler.
     /// </summary>
-    public class GetAvailablePluginsHandler : MessageHandlerBase<GetAvailablePluginsMessage, GetAvailablePluginsResponseMessage>
+    public class GetAvailablePluginsHandler : MessageHandlerBase<GetAvailablePluginsMessage, GetAvailablePluginsResponse>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
@@ -48,7 +48,7 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetAvailablePluginsResponseMessage> ProcessAsync(GetAvailablePluginsMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<GetAvailablePluginsResponse> ProcessAsync(GetAvailablePluginsMessage message, IMessagingContext context, CancellationToken token)
         {
             this.appContext.Logger.Info("Retrieving {count} packages for {search}...", message.Take, message.SearchTerm ?? "<all>");
 
@@ -69,7 +69,7 @@ namespace Kephas.Plugins.Endpoints
                 : $"'{message.Id}' package versions";
             this.appContext.Logger.Info($"Retrieved {{count}} plugin {packageString}. Elapsed: {{elapsed:c}}.", plugins.Count(), result.Elapsed);
 
-            return new GetAvailablePluginsResponseMessage
+            return new GetAvailablePluginsResponse
                 {
                     Message = $"Retrieved {plugins.Count()} plugin packages{searchTerm}. Elapsed: {result.Elapsed:c}.",
                     Plugins = string.IsNullOrEmpty(message.Id)

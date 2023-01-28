@@ -20,7 +20,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="EnqueueMessage"/>.
     /// </summary>
-    public class EnqueueHandler : MessageHandlerBase<EnqueueMessage, EnqueueResponseMessage>
+    public class EnqueueHandler : MessageHandlerBase<EnqueueMessage, EnqueueResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -28,9 +28,9 @@ namespace Kephas.Scheduling.Endpoints
         /// Initializes a new instance of the <see cref="EnqueueHandler"/> class.
         /// </summary>
         /// <param name="scheduler">The scheduler.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public EnqueueHandler(IScheduler scheduler, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public EnqueueHandler(IScheduler scheduler, ILogger<EnqueueHandler>? logger = null)
+            : base(logger)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +44,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<EnqueueResponseMessage> ProcessAsync(EnqueueMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<EnqueueResponse> ProcessAsync(EnqueueMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ScheduledJob == null || message.ScheduledJobId == null)
             {
@@ -63,7 +63,7 @@ namespace Kephas.Scheduling.Endpoints
 
             result.ThrowIfHasErrors();
 
-            return new EnqueueResponseMessage
+            return new EnqueueResponse
             {
                 Result = result,
             };

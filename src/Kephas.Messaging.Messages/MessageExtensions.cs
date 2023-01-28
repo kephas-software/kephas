@@ -25,14 +25,10 @@ namespace Kephas.Messaging
         /// The object as an <see cref="IMessage"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMessage? ToMessage(this object? data)
-        {
-            return data == null
-                ? null
-                : data is IMessage message
-                    ? message
-                    : new MessageEnvelope { Message = data };
-        }
+        public static IMessage ToMessage(this object data) =>
+            data is null
+                ? throw new ArgumentNullException(nameof(data))
+                : data as IMessage ?? new MessageEnvelope { Message = data };
 
         /// <summary>
         /// Converts the provided object to an event.
@@ -42,14 +38,10 @@ namespace Kephas.Messaging
         /// The object as an <see cref="IEvent"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEvent? ToEvent(this object? data)
-        {
-            return data == null
-                ? null
-                : data is IEvent @event
-                    ? @event
-                    : new EventEnvelope { Event = data };
-        }
+        public static IEvent ToEvent(this object data) =>
+            data is null
+                ? throw new ArgumentNullException(nameof(data))
+                : data as IEvent ?? new EventEnvelope { Event = data };
 
         /// <summary>
         /// Gets the content of the message.
@@ -61,9 +53,8 @@ namespace Kephas.Messaging
         /// <returns>
         /// The message content.
         /// </returns>
-        internal static object GetContent(this object message)
-        {
-            return message is IMessageEnvelope envelope ? envelope.GetContent() : message;
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static object GetContent(this object message) =>
+            message is IMessageEnvelope envelope ? envelope.GetContent() : message;
     }
 }

@@ -20,7 +20,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="CancelScheduledJobMessage"/>.
     /// </summary>
-    public class CancelScheduledJobHandler : MessageHandlerBase<CancelScheduledJobMessage, CancelScheduledJobResponseMessage>
+    public class CancelScheduledJobHandler : MessageHandlerBase<CancelScheduledJobMessage, CancelScheduledJobResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -28,9 +28,9 @@ namespace Kephas.Scheduling.Endpoints
         /// Initializes a new instance of the <see cref="CancelScheduledJobHandler"/> class.
         /// </summary>
         /// <param name="scheduler">The scheduler.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public CancelScheduledJobHandler(IScheduler scheduler, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public CancelScheduledJobHandler(IScheduler scheduler, ILogger<CancelScheduledJobHandler>? logger = null)
+            : base(logger)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +44,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<CancelScheduledJobResponseMessage> ProcessAsync(CancelScheduledJobMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<CancelScheduledJobResponse> ProcessAsync(CancelScheduledJobMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ScheduledJob == null || message.ScheduledJobId == null)
             {
@@ -60,7 +60,7 @@ namespace Kephas.Scheduling.Endpoints
 
             result.ThrowIfHasErrors();
 
-            return new CancelScheduledJobResponseMessage
+            return new CancelScheduledJobResponse
             {
                 Result = result,
             };

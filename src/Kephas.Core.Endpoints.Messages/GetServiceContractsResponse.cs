@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetServicesResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="GetServiceContractsResponse.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,16 +8,16 @@
 namespace Kephas.Core.Endpoints
 {
     using Kephas.Messaging.Messages;
-    using Kephas.Services;
+    using Kephas.Services.Reflection;
 
     /// <summary>
-    /// The response message for <see cref="GetServicesMessage"/>.
+    /// The response message for <see cref="GetServiceContractsMessage"/>.
     /// </summary>
-    public class GetServicesResponseMessage : ResponseMessage
+    public class GetServiceContractsResponse : Response
     {
         /// <summary>
-        /// Gets or sets the services.
+        /// Gets or sets the service information.
         /// </summary>
-        public AppServiceMetadata[]? Services { get; set; }
+        public IAppServiceInfo[]? ServiceInfos { get; set; }
     }
 }

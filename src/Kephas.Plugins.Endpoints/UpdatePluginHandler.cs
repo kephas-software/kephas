@@ -33,7 +33,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An update plugin message handler.
     /// </summary>
-    public class UpdatePluginHandler : PluginHandlerBase<UpdatePluginMessage, ResponseMessage>
+    public class UpdatePluginHandler : PluginHandlerBase<UpdatePluginMessage, Response>
     {
         private readonly IAppContext appContext;
         private readonly IAppRuntime appRuntime;
@@ -45,14 +45,14 @@ namespace Kephas.Plugins.Endpoints
         /// <param name="appContext">Context for the application.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public UpdatePluginHandler(
             IPluginManager pluginManager,
             IAppContext appContext,
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            ILogManager? logManager = null)
-            : base(pluginManager, eventHub, logManager)
+            ILogger<UpdatePluginHandler>? logger = null)
+            : base(pluginManager, eventHub, logger)
         {
             this.appContext = appContext;
             this.appRuntime = appRuntime;
@@ -67,14 +67,14 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
         {
             if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
             {
                 var signal = new ScheduleStartupCommandSignal(message);
                 await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
-                return new ResponseMessage
+                return new Response
                 {
                     Message = $"The {nameof(UpdatePluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
                     Severity = SeverityLevel.Warning,
@@ -87,7 +87,7 @@ namespace Kephas.Plugins.Endpoints
             {
                 this.appContext.Logger.Info("No packages to update, all have the requested version.");
 
-                return new ResponseMessage
+                return new Response
                 {
                     Message = "No packages to update, all have the requested version.",
                 };
@@ -109,7 +109,7 @@ namespace Kephas.Plugins.Endpoints
                 }
             }
 
-            return new ResponseMessage
+            return new Response
             {
                 Message = successful == 0
                     ? $"{failed} failed updates."

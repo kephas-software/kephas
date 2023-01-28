@@ -85,7 +85,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void Clone_empty()
         {
-            var message = new BrokeredMessage();
+            IBrokeredMessage message = new BrokeredMessage();
             var clone = message.Clone();
 
             Assert.AreEqual(message.Id, clone.Id);
@@ -94,7 +94,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void Clone_values()
         {
-            var message = new BrokeredMessage
+            IBrokeredMessage message = new BrokeredMessage
             {
                 BearerToken = "123",
                 Content = Substitute.For<IMessage>(),

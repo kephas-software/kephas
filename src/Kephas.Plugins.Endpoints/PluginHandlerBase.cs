@@ -32,12 +32,12 @@ namespace Kephas.Plugins.Endpoints
         /// </summary>
         /// <param name="pluginManager">Gets the plugin manager.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logManager">The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         protected PluginHandlerBase(
             IPluginManager pluginManager,
             IEventHub eventHub,
-            ILogManager? logManager = null)
-            : base(logManager)
+            ILogger<PluginHandlerBase<TMessage, TResponse>>? logger = null)
+            : base(logger)
         {
             this.PluginManager = pluginManager;
             this.EventHub = eventHub;

@@ -27,7 +27,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// An update settings handler.
     /// </summary>
-    public class UpdateSettingsHandler : MessageHandlerBase<UpdateSettingsMessage, ResponseMessage>
+    public class UpdateSettingsHandler : MessageHandlerBase<UpdateSettingsMessage, Response>
     {
         private readonly IServiceProvider serviceProvider;
         private readonly ITypeResolver typeResolver;
@@ -39,13 +39,13 @@ namespace Kephas.Core.Endpoints
         /// <param name="serviceProvider">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public UpdateSettingsHandler(
             IServiceProvider serviceProvider,
             ITypeResolver typeResolver,
             ISerializationService serializationService,
-            ILogManager? logManager = null)
-            : base(logManager)
+            ILogger<UpdateSettingsHandler>? logger = null)
+            : base(logger)
         {
             this.serviceProvider = serviceProvider;
             this.typeResolver = typeResolver;
@@ -59,11 +59,11 @@ namespace Kephas.Core.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<ResponseMessage> ProcessAsync(UpdateSettingsMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(UpdateSettingsMessage message, IMessagingContext context, CancellationToken token)
         {
-            if (string.IsNullOrEmpty(message.SettingsType) && (message.Settings == null || message.Settings is string))
+            if (string.IsNullOrEmpty(message.SettingsType) && message.Settings is null or string)
             {
-                return new ResponseMessage
+                return new Response
                 {
                     Message = "Settings type not provided.",
                 };
@@ -75,7 +75,7 @@ namespace Kephas.Core.Endpoints
             object settings;
             if (message.Settings is string settingsString)
             {
-                var settingsTypeString = message.SettingsType.ToPascalCase();
+                var settingsTypeString = message.SettingsType!.ToPascalCase();
                 settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
                 if (settingsType == null)
                 {
@@ -85,7 +85,7 @@ namespace Kephas.Core.Endpoints
 
                 if (settingsType == null)
                 {
-                    return new GetSettingsResponseMessage
+                    return new GetSettingsResponse
                     {
                         Message = $"Settings type {message.SettingsType} not found.",
                     };
@@ -107,7 +107,7 @@ namespace Kephas.Core.Endpoints
             var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
                 .GetMember(nameof(IConfiguration<NullLogManager>.UpdateSettingsAsync));
             var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }).PreserveThreadContext());
-            return new ResponseMessage
+            return new Response
             {
                 Message = result.HasErrors()
                     ? result.Errors().First().Message

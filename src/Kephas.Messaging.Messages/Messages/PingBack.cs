@@ -1,19 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EmptyResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="PingBack.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the null message class.
+//   The "pong" response.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Messaging.Messages
 {
+    using System;
+
     /// <summary>
-    /// An empty message.
+    /// The "ping back" response.
     /// </summary>
-    public class EmptyResponseMessage : IResponse
+    public class PingBack : Response
     {
+        /// <summary>
+        /// Gets or sets the server time.
+        /// </summary>
+        /// <value>
+        /// The server time.
+        /// </value>
+        public DateTimeOffset ServerTime { get; set; }
     }
 }

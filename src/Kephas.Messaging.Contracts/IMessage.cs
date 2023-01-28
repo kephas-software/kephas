@@ -10,8 +10,6 @@
 
 namespace Kephas.Messaging
 {
-    using Kephas.Messaging.Messages;
-
     /// <summary>
     /// Marker interface for messages.
     /// </summary>
@@ -26,9 +24,14 @@ namespace Kephas.Messaging
         /// <returns>
         /// The message content.
         /// </returns>
-        public virtual object GetContent()
-        {
-            return this;
-        }
+        object GetContent() => this;
+    }
+
+    /// <summary>
+    /// Marker interface for messages requiring a typed response..
+    /// </summary>
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    public interface IMessage<out TResponse> : IMessage
+    {
     }
 }

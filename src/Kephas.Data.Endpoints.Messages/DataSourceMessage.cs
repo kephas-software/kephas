@@ -47,7 +47,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A data source response message.
     /// </summary>
-    public class DataSourceResponseMessage : IResponse
+    public class DataSourceResponseMessage
     {
         /// <summary>
         /// Gets or sets the data source.

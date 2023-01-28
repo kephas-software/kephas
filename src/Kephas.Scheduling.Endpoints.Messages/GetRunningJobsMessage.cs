@@ -25,7 +25,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Response message for <see cref="GetRunningJobsMessage"/>.
     /// </summary>
-    public class GetRunningJobsResponseMessage : ResponseMessage
+    public class GetRunningJobsResponse : Response
     {
         /// <summary>
         /// Gets or sets the jobs data.

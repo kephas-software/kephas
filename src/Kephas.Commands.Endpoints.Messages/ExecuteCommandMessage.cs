@@ -32,7 +32,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// The response of a command execution.
     /// </summary>
-    public class ExecuteCommandResponseMessage : ResponseMessage
+    public class ExecuteCommandResponse : Response
     {
         /// <summary>
         /// Gets or sets the execution return value.

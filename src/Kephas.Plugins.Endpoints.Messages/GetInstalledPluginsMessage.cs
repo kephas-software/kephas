@@ -37,7 +37,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get installed plugins response message.
     /// </summary>
-    public class GetInstalledPluginsResponseMessage : ResponseMessage
+    public class GetInstalledPluginsResponse : Response
     {
         /// <summary>
         /// Gets or sets the plugins.

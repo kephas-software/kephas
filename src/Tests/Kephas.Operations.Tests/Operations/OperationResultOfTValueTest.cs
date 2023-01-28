@@ -18,10 +18,9 @@ namespace Kephas.Core.Tests.Operations
     public class OperationResultOfTValueTest
     {
         [Test]
-        public async Task OperationResult_task_completion_sets_state()
+        public void OperationResult_complete()
         {
-            var opResult = new OperationResult<int>(Task.FromResult(12));
-            await opResult.AsTask();
+            var opResult = new OperationResult<int>(12).Complete();
 
             Assert.AreEqual(OperationState.Completed, opResult.OperationState);
             Assert.AreEqual(1f, opResult.PercentCompleted);
@@ -29,79 +28,21 @@ namespace Kephas.Core.Tests.Operations
         }
 
         [Test]
-        public async Task OperationResult_task_completion_sets_state_delay()
+        public void OperationResult_complete_exception()
         {
-            var opResult = new OperationResult<int>(Task.Delay(100).ContinueWith(t => 12));
-            await opResult.AsTask();
-
-            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
-            Assert.AreEqual(1f, opResult.PercentCompleted);
-            Assert.AreEqual(12, opResult.Value);
+            var opResult = new ArgumentException("arg").ToOperationResult<int>();
+            Assert.AreEqual(OperationState.Failed, opResult.OperationState);
+            Assert.AreEqual(0f, opResult.PercentCompleted);
+            Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
         }
 
         [Test]
-        public async Task OperationResult_task_completion_sets_state_exception()
-        {
-            var opResult = new OperationResult<int>(Task.FromException<int>(new ArgumentException("arg")));
-            await opResult.AsTask().ContinueWith(t =>
-            {
-                Assert.AreEqual(OperationState.Failed, opResult.OperationState);
-                Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
-            });
-        }
-
-        [Test]
-        public async Task OperationResult_task_completion_sets_state_canceled()
-        {
-            var opResult = new OperationResult<int>(Task.FromCanceled<int>(new CancellationToken(true)));
-            await opResult.AsTask().ContinueWith(t =>
-            {
-                Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
-                Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<TaskCanceledException>(() => { var _ = opResult.Value; });
-            });
-        }
-
-        [Test]
-        public async Task GetAwaiter_default_result()
+        public void Value_setter()
         {
             var opResult = new OperationResult<int>(10);
-            var result = await opResult.AsTask();
+            var result = opResult.Value;
 
             Assert.AreEqual(10, result);
-        }
-
-        [Test]
-        public async Task GetAwaiter_subsequent_result()
-        {
-            var opResult = new OperationResult<int>();
-            var result = await opResult.AsTask();
-            Assert.AreEqual(0, result);
-
-            opResult.Value = 40;
-            result = await opResult.AsTask();
-
-            Assert.AreEqual(40, result);
-        }
-
-        [Test]
-        public async Task GetAwaiter_task()
-        {
-            var opResult = new OperationResult<int>(Task.FromResult(10));
-            var result = await opResult.AsTask();
-
-            Assert.AreEqual(10, result);
-        }
-
-        [Test]
-        public async Task AsTask()
-        {
-            var opResult = new OperationResult<int>(Task.FromResult(10));
-            var result = await opResult.AsTask();
-
-            Assert.AreEqual(10, result);
-            Assert.AreEqual(10, opResult.Value);
         }
 
         [Test]

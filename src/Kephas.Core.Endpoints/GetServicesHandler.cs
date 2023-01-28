@@ -22,7 +22,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message handler for <see cref="GetServicesMessage"/>.
     /// </summary>
-    public class GetServicesHandler : MessageHandlerBase<GetServicesMessage, GetServicesResponseMessage>
+    public class GetServicesHandler : MessageHandlerBase<GetServicesMessage, GetServicesResponse>
     {
         private static readonly MethodInfo GetServicesMetadataMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
@@ -50,7 +50,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<GetServicesResponseMessage> ProcessAsync(GetServicesMessage message, IMessagingContext context, CancellationToken token)
+        public override Task<GetServicesResponse> ProcessAsync(GetServicesMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ContractType == null)
             {
@@ -65,7 +65,7 @@ namespace Kephas.Core.Endpoints
 
             var getServicesMetadata = GetServicesMetadataMethod.MakeGenericMethod(contractType);
             var appServicesMetadata = (IEnumerable<AppServiceMetadata>)getServicesMetadata.Call(this, message.Ordered);
-            return Task.FromResult(new GetServicesResponseMessage
+            return Task.FromResult(new GetServicesResponse
             {
                 Services = appServicesMetadata.ToArray(),
                 Message = $"Services for '{contractType}'.",

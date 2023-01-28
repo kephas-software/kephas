@@ -41,7 +41,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Response message for getting the completed jobs.
     /// </summary>
-    public class GetCompletedJobsResponseMessage : ResponseMessage
+    public class GetCompletedJobsResponse : Response
     {
         /// <summary>
         /// Gets or sets the jobs data.

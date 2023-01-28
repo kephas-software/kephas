@@ -49,7 +49,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The response.
         /// </value>
-        IMessage? Response { get; set; }
+        object? Response { get; set; }
 
         /// <summary>
         /// Gets or sets the exception.
@@ -118,7 +118,7 @@ namespace Kephas.Messaging
         /// </returns>
         public static TContext Response<TContext>(
             this TContext context,
-            IMessage response)
+            object? response)
             where TContext : class, IMessagingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));

@@ -108,7 +108,7 @@ namespace Kephas.Reflection
                 },
                 opToken ?? default).PreserveThreadContext();
 
-            var returnValue = responseMessage is ExecuteCommandResponseMessage response
+            var returnValue = responseMessage is ExecuteCommandResponse response
                 ? response.ReturnValue
                 : responseMessage;
             return returnValue;

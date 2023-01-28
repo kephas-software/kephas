@@ -23,7 +23,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Response message for <see cref="GetScheduledJobsMessage"/>.
     /// </summary>
-    public class GetScheduledJobsResponseMessage : ResponseMessage
+    public class GetScheduledJobsResponse : Response
     {
         /// <summary>
         /// Gets or sets the scheduled jobs.

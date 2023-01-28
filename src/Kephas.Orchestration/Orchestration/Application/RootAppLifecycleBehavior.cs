@@ -284,7 +284,7 @@ namespace Kephas.Orchestration.Application
             this.Logger.Info($"Stopping worker application instances: {string.Join(", ", liveApps.Select(r => r.AppInstanceId))}");
 
             var rootAppInstanceId = this.AppRuntime.GetAppInstanceId();
-            var stopTasks = new List<Task<StopAppResponseMessage>>();
+            var stopTasks = new List<Task<StopAppResponse>>();
             foreach (var runtimeAppInfo in liveApps)
             {
                 // we are the master now, ignore this live app role
@@ -442,7 +442,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task<StopAppResponseMessage> StopWorkerProcessAsync(
+        protected virtual async Task<StopAppResponse> StopWorkerProcessAsync(
             IRuntimeAppInfo runtimeAppInfo,
             IAppContext appContext,
             CancellationToken cancellationToken)
@@ -459,7 +459,7 @@ namespace Kephas.Orchestration.Application
                 .StopAppAsync(runtimeAppInfo, ctx => ctx.Impersonate(appContext), cancellationToken)
                 .PreserveThreadContext();
 
-            var message = result[nameof(StopAppResponseMessage)] as StopAppResponseMessage;
+            var message = result[nameof(StopAppResponse)] as StopAppResponse;
             return message!;
         }
 
