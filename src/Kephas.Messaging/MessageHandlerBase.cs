@@ -25,7 +25,7 @@ namespace Kephas.Messaging
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
     public abstract class MessageHandlerBase<TMessage, TResponse> : IMessageHandler<TMessage>
-        where TMessage : class
+        where TMessage : class, IMessage<TResponse>
         where TResponse : class?
     {
         /// <summary>

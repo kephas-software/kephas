@@ -19,7 +19,7 @@ namespace Kephas.Orchestration.Endpoints
     /// </summary>
     [Display(Description = "Gets the live application instances.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class GetLiveAppsMessage : IMessage
+    public class GetLiveAppsMessage : IMessage<GetLiveAppsResponse>
     {
     }
 

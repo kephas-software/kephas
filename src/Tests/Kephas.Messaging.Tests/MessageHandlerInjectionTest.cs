@@ -64,18 +64,18 @@ namespace Kephas.Messaging.Tests
         }
 
         [MessageHandler("Hi")]
-        public class HiTestHandler : MessageHandlerBase<IMessage, IMessage>
+        public class HiTestHandler : IMessageHandler<IMessage>
         {
-            public override async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+            public async Task<object?> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new NotImplementedException();
             }
         }
 
         [MessageHandler("There")]
-        public class ThereTestHandler : MessageHandlerBase<IMessage, IMessage>
+        public class ThereTestHandler : IMessageHandler<IMessage>
         {
-            public override async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+            public async Task<object?> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new NotImplementedException();
             }

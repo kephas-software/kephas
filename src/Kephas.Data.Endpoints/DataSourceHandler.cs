@@ -27,7 +27,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A data source handler.
     /// </summary>
-    public class DataSourceHandler : MessageHandlerBase<DataSourceMessage, DataSourceResponseMessage>
+    public class DataSourceHandler : MessageHandlerBase<DataSourceMessage, DataSourceResponse>
     {
         /// <summary>
         /// The data space factory.
@@ -87,7 +87,7 @@ namespace Kephas.Data.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<DataSourceResponseMessage> ProcessAsync(DataSourceMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<DataSourceResponse> ProcessAsync(DataSourceMessage message, IMessagingContext context, CancellationToken token)
         {
             var entityType = this.ResolveEntityType(message.EntityType, context);
             var property = this.ResolveProperty(entityType, message.Property);
@@ -106,7 +106,7 @@ namespace Kephas.Data.Endpoints
                 dataSourceContext,
                 token).PreserveThreadContext();
 
-            return new DataSourceResponseMessage
+            return new DataSourceResponse
             {
                 DataSource = dataSource?.ToList(),
             };

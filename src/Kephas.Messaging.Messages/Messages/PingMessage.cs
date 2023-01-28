@@ -16,7 +16,7 @@ namespace Kephas.Messaging.Messages
     /// The "ping" message.
     /// </summary>
     [Display(Description = "Sends a 'ping' message to the server.")]
-    public class PingMessage : IMessage
+    public class PingMessage : IMessage<PingBack>
     {
     }
 }

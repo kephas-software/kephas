@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     [Display(Description = "Gets the metadata of the application service contracts.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class GetServiceContractsMessage : IMessage
+    public class GetServiceContractsMessage : IMessage<GetServiceContractsResponse>
     {
         /// <summary>
         /// Gets or sets the contract type.

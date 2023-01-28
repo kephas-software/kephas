@@ -23,7 +23,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// A help message handler.
     /// </summary>
-    public class HelpMessageHandler : MessageHandlerBase<HelpMessage, HelpResponseMessage>
+    public class HelpMessageHandler : MessageHandlerBase<HelpMessage, HelpResponse>
     {
         private readonly ICollection<ICommandRegistry> registries;
 
@@ -45,7 +45,7 @@ namespace Kephas.Commands.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override Task<HelpResponseMessage> ProcessAsync(HelpMessage message, IMessagingContext context, CancellationToken token)
+        public override Task<HelpResponse> ProcessAsync(HelpMessage message, IMessagingContext context, CancellationToken token)
         {
             var matchingCommands = this.registries
                 .SelectMany(r => r.GetCommandTypes(message.Command))
@@ -56,7 +56,7 @@ namespace Kephas.Commands.Endpoints
                 t => t.Name,
                 t => t);
 
-            var response = new HelpResponseMessage();
+            var response = new HelpResponse();
 
             if (commands.Count > 1)
             {

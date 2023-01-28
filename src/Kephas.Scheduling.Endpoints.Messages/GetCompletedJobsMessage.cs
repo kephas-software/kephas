@@ -17,7 +17,7 @@ namespace Kephas.Scheduling.Endpoints
     /// Message for getting the completed jobs.
     /// </summary>
     [Display(Description = "Gets the completed jobs.")]
-    public class GetCompletedJobsMessage : IMessage
+    public class GetCompletedJobsMessage : IMessage<GetCompletedJobsResponse>
     {
         /// <summary>
         /// Gets or sets the number of packages to skip.

@@ -16,7 +16,7 @@ namespace Kephas.Commands.Endpoints
     /// <remarks>
     /// Do not implement <see cref="IMessage"/> so that it remains invisible to the registry.
     /// </remarks>
-    public class ExecuteCommandMessage
+    public class ExecuteCommandMessage : IMessage<ExecuteCommandResponse>
     {
         /// <summary>
         /// Gets or sets the command to be executed.

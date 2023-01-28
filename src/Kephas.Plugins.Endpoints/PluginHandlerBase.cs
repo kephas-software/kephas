@@ -24,7 +24,7 @@ namespace Kephas.Plugins.Endpoints
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
     public abstract class PluginHandlerBase<TMessage, TResponse> : MessageHandlerBase<TMessage, TResponse>
-        where TMessage : class
+        where TMessage : class, IMessage<TResponse>
         where TResponse : class
     {
         /// <summary>

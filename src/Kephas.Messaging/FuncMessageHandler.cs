@@ -21,7 +21,7 @@ using Kephas.Services.AttributedModel;
 /// </summary>
 /// <typeparam name="TMessage">Type of the message.</typeparam>
 [ExcludeFromServices]
-public class FuncMessageHandler<TMessage> : MessageHandlerBase<TMessage, object?>
+public class FuncMessageHandler<TMessage> : IMessageHandler<TMessage>
     where TMessage : class
 {
     private readonly Func<TMessage, IMessagingContext, CancellationToken, Task<object?>> handlerFunction;
@@ -46,7 +46,7 @@ public class FuncMessageHandler<TMessage> : MessageHandlerBase<TMessage, object?
     /// <returns>
     /// The response promise.
     /// </returns>
-    public override Task<object?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
+    public Task<object?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
     {
         return this.handlerFunction(message, context, token);
     }

@@ -53,9 +53,9 @@ namespace Kephas.Commands.Messaging.Tests
 
             var response = await processor.ProcessAsync("help");
 
-            Assert.IsInstanceOf<HelpResponseMessage>(response);
+            Assert.IsInstanceOf<HelpResponse>(response);
 
-            var helpResponse = (HelpResponseMessage)response;
+            var helpResponse = (HelpResponse)response;
             var commands = helpResponse.Command as IEnumerable<KeyValuePair<string, string>>;
             Assert.IsTrue(commands.Any(c => c.Key == "Ping"));
             Assert.IsTrue(commands.Any(c => c.Key == "Quit"));
@@ -70,9 +70,9 @@ namespace Kephas.Commands.Messaging.Tests
 
             var response = await processor.ProcessAsync("help", new Expando { ["help"] = true });
 
-            Assert.IsInstanceOf<HelpResponseMessage>(response);
+            Assert.IsInstanceOf<HelpResponse>(response);
 
-            var helpResponse = (HelpResponseMessage)response;
+            var helpResponse = (HelpResponse)response;
             Assert.AreEqual("Help", helpResponse.Command);
             Assert.AreEqual("Displays the available commands. Use 'help <command>' to display information about the requested command.", helpResponse.Description);
         }

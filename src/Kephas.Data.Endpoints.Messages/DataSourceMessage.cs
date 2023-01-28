@@ -17,7 +17,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// Message for retrieving a data source.
     /// </summary>
-    public class DataSourceMessage : IMessage
+    public class DataSourceMessage : IMessage<DataSourceResponse>
     {
         /// <summary>
         /// Gets or sets the type of the entity.
@@ -25,7 +25,7 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The type of the entity.
         /// </value>
-        public string EntityType { get; set; }
+        public string? EntityType { get; set; }
 
         /// <summary>
         /// Gets or sets the property.
@@ -33,7 +33,7 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The property.
         /// </value>
-        public string Property { get; set; }
+        public string? Property { get; set; }
 
         /// <summary>
         /// Gets or sets options for controlling the operation.
@@ -41,13 +41,13 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The options.
         /// </value>
-        public object Options { get; set; }
+        public object? Options { get; set; }
     }
 
     /// <summary>
     /// A data source response message.
     /// </summary>
-    public class DataSourceResponseMessage
+    public class DataSourceResponse
     {
         /// <summary>
         /// Gets or sets the data source.

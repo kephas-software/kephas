@@ -24,7 +24,7 @@ namespace Kephas.Plugins.Endpoints
     /// A get installed plugins message.
     /// </summary>
     [Display(Description = "Gets the installed plugins.")]
-    public class GetInstalledPluginsMessage : IMessage
+    public class GetInstalledPluginsMessage : IMessage<GetInstalledPluginsResponse>
     {
         /// <summary>
         /// Gets or sets a value indicating whether license information should be included.

@@ -23,7 +23,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// Message handler for <see cref="QueryMessage"/>.
     /// </summary>
-    public class QueryHandler : MessageHandlerBase<QueryMessage, QueryResponseMessage>
+    public class QueryHandler : MessageHandlerBase<QueryMessage, QueryResponse>
     {
         private readonly IInjectableFactory injectableFactory;
         private readonly IClientQueryProcessor clientQueryExecutor;
@@ -51,7 +51,7 @@ namespace Kephas.Data.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<QueryResponseMessage> ProcessAsync(
+        public override async Task<QueryResponse> ProcessAsync(
             QueryMessage message,
             IMessagingContext context,
             CancellationToken token)
@@ -60,7 +60,7 @@ namespace Kephas.Data.Endpoints
             var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, optionsConfig, token)
                                      .PreserveThreadContext();
 
-            return new QueryResponseMessage { Entities = clientEntities.ToArray() };
+            return new QueryResponse { Entities = clientEntities.ToArray() };
         }
 
         /// <summary>

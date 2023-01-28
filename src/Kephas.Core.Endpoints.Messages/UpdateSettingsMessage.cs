@@ -8,7 +8,8 @@
 namespace Kephas.Core.Endpoints
 {
     using System.ComponentModel.DataAnnotations;
-
+    using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
@@ -17,7 +18,7 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     [Display(Description = "Gets the provided settings.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class UpdateSettingsMessage
+    public class UpdateSettingsMessage : IMessage<Response>
     {
         /// <summary>
         /// Gets or sets the settings type.

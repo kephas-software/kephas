@@ -320,9 +320,9 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         public IMessage Response { get; set; }
     }
 
-    public class TestEventHandler : MessageHandlerBase<TestEvent, IMessage>
+    public class TestEventHandler : IMessageHandler<TestEvent>
     {
-        public override async Task<IMessage> ProcessAsync(TestEvent message, IMessagingContext context, CancellationToken token)
+        public async Task<object?> ProcessAsync(TestEvent message, IMessagingContext context, CancellationToken token)
         {
             message.TaskCompletionSource?.SetResult(("ok", context.GetBrokeredMessage()));
 

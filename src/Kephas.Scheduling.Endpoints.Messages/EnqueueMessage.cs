@@ -22,7 +22,7 @@ namespace Kephas.Scheduling.Endpoints
     /// Message for enqueuing a job.
     /// </summary>
     [Display(Description = "Enqueues a new job.")]
-    public class EnqueueMessage : IMessage
+    public class EnqueueMessage : IMessage<EnqueueResponse>
     {
         /// <summary>
         /// Gets or sets the scheduled job.
