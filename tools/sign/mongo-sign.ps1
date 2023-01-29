@@ -1,11 +1,15 @@
 param (
-    [string]$version = $( Read-Host "Please provide package version to sign" )
+    [string]$version = $( Read-Host "Please provide MongoDB package version to sign" ),
+    [string]$cryptversion = $( Read-Host "Please provide Libmongocrypt package version to sign" )
 )
 
 $keyPath = "..\..\src\Kephas.snk"
 $editorPath = "$Env:ProgramFiles\Notepad++\notepad++.exe".Replace(" (x86)", "")
 
 $assemblies = @(
+    "mongodb.libmongocrypt.$cryptversion\lib\net472\MongoDB.Libmongocrypt",
+    "mongodb.libmongocrypt.$cryptversion\lib\netstandard2.0\MongoDB.Libmongocrypt",
+    "mongodb.libmongocrypt.$cryptversion\lib\netstandard2.1\MongoDB.Libmongocrypt",
     "mongodb.bson.$version\lib\net472\MongoDB.Bson",
     "mongodb.bson.$version\lib\netstandard2.0\MongoDB.Bson",
     "mongodb.bson.$version\lib\netstandard2.1\MongoDB.Bson",
