@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="IDataResponse.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IDataResponseMessage interface.
+//   Declares the IDataResponse interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,9 +16,9 @@ namespace Kephas.Data.Endpoints
     using Kephas.Messaging;
 
     /// <summary>
-    /// Contract for response messages returning updated data (to be used for refreshing the client cache, for example).
+    /// Contract for responses returning updated data (to be used for refreshing the client cache, for example).
     /// </summary>
-    public interface IDataResponseMessage : IMessage
+    public interface IDataResponse : IMessage
     {
         /// <summary>
         /// Gets or sets the entity entries after a data operation.

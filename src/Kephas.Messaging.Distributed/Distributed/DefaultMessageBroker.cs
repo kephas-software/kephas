@@ -321,7 +321,7 @@ namespace Kephas.Messaging.Distributed
 
             syncEntry.cancellationTokenSource?.Dispose();
 
-            if (replyMessage.Content is ExceptionResponseMessage exceptionMessage)
+            if (replyMessage.Content is ExceptionResponse exceptionMessage)
             {
                 var exception = new MessagingException(exceptionMessage.Exception);
                 syncEntry.taskCompletionSource.SetException(exception);

@@ -191,7 +191,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 return result;
             }
 
-            return (RoutingInstruction.Reply, new ExceptionResponseMessage { Exception = new ExceptionData(exception) });
+            return (RoutingInstruction.Reply, new ExceptionResponse { Exception = new ExceptionData(exception) });
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Kephas.Messaging.Distributed.Routing
                         }
                         catch (Exception ex)
                         {
-                            reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
+                            reply = new ExceptionResponse { Exception = new ExceptionData(ex) };
                         }
 
                         // after processing requests expecting an answer, redirect the reply

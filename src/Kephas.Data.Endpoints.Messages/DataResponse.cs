@@ -16,9 +16,9 @@ namespace Kephas.Data.Endpoints
     using Kephas.Messaging.Messages;
 
     /// <summary>
-    /// A data response message.
+    /// A data response.
     /// </summary>
-    public class DataResponse : Response, IDataResponseMessage
+    public class DataResponse : Response, IDataResponse
     {
         /// <summary>
         /// Gets or sets the entity entries after a data operation.

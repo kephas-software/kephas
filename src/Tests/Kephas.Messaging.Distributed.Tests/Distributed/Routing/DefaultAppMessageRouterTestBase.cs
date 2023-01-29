@@ -37,7 +37,7 @@ public abstract class DefaultAppMessageRouterTestBase : MessagingTestBase
             Assert.IsNotNull(eventArgs);
             Assert.AreEqual(RoutingInstruction.None, result.action);
             var contentMessage = eventArgs.Message.Content;
-            if (contentMessage is ExceptionResponseMessage exMessage)
+            if (contentMessage is ExceptionResponse exMessage)
             {
                 Assert.Fail(exMessage.Exception.ToString());
             }
