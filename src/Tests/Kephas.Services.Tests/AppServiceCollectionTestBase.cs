@@ -19,7 +19,6 @@ using Kephas.Testing;
 using NSubstitute;
 using NUnit.Framework;
 
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
 public abstract class AppServiceCollectionTestBase : TestBase
 {
     protected abstract IServiceProvider BuildServiceProvider(IAppServiceCollection appServices);

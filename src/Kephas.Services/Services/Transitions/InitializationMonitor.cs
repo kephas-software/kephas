@@ -30,7 +30,6 @@ namespace Kephas.Services.Transitions
     /// Class monitoring the initialization state for the service <typeparamref name="TContract"/> with the implementation type provided in constructor.
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class InitializationMonitor<TContract> : TransitionMonitor<TContract>
     {
         /// <summary>

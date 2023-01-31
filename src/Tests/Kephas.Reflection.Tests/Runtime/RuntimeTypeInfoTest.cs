@@ -25,7 +25,6 @@ namespace Kephas.Tests.Runtime
     /// Test class for <see cref="RuntimeTypeInfo"/>
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeTypeInfoTest
     {
         [Test]
@@ -586,7 +585,6 @@ namespace Kephas.Tests.Runtime
 
         public class OpenGenericFields<T>
         {
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
             public T Value;
         }
     }

@@ -29,7 +29,6 @@ namespace Kephas.Tests.Serialization
     /// Tests for <see cref="DefaultSerializationService"/>
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultSerializationServiceTest : TestBase
     {
         [Test]

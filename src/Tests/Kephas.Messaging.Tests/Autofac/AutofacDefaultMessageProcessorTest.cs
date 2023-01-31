@@ -19,7 +19,6 @@ namespace Kephas.Messaging.Tests.Autofac
     /// Test class for <see cref="DefaultMessageProcessor"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacDefaultMessageProcessorTest : DefaultMessageProcessorTestBase
     {
         protected override IServiceProvider BuildServiceProvider()

@@ -28,7 +28,6 @@ namespace Kephas.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Tests")]
     public class DefaultAppManagerTest
     {
         [Test]

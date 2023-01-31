@@ -27,7 +27,6 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     /// Integration tests for <see cref="AutofacExtensions"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DependencyInjectionExtensionsIntegrationTest : TestBase
     {
         [Test]

@@ -25,7 +25,6 @@ namespace Kephas.Model.Tests.Elements
     /// Test class for <see cref="NamedElementBase{TModelContract}"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class NamedElementBaseTest
     {
         [Test]

@@ -24,7 +24,6 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
     /// A runtime annotation information factory test.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AttributeAnnotationConstructorTest
     {
         [Test]

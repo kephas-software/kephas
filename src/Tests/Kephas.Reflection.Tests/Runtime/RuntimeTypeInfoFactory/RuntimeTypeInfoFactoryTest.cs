@@ -22,7 +22,6 @@ namespace Kephas.Tests.Runtime.RuntimeTypeInfoFactory
     /// Test class for <see cref="RuntimeTypeInfo"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeTypeInfoFactoryTest
     {
         [Test]

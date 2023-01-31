@@ -30,7 +30,6 @@ namespace Kephas.Tests.Services.Autofac
     /// Integration tests for <see cref="AutofacExtensions"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacExtensionsIntegrationTest : TestBase
     {
         [Test]

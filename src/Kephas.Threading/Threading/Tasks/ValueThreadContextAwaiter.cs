@@ -98,7 +98,6 @@ namespace Kephas.Threading.Tasks
     /// <summary>
     /// Value awaiter preserving the thread context.
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     [DebuggerStepThrough]
     public class ValueThreadContextAwaiter : INotifyCompletion, ICriticalNotifyCompletion
     {

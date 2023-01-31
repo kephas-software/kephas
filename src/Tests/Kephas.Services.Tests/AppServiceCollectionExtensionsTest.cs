@@ -17,7 +17,6 @@ using NUnit.Framework;
 /// Test class for <see cref="AppServiceCollectionExtensions"/>.
 /// </summary>
 [TestFixture]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
 public class AppServiceCollectionExtensionsTest : TestBase
 {
     [Test]

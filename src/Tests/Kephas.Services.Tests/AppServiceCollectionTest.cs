@@ -21,7 +21,6 @@ namespace Kephas.Tests
     /// Test class for <see cref="AppServiceCollection"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AppServiceCollectionTest : AppServiceCollectionTestBase
     {
         protected override IServiceProvider BuildServiceProvider(IAppServiceCollection appServices)

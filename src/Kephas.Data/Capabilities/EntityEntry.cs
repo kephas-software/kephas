@@ -172,7 +172,6 @@ namespace Kephas.Data.Capabilities
                 }
 
                 // Ensure the original entity is created.
-                // ReSharper disable once StyleCop.SA1309
                 if (value != ChangeState.NotChanged)
                 {
                     var _ = this.OriginalEntity;

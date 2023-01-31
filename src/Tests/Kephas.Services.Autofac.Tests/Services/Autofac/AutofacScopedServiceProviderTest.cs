@@ -18,7 +18,6 @@ namespace Kephas.Tests.Services.Autofac
     /// Tests for <see cref="AutofacScopedServiceProvider"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacScopedServiceProviderTest : TestBase
     {
         [Test]

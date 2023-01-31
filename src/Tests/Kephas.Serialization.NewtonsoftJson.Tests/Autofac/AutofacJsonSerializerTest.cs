@@ -20,7 +20,6 @@ namespace Kephas.Serialization.Json.Tests.Autofac
     /// Tests for <see cref="JsonSerializer"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacJsonSerializerTest : JsonSerializerIntegrationTestBase
     {
         protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)

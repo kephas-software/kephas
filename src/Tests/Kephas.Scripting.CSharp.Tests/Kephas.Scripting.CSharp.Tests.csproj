@@ -16,11 +16,6 @@
       <None Remove="Scripts\Complex.csx" />
       <None Remove="Scripts\PointDistance.csx" />
       <None Remove="Scripts\Power.csx" />
-      <None Remove="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -35,7 +30,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

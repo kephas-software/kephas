@@ -19,7 +19,6 @@ namespace Kephas.Tests.Data
     /// Tests for <see cref="Id"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class IdTest
     {
         private static readonly object SyncObject = new object();

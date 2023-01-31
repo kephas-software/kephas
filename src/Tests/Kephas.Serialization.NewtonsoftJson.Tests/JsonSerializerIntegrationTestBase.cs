@@ -6,7 +6,6 @@ using Kephas.Reflection;
 using Kephas.Services.Builder;
 using NUnit.Framework;
 
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
 public abstract class JsonSerializerIntegrationTestBase : SerializationTestBase
 {
     protected abstract IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder);

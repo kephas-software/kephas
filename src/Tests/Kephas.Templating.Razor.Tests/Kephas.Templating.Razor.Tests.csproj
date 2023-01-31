@@ -15,13 +15,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="stylecop.json" />
 		<None Remove="Templates\functions.cshtml" />
 		<None Remove="Templates\simple.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,7 +31,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

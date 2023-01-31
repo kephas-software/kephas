@@ -605,7 +605,6 @@ public class DefaultAppManager : Loggable, IAppManager
     /// <returns>
     /// The sorted feature manager factories.
     /// </returns>
-    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
     protected virtual ICollection<Lazy<IFeatureManager, FeatureManagerMetadata>> SortEnabledFeatureManagerFactories(
         ICollection<Lazy<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
     {

@@ -55,18 +55,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="stylecop.json" />
-		<None Update="kephas.logo.stone.png">
-			<Pack>true</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<AdditionalFiles Include="stylecop.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="..\Kephas.snk" Link="Kephas.snk" />
 	</ItemGroup>
 
@@ -75,7 +63,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

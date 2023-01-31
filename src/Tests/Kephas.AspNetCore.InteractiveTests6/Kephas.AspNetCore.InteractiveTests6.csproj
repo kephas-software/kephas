@@ -21,7 +21,7 @@
         <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -44,11 +44,6 @@
         <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />
         <ProjectReference Include="..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Remove="stylecop.json" />
-        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>

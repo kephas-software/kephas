@@ -25,7 +25,6 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     /// Tests for <see cref="ServiceProvider"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DependencyInjectionTest : TestBase
     {
         public IServiceProvider CreateServiceProvider(params Type[] types)

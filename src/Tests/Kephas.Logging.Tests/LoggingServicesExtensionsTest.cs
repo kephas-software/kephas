@@ -19,7 +19,6 @@ namespace Kephas.Tests
     /// Test class for <see cref="LoggingServicesExtensions"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class LoggingServicesExtensionsTest : TestBase
     {
         [Test]
