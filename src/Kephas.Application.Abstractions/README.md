@@ -4,7 +4,7 @@
 This package provides abstractions for applications based on Kephas Framework.
 
 Check the following packages for more information:
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 
 Typically used areas and classes/interfaces/services:

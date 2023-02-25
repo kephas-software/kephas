@@ -30,7 +30,7 @@ appServiceCollection.WithExtensionsLogManager(services);
 
 ## Other resources
 
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 

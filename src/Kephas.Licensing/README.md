@@ -42,7 +42,7 @@ This service is the default implementation of the ``ILicensingManager`` applicat
 
 ## Other resources
 
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Operations](https://www.nuget.org/packages/Kephas.Operations)
 

@@ -96,7 +96,7 @@ These classes should use the globally defined ``ILogManager`` through ``LoggingH
 
 ## Other resources
 
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

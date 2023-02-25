@@ -5,7 +5,7 @@
 The purpose of this library is to provide abstractions for connections to various services.
 
 Check the following packages for more information:
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Security](https://www.nuget.org/packages/Kephas.Security)
 

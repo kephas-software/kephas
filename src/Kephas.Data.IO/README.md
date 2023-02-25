@@ -10,7 +10,7 @@ Typically used areas and classes/interfaces/services:
 
 ## Other resources
 
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Data](https://www.nuget.org/packages/Kephas.Data)
