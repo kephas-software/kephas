@@ -218,7 +218,9 @@ namespace Kephas.Services.Builder
 
             this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(GetBuildAssemblies), searchPattern);
 
-            var assemblies = this.AppServices.TryGetServiceInstance<IAppRuntime>()?.GetAppAssemblies().ToList() ?? new List<Assembly>();
+            var getAssemblies = this.Settings.GetAppAssemblies ?? 
+                              (() => this.AppServices.TryGetServiceInstance<IAppRuntime>()?.GetAppAssemblies() ?? Enumerable.Empty<Assembly>()); 
+            var assemblies = getAssemblies()?.ToList() ?? new List<Assembly>();
             assemblies.AddRange(this.Assemblies);
             var appAssemblies = assemblies.Where(a => !a.IsSystemAssembly());
 
