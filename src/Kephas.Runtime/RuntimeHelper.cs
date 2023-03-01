@@ -19,6 +19,22 @@ namespace Kephas;
 public static class RuntimeHelper
 {
     /// <summary>
+    /// Gets all the assemblies, expanding the references, starting from the provided root assembly and filtered by name as indicated.
+    /// </summary>
+    /// <param name="rootAssembly">The root assembly.</param>
+    /// <param name="nameFilter">Optional. A filter for the assembly name.</param>
+    /// <param name="logger">Optional. A logger to log errors.</param>
+    /// <returns>
+    /// An enumeration of assemblies.
+    /// </returns>
+    public static IEnumerable<Assembly> FlattenReferences(this Assembly rootAssembly, Func<AssemblyName, bool>? nameFilter = null, ILogger? logger = null)
+    {
+        _ = rootAssembly ?? throw new ArgumentNullException(nameof(rootAssembly));
+
+        return RuntimeHelper.FlattenReferences(new[] { rootAssembly }, nameFilter, logger);
+    }
+
+    /// <summary>
     /// Gets all the assemblies, expanding the references, starting from the provided root assemblies and filtered by name as indicated.
     /// </summary>
     /// <param name="rootAssemblies">The root assemblies.</param>
@@ -27,7 +43,7 @@ public static class RuntimeHelper
     /// <returns>
     /// An enumeration of assemblies.
     /// </returns>
-    public static IEnumerable<Assembly> Flatten(this IEnumerable<Assembly> rootAssemblies, Func<AssemblyName, bool>? nameFilter = null, ILogger? logger = null)
+    public static IEnumerable<Assembly> FlattenReferences(this IEnumerable<Assembly> rootAssemblies, Func<AssemblyName, bool>? nameFilter = null, ILogger? logger = null)
     {
         nameFilter ??= _ => true;
 

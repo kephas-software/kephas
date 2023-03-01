@@ -442,7 +442,7 @@ namespace Kephas.Application
         protected virtual IEnumerable<Assembly> ComputeAppAssemblies(Func<AssemblyName, bool> assemblyFilter)
         {
             var loadedAssemblies = this.GetLoadedAssemblies().ToList();
-            return loadedAssemblies.Flatten(assemblyFilter, this.Logger);
+            return loadedAssemblies.FlattenReferences(assemblyFilter, this.Logger);
         }
 
         /// <summary>
