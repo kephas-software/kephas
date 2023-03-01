@@ -215,18 +215,6 @@ namespace Kephas.Application
         /// <summary>
         /// Attempts to load an assembly.
         /// </summary>
-        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
-        /// <returns>
-        /// The resolved assembly reference.
-        /// </returns>
-        protected Assembly LoadAssemblyFromName(AssemblyName assemblyName)
-        {
-            return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
-        }
-
-        /// <summary>
-        /// Attempts to load an assembly.
-        /// </summary>
         /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
         /// <returns>
         /// The resolved assembly reference.
@@ -318,7 +306,7 @@ namespace Kephas.Application
                 return null;
             }
 
-            var appAssemblies = this.GetAppAssembliesRaw();
+            var appAssemblies = this.GetLoadedAssemblies();
             var assembly = appAssemblies.FirstOrDefault(a => a.FullName == assemblyFullName);
             if (assembly == null)
             {
@@ -453,37 +441,8 @@ namespace Kephas.Application
         /// </returns>
         protected virtual IEnumerable<Assembly> ComputeAppAssemblies(Func<AssemblyName, bool> assemblyFilter)
         {
-            var loadedAssemblies = this.GetAppAssembliesRaw().ToList();
-
-            // when computing the assemblies, use the Name and not the FullName
-            // because for some obscure reasons it is possible to have the same
-            // assembly with different versions loaded.
-            // TODO log when such cases occur.
-            var assemblies = loadedAssemblies.Where(a => assemblyFilter(a.GetName())).ToList();
-            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().Name).Where(n => n is not null)!);
-            var assembliesToCheck = new List<Assembly>(assemblies);
-
-            while (assembliesToCheck.Count > 0)
-            {
-                var assemblyRefsToLoad = new HashSet<AssemblyName>();
-                foreach (var referencesToLoad in assembliesToCheck
-                             .Select(assembly => assembly.GetReferencedAssemblies()
-                                 .Where(a => (a.Name is null || !loadedAssemblyRefs.Contains(a.Name)) && assemblyFilter(a))
-                                 .ToList()))
-                {
-                    loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name!).Where(n => n is not null));
-                    assemblyRefsToLoad.AddRange(referencesToLoad);
-                }
-
-                assembliesToCheck = assemblyRefsToLoad
-                    .Select(an => this.TryLoadAssembly(an)!)
-                    .Where(assembly => assembly is not null)
-                    .ToList();
-
-                assemblies.AddRange(assembliesToCheck);
-            }
-
-            return assemblies;
+            var loadedAssemblies = this.GetLoadedAssemblies().ToList();
+            return loadedAssemblies.Flatten(assemblyFilter, this.Logger);
         }
 
         /// <summary>
@@ -495,26 +454,9 @@ namespace Kephas.Application
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
         }
 
-        private IEnumerable<Assembly> GetAppAssembliesRaw()
+        private IEnumerable<Assembly> GetLoadedAssemblies()
         {
-#if NETSTANDARD2_1
-            return this.appAssemblies ?? AppDomain.CurrentDomain.GetAssemblies();
-#else
-            return this.appAssemblies ?? AssemblyLoadContext.Default.Assemblies;
-#endif
-        }
-
-        private Assembly? TryLoadAssembly(AssemblyName n)
-        {
-            try
-            {
-                return this.LoadAssemblyFromName(n);
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Warn(ex, AbstractionStrings.AppRuntimeBase_CannotLoadAssembly_Exception, n);
-                return null;
-            }
+            return this.appAssemblies ?? RuntimeHelper.GetLoadedAssemblies();
         }
 
         private string ComputeAppLocation(string? basePath)
