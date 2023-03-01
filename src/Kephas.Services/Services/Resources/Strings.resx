@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="OrderedServiceFactoryCollection_service_with_requested_criteria_not_found" xml:space="preserve">
-        <value>The service with the requested criteria was not found.</value>
+        <value>The service with the requested predicate was not found.</value>
     </data>
     <data name="ServiceInstanceNotRegistered" xml:space="preserve">
         <value>The service {0} is either not registered or it is not registered with an instance.</value>

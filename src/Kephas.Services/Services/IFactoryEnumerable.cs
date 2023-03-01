@@ -10,12 +10,8 @@
 
 namespace Kephas.Services;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-
-using Kephas.Services;
-using Kephas.Services.Resources;
 
 /// <summary>
 /// Interface for ordered service factory collection.
@@ -23,40 +19,7 @@ using Kephas.Services.Resources;
 /// <typeparam name="TContract">Type of the service contract.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
 [AppServiceContract(AsOpenGeneric = true)]
-public interface IFactoryEnumerable<out TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IEnumerable<IExportFactory<TContract, TMetadata>>
+public interface IFactoryEnumerable<out TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata>
+    : IEnumerable<IExportFactory<TContract, TMetadata>>
 {
-    /// <summary>
-    /// Gets the services in the appropriate order.
-    /// </summary>
-    /// <param name="filter">Optional. Specifies a filter.</param>
-    /// <returns>
-    /// The ordered services.
-    /// </returns>
-    IEnumerable<TContract> SelectServices(Func<IExportFactory<TContract, TMetadata>, bool>? filter = null)
-    {
-        var factories = filter == null ? this : this.Where(filter);
-        foreach (var factory in factories)
-        {
-            yield return factory.CreateExportedValue();
-        }
-    }
-
-    /// <summary>
-    /// Tries to get the service based on the provided criteria.
-    /// </summary>
-    /// <param name="criteria">The criteria function.</param>
-    /// <returns>The requested service or <c>null</c>.</returns>
-    TContract? TryGetService(Func<TMetadata, bool> criteria) =>
-        this.SelectServices(l => criteria(l.Metadata)).FirstOrDefault();
-
-    /// <summary>
-    /// Gets the service based on the provided criteria.
-    /// </summary>
-    /// <param name="criteria">the criteria function.</param>
-    /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    TContract GetService(Func<TMetadata, bool> criteria)
-    {
-        var service = this.TryGetService(criteria);
-        return service ?? throw new ArgumentException(Strings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found, nameof(criteria));
-    }
 }
