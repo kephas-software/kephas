@@ -65,6 +65,6 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the original exception.
         /// </value>
-        public string ExceptionType { get; }
+        public string? ExceptionType { get; }
     }
 }
