@@ -12,7 +12,7 @@ using Kephas.Application;
 /// <summary>
 /// Settings for the <see cref="PluginsAppRuntime"/>.
 /// </summary>
-public class PluginsAppRuntimeSettings : AppRuntimeSettings
+public record PluginsAppRuntimeSettings : AppRuntimeSettings
 {
     /// <summary>
     /// Gets or sets a value indicating whether plugins are enabled.

@@ -14,7 +14,7 @@ using Kephas.Logging;
 /// <summary>
 /// Settings for the application runtime.
 /// </summary>
-public class AppRuntimeSettings : Expando
+public record AppRuntimeSettings
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AppRuntimeSettings"/> class.

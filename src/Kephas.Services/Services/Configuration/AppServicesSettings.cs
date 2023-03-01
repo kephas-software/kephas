@@ -35,7 +35,7 @@ public enum AmbiguousServiceResolutionStrategy
 /// <summary>
 /// Stores application services related settings.
 /// </summary>
-public class AppServicesSettings : Expando
+public record AppServicesSettings
 {
     /// <summary>
     /// Gets or sets the assembly file name pattern.
