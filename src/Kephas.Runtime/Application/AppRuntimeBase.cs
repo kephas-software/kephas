@@ -54,6 +54,7 @@ namespace Kephas.Application
         private ILocations? configLocations;
         private ILocations? licenseLocations;
         private bool isDisposed = false; // To detect redundant calls
+        private Assembly? entryAssembly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
@@ -153,6 +154,11 @@ namespace Kephas.Application
                 ? throw new InvalidOperationException($"App '{appIdentity}' not found.")
                 : (string?)null;
         }
+
+        /// <summary>
+        /// Gets the application's entry assembly.
+        /// </summary>
+        public Assembly? GetEntryAssembly() => this.entryAssembly;
 
         /// <summary>
         /// Gets the application bin folders from where application is loaded.
@@ -276,7 +282,7 @@ namespace Kephas.Application
         /// <param name="settings">The runtime settings.</param>
         protected virtual void InitializeAppProperties(AppRuntimeSettings settings)
         {
-            var entryAssembly = settings.EntryAssembly ?? Assembly.GetEntryAssembly();
+            this.entryAssembly = settings.EntryAssembly ?? Assembly.GetEntryAssembly();
             var isRoot = settings.IsRoot ?? this.AppArgs.RunAsRoot;
             var appId = settings.AppId ?? this.AppArgs.AppId;
             var appInstanceId = settings.AppInstanceId ?? this.AppArgs.AppInstanceId;
@@ -284,14 +290,14 @@ namespace Kephas.Application
             var environment = this.AppArgs.Environment;
 
             this.IsRoot = isRoot;
-            this[IAppRuntime.AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
+            this[IAppRuntime.AppIdKey] = appId = this.GetAppId(appId);
             this[IAppRuntime.AppInstanceIdKey] = string.IsNullOrEmpty(appInstanceId)
                 ? isRoot
                     ? appId
                     : $"{appId}-{Guid.NewGuid():N}"
                 : appInstanceId;
             this[IAppRuntime.AppVersionKey] = string.IsNullOrEmpty(appVersion)
-                ? (entryAssembly?.GetName()?.Version?.ToString() ?? "0.0.0.0")
+                ? (this.entryAssembly?.GetName()?.Version?.ToString() ?? "0.0.0.0")
                 : appVersion;
             this[IAppRuntime.EnvKey] = environment;
         }
@@ -406,12 +412,11 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application identifier.
         /// </summary>
-        /// <param name="entryAssembly">The entry assembly.</param>
         /// <param name="appId">Identifier for the application.</param>
         /// <returns>
         /// The application identifier.
         /// </returns>
-        protected virtual string GetAppId(Assembly? entryAssembly, string? appId)
+        protected virtual string GetAppId(string? appId)
         {
             if (!string.IsNullOrEmpty(appId))
             {
@@ -440,18 +445,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the referenced assemblies.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// An array of assembly name.
-        /// </returns>
-        protected virtual IEnumerable<AssemblyName> GetReferencedAssemblies(Assembly assembly)
-        {
-            return assembly.GetReferencedAssemblies();
-        }
-
-        /// <summary>
         /// Computes the application assemblies.
         /// </summary>
         /// <param name="assemblyFilter">A filter for the assemblies.</param>
@@ -474,7 +467,7 @@ namespace Kephas.Application
             {
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var referencesToLoad in assembliesToCheck
-                             .Select(assembly => this.GetReferencedAssemblies(assembly)
+                             .Select(assembly => assembly.GetReferencedAssemblies()
                                  .Where(a => (a.Name is null || !loadedAssemblyRefs.Contains(a.Name)) && assemblyFilter(a))
                                  .ToList()))
                 {
@@ -531,7 +524,7 @@ namespace Kephas.Application
                 return Path.GetFullPath(basePath);
             }
 
-            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+            var assembly = this.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             return assembly.GetLocationDirectory();
         }
 

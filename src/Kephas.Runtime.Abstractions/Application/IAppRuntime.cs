@@ -88,6 +88,11 @@ namespace Kephas.Application
         string? GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true);
 
         /// <summary>
+        /// Gets the application's entry assembly.
+        /// </summary>
+        Assembly? GetEntryAssembly();
+
+        /// <summary>
         /// Gets the application bin directories from where application is loaded.
         /// </summary>
         /// <returns>
