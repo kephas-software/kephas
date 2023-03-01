@@ -276,7 +276,7 @@ namespace Kephas.Application
         /// <param name="settings">The runtime settings.</param>
         protected virtual void InitializeAppProperties(AppRuntimeSettings settings)
         {
-            var entryAssembly = settings.EntryAssembly ?? Assembly.GetEntryAssembly()!;
+            var entryAssembly = settings.EntryAssembly ?? Assembly.GetEntryAssembly();
             var isRoot = settings.IsRoot ?? this.AppArgs.RunAsRoot;
             var appId = settings.AppId ?? this.AppArgs.AppId;
             var appInstanceId = settings.AppInstanceId ?? this.AppArgs.AppInstanceId;
@@ -285,7 +285,7 @@ namespace Kephas.Application
 
             this.IsRoot = isRoot;
             this[IAppRuntime.AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
-            this[IAppRuntime.AppInstanceIdKey] = appInstanceId = string.IsNullOrEmpty(appInstanceId)
+            this[IAppRuntime.AppInstanceIdKey] = string.IsNullOrEmpty(appInstanceId)
                 ? isRoot
                     ? appId
                     : $"{appId}-{Guid.NewGuid():N}"
@@ -467,7 +467,7 @@ namespace Kephas.Application
             // assembly with different versions loaded.
             // TODO log when such cases occur.
             var assemblies = loadedAssemblies.Where(a => assemblyFilter(a.GetName())).ToList();
-            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().Name!));
+            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().Name).Where(n => n is not null)!);
             var assembliesToCheck = new List<Assembly>(assemblies);
 
             while (assembliesToCheck.Count > 0)
@@ -475,22 +475,17 @@ namespace Kephas.Application
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var referencesToLoad in assembliesToCheck
                              .Select(assembly => this.GetReferencedAssemblies(assembly)
-                                 .Where(a => !loadedAssemblyRefs.Contains(a.Name!) && assemblyFilter(a))
+                                 .Where(a => (a.Name is null || !loadedAssemblyRefs.Contains(a.Name)) && assemblyFilter(a))
                                  .ToList()))
                 {
-                    loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name!));
+                    loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name!).Where(n => n is not null));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 
-                assembliesToCheck = new List<Assembly>();
-                foreach (var an in assemblyRefsToLoad)
-                {
-                    var assembly = this.TryLoadAssembly(an);
-                    if (assembly != null)
-                    {
-                        assembliesToCheck.Add(assembly);
-                    }
-                }
+                assembliesToCheck = assemblyRefsToLoad
+                    .Select(an => this.TryLoadAssembly(an)!)
+                    .Where(assembly => assembly is not null)
+                    .ToList();
 
                 assemblies.AddRange(assembliesToCheck);
             }
@@ -509,8 +504,11 @@ namespace Kephas.Application
 
         private IEnumerable<Assembly> GetAppAssembliesRaw()
         {
-            // TODO AssemblyLoadContext.Default.Assemblies;
+#if NETSTANDARD2_1
             return this.appAssemblies ?? AppDomain.CurrentDomain.GetAssemblies();
+#else
+            return this.appAssemblies ?? AssemblyLoadContext.Default.Assemblies;
+#endif
         }
 
         private Assembly? TryLoadAssembly(AssemblyName n)
