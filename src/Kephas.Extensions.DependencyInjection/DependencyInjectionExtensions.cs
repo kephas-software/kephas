@@ -56,11 +56,13 @@ public static class DependencyInjectionExtensions
     /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="services">The service collection.</param>
     /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(this IAppServiceCollectionBuilder servicesBuilder, IServiceCollection services)
+    public static IServiceProvider BuildWithDependencyInjection(
+        this IAppServiceCollectionBuilder servicesBuilder,
+        IServiceCollection services)
     {
         servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
 
-        services.UseServicesBuilder(servicesBuilder);
+        services.AddFromServicesBuilder(servicesBuilder);
 
         return services.BuildServiceProvider();
     }
@@ -73,7 +75,9 @@ public static class DependencyInjectionExtensions
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection UseServicesBuilder(this IServiceCollection services, IAppServiceCollectionBuilder servicesBuilder)
+    public static IServiceCollection AddFromServicesBuilder(
+        this IServiceCollection services,
+        IAppServiceCollectionBuilder servicesBuilder)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
         servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));

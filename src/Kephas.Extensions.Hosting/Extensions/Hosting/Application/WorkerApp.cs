@@ -136,7 +136,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>The service provider.</returns>
         protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
         {
-            this.HostBuilder.ConfigureServices((context, services) => services.UseServicesBuilder(servicesBuilder));
+            this.HostBuilder.ConfigureServices((context, services) => services.AddFromServicesBuilder(servicesBuilder));
 
             this.Host ??= this.HostBuilder.Build();
             return this.Host.Services;

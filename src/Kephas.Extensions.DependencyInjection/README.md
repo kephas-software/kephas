@@ -5,6 +5,25 @@ Provides a dependency injection implementation based on the ```Microsoft.Extensi
 
 Typically used areas and classes/interfaces/services:
 * `IAppServiceCollection.BuildWithDependencyInjection()`.
+* `IServiceCollection.AddFromServicesBuilder()`.
+
+## Usage
+
+### Create a service provider from merging into the service collection 
+
+```csharp
+var builder = new AppServiceCollectionBuilder();
+var services = new ServiceCollection();
+var serviceProvider = builder.BuildWithDependencyInjection(services);
+```
+
+### Add collected services to the service collection
+
+```csharp
+var builder = new AppServiceCollectionBuilder();
+var services = new ServiceCollection()
+    .AddFromServicesBuilder(builder);
+```
 
 ## Other resources
 
