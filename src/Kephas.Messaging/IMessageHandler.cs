@@ -23,24 +23,16 @@ namespace Kephas.Messaging
     /// </summary>
     public interface IMessageHandler
     {
-        /// <summary>
-        /// Processes the provided message asynchronously and returns a response promise.
-        /// </summary>
-        /// <param name="message">The message to be handled.</param>
-        /// <param name="context">The processing context.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// The response promise.
-        /// </returns>
-        Task<object?> ProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token);
     }
 
     /// <summary>
     /// Application service for handling requests.
     /// </summary>
     /// <typeparam name="TMessage">The type of the message.</typeparam>
+    /// <typeparam name="TResult">The result type.</typeparam>
     [AppServiceContract(ContractType = typeof(IMessageHandler), AllowMultiple = true)]
-    public interface IMessageHandler<in TMessage> : IMessageHandler
+    public interface IMessageHandler<in TMessage, TResult> : IMessageHandler
+        where TMessage : IMessage<TResult>
     {
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
@@ -51,29 +43,6 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        Task<object?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
-
-        /// <summary>
-        /// Processes the provided message asynchronously and returns a response promise.
-        /// </summary>
-        /// <param name="message">The message to be handled.</param>
-        /// <param name="context">The processing context.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// The response promise.
-        /// </returns>
-        async Task<object?> IMessageHandler.ProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token)
-        {
-            // typed message handlers register themselves for a message type which may not implement IMessage
-            // therefore the actual processed message is the message content.
-            var content = message.GetContent();
-            if (content is not TMessage typedMessage)
-            {
-                throw new ArgumentException(Strings.MessageHandler_BadMessageType_Exception.FormatWith(typeof(TMessage), content?.GetType()), nameof(message));
-            }
-
-            var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
-            return response;
-        }
+        Task<TResult> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
     }
 }

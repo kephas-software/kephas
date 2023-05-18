@@ -16,7 +16,7 @@ namespace Kephas.Pipelines;
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
 [AppServiceContract(AsOpenGeneric = true)]
-public interface IPipeline<TTarget, TOperationArgs, TResult>
+public interface IPipeline<in TTarget, in TOperationArgs, TResult>
 {
     /// <summary>
     /// Processes the pipeline, invoking the behaviors in their priority order.
@@ -31,6 +31,6 @@ public interface IPipeline<TTarget, TOperationArgs, TResult>
         TTarget target,
         TOperationArgs args,
         IContext? context,
-        Func<TTarget, TOperationArgs, IContext, CancellationToken, Task<TResult>> operation,
+        Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default);
 }

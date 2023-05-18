@@ -5,64 +5,103 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Kephas.Reflection;
 
-namespace Kephas.Messaging
-{
-    using System.Runtime.CompilerServices;
+namespace Kephas.Messaging;
 
-    using Kephas.Messaging.Events;
-    using Kephas.Messaging.Messages;
+using System.Runtime.CompilerServices;
+
+using Kephas.Messaging.Events;
+using Kephas.Messaging.Messages;
+
+/// <summary>
+/// Extension methods for <see cref="IMessage"/>.
+/// </summary>
+public static class MessageExtensions
+{
+    private static readonly MethodInfo ToMessageMethod = ReflectionHelper.GetGenericMethodOf(_ => ToMessage<object>(null!));
+    private static readonly MethodInfo ToEventMethod = ReflectionHelper.GetGenericMethodOf(_ => ToEvent<object>(null!));
+        
+    /// <summary>
+    /// Converts the provided object to a message.
+    /// </summary>
+    /// <param name="data">The object to be converted.</param>
+    /// <returns>
+    /// The object as an <see cref="IMessage"/>.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IMessageBase ToMessage<T>(this T data)
+        where T : class
+    {
+        _ = data ?? throw new ArgumentNullException(nameof(data));
+
+        var paramType = typeof(T);
+        if (paramType == typeof(object))
+        {
+            var dataType = data.GetType();
+            if (dataType != typeof(object))
+            {
+                var toMessage = ToMessageMethod.MakeGenericMethod(dataType);
+                return toMessage.Call<IMessageBase>(null, data);
+            }
+
+            paramType = dataType;
+        }
+            
+        var resultType = paramType.GetBaseConstructedGenericOf(typeof(IMessage<>));
+        return resultType is null
+            ? new MessageEnvelope<T>(data)
+            : (IMessageBase)data;
+    }
 
     /// <summary>
-    /// Extension methods for <see cref="IMessage"/>.
+    /// Converts the provided object to an event.
     /// </summary>
-    public static class MessageExtensions
+    /// <param name="data">The object to be converted.</param>
+    /// <returns>
+    /// The object as an <see cref="IEvent"/>.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEvent ToEvent<T>(this T data)
+        where T : class
     {
-        /// <summary>
-        /// Converts the provided object to a message.
-        /// </summary>
-        /// <param name="data">The object to be converted.</param>
-        /// <returns>
-        /// The object as an <see cref="IMessage"/>.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMessageBase ToMessage(this object data)
-        {
-            _ = data ?? throw new ArgumentNullException(nameof(data));
+        _ = data ?? throw new ArgumentNullException(nameof(data));
 
-            var messageType = data.GetType();
-            var resultType = messageType.GetBaseConstructedGenericOf(typeof(IMessage<>));
-            return resultType is null
-                ? new MessageEnvelope { Message = data }
-                : (IMessageBase)data;
+        if (data is IEvent dataEvent)
+        {
+            return dataEvent;
         }
 
-        /// <summary>
-        /// Converts the provided object to an event.
-        /// </summary>
-        /// <param name="data">The object to be converted.</param>
-        /// <returns>
-        /// The object as an <see cref="IEvent"/>.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEvent ToEvent(this object data) =>
-            data is null
-                ? throw new ArgumentNullException(nameof(data))
-                : data as IEvent ?? new EventEnvelope { Event = data };
+        var paramType = typeof(T);
+        if (paramType == typeof(object))
+        {
+            paramType = data.GetType();
+            if (paramType != typeof(object))
+            {
+                var toEvent = ToEventMethod.MakeGenericMethod(paramType);
+                return toEvent.Call<IEvent>(null, data);
+            }
+        }
 
-        /// <summary>
-        /// Gets the content of the message.
-        /// </summary>
-        /// <remarks>
-        /// In case of a message envelope, it returns the contained message, otherwise the message itself.
-        /// </remarks>
-        /// <param name="message">The message to act on.</param>
-        /// <returns>
-        /// The message content.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object GetContent(this object message) =>
-            message is IMessageEnvelope envelope ? envelope.GetContent() : message;
+        return new EventEnvelope<T>(data);
+    }
+
+    /// <summary>
+    /// Gets the content of the message.
+    /// </summary>
+    /// <remarks>
+    /// In case of a message envelope, it returns the contained message, otherwise the message itself.
+    /// </remarks>
+    /// <param name="message">The message to act on.</param>
+    /// <returns>
+    /// The message content.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static object GetContent<T>([DisallowNull] this T message)
+    {
+        _ = message ?? throw new ArgumentNullException(nameof(message));
+        return (message is IMessageEnvelopeBase envelope ? envelope.GetContent() : message);
     }
 }

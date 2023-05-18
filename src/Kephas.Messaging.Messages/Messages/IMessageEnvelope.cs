@@ -11,9 +11,22 @@
 namespace Kephas.Messaging.Messages
 {
     /// <summary>
-    /// Interface for message envelopes.
+    /// Base envelope interface for messages not implementing <see cref="IMessage{TResult}"/>.
     /// </summary>
-    public interface IMessageEnvelope : IMessage
+    public interface IMessageEnvelopeBase : IMessage<object?>
     {
+    }
+    
+    /// <summary>
+    /// Envelope for messages not implementing <see cref="IMessage{TResult}"/>.
+    /// </summary>
+    /// <typeparam name="T">The message type.</typeparam>
+    public interface IMessageEnvelope<out T> : IMessageEnvelopeBase
+        where T : class
+    {
+        /// <summary>
+        /// Gets the native message.
+        /// </summary>
+        public T? Message { get; }
     }
 }

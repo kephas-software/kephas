@@ -56,10 +56,11 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
     /// <param name="operation">The operation to be executed.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task yielding the result.</returns>
-    public Task<TResult> ProcessAsync(TTarget target,
+    public Task<TResult> ProcessAsync(
+        TTarget target,
         TOperationArgs args,
         IContext? context,
-        Func<TTarget, TOperationArgs, IContext, CancellationToken, Task<TResult>> operation,
+        Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default)
     {
         var pipelineBehaviors = this.GetPipelineBehaviors();
@@ -75,7 +76,7 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
                         typeof(TOperationArgs), typeof(TResult));
                 }
 
-                var result = operation.Invoke(target, args, context, cancellationToken);
+                var result = operation();
 
                 if (this.Logger.IsDebugEnabled())
                 {
@@ -110,7 +111,7 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
                     ? behavior is not null
                         ? await behavior.InvokeAsync(ToTaskOfObject(next!), target, args, context, cancellationToken).PreserveThreadContext()
                         : throw new NullReferenceException(PipelinesStrings.Pipeline_ProcessAsync_NullBehavior_Exception)
-                    : await operation.Invoke(target, args, context, cancellationToken).PreserveThreadContext();
+                    : await operation().PreserveThreadContext();
 
                 if (this.Logger.IsDebugEnabled())
                 {

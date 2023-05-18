@@ -75,7 +75,7 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>The matching message handlers.</returns>
-        IEnumerable<IMessageHandler> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
+        IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
             where TMessage : IMessage<TResult>;
     }
 }

@@ -15,15 +15,32 @@ namespace Kephas.Messaging.Messages
     /// <summary>
     /// A message envelope.
     /// </summary>
-    public class MessageEnvelope : IMessageEnvelope
+    public record MessageEnvelope<T> : IMessageEnvelope<T>
+        where T : class
     {
         /// <summary>
-        /// Gets or sets the message.
+        /// Initializes a new instance of the <see cref="MessageEnvelope{T}"/>.
+        /// </summary>
+        public MessageEnvelope()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageEnvelope{T}"/>.
+        /// </summary>
+        /// <param name="message">The native message.</param>
+        public MessageEnvelope(T message)
+        {
+            Message = message ?? throw new ArgumentNullException(nameof(message));
+        }
+        
+        /// <summary>
+        /// Gets or sets the native message.
         /// </summary>
         /// <value>
-        /// The message.
+        /// The native message.
         /// </value>
-        public object? Message { get; set; }
+        public T? Message { get; set; }
 
         /// <summary>
         /// Gets the message.
@@ -32,14 +49,7 @@ namespace Kephas.Messaging.Messages
         /// <returns>
         /// The message.
         /// </returns>
-        public object GetContent()
-        {
-            if (this.Message == null)
-            {
-                throw new InvalidOperationException("The message is not set in the envelope.");
-            }
-
-            return this.Message;
-        }
+        public object GetContent() =>
+            this.Message ?? throw new InvalidOperationException("The message is not set in the envelope.");
     }
 }

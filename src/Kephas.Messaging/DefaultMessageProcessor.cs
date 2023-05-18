@@ -89,7 +89,10 @@ namespace Kephas.Messaging
             {
                 try
                 {
-                    result = await ProcessCoreAsync(message, messageHandler, () => this.CreateProcessingContext(message, optionsConfig), token).PreserveThreadContext();
+                    using var context = this.CreateProcessingContext(message, optionsConfig);
+                    var pipeline = this.serviceProvider.GetRequiredService<IPipeline<IMessageProcessor, TMessage, TResult>>();
+                    pipeline.ProcessAsync(this, message, context, () => messageHandler.)
+                    result = await ProcessCoreAsync(message, messageHandler, () => context, token).PreserveThreadContext();
                 }
                 catch (Exception ex)
                 {
@@ -110,18 +113,16 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="message">The message to process.</param>
         /// <param name="messageHandler">The message handler.</param>
-        /// <param name="contextFactory">The messaging context factory.</param>
+        /// <param name="context">The messaging context.</param>
         /// <param name="token">The cancellation token.</param>
         protected virtual async Task<object?> ProcessCoreAsync<TMessage, TResult>(
             TMessage message,
             IMessageHandler messageHandler,
-            Func<IMessagingContext> contextFactory,
-            Func<IPipeline<IMessageProcessor>
+            IMessagingContext context,
+            Func<IPipeline<IMessageProcessor, TMessage, TResult>> pipelineFactory,
             CancellationToken token)
             where TMessage : IMessage<TResult>
         {
-            using var context = contextFactory();
-
             using var behaviorEnumerator = behaviors.GetEnumerator();
             Func<Task<object?>>? next = null;
             next = async () =>
