@@ -11,15 +11,13 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using Kephas.Application;
 using Kephas.Messaging.Behaviors;
-using Kephas.Messaging.Behaviors.AttributedModel;
 using Kephas.Services;
 
 /// <summary>
 /// Behavior ensuring that the required features of the message being processed are enabled.
 /// </summary>
-[MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
 [ProcessingPriority(Priority.Highest + 15)]
-public class EnsureRequiredFeatureMessageProcessingBehavior : MessagingBehaviorBase<IMessage>
+public class EnsureRequiredFeatureMessageProcessingBehavior : MessagingBehaviorBase<IMessage<object?>, object?>
 {
     private readonly IAppRuntime appRuntime;
     private readonly ConcurrentDictionary<Type, IReadOnlyList<string>> featuresMap = new ();
@@ -42,7 +40,7 @@ public class EnsureRequiredFeatureMessageProcessingBehavior : MessagingBehaviorB
     /// <returns>
     /// A task.
     /// </returns>
-    public override Task BeforeProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+    public override Task BeforeProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token)
     {
         var messageType = message.GetType();
 

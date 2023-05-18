@@ -20,7 +20,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Interface for message handler registry.
     /// </summary>
-    [SingletonAppServiceContract]
+    [AppServiceContract]
     public interface IMessageHandlerRegistry
     {
         /// <summary>
@@ -75,6 +75,7 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>The matching message handlers.</returns>
-        IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message);
+        IEnumerable<IMessageHandler> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
+            where TMessage : IMessage<TResult>;
     }
 }

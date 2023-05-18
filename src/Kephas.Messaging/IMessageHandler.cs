@@ -32,7 +32,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        Task<object?> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token);
+        Task<object?> ProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        async Task<object?> IMessageHandler.ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+        async Task<object?> IMessageHandler.ProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token)
         {
             // typed message handlers register themselves for a message type which may not implement IMessage
             // therefore the actual processed message is the message content.

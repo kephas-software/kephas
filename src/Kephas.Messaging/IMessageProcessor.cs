@@ -26,7 +26,7 @@ namespace Kephas.Messaging
     /// <remarks>
     /// The message processor is defined as a shared service.
     /// </remarks>
-    [SingletonAppServiceContract]
+    [AppServiceContract]
     public interface IMessageProcessor
     {
         private static readonly MethodInfo ProcessAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IMessageProcessor)null!).ProcessAsync<IMessage<object?>, object?>(null!, null!, default));

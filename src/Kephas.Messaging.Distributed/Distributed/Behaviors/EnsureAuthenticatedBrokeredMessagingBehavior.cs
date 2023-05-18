@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
     /// </summary>
     [MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
     [ProcessingPriority(Priority.Highest)]
-    public class EnsureAuthenticatedBrokeredMessagingBehavior : MessagingBehaviorBase<IBrokeredMessage>
+    public class EnsureAuthenticatedBrokeredMessagingBehavior : MessagingBehaviorBase<IBrokeredMessage, object?>
     {
         /// <summary>
         /// The authentication service.

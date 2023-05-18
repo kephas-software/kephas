@@ -19,9 +19,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Security.Authorization;
     using Kephas.Security.Permissions.AttributedModel;
     using Kephas.Services;
@@ -30,9 +28,8 @@ namespace Kephas.Messaging.Authorization.Behaviors
     /// <summary>
     /// A message processing behavior ensuring that only authorized calls execute the request.
     /// </summary>
-    [MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
     [ProcessingPriority(Priority.Highest + 10)]
-    public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage>
+    public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage<object?>, object?>
     {
         private readonly IAuthorizationService authorizationService;
         private readonly IAuthorizationScopeService authorizationScopeService;
@@ -62,7 +59,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task.</returns>
-        public override async Task BeforeProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task BeforeProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token)
         {
             var messageType = message.GetType();
 

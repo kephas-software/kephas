@@ -79,7 +79,8 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>The message handlers.</returns>
-        public virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
+        public virtual IEnumerable<IMessageHandler> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
+            where TMessage : IMessage<TResult>
         {
             var envelopeType = message.GetType();
             var messageType = this.messageMatchService.GetMessageType(message);

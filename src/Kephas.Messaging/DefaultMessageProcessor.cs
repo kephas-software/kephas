@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Pipelines;
+
 namespace Kephas.Messaging
 {
     using System;
@@ -31,7 +33,7 @@ namespace Kephas.Messaging
     {
         private readonly IMessageHandlerRegistry handlerRegistry;
         private readonly IMessageMatchService messageMatchService;
-        private readonly IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories;
+        private readonly IServiceProvider serviceProvider;
         private readonly ConcurrentDictionary<string, IList<IMessagingBehavior>> behaviorFactoriesDictionary = new ();
 
         /// <summary>
@@ -40,23 +42,18 @@ namespace Kephas.Messaging
         /// <param name="injectableFactory">The injectable factory.</param>
         /// <param name="handlerRegistry">The handler registry.</param>
         /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="behaviorFactories">The behavior factories.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         public DefaultMessageProcessor(
             IInjectableFactory injectableFactory,
             IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
+            IServiceProvider serviceProvider)
             : base(injectableFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
-            handlerRegistry = handlerRegistry ?? throw new System.ArgumentNullException(nameof(handlerRegistry));
-            messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
-            behaviorFactories = behaviorFactories ?? throw new System.ArgumentNullException(nameof(behaviorFactories));
-
-            this.InjectableFactory = injectableFactory;
-            this.handlerRegistry = handlerRegistry;
-            this.messageMatchService = messageMatchService;
-            this.behaviorFactories = behaviorFactories.Order().ToList();
+            this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            this.handlerRegistry = handlerRegistry ?? throw new System.ArgumentNullException(nameof(handlerRegistry));
+            this.messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -81,20 +78,18 @@ namespace Kephas.Messaging
         public async Task<TResult> ProcessAsync<TMessage, TResult>(
             TMessage message,
             Action<IMessagingContext<TMessage, TResult>>? optionsConfig = null,
-            CancellationToken token = default) where TMessage : IMessage<TResult>
+            CancellationToken token = default)
+            where TMessage : IMessage<TResult>
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
-            var behaviors = this.GetOrderedBehaviors(message);
-            using var localContext = this.CreateProcessingContext(message, optionsConfig);
-
             var exceptions = new List<Exception>();
             object? result = null;
-            foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers(message))
+            foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers<TMessage, TResult>(message))
             {
                 try
                 {
-                    result = await ProcessCoreAsync(message, messageHandler, behaviors, localContext, token).PreserveThreadContext();
+                    result = await ProcessCoreAsync(message, messageHandler, () => this.CreateProcessingContext(message, optionsConfig), token).PreserveThreadContext();
                 }
                 catch (Exception ex)
                 {
@@ -115,16 +110,18 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="message">The message to process.</param>
         /// <param name="messageHandler">The message handler.</param>
-        /// <param name="behaviors">The behaviors.</param>
-        /// <param name="context">The messaging context.</param>
+        /// <param name="contextFactory">The messaging context factory.</param>
         /// <param name="token">The cancellation token.</param>
-        protected virtual async Task<object?> ProcessCoreAsync(
-            IMessage message,
+        protected virtual async Task<object?> ProcessCoreAsync<TMessage, TResult>(
+            TMessage message,
             IMessageHandler messageHandler,
-            IList<IMessagingBehavior> behaviors,
-            IMessagingContext context,
+            Func<IMessagingContext> contextFactory,
+            Func<IPipeline<IMessageProcessor>
             CancellationToken token)
+            where TMessage : IMessage<TResult>
         {
+            using var context = contextFactory();
+
             using var behaviorEnumerator = behaviors.GetEnumerator();
             Func<Task<object?>>? next = null;
             next = async () =>
@@ -169,7 +166,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// An ordered list of behaviors which can be applied to the provided message, with their reversed counterpart.
         /// </returns>
-        protected virtual IList<IMessagingBehavior> GetOrderedBehaviors(IMessage message)
+        protected virtual IList<IMessagingBehavior> GetOrderedBehaviors<>(IMessage message)
         {
             var messageType = this.messageMatchService.GetMessageType(message);
             var messageId = this.messageMatchService.GetMessageId(message);
