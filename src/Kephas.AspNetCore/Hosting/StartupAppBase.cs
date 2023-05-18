@@ -88,7 +88,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             var servicesBuilder = this.ServicesBuilder;
             servicesBuilder.Replace(this.AppArgs);
 
-            services.UseServicesBuilder(servicesBuilder);
+            services.AddFromServicesBuilder(servicesBuilder);
 
             this.BeforeAppManagerInitialize(this.AppArgs);
         }
