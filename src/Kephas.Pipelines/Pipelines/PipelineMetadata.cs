@@ -28,7 +28,7 @@ public class PipelineMetadata : AppServiceMetadata
         }
 
         this.TargetType = (Type?)metadata.TryGetValue(nameof(this.TargetType));
-        this.ContextType = (Type?)metadata.TryGetValue(nameof(this.ContextType));
+        this.OperationArgsType = (Type?)metadata.TryGetValue(nameof(this.OperationArgsType));
         this.ResultType = (Type?)metadata.TryGetValue(nameof(this.ResultType));
     }
 
@@ -38,9 +38,9 @@ public class PipelineMetadata : AppServiceMetadata
     public Type? TargetType { get; set; }
 
     /// <summary>
-    /// Gets or sets the context type.
+    /// Gets or sets the operation arguments type.
     /// </summary>
-    public Type? ContextType { get; set; }
+    public Type? OperationArgsType { get; set; }
 
     /// <summary>
     /// Gets or sets the result type.

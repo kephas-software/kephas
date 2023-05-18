@@ -77,7 +77,7 @@ namespace Kephas.Tests.Pipelines
             var context = new object();
             var token = new CancellationToken();
 
-            b1.InvokeAsync(target, context, Arg.Any<Func<object?, object, CancellationToken, Task<object?>>>(), token)
+            b1.InvokeAsync(Arg.Any<Func<Task<object?>>>(), target, context, token)
                 .Returns(ci =>
                 {
                     sb.Append("b1");
@@ -86,7 +86,7 @@ namespace Kephas.Tests.Pipelines
                         : ci.Arg<Func<object?, object, CancellationToken, Task<object?>>>()(target, context, token);
                 });
             
-            b2.InvokeAsync(target, context, Arg.Any<Func<object?, object, CancellationToken, Task<object?>>>(), token)
+            b2.InvokeAsync(Arg.Any<Func<Task<object?>>>(), target, context, token)
                 .Returns(ci =>
                 {
                     sb.Append("b2");

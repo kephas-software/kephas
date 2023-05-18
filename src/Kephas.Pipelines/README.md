@@ -4,8 +4,15 @@
 Provides abstractions for intercepting operations to apply transversal behavior.
 
 Typically used areas and classes/interfaces/services:
-* Operations: ```IOperation```, ```OperationResult```.
-* Diagnostics: ```Profiler```.
+* `IPipeline`, `IPipelineBehavior`.
+
+## Usage
+
+```csharp
+
+var pipeline = serviceProvider.GetRequiredService<IPipeline<>>
+
+```
 
 ## Other resources
 

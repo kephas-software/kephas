@@ -13,22 +13,22 @@ namespace Kephas.Pipelines;
 /// Contract for pipelines.
 /// </summary>
 /// <typeparam name="TTarget">The target type.</typeparam>
-/// <typeparam name="TContext">The context type.</typeparam>
+/// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
 [AppServiceContract(AsOpenGeneric = true)]
-public interface IPipeline<TTarget, TContext, TResult>
+public interface IPipeline<TTarget, TOperationArgs, TResult>
 {
     /// <summary>
     /// Processes the pipeline, invoking the behaviors in their priority order.
     /// </summary>
     /// <param name="target">The target.</param>
-    /// <param name="context">The context.</param>
+    /// <param name="args">The operation arguments.</param>
     /// <param name="operation">The operation to be executed.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task yielding the result.</returns>
     Task<TResult> ProcessAsync(
         TTarget target,
-        TContext context,
-        Func<TTarget, TContext, CancellationToken, Task<TResult>> operation,
+        TOperationArgs args,
+        Func<TTarget, TOperationArgs, CancellationToken, Task<TResult>> operation,
         CancellationToken cancellationToken = default);
 }
