@@ -51,7 +51,7 @@ namespace Kephas.Messaging.HandlerProviders
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public abstract bool CanHandle(Type envelopeType, Type messageType, object messageId);
+        public abstract bool CanHandle(Type envelopeType, Type messageType, object? messageId);
 
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
@@ -68,7 +68,7 @@ namespace Kephas.Messaging.HandlerProviders
             IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories,
             Type envelopeType,
             Type messageType,
-            object messageId)
+            object? messageId)
         {
             var orderedHandlers = this.GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
             return () => orderedHandlers.Select(f => f.CreateExportedValue()).ToList();

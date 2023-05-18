@@ -18,68 +18,49 @@ namespace Kephas.Messaging
     /// <summary>
     /// The messaging context.
     /// </summary>
-    public class MessagingContext : Context, IMessagingContext
+    public class MessagingContext<TMessage, TResult> : Context, IMessagingContext<TMessage, TResult>
+        where TMessage : IMessage<TResult>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingContext"/> class.
+        /// Initializes a new instance of the <see cref="MessagingContext{TMessage, TResult}"/> class.
         /// </summary>
         /// <param name="parentContext">The parent context.</param>
-        /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">Optional. The message.</param>
         public MessagingContext(
             IContext parentContext,
-            IMessageProcessor messageProcessor,
-            IMessage? message = null)
+            IMessage? message)
             : base(parentContext, merge: true)
         {
             parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
-            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
 
-            this.MessageProcessor = messageProcessor;
             this.Message = message;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingContext"/> class.
+        /// Initializes a new instance of the <see cref="MessagingContext{TMessage, TResult}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The injector.</param>
-        /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="message">Optional. The Message.</param>
+        /// <param name="message">Optional. The message.</param>
         public MessagingContext(
             IServiceProvider serviceProvider,
-            IMessageProcessor messageProcessor,
-            IMessage? message = null)
+            IMessage? message)
             : base(serviceProvider)
         {
-            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
-
-            this.MessageProcessor = messageProcessor;
             this.Message = message;
         }
 
         /// <summary>
-        /// Gets the message processor.
-        /// </summary>
-        /// <value>
-        /// The message processor.
-        /// </value>
-        public IMessageProcessor MessageProcessor { get; }
-
-        /// <summary>
-        /// Gets or sets the handler.
-        /// </summary>
-        /// <value>
-        /// The handler.
-        /// </value>
-        public IMessageHandler Handler { get; set; }
-
-        /// <summary>
-        /// Gets or sets the message.
+        /// Gets the message.
         /// </summary>
         /// <value>
         /// The message.
         /// </value>
-        public IMessage? Message { get; set; }
+        public IMessage? Message { get; }
+
+        /// <summary>
+        /// Gets or sets the result.
+        /// </summary>
+        public object? Result { get; set; }
 
         /// <summary>
         /// Gets or sets the response.
@@ -88,13 +69,5 @@ namespace Kephas.Messaging
         /// The response.
         /// </value>
         public object? Response { get; set; }
-
-        /// <summary>
-        /// Gets or sets the exception.
-        /// </summary>
-        /// <value>
-        /// The exception.
-        /// </value>
-        public Exception? Exception { get; set; }
     }
 }

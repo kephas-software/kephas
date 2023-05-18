@@ -13,7 +13,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Marker interface for messages.
     /// </summary>
-    public interface IMessage
+    public interface IMessageBase
     {
         /// <summary>
         /// Gets the content of the message.
@@ -30,8 +30,15 @@ namespace Kephas.Messaging
     /// <summary>
     /// Marker interface for messages requiring a typed response..
     /// </summary>
-    /// <typeparam name="TResponse">The response type.</typeparam>
-    public interface IMessage<out TResponse> : IMessage
+    /// <typeparam name="TResult">The result type.</typeparam>
+    public interface IMessage<out TResult> : IMessageBase
+    {
+    }
+
+    /// <summary>
+    /// Marker interface for messages.
+    /// </summary>
+    public interface IMessage : IMessage<object?>
     {
     }
 }

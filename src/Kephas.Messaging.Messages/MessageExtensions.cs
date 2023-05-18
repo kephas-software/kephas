@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+
 namespace Kephas.Messaging
 {
     using System.Runtime.CompilerServices;
@@ -25,10 +27,16 @@ namespace Kephas.Messaging
         /// The object as an <see cref="IMessage"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMessage ToMessage(this object data) =>
-            data is null
-                ? throw new ArgumentNullException(nameof(data))
-                : data as IMessage ?? new MessageEnvelope { Message = data };
+        public static IMessageBase ToMessage(this object data)
+        {
+            _ = data ?? throw new ArgumentNullException(nameof(data));
+
+            var messageType = data.GetType();
+            var resultType = messageType.GetBaseConstructedGenericOf(typeof(IMessage<>));
+            return resultType is null
+                ? new MessageEnvelope { Message = data }
+                : (IMessageBase)data;
+        }
 
         /// <summary>
         /// Converts the provided object to an event.

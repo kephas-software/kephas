@@ -10,8 +10,6 @@
 
 namespace Kephas.Messaging
 {
-    using System;
-    using System.Runtime.CompilerServices;
     using Kephas.Services;
 
     /// <summary>
@@ -20,133 +18,23 @@ namespace Kephas.Messaging
     public interface IMessagingContext : IContext
     {
         /// <summary>
-        /// Gets the message processor.
+        /// Gets the message to process.
         /// </summary>
-        /// <value>
-        /// The message processor.
-        /// </value>
-        IMessageProcessor MessageProcessor { get; }
+        IMessage Message { get; }
 
         /// <summary>
-        /// Gets or sets the handler.
+        /// Gets or sets the result.
         /// </summary>
-        /// <value>
-        /// The handler.
-        /// </value>
-        IMessageHandler Handler { get; set; }
-
-        /// <summary>
-        /// Gets or sets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        IMessage? Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets the response.
-        /// </summary>
-        /// <value>
-        /// The response.
-        /// </value>
-        object? Response { get; set; }
-
-        /// <summary>
-        /// Gets or sets the exception.
-        /// </summary>
-        /// <value>
-        /// The exception.
-        /// </value>
-        Exception? Exception { get; set; }
+        object? Result { get; set; }
     }
 
     /// <summary>
-    /// Extension methods for <see cref="IMessagingContext"/>.
+    /// Contract for contexts when processing messages.
     /// </summary>
-    public static class MessagingContextExtensions
+    /// <typeparam name="TMessage">The message type.</typeparam>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    public interface IMessagingContext<in TMessage, out TResult> : IMessagingContext
+        where TMessage : IMessage<TResult>
     {
-        /// <summary>
-        /// Sets the message handler.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="context">The messaging context.</param>
-        /// <param name="handler">The message handler.</param>
-        /// <returns>
-        /// This <paramref name="context"/>.
-        /// </returns>
-        public static TContext Handler<TContext>(
-            this TContext context,
-            IMessageHandler handler)
-            where TContext : class, IMessagingContext
-        {
-            context = context ?? throw new ArgumentNullException(nameof(context));
-
-            context.Handler = handler;
-
-            return context;
-        }
-
-        /// <summary>
-        /// Sets the processing message.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="context">The messaging context.</param>
-        /// <param name="message">The processing message.</param>
-        /// <returns>
-        /// This <paramref name="context"/>.
-        /// </returns>
-        public static TContext Message<TContext>(
-            this TContext context,
-            IMessage message)
-            where TContext : class, IMessagingContext
-        {
-            context = context ?? throw new ArgumentNullException(nameof(context));
-
-            context.Message = message;
-
-            return context;
-        }
-
-        /// <summary>
-        /// Sets the response message.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="context">The messaging context.</param>
-        /// <param name="response">The response message.</param>
-        /// <returns>
-        /// This <paramref name="context"/>.
-        /// </returns>
-        public static TContext Response<TContext>(
-            this TContext context,
-            object? response)
-            where TContext : class, IMessagingContext
-        {
-            context = context ?? throw new ArgumentNullException(nameof(context));
-
-            context.Response = response;
-
-            return context;
-        }
-
-        /// <summary>
-        /// Sets the response exception.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="context">The messaging context.</param>
-        /// <param name="exception">The response exception.</param>
-        /// <returns>
-        /// This <paramref name="context"/>.
-        /// </returns>
-        public static TContext Exception<TContext>(
-            this TContext context,
-            Exception exception)
-            where TContext : class, IMessagingContext
-        {
-            context = context ?? throw new ArgumentNullException(nameof(context));
-
-            context.Exception = exception;
-
-            return context;
-        }
     }
 }

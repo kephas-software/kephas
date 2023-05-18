@@ -400,13 +400,15 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
 
         public Action<IMessage, IMessagingContext> ProcessingContextConfigurator { get; set; }
 
-        protected override Task ApplyBeforeProcessBehaviorsAsync(
-            IEnumerable<IMessagingBehavior> behaviors,
+        protected override Task<object?> ProcessCoreAsync(
+            IMessage message,
+            IMessageHandler messageHandler,
+            IList<IMessagingBehavior> behaviors,
             IMessagingContext context,
             CancellationToken token)
         {
             this.ProcessingContextConfigurator?.Invoke(context.Message, context);
-            return base.ApplyBeforeProcessBehaviorsAsync(behaviors, context, token);
+            return base.ProcessCoreAsync(message, messageHandler, behaviors, context, token);
         }
     }
 

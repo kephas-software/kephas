@@ -48,7 +48,7 @@ namespace Kephas.Messaging.HandlerProviders
             IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories,
             Type envelopeType,
             Type messageType,
-            object messageId)
+            object? messageId)
         {
             var orderedFactories = GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
 

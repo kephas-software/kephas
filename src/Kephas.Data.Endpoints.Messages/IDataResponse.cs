@@ -18,7 +18,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// Contract for responses returning updated data (to be used for refreshing the client cache, for example).
     /// </summary>
-    public interface IDataResponse : IMessage
+    public interface IDataResponse
     {
         /// <summary>
         /// Gets or sets the entity entries after a data operation.

@@ -7,12 +7,10 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using Kephas.Messaging;
-
     /// <summary>
     /// A hash response message.
     /// </summary>
-    public class HashResponse : IMessage
+    public class HashResponse
     {
         /// <summary>
         /// Gets or sets the hash.

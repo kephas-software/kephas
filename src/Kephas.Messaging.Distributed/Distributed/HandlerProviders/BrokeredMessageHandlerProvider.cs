@@ -41,7 +41,7 @@ namespace Kephas.Messaging.Distributed.HandlerProviders
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public override bool CanHandle(Type envelopeType, Type messageType, object messageId)
+        public override bool CanHandle(Type envelopeType, Type messageType, object? messageId)
         {
             return typeof(IBrokeredMessage).IsAssignableFrom(messageType);
         }

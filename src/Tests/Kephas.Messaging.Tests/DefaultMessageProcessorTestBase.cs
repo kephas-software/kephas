@@ -93,7 +93,6 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
         processor.CreateProcessingContextFunc = (msg, ctx) =>
         {
             context = Substitute.For<IMessagingContext>();
-            context.MessageProcessor.Returns(processor);
             context.Message.Returns(msg);
             return context;
         };
@@ -394,8 +393,8 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
         var beforelist = new List<Exception>();
         var afterlist = new List<Exception>();
         var f1 = this.CreateBehaviorFactory(
-            (c, t) => { beforelist.Add(c.Exception); return Task.CompletedTask; },
-            (c, t) => { afterlist.Add(c.Exception); return Task.CompletedTask; });
+            (c, t) => Task.CompletedTask,
+            (c, t) => Task.CompletedTask);
 
         var processor = this.CreateMessageProcessor(new[] { f1 }, handler, message);
         InvalidOperationException thrownException = null;

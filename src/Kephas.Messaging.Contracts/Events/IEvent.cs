@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Events
     /// <summary>
     /// Marker interface for events, in a publisher/subscriber scenario.
     /// </summary>
-    public interface IEvent : IMessage
+    public interface IEvent : IMessage<object?>
     {
     }
 }

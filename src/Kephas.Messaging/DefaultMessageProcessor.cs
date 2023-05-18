@@ -32,7 +32,7 @@ namespace Kephas.Messaging
         private readonly IMessageHandlerRegistry handlerRegistry;
         private readonly IMessageMatchService messageMatchService;
         private readonly IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories;
-        private readonly ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors)> behaviorFactoriesDictionary = new ();
+        private readonly ConcurrentDictionary<string, IList<IMessagingBehavior>> behaviorFactoriesDictionary = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
@@ -70,96 +70,78 @@ namespace Kephas.Messaging
         /// <summary>
         /// Processes the specified message asynchronously.
         /// </summary>
-        /// <exception cref="Exception">Thrown when an exception error condition occurs.</exception>
+        /// <typeparam name="TMessage">The message type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
         /// <param name="message">The message to process.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="token">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the response message.
         /// </returns>
-        public async Task<object?> ProcessAsync(
-            IMessage message,
-            Action<IMessagingContext>? optionsConfig = null,
-            CancellationToken token = default)
+        public async Task<TResult> ProcessAsync<TMessage, TResult>(
+            TMessage message,
+            Action<IMessagingContext<TMessage, TResult>>? optionsConfig = null,
+            CancellationToken token = default) where TMessage : IMessage<TResult>
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
-            var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(message);
+            var behaviors = this.GetOrderedBehaviors(message);
             using var localContext = this.CreateProcessingContext(message, optionsConfig);
 
+            var exceptions = new List<Exception>();
+            object? result = null;
             foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers(message))
             {
-                localContext.Message = message;
-                localContext.Handler = messageHandler;
-
                 try
                 {
-                    await this.ApplyBeforeProcessBehaviorsAsync(behaviors, localContext, token)
-                        .PreserveThreadContext();
-
-                    var response = await messageHandler.ProcessAsync(message, localContext, token)
-                                       .PreserveThreadContext();
-                    localContext.Response = response;
+                    result = await ProcessCoreAsync(message, messageHandler, behaviors, localContext, token).PreserveThreadContext();
                 }
                 catch (Exception ex)
                 {
-                    localContext.Exception = ex;
+                    exceptions.Add(ex);
                 }
-                finally
+            }
+
+            return exceptions.Count switch
+            {
+                0 => result,
+                1 => throw exceptions[0],
+                _ => throw new AggregateException(exceptions)
+            };
+        }
+
+        /// <summary>
+        /// Processes the message asynchronously using the handler, behaviors, and the messaging context.
+        /// </summary>
+        /// <param name="message">The message to process.</param>
+        /// <param name="messageHandler">The message handler.</param>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="context">The messaging context.</param>
+        /// <param name="token">The cancellation token.</param>
+        protected virtual async Task<object?> ProcessCoreAsync(
+            IMessage message,
+            IMessageHandler messageHandler,
+            IList<IMessagingBehavior> behaviors,
+            IMessagingContext context,
+            CancellationToken token)
+        {
+            using var behaviorEnumerator = behaviors.GetEnumerator();
+            Func<Task<object?>>? next = null;
+            next = async () =>
+            {
+                if (behaviorEnumerator.MoveNext())
                 {
-                    // restore the message and handler that could be changed
-                    // by a nested message processor ProcessAsync call.
-                    localContext.Handler = messageHandler;
-                    localContext.Message = message;
+                    return await behaviorEnumerator.Current
+                        .ProcessAsync(next!, context, token)
+                        .PreserveThreadContext();
                 }
 
-                await this.ApplyAfterProcessBehaviorsAsync(reversedBehaviors, localContext, token)
+                return await messageHandler
+                    .ProcessAsync(message, context, token)
                     .PreserveThreadContext();
-            }
+            };
 
-            return localContext.Exception != null
-                       ? throw localContext.Exception
-                       : localContext.Response;
-        }
-
-        /// <summary>
-        /// Applies the behaviors invoking the <see cref="IMessagingBehavior.AfterProcessAsync"/> asynchronously.
-        /// </summary>
-        /// <param name="reversedBehaviors">The reversed behaviors.</param>
-        /// <param name="context">Context for the message processing.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        protected virtual async Task ApplyAfterProcessBehaviorsAsync(
-            IEnumerable<IMessagingBehavior> reversedBehaviors,
-            IMessagingContext context,
-            CancellationToken token)
-        {
-            foreach (var behavior in reversedBehaviors)
-            {
-                await behavior.AfterProcessAsync(context, token).PreserveThreadContext();
-            }
-        }
-
-        /// <summary>
-        /// Applies the behaviors invoking the <see cref="IMessagingBehavior.BeforeProcessAsync"/> asynchronously.
-        /// </summary>
-        /// <param name="behaviors">The reversed behaviors.</param>
-        /// <param name="context">Context for the message processing.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        protected virtual async Task ApplyBeforeProcessBehaviorsAsync(
-            IEnumerable<IMessagingBehavior> behaviors,
-            IMessagingContext context,
-            CancellationToken token)
-        {
-            foreach (var behavior in behaviors)
-            {
-                await behavior.BeforeProcessAsync(context, token).PreserveThreadContext();
-            }
+            return await next().PreserveThreadContext();
         }
 
         /// <summary>
@@ -170,13 +152,13 @@ namespace Kephas.Messaging
         /// <returns>
         /// The processing context.
         /// </returns>
-        protected virtual IMessagingContext CreateProcessingContext(
-            IMessage message,
-            Action<IMessagingContext>? optionsConfig)
+        protected virtual IMessagingContext<TMessage, TResult> CreateProcessingContext<TMessage, TResult>(
+            TMessage message,
+            Action<IMessagingContext<TMessage, TResult>>? optionsConfig)
+            where TMessage : IMessage<TResult>
         {
-            var context = this.InjectableFactory.Create<MessagingContext>(this);
+            var context = this.InjectableFactory.Create<MessagingContext<TMessage, TResult>>(message);
             optionsConfig?.Invoke(context);
-            context.Message = message;
             return context;
         }
 
@@ -187,12 +169,12 @@ namespace Kephas.Messaging
         /// <returns>
         /// An ordered list of behaviors which can be applied to the provided message, with their reversed counterpart.
         /// </returns>
-        protected virtual (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors) GetOrderedBehaviors(IMessage message)
+        protected virtual IList<IMessagingBehavior> GetOrderedBehaviors(IMessage message)
         {
             var messageType = this.messageMatchService.GetMessageType(message);
             var messageId = this.messageMatchService.GetMessageId(message);
 
-            var orderedBehaviorsEntry = this.behaviorFactoriesDictionary.GetOrAdd(
+            var orderedBehaviors = this.behaviorFactoriesDictionary.GetOrAdd(
                 $"{message.GetType()}/{messageType}/{messageId}",
                 _ =>
                     {
@@ -201,10 +183,10 @@ namespace Kephas.Messaging
                             .Select(f => f.CreateExportedValue())
                             .ToList();
 
-                        return (behaviors, ((IEnumerable<IMessagingBehavior>)behaviors).Reverse().ToList());
+                        return behaviors;
                     });
 
-            return orderedBehaviorsEntry;
+            return orderedBehaviors;
         }
     }
 }

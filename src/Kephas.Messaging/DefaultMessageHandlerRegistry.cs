@@ -26,8 +26,7 @@ namespace Kephas.Messaging
     public class DefaultMessageHandlerRegistry : IMessageHandlerRegistry
     {
         private readonly IList<IMessageHandlerProvider> handlerProviders;
-        private readonly ConcurrentDictionary<string, (Type envelopeType, Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)> handlerFactories
-            = new ConcurrentDictionary<string, (Type envelopeType, Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)>();
+        private readonly ConcurrentDictionary<string, (Type envelopeType, Type messageType, object? messageId, Func<IEnumerable<IMessageHandler>?> factory)> handlerFactories = new();
 
         private readonly ConcurrentBag<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerRegistry;
 

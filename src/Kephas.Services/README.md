@@ -4,9 +4,9 @@
 This package provides support for application services and dependency injection.
 
 Typically used areas and classes/interfaces/services:
-- Injection: ``IInjector``, ``IInjectorBuilder``, ``InjectorBuilderBase``.
-- Services: ``IAppServiceInfo``, ``IAppServiceInfoProvider``, ``SingletonAppServiceContractAttribute``, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
-- ``IAppServiceCollection``, ``AppServiceCollection``.
+- Services: `IAppServiceInfo`, `IAppServiceInfoProvider`, `SingletonAppServiceContractAttribute`, `AppServiceContractAttribute`, `OverridePriorityAttribute`, ProcessingPriorityAttribute.
+- Services.Builder: `IAppServiceCollectionBuilder`, `AppServiceCollectionBuilder`. 
+- `IAppServiceCollection`, `AppServiceCollection`.
 
 Packages providing specific dependency injection implementations:
 * [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
@@ -29,10 +29,22 @@ It consists of:
 During the application startup, the service declarations are collected using an implementation of the `IAppServiceCollection` and,
 after that, the `IServiceProvider` will be built.
 
-#### Example
+### Usage examples
+
+#### Using the `IAppRuntime` service to collect the services
 
 ```csharp
+var builder = new AppServiceCollectionBuilder()
+    .WithDynamicAppRuntime();
+var services = builder.Build();
+```
 
+#### Using a custom function to collect the services
+
+```csharp
+var builder = new AppServiceCollectionBuilder(
+    new AppServicesSettings { GetAppAssemblies = () => typeof(MyTestClass).Assembly.FlattenReferences() });
+var services = builder.Build();
 ```
 
 ### Registering default services
@@ -43,7 +55,7 @@ Typically, app services collectors are registered in [assembly initializers](htt
 /// <summary>
 /// Assembly initializer for Kephas.Services.
 /// </summary>
-public class InjectionAssemblyInitializer : IAssemblyInitializer
+public class ServicesAssemblyInitializer : IAssemblyInitializer
 {
     /// <summary>
     /// Initializes the assembly.
@@ -55,6 +67,28 @@ public class InjectionAssemblyInitializer : IAssemblyInitializer
     }
 }
 ```
+
+## Collecting services and building the service provider
+
+Services can be auto discovered using the `[AppServiceContract]` attribute, or one of its derivatives, or can be registered manually.
+Once they are collected, a service provider can be built using one of yours favorite DI frameworks.
+Kephas provides support for both [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection) and [Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac).
+
+### Service collection
+
+Services are collected using an `AppServiceCollectionBuilder`. During this process:
+* The builder:
+  * Tries to use the `AppServicesSettings.GetServicesAssemblies` function.
+  * If not set, it tries to identify the `IAppRuntime` service within the `IAppServices` collection, from which it calls `GetAppAssemblies()`.
+  * Otherwise it will not use any assemblies, instead only the manually registered services will be used.
+* After identifying the services assemblies, the system assemblies are excluded (those starting with `System` or `Microsoft`) and, additionally, the search filter specified in the settings is applied.
+* Using the selected assemblies, all the assembly attributes implementing `IAppServiceInfoProvider` are collected in the order of their `ProcessingPriority` (if their type implements `IHasProcessingPriority`).
+* These providers are then merged with the providers provided in settings.
+* The providers are used to collect the service registrations, which are added to the collection.
+
+### Build the service provider
+
+...TODO
 
 ## `AppServiceCollection` implementation
 

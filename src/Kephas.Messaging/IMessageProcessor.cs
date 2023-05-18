@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
+using Kephas.Reflection;
+using Kephas.Threading.Tasks;
+
 namespace Kephas.Messaging
 {
     using System;
@@ -25,6 +29,8 @@ namespace Kephas.Messaging
     [SingletonAppServiceContract]
     public interface IMessageProcessor
     {
+        private static readonly MethodInfo ProcessAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IMessageProcessor)null!).ProcessAsync<IMessage<object?>, object?>(null!, null!, default));
+        
         /// <summary>
         /// Processes the specified message asynchronously.
         /// </summary>
@@ -34,7 +40,33 @@ namespace Kephas.Messaging
         /// <returns>
         /// An asynchronous result that yields the response message.
         /// </returns>
-        Task<object?> ProcessAsync(IMessage message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default);
+        async Task<object?> ProcessAsync(object message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
+        {
+            _ = message ?? throw new ArgumentNullException(nameof(message));
+
+            var typedMessage = message.ToMessage();
+            var messageType = message.GetType();
+            var resultType = messageType.GetBaseConstructedGenericOf(typeof(IMessage<>))!;
+
+            var processAsync = ProcessAsyncMethod.MakeGenericMethod(messageType, resultType);
+            var task = processAsync.Call<Task>(this, typedMessage, optionsConfig, token);
+            await task.PreserveThreadContext();
+            return task.GetResult();
+        }
+
+        /// <summary>
+        /// Processes the specified message asynchronously.
+        /// </summary>
+        /// <typeparam name="TMessage">The message type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="message">The message to process.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="token">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the response message.
+        /// </returns>
+        Task<TResult> ProcessAsync<TMessage, TResult>(TMessage message, Action<IMessagingContext<TMessage, TResult>>? optionsConfig = null, CancellationToken token = default)
+            where TMessage : IMessage<TResult>;
     }
 
     /// <summary>
@@ -54,8 +86,8 @@ namespace Kephas.Messaging
         /// </returns>
         public static Task<object?> ProcessAsync(this IMessageProcessor @this, object message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
         {
-            @this = @this ?? throw new System.ArgumentNullException(nameof(@this));
-            message = message ?? throw new ArgumentNullException(nameof(message));
+            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+            _ = message ?? throw new ArgumentNullException(nameof(message));
 
             return @this.ProcessAsync(message.ToMessage(), optionsConfig, token);
         }
