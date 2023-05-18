@@ -14,7 +14,7 @@ using Kephas.Logging;
 /// <summary>
 /// Factory of injectable instances.
 /// </summary>
-[SingletonAppServiceContract]
+[AppServiceContract]
 public interface IInjectableFactory
 {
     /// <summary>
