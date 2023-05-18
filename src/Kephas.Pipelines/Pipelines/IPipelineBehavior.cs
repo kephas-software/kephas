@@ -23,19 +23,26 @@ public interface IPipelineBehavior
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
 [AppServiceContract(AllowMultiple = true, ContractType = typeof(IPipelineBehavior))]
-public interface IPipelineBehavior<TTarget, TOperationArgs, TResult> : IPipelineBehavior
+public interface IPipelineBehavior<in TTarget, in TOperationArgs, out TResult> : IPipelineBehavior
 {
     /// <summary>
     /// Invokes the behavior.
     /// </summary>
+    /// <remarks>
+    /// Make sure to return a result convertible to <typeparamref name="TResult"/>.
+    /// Due to the fact that the <typeparamref name="TResult"/> must be contravariant
+    /// so that generic pipeline behaviors may handle all kind of results.
+    /// </remarks>
     /// <param name="next">The pipeline continuation delegate.</param>
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
+    /// <param name="context">The operation context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns></returns>
-    Task<TResult> InvokeAsync(
-        Func<Task<TResult>> next,
+    /// <returns>A task yielding the invocation result.</returns>
+    Task<object?> InvokeAsync(
+        Func<Task<object?>> next,
         TTarget target,
         TOperationArgs args,
+        IContext context,
         CancellationToken cancellationToken);
 }
