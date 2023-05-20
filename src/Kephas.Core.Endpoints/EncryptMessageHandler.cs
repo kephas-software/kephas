@@ -20,7 +20,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// An encrypt message handler.
     /// </summary>
-    public class EncryptMessageHandler : MessageHandlerBase<EncryptMessage, EncryptResponse>
+    public class EncryptMessageHandler : IMessageHandler<EncryptMessage, EncryptResponse>
     {
         private readonly IEncryptionService encryptionService;
 
@@ -40,7 +40,7 @@ namespace Kephas.Core.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override Task<EncryptResponse> ProcessAsync(EncryptMessage message, IMessagingContext context, CancellationToken token)
+        public Task<EncryptResponse> ProcessAsync(EncryptMessage message, IMessagingContext context, CancellationToken token)
         {
             var key = string.IsNullOrWhiteSpace(message.Key) ? null : Convert.FromBase64String(message.Key);
             var encrypted = encryptionService.Encrypt(message.Value, ctx => ctx.Key(key));

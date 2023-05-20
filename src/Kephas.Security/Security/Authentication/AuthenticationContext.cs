@@ -13,7 +13,6 @@ namespace Kephas.Security.Authentication
     using System;
 
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// An authentication context.

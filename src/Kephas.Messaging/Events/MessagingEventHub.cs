@@ -66,7 +66,7 @@ namespace Kephas.Messaging.Events
             match = match ?? throw new ArgumentNullException(nameof(match));
             callback = callback ?? throw new ArgumentNullException(nameof(callback));
 
-            bool FuncMatch(object e) => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e), this.messageMatchService.GetMessageId(e));
+            bool FuncMatch(object e) => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e));
             return this.Subscribe(FuncMatch, callback);
         }
 
@@ -96,7 +96,7 @@ namespace Kephas.Messaging.Events
                 MessageType = typeMatch,
                 MessageTypeMatching = MessageTypeMatching.Type,
             };
-            return e => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e), this.messageMatchService.GetMessageId(e));
+            return e => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e));
         }
     }
 }

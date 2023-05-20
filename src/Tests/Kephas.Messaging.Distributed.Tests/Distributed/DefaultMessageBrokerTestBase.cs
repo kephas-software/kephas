@@ -331,7 +331,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
     }
 
     [OverridePriority(Priority.High)]
-    public class ExceptionEventHandler : MessageHandlerBase<PingMessage, PingBack>
+    public class ExceptionEventHandler : IMessageHandler<PingMessage, PingBack>
     {
         public override async Task<PingBack> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {

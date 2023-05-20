@@ -16,7 +16,6 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
 
     using Kephas.Behaviors;
     using Kephas.Services;
-    using Kephas.Services;
     using Kephas.Services.Behaviors;
     using Kephas.Testing;
     using NSubstitute;

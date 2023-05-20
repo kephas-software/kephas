@@ -81,8 +81,8 @@ public interface IMessageHandlerRegistry
     /// </returns>
     IMessageHandlerRegistry RegisterHandler<TMessage, TResponse>(
         Func<TMessage, IMessagingContext, TResponse> handlerFunction)
-        where TMessage : class
-        => RegisterHandler<TMessage, TResponse>((message, context, _) => Task.FromResult(handlerFunction(message, context)));
+        where TMessage : class =>
+        RegisterHandler<TMessage, TResponse>((message, context, _) => Task.FromResult(handlerFunction(message, context)));
 
     /// <summary>
     /// Registers the handler.
@@ -95,8 +95,26 @@ public interface IMessageHandlerRegistry
     /// </returns>
     IMessageHandlerRegistry RegisterHandler<TMessage, TResponse>(
         Func<TMessage, TResponse> handlerFunction)
-        where TMessage : class
-        => RegisterHandler<TMessage, TResponse>((message, _, _) => Task.FromResult(handlerFunction(message)));
+        where TMessage : class =>
+        RegisterHandler<TMessage, TResponse>((message, _, _) => Task.FromResult(handlerFunction(message)));
+
+    /// <summary>
+    /// Registers the handler.
+    /// </summary>
+    /// <typeparam name="TMessage">Type of the message.</typeparam>
+    /// <typeparam name="TResponse">Type of the response.</typeparam>
+    /// <param name="handlerFunction">The handler function.</param>
+    /// <returns>
+    /// This message handler registry.
+    /// </returns>
+    IMessageHandlerRegistry RegisterHandler<TMessage>(
+        Func<TMessage, IMessagingContext, CancellationToken, Task> handlerFunction)
+        where TMessage : class =>
+        RegisterHandler<TMessage, object?>(async (message, context, token) =>
+        {
+            await handlerFunction(message, context, token).PreserveThreadContext();
+            return Task.FromResult<object?>(null);
+        });
 
     /// <summary>
     /// Registers the handler.
@@ -133,9 +151,9 @@ public interface IMessageHandlerRegistry
     /// <summary>
     /// Resolves the message handlers for the provided message.
     /// </summary>
-    /// <param name="message">The message.</param>
+    /// <param name="context"></param>
     /// <returns>The matching message handlers.</returns>
-    IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
+    IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(IMessagingContext context)
         where TMessage : IMessage<TResult>;
 
     private IMessageHandlerRegistry RegisterFuncHandler<TMessage, TResponse>(

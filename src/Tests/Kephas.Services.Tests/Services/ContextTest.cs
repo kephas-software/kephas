@@ -14,7 +14,6 @@ namespace Kephas.Tests.Services
     using System.Security;
     using System.Security.Principal;
     using Kephas.Services;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 

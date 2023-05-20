@@ -28,14 +28,6 @@ namespace Kephas.Messaging
         public Type? MessageType { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the event.
-        /// </summary>
-        /// <value>
-        /// The identifier of the event.
-        /// </value>
-        public object? MessageId { get; set; }
-
-        /// <summary>
         /// Gets or sets the type of the envelope.
         /// </summary>
         /// <value>
@@ -52,14 +44,6 @@ namespace Kephas.Messaging
         public MessageTypeMatching MessageTypeMatching { get; set; }
 
         /// <summary>
-        /// Gets or sets the event identifier matching.
-        /// </summary>
-        /// <value>
-        /// The event identifier matching.
-        /// </value>
-        public MessageIdMatching MessageIdMatching { get; set; }
-
-        /// <summary>
         /// Gets or sets the envelope type matching.
         /// </summary>
         /// <value>
@@ -72,7 +56,7 @@ namespace Kephas.Messaging
         public override string ToString()
         {
             var envelopeMatching = this.EnvelopeType != null ? $"{this.EnvelopeTypeMatching}/{this.EnvelopeType}:" : string.Empty;
-            return $"{envelopeMatching}{this.MessageTypeMatching}/{this.MessageType}:{this.MessageIdMatching}/{this.MessageId}";
+            return $"{envelopeMatching}{this.MessageTypeMatching}/{this.MessageType}";
         }
     }
 }

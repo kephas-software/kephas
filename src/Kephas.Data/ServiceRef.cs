@@ -12,7 +12,6 @@ namespace Kephas.Data
 {
     using System;
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A service reference.

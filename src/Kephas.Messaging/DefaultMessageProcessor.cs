@@ -70,11 +70,11 @@ public class DefaultMessageProcessor : Loggable, IMessageProcessor
 
         var exceptions = new List<Exception>();
         TResponse result = default!;
-        foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers<TMessage, TResponse>(message))
+        using var context = this.CreateProcessingContext(message, optionsConfig);
+        foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers<TMessage, TResponse>(context))
         {
             try
             {
-                using var context = this.CreateProcessingContext(message, optionsConfig);
                 var pipeline = this.serviceProvider.GetRequiredService<IPipeline<IMessageProcessor, TMessage, TResponse>>();
                 result = await pipeline.ProcessAsync(this, message, context, () => messageHandler.ProcessAsync(message, context, token), token)
                     .PreserveThreadContext();

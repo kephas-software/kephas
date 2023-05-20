@@ -11,7 +11,6 @@
 namespace Kephas.Cryptography
 {
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A hashing context.

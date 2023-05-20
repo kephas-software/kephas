@@ -27,7 +27,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A persist changes handler.
     /// </summary>
-    public class PersistChangesHandler : MessageHandlerBase<PersistChangesMessage, PersistChangesResponse>
+    public class PersistChangesHandler : IMessageHandler<PersistChangesMessage, PersistChangesResponse>
     {
         /// <summary>
         /// The data conversion service.
@@ -73,7 +73,7 @@ namespace Kephas.Data.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<PersistChangesResponse> ProcessAsync(PersistChangesMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<PersistChangesResponse> ProcessAsync(PersistChangesMessage message, IMessagingContext context, CancellationToken token)
         {
             var mappings = new List<(DtoEntityEntry dtoEntry, object entity)>();
             var response = new PersistChangesResponse();

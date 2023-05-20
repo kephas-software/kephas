@@ -79,23 +79,23 @@ namespace Kephas.Messaging
         /// <summary>
         /// Resolves the message handlers for the provided message.
         /// </summary>
-        /// <param name="message">The message.</param>
+        /// <param name="context"></param>
         /// <returns>The message handlers.</returns>
-        public virtual IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
+        public virtual IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(
+            IMessagingContext context)
             where TMessage : IMessage<TResult>
         {
-            var envelopeType = message.GetType();
-            var messageType = this.messageMatchService.GetMessageType(message);
-            var messageId = this.messageMatchService.GetMessageId(message);
-            var (_, _, _, messageHandlersFactory) = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType}/{messageId}", _ =>
+            var envelopeType = context.EnvelopeType;
+            var messageType = context.MessageType;
+            var (_, _, _, messageHandlersFactory) = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType}", _ =>
             {
-                var handlerProvider = this.handlerProviders.FirstOrDefault(s => s.CanHandle(envelopeType, messageType, messageId));
+                var handlerProvider = this.handlerProviders.FirstOrDefault(s => s.CanHandle(context));
                 if (handlerProvider == null)
                 {
                     return (envelopeType, messageType, messageId, () => null);
                 }
 
-                return (envelopeType, messageType, messageId, handlerProvider.GetHandlersFactory(this.handlerRegistry, envelopeType, messageType, messageId));
+                return (envelopeType, messageType, messageId, handlerProvider.GetHandlersFactory(this.handlerRegistry, envelopeType));
             });
 
             var handlers = messageHandlersFactory()?.OfType<IMessageHandler<TMessage, TResult>>();
@@ -106,7 +106,7 @@ namespace Kephas.Messaging
         {
             // remove all factories which match the metadata match.
             var factoriesToDelete = this.handlerFactories
-                .Where(f => this.messageMatchService.IsMatch(messageMatch, f.Value.envelopeType, f.Value.messageType, f.Value.messageId))
+                .Where(f => this.messageMatchService.IsMatch(messageMatch, f.Value.envelopeType, f.Value.messageType))
                 .ToList();
 
             foreach (var factoryToDelete in factoriesToDelete)

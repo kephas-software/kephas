@@ -20,7 +20,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="EnqueueMessage"/>.
     /// </summary>
-    public class EnqueueHandler : MessageHandlerBase<EnqueueMessage, EnqueueResponse>
+    public class EnqueueHandler : IMessageHandler<EnqueueMessage, EnqueueResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -30,7 +30,6 @@ namespace Kephas.Scheduling.Endpoints
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="logger">Optional. The logger.</param>
         public EnqueueHandler(IScheduler scheduler, ILogger<EnqueueHandler>? logger = null)
-            : base(logger)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +43,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<EnqueueResponse> ProcessAsync(EnqueueMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<EnqueueResponse> ProcessAsync(EnqueueMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ScheduledJob == null || message.ScheduledJobId == null)
             {

@@ -291,7 +291,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 }
 
                 // if the input queue notifies a reply, notify it further to the message broker.
-                if (brokeredMessage.ReplyToMessageId != null)
+                if (brokeredMessage.ReplyTo != null)
                 {
                     this.OnReplyReceived(new ReplyReceivedEventArgs { Message = brokeredMessage, Context = context });
                     return (RoutingInstruction.None, null);

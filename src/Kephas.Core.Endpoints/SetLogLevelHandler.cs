@@ -20,17 +20,20 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A set log level handler.
     /// </summary>
-    public class SetLogLevelHandler : MessageHandlerBase<SetLogLevelMessage, Response>
+    public class SetLogLevelHandler : IMessageHandler<SetLogLevelMessage, Response>
     {
         private readonly ILogManager logManager;
+        private readonly ILogger<SetLogLevelHandler> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SetLogLevelHandler"/> class.
         /// </summary>
-        /// <param name="logManager">Manager for log.</param>
-        public SetLogLevelHandler(ILogManager logManager)
+        /// <param name="logManager">The log manager.</param>
+        /// <param name="logger">The logger.</param>
+        public SetLogLevelHandler(ILogManager logManager, ILogger<SetLogLevelHandler> logger)
         {
             this.logManager = logManager;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -42,11 +45,11 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<Response> ProcessAsync(SetLogLevelMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<Response> ProcessAsync(SetLogLevelMessage message, IMessagingContext context, CancellationToken token)
         {
-            this.Logger.Warn("Changing the minimum log level from {oldLogLevel} to {logLevel} by '{user}'.", this.logManager.MinimumLevel, message.MinimumLevel, context.Identity?.Name);
+            this.logger.Warn("Changing the minimum log level from {oldLogLevel} to {logLevel} by '{user}'.", this.logManager.MinimumLevel, message.MinimumLevel, context.Identity?.Name);
             this.logManager.MinimumLevel = message.MinimumLevel;
-            this.Logger.Warn("The minimum log level changed to {logLevel} by '{user}'.", this.logManager.MinimumLevel, context.Identity?.Name);
+            this.logger.Warn("The minimum log level changed to {logLevel} by '{user}'.", this.logManager.MinimumLevel, context.Identity?.Name);
 
             return new Response
             {

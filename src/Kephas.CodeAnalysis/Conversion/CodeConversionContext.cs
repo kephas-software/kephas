@@ -13,7 +13,6 @@ namespace Kephas.CodeAnalysis.Conversion
     using System;
 
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A code conversion context.

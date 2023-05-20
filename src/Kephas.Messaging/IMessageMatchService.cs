@@ -21,6 +21,15 @@ using Kephas.Services;
 public interface IMessageMatchService
 {
     /// <summary>
+    /// Gets the envelope type.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <returns>
+    /// The envelope type.
+    /// </returns>
+    Type GetEnvelopeType(object message) => message.GetType();
+
+    /// <summary>
     /// Gets the message type.
     /// </summary>
     /// <param name="message">The message.</param>
@@ -30,25 +39,15 @@ public interface IMessageMatchService
     Type GetMessageType(object message);
 
     /// <summary>
-    /// Gets the message ID.
-    /// </summary>
-    /// <param name="message">The message.</param>
-    /// <returns>
-    /// The message ID.
-    /// </returns>
-    object? GetMessageId(object message);
-
-    /// <summary>
     /// Checks whether the message type and message ID matches the provided criteria.
     /// </summary>
     /// <param name="messageMatch">Provides the matching criteria.</param>
     /// <param name="envelopeType">Type of the envelope.</param>
     /// <param name="messageType">Type of the message.</param>
-    /// <param name="messageId">Identifier for the message.</param>
     /// <returns>
     /// True if the message type and ID matches the criteria, false if not.
     /// </returns>
-    bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object? messageId);
+    bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType);
 }
 
 /// <summary>
@@ -77,7 +76,6 @@ public static class MessageMatchServiceExtensions
         return messageMatchService.IsMatch(
             messageMatch,
             message.GetType(),
-            messageMatchService.GetMessageType(message),
-            messageMatchService.GetMessageId(message));
+            messageMatchService.GetMessageType(message));
     }
 }

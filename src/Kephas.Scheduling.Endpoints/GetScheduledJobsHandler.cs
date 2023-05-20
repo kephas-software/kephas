@@ -17,7 +17,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="GetScheduledJobsMessage"/>.
     /// </summary>
-    public class GetScheduledJobsHandler : MessageHandlerBase<GetScheduledJobsMessage, GetScheduledJobsResponse>
+    public class GetScheduledJobsHandler : IMessageHandler<GetScheduledJobsMessage, GetScheduledJobsResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -37,7 +37,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<GetScheduledJobsResponse> ProcessAsync(GetScheduledJobsMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetScheduledJobsResponse> ProcessAsync(GetScheduledJobsMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 

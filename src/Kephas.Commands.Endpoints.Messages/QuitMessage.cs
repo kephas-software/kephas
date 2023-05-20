@@ -22,7 +22,7 @@ namespace Kephas.Commands.Endpoints
     /// </summary>
     [Display(Description = "Quits the application.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class QuitMessage : IMessage<object?>
+    public class QuitMessage : IActionMessage
     {
     }
 }

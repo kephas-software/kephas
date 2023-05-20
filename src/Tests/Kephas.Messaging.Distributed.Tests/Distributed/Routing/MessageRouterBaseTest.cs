@@ -45,7 +45,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     {
         var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
         var message = Substitute.For<IBrokeredMessage>();
-        message.ReplyToMessageId.Returns("some-id");
+        message.ReplyTo.Returns("some-id");
 
         IBrokeredMessage reply = null;
         router.ReplyReceived += (s, e) => reply = e.Message;
@@ -61,7 +61,7 @@ public class MessageRouterBaseTest : MessagingTestBase
         var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), messageProcessor);
 
         var message = Substitute.For<IBrokeredMessage>();
-        message.ReplyToMessageId.Returns((string)null);
+        message.ReplyTo.Returns((string)null);
         message.Id.Returns("gigi");
         message.IsOneWay.Returns(false);
         var content = Substitute.For<IMessage>();
@@ -79,7 +79,7 @@ public class MessageRouterBaseTest : MessagingTestBase
         var brokeredReply = router.Out.Dequeue();
 
         Assert.AreSame(dispatchReply, brokeredReply.Content);
-        Assert.AreEqual("gigi", brokeredReply.ReplyToMessageId);
+        Assert.AreEqual("gigi", brokeredReply.ReplyTo);
         Assert.IsNull(receivedReply);
     }
 

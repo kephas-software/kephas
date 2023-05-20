@@ -21,7 +21,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Handler for <see cref="ConfigurationChangedSignal"/>.
     /// </summary>
-    public class ConfigurationChangedHandler : IMessageHandler<ConfigurationChangedSignal>
+    public class ConfigurationChangedHandler : IMessageHandler<IMessageEnvelope<ConfigurationChangedSignal>, object?>
     {
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
@@ -49,24 +49,25 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public async Task<object?> ProcessAsync(ConfigurationChangedSignal message, IMessagingContext context, CancellationToken token)
+        public async Task<object?> ProcessAsync(IMessageEnvelope<ConfigurationChangedSignal> message, IMessagingContext context, CancellationToken token)
         {
-            if (this.appRuntime.GetAppInstanceId() == message.SourceAppInstanceId)
+            var signal = message.GetContent();
+            if (this.appRuntime.GetAppInstanceId() == signal.SourceAppInstanceId)
             {
-                this.logger.Debug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", message.SettingsType, message.SourceAppInstanceId);
+                this.logger.Debug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
                 return new Response
                 {
-                    Message = $"Ignore {nameof(ConfigurationChangedSignal)} for {message.SettingsType}, sent from the same app instance {message.SourceAppInstanceId}.",
+                    Message = $"Ignore {nameof(ConfigurationChangedSignal)} for {signal.SettingsType}, sent from the same app instance {signal.SourceAppInstanceId}.",
                 };
             }
 
-            this.logger.Info($"Received {nameof(ConfigurationChangedSignal)} for {{settingsType}} from app instance {{app}}.", message.SettingsType, message.SourceAppInstanceId);
+            this.logger.Info($"Received {nameof(ConfigurationChangedSignal)} for {{settingsType}} from app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
 
-            await this.eventHub.PublishAsync(message, context, token).PreserveThreadContext();
+            await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
             return new Response
             {
-                Message = $"Received {nameof(ConfigurationChangedSignal)} for {message.SettingsType} from app instance {message.SourceAppInstanceId}.",
+                Message = $"Received {nameof(ConfigurationChangedSignal)} for {signal.SettingsType} from app instance {signal.SourceAppInstanceId}.",
             };
         }
     }

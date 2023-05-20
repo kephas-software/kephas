@@ -18,7 +18,6 @@ namespace Kephas.Security.Authorization
 
     using Kephas.Dynamic;
     using Kephas.Services;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>

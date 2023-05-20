@@ -17,7 +17,6 @@ namespace Kephas.Data.IO.Setup
 
     using Kephas.Data.IO.Import;
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// Base class for directory-based data installers.

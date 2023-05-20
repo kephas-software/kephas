@@ -13,7 +13,6 @@ namespace Kephas.Logging
     using System;
 
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A loggable mixin class.

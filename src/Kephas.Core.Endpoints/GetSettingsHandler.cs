@@ -21,7 +21,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A get settings handler.
     /// </summary>
-    public class GetSettingsHandler : MessageHandlerBase<GetSettingsMessage, GetSettingsResponse>
+    public class GetSettingsHandler : IMessageHandler<GetSettingsMessage, GetSettingsResponse>
     {
         private const string SettingsEnding = "Settings";
 
@@ -46,7 +46,7 @@ namespace Kephas.Core.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<GetSettingsResponse> ProcessAsync(GetSettingsMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetSettingsResponse> ProcessAsync(GetSettingsMessage message, IMessagingContext context, CancellationToken token)
         {
             if (string.IsNullOrEmpty(message.SettingsType))
             {

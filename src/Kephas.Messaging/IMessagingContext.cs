@@ -21,5 +21,20 @@ namespace Kephas.Messaging
         /// Gets the message to process.
         /// </summary>
         IMessageBase Message { get; }
+
+        /// <summary>
+        /// Gets the envelope type.
+        /// </summary>
+        Type EnvelopeType { get; }
+
+        /// <summary>
+        /// Gets the message type.
+        /// </summary>
+        Type MessageType { get; }
+
+        /// <summary>
+        /// Gets the correlation ID of this invocation.
+        /// </summary>
+        string CorrelationId { get; }
     }
 }

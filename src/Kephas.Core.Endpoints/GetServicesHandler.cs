@@ -22,7 +22,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message handler for <see cref="GetServicesMessage"/>.
     /// </summary>
-    public class GetServicesHandler : MessageHandlerBase<GetServicesMessage, GetServicesResponse>
+    public class GetServicesHandler : IMessageHandler<GetServicesMessage, GetServicesResponse>
     {
         private static readonly MethodInfo GetServicesMetadataMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
@@ -50,7 +50,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<GetServicesResponse> ProcessAsync(GetServicesMessage message, IMessagingContext context, CancellationToken token)
+        public Task<GetServicesResponse> ProcessAsync(GetServicesMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ContractType == null)
             {

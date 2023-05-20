@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Contract interface for brokered messages.
     /// </summary>
-    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelopeBase, IDynamic, INonIdentifiableMessage
+    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope<object?>, IDynamic
     {
         /// <summary>
         /// Gets the identifier.
@@ -73,9 +73,9 @@ namespace Kephas.Messaging.Distributed
         /// Gets or sets the identifier of the message to reply to.
         /// </summary>
         /// <value>
-        /// The identifier of the reply to message.
+        /// The identifier of the message to reply to.
         /// </value>
-        string? ReplyToMessageId { get; set; }
+        string? ReplyTo { get; set; }
 
         /// <summary>
         /// Gets or sets the bearer token.
@@ -117,17 +117,6 @@ namespace Kephas.Messaging.Distributed
         /// A copy of this object.
         /// </returns>
         IBrokeredMessage Clone(IEnumerable<IEndpoint>? recipients = null);
-
-        /// <summary>
-        /// Gets the content of the message.
-        /// </summary>
-        /// <remarks>
-        /// In case of a message envelope, it returns the contained message, otherwise the message itself.
-        /// </remarks>
-        /// <returns>
-        /// The message content.
-        /// </returns>
-        object IMessage.GetContent() => this.Content;
     }
 
     /// <summary>

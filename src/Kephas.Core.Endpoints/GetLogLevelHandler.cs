@@ -19,7 +19,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A get log level handler.
     /// </summary>
-    public class GetLogLevelHandler : MessageHandlerBase<GetLogLevelMessage, GetLogLevelResponse>
+    public class GetLogLevelHandler : IMessageHandler<GetLogLevelMessage, GetLogLevelResponse>
     {
         private readonly ILogManager logManager;
 
@@ -41,7 +41,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetLogLevelResponse> ProcessAsync(GetLogLevelMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetLogLevelResponse> ProcessAsync(GetLogLevelMessage message, IMessagingContext context, CancellationToken token)
         {
             return new GetLogLevelResponse
             {

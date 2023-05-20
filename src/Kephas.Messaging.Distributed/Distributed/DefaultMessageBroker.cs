@@ -94,7 +94,7 @@ namespace Kephas.Messaging.Distributed
 
             var brokeredMessage = context.BrokeredMessage;
 
-            if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
+            if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyTo))
             {
                 throw new ArgumentNullException(
                     nameof(brokeredMessage),
@@ -288,10 +288,10 @@ namespace Kephas.Messaging.Distributed
             IBrokeredMessage replyMessage,
             IContext? context = null)
         {
-            var replyToMessageId = replyMessage.ReplyToMessageId;
+            var replyToMessageId = replyMessage.ReplyTo;
             if (string.IsNullOrEmpty(replyToMessageId))
             {
-                this.Logger.Warn(Strings.DefaultMessageBroker_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyToMessageId), replyMessage);
+                this.Logger.Warn(Strings.DefaultMessageBroker_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyTo), replyMessage);
                 return;
             }
 
@@ -474,7 +474,7 @@ namespace Kephas.Messaging.Distributed
                 this.Logger.Debug("Message {message} has {recipients}; using router {router}.", brokeredMessage, recipients, router.GetType());
             }
 
-            if (context.InputRouter == router && !string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
+            if (context.InputRouter == router && !string.IsNullOrEmpty(brokeredMessage.ReplyTo))
             {
                 this.Logger.Warn(Strings.DefaultMessageBroker_ReplyToMessageNotFound_Exception, brokeredMessage);
                 return (RoutingInstruction.None, (IMessage?)null);

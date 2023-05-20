@@ -14,7 +14,6 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
     using Kephas.Data;
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A scheduling job store context.

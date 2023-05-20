@@ -10,14 +10,13 @@ namespace Kephas.Commands.Endpoints
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Message handler for <see cref="ExecuteCommandMessage"/>.
     /// </summary>
-    public class ExecuteCommandMessageHandler : MessageHandlerBase<ExecuteCommandMessage, ExecuteCommandResponse>
+    public class ExecuteCommandMessageHandler : IMessageHandler<ExecuteCommandMessage, ExecuteCommandResponse>
     {
         private readonly Lazy<ICommandProcessor> lazyCommandProcessor;
 
@@ -25,9 +24,7 @@ namespace Kephas.Commands.Endpoints
         /// Initializes a new instance of the <see cref="ExecuteCommandMessageHandler"/> class.
         /// </summary>
         /// <param name="lazyCommandProcessor">The lazy command processor.</param>
-        /// <param name="logger">Optional. The logger.</param>
-        public ExecuteCommandMessageHandler(Lazy<ICommandProcessor> lazyCommandProcessor, ILogger<ExecuteCommandMessageHandler>? logger = null)
-            : base(logger)
+        public ExecuteCommandMessageHandler(Lazy<ICommandProcessor> lazyCommandProcessor)
         {
             this.lazyCommandProcessor = lazyCommandProcessor;
         }
@@ -41,7 +38,7 @@ namespace Kephas.Commands.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ExecuteCommandResponse> ProcessAsync(
+        public async Task<ExecuteCommandResponse> ProcessAsync(
             ExecuteCommandMessage message,
             IMessagingContext context,
             CancellationToken token)

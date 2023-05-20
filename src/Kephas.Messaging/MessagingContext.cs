@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+using Kephas.Data;
+using Kephas.Services;
+
 namespace Kephas.Messaging
 {
-    using System;
-
-    using Kephas.Services;
-    using Kephas.Services;
-
     /// <summary>
     /// The messaging context.
     /// </summary>
@@ -24,26 +23,30 @@ namespace Kephas.Messaging
         /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
         /// <param name="parentContext">The parent context.</param>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="message">Optional. The message.</param>
         public MessagingContext(
             IContext parentContext,
+            IMessageMatchService messageMatchService,
             IMessageBase message)
             : base(parentContext ?? throw new ArgumentNullException(nameof(parentContext)), merge: true)
         {
-            this.Message = message;
+            InitializeContext(message, messageMatchService);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
         /// <param name="serviceProvider">The injector.</param>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="message">Optional. The message.</param>
         public MessagingContext(
             IServiceProvider serviceProvider,
+            IMessageMatchService messageMatchService,
             IMessageBase message)
             : base(serviceProvider)
         {
-            this.Message = message;
+            InitializeContext(message, messageMatchService);
         }
 
         /// <summary>
@@ -52,6 +55,35 @@ namespace Kephas.Messaging
         /// <value>
         /// The message.
         /// </value>
-        public IMessageBase Message { get; }
+        public IMessageBase Message { get; private set; }
+
+        /// <summary>
+        /// Gets the envelope type.
+        /// </summary>
+        public Type EnvelopeType { get; private set; }
+
+        /// <summary>
+        /// Gets the message type.
+        /// </summary>
+        public Type MessageType { get; private set; }
+
+        /// <summary>
+        /// Gets the correlation ID of this invocation.
+        /// </summary>
+        public string CorrelationId { get; private set; }
+
+#if NET6_0_OR_GREATER        
+        [MemberNotNull(nameof(EnvelopeType))]
+        [MemberNotNull(nameof(MessageType))]
+        [MemberNotNull(nameof(Message))]
+        [MemberNotNull(nameof(CorrelationId))]
+#endif
+        private void InitializeContext(IMessageBase message, IMessageMatchService matchService)
+        {
+            Message = message ?? throw new ArgumentNullException(nameof(message));
+            EnvelopeType = matchService.GetEnvelopeType(message);
+            MessageType = matchService.GetMessageType(message);
+            CorrelationId = (message as ICorrelated)?.CorrelationId ?? Guid.NewGuid().ToString("N");
+        }
     }
 }

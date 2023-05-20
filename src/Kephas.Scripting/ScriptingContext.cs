@@ -14,7 +14,6 @@ namespace Kephas.Scripting
 
     using Kephas.Dynamic;
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A scripting context.

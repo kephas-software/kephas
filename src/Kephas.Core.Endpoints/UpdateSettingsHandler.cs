@@ -27,7 +27,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// An update settings handler.
     /// </summary>
-    public class UpdateSettingsHandler : MessageHandlerBase<UpdateSettingsMessage, Response>
+    public class UpdateSettingsHandler : IMessageHandler<UpdateSettingsMessage, Response>
     {
         private readonly IServiceProvider serviceProvider;
         private readonly ITypeResolver typeResolver;
@@ -39,13 +39,10 @@ namespace Kephas.Core.Endpoints
         /// <param name="serviceProvider">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="logger">Optional. The logger.</param>
         public UpdateSettingsHandler(
             IServiceProvider serviceProvider,
             ITypeResolver typeResolver,
-            ISerializationService serializationService,
-            ILogger<UpdateSettingsHandler>? logger = null)
-            : base(logger)
+            ISerializationService serializationService)
         {
             this.serviceProvider = serviceProvider;
             this.typeResolver = typeResolver;
@@ -59,7 +56,7 @@ namespace Kephas.Core.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<Response> ProcessAsync(UpdateSettingsMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<Response> ProcessAsync(UpdateSettingsMessage message, IMessagingContext context, CancellationToken token)
         {
             if (string.IsNullOrEmpty(message.SettingsType) && message.Settings is null or string)
             {

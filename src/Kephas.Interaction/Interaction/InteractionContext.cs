@@ -10,7 +10,6 @@ namespace Kephas.Interaction
     using System;
 
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// Context for the interaction.

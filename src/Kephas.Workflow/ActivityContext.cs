@@ -14,7 +14,6 @@ namespace Kephas.Workflow
 
     using Kephas.Dynamic;
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// An activity context.

@@ -45,32 +45,25 @@ namespace Kephas.Messaging.HandlerProviders
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
         /// </summary>
-        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if the message does not implement <see cref="IMessage"/>.</param>
-        /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageId">The ID of the message.</param>
+        /// <param name="context"></param>
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public abstract bool CanHandle(Type envelopeType, Type messageType, object? messageId);
+        public abstract bool CanHandle(IMessagingContext context);
 
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
         /// <param name="handlerFactories">The handler factories.</param>
-        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if
-        ///                            the message does not implement <see cref="IMessage"/>.</param>
-        /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageId">The ID of the message.</param>
+        /// <param name="context"></param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
         public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(
             IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories,
-            Type envelopeType,
-            Type messageType,
-            object? messageId)
+            IMessagingContext context)
         {
-            var orderedHandlers = this.GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
+            var orderedHandlers = this.GetOrderedMessageHandlerFactories(handlerFactories, context, messageType, messageId);
             return () => orderedHandlers.Select(f => f.CreateExportedValue()).ToList();
         }
 
@@ -93,7 +86,7 @@ namespace Kephas.Messaging.HandlerProviders
                 object messageId)
         {
             var orderedFactories = handlerFactories
-                .Where(f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, envelopeType, messageType, messageId))
+                .Where(f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, envelopeType, messageType))
                 .Order()
                 .ToList();
             return orderedFactories;

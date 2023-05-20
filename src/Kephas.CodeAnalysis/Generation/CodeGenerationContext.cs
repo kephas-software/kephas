@@ -13,7 +13,6 @@ namespace Kephas.CodeAnalysis.Generation
     using System;
 
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// A code generation context.

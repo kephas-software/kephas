@@ -13,7 +13,6 @@ namespace Kephas.Model.AttributedModel
     using System;
 
     using Kephas.Services;
-    using Kephas.Services;
 
     /// <summary>
     /// Attribute for indicating that classifiers or members override their base. This class cannot be inherited.

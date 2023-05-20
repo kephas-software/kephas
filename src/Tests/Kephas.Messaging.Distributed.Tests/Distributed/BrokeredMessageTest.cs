@@ -76,7 +76,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content_null_when_reply()
         {
             var message = new BrokeredMessage();
-            message.ReplyToMessageId = "hello";
+            message.ReplyTo = "hello";
             message.Message = null;
 
             Assert.IsNull(message.Message);
@@ -101,7 +101,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 IsOneWay = true,
                 Priority = Priority.High,
                 Recipients = new List<IEndpoint> { Substitute.For<IEndpoint>() },
-                ReplyToMessageId = "345",
+                ReplyTo = "345",
                 Sender = Substitute.For<IEndpoint>(),
             };
             var clone = message.Clone();
@@ -113,7 +113,7 @@ namespace Kephas.Messaging.Tests.Distributed
             Assert.AreEqual(message.Priority, clone.Priority);
             Assert.AreNotSame(message.Recipients, clone.Recipients);
             CollectionAssert.AreEqual(message.Recipients, clone.Recipients);
-            Assert.AreEqual(message.ReplyToMessageId, clone.ReplyToMessageId);
+            Assert.AreEqual(message.ReplyTo, clone.ReplyTo);
             Assert.AreSame(message.Sender, clone.Sender);
         }
     }

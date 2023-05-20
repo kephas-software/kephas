@@ -20,7 +20,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Handler for the <see cref="CancelTriggerMessage"/>.
     /// </summary>
-    public class CancelTriggerHandler : MessageHandlerBase<CancelTriggerMessage, CancelTriggerResponse>
+    public class CancelTriggerHandler : IMessageHandler<CancelTriggerMessage, CancelTriggerResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -30,7 +30,6 @@ namespace Kephas.Scheduling.Endpoints
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="logger">Optional. The logger.</param>
         public CancelTriggerHandler(IScheduler scheduler, ILogger<CancelTriggerHandler>? logger = null)
-            : base(logger)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +43,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<CancelTriggerResponse> ProcessAsync(CancelTriggerMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<CancelTriggerResponse> ProcessAsync(CancelTriggerMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.Trigger == null || message.TriggerId == null)
             {

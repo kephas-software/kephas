@@ -20,7 +20,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Handler for the <see cref="GetCompletedJobsMessage"/>.
     /// </summary>
-    public class GetCompletedJobsHandler : MessageHandlerBase<GetCompletedJobsMessage, GetCompletedJobsResponse>
+    public class GetCompletedJobsHandler : IMessageHandler<GetCompletedJobsMessage, GetCompletedJobsResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -42,7 +42,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetCompletedJobsResponse> ProcessAsync(GetCompletedJobsMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetCompletedJobsResponse> ProcessAsync(GetCompletedJobsMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 

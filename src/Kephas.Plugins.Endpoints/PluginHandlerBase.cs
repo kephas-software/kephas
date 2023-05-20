@@ -23,7 +23,7 @@ namespace Kephas.Plugins.Endpoints
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
-    public abstract class PluginHandlerBase<TMessage, TResponse> : MessageHandlerBase<TMessage, TResponse>
+    public abstract class PluginHandlerBase<TMessage, TResponse> : IMessageHandler<TMessage, TResponse>
         where TMessage : class, IMessage<TResponse>
         where TResponse : class
     {
@@ -37,7 +37,6 @@ namespace Kephas.Plugins.Endpoints
             IPluginManager pluginManager,
             IEventHub eventHub,
             ILogger<PluginHandlerBase<TMessage, TResponse>>? logger = null)
-            : base(logger)
         {
             this.PluginManager = pluginManager;
             this.EventHub = eventHub;
@@ -65,5 +64,16 @@ namespace Kephas.Plugins.Endpoints
             await this.EventHub.PublishAsync(setupEvent, context, cancellationToken).PreserveThreadContext();
             return setupEvent.SetupEnabled;
         }
+
+        /// <summary>
+        /// Processes the provided message asynchronously and returns a response promise.
+        /// </summary>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        public abstract Task<TResponse> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
     }
 }

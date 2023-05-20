@@ -23,7 +23,7 @@ namespace Kephas.Plugins.Endpoints
     /// A get installed plugins message handler.
     /// </summary>
     public class
-        GetInstalledPluginsHandler : MessageHandlerBase<GetInstalledPluginsMessage, GetInstalledPluginsResponse>
+        GetInstalledPluginsHandler : IMessageHandler<GetInstalledPluginsMessage, GetInstalledPluginsResponse>
     {
         private readonly IPluginManager pluginManager;
         private readonly ILicensingManager licensingManager;
@@ -48,7 +48,7 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetInstalledPluginsResponse> ProcessAsync(
+        public async Task<GetInstalledPluginsResponse> ProcessAsync(
             GetInstalledPluginsMessage message,
             IMessagingContext context,
             CancellationToken token)

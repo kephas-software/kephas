@@ -102,7 +102,7 @@ namespace Kephas.Messaging.Distributed
             get => this.content;
             set
             {
-                if (this.ReplyToMessageId == null && value == null)
+                if (this.ReplyTo == null && value == null)
                 {
                     throw new ArgumentNullException(
                         nameof(value),
@@ -158,7 +158,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the reply to message.
         /// </value>
-        public string? ReplyToMessageId { get; set; }
+        public string? ReplyTo { get; set; }
 
         /// <summary>
         /// Gets or sets the bearer token.
@@ -217,7 +217,7 @@ namespace Kephas.Messaging.Distributed
             var contentType = this.Message?.GetType().Name;
             var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
             var oneway = this.IsOneWay ? ", one way" : string.Empty;
-            var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $", reply to #{this.ReplyToMessageId}";
+            var reply = string.IsNullOrEmpty(this.ReplyTo) ? string.Empty : $", reply to #{this.ReplyTo}";
             return $"{this.GetType().Name} (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}{oneway}{reply}, {this.Priority} priority";
         }
 

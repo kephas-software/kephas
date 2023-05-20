@@ -24,7 +24,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Handler for <see cref="GetSettingsTypesMessage"/>.
     /// </summary>
-    public class GetSettingsTypesHandler : MessageHandlerBase<GetSettingsTypesMessage, GetSettingsTypesResponse>
+    public class GetSettingsTypesHandler : IMessageHandler<GetSettingsTypesMessage, GetSettingsTypesResponse>
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
@@ -49,7 +49,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetSettingsTypesResponse> ProcessAsync(GetSettingsTypesMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetSettingsTypesResponse> ProcessAsync(GetSettingsTypesMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 

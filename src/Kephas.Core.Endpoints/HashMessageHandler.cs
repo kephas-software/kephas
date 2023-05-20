@@ -21,7 +21,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A hash message handler.
     /// </summary>
-    public class HashMessageHandler : MessageHandlerBase<HashMessage, HashResponse>
+    public class HashMessageHandler : IMessageHandler<HashMessage, HashResponse>
     {
         /// <summary>
         /// The hashing service.
@@ -44,7 +44,7 @@ namespace Kephas.Core.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<HashResponse> ProcessAsync(HashMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<HashResponse> ProcessAsync(HashMessage message, IMessagingContext context, CancellationToken token)
         {
             if (string.IsNullOrEmpty(message.Value)) throw new ArgumentException("Value must not be null or empty.", nameof(message.Value));
 
