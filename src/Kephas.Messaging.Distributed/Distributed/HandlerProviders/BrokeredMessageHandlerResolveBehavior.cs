@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Interaction;
+
 namespace Kephas.Messaging.Distributed.HandlerProviders
 {
     using System;
@@ -21,17 +23,8 @@ namespace Kephas.Messaging.Distributed.HandlerProviders
     /// A brokered message handler provider.
     /// </summary>
     [ProcessingPriority(Priority.Low)]
-    public class BrokeredMessageHandlerProvider : SingleMessageHandlerProviderBase
+    public class BrokeredMessageHandlerResolveBehavior : IMessageHandlerResolveBehavior
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BrokeredMessageHandlerProvider"/> class.
-        /// </summary>
-        /// <param name="messageMatchService">The message match service.</param>
-        public BrokeredMessageHandlerProvider(IMessageMatchService messageMatchService)
-            : base(messageMatchService)
-        {
-        }
-
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
         /// </summary>
@@ -39,9 +32,28 @@ namespace Kephas.Messaging.Distributed.HandlerProviders
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public override bool CanHandle(IMessagingContext context)
+        public bool CanHandle(IMessagingContext context)
         {
-            return typeof(IBrokeredMessage).IsAssignableFrom(messageType);
+            return typeof(IBrokeredMessage).IsAssignableFrom(context.MessageType);
+        }
+
+        /// <summary>
+        /// Invokes the behavior.
+        /// </summary>
+        /// <param name="next">The pipeline continuation delegate.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="args">The operation arguments.</param>
+        /// <param name="context">The operation context.</param>
+        /// <returns>The invocation result.</returns>
+        public object? Invoke(Func<object?> next, IMessageHandlerResolver target, IMessagingContext args, IContext context)
+        {
+            var handlers = next() as IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>>;
+            if (CanHandle(args))
+            {
+                throw new InterruptSignal(handlers?.Take(1));
+            }
+
+            return handlers;
         }
     }
 }

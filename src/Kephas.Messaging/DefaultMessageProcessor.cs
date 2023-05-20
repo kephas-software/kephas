@@ -21,23 +21,23 @@ namespace Kephas.Messaging;
 [OverridePriority(Priority.Low)]
 public class DefaultMessageProcessor : Loggable, IMessageProcessor
 {
-    private readonly IMessageHandlerRegistry handlerRegistry;
+    private readonly IMessageHandlerResolver handlerResolver;
     private readonly IServiceProvider serviceProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
     /// </summary>
     /// <param name="injectableFactory">The injectable factory.</param>
-    /// <param name="handlerRegistry">The handler registry.</param>
+    /// <param name="handlerResolver">The handler registry.</param>
     /// <param name="serviceProvider">The service provider.</param>
     public DefaultMessageProcessor(
         IInjectableFactory injectableFactory,
-        IMessageHandlerRegistry handlerRegistry,
+        IMessageHandlerResolver handlerResolver,
         IServiceProvider serviceProvider)
         : base(injectableFactory)
     {
         this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
-        this.handlerRegistry = handlerRegistry ?? throw new ArgumentNullException(nameof(handlerRegistry));
+        this.handlerResolver = handlerResolver ?? throw new ArgumentNullException(nameof(handlerResolver));
         this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
@@ -71,11 +71,11 @@ public class DefaultMessageProcessor : Loggable, IMessageProcessor
         var exceptions = new List<Exception>();
         TResponse result = default!;
         using var context = this.CreateProcessingContext(message, optionsConfig);
-        foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers<TMessage, TResponse>(context))
+        foreach (var messageHandler in this.handlerResolver.Resolve<TMessage, TResponse>(context))
         {
             try
             {
-                var pipeline = this.serviceProvider.GetRequiredService<IPipeline<IMessageProcessor, TMessage, TResponse>>();
+                var pipeline = this.serviceProvider.GetRequiredService<IAsyncPipeline<IMessageProcessor, TMessage, TResponse>>();
                 result = await pipeline.ProcessAsync(this, message, context, () => messageHandler.ProcessAsync(message, context, token), token)
                     .PreserveThreadContext();
             }

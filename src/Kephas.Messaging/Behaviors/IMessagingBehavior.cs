@@ -17,7 +17,7 @@ namespace Kephas.Messaging.Behaviors;
 /// <summary>
 /// Pipeline behavior for message processing interception.
 /// </summary>
-public interface IMessagingBehavior<in TMessage, out TResult> : IPipelineBehavior<IMessageProcessor, TMessage, TResult>
+public interface IMessagingBehavior<in TMessage, out TResult> : IAsyncPipelineBehavior<IMessageProcessor, TMessage, TResult>
     where TMessage : IMessage<TResult>
 {
     /// <summary>
@@ -54,7 +54,7 @@ public interface IMessagingBehavior<in TMessage, out TResult> : IPipelineBehavio
     /// <param name="context">The operation context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task yielding the invocation result.</returns>
-    async Task<object?> IPipelineBehavior<IMessageProcessor, TMessage, TResult>.InvokeAsync(
+    async Task<object?> IAsyncPipelineBehavior<IMessageProcessor, TMessage, TResult>.InvokeAsync(
         Func<Task<object?>> next,
         IMessageProcessor target,
         TMessage args,

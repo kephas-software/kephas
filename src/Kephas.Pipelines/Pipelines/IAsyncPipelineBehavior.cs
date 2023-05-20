@@ -10,20 +10,20 @@ using Kephas.Services;
 namespace Kephas.Pipelines;
 
 /// <summary>
-/// Base interface for pipeline behaviors.
+/// Base interface for asynchronous pipeline behaviors.
 /// </summary>
-public interface IPipelineBehavior
+public interface IAsyncPipelineBehavior
 {
 }
 
 /// <summary>
-/// Contract for pipeline behaviors.
+/// Contract for asynchronous pipeline behaviors.
 /// </summary>
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
-[AppServiceContract(AllowMultiple = true, ContractType = typeof(IPipelineBehavior))]
-public interface IPipelineBehavior<in TTarget, in TOperationArgs, out TResult> : IPipelineBehavior
+[AppServiceContract(AllowMultiple = true, ContractType = typeof(IAsyncPipelineBehavior))]
+public interface IAsyncPipelineBehavior<in TTarget, in TOperationArgs, out TResult> : IAsyncPipelineBehavior
 {
     /// <summary>
     /// Invokes the behavior.
@@ -37,10 +37,12 @@ public interface IPipelineBehavior<in TTarget, in TOperationArgs, out TResult> :
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
     /// <param name="context">The operation context.</param>
-    /// <returns>The invocation result.</returns>
-    object? Invoke(
-        Func<object?> next,
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task yielding the invocation result.</returns>
+    Task<object?> InvokeAsync(
+        Func<Task<object?>> next,
         TTarget target,
         TOperationArgs args,
-        IContext context);
+        IContext context,
+        CancellationToken cancellationToken);
 }

@@ -13,28 +13,28 @@ using Kephas.Threading.Tasks;
 namespace Kephas.Pipelines;
 
 /// <summary>
-/// Default implementation of a <see cref="IPipeline{TTarget,TOperationArgs,TResult}"/>.
+/// Default implementation of a <see cref="IAsyncPipeline{TTarget,TOperationArgs,TResult}"/>.
 /// </summary>
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
 [OverridePriority(Priority.Low)]
-public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOperationArgs, TResult>
+public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TTarget, TOperationArgs, TResult>
 {
     private readonly IExportFactory<PipelineContext> contextFactory;
-    private readonly ILazyEnumerable<IPipelineBehavior, PipelineBehaviorMetadata>? behaviors;
-    private IReadOnlyList<IPipelineBehavior<TTarget, TOperationArgs, TResult>>? cachedPipelineBehaviors;
+    private readonly ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors;
+    private IReadOnlyList<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>? cachedPipelineBehaviors;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Pipeline{TTarget,TOperationArgs,TResult}"/> class.
+    /// Initializes a new instance of the <see cref="AsyncPipeline{TTarget,TOperationArgs,TResult}"/> class.
     /// </summary>
     /// <param name="contextFactory">The context factory.</param>
     /// <param name="behaviors">Optional. The behaviors.</param>
     /// <param name="logger">Optional. The logger.</param>
-    public Pipeline(
+    public AsyncPipeline(
         IExportFactory<PipelineContext> contextFactory,
-        ILazyEnumerable<IPipelineBehavior, PipelineBehaviorMetadata>? behaviors = null,
-        ILogger<Pipeline<TTarget, TOperationArgs, TResult>>? logger = null)
+        ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors = null,
+        ILogger<AsyncPipeline<TTarget, TOperationArgs, TResult>>? logger = null)
     {
         this.contextFactory = contextFactory;
         this.behaviors = behaviors;
@@ -44,7 +44,8 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
     /// <summary>
     /// Gets the logger.
     /// </summary>
-    protected ILogger<Pipeline<TTarget, TOperationArgs, TResult>>? Logger { get; }
+    protected ILogger<AsyncPipeline<TTarget, TOperationArgs, TResult>>? Logger { get; }
+
 
     /// <summary>
     /// Processes the pipeline, invoking the behaviors in their priority order.
@@ -53,12 +54,14 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
     /// <param name="args">The operation arguments.</param>
     /// <param name="context">An optional context for the operation. If not context is provided, one will be created for the scope of the operation.</param>
     /// <param name="operation">The operation to be executed.</param>
-    /// <returns>The execution result.</returns>
-    public TResult Process(
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>A task yielding the result.</returns>
+    public Task<TResult> ProcessAsync(
         TTarget target,
         TOperationArgs args,
         IContext? context,
-        Func<TResult> operation)
+        Func<Task<TResult>> operation,
+        CancellationToken cancellationToken = default)
     {
         var pipelineBehaviors = this.GetPipelineBehaviors();
         var ownsContext = context is null;
@@ -85,8 +88,8 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
             }
 
             using var enumerator = pipelineBehaviors.GetEnumerator();
-            Func<TResult>? next = null;
-            next = () =>
+            Func<Task<TResult>>? next = null;
+            next = async () =>
             {
                 var hasBehavior = enumerator.MoveNext();
                 var behavior = hasBehavior ? enumerator.Current : null;
@@ -106,9 +109,9 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
 
                 var result = hasBehavior
                     ? behavior is not null
-                        ? behavior.Invoke(ToFuncOfObject(next!), target, args, context)
+                        ? await behavior.InvokeAsync(ToFuncOfTaskOfObject(next!), target, args, context, cancellationToken).PreserveThreadContext()
                         : throw new NullReferenceException(PipelinesStrings.Pipeline_ProcessAsync_NullBehavior_Exception)
-                    : operation();
+                    : await operation().PreserveThreadContext();
 
                 if (this.Logger.IsDebugEnabled())
                 {
@@ -142,20 +145,20 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
     /// Gets the pipeline behaviors.
     /// </summary>
     /// <returns></returns>
-    protected virtual IReadOnlyList<IPipelineBehavior<TTarget, TOperationArgs, TResult>>? GetPipelineBehaviors() =>
+    protected virtual IReadOnlyList<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>? GetPipelineBehaviors() =>
         this.cachedPipelineBehaviors ??= this.behaviors?
             .SelectServices(b =>
                 (b.Metadata.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
                 (b.Metadata.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
                 (b.Metadata.ResultType is null || typeof(TResult).IsAssignableFrom(b.Metadata.ResultType)))   // contravariant
-            .Cast<IPipelineBehavior<TTarget, TOperationArgs, TResult>>()
+            .Cast<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>()
             .ToList();
 
-    private static Func<object?> ToFuncOfObject(Func<TResult> func)
+    private static Func<Task<object?>> ToFuncOfTaskOfObject(Func<Task<TResult>> func)
     {
-        return () =>
+        return async () =>
         {
-            var result = func();
+            var result = await func().PreserveThreadContext();
             return result;
         };
     }

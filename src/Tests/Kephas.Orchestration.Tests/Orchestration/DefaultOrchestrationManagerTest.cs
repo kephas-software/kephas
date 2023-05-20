@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Messaging.Messages;
+
 namespace Kephas.Tests.Orchestration
 {
     using System;
@@ -116,7 +118,7 @@ namespace Kephas.Tests.Orchestration
                 .Returns(ci =>
                 {
                     messages.Add(ci.Arg<object>());
-                    return (IMessage)null;
+                    return (Response?)null;
                 });
 
             await manager.InitializeAsync(appContext);

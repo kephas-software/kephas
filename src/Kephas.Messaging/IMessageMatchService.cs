@@ -8,11 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging;
-
-using System;
-
 using Kephas.Services;
+
+namespace Kephas.Messaging;
 
 /// <summary>
 /// Interface for message match service.
@@ -42,40 +40,9 @@ public interface IMessageMatchService
     /// Checks whether the message type and message ID matches the provided criteria.
     /// </summary>
     /// <param name="messageMatch">Provides the matching criteria.</param>
-    /// <param name="envelopeType">Type of the envelope.</param>
-    /// <param name="messageType">Type of the message.</param>
+    /// <param name="context">The messaging context.</param>
     /// <returns>
     /// True if the message type and ID matches the criteria, false if not.
     /// </returns>
-    bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType);
-}
-
-/// <summary>
-/// A message match service extensions.
-/// </summary>
-public static class MessageMatchServiceExtensions
-{
-    /// <summary>
-    /// Checks whether the message matches the provided criteria.
-    /// </summary>
-    /// <param name="messageMatchService">The message match service to act on.</param>
-    /// <param name="messageMatch">Provides the matching criteria.</param>
-    /// <param name="message">The message to check.</param>
-    /// <returns>
-    /// True if the message matches the criteria, false if not.
-    /// </returns>
-    public static bool IsMatch(
-        this IMessageMatchService messageMatchService,
-        IMessageMatch messageMatch,
-        IMessageBase message)
-    {
-        _ = messageMatchService ?? throw new ArgumentNullException(nameof(messageMatchService));
-        _ = messageMatch ?? throw new ArgumentNullException(nameof(messageMatch));
-        _ = message ?? throw new ArgumentNullException(nameof(message));
-
-        return messageMatchService.IsMatch(
-            messageMatch,
-            message.GetType(),
-            messageMatchService.GetMessageType(message));
-    }
+    bool IsMatch(IMessageMatch messageMatch, IMessagingContext context);
 }

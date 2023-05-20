@@ -131,7 +131,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         {
             var messageProcessor = Substitute.For<IMessageProcessor>();
             messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => (IMessage)null ?? throw new MissingHandlerException("bad"));
+                .Returns(ci => (Response?)null ?? throw new MissingHandlerException("bad"));
             var operationInfo = new MessageOperationInfo(
                     this.typeRegistry,
                     this.typeRegistry.GetTypeInfo(typeof(NullableParamMessage)),
@@ -140,17 +140,17 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             Assert.ThrowsAsync<MissingHandlerException>(() => operationInfo.InvokeAsync(null, new object?[] { new Expando() }));
         }
 
-        public class NullableParamMessage : IMessage
+        public class NullableParamMessage : IMessage<Response>
         {
             public DateTime? StartTime { get; set; }
         }
 
-        public class EnumMessage : IMessage
+        public class EnumMessage : IMessage<object?>
         {
             public LogLevel? LogLevel { get; set; }
         }
 
-        public class UpdateMessage : IMessage
+        public class UpdateMessage : IActionMessage
         {
             [Display(ShortName = "pre", Description = "Includes prerelease.")]
             public bool IncludePrerelease { get; set; }

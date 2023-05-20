@@ -17,10 +17,13 @@ using Kephas.Threading.Tasks;
 namespace Kephas.Messaging;
 
 /// <summary>
-/// Interface for message handler registry.
+/// Singleton service contract for registering message handlers.
 /// </summary>
-[AppServiceContract]
-public interface IMessageHandlerRegistry
+/// <remarks>
+/// The registry must be singleton, so that once registered, a handler is available everywhere.
+/// </remarks>
+[SingletonAppServiceContract]
+public interface IMessageHandlerRegistry : IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
 {
     private static readonly MethodInfo RegisterFuncHandlerMethod = ReflectionHelper.GetGenericMethodOf(_ =>
         ((IMessageHandlerRegistry)null!).RegisterFuncHandler<IMessage<object?>, object?>(null!));
@@ -29,13 +32,23 @@ public interface IMessageHandlerRegistry
     /// Registers the message handler factory.
     /// </summary>
     /// <param name="handlerFactory">The handler factory.</param>
+    /// <returns>
+    /// This message handler registry.
+    /// </returns>
+    public IMessageHandlerRegistry RegisterHandler(IExportFactory<IMessageHandler, MessageHandlerMetadata> handlerFactory);
+    
+    /// <summary>
+    /// Registers the message handler factory.
+    /// </summary>
+    /// <param name="handler">The handler.</param>
     /// <param name="metadata">The handler metadata.</param>
     /// <returns>
     /// This message handler registry.
     /// </returns>
     public IMessageHandlerRegistry RegisterHandler(
-        Func<IServiceProvider, IMessageHandler> handlerFactory,
-        MessageHandlerMetadata metadata);
+        IMessageHandler handler,
+        MessageHandlerMetadata metadata) =>
+        RegisterHandler(new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, metadata));
 
     /// <summary>
     /// Registers the handler.
@@ -148,20 +161,12 @@ public interface IMessageHandlerRegistry
             return Task.FromResult<object?>(null);
         });
 
-    /// <summary>
-    /// Resolves the message handlers for the provided message.
-    /// </summary>
-    /// <param name="context"></param>
-    /// <returns>The matching message handlers.</returns>
-    IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(IMessagingContext context)
-        where TMessage : IMessage<TResult>;
-
     private IMessageHandlerRegistry RegisterFuncHandler<TMessage, TResponse>(
         Func<TMessage, IMessagingContext, CancellationToken, Task<TResponse>> handlerFunction)
         where TMessage : IMessage<TResponse>
     {
         return RegisterHandler(
-            _ => new FuncMessageHandler<TMessage, TResponse>(handlerFunction),
+            new FuncMessageHandler<TMessage, TResponse>(handlerFunction),
             new MessageHandlerMetadata(typeof(TMessage)));
     }
 }

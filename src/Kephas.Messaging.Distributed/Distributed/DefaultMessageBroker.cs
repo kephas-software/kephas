@@ -477,7 +477,7 @@ namespace Kephas.Messaging.Distributed
             if (context.InputRouter == router && !string.IsNullOrEmpty(brokeredMessage.ReplyTo))
             {
                 this.Logger.Warn(Strings.DefaultMessageBroker_ReplyToMessageNotFound_Exception, brokeredMessage);
-                return (RoutingInstruction.None, (IMessage?)null);
+                return (RoutingInstruction.None, (IMessageBase?)null);
             }
 
             return await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();

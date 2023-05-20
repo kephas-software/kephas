@@ -26,7 +26,7 @@ namespace Kephas.Messaging.Distributed
     public record BrokeredMessage : IBrokeredMessage
     {
         private string id;
-        private IMessage? content;
+        private IMessageBase? content;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessage"/> class.
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
-            this.Message = message.ToMessage();
+            this.Content = message.ToMessage();
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message to send.
         /// </value>
-        public IMessage? Message
+        public IMessageBase? Content
         {
             get => this.content;
             set
@@ -110,7 +110,7 @@ namespace Kephas.Messaging.Distributed
                             .FormatWith(this, nameof(DispatchingContextExtensions.ReplyTo)));
                 }
 
-                if (value is IMessageEnvelope envelope && envelope.GetContent() is Delegate)
+                if (value is IMessageEnvelopeBase envelope && envelope.GetContent() is Delegate)
                 {
                     throw new ArgumentException(Strings.BrokeredMessage_ContentCannotBeDelegate_Exception.FormatWith(value), nameof(value));
                 }
@@ -214,7 +214,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override string ToString()
         {
-            var contentType = this.Message?.GetType().Name;
+            var contentType = this.Content?.GetType().Name;
             var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
             var oneway = this.IsOneWay ? ", one way" : string.Empty;
             var reply = string.IsNullOrEmpty(this.ReplyTo) ? string.Empty : $", reply to #{this.ReplyTo}";
@@ -244,7 +244,7 @@ namespace Kephas.Messaging.Distributed
             return this with
             {
                 Recipients = recipients ?? this.Recipients?.ToArray(),
-                content = this.Message,             // write directly into the content field, to avoid validations
+                content = this.Content,             // write directly into the content field, to avoid validations
                 Properties = this.Properties == null ? null : new Dictionary<string, object?>(this.Properties),
             };
         }

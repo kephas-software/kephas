@@ -430,9 +430,9 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
             new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: Priority.Low))
         };
         var processor = this.CreateMessageProcessor(
-            handlerProviderFactories: new List<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>>
+            handlerProviderFactories: new List<IExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>>
             {
-                new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new EventMessageHandlerProvider(mms), new AppServiceMetadata())
+                new ExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>(() => new EventMessageHandlerResolveBehavior(mms), new AppServiceMetadata())
             },
             handlerFactories: handlerFactories);
         await processor.ProcessAsync(message, null, default);
@@ -457,10 +457,10 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
         };
 
         var processor = this.CreateMessageProcessor(
-            handlerProviderFactories: new List<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>>
+            handlerProviderFactories: new List<IExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>>
             {
-                new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata(processingPriority: Priority.Low)),
-                new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new EventMessageHandlerProvider(mms), new AppServiceMetadata(processingPriority: Priority.High))
+                new ExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>(() => new DefaultMessageHandlerResolveBehavior(mms), new AppServiceMetadata(processingPriority: Priority.Low)),
+                new ExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>(() => new EventMessageHandlerResolveBehavior(mms), new AppServiceMetadata(processingPriority: Priority.High))
             },
             handlerFactories: handlerFactories);
 
@@ -556,7 +556,7 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
 
     private TestMessageProcessor CreateMessageProcessor(
         IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories = null,
-        IList<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>> handlerProviderFactories = null,
+        IList<IExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>> handlerProviderFactories = null,
         IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
     {
         var mms = new DefaultMessageMatchService();
@@ -564,9 +564,9 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
                             ?? new List<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>>();
 
         handlerProviderFactories = handlerProviderFactories
-                                   ?? new List<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>>
+                                   ?? new List<IExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>>
                                    {
-                                       new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata()),
+                                       new ExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>(() => new DefaultMessageHandlerResolveBehavior(mms), new AppServiceMetadata()),
                                    };
         handlerFactories = handlerFactories
                            ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
@@ -625,9 +625,9 @@ public class TestMessageProcessor : DefaultMessageProcessor
     public Func<IMessage, Action<IMessagingContext>, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
     public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageMatchService messageMatchService,
-        IMessageHandlerRegistry handlerRegistry,
+        IMessageHandlerRegistry handlerResolver,
         IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-        : base(injectableFactory, handlerRegistry, behaviorFactories)
+        : base(injectableFactory, handlerResolver, behaviorFactories)
     {
     }
 

@@ -35,7 +35,7 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
             registry.RegisterHandler(handler, new MessageHandlerMetadata(typeof(string)));
 
-            var handlers = registry.ResolveMessageHandlers(new MessageEnvelope { Content = "hello" });
+            var handlers = registry.Resolve(new MessageEnvelope { Content = "hello" });
             Assert.AreSame(handler, handlers.Single());
         }
 
@@ -50,19 +50,19 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
             registry.RegisterHandler(handler, new MessageHandlerMetadata(typeof(string)));
 
-            var handlers = registry.ResolveMessageHandlers(new MessageEnvelope { Content = "hello" });
+            var handlers = registry.Resolve(new MessageEnvelope { Content = "hello" });
 
             var handler2 = Substitute.For<IMessageHandler>();
             registry.RegisterHandler(handler2, new MessageHandlerMetadata(typeof(string), overridePriority: Priority.High));
 
-            handlers = registry.ResolveMessageHandlers(new MessageEnvelope { Content = "hello" });
+            handlers = registry.Resolve(new MessageEnvelope { Content = "hello" });
             Assert.AreSame(handler2, handlers.Single());
         }
 
-        private IEnumerable<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>> GetHandlerProviderFactories()
+        private IEnumerable<IExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>> GetHandlerProviderFactories()
         {
-            yield return new ExportFactory<IMessageHandlerProvider, AppServiceMetadata>(
-                () => new DefaultMessageHandlerProvider(new DefaultMessageMatchService()),
+            yield return new ExportFactory<IMessageHandlerResolveBehavior, AppServiceMetadata>(
+                () => new DefaultMessageHandlerResolveBehavior(new DefaultMessageMatchService()),
                 new AppServiceMetadata());
         }
 

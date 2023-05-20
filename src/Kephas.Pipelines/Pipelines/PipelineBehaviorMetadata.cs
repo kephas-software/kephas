@@ -11,7 +11,7 @@ using Kephas.Services;
 namespace Kephas.Pipelines;
 
 /// <summary>
-/// Metadata class for <see cref="IPipelineBehavior"/>.
+/// Metadata class for <see cref="IAsyncPipelineBehavior"/>.
 /// </summary>
 public class PipelineBehaviorMetadata : AppServiceMetadata
 {

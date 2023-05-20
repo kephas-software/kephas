@@ -10,13 +10,13 @@ using Kephas.Services;
 namespace Kephas.Pipelines;
 
 /// <summary>
-/// Contract for synchronous pipelines.
+/// Contract for asynchronous pipelines.
 /// </summary>
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
 [AppServiceContract(AsOpenGeneric = true)]
-public interface IPipeline<in TTarget, in TOperationArgs, TResult>
+public interface IAsyncPipeline<in TTarget, in TOperationArgs, TResult>
 {
     /// <summary>
     /// Processes the pipeline, invoking the behaviors in their priority order.
@@ -25,10 +25,12 @@ public interface IPipeline<in TTarget, in TOperationArgs, TResult>
     /// <param name="args">The operation arguments.</param>
     /// <param name="context">An optional context for the operation. If not context is provided, one will be created for the scope of the operation.</param>
     /// <param name="operation">The operation to be executed.</param>
-    /// <returns>The execution result.</returns>
-    TResult Process(
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>A task yielding the execution result.</returns>
+    Task<TResult> ProcessAsync(
         TTarget target,
         TOperationArgs args,
         IContext? context,
-        Func<TResult> operation);
+        Func<Task<TResult>> operation,
+        CancellationToken cancellationToken = default);
 }

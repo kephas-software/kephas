@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Messaging.Messages;
+
 namespace Kephas.Tests.Reflection
 {
     using System;
@@ -114,7 +116,7 @@ namespace Kephas.Tests.Reflection
                         broker,
                         Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>());
-                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessage message ? message.GetContent() : ci.Arg<object>());
+                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessageBase message ? message.GetContent() : ci.Arg<object>());
 
                     ci.Arg<Action<IDispatchingContext>>()(dispContext);
                     Assert.AreSame(identity, dispContext.Identity);
@@ -166,13 +168,13 @@ namespace Kephas.Tests.Reflection
                         broker,
                         Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>());
-                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessage message ? message.GetContent() : ci.Arg<object>());
+                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessageBase message ? message.GetContent() : ci.Arg<object>());
 
                     ci.Arg<Action<IDispatchingContext>>()(dispContext);
                     Assert.AreSame(identity, dispContext.Identity);
                     Assert.IsTrue(dispContext.BrokeredMessage.IsOneWay);
 
-                    return Task.FromResult<IMessage>(null);
+                    return Task.FromResult<Response?>(null);
                 });
 
             var resultTask = (Task)opInfo.Invoke(null, opArgs);

@@ -44,9 +44,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { };
-            Assert.IsTrue(matchService.IsMatch(match, null, null));
-            Assert.IsFalse(matchService.IsMatch(match, null, null));
-            Assert.IsFalse(matchService.IsMatch(match, null, null));
+            Assert.IsTrue(matchService.IsMatch(match, null));
+            Assert.IsFalse(matchService.IsMatch(match, null));
+            Assert.IsFalse(matchService.IsMatch(match, null));
         }
 
         [Test]
@@ -54,9 +54,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { };
-            Assert.IsTrue(matchService.IsMatch(match, null, null));
-            Assert.IsTrue(matchService.IsMatch(match, null, null));
-            Assert.IsTrue(matchService.IsMatch(match, null, null));
+            Assert.IsTrue(matchService.IsMatch(match, null));
+            Assert.IsTrue(matchService.IsMatch(match, null));
+            Assert.IsTrue(matchService.IsMatch(match, null));
         }
 
         [Test]
@@ -64,9 +64,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { MessageType = typeof(IMessage), MessageTypeMatching = MessageTypeMatching.Type };
-            Assert.IsTrue(matchService.IsMatch(match, null, typeof(IMessage)));
-            Assert.IsFalse(matchService.IsMatch(match, null, typeof(IEvent)));  // inherited
-            Assert.IsFalse(matchService.IsMatch(match, null, typeof(string)));
+            Assert.IsTrue(matchService.IsMatch(match, null));
+            Assert.IsFalse(matchService.IsMatch(match, null));  // inherited
+            Assert.IsFalse(matchService.IsMatch(match, null));
         }
 
         [Test]
@@ -74,9 +74,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { MessageType = typeof(IMessage), MessageTypeMatching = MessageTypeMatching.TypeOrHierarchy };
-            Assert.IsTrue(matchService.IsMatch(match, null, typeof(IMessage)));
-            Assert.IsTrue(matchService.IsMatch(match, null, typeof(IEvent)));  // inherited
-            Assert.IsFalse(matchService.IsMatch(match, null, typeof(string)));
+            Assert.IsTrue(matchService.IsMatch(match, null));
+            Assert.IsTrue(matchService.IsMatch(match, null));  // inherited
+            Assert.IsFalse(matchService.IsMatch(match, null));
         }
 
         [Test]
@@ -84,9 +84,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { EnvelopeType = typeof(int), EnvelopeTypeMatching = MessageTypeMatching.Type };
-            Assert.IsFalse(matchService.IsMatch(match, typeof(IMessage), null));
-            Assert.IsFalse(matchService.IsMatch(match, typeof(IEvent), null));  // inherited
-            Assert.IsTrue(matchService.IsMatch(match, typeof(int), null));
+            Assert.IsFalse(matchService.IsMatch((IMessageMatch)match, (IMessagingContext)typeof(IMessage)));
+            Assert.IsFalse(matchService.IsMatch((IMessageMatch)match, (IMessagingContext)typeof(IEvent)));  // inherited
+            Assert.IsTrue(matchService.IsMatch((IMessageMatch)match, (IMessagingContext)typeof(int)));
         }
 
         [Test]
@@ -94,9 +94,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { EnvelopeType = typeof(IMessage), EnvelopeTypeMatching = MessageTypeMatching.TypeOrHierarchy };
-            Assert.IsTrue(matchService.IsMatch(match, typeof(IMessage), null));
-            Assert.IsTrue(matchService.IsMatch(match, typeof(PingMessage), null));  // inherited
-            Assert.IsFalse(matchService.IsMatch(match, typeof(string), null));
+            Assert.IsTrue(matchService.IsMatch((IMessageMatch)match, (IMessagingContext)typeof(IMessage)));
+            Assert.IsTrue(matchService.IsMatch((IMessageMatch)match, (IMessagingContext)typeof(PingMessage)));  // inherited
+            Assert.IsFalse(matchService.IsMatch((IMessageMatch)match, (IMessagingContext)typeof(string)));
         }
 
         [Test]

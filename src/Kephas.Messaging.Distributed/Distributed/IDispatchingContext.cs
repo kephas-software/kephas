@@ -459,7 +459,7 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext Content<TContext>(this TContext context, IMessage message)
+        public static TContext Content<TContext>(this TContext context, IMessageBase message)
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));

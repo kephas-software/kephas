@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
 
     using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -23,7 +22,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
     /// <summary>
     /// A distributed message processing behavior ensuring that the bearer token is transformed to an .
     /// </summary>
-    [MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
     [ProcessingPriority(Priority.Highest)]
     public class EnsureAuthenticatedBrokeredMessagingBehavior : MessagingBehaviorBase<IBrokeredMessage, object?>
     {

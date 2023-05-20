@@ -11,7 +11,7 @@ using Kephas.Services;
 namespace Kephas.Pipelines;
 
 /// <summary>
-/// Metadata class for <see cref="IPipeline{TTarget,TContext,TResult}"/>.
+/// Metadata class for <see cref="IAsyncPipeline{TTarget,TOperationArgs,TResult}"/>.
 /// </summary>
 public class PipelineMetadata : AppServiceMetadata
 {
