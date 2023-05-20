@@ -8,183 +8,105 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
 using Kephas.Pipelines;
+using Kephas.Services;
+using Kephas.Threading.Tasks;
 
-namespace Kephas.Messaging
+namespace Kephas.Messaging;
+
+/// <summary>
+/// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
+/// </summary>
+[OverridePriority(Priority.Low)]
+public class DefaultMessageProcessor : Loggable, IMessageProcessor
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Services;
-    using Kephas.Logging;
-    using Kephas.Messaging.Behaviors;
-    using Kephas.Services;
-    using Kephas.Threading.Tasks;
+    private readonly IMessageHandlerRegistry handlerRegistry;
+    private readonly IServiceProvider serviceProvider;
 
     /// <summary>
-    /// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
+    /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
     /// </summary>
-    [OverridePriority(Priority.Low)]
-    public class DefaultMessageProcessor : Loggable, IMessageProcessor
+    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="handlerRegistry">The handler registry.</param>
+    /// <param name="serviceProvider">The service provider.</param>
+    public DefaultMessageProcessor(
+        IInjectableFactory injectableFactory,
+        IMessageHandlerRegistry handlerRegistry,
+        IServiceProvider serviceProvider)
+        : base(injectableFactory)
     {
-        private readonly IMessageHandlerRegistry handlerRegistry;
-        private readonly IMessageMatchService messageMatchService;
-        private readonly IServiceProvider serviceProvider;
-        private readonly ConcurrentDictionary<string, IList<IMessagingBehavior>> behaviorFactoriesDictionary = new ();
+        this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+        this.handlerRegistry = handlerRegistry ?? throw new ArgumentNullException(nameof(handlerRegistry));
+        this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
-        /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        /// <param name="handlerRegistry">The handler registry.</param>
-        /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="serviceProvider">The service provider.</param>
-        public DefaultMessageProcessor(
-            IInjectableFactory injectableFactory,
-            IMessageHandlerRegistry handlerRegistry,
-            IMessageMatchService messageMatchService,
-            IServiceProvider serviceProvider)
-            : base(injectableFactory)
+    /// <summary>
+    /// Gets the injectable factory.
+    /// </summary>
+    /// <value>
+    /// The injectable factory.
+    /// </value>
+    protected IInjectableFactory InjectableFactory { get; }
+
+    /// <summary>
+    /// Processes the specified message asynchronously and returns the response.
+    /// </summary>
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    /// <typeparam name="TMessage">The message type.</typeparam>
+    /// <param name="message">The message to process.</param>
+    /// <param name="optionsConfig">Optional. The options configuration.</param>
+    /// <param name="token">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the response message.
+    /// </returns>
+    public async Task<TResponse> ProcessAsync<TMessage, TResponse>(
+        TMessage message,
+        Action<IMessagingContext>? optionsConfig = null,
+        CancellationToken token = default)
+        where TMessage : IMessage<TResponse>
+    {
+        message = message ?? throw new ArgumentNullException(nameof(message));
+
+        var exceptions = new List<Exception>();
+        TResponse result = default!;
+        foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers<TMessage, TResponse>(message))
         {
-            this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
-            this.handlerRegistry = handlerRegistry ?? throw new System.ArgumentNullException(nameof(handlerRegistry));
-            this.messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
-            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        }
-
-        /// <summary>
-        /// Gets the injectable factory.
-        /// </summary>
-        /// <value>
-        /// The injectable factory.
-        /// </value>
-        public IInjectableFactory InjectableFactory { get; }
-
-        /// <summary>
-        /// Processes the specified message asynchronously.
-        /// </summary>
-        /// <typeparam name="TMessage">The message type.</typeparam>
-        /// <typeparam name="TResult">The result type.</typeparam>
-        /// <param name="message">The message to process.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        /// <param name="token">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the response message.
-        /// </returns>
-        public async Task<TResult> ProcessAsync<TMessage, TResult>(
-            TMessage message,
-            Action<IMessagingContext<TMessage, TResult>>? optionsConfig = null,
-            CancellationToken token = default)
-            where TMessage : IMessage<TResult>
-        {
-            message = message ?? throw new ArgumentNullException(nameof(message));
-
-            var exceptions = new List<Exception>();
-            object? result = null;
-            foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers<TMessage, TResult>(message))
+            try
             {
-                try
-                {
-                    using var context = this.CreateProcessingContext(message, optionsConfig);
-                    var pipeline = this.serviceProvider.GetRequiredService<IPipeline<IMessageProcessor, TMessage, TResult>>();
-                    pipeline.ProcessAsync(this, message, context, () => messageHandler.)
-                    result = await ProcessCoreAsync(message, messageHandler, () => context, token).PreserveThreadContext();
-                }
-                catch (Exception ex)
-                {
-                    exceptions.Add(ex);
-                }
-            }
-
-            return exceptions.Count switch
-            {
-                0 => result,
-                1 => throw exceptions[0],
-                _ => throw new AggregateException(exceptions)
-            };
-        }
-
-        /// <summary>
-        /// Processes the message asynchronously using the handler, behaviors, and the messaging context.
-        /// </summary>
-        /// <param name="message">The message to process.</param>
-        /// <param name="messageHandler">The message handler.</param>
-        /// <param name="context">The messaging context.</param>
-        /// <param name="token">The cancellation token.</param>
-        protected virtual async Task<object?> ProcessCoreAsync<TMessage, TResult>(
-            TMessage message,
-            IMessageHandler messageHandler,
-            IMessagingContext context,
-            Func<IPipeline<IMessageProcessor, TMessage, TResult>> pipelineFactory,
-            CancellationToken token)
-            where TMessage : IMessage<TResult>
-        {
-            using var behaviorEnumerator = behaviors.GetEnumerator();
-            Func<Task<object?>>? next = null;
-            next = async () =>
-            {
-                if (behaviorEnumerator.MoveNext())
-                {
-                    return await behaviorEnumerator.Current
-                        .ProcessAsync(next!, context, token)
-                        .PreserveThreadContext();
-                }
-
-                return await messageHandler
-                    .ProcessAsync(message, context, token)
+                using var context = this.CreateProcessingContext(message, optionsConfig);
+                var pipeline = this.serviceProvider.GetRequiredService<IPipeline<IMessageProcessor, TMessage, TResponse>>();
+                result = await pipeline.ProcessAsync(this, message, context, () => messageHandler.ProcessAsync(message, context, token), token)
                     .PreserveThreadContext();
-            };
-
-            return await next().PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                exceptions.Add(ex);
+            }
         }
 
-        /// <summary>
-        /// Creates the processing context.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="optionsConfig">The options configuration.</param>
-        /// <returns>
-        /// The processing context.
-        /// </returns>
-        protected virtual IMessagingContext<TMessage, TResult> CreateProcessingContext<TMessage, TResult>(
-            TMessage message,
-            Action<IMessagingContext<TMessage, TResult>>? optionsConfig)
-            where TMessage : IMessage<TResult>
+        return exceptions.Count switch
         {
-            var context = this.InjectableFactory.Create<MessagingContext<TMessage, TResult>>(message);
-            optionsConfig?.Invoke(context);
-            return context;
-        }
+            0 => result,
+            1 => throw exceptions[0],
+            _ => throw new AggregateException(exceptions)
+        };
+    }
 
-        /// <summary>
-        /// Gets the ordered behaviors (direct and reversed) to be applied.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>
-        /// An ordered list of behaviors which can be applied to the provided message, with their reversed counterpart.
-        /// </returns>
-        protected virtual IList<IMessagingBehavior> GetOrderedBehaviors<>(IMessage message)
-        {
-            var messageType = this.messageMatchService.GetMessageType(message);
-            var messageId = this.messageMatchService.GetMessageId(message);
-
-            var orderedBehaviors = this.behaviorFactoriesDictionary.GetOrAdd(
-                $"{message.GetType()}/{messageType}/{messageId}",
-                _ =>
-                    {
-                        var behaviors = this.behaviorFactories.Where(
-                                f => this.messageMatchService.IsMatch(f.Metadata.MessageMatch, message.GetType(), messageType, messageId))
-                            .Select(f => f.CreateExportedValue())
-                            .ToList();
-
-                        return behaviors;
-                    });
-
-            return orderedBehaviors;
-        }
+    /// <summary>
+    /// Creates the processing context.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="optionsConfig">The options configuration.</param>
+    /// <returns>
+    /// The processing context.
+    /// </returns>
+    protected virtual IMessagingContext CreateProcessingContext(
+        IMessageBase message,
+        Action<IMessagingContext>? optionsConfig)
+    {
+        var context = this.InjectableFactory.Create<MessagingContext>(message);
+        optionsConfig?.Invoke(context);
+        return context;
     }
 }
