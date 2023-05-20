@@ -161,7 +161,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         var pingBack = await messageBroker.DispatchAsync(
             new BrokeredMessage
             {
-                Content = new PingMessage(),
+                Message = new PingMessage(),
                 Timeout = TimeSpan.FromSeconds(100),
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             });
@@ -183,14 +183,14 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         var pingBack1 = (PingBack?)await messageBroker.DispatchAsync(
             new BrokeredMessage
             {
-                Content = new PingMessage(),
+                Message = new PingMessage(),
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             });
 
         var pingBack2 = (PingBack?)await messageBroker.DispatchAsync(
             new BrokeredMessage
             {
-                Content = new PingMessage(),
+                Message = new PingMessage(),
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             });
 
@@ -228,7 +228,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         var pingBack = await messageBroker.DispatchAsync(
             new BrokeredMessage
             {
-                Content = new PingMessage(),
+                Message = new PingMessage(),
                 Timeout = TimeSpan.FromSeconds(100),
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             });
@@ -394,7 +394,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-            : base(injectableFactory, handlerRegistry, messageMatchService, behaviorFactories)
+            : base(injectableFactory, handlerRegistry, behaviorFactories)
         {
         }
 

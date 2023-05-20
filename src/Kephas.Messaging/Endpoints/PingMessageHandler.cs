@@ -20,7 +20,7 @@ namespace Kephas.Messaging.Endpoints
     /// <summary>
     /// Message handler for the <see cref="PingMessage"/>.
     /// </summary>
-    public class PingMessageHandler : MessageHandlerBase<PingMessage, PingBack>
+    public class PingMessageHandler : IMessageHandler<PingMessage, PingBack>
     {
         private readonly IAppRuntime appRuntime;
 
@@ -42,7 +42,7 @@ namespace Kephas.Messaging.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<PingBack> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
+        public Task<PingBack> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {
             return Task.FromResult(new PingBack
                                        {

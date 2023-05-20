@@ -35,12 +35,12 @@ namespace Kephas.Messaging.Runtime
         public override IRuntimeTypeInfo? TryCreateElementInfo(IRuntimeTypeRegistry registry, Type reflectInfo, int position = -1, ILogger? logger = null)
         {
             var type = reflectInfo;
-            if (typeof(IEvent).IsAssignableFrom(type) && type != typeof(IEvent))
+            if (typeof(IEvent).IsAssignableFrom(type) && type.IsClass)
             {
                 return new RuntimeEventInfo(registry, type, logger);
             }
 
-            if (typeof(IMessage).IsAssignableFrom(type) && type != typeof(IMessage))
+            if (typeof(IMessageBase).IsAssignableFrom(type) && type.IsClass)
             {
                 return new RuntimeMessageInfo(registry, type, logger);
             }

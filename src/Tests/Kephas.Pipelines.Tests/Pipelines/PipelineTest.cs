@@ -36,13 +36,8 @@ public class PipelineTest
         var token = new CancellationToken();
         var result = new object();
 
-        Task<object?> Operation(object? opTarget, object opArgs, IContext opContext, CancellationToken opToken)
+        Task<object?> Operation()
         {
-            Assert.AreSame(target, opTarget);
-            Assert.AreSame(args, opArgs);
-            Assert.AreEqual(token, opToken);
-            Assert.AreEqual(context, opContext);
-
             return Task.FromResult<object?>(result);
         }
 
@@ -69,13 +64,8 @@ public class PipelineTest
         var token = new CancellationToken();
         var result = new object();
 
-        Task<object?> Operation(object? opTarget, object opArgs, IContext opContext, CancellationToken opToken)
+        Task<object?> Operation()
         {
-            Assert.AreSame(target, opTarget);
-            Assert.AreSame(args, opArgs);
-            Assert.AreEqual(token, opToken);
-            Assert.IsInstanceOf<PipelineContext>(opContext);
-
             return Task.FromResult<object?>(result);
         }
 
@@ -130,13 +120,8 @@ public class PipelineTest
                     : ci.Arg<Func<object?, object, CancellationToken, Task<object?>>>()(target, args, token);
             });
             
-        Task<object?> Operation(object? opTarget, object opArgs, IContext opContext, CancellationToken opToken)
+        Task<object?> Operation()
         {
-            Assert.AreSame(target, opTarget);
-            Assert.AreSame(args, opArgs);
-            Assert.AreSame(context, opContext);
-            Assert.AreEqual(token, opToken);
-
             return Task.FromResult<object?>(opResult);
         }
 

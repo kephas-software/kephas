@@ -20,21 +20,6 @@ namespace Kephas.Messaging
         /// <summary>
         /// Gets the message to process.
         /// </summary>
-        IMessage Message { get; }
-
-        /// <summary>
-        /// Gets or sets the result.
-        /// </summary>
-        object? Result { get; set; }
-    }
-
-    /// <summary>
-    /// Contract for contexts when processing messages.
-    /// </summary>
-    /// <typeparam name="TMessage">The message type.</typeparam>
-    /// <typeparam name="TResult">The result type.</typeparam>
-    public interface IMessagingContext<in TMessage, out TResult> : IMessagingContext
-        where TMessage : IMessage<TResult>
-    {
+        IMessageBase Message { get; }
     }
 }

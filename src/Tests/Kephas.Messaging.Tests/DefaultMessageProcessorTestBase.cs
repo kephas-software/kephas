@@ -591,16 +591,16 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
 }
 
 
-public class ExpandoMessage : Expando, IMessage
+public class ExpandoMessage : Expando, IMessage<object?>
 {
 }
 
-public class IdentifiedMessage : IMessage
+public class IdentifiedMessage : IMessage<object?>
 {
     public string Id { get; set; }
 }
 
-public class IdentifiedMessage2 : IMessage
+public class IdentifiedMessage2 : IMessage<object?>
 {
     public string MessageId { get; set; }
 }
@@ -627,7 +627,7 @@ public class TestMessageProcessor : DefaultMessageProcessor
     public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageMatchService messageMatchService,
         IMessageHandlerRegistry handlerRegistry,
         IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-        : base(injectableFactory, handlerRegistry, messageMatchService, behaviorFactories)
+        : base(injectableFactory, handlerRegistry, behaviorFactories)
     {
     }
 

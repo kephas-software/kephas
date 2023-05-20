@@ -297,7 +297,10 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StopAppAsync(
+            IRuntimeAppInfo runtimeAppInfo,
+            Action<IContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default)
         {
             this.Logger.Info("Stopping application {appInstanceId}...", runtimeAppInfo.AppInstanceId);
 

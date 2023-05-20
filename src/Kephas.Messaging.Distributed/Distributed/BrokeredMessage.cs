@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
-            this.Content = message.ToMessage();
+            this.Message = message.ToMessage();
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message to send.
         /// </value>
-        public IMessage? Content
+        public IMessage? Message
         {
             get => this.content;
             set
@@ -214,7 +214,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override string ToString()
         {
-            var contentType = this.Content?.GetType().Name;
+            var contentType = this.Message?.GetType().Name;
             var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
             var oneway = this.IsOneWay ? ", one way" : string.Empty;
             var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $", reply to #{this.ReplyToMessageId}";
@@ -244,7 +244,7 @@ namespace Kephas.Messaging.Distributed
             return this with
             {
                 Recipients = recipients ?? this.Recipients?.ToArray(),
-                content = this.Content,             // write directly into the content field, to avoid validations
+                content = this.Message,             // write directly into the content field, to avoid validations
                 Properties = this.Properties == null ? null : new Dictionary<string, object?>(this.Properties),
             };
         }

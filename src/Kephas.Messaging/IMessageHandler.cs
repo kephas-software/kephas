@@ -26,13 +26,11 @@ namespace Kephas.Messaging
     }
 
     /// <summary>
-    /// Application service for handling requests.
+    /// Message handler for actions
     /// </summary>
-    /// <typeparam name="TMessage">The type of the message.</typeparam>
-    /// <typeparam name="TResult">The result type.</typeparam>
-    [AppServiceContract(ContractType = typeof(IMessageHandler), AllowMultiple = true)]
-    public interface IMessageHandler<in TMessage, TResult> : IMessageHandler
-        where TMessage : IMessage<TResult>
+    /// <typeparam name="TMessage"></typeparam>
+    public interface IActionMessageHandler<in TMessage> : IMessageHandler<TMessage, object?>
+        where TMessage : IActionMessage
     {
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
@@ -43,6 +41,42 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        Task<TResult> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
+        async Task<object?> IMessageHandler<TMessage, object?>.ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
+        {
+            await ProcessAsync(message, context, token).PreserveThreadContext();
+            return null;
+        }
+        
+        /// <summary>
+        /// Processes the provided message asynchronously and returns a response promise.
+        /// </summary>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        new Task ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
+    }
+
+    /// <summary>
+    /// Application service for handling requests.
+    /// </summary>
+    /// <typeparam name="TMessage">The type of the message.</typeparam>
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    [AppServiceContract(ContractType = typeof(IMessageHandler), AllowMultiple = true)]
+    public interface IMessageHandler<in TMessage, TResponse> : IMessageHandler
+        where TMessage : IMessage<TResponse>
+    {
+        /// <summary>
+        /// Processes the provided message asynchronously and returns a response promise.
+        /// </summary>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        Task<TResponse> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
     }
 }

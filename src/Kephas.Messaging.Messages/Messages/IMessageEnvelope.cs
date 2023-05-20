@@ -15,6 +15,10 @@ namespace Kephas.Messaging.Messages
     /// </summary>
     public interface IMessageEnvelopeBase : IMessage<object?>
     {
+        /// <summary>
+        /// Gets the native message.
+        /// </summary>
+        public object? Content { get; }
     }
     
     /// <summary>
@@ -27,6 +31,22 @@ namespace Kephas.Messaging.Messages
         /// <summary>
         /// Gets the native message.
         /// </summary>
-        public T? Message { get; }
+        object? IMessageEnvelopeBase.Content => Content;
+        
+        /// <summary>
+        /// Gets the typed native message.
+        /// </summary>
+        new T? Content { get; }
+
+        /// <summary>
+        /// Gets the typed content of the message.
+        /// </summary>
+        /// <remarks>
+        /// In case of a message envelope, it returns the contained message, otherwise the message itself.
+        /// </remarks>
+        /// <returns>
+        /// The message content.
+        /// </returns>
+        new T GetContent() => (T)((IMessageEnvelopeBase)this).GetContent();
     }
 }

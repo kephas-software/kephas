@@ -43,7 +43,7 @@ namespace Kephas.Messaging.HandlerProviders
         /// </summary>
         /// <param name="handlerFactories">The handler factories.</param>
         /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if
-        ///                            the message does not implement <see cref="IMessage"/>.</param>
+        ///                            the message does not implement <see cref="IMessage{TResponse}"/>.</param>
         /// <param name="messageType">The type of the message.</param>
         /// <param name="messageId">The ID of the message.</param>
         /// <returns>

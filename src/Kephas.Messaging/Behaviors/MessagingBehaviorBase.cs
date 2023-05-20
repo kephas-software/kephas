@@ -56,7 +56,7 @@ namespace Kephas.Messaging.Behaviors
         /// </remarks>
         Task IMessagingBehavior<TMessage, TResult>.AfterProcessAsync(IMessagingContext context, CancellationToken token)
         {
-            context = context ?? throw new ArgumentNullException(nameof(context));
+            _ = context ?? throw new ArgumentNullException(nameof(context));
 
             this.EnsureInitialized(context);
             var message = (TMessage)context.Message;

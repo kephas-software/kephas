@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var message = new BrokeredMessage
                               {
-                                  Content = new PingMessage(),
+                                  Message = new PingMessage(),
                                   Sender = new Endpoint(appInstanceId: "app-instance"),
                                   Recipients =
                                       new[]
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content_delegate_not_allowed()
         {
             var message = new BrokeredMessage();
-            Assert.Throws<ArgumentException>(() => message.Content = new MessageEnvelope { Message = (Func<string, string>)((string e) => e) });
+            Assert.Throws<ArgumentException>(() => message.Message = new MessageEnvelope { Content = (Func<string, string>)((string e) => e) });
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content_not_null()
         {
             var message = new BrokeredMessage();
-            Assert.Throws<ArgumentNullException>(() => message.Content = null);
+            Assert.Throws<ArgumentNullException>(() => message.Message = null);
         }
 
         [Test]
@@ -77,9 +77,9 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var message = new BrokeredMessage();
             message.ReplyToMessageId = "hello";
-            message.Content = null;
+            message.Message = null;
 
-            Assert.IsNull(message.Content);
+            Assert.IsNull(message.Message);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace Kephas.Messaging.Tests.Distributed
             IBrokeredMessage message = new BrokeredMessage
             {
                 BearerToken = "123",
-                Content = Substitute.For<IMessage>(),
+                Message = Substitute.For<IMessage>(),
                 IsOneWay = true,
                 Priority = Priority.High,
                 Recipients = new List<IEndpoint> { Substitute.For<IEndpoint>() },

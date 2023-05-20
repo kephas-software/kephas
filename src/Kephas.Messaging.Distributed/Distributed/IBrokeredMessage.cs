@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Contract interface for brokered messages.
     /// </summary>
-    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope, IDynamic, INonIdentifiableMessage
+    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelopeBase, IDynamic, INonIdentifiableMessage
     {
         /// <summary>
         /// Gets the identifier.
@@ -39,14 +39,6 @@ namespace Kephas.Messaging.Distributed
         /// The message sender.
         /// </value>
         IEndpoint? Sender { get; set; }
-
-        /// <summary>
-        /// Gets or sets the message to send.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        IMessage? Content { get; set; }
 
         /// <summary>
         /// Gets or sets the recipients.

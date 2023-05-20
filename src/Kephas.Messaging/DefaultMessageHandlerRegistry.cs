@@ -25,8 +25,10 @@ namespace Kephas.Messaging
     [OverridePriority(Priority.Low)]
     public class DefaultMessageHandlerRegistry : IMessageHandlerRegistry
     {
+        private record HandlerEntry(Type EnvelopeType, Type MessageType, object? MessageId, IEnumerable<Func<IMessageHandler>>? Factories);
+        
         private readonly IList<IMessageHandlerProvider> handlerProviders;
-        private readonly ConcurrentDictionary<string, (Type envelopeType, Type messageType, object? messageId, Func<IEnumerable<IMessageHandler>?> factory)> handlerFactories = new();
+        private readonly ConcurrentDictionary<string, HandlerEntry> handlerFactories = new();
 
         private readonly ConcurrentBag<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerRegistry;
 
@@ -56,19 +58,19 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Registers the message handler.
+        /// Registers the message handler factory.
         /// </summary>
-        /// <param name="handler">The handler.</param>
+        /// <param name="handlerFactory">The handler factory.</param>
         /// <param name="metadata">The handler metadata.</param>
         /// <returns>
         /// This message handler registry.
         /// </returns>
-        public IMessageHandlerRegistry RegisterHandler(IMessageHandler handler, MessageHandlerMetadata metadata)
+        public IMessageHandlerRegistry RegisterHandler(Func<IServiceProvider, IMessageHandler> handlerFactory, MessageHandlerMetadata metadata)
         {
-            handler = handler ?? throw new ArgumentNullException(nameof(handler));
+            handlerFactory = handlerFactory ?? throw new ArgumentNullException(nameof(handlerFactory));
             metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
 
-            this.handlerRegistry.Add(new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, metadata));
+            this.handlerRegistry.Add(new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handlerFactory(), metadata));
             this.ResetFactoryCache(metadata.MessageMatch);
 
             return this;
@@ -79,7 +81,7 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>The message handlers.</returns>
-        public virtual IEnumerable<IMessageHandler> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
+        public virtual IEnumerable<IMessageHandler<TMessage, TResult>> ResolveMessageHandlers<TMessage, TResult>(TMessage message)
             where TMessage : IMessage<TResult>
         {
             var envelopeType = message.GetType();
@@ -96,8 +98,8 @@ namespace Kephas.Messaging
                 return (envelopeType, messageType, messageId, handlerProvider.GetHandlersFactory(this.handlerRegistry, envelopeType, messageType, messageId));
             });
 
-            var handlers = messageHandlersFactory();
-            return handlers ?? Array.Empty<IMessageHandler>();
+            var handlers = messageHandlersFactory()?.OfType<IMessageHandler<TMessage, TResult>>();
+            return handlers ?? Array.Empty<IMessageHandler<TMessage, TResult>>();
         }
 
         private void ResetFactoryCache(IMessageMatch messageMatch)

@@ -31,7 +31,7 @@ namespace Kephas.Messaging.Messages
         /// <param name="message">The native message.</param>
         public MessageEnvelope(T message)
         {
-            Message = message ?? throw new ArgumentNullException(nameof(message));
+            Content = message ?? throw new ArgumentNullException(nameof(message));
         }
         
         /// <summary>
@@ -40,16 +40,16 @@ namespace Kephas.Messaging.Messages
         /// <value>
         /// The native message.
         /// </value>
-        public T? Message { get; set; }
+        public T? Content { get; set; }
 
         /// <summary>
         /// Gets the message.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the message is not set.</exception>
         /// <returns>
-        /// The message.
+        /// The message, or if the message is not set, an <see cref="InvalidOperationException"/> occurs.
         /// </returns>
         public object GetContent() =>
-            this.Message ?? throw new InvalidOperationException("The message is not set in the envelope.");
+            this.Content ?? throw new InvalidOperationException("The message is not set in the envelope.");
     }
 }

@@ -17,13 +17,6 @@ namespace Kephas.Messaging.Behaviors;
 /// <summary>
 /// Pipeline behavior for message processing interception.
 /// </summary>
-public interface IMessagingBehavior : IMessagingBehavior<IMessage, object?>
-{
-}
-
-/// <summary>
-/// Pipeline behavior for message processing interception.
-/// </summary>
 public interface IMessagingBehavior<in TMessage, out TResult> : IPipelineBehavior<IMessageProcessor, TMessage, TResult>
     where TMessage : IMessage<TResult>
 {

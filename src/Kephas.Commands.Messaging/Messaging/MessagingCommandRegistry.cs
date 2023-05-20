@@ -100,8 +100,8 @@ namespace Kephas.Commands.Messaging
             new MessageOperationInfo(this.TypeRegistry, this.TypeRegistry.GetTypeInfo(t), this.LazyMessageProcessor);
 
         private bool IsMessageType(Type type) => !type.IsAbstract
-                                                 && typeof(IMessage).IsAssignableFrom(type)
-                                                 && !typeof(IMessageEnvelope).IsAssignableFrom(type)
+                                                 && typeof(IMessageBase).IsAssignableFrom(type)
+                                                 && !typeof(IMessageEnvelopeBase).IsAssignableFrom(type)
                                                  && type.GetCustomAttribute<ExcludeFromModelAttribute>() == null;
     }
 }

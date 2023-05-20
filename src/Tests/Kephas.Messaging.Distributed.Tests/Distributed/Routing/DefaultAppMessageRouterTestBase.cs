@@ -30,7 +30,7 @@ public abstract class DefaultAppMessageRouterTestBase : MessagingTestBase
 
             ReplyReceivedEventArgs eventArgs = null;
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
-            var request = new BrokeredMessage { Content = new PingMessage() };
+            var request = new BrokeredMessage { Message = new PingMessage() };
             var result = await inProcessRouter.DispatchAsync(request, Substitute.For<IDispatchingContext>(), default);
 
             await Task.Delay(200);
