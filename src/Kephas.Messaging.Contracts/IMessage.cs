@@ -28,17 +28,17 @@ namespace Kephas.Messaging
     }
 
     /// <summary>
-    /// Marker interface for messages requiring a typed response..
+    /// Marker interface for messages requiring a typed response.
     /// </summary>
-    /// <typeparam name="TResult">The result type.</typeparam>
-    public interface IMessage<out TResult> : IMessageBase
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    public interface IMessage<out TResponse> : IMessageBase
     {
     }
 
     /// <summary>
-    /// Marker interface for messages.
+    /// Marker interface for messages with a void response.
     /// </summary>
-    public interface IMessage : IMessage<object?>
+    public interface IActionMessage : IMessage<object?>
     {
     }
 }
