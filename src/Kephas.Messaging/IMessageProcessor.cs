@@ -8,56 +8,97 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging
+using System.Reflection;
+using Kephas.Services;
+using Kephas.Messaging.Messages;
+using Kephas.Reflection;
+using Kephas.Threading.Tasks;
+
+namespace Kephas.Messaging;
+
+/// <summary>
+/// Application service for processing messages.
+/// </summary>
+/// <remarks>
+/// The message processor is defined as a shared service.
+/// </remarks>
+[AppServiceContract]
+public interface IMessageProcessor
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Services;
-
+    private static readonly MethodInfo ProcessAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IMessageProcessor)null!).ProcessAsync<IMessage<object>, object?>(null!, null!, default));
+        
     /// <summary>
-    /// Application service for processing messages.
+    /// Processes the specified message asynchronously and returns the response.
     /// </summary>
-    /// <remarks>
-    /// The message processor is defined as a shared service.
-    /// </remarks>
-    [SingletonAppServiceContract]
-    public interface IMessageProcessor
+    /// <param name="message">
+    /// The message to process. If the message does not implement <see cref="IMessage{TResponse}"/>,
+    /// an <see cref="IMessageEnvelope{T}"/> instance if created wrapping the message.
+    /// </param>
+    /// <param name="optionsConfig">Optional. The options configuration.</param>
+    /// <param name="token">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the response message.
+    /// </returns>
+    async Task<object?> ProcessAsync(object message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
     {
-        /// <summary>
-        /// Processes the specified message asynchronously.
-        /// </summary>
-        /// <param name="message">The message to process.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        /// <param name="token">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the response message.
-        /// </returns>
-        Task<IMessage?> ProcessAsync(IMessage message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default);
+        _ = message ?? throw new ArgumentNullException(nameof(message));
+
+        var typedMessage = message.ToMessage();
+        var messageType = typedMessage.GetType();
+        var responseType = messageType.GetBaseConstructedGenericOf(typeof(IMessage<>))!;
+
+        var processAsync = ProcessAsyncMethod.MakeGenericMethod(messageType, responseType);
+        var task = processAsync.Call<Task>(this, typedMessage, optionsConfig, token);
+        await task.PreserveThreadContext();
+        return task.GetResult();
     }
 
     /// <summary>
-    /// Extension methods for message processor.
+    /// Processes the specified message asynchronously and returns the response.
     /// </summary>
-    public static class MessageProcessorExtensions
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    /// <param name="message">The message to process.</param>
+    /// <param name="optionsConfig">Optional. The options configuration.</param>
+    /// <param name="token">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the response message.
+    /// </returns>
+    Task<TResponse> ProcessAsync<TResponse>(IMessage<TResponse> message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
     {
-        /// <summary>
-        /// Processes the specified message asynchronously.
-        /// </summary>
-        /// <param name="this">The message processor to act on.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="optionsConfig">Optional. The options configuration.</param>
-        /// <param name="token">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the response message.
-        /// </returns>
-        public static Task<IMessage?> ProcessAsync(this IMessageProcessor @this, object message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
-        {
-            @this = @this ?? throw new System.ArgumentNullException(nameof(@this));
-            message = message ?? throw new ArgumentNullException(nameof(message));
+        _ = message ?? throw new ArgumentNullException(nameof(message));
 
-            return @this.ProcessAsync(message.ToMessage(), optionsConfig, token);
-        }
+        var messageType = message.GetType();
+        var responseType = typeof(TResponse);
+
+        var processAsync = ProcessAsyncMethod.MakeGenericMethod(messageType, responseType);
+        return processAsync.Call<Task<TResponse>>(this, message, optionsConfig, token);
     }
+
+    /// <summary>
+    /// Processes the specified message asynchronously and returns the response.
+    /// </summary>
+    /// <typeparam name="TMessage">The message type.</typeparam>
+    /// <param name="message">The message to process.</param>
+    /// <param name="optionsConfig">Optional. The options configuration.</param>
+    /// <param name="token">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the response message.
+    /// </returns>
+    Task ProcessAsync<TMessage>(TMessage message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
+        where TMessage : IActionMessage
+        => ProcessAsync<object?>((IMessage<object?>)message, optionsConfig, token);
+
+    /// <summary>
+    /// Processes the specified message asynchronously and returns the response.
+    /// </summary>
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    /// <typeparam name="TMessage">The message type.</typeparam>
+    /// <param name="message">The message to process.</param>
+    /// <param name="optionsConfig">Optional. The options configuration.</param>
+    /// <param name="token">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the response message.
+    /// </returns>
+    Task<TResponse> ProcessAsync<TMessage, TResponse>(TMessage message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
+        where TMessage : IMessage<TResponse>;
 }

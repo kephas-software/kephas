@@ -28,7 +28,7 @@ namespace Kephas.Operations
         /// <returns>
         /// An object.
         /// </returns>
-        object? Execute(IContext? context = null)
+        object? Execute(IContextBase? context = null)
         {
             return this.ExecuteAsync(context).GetResultNonLocking();
         }
@@ -41,7 +41,7 @@ namespace Kephas.Operations
         /// <returns>
         /// An object.
         /// </returns>
-        async Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default)
+        async Task<object?> ExecuteAsync(IContextBase? context = null, CancellationToken cancellationToken = default)
         {
             await Task.Yield();
 

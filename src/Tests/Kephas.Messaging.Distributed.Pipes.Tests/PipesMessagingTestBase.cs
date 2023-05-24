@@ -19,19 +19,18 @@ namespace Kephas.Messaging.Pipes.Tests
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Cryptography;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Pipes.Routing;
     using Kephas.Orchestration;
     using Kephas.Serialization.Json;
-    using Kephas.Testing.Injection;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
 
-    public abstract class PipesMessagingTestBase : InjectionTestBase
+    public abstract class PipesMessagingTestBase : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
@@ -48,22 +47,32 @@ namespace Kephas.Messaging.Pipes.Tests
             };
         }
 
-        public override IInjector CreateInjector(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
-            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            var builder = base.CreateServicesBuilder(appServices, logManager, appRuntime);
+            appServices = builder.AppServices;
+            if (!appServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(appServices));
+                appServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config);
+            return builder;
+        }
+
+        protected IServiceProvider BuildServiceProvider()
+        {
+            return this.CreateServicesBuilder().BuildWithDependencyInjection();
+        }
+
+        protected IServiceProvider BuildServiceProvider(Action<IAppServiceCollectionBuilder> servicesBuilderConfig)
+        {
+            var builder = this.CreateServicesBuilder(this.CreateAppServices());
+            servicesBuilderConfig(builder);
+            return builder.BuildWithDependencyInjection();
         }
     }
 }

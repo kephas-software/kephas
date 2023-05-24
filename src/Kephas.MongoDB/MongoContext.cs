@@ -7,7 +7,7 @@
 
 namespace Kephas.MongoDB;
 
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Services;
 
 /// <summary>
@@ -18,9 +18,9 @@ public class MongoContext : Context, IMongoContext
     /// <summary>
     /// Initializes a new instance of the <see cref="MongoContext"/> class.
     /// </summary>
-    /// <param name="injector">The injector.</param>
-    public MongoContext(IInjector injector)
-        : base(injector)
+    /// <param name="serviceProvider">The injector.</param>
+    public MongoContext(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
     }
 

@@ -50,7 +50,7 @@ namespace Kephas.Orchestration.Diagnostics
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task<ProcessStartResult> StartAsync(
+        public async Task<IProcessStartResult> StartAsync(
             Action<Process>? config = null,
             CancellationToken cancellationToken = default)
         {

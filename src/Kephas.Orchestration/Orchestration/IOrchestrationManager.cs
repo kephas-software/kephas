@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Messaging;
+using Kephas.Orchestration.Endpoints;
+
 namespace Kephas.Orchestration
 {
     using System;
@@ -71,6 +74,8 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo,
+            Action<IContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default);
     }
 }

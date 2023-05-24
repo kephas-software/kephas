@@ -18,17 +18,17 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message handler for <see cref="GetServiceContractsMessage"/>.
     /// </summary>
-    public class GetServiceContractsHandler : MessageHandlerBase<GetServiceContractsMessage, GetServiceContractsResponseMessage>
+    public class GetServiceContractsHandler : IMessageHandler<GetServiceContractsMessage, GetServiceContractsResponse>
     {
-        private readonly IAmbientServices ambientServices;
+        private readonly IAppServiceCollection appServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetServiceContractsHandler"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public GetServiceContractsHandler(IAmbientServices ambientServices)
+        /// <param name="appServices">The application services.</param>
+        public GetServiceContractsHandler(IAppServiceCollection appServices)
         {
-            this.ambientServices = ambientServices;
+            this.appServices = appServices;
         }
 
         /// <summary>
@@ -40,15 +40,13 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<GetServiceContractsResponseMessage> ProcessAsync(GetServiceContractsMessage message, IMessagingContext context, CancellationToken token)
+        public Task<GetServiceContractsResponse> ProcessAsync(GetServiceContractsMessage message, IMessagingContext context, CancellationToken token)
         {
-            var appServiceInfos = this.ambientServices
-                .GetAppServiceInfos()
-                .Select(i => (IAppServiceInfo)new AppServiceInfo(i.AppServiceInfo, i.ContractDeclarationType));
+            IEnumerable<IAppServiceInfo> appServiceInfos = this.appServices;
 
             if (!string.IsNullOrEmpty(message.ContractType))
             {
-                appServiceInfos = appServiceInfos.Where(i => i.ContractType.FullName.Contains(message.ContractType));
+                appServiceInfos = appServiceInfos.Where(i => i.ContractType?.FullName?.Contains(message.ContractType) is true);
             }
 
             if (message.AllowMultiple != null)
@@ -61,7 +59,7 @@ namespace Kephas.Core.Endpoints
                 appServiceInfos = appServiceInfos.Where(i => i.AsOpenGeneric == message.AsOpenGeneric);
             }
 
-            return Task.FromResult(new GetServiceContractsResponseMessage
+            return Task.FromResult(new GetServiceContractsResponse
             {
                 ServiceInfos = appServiceInfos.ToArray(),
             });

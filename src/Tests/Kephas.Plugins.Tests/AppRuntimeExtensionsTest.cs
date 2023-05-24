@@ -13,7 +13,7 @@ namespace Kephas.Tests
     using System;
     using System.IO;
     using System.Linq;
-
+    using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Plugins.Application;
     using NUnit.Framework;
@@ -25,7 +25,10 @@ namespace Kephas.Tests
         public void GetPluginsLocation_default()
         {
             var appLocation = Path.GetFullPath("/");
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation);
+            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
+            {
+                AppFolder = appLocation,
+            });
             var pluginFolder = appRuntime.GetPluginsLocation();
 
             Assert.AreEqual(Path.Combine(appLocation, PluginsAppRuntime.DefaultPluginsFolder), pluginFolder);
@@ -36,7 +39,11 @@ namespace Kephas.Tests
         {
             var appLocation = Path.GetFullPath("/");
             var pluginsLocation = Path.Combine(appLocation, "my", "plugins");
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [PluginsAppRuntime.PluginsFolderArgName] = pluginsLocation });
+            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
+            {
+                AppFolder = appLocation,
+                AppArgs = new AppArgs { [PluginsAppRuntime.PluginsFolderArgName] = pluginsLocation },
+            });
             var pluginFolder = appRuntime.GetPluginsLocation();
 
             Assert.AreEqual(pluginsLocation, pluginFolder);
@@ -55,7 +62,11 @@ namespace Kephas.Tests
             var plugin2Location = Path.Combine(pluginsFolder, "p2");
             Directory.CreateDirectory(plugin2Location);
 
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins");
+            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
+            {
+                AppFolder = appLocation,
+                PluginsFolder = "myPlugins",
+            });
             var pluginFolders = appRuntime.GetPluginsInstallationLocations().ToList();
 
             var binFolder = appRuntime.GetAppLocation();

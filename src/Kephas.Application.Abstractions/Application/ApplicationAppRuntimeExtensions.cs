@@ -8,20 +8,16 @@
 namespace Kephas.Application;
 
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+
 using Kephas.Application.Reflection;
 using Kephas.IO;
-using Kephas.Reflection;
 
 /// <summary>
 /// Extension methods for <see cref="IAppRuntime"/>.
 /// </summary>
 public static class ApplicationAppRuntimeExtensions
 {
-    private const string GetAppAssemblyFilterToken = $"__{nameof(GetAppAssemblyFilterToken)}";
-    private const string GetLocationsToken = $"__{nameof(GetLocationsToken)}";
     internal const string FeaturesToken = $"__{nameof(FeaturesToken)}";
 
     /// <summary>
@@ -54,80 +50,6 @@ public static class ApplicationAppRuntimeExtensions
         }
 
         return appRuntime.GetFeatures().Any(f => string.Equals(f.Name, featureName, StringComparison.OrdinalIgnoreCase));
-    }
-
-    /// <summary>
-    /// Sets the callback for checking whether an assembly is an application-specific assembly.
-    /// </summary>
-    /// <typeparam name="T">The <see cref="IAppRuntime"/> type.</typeparam>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="assemblyFilter">The assembly filter.</param>
-    /// <returns>The provided application runtime.</returns>
-    public static T OnIsAppAssembly<T>(this T appRuntime, Func<AssemblyName, bool> assemblyFilter)
-        where T : IAppRuntime
-    {
-        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-        assemblyFilter = assemblyFilter ?? throw new ArgumentNullException(nameof(assemblyFilter));
-
-        appRuntime[GetAppAssemblyFilterToken] = assemblyFilter;
-
-        return appRuntime;
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether the assembly with the provided name is an application-specific assembly.
-    /// </summary>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="assemblyName">The assembly name.</param>
-    /// <returns>The assembly filter.</returns>
-    public static bool IsAppAssembly(this IAppRuntime appRuntime, AssemblyName assemblyName)
-    {
-        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-
-        if (appRuntime[GetAppAssemblyFilterToken] is Func<AssemblyName, bool> assemblyFilter)
-        {
-            return assemblyFilter(assemblyName);
-        }
-
-        return !assemblyName.IsSystemAssembly();
-    }
-
-    /// <summary>
-    /// Sets the callback for filtering the assemblies.
-    /// </summary>
-    /// <typeparam name="T">The <see cref="IAppRuntime"/> type.</typeparam>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="getLocations">The callback for getting the locations.</param>
-    /// <returns>The provided application runtime.</returns>
-    public static T OnGetLocations<T>(this T appRuntime, Func<string, string, IEnumerable<string>, ILocations> getLocations)
-        where T : IAppRuntime
-    {
-        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-        getLocations = getLocations ?? throw new ArgumentNullException(nameof(getLocations));
-
-        appRuntime[GetLocationsToken] = getLocations;
-
-        return appRuntime;
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether the assembly with the provided name is an application-specific assembly.
-    /// </summary>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="logicalName">The logical name of the locations.</param>
-    /// <param name="basePath">The base path.</param>
-    /// <param name="relativePaths">The relative paths.</param>
-    /// <returns>The assembly filter.</returns>
-    public static ILocations GetLocations(this IAppRuntime appRuntime, string logicalName, string basePath, IEnumerable<string> relativePaths)
-    {
-        appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
-
-        if (appRuntime[GetLocationsToken] is Func<string, string, IEnumerable<string>, ILocations> getLocations)
-        {
-            return getLocations(logicalName, basePath, relativePaths);
-        }
-
-        return new FolderLocations(relativePaths, basePath, logicalName);
     }
 
     /// <summary>

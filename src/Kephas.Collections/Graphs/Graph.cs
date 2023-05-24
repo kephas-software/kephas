@@ -184,7 +184,7 @@ namespace Kephas.Graphs
         /// <returns>
         /// The new node.
         /// </returns>
-        public IGraphNode<TNodeValue> AddNode(TNodeValue? value)
+        public IGraphNode<TNodeValue> AddNode(TNodeValue value)
         {
             var node = (IGraphNode<TNodeValue>)base.AddNode();
             node.Value = value;
@@ -200,7 +200,7 @@ namespace Kephas.Graphs
         /// <returns>
         /// The new edge.
         /// </returns>
-        public IGraphEdge<TNodeValue, TEdgeValue> AddEdge(IGraphNode<TNodeValue> from, IGraphNode<TNodeValue> to, TEdgeValue? edgeValue = default)
+        public IGraphEdge<TNodeValue, TEdgeValue> AddEdge(IGraphNode<TNodeValue> from, IGraphNode<TNodeValue> to, TEdgeValue edgeValue = default!)
         {
             var edge = (IGraphEdge<TNodeValue, TEdgeValue>)base.AddEdge(from, to);
             edge.Value = edgeValue;
@@ -218,7 +218,7 @@ namespace Kephas.Graphs
         /// <returns>
         /// The new edge.
         /// </returns>
-        public IGraphEdge<TNodeValue, TEdgeValue> AddEdge(TNodeValue fromValue, TNodeValue toValue, TEdgeValue? edgeValue = default)
+        public IGraphEdge<TNodeValue, TEdgeValue> AddEdge(TNodeValue fromValue, TNodeValue toValue, TEdgeValue edgeValue = default!)
         {
             var fromNodes = this.FindNodesByValue(fromValue).Take(2).ToList();
             if (fromNodes.Count > 1)

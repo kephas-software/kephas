@@ -12,7 +12,7 @@ Typically used areas and classes/interfaces/services:
 #### Example with the default licensing manager
 
 ```csharp
-ambientServices.WithDefaultLicensingManager();
+appServices.WithDefaultLicensingManager();
 ```
 
 #### Example with a custom licensing manager
@@ -23,7 +23,7 @@ public class CustomLicensingManager : ILicensingManager
     // ...
 }
 
-ambientServices.WithLicensingManager(new CustomLicensingManager());
+appServices.WithLicensingManager(new CustomLicensingManager());
 ```
 
 #### Example registering a custom license check callback
@@ -42,8 +42,8 @@ This service is the default implementation of the ``ILicensingManager`` applicat
 
 ## Other resources
 
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Operations](https://www.nuget.org/packages/Kephas.Operations)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

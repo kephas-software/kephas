@@ -21,10 +21,9 @@ namespace Kephas.Core.Tests.Operations
     public class OperationResultTest
     {
         [Test]
-        public async Task OperationResult_task_completion_sets_state()
+        public void OperationResult_complete()
         {
-            var opResult = new OperationResult(Task.FromResult((object)12));
-            await opResult.AsTask();
+            var opResult = new OperationResult(12).Complete();
 
             Assert.AreEqual(OperationState.Completed, opResult.OperationState);
             Assert.AreEqual(1f, opResult.PercentCompleted);
@@ -32,88 +31,22 @@ namespace Kephas.Core.Tests.Operations
         }
 
         [Test]
-        public async Task OperationResult_task_completion_sets_state_delay()
+        public void OperationResult_complete_exception()
         {
-            var opResult = new OperationResult(Task.Delay(100).ContinueWith(t => 12));
-            await opResult.AsTask();
-
-            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
-            Assert.AreEqual(1f, opResult.PercentCompleted);
-            Assert.AreEqual(12, opResult.Value);
+            var opResult = new ArgumentException("arg").ToOperationResult<object?>();
+            Assert.AreEqual(OperationState.Failed, opResult.OperationState);
+            Assert.AreEqual(0f, opResult.PercentCompleted);
+            Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
         }
 
         [Test]
-        public async Task OperationResult_task_completion_sets_state_exception()
-        {
-            var opResult = new OperationResult(Task.FromException(new ArgumentException("arg")));
-            await opResult.AsTask().ContinueWith(t =>
-            {
-                Assert.AreEqual(OperationState.Failed, opResult.OperationState);
-                Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
-            });
-        }
-
-        [Test]
-        public async Task OperationResult_task_completion_sets_state_canceled()
-        {
-            var opResult = new OperationResult(Task.FromCanceled(new CancellationToken(true)));
-            await opResult.AsTask().ContinueWith(t =>
-            {
-                Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
-                Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<TaskCanceledException>(() => { var _ = opResult.Value; });
-            });
-        }
-
-        [Test]
-        public async Task GetAwaiter_no_result()
-        {
-            var opResult = new OperationResult();
-            var result = await opResult.AsTask();
-
-            Assert.IsNull(result);
-        }
-
-        [Test]
-        public async Task GetAwaiter_subsequent_result()
-        {
-            var opResult = new OperationResult();
-            var result = await opResult.AsTask();
-            Assert.IsNull(result);
-
-            opResult.Value = 40;
-            result = await opResult.AsTask();
-
-            Assert.AreEqual(40, result);
-        }
-
-        [Test]
-        public async Task GetAwaiter_task()
-        {
-            var opResult = new OperationResult(Task.FromResult((object)12));
-            var result = await opResult.AsTask();
-
-            Assert.AreEqual(12, result);
-        }
-
-        [Test]
-        public async Task AsTask()
-        {
-            var opResult = new OperationResult(Task.FromResult((object)12));
-            await opResult.AsTask();
-
-            Assert.AreEqual(12, opResult.Value);
-        }
-
-        [Test]
-        public void Exceptions_Clear()
+        public void Messages_Clear()
         {
             var opResult = new OperationResult().MergeException(new InvalidOperationException());
 
-            CollectionAssert.IsNotEmpty(opResult.Exceptions);
-            opResult.Exceptions.Clear();
-            CollectionAssert.IsEmpty(opResult.Exceptions);
+            CollectionAssert.IsNotEmpty(opResult.Messages);
+            opResult.Messages.Clear();
+            CollectionAssert.IsEmpty(opResult.Messages);
         }
 
         [Test]

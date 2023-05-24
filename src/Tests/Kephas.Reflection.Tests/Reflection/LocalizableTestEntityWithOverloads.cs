@@ -8,11 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using System.ComponentModel.DataAnnotations;
-
-    using Kephas.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// The localizable test entity.

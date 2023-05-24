@@ -379,6 +379,19 @@ namespace Kephas.Operations
         }
 
         /// <summary>
+        /// Converts the provided value to a new asynchronous operation result and completes it as successful.
+        /// </summary>
+        /// <param name="value">The result value.</param>
+        /// <param name="elapsed">Optional. The elapsed time. If not provided will be set to zero.</param>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <returns>The completed operation result.</returns>
+        public static IAsyncOperationResult<TValue> ToAsyncOperationResult<TValue>(this TValue value, TimeSpan? elapsed = null)
+        {
+            return new AsyncOperationResult<TValue>(Task.FromResult(value))
+                .Complete(elapsed ?? TimeSpan.Zero, Operations.OperationState.Completed);
+        }
+
+        /// <summary>
         /// Converts the provided exception to a new operation result and completes it
         /// either as failed, canceled, timed out, or aborted, depending on the exception type.
         /// </summary>
@@ -397,14 +410,21 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Converts the provided exception to a new operation result and completes it as failed.
+        /// Converts the provided exception to a new asynchronous operation result and completes it
+        /// either as failed, canceled, timed out, or aborted, depending on the exception type.
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <param name="elapsed">Optional. The elapsed time. If not provided will be set to zero.</param>
+        /// <typeparam name="TValue">The value type.</typeparam>
         /// <returns>The failed operation result.</returns>
-        public static IOperationResult ToOperationResult(Exception exception, TimeSpan? elapsed = null)
+        public static IAsyncOperationResult<TValue> ToAsyncOperationResult<TValue>(this Exception exception, TimeSpan? elapsed = null)
         {
-            return ToOperationResult<object>(exception, elapsed);
+            exception = exception ?? throw new ArgumentNullException(nameof(exception));
+
+            var state = GetOperationState(exception);
+            return new AsyncOperationResult<TValue>(Task.FromException<TValue>(exception))
+                .MergeException(exception)
+                .Complete(elapsed ?? TimeSpan.Zero, state);
         }
 
         /// <summary>

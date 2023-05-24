@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
 {
     using System;
@@ -46,7 +44,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(PingMessage) });
 
             var contextFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IInjector>()));
+                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
 
             var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
@@ -66,7 +64,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(ExcludedMessage) });
 
             var contextFactory = this.CreateInjectableFactoryMock(() =>
-                new ModelRegistryConventions(Substitute.For<IInjector>()));
+                new ModelRegistryConventions(Substitute.For<IServiceProvider>()));
 
             var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();

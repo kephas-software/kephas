@@ -17,13 +17,14 @@ namespace Kephas.Commands.Endpoints
     using Kephas.Application;
     using Kephas.Interaction;
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A quit message handler.
     /// </summary>
-    public class QuitMessageHandler : MessageHandlerBase<QuitMessage, IMessage?>
+    public class QuitMessageHandler : IActionMessageHandler<QuitMessage>
     {
         private readonly IEventHub eventHub;
 
@@ -45,13 +46,12 @@ namespace Kephas.Commands.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<IMessage?> ProcessAsync(QuitMessage message, IMessagingContext context, CancellationToken token)
+        public async Task ProcessAsync(QuitMessage message, IMessagingContext context, CancellationToken token)
         {
             await this.eventHub.PublishAsync<InteractionContext>(
                 new ShutdownSignal("Shutdown triggered by user"),
                 ctx => ctx.Impersonate(context).OneWay().WithDelay(TimeSpan.FromSeconds(2)),
                 token).PreserveThreadContext();
-            return null;
         }
     }
 }

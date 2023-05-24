@@ -11,26 +11,26 @@ There are basically two scenarios how Kephas and Microsoft.Extensions.Logging ca
 
 ### Configure logging in Kephas, redirect from Microsoft.Extensions.Logging.
 
-This scenario should be considered when the logging in configured in ambient services, and the configured log manager is used to output the logging from `Microsoft.Extensions.Logging`.
+This scenario should be considered when the logging in configured in the services collection, and the configured log manager is used to output the logging from `Microsoft.Extensions.Logging`.
 * Advantage: The loggers are available also before the container is built.
 * Disadvantage: Kephas will log only to its own configured logger, will ignore the logger configured with `Microsoft.Extensions.Logging`.
 
 ```csharp
-// 1. configure in ambient services
-ambientServices.WithSerilogManager();
+// 1. configure in app services
+appServiceCollection.WithSerilogManager();
 
 // 2. use in Microsoft.Extensions.Logging
-servicesCollection.UseKephasLogging(ambientServices)
+servicesCollection.UseKephasLogging(appServiceCollection.GetServiceInstance<ILogManager>());
 ```
 ### Configure logging in `Microsoft.Extensions.Logging`, redirect logging from Kephas.
 
 ```csharp
-ambientServices.WithExtensionsLogManager(services);
+appServiceCollection.WithExtensionsLogManager(services);
 ```
 
 ## Other resources
 
-* [Kephas.Abstractions](https://www.nuget.org/packages/Kephas.Abstractions)
+* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 * [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 

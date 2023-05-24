@@ -46,7 +46,7 @@ public class RuntimeElementInfoFactorySourceGenerator : ISourceGenerator
         var syntaxReceiver = (SyntaxReceiver)context.SyntaxContextReceiver!;
 
         var factoryTypes = syntaxReceiver.FactoryTypes
-            .Where(t => ReflectionHelper.IsFactory(t, context))
+            .Where(t => AnalyzerReflectionHelper.IsFactory(t, context))
             .ToList();
         if (factoryTypes is { Count: 0 })
         {
@@ -67,7 +67,7 @@ using System.Runtime.CompilerServices;
 using Kephas.Application;
 using Kephas.Runtime;
 
-[assembly: Kephas.CodeAnalysis.AssemblyInitializer(typeof({initializerNamespace}.{initializerName}))]
+[assembly: AssemblyInitializer(typeof({initializerNamespace}.{initializerName}))]
 
 namespace {initializerNamespace}
 {{

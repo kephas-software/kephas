@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Messaging.Messages;
+
 namespace Kephas.Tests.Orchestration.Application
 {
     using System;
@@ -16,7 +18,6 @@ namespace Kephas.Tests.Orchestration.Application
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.Configuration.Interaction;
-    using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
@@ -41,7 +42,7 @@ namespace Kephas.Tests.Orchestration.Application
                     Arg.Any<object>(),
                     Arg.Any<Action<IDispatchingContext>>(),
                     Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult<IMessage?>(null));
+                .Returns(Task.FromResult<Response?>(null));
 
             var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));
 
@@ -74,7 +75,7 @@ namespace Kephas.Tests.Orchestration.Application
                     Arg.Any<object>(),
                     Arg.Any<Action<IDispatchingContext>>(),
                     Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult<IMessage?>(null));
+                .Returns(Task.FromResult<Response?>(null));
 
             var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));
 
@@ -110,7 +111,7 @@ namespace Kephas.Tests.Orchestration.Application
                 .Returns(ci =>
                 {
                     var ctx = new DispatchingContext(
-                        Substitute.For<IInjector>(),
+                        Substitute.For<IServiceProvider>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         Substitute.For<IMessageBroker>(),
                         appRuntime,
@@ -118,7 +119,7 @@ namespace Kephas.Tests.Orchestration.Application
                     ci.Arg<Action<IDispatchingContext>>()?.Invoke(ctx);
                     Assert.AreEqual(1, ctx.BrokeredMessage.Recipients.Count());
                     Assert.AreNotEqual(thisAppInstanceId, ctx.BrokeredMessage.Recipients.Single().AppInstanceId);
-                    return Task.FromResult<IMessage?>(null);
+                    return Task.FromResult<Response?>(null);
                 });
 
             var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));

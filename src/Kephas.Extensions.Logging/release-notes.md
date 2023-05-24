@@ -8,5 +8,5 @@
 * Added ``README.md`` and ``release-notes.md``.
 * Breaking change: `LoggingServiceCollectionExtensions` renamed to `ExtensionsLogging`.
 * Breaking change: Renamed `ConfigureExtensionsLogging` to `UseKephasLogging` and inverted the parameters.
-* Breaking change: Added `IServicesCollection` parameter to `IAmbientServices.WithExtensionsLogManager` extension method.
+* Breaking change: Added `IServicesCollection` parameter to `IAppServiceCollection.WithExtensionsLogManager` extension method.
 * Breaking change: Removed the `LoggerFactory`, use the default one from `Microsoft.Extensions.Logging`.

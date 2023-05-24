@@ -27,7 +27,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An enable plugin message handler.
     /// </summary>
-    public class EnablePluginHandler : PluginHandlerBase<EnablePluginMessage, ResponseMessage>
+    public class EnablePluginHandler : PluginHandlerBase<EnablePluginMessage, Response>
     {
         private readonly IAppContext appContext;
         private readonly IAppRuntime appRuntime;
@@ -39,14 +39,14 @@ namespace Kephas.Plugins.Endpoints
         /// <param name="appContext">Context for the application.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public EnablePluginHandler(
             IPluginManager pluginManager,
             IAppContext appContext,
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            ILogManager? logManager = null)
-            : base(pluginManager, eventHub, logManager)
+            ILogger<EnablePluginHandler>? logger = null)
+            : base(pluginManager, eventHub, logger)
         {
             this.appContext = appContext;
             this.appRuntime = appRuntime;
@@ -61,14 +61,14 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(EnablePluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(EnablePluginMessage message, IMessagingContext context, CancellationToken token)
         {
             if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
             {
                 var signal = new ScheduleStartupCommandSignal(message);
                 await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
-                return new ResponseMessage
+                return new Response
                 {
                     Message = $"The {nameof(EnablePluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
                     Severity = SeverityLevel.Warning,
@@ -81,7 +81,7 @@ namespace Kephas.Plugins.Endpoints
 
             this.appContext.Logger.Info("Plugin {plugin} enabled.", message.Id);
 
-            return new ResponseMessage
+            return new Response
             {
                 Message = $"Plugin {message.Id} enabled. It will be loaded the next time you restart the system.",
             };

@@ -17,8 +17,6 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Services;
 
-    using IMessage = Kephas.Messaging.IMessage;
-
     /// <summary>
     /// A messaging model registry.
     /// </summary>
@@ -42,7 +40,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
                 typeLoader,
                 conventions =>
                 {
-                    conventions.MarkerBaseTypes = new[] { typeof(IMessage) };
+                    conventions.MarkerBaseTypes = new[] { typeof(IMessageBase) };
                     conventions.MarkerAttributeTypes = new[] { typeof(MessagePartAttribute) };
                     conventions.IncludeClasses = true;
                     conventions.ExcludeMarkers = true;

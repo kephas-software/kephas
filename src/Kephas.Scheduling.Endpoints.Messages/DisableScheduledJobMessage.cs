@@ -10,12 +10,13 @@ namespace Kephas.Scheduling.Endpoints
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// Message for disabling a scheduled job.
     /// </summary>
     [Display(Description = "Disables the specified scheduled job.")]
-    public class DisableScheduledJobMessage : IMessage
+    public class DisableScheduledJobMessage : IMessage<Response>
     {
         /// <summary>
         /// Gets or sets the ID of the scheduled job to be disabled.

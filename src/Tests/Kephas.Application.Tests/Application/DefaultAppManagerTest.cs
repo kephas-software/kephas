@@ -19,7 +19,6 @@ namespace Kephas.Tests.Application
     using System.Threading.Tasks;
     using Kephas.Application;
     using Kephas.Application.Reflection;
-    using Kephas.Injection;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
@@ -29,7 +28,6 @@ namespace Kephas.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Tests")]
     public class DefaultAppManagerTest
     {
         [Test]
@@ -740,9 +738,9 @@ namespace Kephas.Tests.Application
             return featureManager;
         }
 
-        private IInjector GetInjector()
+        private IServiceProvider GetInjector()
         {
-            var injector = Substitute.For<IInjector>();
+            var injector = Substitute.For<IServiceProvider>();
             return injector;
         }
 

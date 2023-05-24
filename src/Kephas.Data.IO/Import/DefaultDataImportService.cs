@@ -8,16 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.IO.Import
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Data;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
@@ -89,8 +87,7 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A data import result.
         /// </returns>
-        public IOperationResult ImportDataAsync(
-            DataStream dataSource,
+        public IAsyncOperationResult ImportDataAsync(DataStream dataSource,
             Action<IDataImportContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {

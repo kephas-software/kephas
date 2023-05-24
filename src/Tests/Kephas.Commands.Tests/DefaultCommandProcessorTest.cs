@@ -26,7 +26,7 @@ namespace Kephas.Commands.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var processor = container.Resolve<ICommandProcessor>();
 
             Assert.IsInstanceOf<DefaultCommandProcessor>(processor);
@@ -35,7 +35,7 @@ namespace Kephas.Commands.Tests
         [Test]
         public async Task ProcessAsync_return_object()
         {
-            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IAmbientServices>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IServiceProvider>()));
             var cmdInfo = Substitute.For<IOperationInfo>();
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
                 .Returns(ci => ((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!");
@@ -52,7 +52,7 @@ namespace Kephas.Commands.Tests
         [Test]
         public async Task ProcessAsync_return_task()
         {
-            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IAmbientServices>()));
+            var contextFactory = this.CreateInjectableFactoryMock(() => new Context(Substitute.For<IServiceProvider>()));
             var cmdInfo = Substitute.For<IOperationInfo>();
             cmdInfo.Invoke(Arg.Any<object?>(), Arg.Any<IEnumerable<object?>>())
                 .Returns(ci => Task.FromResult<object?>(((IDynamic)ci.Arg<IEnumerable<object?>>().ToArray()[0])["hi"].ToString() + " gigi!"));

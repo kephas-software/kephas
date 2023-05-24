@@ -18,14 +18,14 @@ namespace Kephas.Scheduling.Endpoints
     /// Message for getting the running jobs.
     /// </summary>
     [Display(Description = "Gets the running jobs.")]
-    public class GetRunningJobsMessage : IMessage
+    public class GetRunningJobsMessage : IMessage<GetRunningJobsResponse>
     {
     }
 
     /// <summary>
     /// Response message for <see cref="GetRunningJobsMessage"/>.
     /// </summary>
-    public class GetRunningJobsResponseMessage : ResponseMessage
+    public class GetRunningJobsResponse : Response
     {
         /// <summary>
         /// Gets or sets the jobs data.

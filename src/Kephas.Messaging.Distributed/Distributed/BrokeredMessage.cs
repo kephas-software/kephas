@@ -23,10 +23,10 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// A message envelope.
     /// </summary>
-    public class BrokeredMessage : IBrokeredMessage
+    public record BrokeredMessage : IBrokeredMessage
     {
         private string id;
-        private IMessage content;
+        private IMessageBase? content;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessage"/> class.
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
-            this.Content = message.ToMessage()!;
+            this.Content = message.ToMessage();
         }
 
         /// <summary>
@@ -66,7 +66,11 @@ namespace Kephas.Messaging.Distributed
             get => this.id;
             set
             {
-                if (string.IsNullOrEmpty(value)) throw new System.ArgumentException("Value must not be null or empty.", nameof(value));
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Value must not be null or empty.", nameof(value));
+                }
+
                 this.id = value;
             }
         }
@@ -85,7 +89,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message sender.
         /// </value>
-        public IEndpoint Sender { get; set; }
+        public IEndpoint? Sender { get; set; }
 
         /// <summary>
         /// Gets or sets the message to send.
@@ -93,12 +97,12 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message to send.
         /// </value>
-        public IMessage Content
+        public IMessageBase? Content
         {
             get => this.content;
             set
             {
-                if (this.ReplyToMessageId == null && value == null)
+                if (this.ReplyTo == null && value == null)
                 {
                     throw new ArgumentNullException(
                         nameof(value),
@@ -106,9 +110,9 @@ namespace Kephas.Messaging.Distributed
                             .FormatWith(this, nameof(DispatchingContextExtensions.ReplyTo)));
                 }
 
-                if (value is IMessageEnvelope envelope && envelope.GetContent() is Delegate)
+                if (value is IMessageEnvelopeBase envelope && envelope.GetContent() is Delegate)
                 {
-                    throw new ArgumentException(nameof(value), Strings.BrokeredMessage_ContentCannotBeDelegate_Exception.FormatWith(value));
+                    throw new ArgumentException(Strings.BrokeredMessage_ContentCannotBeDelegate_Exception.FormatWith(value), nameof(value));
                 }
 
                 this.content = value;
@@ -154,7 +158,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the reply to message.
         /// </value>
-        public string ReplyToMessageId { get; set; }
+        public string? ReplyTo { get; set; }
 
         /// <summary>
         /// Gets or sets the bearer token.
@@ -162,7 +166,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The bearer token.
         /// </value>
-        public string BearerToken { get; set; }
+        public string? BearerToken { get; set; }
 
         /// <summary>
         /// Gets or sets the custom properties of the brokered message.
@@ -186,7 +190,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The trace.
         /// </value>
-        public string Trace { get; set; }
+        public string? Trace { get; set; }
 
         /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.
@@ -213,7 +217,7 @@ namespace Kephas.Messaging.Distributed
             var contentType = this.Content?.GetType().Name;
             var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
             var oneway = this.IsOneWay ? ", one way" : string.Empty;
-            var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $", reply to #{this.ReplyToMessageId}";
+            var reply = string.IsNullOrEmpty(this.ReplyTo) ? string.Empty : $", reply to #{this.ReplyTo}";
             return $"{this.GetType().Name} (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}{oneway}{reply}, {this.Priority} priority";
         }
 
@@ -225,21 +229,23 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A copy of this object.
         /// </returns>
-        public IBrokeredMessage Clone(IEnumerable<IEndpoint>? recipients = null)
+        IBrokeredMessage IBrokeredMessage.Clone(IEnumerable<IEndpoint>? recipients) => this.CloneCore(recipients);
+
+        /// <summary>
+        /// Makes a deep copy of this object, optionally replacing the existing recipients with the
+        /// provided ones.
+        /// </summary>
+        /// <param name="recipients">Optional. The recipients.</param>
+        /// <returns>
+        /// A copy of this object.
+        /// </returns>
+        protected virtual IBrokeredMessage CloneCore(IEnumerable<IEndpoint>? recipients = null)
         {
-            return new BrokeredMessage
+            return this with
             {
-                Id = this.Id,
-                Sender = this.Sender,
                 Recipients = recipients ?? this.Recipients?.ToArray(),
-                BearerToken = this.BearerToken,
                 content = this.Content,             // write directly into the content field, to avoid validations
-                IsOneWay = this.IsOneWay,
                 Properties = this.Properties == null ? null : new Dictionary<string, object?>(this.Properties),
-                Priority = this.Priority,
-                ReplyToMessageId = this.ReplyToMessageId,
-                Timeout = this.Timeout,
-                Trace = this.Trace,
             };
         }
     }

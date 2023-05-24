@@ -16,7 +16,6 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading.Tasks;
 
     using Kephas.Data.IO.Resources;
-    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>

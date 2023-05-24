@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Data.Tests.Conversion
 {
@@ -39,7 +39,7 @@ namespace Kephas.Data.Tests.Conversion
                 .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 5L }));
 
             var service =
-                new DefaultDataConversionService(Substitute.For<IInjector>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IServiceProvider>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(int), typeof(long)))
@@ -62,7 +62,7 @@ namespace Kephas.Data.Tests.Conversion
                 .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 6L }));
 
             var service =
-                new DefaultDataConversionService(Substitute.For<IInjector>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IServiceProvider>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(long))),
@@ -87,7 +87,7 @@ namespace Kephas.Data.Tests.Conversion
                 .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 6L }));
 
             var service =
-                new DefaultDataConversionService(Substitute.For<IInjector>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IServiceProvider>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(long), processingPriority:  Priority.Low)),
@@ -116,7 +116,7 @@ namespace Kephas.Data.Tests.Conversion
                 Arg.Any<CancellationToken>()).Returns(new StringBuilder());
 
             var service = new DefaultDataConversionService(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 new IExportFactory<IDataConverter, DataConverterMetadata>[]
                     {
                         new ExportFactory<IDataConverter, DataConverterMetadata>(
@@ -144,7 +144,7 @@ namespace Kephas.Data.Tests.Conversion
                 .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = new StringBuilder("hello") }));
 
             var service =
-                new DefaultDataConversionService(Substitute.For<IInjector>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IServiceProvider>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(StringBuilder)))
@@ -164,7 +164,7 @@ namespace Kephas.Data.Tests.Conversion
 
             var service =
                 new DefaultDataConversionService(
-                    Substitute.For<IInjector>(),
+                    Substitute.For<IServiceProvider>(),
                     new IExportFactory<IDataConverter, DataConverterMetadata>[]
                     {
                         new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
@@ -190,7 +190,7 @@ namespace Kephas.Data.Tests.Conversion
 
             var service =
                 new DefaultDataConversionService(
-                    Substitute.For<IInjector>(),
+                    Substitute.For<IServiceProvider>(),
                     new IExportFactory<IDataConverter, DataConverterMetadata>[]
                     {
                         new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
@@ -222,7 +222,7 @@ namespace Kephas.Data.Tests.Conversion
         public void ConvertAsync_object_exception()
         {
             var service = new DefaultDataConversionService(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 new IExportFactory<IDataConverter, DataConverterMetadata>[0],
                 this.GetDefaultTargetResolverFactories());
 

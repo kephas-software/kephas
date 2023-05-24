@@ -12,7 +12,6 @@ namespace Kephas.Core.Endpoints
 
     using Kephas.Application;
     using Kephas.Configuration.Interaction;
-    using Kephas.ExceptionHandling;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
@@ -22,22 +21,23 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Handler for <see cref="ConfigurationChangedSignal"/>.
     /// </summary>
-    public class ConfigurationChangedHandler : MessageHandlerBase<ConfigurationChangedSignal, ResponseMessage>
+    public class ConfigurationChangedHandler : IMessageHandler<IMessageEnvelope<ConfigurationChangedSignal>, object?>
     {
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
+        private readonly ILogger<ConfigurationChangedHandler>? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationChangedHandler"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The vent hub.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public ConfigurationChangedHandler(IAppRuntime appRuntime, IEventHub eventHub, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">Optional. The logger.</param>
+        public ConfigurationChangedHandler(IAppRuntime appRuntime, IEventHub eventHub, ILogger<ConfigurationChangedHandler>? logger = null)
         {
             this.appRuntime = appRuntime;
             this.eventHub = eventHub;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -49,24 +49,25 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(ConfigurationChangedSignal message, IMessagingContext context, CancellationToken token)
+        public async Task<object?> ProcessAsync(IMessageEnvelope<ConfigurationChangedSignal> message, IMessagingContext context, CancellationToken token)
         {
-            if (this.appRuntime.GetAppInstanceId() == message.SourceAppInstanceId)
+            var signal = message.GetContent();
+            if (this.appRuntime.GetAppInstanceId() == signal.SourceAppInstanceId)
             {
-                this.Logger.Debug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", message.SettingsType, message.SourceAppInstanceId);
-                return new ResponseMessage
+                this.logger.Debug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
+                return new Response
                 {
-                    Message = $"Ignore {nameof(ConfigurationChangedSignal)} for {message.SettingsType}, sent from the same app instance {message.SourceAppInstanceId}.",
+                    Message = $"Ignore {nameof(ConfigurationChangedSignal)} for {signal.SettingsType}, sent from the same app instance {signal.SourceAppInstanceId}.",
                 };
             }
 
-            this.Logger.Info($"Received {nameof(ConfigurationChangedSignal)} for {{settingsType}} from app instance {{app}}.", message.SettingsType, message.SourceAppInstanceId);
+            this.logger.Info($"Received {nameof(ConfigurationChangedSignal)} for {{settingsType}} from app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
 
-            await this.eventHub.PublishAsync(message, context, token).PreserveThreadContext();
+            await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
-            return new ResponseMessage
+            return new Response
             {
-                Message = $"Received {nameof(ConfigurationChangedSignal)} for {message.SettingsType} from app instance {message.SourceAppInstanceId}.",
+                Message = $"Received {nameof(ConfigurationChangedSignal)} for {signal.SettingsType} from app instance {signal.SourceAppInstanceId}.",
             };
         }
     }

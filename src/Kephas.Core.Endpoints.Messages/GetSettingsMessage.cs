@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     [Display(Description = "Gets the settings for the provided type.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class GetSettingsMessage : IMessage
+    public class GetSettingsMessage : IMessage<GetSettingsResponse>
     {
         /// <summary>
         /// Gets or sets the settings type.

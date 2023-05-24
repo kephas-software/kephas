@@ -14,6 +14,7 @@ namespace Kephas.Tests.Application
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -28,10 +29,9 @@ namespace Kephas.Tests.Application
         {
             var logger = Substitute.For<ILogger>();
             var logManager = Substitute.For<ILogManager>();
-            var ambientServices = Substitute.For<IAmbientServices>();
+            var ambientServices = Substitute.For<IAppServiceCollection>();
             var appContext = Substitute.For<IAppContext>();
-            appContext.AmbientServices.Returns(ambientServices);
-            ambientServices.LogManager.Returns(logManager);
+            appContext.AppServices.Returns(ambientServices);
             logManager.GetLogger(Arg.Any<string>()).Returns(logger);
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
 
@@ -39,7 +39,7 @@ namespace Kephas.Tests.Application
             logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
                 .Do(ci => sb.Append(ci.Arg<string>()).Append("."));
 
-            IAppLifecycleBehavior behavior = new TestAppLifecycleBehavior();
+            IAppLifecycleBehavior behavior = new TestAppLifecycleBehavior(logManager);
             await behavior.BeforeAppInitializeAsync(appContext);
             await behavior.AfterAppInitializeAsync(appContext);
             await behavior.BeforeAppFinalizeAsync(appContext);
@@ -50,6 +50,11 @@ namespace Kephas.Tests.Application
 
         public class TestAppLifecycleBehavior : AppLifecycleBehaviorBase
         {
+            public TestAppLifecycleBehavior(ILogManager logManager)
+                : base(logManager)
+            {
+            }
+
             public override Task<IOperationResult> BeforeAppInitializeAsync(
                 IAppContext appContext,
                 CancellationToken cancellationToken = default)

@@ -22,7 +22,7 @@ namespace Kephas.Commands.Messaging.Tests
     [TestFixture]
     public class MessagingCommandRegistryTest : CommandsTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
@@ -33,7 +33,7 @@ namespace Kephas.Commands.Messaging.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var registries = container.ResolveMany<ICommandRegistry>();
 
             var msgRegistry = registries.OfType<MessagingCommandRegistry>().Single();
@@ -48,14 +48,14 @@ namespace Kephas.Commands.Messaging.Tests
         [Test]
         public async Task ProcessAsync_injection_help()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var processor = container.Resolve<ICommandProcessor>();
 
             var response = await processor.ProcessAsync("help");
 
-            Assert.IsInstanceOf<HelpResponseMessage>(response);
+            Assert.IsInstanceOf<HelpResponse>(response);
 
-            var helpResponse = (HelpResponseMessage)response;
+            var helpResponse = (HelpResponse)response;
             var commands = helpResponse.Command as IEnumerable<KeyValuePair<string, string>>;
             Assert.IsTrue(commands.Any(c => c.Key == "Ping"));
             Assert.IsTrue(commands.Any(c => c.Key == "Quit"));
@@ -65,14 +65,14 @@ namespace Kephas.Commands.Messaging.Tests
         [Test]
         public async Task ProcessAsync_injection_help_indexed_params()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var processor = container.Resolve<ICommandProcessor>();
 
             var response = await processor.ProcessAsync("help", new Expando { ["help"] = true });
 
-            Assert.IsInstanceOf<HelpResponseMessage>(response);
+            Assert.IsInstanceOf<HelpResponse>(response);
 
-            var helpResponse = (HelpResponseMessage)response;
+            var helpResponse = (HelpResponse)response;
             Assert.AreEqual("Help", helpResponse.Command);
             Assert.AreEqual("Displays the available commands. Use 'help <command>' to display information about the requested command.", helpResponse.Description);
         }

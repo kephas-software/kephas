@@ -13,7 +13,7 @@ namespace Kephas.Data;
 using System;
 
 using Kephas.Configuration;
-using Kephas.Injection.AttributedModel;
+using Kephas.Services.AttributedModel;
 using Kephas.Services;
 
 /// <summary>
@@ -56,7 +56,6 @@ public class DefaultIdGenerator : IIdGenerator
     /// Initializes a new instance of the <see cref="DefaultIdGenerator"/> class.
     /// </summary>
     /// <param name="configuration">The configuration.</param>
-    [InjectConstructor]
     public DefaultIdGenerator(IConfiguration<IdGeneratorSettings> configuration)
         : this(configuration.GetSettings())
     {

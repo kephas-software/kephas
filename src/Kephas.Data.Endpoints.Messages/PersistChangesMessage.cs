@@ -18,7 +18,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A persist changes message.
     /// </summary>
-    public class PersistChangesMessage : IMessage
+    public class PersistChangesMessage : IMessage<PersistChangesResponse>
     {
         /// <summary>
         /// Gets or sets the entity entries to persist.
@@ -26,13 +26,13 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The entity entries to persist.
         /// </value>
-        public IList<DtoEntityEntry> EntityEntries { get; set; }
+        public IList<DtoEntityEntry>? EntityEntries { get; set; }
     }
 
     /// <summary>
     /// A persist changes response message.
     /// </summary>
-    public class PersistChangesResponseMessage : DataResponseMessage
+    public class PersistChangesResponse : DataResponse
     {
     }
 }

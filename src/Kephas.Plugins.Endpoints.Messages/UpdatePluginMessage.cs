@@ -15,6 +15,7 @@ namespace Kephas.Plugins.Endpoints
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
@@ -24,7 +25,7 @@ namespace Kephas.Plugins.Endpoints
     /// </summary>
     [Display(Description = "Updates the installed plugin with the indicated version. A typical usage is 'updateplugin @all', which updates all installed plugins to the latest version.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class UpdatePluginMessage : IMessage
+    public class UpdatePluginMessage : IMessage<Response>
     {
         /// <summary>
         /// Version identifier indicating the latest version available.

@@ -66,7 +66,9 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// An asynchronous result that yields the export result.
         /// </returns>
-        public IOperationResult ExportDataAsync(Action<IDataExportContext>? optionsConfig = null, CancellationToken cancellationToken = default)
+        public IAsyncOperationResult ExportDataAsync(
+            Action<IDataExportContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default)
         {
             var context = this.CreateDataExportContext(optionsConfig);
 

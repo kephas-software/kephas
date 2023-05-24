@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var message = new BrokeredMessage
                               {
-                                  Content = new PingMessage(),
+                                  Message = new PingMessage(),
                                   Sender = new Endpoint(appInstanceId: "app-instance"),
                                   Recipients =
                                       new[]
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content_delegate_not_allowed()
         {
             var message = new BrokeredMessage();
-            Assert.Throws<ArgumentException>(() => message.Content = new MessageEnvelope { Message = (Func<string, string>)((string e) => e) });
+            Assert.Throws<ArgumentException>(() => message.Message = new MessageEnvelope { Content = (Func<string, string>)((string e) => e) });
         }
 
         [Test]
@@ -69,23 +69,23 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Content_not_null()
         {
             var message = new BrokeredMessage();
-            Assert.Throws<ArgumentNullException>(() => message.Content = null);
+            Assert.Throws<ArgumentNullException>(() => message.Message = null);
         }
 
         [Test]
         public void Content_null_when_reply()
         {
             var message = new BrokeredMessage();
-            message.ReplyToMessageId = "hello";
-            message.Content = null;
+            message.ReplyTo = "hello";
+            message.Message = null;
 
-            Assert.IsNull(message.Content);
+            Assert.IsNull(message.Message);
         }
 
         [Test]
         public void Clone_empty()
         {
-            var message = new BrokeredMessage();
+            IBrokeredMessage message = new BrokeredMessage();
             var clone = message.Clone();
 
             Assert.AreEqual(message.Id, clone.Id);
@@ -94,14 +94,14 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void Clone_values()
         {
-            var message = new BrokeredMessage
+            IBrokeredMessage message = new BrokeredMessage
             {
                 BearerToken = "123",
-                Content = Substitute.For<IMessage>(),
+                Message = Substitute.For<IMessage>(),
                 IsOneWay = true,
                 Priority = Priority.High,
                 Recipients = new List<IEndpoint> { Substitute.For<IEndpoint>() },
-                ReplyToMessageId = "345",
+                ReplyTo = "345",
                 Sender = Substitute.For<IEndpoint>(),
             };
             var clone = message.Clone();
@@ -113,7 +113,7 @@ namespace Kephas.Messaging.Tests.Distributed
             Assert.AreEqual(message.Priority, clone.Priority);
             Assert.AreNotSame(message.Recipients, clone.Recipients);
             CollectionAssert.AreEqual(message.Recipients, clone.Recipients);
-            Assert.AreEqual(message.ReplyToMessageId, clone.ReplyToMessageId);
+            Assert.AreEqual(message.ReplyTo, clone.ReplyTo);
             Assert.AreSame(message.Sender, clone.Sender);
         }
     }

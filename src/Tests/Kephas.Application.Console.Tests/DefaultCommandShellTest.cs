@@ -29,7 +29,7 @@ namespace Kephas.Application.Console.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var shell = container.Resolve<ICommandShell>();
 
             Assert.IsInstanceOf<DefaultCommandShell>(shell);

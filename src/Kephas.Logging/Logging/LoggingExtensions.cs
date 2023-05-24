@@ -12,7 +12,6 @@ namespace Kephas.Logging
 {
     using System;
 
-    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>
@@ -32,7 +31,7 @@ namespace Kephas.Logging
         {
             type = type ?? throw new ArgumentNullException(nameof(type));
 
-            var logManager = context?.AmbientServices?.LogManager ?? LoggingHelper.DefaultLogManager;
+            var logManager = context?.ServiceProvider?.Resolve<ILogManager>() ?? LoggingHelper.DefaultLogManager;
             return logManager.GetLogger(type);
         }
 
@@ -47,37 +46,31 @@ namespace Kephas.Logging
         /// <returns>
         /// The logger.
         /// </returns>
-        public static ILogger GetLogger(this object obj, IContext? context = null)
+        public static ILogger GetLogger(this object obj, IContextBase? context = null)
         {
             obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
             var objType = obj as Type ?? obj.GetType();
-            if (obj is IAmbientServices ambientServices)
+            if (obj is IAppServiceCollection appServices)
             {
-                return ambientServices.LogManager.GetLogger(objType);
+                return appServices.GetServiceInstance<ILogManager>().GetLogger(objType);
             }
 
-            if (obj is IInjector injector)
+            if (obj is IServiceProvider injector)
             {
                 return injector.GetLogger(objType);
             }
 
             if (obj is IContext contextObj)
             {
-                ambientServices = contextObj.AmbientServices;
-                if (ambientServices != null)
-                {
-                    return ambientServices.LogManager.GetLogger(objType);
-                }
-
-                injector = contextObj.Injector;
+                injector = contextObj.ServiceProvider;
                 if (injector != null)
                 {
                     return injector.GetLogger(objType);
                 }
             }
 
-            var logManager = context?.AmbientServices?.LogManager ?? LoggingHelper.DefaultLogManager;
+            var logManager = context?.ServiceProvider.Resolve<ILogManager>() ?? LoggingHelper.DefaultLogManager;
             return logManager.GetLogger(objType);
         }
     }

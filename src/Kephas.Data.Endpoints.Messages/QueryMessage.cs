@@ -16,7 +16,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A query message.
     /// </summary>
-    public class QueryMessage : IMessage
+    public class QueryMessage : IMessage<QueryResponse>
     {
         /// <summary>
         /// Gets or sets the query to be executed.
@@ -24,7 +24,7 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The query to be executed.
         /// </value>
-        public ClientQuery Query { get; set; }
+        public ClientQuery? Query { get; set; }
 
         /// <summary>
         /// Gets or sets options for controlling the operation.
@@ -32,13 +32,13 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The options.
         /// </value>
-        public object Options { get; set; }
+        public object? Options { get; set; }
     }
 
     /// <summary>
     /// A query response message.
     /// </summary>
-    public class QueryResponseMessage : IResponse
+    public class QueryResponse
     {
         /// <summary>
         /// Gets or sets the entities.

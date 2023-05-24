@@ -18,7 +18,7 @@ namespace Kephas.Core.Endpoints
     /// A get log level message.
     /// </summary>
     [Display(Description = "Gets the application minimum log level.")]
-    public class GetLogLevelMessage : IMessage
+    public class GetLogLevelMessage : IMessage<GetLogLevelResponse>
     {
     }
 }

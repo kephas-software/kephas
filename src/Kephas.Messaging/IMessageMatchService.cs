@@ -8,77 +8,41 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging
+using Kephas.Services;
+
+namespace Kephas.Messaging;
+
+/// <summary>
+/// Interface for message match service.
+/// </summary>
+[SingletonAppServiceContract]
+public interface IMessageMatchService
 {
-    using System;
-
-    using Kephas.Services;
+    /// <summary>
+    /// Gets the envelope type.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <returns>
+    /// The envelope type.
+    /// </returns>
+    Type GetEnvelopeType(object message) => message.GetType();
 
     /// <summary>
-    /// Interface for message match service.
+    /// Gets the message type.
     /// </summary>
-    [SingletonAppServiceContract]
-    public interface IMessageMatchService
-    {
-        /// <summary>
-        /// Gets the message type.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>
-        /// The message type.
-        /// </returns>
-        Type GetMessageType(object message);
-
-        /// <summary>
-        /// Gets the message ID.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>
-        /// The message ID.
-        /// </returns>
-        object? GetMessageId(object message);
-
-        /// <summary>
-        /// Checks whether the message type and message ID matches the provided criteria.
-        /// </summary>
-        /// <param name="messageMatch">Provides the matching criteria.</param>
-        /// <param name="envelopeType">Type of the envelope.</param>
-        /// <param name="messageType">Type of the message.</param>
-        /// <param name="messageId">Identifier for the message.</param>
-        /// <returns>
-        /// True if the message type and ID matches the criteria, false if not.
-        /// </returns>
-        bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object? messageId);
-    }
+    /// <param name="message">The message.</param>
+    /// <returns>
+    /// The message type.
+    /// </returns>
+    Type GetMessageType(object message);
 
     /// <summary>
-    /// A message match service extensions.
+    /// Checks whether the message type and message ID matches the provided criteria.
     /// </summary>
-    public static class MessageMatchServiceExtensions
-    {
-        /// <summary>
-        /// Checks whether the message matches the provided criteria.
-        /// </summary>
-        /// <param name="messageMatchService">The message match service to act on.</param>
-        /// <param name="messageMatch">Provides the matching criteria.</param>
-        /// <param name="message">The message to check.</param>
-        /// <returns>
-        /// True if the message matches the criteria, false if not.
-        /// </returns>
-        public static bool IsMatch(
-            this IMessageMatchService messageMatchService,
-            IMessageMatch messageMatch,
-            IMessage message)
-        {
-            messageMatchService = messageMatchService ?? throw new System.ArgumentNullException(nameof(messageMatchService));
-            messageMatch = messageMatch ?? throw new System.ArgumentNullException(nameof(messageMatch));
-            message = message ?? throw new ArgumentNullException(nameof(message));
-
-            return messageMatchService.IsMatch(
-                messageMatch,
-                message.GetType(),
-                messageMatchService.GetMessageType(message),
-                messageMatchService.GetMessageId(message));
-        }
-    }
+    /// <param name="messageMatch">Provides the matching criteria.</param>
+    /// <param name="context">The messaging context.</param>
+    /// <returns>
+    /// True if the message type and ID matches the criteria, false if not.
+    /// </returns>
+    bool IsMatch(IMessageMatch messageMatch, IMessagingContext context);
 }

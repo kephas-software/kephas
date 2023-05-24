@@ -10,8 +10,6 @@ namespace Kephas.Scheduling.Endpoints
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Operations;
     using Kephas.Services;
@@ -20,7 +18,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="CancelScheduledJobMessage"/>.
     /// </summary>
-    public class CancelScheduledJobHandler : MessageHandlerBase<CancelScheduledJobMessage, CancelScheduledJobResponseMessage>
+    public class CancelScheduledJobHandler : IMessageHandler<CancelScheduledJobMessage, CancelScheduledJobResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -28,9 +26,7 @@ namespace Kephas.Scheduling.Endpoints
         /// Initializes a new instance of the <see cref="CancelScheduledJobHandler"/> class.
         /// </summary>
         /// <param name="scheduler">The scheduler.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public CancelScheduledJobHandler(IScheduler scheduler, ILogManager? logManager = null)
-            : base(logManager)
+        public CancelScheduledJobHandler(IScheduler scheduler)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +40,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<CancelScheduledJobResponseMessage> ProcessAsync(CancelScheduledJobMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<CancelScheduledJobResponse> ProcessAsync(CancelScheduledJobMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ScheduledJob == null || message.ScheduledJobId == null)
             {
@@ -60,7 +56,7 @@ namespace Kephas.Scheduling.Endpoints
 
             result.ThrowIfHasErrors();
 
-            return new CancelScheduledJobResponseMessage
+            return new CancelScheduledJobResponse
             {
                 Result = result,
             };

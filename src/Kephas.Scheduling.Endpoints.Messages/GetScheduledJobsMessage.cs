@@ -16,14 +16,14 @@ namespace Kephas.Scheduling.Endpoints
     /// Message for getting the scheduled jobs.
     /// </summary>
     [Display(Description = "Gets the scheduled jobs.")]
-    public class GetScheduledJobsMessage : IMessage
+    public class GetScheduledJobsMessage : IMessage<GetScheduledJobsResponse>
     {
     }
 
     /// <summary>
     /// Response message for <see cref="GetScheduledJobsMessage"/>.
     /// </summary>
-    public class GetScheduledJobsResponseMessage : ResponseMessage
+    public class GetScheduledJobsResponse : Response
     {
         /// <summary>
         /// Gets or sets the scheduled jobs.

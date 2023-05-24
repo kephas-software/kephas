@@ -7,7 +7,7 @@
 
 namespace Kephas.Licensing;
 
-using Kephas.Application;
+using Kephas.Runtime;
 
 /// <summary>
 /// Assembly initializer for Kephas.Licensing.
@@ -19,6 +19,6 @@ public class LicensingAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ILicensingManager, NullLicensingManager>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<ILicensingManager, NullLicensingManager>());
     }
 }

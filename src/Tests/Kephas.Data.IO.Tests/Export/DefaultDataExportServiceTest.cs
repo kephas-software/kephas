@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Data.IO.Tests.Export
 {
     using System;
@@ -20,7 +18,6 @@ namespace Kephas.Data.IO.Tests.Export
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Export;
-    using Kephas.Services;
     using Kephas.Testing;
     using NSubstitute;
 
@@ -34,7 +31,7 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryProcessor>();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IServiceProvider>()));
 
             var entities = new List<object> { "hello" };
             queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<Action<IClientQueryExecutionContext>>(), Arg.Any<CancellationToken>())
@@ -58,7 +55,7 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryProcessor>();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IServiceProvider>()));
 
             queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<Action<IClientQueryExecutionContext>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IList<object>>(new object[0]));
@@ -77,7 +74,7 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryProcessor>();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IServiceProvider>()));
 
             var entities = new List<object> { "hello" };
 
@@ -99,7 +96,7 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryProcessor>();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IServiceProvider>()));
 
             var entities = new List<object>();
 
@@ -121,7 +118,7 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryProcessor>();
-            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<IServiceProvider>()));
 
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))

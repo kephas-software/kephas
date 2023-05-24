@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
+namespace Kephas.Tests.Runtime.RuntimeTypeInfoFactory
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-
     using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Runtime.Factories;
@@ -23,7 +22,6 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
     /// Test class for <see cref="RuntimeTypeInfo"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeTypeInfoFactoryTest
     {
         [Test]

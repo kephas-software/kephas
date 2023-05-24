@@ -28,7 +28,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An uninstall plugin message handler.
     /// </summary>
-    public class UninstallPluginHandler : PluginHandlerBase<UninstallPluginMessage, ResponseMessage>
+    public class UninstallPluginHandler : PluginHandlerBase<UninstallPluginMessage, Response>
     {
         private readonly IAppContext appContext;
         private readonly IAppRuntime appRuntime;
@@ -40,14 +40,14 @@ namespace Kephas.Plugins.Endpoints
         /// <param name="appContext">Context for the application.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         public UninstallPluginHandler(
             IPluginManager pluginManager,
             IAppContext appContext,
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            ILogManager? logManager = null)
-            : base(pluginManager, eventHub, logManager)
+            ILogger<UninstallPluginHandler>? logger = null)
+            : base(pluginManager, eventHub, logger)
         {
             this.appContext = appContext;
             this.appRuntime = appRuntime;
@@ -62,14 +62,14 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(UninstallPluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<Response> ProcessAsync(UninstallPluginMessage message, IMessagingContext context, CancellationToken token)
         {
             if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
             {
                 var signal = new ScheduleStartupCommandSignal(message);
                 await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
-                return new ResponseMessage
+                return new Response
                 {
                     Message = $"The {nameof(UninstallPluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
                     Severity = SeverityLevel.Warning,
@@ -86,7 +86,7 @@ namespace Kephas.Plugins.Endpoints
 
             this.appContext.Logger.Info("Plugin {plugin} {operation} ({state}). Elapsed: {elapsed:c}.", result.Value?.Id ?? message.Id, operation, result.Value?.State, result.Elapsed);
 
-            return new ResponseMessage
+            return new Response
             {
                 Message = $"Plugin {message.Id} {operation}. Elapsed: {result.Elapsed:c}.",
             };

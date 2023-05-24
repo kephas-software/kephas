@@ -9,6 +9,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.ServicesConfigurators
 {
     using Kephas;
     using Kephas.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -26,8 +27,9 @@ namespace Kephas.AspNetCore.SignalR.Hosting.ServicesConfigurators
         /// Configure the services.
         /// </summary>
         /// <param name="services">The services to configure.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        public virtual void ConfigureServices(IServiceCollection services, IAmbientServices ambientServices)
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="appServices">The application services.</param>
+        public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration, IAppServiceCollection appServices)
         {
             services.AddSignalR();
         }

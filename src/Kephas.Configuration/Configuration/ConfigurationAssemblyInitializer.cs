@@ -7,7 +7,7 @@
 
 namespace Kephas.Configuration;
 
-using Kephas.Application;
+using Kephas.Runtime;
 
 /// <summary>
 /// Assembly initializer for configuration.
@@ -19,6 +19,6 @@ public class ConfigurationAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<IConfigurationStore, DefaultConfigurationStore>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.Add<IConfigurationStore, DefaultConfigurationStore>());
     }
 }

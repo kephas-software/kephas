@@ -15,7 +15,7 @@ namespace Kephas.Application.Console
     using System.Threading.Tasks;
 
     using Kephas.Commands;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Serialization;
     using Kephas.Services;
@@ -48,7 +48,6 @@ namespace Kephas.Application.Console
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        [InjectConstructor]
         public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, ILogManager? logManager = null)
             : base(logManager)
         {

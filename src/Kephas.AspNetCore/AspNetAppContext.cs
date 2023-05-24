@@ -26,17 +26,15 @@ namespace Kephas.Application.AspNetCore
         /// </summary>
         /// <param name="hostEnvironment">The host environment.</param>
         /// <param name="configuration">The ASP.NET configuration.</param>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided then
-        ///                               a new instance of <see cref="AmbientServices"/> will be created and used.</param>
-        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <param name="appServices">Optional. The application services. If not provided then
+        ///                               a new instance of <see cref="AppServiceCollection"/> will be created and used.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AspNetAppContext(
             IWebHostEnvironment hostEnvironment,
             IConfiguration configuration,
-            IAmbientServices ambientServices,
-            IAppRuntime? appRuntime = null,
+            IAppServiceCollection appServices,
             IAppArgs? appArgs = null)
-            : base(ambientServices, appRuntime, appArgs)
+            : base(appServices, appArgs)
         {
             this.HostEnvironment = hostEnvironment;
             this.Configuration = configuration;
@@ -48,7 +46,7 @@ namespace Kephas.Application.AspNetCore
         /// <value>
         /// The application builder.
         /// </value>
-        public IApplicationBuilder AppBuilder => this.AmbientServices.GetRequiredService<IApplicationBuilder>();
+        public IApplicationBuilder AppBuilder => this.AppServices.GetServiceInstance<IApplicationBuilder>();
 
         /// <summary>
         /// Gets the hosting environment.

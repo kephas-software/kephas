@@ -22,17 +22,20 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Handler for the <see cref="AddLicenseMessage"/>.
     /// </summary>
-    public class AddLicenseHandler : MessageHandlerBase<AddLicenseMessage, ResponseMessage>
+    public class AddLicenseHandler : IMessageHandler<AddLicenseMessage, Response>
     {
         private readonly IAppRuntime appRuntime;
+        private readonly ILogger<AddLicenseHandler>? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddLicenseHandler"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        public AddLicenseHandler(IAppRuntime appRuntime)
+        /// <param name="logger">Optional. The logger.</param>
+        public AddLicenseHandler(IAppRuntime appRuntime, ILogger<AddLicenseHandler>? logger = null)
         {
             this.appRuntime = appRuntime;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(AddLicenseMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<Response> ProcessAsync(AddLicenseMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 
@@ -75,16 +78,16 @@ namespace Kephas.Core.Endpoints
             File.WriteAllText(fileName, message.Content);
             if (oldFileRename == null)
             {
-                this.Logger.Info($"License saved to '{message.Name}' at the license location.");
-                return new ResponseMessage
+                this.logger.Info($"License saved to '{message.Name}' at the license location.");
+                return new Response
                 {
                     Message = $"License saved to '{message.Name}' at the license location.",
                     Severity = SeverityLevel.Info,
                 };
             }
 
-            this.Logger.Warn($"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.");
-            return new ResponseMessage
+            this.logger.Warn($"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.");
+            return new Response
             {
                 Message = $"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.",
                 Severity = SeverityLevel.Warning,

@@ -14,32 +14,24 @@ namespace Kephas.Messaging
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Messaging.AttributedModel;
+    using Kephas.Messaging.Resources;
     using Kephas.Services;
 
     /// <summary>
     /// Application service for handling messages.
     /// </summary>
-    public interface IMessageHandler : IDisposable
+    public interface IMessageHandler
     {
-        /// <summary>
-        /// Processes the provided message asynchronously and returns a response promise.
-        /// </summary>
-        /// <param name="message">The message to be handled.</param>
-        /// <param name="context">The processing context.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// The response promise.
-        /// </returns>
-        Task<IMessage?> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token);
     }
 
     /// <summary>
     /// Application service for handling requests.
     /// </summary>
     /// <typeparam name="TMessage">The type of the message.</typeparam>
+    /// <typeparam name="TResponse">The response type.</typeparam>
     [AppServiceContract(ContractType = typeof(IMessageHandler), AllowMultiple = true)]
-    public interface IMessageHandler<in TMessage> : IMessageHandler
+    public interface IMessageHandler<in TMessage, TResponse> : IMessageHandler
+        where TMessage : IMessage<TResponse>
     {
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
@@ -50,6 +42,6 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        Task<IMessage?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
+        Task<TResponse> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
     }
 }

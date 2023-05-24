@@ -156,7 +156,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(
+        protected override async Task<(RoutingInstruction action, object? reply)> RouteOutputAsync(
             IBrokeredMessage brokeredMessage,
             IDispatchingContext context,
             CancellationToken cancellationToken)
@@ -258,7 +258,7 @@ namespace Kephas.Messaging.Pipes.Routing
                 : recipient.AppInstanceId;
         }
 
-        private async Task<(RoutingInstruction action, IMessage? reply)> PublishAsync(
+        private async Task<(RoutingInstruction action, object? reply)> PublishAsync(
             IBrokeredMessage message,
             IDispatchingContext context,
             string appInstanceId,

@@ -22,7 +22,7 @@ namespace Kephas.Orchestration.Endpoints
     /// </summary>
     [Display(Description = "Stops a worker application instance.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class StopAppMessage : IMessage
+    public class StopAppMessage : IMessage<StopAppResponse>
     {
         /// <summary>
         /// Gets or sets the identifier of the application.
@@ -46,7 +46,7 @@ namespace Kephas.Orchestration.Endpoints
     /// <summary>
     /// A stop application response message.
     /// </summary>
-    public class StopAppResponseMessage : ResponseMessage
+    public class StopAppResponse : Response
     {
         /// <summary>
         /// Gets or sets the identifier of the process.

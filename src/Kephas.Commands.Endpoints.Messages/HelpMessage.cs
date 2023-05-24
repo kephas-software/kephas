@@ -21,8 +21,8 @@ namespace Kephas.Commands.Endpoints
     /// A help message.
     /// </summary>
     [Display(Description = "Displays the available commands. Use 'help <command>' to display information about the requested command.")]
-    [ReturnType(typeof(HelpResponseMessage))]
-    public class HelpMessage : IMessage
+    [ReturnType(typeof(HelpResponse))]
+    public class HelpMessage : IMessage<HelpResponse>
     {
         /// <summary>
         /// Gets or sets the command.
@@ -37,7 +37,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// A help response message.
     /// </summary>
-    public class HelpResponseMessage : IResponse
+    public class HelpResponse
     {
         /// <summary>
         /// Gets or sets the command.

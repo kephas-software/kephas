@@ -24,18 +24,18 @@ namespace Kephas.Extensions.Configuration
         /// <summary>
         /// Uses the extensions configuration.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="appServices">The app services to act on.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns>
-        /// The provided ambient services.
+        /// The provided app services.
         /// </returns>
-        public static IAmbientServices UseConfiguration(this IAmbientServices ambientServices, IConfiguration configuration)
+        public static IAppServiceCollection UseConfiguration(this IAppServiceCollection appServices, IConfiguration configuration)
         {
-            ambientServices = ambientServices ?? throw new ArgumentNullException(nameof(ambientServices));
+            appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
 
-            ambientServices.Register<IConfigurationStore>(new ConfigurationStore(configuration, ambientServices.GetTypeRegistry()));
+            appServices.Add<IConfigurationStore>(new ConfigurationStore(configuration, appServices.GetTypeRegistry()));
 
-            return ambientServices;
+            return appServices;
         }
     }
 }

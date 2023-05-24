@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Orchestration
 {
@@ -51,11 +51,11 @@ namespace Kephas.Orchestration
     {
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
         private readonly IHostInfoProvider hostInfoProvider;
-        private Timer heartbeatTimer;
+        private readonly Lazy<string> lazyRootAppInstanceId;
+        private Timer? heartbeatTimer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
         private IEventSubscription appHeartbeatSubscription;
-        private readonly Lazy<string> lazyRootAppInstanceId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
@@ -167,7 +167,7 @@ namespace Kephas.Orchestration
         /// <value>
         /// The live apps cache.
         /// </value>
-        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ConcurrentDictionary<string, IAppEvent>();
+        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ();
 
         /// <summary>
         /// Initializes the service asynchronously.
@@ -297,7 +297,10 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StopAppAsync(
+            IRuntimeAppInfo runtimeAppInfo,
+            Action<IContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default)
         {
             this.Logger.Info("Stopping application {appInstanceId}...", runtimeAppInfo.AppInstanceId);
 
@@ -312,11 +315,9 @@ namespace Kephas.Orchestration
                         stopMessage,
                         ctx => ctx.Merge(optionsConfig),
                         cancellationToken).PreserveThreadContext();
-                    return new OperationResult
-                    {
-                        OperationState = OperationState.Completed,
-                        [nameof(StopAppResponseMessage)] = response,
-                    };
+                    IOperationResult result = new OperationResult().Complete();
+                    result[nameof(StopAppResponse)] = response;
+                    return result;
                 }
                 else
                 {
@@ -342,21 +343,19 @@ namespace Kephas.Orchestration
                         }
                     }
 
-                    return new OperationResult
+                    IOperationResult result = new OperationResult
                     {
                         OperationState = stopped ? OperationState.Completed : OperationState.InProgress,
-                        [nameof(StopAppResponseMessage)] = stopped ? new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId } : null,
                     };
+                    result[nameof(StopAppResponse)] = stopped ? new StopAppResponse { ProcessId = runtimeAppInfo.ProcessId } : null;
+                    return result;
                 }
             }
             catch (Exception ex)
             {
                 // TODO localization
                 this.Logger.Error(ex, $"Error while trying to stop application {runtimeAppInfo}.");
-                return new OperationResult
-                {
-                    OperationState = OperationState.Failed,
-                }.MergeException(ex);
+                return new OperationResult().Fail(ex);
             }
         }
 

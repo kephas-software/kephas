@@ -22,13 +22,14 @@ namespace Kephas.Plugins.NuGet.Tests
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Plugins.Application;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using NUnit.Framework;
 
     [TestFixture]
-    public class NuGetPluginManagerTest : InjectionTestBase
+    public class NuGetPluginManagerTest : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = new List<Assembly>(base.GetAssemblies())
             {
@@ -45,14 +46,16 @@ namespace Kephas.Plugins.NuGet.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var manager = container.Resolve<IPluginManager>();
 
             Assert.IsInstanceOf<NuGetPluginManager>(manager);
         }
 
         [Test]
-        public async Task InstallPluginAsync()
+        [TestCase("kephas mailkit exchange online", "Kephas.Mail.MailKit.ExchangeOnline", "11.1.0", false)]
+        [TestCase("kephas", "Kephas.Core", "11.0.0", true)]
+        public async Task InstallPluginAsync(string tags, string packageId, string packageVersion, bool hasResources)
         {
             var tempFolder = Path.GetTempPath();
             var pluginsFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
@@ -60,25 +63,29 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.CreateInjector(
-                    config: b => b.ForFactory<ISettingsProvider>(
-                        _ => new PluginsSettingsProvider("tags:kephas"))
-                        .Singleton()
-                        .AllowMultiple(),
-                    appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
+                var appServices = new AppServiceCollection()
+                    .Add<ISettingsProvider>(
+                        _ => new PluginsSettingsProvider($"tags:{tags}"),
+                        b => b.Singleton().AllowMultiple());
+                var container = this.CreateServicesBuilder(appServices)
+                    .WithAppRuntime(this.CreateAppRuntime(new DebugLogManager(), pluginsFolder))
+                    .BuildWithDependencyInjection();
                 var manager = container.Resolve<IPluginManager>();
 
-                var result = await manager.InstallPluginAsync(new AppIdentity("Kephas.Core", "11.0.0"));
+                var result = await manager.InstallPluginAsync(new AppIdentity(packageId, packageVersion));
 
                 var pluginData = result.Value;
-                Assert.AreEqual(new AppIdentity("Kephas.Core", "11.0.0"), pluginData.Identity);
+                Assert.AreEqual(new AppIdentity(packageId, packageVersion), pluginData.Identity);
 
-                var pluginLocation = Path.Combine(pluginsFolder, "Kephas.Core");
+                var pluginLocation = Path.Combine(pluginsFolder, packageId);
                 Assert.AreEqual(pluginLocation, pluginData.Location);
                 Assert.AreEqual(PluginState.Enabled, pluginData.State);
 
-                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "Kephas.Core.dll")), "File Kephas.Core.dll does not exist.");
-                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "de-DE", "Kephas.Core.resources.dll")), "File de-DE/Kephas.Core.resources.dll does not exist.");
+                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, $"{packageId}.dll")), $"File {packageId}.dll does not exist.");
+                if (hasResources)
+                {
+                    Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "de-DE", $"{packageId}.resources.dll")), $"File de-DE/{packageId}.resources.dll does not exist.");
+                }
             }
             finally
             {
@@ -87,7 +94,8 @@ namespace Kephas.Plugins.NuGet.Tests
         }
 
         [Test]
-        public async Task InstallPluginAsync_with_contentFiles()
+        [TestCase("kismsspplugin", "Kis.Logging.Seq", "4.0.0", true)]
+        public async Task InstallPluginAsync_with_contentFiles(string tags, string packageId, string packageVersion, bool hasResources)
         {
             var tempFolder = Path.GetTempPath();
             var pluginsFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
@@ -95,24 +103,25 @@ namespace Kephas.Plugins.NuGet.Tests
 
             try
             {
-                var container = this.CreateInjector(
-                    config: b => b.ForFactory<ISettingsProvider>(
-                        _ => new PluginsSettingsProvider("tags:kismsspplugin"))
-                        .Singleton()
-                        .AllowMultiple(),
-                    appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
+                var appServices = new AppServiceCollection()
+                    .Add<ISettingsProvider>(
+                        _ => new PluginsSettingsProvider($"tags:{tags}"),
+                        b => b.Singleton().AllowMultiple());
+                var container = this.CreateServicesBuilder(appServices)
+                    .WithAppRuntime(this.CreateAppRuntime(new DebugLogManager(), pluginsFolder))
+                    .BuildWithDependencyInjection();
                 var manager = container.Resolve<IPluginManager>();
 
-                var result = await manager.InstallPluginAsync(new AppIdentity("Kis.Logging.Seq", "4.0.0"));
+                var result = await manager.InstallPluginAsync(new AppIdentity(packageId, packageVersion));
 
                 var pluginData = result.Value;
-                Assert.AreEqual(new AppIdentity("Kis.Logging.Seq", "4.0.0"), pluginData.Identity);
+                Assert.AreEqual(new AppIdentity(packageId, packageVersion), pluginData.Identity);
 
-                var pluginLocation = Path.Combine(pluginsFolder, "Kis.Logging.Seq");
+                var pluginLocation = Path.Combine(pluginsFolder, packageId);
                 Assert.AreEqual(pluginLocation, pluginData.Location);
                 Assert.AreEqual(PluginState.Enabled, pluginData.State);
 
-                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "Kis.Logging.Seq.dll")), "File Kis.Logging.Seq.dll does not exist.");
+                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, $"{packageId}.dll")), $"File {packageId}.dll does not exist.");
                 Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "Config", "logSettings.json")), "File Config/logSettings.json does not exist.");
             }
             finally
@@ -123,8 +132,12 @@ namespace Kephas.Plugins.NuGet.Tests
 
         private PluginsAppRuntime CreateAppRuntime(ILogManager logManager, string? pluginsPath = null)
         {
-            var appRuntime = new PluginsAppRuntime(logManager.GetLogger, pluginsFolder: pluginsPath)
-                .OnIsAppAssembly(this.IsNotTestAssembly);
+            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
+                {
+                    GetLogger = logManager.GetLogger,
+                    PluginsFolder = pluginsPath,
+                    IsAppAssembly = this.IsNotTestAssembly,
+                });
             return appRuntime;
         }
 

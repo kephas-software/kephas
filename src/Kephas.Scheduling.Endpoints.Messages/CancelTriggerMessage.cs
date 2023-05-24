@@ -18,7 +18,7 @@ namespace Kephas.Scheduling.Endpoints
     /// Message for canceling a trigger.
     /// </summary>
     [Display(Description = "Cancels the trigger with the given ID.")]
-    public class CancelTriggerMessage : IMessage
+    public class CancelTriggerMessage : IMessage<CancelTriggerResponse>
     {
         /// <summary>
         /// Gets or sets the identifier of the trigger to be canceled.
@@ -33,9 +33,9 @@ namespace Kephas.Scheduling.Endpoints
     }
 
     /// <summary>
-    /// Response for <see cref="CancelTriggerResponseMessage"/>.
+    /// Response for <see cref="CancelTriggerResponse"/>.
     /// </summary>
-    public class CancelTriggerResponseMessage : ResponseMessage
+    public class CancelTriggerResponse : Response
     {
         /// <summary>
         /// Gets or sets the result of the cancel trigger operation.

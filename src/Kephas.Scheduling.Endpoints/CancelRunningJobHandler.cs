@@ -10,8 +10,6 @@ namespace Kephas.Scheduling.Endpoints
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Operations;
     using Kephas.Services;
@@ -20,7 +18,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Message handler for <see cref="CancelRunningJobMessage"/>.
     /// </summary>
-    public class CancelRunningJobHandler : MessageHandlerBase<CancelRunningJobMessage, CancelRunningJobResponseMessage>
+    public class CancelRunningJobHandler : IMessageHandler<CancelRunningJobMessage, CancelRunningJobResponse>
     {
         private readonly IScheduler scheduler;
 
@@ -28,9 +26,7 @@ namespace Kephas.Scheduling.Endpoints
         /// Initializes a new instance of the <see cref="CancelRunningJobHandler"/> class.
         /// </summary>
         /// <param name="scheduler">The scheduler.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
-        public CancelRunningJobHandler(IScheduler scheduler, ILogManager? logManager = null)
-            : base(logManager)
+        public CancelRunningJobHandler(IScheduler scheduler)
         {
             this.scheduler = scheduler;
         }
@@ -44,7 +40,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<CancelRunningJobResponseMessage> ProcessAsync(CancelRunningJobMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<CancelRunningJobResponse> ProcessAsync(CancelRunningJobMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.RunningJob == null || message.RunningJobId == null)
             {
@@ -60,7 +56,7 @@ namespace Kephas.Scheduling.Endpoints
 
             result.ThrowIfHasErrors();
 
-            return new CancelRunningJobResponseMessage
+            return new CancelRunningJobResponse
             {
                 Result = result,
             };

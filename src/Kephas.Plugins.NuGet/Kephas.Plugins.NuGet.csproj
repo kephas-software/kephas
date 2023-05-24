@@ -49,11 +49,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
-        <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
         <ProjectReference Include="..\Kephas.Plugins\Kephas.Plugins.csproj" />
@@ -71,7 +66,7 @@
         <PackageReference Include="NuGet.Protocol" Version="6.1.0" />
         <PackageReference Include="NuGet.Resolver" Version="6.1.0" />
         <PackageReference Include="NuGet.Versioning" Version="6.1.0" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -93,7 +88,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>

@@ -21,7 +21,7 @@
         <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -36,18 +36,14 @@
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj" />
         <ProjectReference Include="..\..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
-        <ProjectReference Include="..\..\Kephas.Injection\Kephas.Injection.csproj" />
-        <ProjectReference Include="..\..\Kephas.Injection.Autofac\Kephas.Injection.Autofac.csproj" />
+        <ProjectReference Include="..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
+        <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
+        <ProjectReference Include="..\..\Kephas.Services.Autofac\Kephas.Services.Autofac.csproj" />
         <ProjectReference Include="..\..\Kephas.Licensing\Kephas.Licensing.csproj" />
         <ProjectReference Include="..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
         <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
         <ProjectReference Include="..\..\Kephas.Security.Cryptography\Kephas.Security.Cryptography.csproj" />
         <ProjectReference Include="..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Remove="stylecop.json" />
-        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>

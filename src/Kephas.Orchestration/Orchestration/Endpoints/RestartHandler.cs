@@ -23,7 +23,7 @@ namespace Kephas.Orchestration.Endpoints
     /// <summary>
     /// A restart message handler.
     /// </summary>
-    public class RestartHandler : MessageHandlerBase<RestartMessage, ResponseMessage>
+    public class RestartHandler : IMessageHandler<RestartMessage, Response>
     {
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
@@ -58,9 +58,9 @@ namespace Kephas.Orchestration.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage?> ProcessAsync(RestartMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<Response> ProcessAsync(RestartMessage message, IMessagingContext context, CancellationToken token)
         {
-            var response = new ResponseMessage();
+            var response = new Response();
 
             if (this.appRuntime.IsRoot)
             {

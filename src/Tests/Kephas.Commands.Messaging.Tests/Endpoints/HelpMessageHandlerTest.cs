@@ -88,12 +88,12 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
             Assert.AreEqual("IncludePrerelease/pre (System.Boolean): Includes prerelease.", helpResponse.Parameters[0]);
         }
 
-        public class NullableParamMessage : IMessage
+        public class NullableParamMessage : IMessage<object?>
         {
             public DateTime? StartTime { get; set; }
         }
 
-        public class LongParamMessage : IMessage
+        public class LongParamMessage : IMessage<object?>
         {
             [Display(ShortName = "pre", Description = "Includes prerelease.")]
             public bool IncludePrerelease { get; set; }

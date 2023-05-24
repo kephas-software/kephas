@@ -19,7 +19,7 @@ namespace Kephas.Core.Endpoints
     /// A hash message.
     /// </summary>
     [Display(Description = "Hashes the provided value, using an optional salt.")]
-    public class HashMessage : IMessage
+    public class HashMessage : IMessage<HashResponse>
     {
         /// <summary>
         /// Gets or sets the value to hash.

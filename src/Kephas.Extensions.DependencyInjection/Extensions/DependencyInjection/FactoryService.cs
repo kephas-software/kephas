@@ -7,7 +7,7 @@
 
 namespace Kephas.Extensions.DependencyInjection;
 
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Services;
 
 /// <summary>
@@ -62,6 +62,16 @@ public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, T
     /// <param name="serviceProvider">The service provider.</param>
     public FactoryService(IServiceProvider serviceProvider)
         : this(() => serviceProvider.GetRequiredService<TImplementation>(), ServiceHelper.GetServiceMetadata<TMetadata>(typeof(TImplementation), typeof(T)))
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FactoryService{T, TImplementation, TMetadata}"/> class.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <param name="metadata">The metadata.</param>
+    internal FactoryService(IServiceProvider serviceProvider, IDictionary<string, object?>? metadata)
+        : this(() => serviceProvider.GetRequiredService<TImplementation>(), ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
     {
     }
 

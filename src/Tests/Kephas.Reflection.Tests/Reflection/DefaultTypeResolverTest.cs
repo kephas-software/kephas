@@ -8,18 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text;
-
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -65,8 +63,8 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("Kephas.IAmbientServices, Kephas.Injection");
-            Assert.AreSame(typeof(IAmbientServices), type);
+            var type = resolver.ResolveType("Kephas.IAppServiceCollection, Kephas.Services");
+            Assert.AreSame(typeof(IAppServiceCollection), type);
         }
 
         [Test]
@@ -74,8 +72,8 @@ namespace Kephas.Core.Tests.Reflection
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
-            var type = resolver.ResolveType("IAmbientServices, Kephas.Injection");
-            Assert.AreSame(typeof(IAmbientServices), type);
+            var type = resolver.ResolveType("IAppServiceCollection, Kephas.Services");
+            Assert.AreSame(typeof(IAppServiceCollection), type);
         }
 
         [Test]

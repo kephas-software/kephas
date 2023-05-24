@@ -17,7 +17,7 @@ namespace Kephas.Scheduling.Jobs
     /// <summary>
     /// Interface for job result.
     /// </summary>
-    public interface IJobResult : IOperationResult
+    public interface IJobResult : IAsyncOperationResult
     {
         /// <summary>
         /// Gets the identifier of the scheduled job.
@@ -84,6 +84,6 @@ namespace Kephas.Scheduling.Jobs
         /// Cancels the background job.
         /// </summary>
         /// <returns>An operation result to await.</returns>
-        IOperationResult Cancel();
+        IAsyncOperationResult Cancel();
     }
 }

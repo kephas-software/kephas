@@ -10,6 +10,7 @@ namespace Kephas.Orchestration.Endpoints
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
 
@@ -18,7 +19,7 @@ namespace Kephas.Orchestration.Endpoints
     /// </summary>
     [Display(Description = "Restarts the worker application instances.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class RestartMessage : IMessage
+    public class RestartMessage : IMessage<Response>
     {
     }
 }

@@ -58,11 +58,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
-        <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
@@ -71,23 +66,14 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='netstandard2.1'">
-            <ItemGroup>
-                <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-            </ItemGroup>
-        </When>
-    </Choose>
-
-
     <ItemGroup>
-        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
@@ -96,6 +82,10 @@
         <None Remove="LinkerConfig.xml" />
         <EmbeddedResource Include="LinkerConfig.xml">
             <LogicalName>ILLink.Descriptors.xml</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppAbstractionStrings.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>AppAbstractionStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 
@@ -109,12 +99,17 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>ApplicationStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <Compile Update="Resources\AppAbstractionStrings.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>AppAbstractionStrings.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Interaction\Kephas.Interaction.csproj" />
+        <ProjectReference Include="..\Kephas.IO\Kephas.IO.csproj" />
         <ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />
         <ProjectReference Include="..\Kephas.Reflection.Dynamic\Kephas.Reflection.Dynamic.csproj" />
         <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />

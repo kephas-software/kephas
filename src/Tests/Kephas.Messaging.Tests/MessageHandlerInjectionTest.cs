@@ -15,23 +15,21 @@ namespace Kephas.Messaging.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Messaging.AttributedModel;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageHandlerAutofacInjectionTest : AutofacInjectionTestBase
+    public class MessageHandlerAutofacInjectionTest : TestBase
     {
         [Test]
         public void Injection_single_handler()
         {
-            var container = this.CreateInjector(parts: new[]
-                                                            {
-                                                                typeof(IMessageHandler),
-                                                                typeof(IMessageHandler<>),
-                                                                typeof(HiTestHandler)
-                                                            });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(IMessageHandler), typeof(IMessageHandler<>), typeof(HiTestHandler))
+                .BuildWithAutofac();
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
@@ -48,13 +46,9 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void Injection_two_handlers()
         {
-            var container = this.CreateInjector(parts: new[]
-                                                            {
-                                                                typeof(IMessageHandler),
-                                                                typeof(IMessageHandler<>),
-                                                                typeof(HiTestHandler),
-                                                                typeof(ThereTestHandler),
-                                                            });
+            var container = this.CreateServicesBuilder()
+                .WithParts(typeof(IMessageHandler), typeof(IMessageHandler<>), typeof(HiTestHandler), typeof(ThereTestHandler))
+                .BuildWithAutofac();
 
             var handlers = container.ResolveMany<IMessageHandler>().ToList();
 
@@ -70,18 +64,18 @@ namespace Kephas.Messaging.Tests
         }
 
         [MessageHandler("Hi")]
-        public class HiTestHandler : MessageHandlerBase<IMessage, IMessage>
+        public class HiTestHandler : IMessageHandler<IMessage>
         {
-            public override async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+            public async Task<object?> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new NotImplementedException();
             }
         }
 
         [MessageHandler("There")]
-        public class ThereTestHandler : MessageHandlerBase<IMessage, IMessage>
+        public class ThereTestHandler : IMessageHandler<IMessage>
         {
-            public override async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
+            public async Task<object?> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new NotImplementedException();
             }

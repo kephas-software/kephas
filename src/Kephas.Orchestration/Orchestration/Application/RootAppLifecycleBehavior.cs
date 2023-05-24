@@ -96,7 +96,7 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// Gets or sets the worker processes.
         /// </summary>
-        protected IList<ProcessStartResult>? WorkerProcesses { get; set; }
+        protected IList<IProcessStartResult>? WorkerProcesses { get; set; }
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
@@ -193,7 +193,7 @@ namespace Kephas.Orchestration.Application
                 (await this.OrchestrationManager.GetLiveAppsAsync(cancellationToken: cancellationToken)
                     .PreserveThreadContext())
                 .ToList();
-            var startTasks = new List<Task<ProcessStartResult>>();
+            var startTasks = new List<Task<IProcessStartResult>>();
             this.Logger.Info("Starting worker application instances...");
 
             foreach (var appInstanceEntry in this.GetWorkerSettings(liveApps, appContext))
@@ -284,7 +284,7 @@ namespace Kephas.Orchestration.Application
             this.Logger.Info($"Stopping worker application instances: {string.Join(", ", liveApps.Select(r => r.AppInstanceId))}");
 
             var rootAppInstanceId = this.AppRuntime.GetAppInstanceId();
-            var stopTasks = new List<Task<StopAppResponseMessage>>();
+            var stopTasks = new List<Task<StopAppResponse>>();
             foreach (var runtimeAppInfo in liveApps)
             {
                 // we are the master now, ignore this live app role
@@ -378,7 +378,7 @@ namespace Kephas.Orchestration.Application
             foreach (var processStartResult in this.WorkerProcesses.ToList()
                 .Where(processStartResult => processStartResult.Process.HasExited))
             {
-                if (!(processStartResult[nameof(AppInfo)] is IAppInfo appInfo))
+                if (processStartResult[nameof(AppInfo)] is not IAppInfo appInfo)
                 {
                     continue;
                 }
@@ -422,13 +422,13 @@ namespace Kephas.Orchestration.Application
         /// <param name="appContext">The application context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result yielding the <see cref="ProcessStartResult"/>.</returns>
-        protected virtual async Task<ProcessStartResult> StartWorkerProcessAsync(
+        protected virtual async Task<IProcessStartResult> StartWorkerProcessAsync(
             IAppInfo appInfo,
             AppSettings? appSettings,
             IAppContext appContext,
             CancellationToken cancellationToken)
         {
-            return (ProcessStartResult)await this.OrchestrationManager
+            return (IProcessStartResult)await this.OrchestrationManager
                 .StartAppAsync(appInfo, appSettings?.Args ?? new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
                 .PreserveThreadContext();
         }
@@ -442,7 +442,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task<StopAppResponseMessage> StopWorkerProcessAsync(
+        protected virtual async Task<StopAppResponse> StopWorkerProcessAsync(
             IRuntimeAppInfo runtimeAppInfo,
             IAppContext appContext,
             CancellationToken cancellationToken)
@@ -459,7 +459,7 @@ namespace Kephas.Orchestration.Application
                 .StopAppAsync(runtimeAppInfo, ctx => ctx.Impersonate(appContext), cancellationToken)
                 .PreserveThreadContext();
 
-            var message = result[nameof(StopAppResponseMessage)] as StopAppResponseMessage;
+            var message = result[nameof(StopAppResponse)] as StopAppResponse;
             return message!;
         }
 
@@ -508,7 +508,7 @@ namespace Kephas.Orchestration.Application
             return secondsToWait;
         }
 
-        private int? TryGetProcessId(ProcessStartResult processStartResult)
+        private int? TryGetProcessId(IProcessStartResult processStartResult)
         {
             try
             {

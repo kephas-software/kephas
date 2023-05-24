@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Data.IO.Import
 {
@@ -26,9 +26,9 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Initializes a new instance of the <see cref="DataImportContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        public DataImportContext(IInjector injector)
-            : base(injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public DataImportContext(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
 

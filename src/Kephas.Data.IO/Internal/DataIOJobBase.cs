@@ -40,18 +40,18 @@ namespace Kephas.Data.IO.Internal
         /// <summary>
         /// Gets the result.
         /// </summary>
-        protected IOperationResult Result { get; private set; }
+        protected IAsyncOperationResult Result { get; private set; }
 
         /// <summary>
         /// Executes the job.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The operation result.</returns>
-        public IOperationResult ExecuteAsync(CancellationToken cancellationToken)
+        public IAsyncOperationResult ExecuteAsync(CancellationToken cancellationToken)
         {
             this.stopwatch = Stopwatch.StartNew();
             this.taskCompletionSource = new TaskCompletionSource<IOperationResult>();
-            this.Result = new OperationResult(this.taskCompletionSource.Task)
+            this.Result = new AsyncOperationResult(this.taskCompletionSource.Task)
             {
                 OperationState = OperationState.InProgress,
             };

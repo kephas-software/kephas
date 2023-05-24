@@ -23,12 +23,12 @@ namespace Kephas.Messaging.Tests.Events
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutofacMessagingEventHubTest : AutofacMessagingTestBase
+    public class AutofacMessagingEventHubTest : MessagingTestBase
     {
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder().BuildWithAutofac();
             var hub = container.Resolve<IEventHub>();
 
             Assert.IsNotNull(hub);
@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Tests.Events
         public async Task Subscribe_subscription_called()
         {
             var matchService = Substitute.For<IMessageMatchService>();
-            matchService.IsMatch(Arg.Any<IMessageMatch>(), Arg.Any<Type>(), Arg.Any<Type>(), Arg.Any<object>()).Returns(true);
+            matchService.IsMatch(Arg.Any<IMessageMatch>(), (IMessagingContext)Arg.Any<Type>()).Returns(true);
             var hub = new MessagingEventHub(Substitute.For<IInjectableFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
@@ -57,7 +57,7 @@ namespace Kephas.Messaging.Tests.Events
         public async Task Subscribe_subscription_not_called_if_no_match()
         {
             var matchService = Substitute.For<IMessageMatchService>();
-            matchService.IsMatch(Arg.Any<IMessageMatch>(), Arg.Any<Type>(), Arg.Any<Type>(), Arg.Any<object>()).Returns(false);
+            matchService.IsMatch(Arg.Any<IMessageMatch>(), (IMessagingContext)Arg.Any<Type>()).Returns(false);
             var hub = new MessagingEventHub(Substitute.For<IInjectableFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
@@ -75,7 +75,7 @@ namespace Kephas.Messaging.Tests.Events
         public async Task Subscribe_multiple_subscriptions_called()
         {
             var matchService = Substitute.For<IMessageMatchService>();
-            matchService.IsMatch(Arg.Any<IMessageMatch>(), Arg.Any<Type>(), Arg.Any<Type>(), Arg.Any<object>()).Returns(true);
+            matchService.IsMatch(Arg.Any<IMessageMatch>(), (IMessagingContext)Arg.Any<Type>()).Returns(true);
             var hub = new MessagingEventHub(Substitute.For<IInjectableFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
             var s1calls = 0;
             var s2calls = 0;

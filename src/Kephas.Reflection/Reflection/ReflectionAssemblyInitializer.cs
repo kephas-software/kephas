@@ -20,7 +20,7 @@ public class ReflectionAssemblyInitializer : IAssemblyInitializer
     /// </summary>
     public void Initialize()
     {
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<ITypeLoader, DefaultTypeLoader>());
-        IAmbientServices.RegisterInitializer(ambient => ambient.Register<IRuntimeTypeRegistry>(RuntimeTypeRegistry.Instance, b => b.ExternallyOwned()));
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<ITypeLoader, DefaultTypeLoader>());
+        IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<IRuntimeTypeRegistry>(RuntimeTypeRegistry.Instance, b => b.ExternallyOwned()));
     }
 }

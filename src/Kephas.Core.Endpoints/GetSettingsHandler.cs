@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Core.Endpoints
 {
@@ -21,21 +21,21 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A get settings handler.
     /// </summary>
-    public class GetSettingsHandler : MessageHandlerBase<GetSettingsMessage, GetSettingsResponseMessage>
+    public class GetSettingsHandler : IMessageHandler<GetSettingsMessage, GetSettingsResponse>
     {
         private const string SettingsEnding = "Settings";
 
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
         private readonly ITypeResolver typeResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSettingsHandler"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
+        /// <param name="serviceProvider">The injector.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        public GetSettingsHandler(IInjector injector, ITypeResolver typeResolver)
+        public GetSettingsHandler(IServiceProvider serviceProvider, ITypeResolver typeResolver)
         {
-            this.injector = injector;
+            this.serviceProvider = serviceProvider;
             this.typeResolver = typeResolver;
         }
 
@@ -46,11 +46,11 @@ namespace Kephas.Core.Endpoints
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The response promise.</returns>
-        public override async Task<GetSettingsResponseMessage> ProcessAsync(GetSettingsMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetSettingsResponse> ProcessAsync(GetSettingsMessage message, IMessagingContext context, CancellationToken token)
         {
             if (string.IsNullOrEmpty(message.SettingsType))
             {
-                return new GetSettingsResponseMessage
+                return new GetSettingsResponse
                 {
                     Message = "Settings type not provided.",
                     Severity = SeverityLevel.Error,
@@ -68,7 +68,7 @@ namespace Kephas.Core.Endpoints
             var settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
             if (settingsType == null)
             {
-                return new GetSettingsResponseMessage
+                return new GetSettingsResponse
                 {
                     Message = $"Settings type {message.SettingsType} not found.",
                     Severity = SeverityLevel.Error,
@@ -76,10 +76,10 @@ namespace Kephas.Core.Endpoints
             }
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
-            var configuration = this.injector.Resolve(configurationType);
+            var configuration = this.serviceProvider.Resolve(configurationType);
             var getSettings = configurationType.GetMethod(nameof(IConfiguration<NullLogManager>.GetSettings));
             var settings = getSettings?.Call(configuration, context);
-            return new GetSettingsResponseMessage
+            return new GetSettingsResponse
             {
                 Settings = settings,
             };

@@ -126,9 +126,10 @@ public class DefaultAppMessageRouter : MessageRouterBase
     /// <returns>
     /// An asynchronous result that yields the reply message.
     /// </returns>
-    protected override Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+    protected override Task<object?> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context,
+        CancellationToken cancellationToken)
     {
-        var completionSource = new TaskCompletionSource<IMessage>();
+        var completionSource = new TaskCompletionSource<object?>();
 
         // make processing really async for in-process handling
         Task.Factory.StartNew(
@@ -158,7 +159,8 @@ public class DefaultAppMessageRouter : MessageRouterBase
     /// <returns>
     /// The asynchronous result yielding an action to take further and an optional reply.
     /// </returns>
-    protected override async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+    protected override async Task<(RoutingInstruction action, object? reply)> RouteOutputAsync(
+        IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
     {
         this.InitializationMonitor.AssertIsCompletedSuccessfully();
 

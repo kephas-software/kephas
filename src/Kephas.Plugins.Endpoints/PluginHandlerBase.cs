@@ -23,8 +23,8 @@ namespace Kephas.Plugins.Endpoints
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
-    public abstract class PluginHandlerBase<TMessage, TResponse> : MessageHandlerBase<TMessage, TResponse>
-        where TMessage : class
+    public abstract class PluginHandlerBase<TMessage, TResponse> : IMessageHandler<TMessage, TResponse>
+        where TMessage : class, IMessage<TResponse>
         where TResponse : class
     {
         /// <summary>
@@ -32,12 +32,11 @@ namespace Kephas.Plugins.Endpoints
         /// </summary>
         /// <param name="pluginManager">Gets the plugin manager.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="logManager">The log manager.</param>
+        /// <param name="logger">Optional. The logger.</param>
         protected PluginHandlerBase(
             IPluginManager pluginManager,
             IEventHub eventHub,
-            ILogManager? logManager = null)
-            : base(logManager)
+            ILogger<PluginHandlerBase<TMessage, TResponse>>? logger = null)
         {
             this.PluginManager = pluginManager;
             this.EventHub = eventHub;
@@ -65,5 +64,16 @@ namespace Kephas.Plugins.Endpoints
             await this.EventHub.PublishAsync(setupEvent, context, cancellationToken).PreserveThreadContext();
             return setupEvent.SetupEnabled;
         }
+
+        /// <summary>
+        /// Processes the provided message asynchronously and returns a response promise.
+        /// </summary>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        public abstract Task<TResponse> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
     }
 }

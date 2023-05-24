@@ -15,18 +15,19 @@ namespace Kephas.Tests.Application
     using Kephas.Application;
     using Kephas.Operations;
     using Kephas.Reflection;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
 
-    public class ApplicationTestBase : InjectionTestBase
+    public class ApplicationTestBase : TestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
                 typeof(ITypeRegistry).Assembly,             // Kephas.Reflection
                 typeof(IOperation).Assembly,                // Kephas.Operations
                 typeof(IAppLifecycleBehavior).Assembly,     // Kephas.Application.Abstractions
-                typeof(AppBase<>).Assembly,                 // Kephas.Application
+                typeof(AppBase).Assembly,                 // Kephas.Application
             };
         }
     }

@@ -15,17 +15,17 @@ namespace Kephas.Tests.Application
     using Kephas.Application.Configuration;
     using Kephas.Behaviors;
     using Kephas.Configuration;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
     using Kephas.Logging;
     using Kephas.Services.Behaviors;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
     using Kephas.Versioning;
     using NUnit.Framework;
 
     [TestFixture]
     public class DefaultAppManagerInjectionTest : ApplicationTestBase
     {
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             return new List<Assembly>(base.GetAssemblies())
             {
@@ -33,28 +33,33 @@ namespace Kephas.Tests.Application
             };
         }
 
-        public override IInjector CreateInjector(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
-            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            var builder = base.CreateServicesBuilder(appServices, logManager, appRuntime);
+            appServices = builder.AppServices;
+            if (!appServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(appServices));
+                appServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config, logManager, appRuntime);
+            return builder;
+        }
+
+        protected IServiceProvider BuildServiceProvider(params Type[] parts)
+        {
+            return this.CreateServicesBuilder()
+                .WithParts(parts)
+                .BuildWithAutofac();
         }
 
         [Test]
         public void Injection_compute_auto_feature_info()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(TestFeatureManager) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(TestFeatureManager) });
             var appConfiguration = container.Resolve<IConfiguration<AppSettings>>();
             appConfiguration.GetSettings().EnabledFeatures = new[] { "test" };
             var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
@@ -71,7 +76,7 @@ namespace Kephas.Tests.Application
         [Test]
         public void Injection_not_required()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(TestFeatureManager) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(TestFeatureManager) });
             var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -81,7 +86,7 @@ namespace Kephas.Tests.Application
         [Test]
         public void Injection_full_feature_info()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(AnnotatedTestFeatureManager) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(AnnotatedTestFeatureManager) });
             var appConfiguration = container.Resolve<IConfiguration<AppSettings>>();
             appConfiguration.GetSettings().EnabledFeatures = new[] { "Annotated test" };
             var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
@@ -100,7 +105,7 @@ namespace Kephas.Tests.Application
         [Test]
         public void Injection_enabled_feature_info()
         {
-            var container = this.CreateInjector(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
+            var container = this.BuildServiceProvider(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
             var appManager = (DefaultAppManager)container.Resolve<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();

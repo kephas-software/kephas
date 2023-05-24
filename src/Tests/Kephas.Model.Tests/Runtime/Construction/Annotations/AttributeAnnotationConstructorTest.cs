@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Model.Tests.Runtime.Construction.Annotations
 {
     using System;
@@ -26,14 +24,13 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
     /// A runtime annotation information factory test.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AttributeAnnotationConstructorTest
     {
         [Test]
         public void TryCreateModelElement_success()
         {
             var constructor = new AttributeAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IInjector>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IServiceProvider>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new AnnotationConstructorBaseTest.NotMultipleAttribute());
 
             Assert.IsInstanceOf<Annotation>(annotation);

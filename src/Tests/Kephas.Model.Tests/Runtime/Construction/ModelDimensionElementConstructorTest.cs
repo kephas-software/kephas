@@ -24,7 +24,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
     /// Tests for <see cref="ModelDimensionElementConstructor"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class ModelDimensionElementConstructorTest : ConstructorTestBase
     {
         [Test]

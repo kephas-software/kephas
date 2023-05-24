@@ -229,7 +229,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result yielding the response message.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<IMessage?> ProcessAsync(
+        public static Task<object?> ProcessAsync(
             this IMessageBroker messageBroker,
             object message,
             Action<IDispatchingContext>? optionsConfig = null,
@@ -249,7 +249,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result yielding the response message.
         /// </returns>
-        public static Task<IMessage?> ProcessAsync(
+        public static Task<object?> ProcessAsync(
             this IMessageBroker messageBroker,
             object message,
             IEndpoint recipient,
@@ -272,7 +272,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result yielding the response message.
         /// </returns>
-        public static Task<IMessage?> ProcessAsync(
+        public static Task<object?> ProcessAsync(
             this IMessageBroker messageBroker,
             object message,
             IEnumerable<IEndpoint> recipients,
@@ -295,7 +295,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<IMessage?> ProcessOneWayAsync(
+        public static Task<object?> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
             Action<IDispatchingContext>? optionsConfig = null,
@@ -316,7 +316,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<IMessage?> ProcessOneWayAsync(
+        public static Task<object?> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
             IEndpoint recipient,
@@ -340,7 +340,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<IMessage> ProcessOneWayAsync(
+        public static Task<object?> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
             IEnumerable<IEndpoint> recipients,

@@ -50,7 +50,7 @@
                     "files": [
                         "*.csproj"
                     ],
-                    "cwd": "./Kephas.Injection.Autofac",
+                    "cwd": "./Kephas.Services.Autofac",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",

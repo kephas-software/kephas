@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using Kephas.Application;
 using Kephas.Configuration;
-using Kephas.Injection;
 using Kephas.Messaging.Distributed;
 using Kephas.Messaging.Distributed.Routing;
 using Kephas.Security.Authentication;
@@ -46,7 +45,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     {
         var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
         var message = Substitute.For<IBrokeredMessage>();
-        message.ReplyToMessageId.Returns("some-id");
+        message.ReplyTo.Returns("some-id");
 
         IBrokeredMessage reply = null;
         router.ReplyReceived += (s, e) => reply = e.Message;
@@ -62,7 +61,7 @@ public class MessageRouterBaseTest : MessagingTestBase
         var router = new TestMessageRouter(this.CreateMessagingInjectableFactory(), new TestAppRuntime(), messageProcessor);
 
         var message = Substitute.For<IBrokeredMessage>();
-        message.ReplyToMessageId.Returns((string)null);
+        message.ReplyTo.Returns((string)null);
         message.Id.Returns("gigi");
         message.IsOneWay.Returns(false);
         var content = Substitute.For<IMessage>();
@@ -80,7 +79,7 @@ public class MessageRouterBaseTest : MessagingTestBase
         var brokeredReply = router.Out.Dequeue();
 
         Assert.AreSame(dispatchReply, brokeredReply.Content);
-        Assert.AreEqual("gigi", brokeredReply.ReplyToMessageId);
+        Assert.AreEqual("gigi", brokeredReply.ReplyTo);
         Assert.IsNull(receivedReply);
     }
 
@@ -88,7 +87,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     {
         return this.CreateInjectableFactoryMock(
             args => new DispatchingContext(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
@@ -112,7 +111,8 @@ public class MessageRouterBaseTest : MessagingTestBase
             this.RouteInputAsync(message, context, default).WaitNonLocking();
         }
 
-        protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        protected override async Task<(RoutingInstruction action, object? reply)> RouteOutputAsync(
+            IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.Out.Enqueue(brokeredMessage);
             return (RoutingInstruction.None, null);
@@ -122,7 +122,7 @@ public class MessageRouterBaseTest : MessagingTestBase
     public class TestAppRuntime : AppRuntimeBase
     {
         public TestAppRuntime(string appId = "test")
-            : base(appId: appId)
+            : base(new AppRuntimeSettings { AppId = appId })
         {
         }
     }

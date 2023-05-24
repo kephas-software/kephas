@@ -9,8 +9,6 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
 {
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Kephas.Application;
     using Kephas.Model.Security.Permissions.Elements;
     using Kephas.Runtime;
     using Kephas.Security.Authorization;
@@ -28,10 +26,10 @@ namespace Kephas.Model.Tests.Models.PermissionsModel
             var typeRegistry = new RuntimeTypeRegistry();
             typeRegistry.RegisterFactory(new SecurityTypeInfoFactory());
 
-            var container = this.CreateInjectorForModel(
-                new AmbientServices().Register<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()),
-                typeof(IDoPermission),
-                typeof(ISpecialDoPermission));
+            var container = this.CreateServicesBuilder(
+                    new AppServiceCollection().Add<IRuntimeTypeRegistry>(typeRegistry, b => b.ExternallyOwned()))
+                .WithModelElements(typeof(IDoPermission), typeof(ISpecialDoPermission))
+                .BuildWithDependencyInjection();
             var provider = container.Resolve<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

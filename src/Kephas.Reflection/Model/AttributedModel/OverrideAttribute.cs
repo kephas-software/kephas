@@ -12,7 +12,6 @@ namespace Kephas.Model.AttributedModel
 {
     using System;
 
-    using Kephas.Injection;
     using Kephas.Services;
 
     /// <summary>

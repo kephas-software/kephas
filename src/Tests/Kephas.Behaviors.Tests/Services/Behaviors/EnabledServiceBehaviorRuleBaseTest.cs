@@ -11,7 +11,6 @@
 namespace Kephas.Behaviors.Tests.Services.Behaviors
 {
     using Kephas.Behaviors;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using NSubstitute;
@@ -24,7 +23,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
         public void CanApply_success()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IInjector>(), () => new TestService(), new AppServiceMetadata()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IServiceProvider>(), () => new TestService(), new AppServiceMetadata()));
             Assert.IsTrue(canApply);
         }
 
@@ -32,7 +31,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
         public void CanApply_failure_mismatched_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IInjector>(), () => new AnotherTestService(), new AppServiceMetadata()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IServiceProvider>(), () => new AnotherTestService(), new AppServiceMetadata()));
             Assert.IsFalse(canApply);
         }
 
@@ -40,7 +39,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
         public void CanApply_failure_mismatched_derived_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IInjector>(), () => new DerivedTestService(), new AppServiceMetadata()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService, AppServiceMetadata>(Substitute.For<IServiceProvider>(), () => new DerivedTestService(), new AppServiceMetadata()));
             Assert.IsFalse(canApply);
         }
 

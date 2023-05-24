@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System;
 
     using Kephas.ExceptionHandling;
+    using Kephas.Services.Builder;
 
     /// <summary>
     /// Exception for signalling bootstrap errors.
@@ -23,9 +24,11 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="BootstrapException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public BootstrapException(string message)
+        /// <param name="servicesBuilder">The services builder.</param>
+        public BootstrapException(string message, IAppServiceCollectionBuilder servicesBuilder)
             : base(message)
         {
+            this.ServicesBuilder = servicesBuilder;
             this.Severity = SeverityLevel.Fatal;
         }
 
@@ -33,10 +36,12 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="BootstrapException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public BootstrapException(string message, Exception inner)
+        /// <param name="servicesBuilder">The services builder.</param>
+        /// <param name="inner">The inner exception.</param>
+        public BootstrapException(string message, IAppServiceCollectionBuilder servicesBuilder, Exception inner)
             : base(message, inner)
         {
+            this.ServicesBuilder = servicesBuilder;
             this.Severity = SeverityLevel.Fatal;
         }
 
@@ -54,14 +59,14 @@ namespace Kephas.Application
         /// <value>
         /// The application context.
         /// </value>
-        public IAppContext AppContext { get; set; }
+        public IAppContext? AppContext { get; set; }
 
         /// <summary>
-        /// Gets or sets the ambient services.
+        /// Gets the services builder.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The services builder.
         /// </value>
-        public IAmbientServices AmbientServices { get; set; }
+        public IAppServiceCollectionBuilder ServicesBuilder { get; }
     }
 }

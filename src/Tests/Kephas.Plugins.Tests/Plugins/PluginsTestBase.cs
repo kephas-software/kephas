@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
-using Kephas.Injection;
 using Kephas.Plugins.Application;
 using Kephas.Plugins.Reflection;
 
@@ -26,10 +25,11 @@ namespace Kephas.Tests.Plugins
     using Kephas.Operations;
     using Kephas.Plugins;
     using Kephas.Services;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
     using NSubstitute;
 
-    public abstract class PluginsTestBase : InjectionTestBase
+    public abstract class PluginsTestBase : TestBase
     {
         protected TestPluginManager CreatePluginManager(
             PluginsTestContext context,
@@ -42,11 +42,16 @@ namespace Kephas.Tests.Plugins
             Func<PluginData, IPluginContext, bool>? canDisable = null)
         {
             var pluginsDataStore = new TestPluginStore();
-            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
+            var appRuntime = new PluginsAppRuntime(new PluginsAppRuntimeSettings
+            {
+                AppFolder = context.AppLocation,
+                PluginsFolder = context.PluginsFolder,
+                PluginRepository = pluginsDataStore,
+            });
             return new TestPluginManager(
                 context,
                 appRuntime,
-                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IInjector>())),
+                this.CreateInjectableFactoryMock(() => new PluginContext(Substitute.For<IServiceProvider>())),
                 this.CreateEventHubMock(),
                 pluginsDataStore,
                 onInstall: onInstall,

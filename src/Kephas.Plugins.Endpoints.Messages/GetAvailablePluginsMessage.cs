@@ -22,7 +22,7 @@ namespace Kephas.Plugins.Endpoints
     /// A get available plugins message.
     /// </summary>
     [Display(Description = "Gets the available plugins. If a plugin ID is provided, the available versions are retrieved.")]
-    public class GetAvailablePluginsMessage : IMessage
+    public class GetAvailablePluginsMessage : IMessage<GetAvailablePluginsResponse>
     {
         /// <summary>
         /// Gets or sets a value indicating whether prerelease versions should be included or not.
@@ -73,7 +73,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get available plugins response message.
     /// </summary>
-    public class GetAvailablePluginsResponseMessage : ResponseMessage
+    public class GetAvailablePluginsResponse : Response
     {
         /// <summary>
         /// Gets or sets the plugins.

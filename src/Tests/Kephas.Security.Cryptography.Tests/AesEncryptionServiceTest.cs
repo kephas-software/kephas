@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
-
 namespace Kephas.Core.Tests.Cryptography
 {
     using System;
@@ -28,7 +26,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public async Task EncryptAsync(string value, string key)
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext());
             var service = new AesEncryptionService(ctxFactory);
             var encrypted = await service.EncryptAsync(value, ctx => ctx.Key(this.GetKey(key)));
             var decrypted = await service.DecryptAsync(encrypted, ctx => ctx.Key(this.GetKey(key)));
@@ -40,7 +38,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public async Task EncryptAsync_twice_different_values(string value, string key)
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext());
             var service = new AesEncryptionService(ctxFactory);
             var encrypted1 = await service.EncryptAsync(value, ctx => ctx.Key(this.GetKey(key)));
             var encrypted2 = await service.EncryptAsync(value, ctx => ctx.Key(this.GetKey(key)));
@@ -52,7 +50,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public void Encrypt(string value, string key)
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext());
             var service = new AesEncryptionService(ctxFactory);
             var encrypted = service.Encrypt(value, ctx => ctx.Key(this.GetKey(key)));
             var decrypted = service.Decrypt(encrypted, ctx => ctx.Key(this.GetKey(key)));
@@ -64,7 +62,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public void Encrypt_twice_different_values(string value, string key)
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext());
             var service = new AesEncryptionService(ctxFactory);
             var encrypted1 = service.Encrypt(value, ctx => ctx.Key(this.GetKey(key)));
             var encrypted2 = service.Encrypt(value, ctx => ctx.Key(this.GetKey(key)));
@@ -77,7 +75,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase(192, 24)]
         public void GenerateKey(int keySize, int expectedLength)
         {
-            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext(Substitute.For<IInjector>()));
+            var ctxFactory = this.CreateInjectableFactoryMock(() => new EncryptionContext());
             var service = new AesEncryptionService(ctxFactory);
             var key = service.GenerateKey(ctx => ctx.KeySize(keySize));
 

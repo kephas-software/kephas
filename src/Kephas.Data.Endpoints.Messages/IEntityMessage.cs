@@ -15,7 +15,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// Contract for messages targeting a specific entity.
     /// </summary>
-    public interface IEntityMessage : IMessage
+    public interface IEntityMessage<out TResponse> : IMessage<TResponse>
     {
         /// <summary>
         /// Gets or sets the type of the entity.

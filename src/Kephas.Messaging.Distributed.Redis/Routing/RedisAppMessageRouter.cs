@@ -48,8 +48,8 @@ namespace Kephas.Messaging.Redis.Routing
         private readonly IConfiguration<RedisRoutingSettings> redisConfiguration;
         private readonly IEventHub eventHub;
 
-        private readonly ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, IMessage? reply)> taskSource,
-            Func<Task<(RoutingInstruction action, IMessage? reply)>> asyncRouteAction)> preInitQueue = new();
+        private readonly ConcurrentQueue<(TaskCompletionSource<(RoutingInstruction action, object? reply)> taskSource,
+            Func<Task<(RoutingInstruction action, object? reply)>> asyncRouteAction)> preInitQueue = new();
 
         private ISubscriber? publisher;
         private IRedisConnection? subConnection;
@@ -211,11 +211,12 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        protected override Task<(RoutingInstruction action, object? reply)> RouteOutputAsync(
+            IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputCoreAsync()
+            async Task<(RoutingInstruction action, object? reply)> RouteOutputCoreAsync()
             {
                 if (brokeredMessage.Recipients?.Any() ?? false)
                 {
@@ -266,10 +267,10 @@ namespace Kephas.Messaging.Redis.Routing
                     return RouteOutputCoreAsync();
                 default:
                     // otherwise postpone the execution until the channel gets initialized.
-                    var taskCompletionSource = new TaskCompletionSource<(RoutingInstruction action, IMessage? reply)>();
-                    this.preInitQueue.Enqueue((taskCompletionSource, RouteOutputCoreAsync));
+                    var taskCompletionSource = new TaskCompletionSource<(RoutingInstruction action, object? reply)>();
+                    this.preInitQueue.Enqueue((taskCompletionSource, () => RouteOutputCoreAsync()));
                     return brokeredMessage.IsOneWay
-                        ? Task.FromResult<(RoutingInstruction action, IMessage? reply)>((RoutingInstruction.None, null))
+                        ? Task.FromResult<(RoutingInstruction action, object? reply)>((RoutingInstruction.None, null))
                         : taskCompletionSource.Task;
             }
         }

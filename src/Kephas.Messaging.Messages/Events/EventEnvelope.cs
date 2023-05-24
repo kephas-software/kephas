@@ -10,38 +10,28 @@
 
 namespace Kephas.Messaging.Events
 {
-    using System;
-
     using Kephas.Messaging.Messages;
 
     /// <summary>
     /// An event envelope.
     /// </summary>
-    public class EventEnvelope : IEvent, IMessageEnvelope
+    public record EventEnvelope<T> : MessageEnvelope<T>, IEvent
+        where T : class
     {
         /// <summary>
-        /// Gets or sets the event.
+        /// Initializes a new instance of the <see cref="MessageEnvelope{T}"/>.
         /// </summary>
-        /// <value>
-        /// The event.
-        /// </value>
-        public object? Event { get; set; }
+        public EventEnvelope()
+        {
+        }
 
         /// <summary>
-        /// Gets the message.
+        /// Initializes a new instance of the <see cref="MessageEnvelope{T}"/>.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the event is not set.</exception>
-        /// <returns>
-        /// The message.
-        /// </returns>
-        public object GetContent()
+        /// <param name="message">The native message.</param>
+        public EventEnvelope(T message)
+            : base(message)
         {
-            if (this.Event == null)
-            {
-                throw new InvalidOperationException("The message is not set in the event envelope.");
-            }
-
-            return this.Event;
         }
     }
 }

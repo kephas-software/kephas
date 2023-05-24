@@ -15,7 +15,7 @@ namespace Kephas.Core.Endpoints
     /// Message for retrieving metadata of the application services.
     /// </summary>
     [Display(Description = "Gets the metadata of the application services.")]
-    public class GetServicesMessage : IMessage
+    public class GetServicesMessage : IMessage<GetServicesResponse>
     {
         /// <summary>
         /// Gets or sets the contract type.

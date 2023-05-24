@@ -174,7 +174,7 @@ namespace Kephas.Graphs
         /// <value>
         /// The node value.
         /// </value>
-        public TValue Value { get; set; }
+        public TValue Value { get; set; } = default!;
 
         /// <summary>
         /// Returns a string that represents the current object.

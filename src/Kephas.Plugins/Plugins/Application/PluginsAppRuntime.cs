@@ -48,39 +48,13 @@ namespace Kephas.Plugins.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
-        /// <param name="getLogger">Optional. The get logger delegate.</param>
-        /// <param name="appAssemblies">Optional. The application assemblies. If not provided, the loaded assemblies are considered.</param>
-        /// <param name="appFolder">Optional. The application location. If not specified, the current
-        ///                           application location is considered.</param>
-        /// <param name="configFolders">Optional. The configuration folders.</param>
-        /// <param name="licenseFolders">Optional. The license folders.</param>
-        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
-        /// <param name="appId">Optional. Identifier for the application.</param>
-        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
-        /// <param name="appVersion">Optional. The application version.</param>
-        /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
-        /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
-        /// <param name="pluginRepository">Optional. The plugin repository.</param>
-        public PluginsAppRuntime(
-            Func<string, ILogger>? getLogger = null,
-            IEnumerable<Assembly>? appAssemblies = null,
-            string? appFolder = null,
-            IEnumerable<string>? configFolders = null,
-            IEnumerable<string>? licenseFolders = null,
-            bool? isRoot = null,
-            string? appId = null,
-            string? appInstanceId = null,
-            string? appVersion = null,
-            IDynamic? appArgs = null,
-            bool? enablePlugins = null,
-            string? pluginsFolder = null,
-            IPluginStore? pluginRepository = null)
-            : base(getLogger, appAssemblies, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
+        /// <param name="settings">Optional. The runtime settings.</param>
+        public PluginsAppRuntime(PluginsAppRuntimeSettings? settings = null)
+            : base(settings)
         {
-            this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
-            this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(pluginsFolder, appArgs));
-            this.PluginStore = pluginRepository ??
+            this.EnablePlugins = this.ComputeEnablePlugins(settings?.EnablePlugins, settings?.AppArgs);
+            this.lazyPluginsLocation = new Lazy<string>(() => this.ComputePluginsLocation(settings?.PluginsFolder, settings?.AppArgs));
+            this.PluginStore = settings?.PluginRepository ??
                                     new PluginStore(appIdentity =>
                                         this.GetAppLocation(appIdentity, throwOnNotFound: false));
         }

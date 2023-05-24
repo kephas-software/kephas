@@ -16,33 +16,30 @@ namespace Kephas.Commands.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Injection;
-    using Kephas.Injection.Builder;
-    using Kephas.Injection.Lite.Builder;
     using Kephas.Logging;
-    using Kephas.Testing.Injection;
+    using Kephas.Services.Builder;
+    using Kephas.Testing;
+    using Kephas.Testing.Services;
 
-    public abstract class CommandsTestBase : InjectionTestBase
+    public abstract class CommandsTestBase : TestBase
     {
-        public override IInjector CreateInjector(
-            IAmbientServices? ambientServices = null,
-            IEnumerable<Assembly>? assemblies = null,
-            IEnumerable<Type>? parts = null,
-            Action<IInjectorBuilder>? config = null,
+        protected override IAppServiceCollectionBuilder CreateServicesBuilder(
+            IAppServiceCollection? appServices = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            ambientServices ??= this.CreateAmbientServices();
-            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            var builder = base.CreateServicesBuilder(appServices, logManager, appRuntime);
+            appServices = builder.AppServices;
+            if (!appServices.Contains(typeof(IAppContext)))
             {
-                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
-                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(appServices));
+                appServices.Add<IAppContext>(() => lazyAppContext.Value);
             }
 
-            return base.CreateInjector(ambientServices, assemblies, parts, config);
+            return builder;
         }
 
-        public override IEnumerable<Assembly> GetAssemblies()
+        protected override IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = base.GetAssemblies().ToList();
             assemblies.AddRange(new[]

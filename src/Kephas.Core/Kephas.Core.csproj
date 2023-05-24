@@ -3,10 +3,12 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<!--        <WarningsAsErrors>nullable</WarningsAsErrors>-->
+		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+		<WarningsAsErrors>nullable</WarningsAsErrors>
 
 		<Version>12.0.0-dev.1</Version>
 		<AssemblyVersion>12.0.0.0</AssemblyVersion>
@@ -16,14 +18,7 @@
 		<Product>Kephas Framework</Product>
 
 		<CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-		<Description>
-			Aggregates the most used Kephas infrastructure to provide a .
-			Typically used areas and classes/interfaces/services:
-			- AmbientServices
-			- Data: IIdGenerator, DefaultIdGenerator.
-
-			Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-		</Description>
+		<Description>Provides common abstractions for Kephas components.</Description>
 		<Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -33,10 +28,8 @@
 		<PackageIcon>kephas.logo.stone.png</PackageIcon>
 		<RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
-		<PackageReleaseNotes>
-			Please check https://github.com/kephas-software/kephas/releases for the change log.
-			Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>kephas core</PackageTags>
 
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -65,26 +58,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="stylecop.json" />
-		<AdditionalFiles Include="stylecop.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="..\Kephas.snk" Link="Kephas.snk" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-		<PackageReference Include="System.Reflection" Version="4.3.0" />
-		<PackageReference Include="System.Security.Principal" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,25 +82,25 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove="LinkerConfig.xml" />
-		<EmbeddedResource Include="LinkerConfig.xml">
-			<LogicalName>ILLink.Descriptors.xml</LogicalName>
+		<EmbeddedResource Update="Resources\AbstractionStrings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>AbstractionStrings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<Compile Update="Resources\AbstractionStrings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>AbstractionStrings.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+		<None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="release-notes.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\Kephas.Abstractions\Kephas.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Injection\Kephas.Injection.csproj" />
-		<ProjectReference Include="..\Kephas.Injection.Lite\Kephas.Injection.Lite.csproj" />
+	  <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj" />
 	</ItemGroup>
 
 </Project>

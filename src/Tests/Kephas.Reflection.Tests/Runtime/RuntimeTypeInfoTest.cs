@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Runtime
+namespace Kephas.Tests.Runtime
 {
     using System;
     using System.Collections;
@@ -16,19 +16,15 @@ namespace Kephas.Core.Tests.Runtime
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-
     using Kephas.Activation;
-    using Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory;
     using Kephas.Reflection;
     using Kephas.Runtime;
-
     using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="RuntimeTypeInfo"/>
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeTypeInfoTest
     {
         [Test]
@@ -77,7 +73,7 @@ namespace Kephas.Core.Tests.Runtime
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
-            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass", runtimeTypeInfo.FullName);
+            Assert.AreEqual("Kephas.Tests.Runtime.RuntimeTypeInfoTest+TestClass", runtimeTypeInfo.FullName);
         }
 
         [Test]
@@ -85,7 +81,7 @@ namespace Kephas.Core.Tests.Runtime
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
-            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Reflection.Tests", runtimeTypeInfo.QualifiedFullName);
+            Assert.AreEqual("Kephas.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Reflection.Tests", runtimeTypeInfo.QualifiedFullName);
         }
 
         [Test]
@@ -589,7 +585,6 @@ namespace Kephas.Core.Tests.Runtime
 
         public class OpenGenericFields<T>
         {
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
             public T Value;
         }
     }

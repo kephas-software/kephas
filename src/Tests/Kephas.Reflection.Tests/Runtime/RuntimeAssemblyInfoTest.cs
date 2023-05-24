@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Runtime
+namespace Kephas.Tests.Runtime
 {
     using System.Linq;
-
     using Kephas.Reflection;
     using Kephas.Runtime;
     using NSubstitute;

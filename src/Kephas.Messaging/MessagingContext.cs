@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+using Kephas.Data;
+using Kephas.Services;
+
 namespace Kephas.Messaging
 {
-    using System;
-
-    using Kephas.Injection;
-    using Kephas.Services;
-
     /// <summary>
     /// The messaging context.
     /// </summary>
@@ -24,77 +23,67 @@ namespace Kephas.Messaging
         /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
         /// <param name="parentContext">The parent context.</param>
-        /// <param name="messageProcessor">The message processor.</param>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="message">Optional. The message.</param>
         public MessagingContext(
             IContext parentContext,
-            IMessageProcessor messageProcessor,
-            IMessage? message = null)
-            : base(parentContext, merge: true)
+            IMessageMatchService messageMatchService,
+            IMessageBase message)
+            : base(parentContext ?? throw new ArgumentNullException(nameof(parentContext)), merge: true)
         {
-            parentContext = parentContext ?? throw new ArgumentNullException(nameof(parentContext));
-            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
-
-            this.MessageProcessor = messageProcessor;
-            this.Message = message;
+            InitializeContext(message, messageMatchService);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
-        /// <param name="injector">The injector.</param>
-        /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="message">Optional. The Message.</param>
+        /// <param name="serviceProvider">The injector.</param>
+        /// <param name="messageMatchService">The message match service.</param>
+        /// <param name="message">Optional. The message.</param>
         public MessagingContext(
-            IInjector injector,
-            IMessageProcessor messageProcessor,
-            IMessage? message = null)
-            : base(injector)
+            IServiceProvider serviceProvider,
+            IMessageMatchService messageMatchService,
+            IMessageBase message)
+            : base(serviceProvider)
         {
-            messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
-
-            this.MessageProcessor = messageProcessor;
-            this.Message = message;
+            InitializeContext(message, messageMatchService);
         }
 
         /// <summary>
-        /// Gets the message processor.
-        /// </summary>
-        /// <value>
-        /// The message processor.
-        /// </value>
-        public IMessageProcessor MessageProcessor { get; }
-
-        /// <summary>
-        /// Gets or sets the handler.
-        /// </summary>
-        /// <value>
-        /// The handler.
-        /// </value>
-        public IMessageHandler Handler { get; set; }
-
-        /// <summary>
-        /// Gets or sets the message.
+        /// Gets the message.
         /// </summary>
         /// <value>
         /// The message.
         /// </value>
-        public IMessage? Message { get; set; }
+        public IMessageBase Message { get; private set; }
 
         /// <summary>
-        /// Gets or sets the response.
+        /// Gets the envelope type.
         /// </summary>
-        /// <value>
-        /// The response.
-        /// </value>
-        public IMessage? Response { get; set; }
+        public Type EnvelopeType { get; private set; }
 
         /// <summary>
-        /// Gets or sets the exception.
+        /// Gets the message type.
         /// </summary>
-        /// <value>
-        /// The exception.
-        /// </value>
-        public Exception? Exception { get; set; }
+        public Type MessageType { get; private set; }
+
+        /// <summary>
+        /// Gets the correlation ID of this invocation.
+        /// </summary>
+        public string CorrelationId { get; private set; }
+
+#if NET6_0_OR_GREATER        
+        [MemberNotNull(nameof(EnvelopeType))]
+        [MemberNotNull(nameof(MessageType))]
+        [MemberNotNull(nameof(Message))]
+        [MemberNotNull(nameof(CorrelationId))]
+#endif
+        private void InitializeContext(IMessageBase message, IMessageMatchService matchService)
+        {
+            Message = message ?? throw new ArgumentNullException(nameof(message));
+            EnvelopeType = matchService.GetEnvelopeType(message);
+            MessageType = matchService.GetMessageType(message);
+            CorrelationId = (message as ICorrelated)?.CorrelationId ?? Guid.NewGuid().ToString("N");
+        }
     }
 }

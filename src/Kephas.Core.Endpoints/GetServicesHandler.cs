@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Services;
 
 namespace Kephas.Core.Endpoints
 {
@@ -22,23 +22,23 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// Message handler for <see cref="GetServicesMessage"/>.
     /// </summary>
-    public class GetServicesHandler : MessageHandlerBase<GetServicesMessage, GetServicesResponseMessage>
+    public class GetServicesHandler : IMessageHandler<GetServicesMessage, GetServicesResponse>
     {
         private static readonly MethodInfo GetServicesMetadataMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
 
         private readonly ITypeResolver typeResolver;
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetServicesHandler"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="injector">The injector.</param>
-        public GetServicesHandler(ITypeResolver typeResolver, IInjector injector)
+        /// <param name="serviceProvider">The injector.</param>
+        public GetServicesHandler(ITypeResolver typeResolver, IServiceProvider serviceProvider)
         {
             this.typeResolver = typeResolver;
-            this.injector = injector;
+            this.serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<GetServicesResponseMessage> ProcessAsync(GetServicesMessage message, IMessagingContext context, CancellationToken token)
+        public Task<GetServicesResponse> ProcessAsync(GetServicesMessage message, IMessagingContext context, CancellationToken token)
         {
             if (message.ContractType == null)
             {
@@ -65,7 +65,7 @@ namespace Kephas.Core.Endpoints
 
             var getServicesMetadata = GetServicesMetadataMethod.MakeGenericMethod(contractType);
             var appServicesMetadata = (IEnumerable<AppServiceMetadata>)getServicesMetadata.Call(this, message.Ordered);
-            return Task.FromResult(new GetServicesResponseMessage
+            return Task.FromResult(new GetServicesResponse
             {
                 Services = appServicesMetadata.ToArray(),
                 Message = $"Services for '{contractType}'.",
@@ -74,7 +74,7 @@ namespace Kephas.Core.Endpoints
 
         private IEnumerable<AppServiceMetadata> GetServicesMetadata<TContract>(bool ordered)
         {
-            var factories = this.injector.ResolveMany<Lazy<TContract, AppServiceMetadata>>();
+            var factories = this.serviceProvider.ResolveMany<Lazy<TContract, AppServiceMetadata>>();
             return ordered
                 ? factories.Order().Select(f => f.Metadata)
                 : factories.Select(f => f.Metadata);

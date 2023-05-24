@@ -12,7 +12,7 @@ namespace Kephas.Services.Behaviors
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Injection;
+    using Kephas.Services;
 
     /// <summary>
     /// Service for filtering enabled service factories collections (with metadata).

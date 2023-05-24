@@ -18,7 +18,7 @@ namespace Kephas.Scheduling.Endpoints
     /// Message for cancelling a scheduled job.
     /// </summary>
     [Display(Description = "Cancels the scheduled job with the given ID.")]
-    public class CancelScheduledJobMessage : IMessage
+    public class CancelScheduledJobMessage : IMessage<CancelScheduledJobResponse>
     {
         /// <summary>
         /// Gets or sets the identifier of the scheduled job.
@@ -35,7 +35,7 @@ namespace Kephas.Scheduling.Endpoints
     /// <summary>
     /// Response for <see cref="CancelScheduledJobMessage"/>.
     /// </summary>
-    public class CancelScheduledJobResponseMessage : ResponseMessage
+    public class CancelScheduledJobResponse : Response
     {
         /// <summary>
         /// Gets or sets the result of the cancel scheduled job operation.

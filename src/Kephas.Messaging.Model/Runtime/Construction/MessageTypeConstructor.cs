@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Model.Runtime.Construction
         /// <summary>
         /// The marker interface.
         /// </summary>
-        private static readonly TypeInfo MarkerInterface = typeof(IMessage).GetTypeInfo();
+        private static readonly TypeInfo MarkerInterface = typeof(IMessageBase).GetTypeInfo();
 
         /// <summary>
         /// Determines whether a model element can be created for the provided runtime element.
@@ -37,7 +37,7 @@ namespace Kephas.Messaging.Model.Runtime.Construction
         /// </returns>
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return MarkerInterface.IsAssignableFrom(runtimeElement.TypeInfo);
+            return MarkerInterface.IsAssignableFrom(runtimeElement.Type) && runtimeElement.Type.IsClass;
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace Kephas.Data.Setup
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

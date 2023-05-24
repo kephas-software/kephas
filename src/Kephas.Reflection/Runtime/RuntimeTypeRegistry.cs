@@ -16,7 +16,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.Injection.AttributedModel;
+    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime.Factories;
@@ -24,7 +24,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Provides methods for accessing runtime type information.
     /// </summary>
-    [ExcludeFromInjection]
+    [ExcludeFromServices]
     public class RuntimeTypeRegistry : Expando, IRuntimeTypeRegistry, IRuntimeElementInfoFactory
     {
         private readonly ITypeLoader? typeLoader;

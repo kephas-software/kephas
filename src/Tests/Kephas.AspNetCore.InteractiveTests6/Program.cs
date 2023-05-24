@@ -1,39 +1,34 @@
 using Kephas;
 using Kephas.Application;
 using Kephas.Application.AspNetCore;
-using Kephas.AspNetCore;
 using Kephas.AspNetCore.InteractiveTests6.Extensions;
 using Kephas.Cryptography;
-using Kephas.Extensions.Hosting;
+using Kephas.Extensions.DependencyInjection;
 
 return await new SwitchApp(args)
-    .AddApp((ambientServices, appArgs) =>
+    .AddApp((servicesBuilder, appArgs) =>
     {
         return new WebApp(
             appArgs,
             builder =>
             {
                 builder.Host
-                    .ConfigureAmbientServices(
-                        ambientServices,
-                        appArgs,
-                        ambient => ambient.WithDynamicAppRuntime().BuildWithAutofac(),
-                        (services, ambient) =>
-                            ambient.SetupAmbientServices(
-                                CreateEncryptionService,
-                                services.TryGetStartupService<IConfiguration>()));
+                    .ConfigureHostConfiguration(_ =>
+                    {
+                        servicesBuilder
+                            .WithDefaultLicensingManager(new EncryptionService())
+                            .WithDynamicAppRuntime()
+                            .AddAppArgs(appArgs);
+                    })
+                    .ConfigureServices((ctx, services) =>
+                    {
+                        servicesBuilder.WithSerilogManager(ctx.Configuration);
+                        services.AddFromServicesBuilder(servicesBuilder);
+                    })
+                    .UseServicesConfigurators(servicesBuilder);
             });
     }).RunAsync(1);
 
-static IEncryptionService CreateEncryptionService(IAmbientServices ambientServices)
-{
-return new EncryptionService(() => new EncryptionContext(ambientServices.Injector));
-}
-
 class EncryptionService : AesEncryptionService
 {
-    public EncryptionService(Func<IEncryptionContext> contextCtor)
-        : base(contextCtor)
-    {
-    }
 }

@@ -153,7 +153,8 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        public virtual async Task<(RoutingInstruction action, IMessage? reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        public virtual async Task<(RoutingInstruction action, object? reply)> DispatchAsync(
+            IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             brokeredMessage = brokeredMessage ?? throw new System.ArgumentNullException(nameof(brokeredMessage));
             context = context ?? throw new ArgumentNullException(nameof(context));
@@ -173,7 +174,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 return (RoutingInstruction.None, null);
             }
 
-            (RoutingInstruction action, IMessage reply) result = default;
+            (RoutingInstruction action, object? reply) result = default;
             Exception? exception = null;
             try
             {
@@ -190,7 +191,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 return result;
             }
 
-            return (RoutingInstruction.Reply, new ExceptionResponseMessage { Exception = new ExceptionData(exception) });
+            return (RoutingInstruction.Reply, new ExceptionResponse { Exception = new ExceptionData(exception) });
         }
 
         /// <summary>
@@ -276,7 +277,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<(RoutingInstruction action, IMessage? reply)> RouteInputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected virtual async Task<(RoutingInstruction action, object? reply)> RouteInputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             try
             {
@@ -290,7 +291,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 }
 
                 // if the input queue notifies a reply, notify it further to the message broker.
-                if (brokeredMessage.ReplyToMessageId != null)
+                if (brokeredMessage.ReplyTo != null)
                 {
                     this.OnReplyReceived(new ReplyReceivedEventArgs { Message = brokeredMessage, Context = context });
                     return (RoutingInstruction.None, null);
@@ -308,7 +309,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
                 // for remote recipients redirect the message to the output.
                 var remoteInstruction = RoutingInstruction.None;
-                IMessage? remoteReply = null;
+                object? remoteReply = null;
                 if (remoteRecipients?.Any() ?? false)
                 {
                     var remoteMessage = !localRecipients.Any()
@@ -328,7 +329,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
                 // for local recipients, handle the request here
                 var localInstruction = RoutingInstruction.None;
-                IMessage? localReply = null;
+                object? localReply = null;
                 if ((localRecipients?.Any() ?? false) || !(brokeredMessage.Recipients?.Any() ?? false))
                 {
                     var localMessage = brokeredMessage.Recipients == null || !(remoteRecipients?.Any() ?? false)
@@ -344,14 +345,14 @@ namespace Kephas.Messaging.Distributed.Routing
                     }
                     else
                     {
-                        IMessage? reply = null;
+                        object? reply = null;
                         try
                         {
                             reply = await this.ProcessAsync(localMessage, context, cancellationToken).PreserveThreadContext();
                         }
                         catch (Exception ex)
                         {
-                            reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
+                            reply = new ExceptionResponse { Exception = new ExceptionData(ex) };
                         }
 
                         // after processing requests expecting an answer, redirect the reply
@@ -405,7 +406,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// An asynchronous result that yields the reply message.
         /// </returns>
-        protected virtual async Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected virtual async Task<object?> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             var response = await this.MessageProcessor.ProcessAsync(
                 brokeredMessage.Content,
@@ -427,7 +428,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected abstract Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken);
+        protected abstract Task<(RoutingInstruction action, object? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken);
 
         /// <summary>
         /// Raises the reply received event.

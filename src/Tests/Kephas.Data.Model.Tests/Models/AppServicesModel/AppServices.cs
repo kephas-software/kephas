@@ -11,7 +11,4 @@
 namespace Kephas.Data.Model.Tests.Models.AppServicesModel
 {
     using System;
-
-    using Kephas.Services;
-
 }

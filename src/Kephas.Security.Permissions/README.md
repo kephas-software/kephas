@@ -3,7 +3,7 @@
 ## Introduction
 
 Provides an infrastructure for permissions.
-* [Kephas.Injection](https://www.nuget.org/packages/Kephas.Injection)
+* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Security](https://www.nuget.org/packages/Kephas.Security)
 
 Typically used areas and classes/interfaces/services:

@@ -8,16 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Activation
+namespace Kephas.Tests.Reflection.Activation
 {
     using System;
-
     using Kephas.Activation;
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
-
     using NUnit.Framework;
 
     /// <summary>

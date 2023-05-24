@@ -18,13 +18,12 @@ namespace Kephas.Scheduling.Tests
 
     using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Injection;
     using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.JobStore;
     using Kephas.Scheduling.Runtime;
     using Kephas.Scheduling.Triggers;
-    using Kephas.Testing.Injection;
+    using Kephas.Testing.Services;
     using Kephas.Workflow;
     using NSubstitute;
     using NUnit.Framework;
@@ -42,7 +41,7 @@ namespace Kephas.Scheduling.Tests
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.CreateServicesBuilder().BuildWithDependencyInjection();
             var scheduler = container.Resolve<IScheduler>();
             Assert.IsInstanceOf<InProcessScheduler>(scheduler);
         }
@@ -51,7 +50,7 @@ namespace Kephas.Scheduling.Tests
         public async Task EnqueueAsync_extension()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -86,8 +85,8 @@ namespace Kephas.Scheduling.Tests
         public async Task EnqueueAsync()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
-            var appRuntime = new StaticAppRuntime(appId: "test", appInstanceId: "test-1");
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
+            var appRuntime = new StaticAppRuntime(new AppRuntimeSettings { AppId = "test", AppInstanceId = "test-1" });
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), appRuntime);
 
             await scheduler.InitializeAsync();
@@ -122,7 +121,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelTriggerAsync_triggerId()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -163,7 +162,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelTriggerAsync_trigger()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -203,7 +202,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelScheduledJobAsync_jobInfo()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -243,7 +242,7 @@ namespace Kephas.Scheduling.Tests
         public async Task CancelScheduledJobAsync_jobInfoId()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -283,7 +282,7 @@ namespace Kephas.Scheduling.Tests
         public async Task FinalizeAsync_disposes_all_triggers_and_scheduled_jobs()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
@@ -317,7 +316,7 @@ namespace Kephas.Scheduling.Tests
         public async Task FinalizeAsync_disposes_all_triggers()
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
-            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IInjector>()));
+            var injectableFactory = this.CreateInjectableFactoryMock(() => new SchedulingContext(Substitute.For<IServiceProvider>()));
             var scheduler = new InProcessScheduler(injectableFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();

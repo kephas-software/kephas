@@ -19,7 +19,7 @@ namespace Kephas.Core.Endpoints
     /// An encrypt message.
     /// </summary>
     [Display(Description = "Encrypts the provided value, using an optional key.")]
-    public class EncryptMessage : IMessage
+    public class EncryptMessage : IMessage<EncryptResponse>
     {
         /// <summary>
         /// Gets or sets the encrypted value.

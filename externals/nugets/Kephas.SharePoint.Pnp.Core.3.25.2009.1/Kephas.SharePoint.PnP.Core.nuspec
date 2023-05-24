@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Kephas.SharePoint.PnP.Core</id>
+    <version>3.25.2009.1</version>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <icon>pnp-kephas.png</icon>
+    <projectUrl>https://github.com/kephas-software/PnP-Sites-Core</projectUrl>
+    <description>Office Dev PnP Core library for SharePoint Online.</description>
+    <copyright>Copyright © Microsoft 2020</copyright>
+    <tags>office pnp sharepoint</tags>
+    <repository type="github" url="https://github.com/kephas-software/PnP-Sites-Core" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="AngleSharp" version="0.9.9.2" exclude="Build,Analyzers" />
+        <dependency id="DocumentFormat.OpenXml" version="2.8.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.StaticFiles" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Graph" version="1.7.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.IdentityModel.Clients.ActiveDirectory" version="3.19.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.IdentityModel.Tokens" version="5.2.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
+        <dependency id="Portable.Xaml" version="0.21.0" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.4.1" exclude="Build,Analyzers" />
+        <dependency id="System.IO.Packaging" version="4.4.1" exclude="Build,Analyzers" />
+        <dependency id="System.IdentityModel.Tokens.Jwt" version="5.2.1" exclude="Build,Analyzers" />
+        <dependency id="System.Resources.ResourceManager" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="4.7.2" exclude="Build,Analyzers" />
+        <dependency id="System.Xml.XmlSerializer" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="WindowsAzure.Storage" version="9.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="pnp-kephas.png" target="pnp-kephas.png"/>
+    <file src="lib\**\*.*" target="lib"/>
+  </files>
+</package>

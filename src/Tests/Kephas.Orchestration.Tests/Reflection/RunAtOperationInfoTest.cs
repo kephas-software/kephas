@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Injection;
+using Kephas.Messaging.Messages;
 
 namespace Kephas.Tests.Reflection
 {
@@ -111,18 +111,18 @@ namespace Kephas.Tests.Reflection
                 .Returns(ci =>
                 {
                     var dispContext = new DispatchingContext(
-                        Substitute.For<IInjector>(),
+                        Substitute.For<IServiceProvider>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>());
-                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessage message ? message.GetContent() : ci.Arg<object>());
+                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessageBase message ? message.GetContent() : ci.Arg<object>());
 
                     ci.Arg<Action<IDispatchingContext>>()(dispContext);
                     Assert.AreSame(identity, dispContext.Identity);
                     Assert.IsFalse(dispContext.BrokeredMessage.IsOneWay);
 
-                    return Task.FromResult<IMessage>(new ExecuteCommandResponseMessage
+                    return Task.FromResult<object?>(new ExecuteCommandResponse
                     {
                         ReturnValue = $"result for {msg.Command}({string.Join(" ", msg.Args.ToCommandArgs())})",
                     });
@@ -163,18 +163,18 @@ namespace Kephas.Tests.Reflection
                 .Returns(ci =>
                 {
                     var dispContext = new DispatchingContext(
-                        Substitute.For<IInjector>(),
+                        Substitute.For<IServiceProvider>(),
                         Substitute.For<IConfiguration<DistributedMessagingSettings>>(),
                         broker,
                         Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>());
-                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessage message ? message.GetContent() : ci.Arg<object>());
+                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessageBase message ? message.GetContent() : ci.Arg<object>());
 
                     ci.Arg<Action<IDispatchingContext>>()(dispContext);
                     Assert.AreSame(identity, dispContext.Identity);
                     Assert.IsTrue(dispContext.BrokeredMessage.IsOneWay);
 
-                    return Task.FromResult<IMessage>(null);
+                    return Task.FromResult<Response?>(null);
                 });
 
             var resultTask = (Task)opInfo.Invoke(null, opArgs);

@@ -19,7 +19,7 @@ namespace Kephas.Core.Endpoints
     /// <summary>
     /// A get log level handler.
     /// </summary>
-    public class GetLogLevelHandler : MessageHandlerBase<GetLogLevelMessage, GetLogLevelResponseMessage>
+    public class GetLogLevelHandler : IMessageHandler<GetLogLevelMessage, GetLogLevelResponse>
     {
         private readonly ILogManager logManager;
 
@@ -28,7 +28,6 @@ namespace Kephas.Core.Endpoints
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
         public GetLogLevelHandler(ILogManager logManager)
-            : base(logManager)
         {
             this.logManager = logManager;
         }
@@ -42,9 +41,9 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetLogLevelResponseMessage> ProcessAsync(GetLogLevelMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<GetLogLevelResponse> ProcessAsync(GetLogLevelMessage message, IMessagingContext context, CancellationToken token)
         {
-            return new GetLogLevelResponseMessage
+            return new GetLogLevelResponse
             {
                 MinimumLevel = this.logManager.MinimumLevel,
                 Message = $"The application's minimum log level is {this.logManager.MinimumLevel}.",

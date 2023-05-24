@@ -12,7 +12,7 @@ namespace Kephas.Templating.AttributedModel;
 
 using System;
 
-using Kephas.Injection;
+using Kephas.Services;
 
 /// <summary>
 /// Indicates the supported template kind.

@@ -7,7 +7,7 @@
 
 namespace Kephas.Connectivity;
 
-using Kephas.Injection;
+using Kephas.Services;
 using Kephas.Security.Authentication;
 using Kephas.Services;
 
@@ -21,9 +21,9 @@ public class ConnectionContext : Context, IConnectionContext
     /// <summary>
     /// Initializes a new instance of the <see cref="ConnectionContext"/> class.
     /// </summary>
-    /// <param name="injector">The injector.</param>
-    public ConnectionContext(IInjector injector)
-        : base(injector)
+    /// <param name="serviceProvider">The injector.</param>
+    public ConnectionContext(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
     }
 

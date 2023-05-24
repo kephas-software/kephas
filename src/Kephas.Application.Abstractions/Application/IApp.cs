@@ -7,7 +7,7 @@
 
 namespace Kephas.Application;
 
-using Kephas.Operations;
+using Kephas.Services.Builder;
 using Kephas.Threading.Tasks;
 
 /// <summary>
@@ -16,12 +16,17 @@ using Kephas.Threading.Tasks;
 public interface IApp : IAsyncDisposable
 {
     /// <summary>
-    /// Gets the ambient services.
+    /// Gets the application services builder.
     /// </summary>
     /// <value>
-    /// The ambient services.
+    /// The application services builder.
     /// </value>
-    IAmbientServices AmbientServices { get; }
+    IAppServiceCollectionBuilder ServicesBuilder { get; }
+
+    /// <summary>
+    /// Gets the <see cref="IServiceProvider"/>.
+    /// </summary>
+    IServiceProvider? ServiceProvider { get; }
 
     /// <summary>
     /// Gets a context for the application.
@@ -44,16 +49,11 @@ public interface IApp : IAsyncDisposable
     /// <summary>
     /// Runs the application asynchronously.
     /// </summary>
-    /// <param name="mainCallback">
-    /// Optional. The callback for the main function.
-    /// </param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>
     /// The asynchronous result that yields the <see cref="IAppContext"/>.
     /// </returns>
-    Task<AppRunResult> RunAsync(
-        Func<IAppArgs, Task<(IOperationResult result, AppShutdownInstruction instruction)>>? mainCallback = null,
-        CancellationToken cancellationToken = default);
+    Task<AppRunResult> RunAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Shuts down the application asynchronously.
@@ -80,7 +80,7 @@ public static class AppExtensions
     {
         try
         {
-            await app.RunAsync(null, default).PreserveThreadContext();
+            await app.RunAsync(default).PreserveThreadContext();
             return 0;
         }
         catch (Exception ex)

@@ -12,15 +12,14 @@ namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
     using System.Collections.Generic;
-
-    using Kephas.Application;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Runtime;
+    using Kephas.Services.Builder;
     using Kephas.Testing;
     using NSubstitute;
 
@@ -38,9 +37,11 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace? modelSpace = null,
             IRuntimeModelElementFactory? factory = null)
         {
-            var ambientServices = this.CreateAmbientServices().WithStaticAppRuntime();
-            var injector = Substitute.For<IInjector>();
-            injector.Resolve<IAmbientServices>().Returns(ambientServices);
+            var appServices = new AppServiceCollectionBuilder(this.CreateAppServices())
+                .WithStaticAppRuntime()
+                .AppServices;
+            var injector = Substitute.For<IServiceProvider>();
+            injector.Resolve<IAppServiceCollection>().Returns(appServices);
             return new ModelConstructionContext(injector)
             {
                 ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),

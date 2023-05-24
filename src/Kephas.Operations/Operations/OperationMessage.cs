@@ -13,6 +13,8 @@ namespace Kephas.Operations
     using System;
 
     using Kephas.Data.Formatting;
+    using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
     /// An operation message.
@@ -67,6 +69,23 @@ namespace Kephas.Operations
         {
             var exceptionMessage = this.Exception is null ? null : $" ({this.Exception.GetType()})";
             return $"[{this.Timestamp:s}] {this.Message}{exceptionMessage}";
+        }
+
+        /// <summary>
+        /// Converts this object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="context">Optional. The formatting context.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        object? IDataFormattable.ToData(object? context)
+        {
+            return this.Exception is null
+                ? this.ToString()
+                : new Expando
+                {
+                    [nameof(this.Timestamp)] = this.Timestamp,
+                    [nameof(this.Message)] = this.Message,
+                    [nameof(this.Exception)] = new ExceptionData(this.Exception),
+                };
         }
     }
 }

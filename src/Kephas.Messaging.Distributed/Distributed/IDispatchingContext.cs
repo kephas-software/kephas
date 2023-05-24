@@ -437,7 +437,7 @@ namespace Kephas.Messaging.Distributed
             context = context ?? throw new ArgumentNullException(nameof(context));
             if (string.IsNullOrEmpty(messageId)) throw new System.ArgumentException("Value must not be null or empty.", nameof(messageId));
 
-            context.BrokeredMessage.ReplyToMessageId = messageId;
+            context.BrokeredMessage.ReplyTo = messageId;
             context.BrokeredMessage.TraceReply(trace, null);
             if (sender != null)
             {
@@ -459,7 +459,7 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext Content<TContext>(this TContext context, IMessage message)
+        public static TContext Content<TContext>(this TContext context, IMessageBase message)
             where TContext : class, IDispatchingContext
         {
             context = context ?? throw new ArgumentNullException(nameof(context));

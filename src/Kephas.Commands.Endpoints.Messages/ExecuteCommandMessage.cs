@@ -16,7 +16,7 @@ namespace Kephas.Commands.Endpoints
     /// <remarks>
     /// Do not implement <see cref="IMessage"/> so that it remains invisible to the registry.
     /// </remarks>
-    public class ExecuteCommandMessage
+    public class ExecuteCommandMessage : IMessage<ExecuteCommandResponse>
     {
         /// <summary>
         /// Gets or sets the command to be executed.
@@ -32,7 +32,7 @@ namespace Kephas.Commands.Endpoints
     /// <summary>
     /// The response of a command execution.
     /// </summary>
-    public class ExecuteCommandResponseMessage : ResponseMessage
+    public class ExecuteCommandResponse : Response
     {
         /// <summary>
         /// Gets or sets the execution return value.

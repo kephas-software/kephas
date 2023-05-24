@@ -20,11 +20,11 @@ namespace Kephas.Tests.Application
         [Test]
         public void Constructor_default_AppRuntime_is_from_di_container()
         {
-            var ambientServices = Substitute.For<IAmbientServices>();
+            var appServices = Substitute.For<IAppServiceCollection>();
             var appRuntime = Substitute.For<IAppRuntime>();
 
-            ambientServices.GetAppRuntime().Returns(appRuntime);
-            var appContext = new AppContext(ambientServices);
+            appServices.GetAppRuntime().Returns(appRuntime);
+            var appContext = new AppContext(appServices);
             Assert.AreSame(appRuntime, appContext.AppRuntime);
         }
     }

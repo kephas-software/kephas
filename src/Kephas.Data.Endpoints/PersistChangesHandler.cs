@@ -18,7 +18,7 @@ namespace Kephas.Data.Endpoints
     using Kephas.Data.Capabilities;
     using Kephas.Data.Client.Capabilities;
     using Kephas.Data.Conversion;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Messaging;
     using Kephas.Model;
     using Kephas.Services;
@@ -27,7 +27,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A persist changes handler.
     /// </summary>
-    public class PersistChangesHandler : MessageHandlerBase<PersistChangesMessage, PersistChangesResponseMessage>
+    public class PersistChangesHandler : IMessageHandler<PersistChangesMessage, PersistChangesResponse>
     {
         /// <summary>
         /// The data conversion service.
@@ -73,10 +73,10 @@ namespace Kephas.Data.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<PersistChangesResponseMessage> ProcessAsync(PersistChangesMessage message, IMessagingContext context, CancellationToken token)
+        public async Task<PersistChangesResponse> ProcessAsync(PersistChangesMessage message, IMessagingContext context, CancellationToken token)
         {
             var mappings = new List<(DtoEntityEntry dtoEntry, object entity)>();
-            var response = new PersistChangesResponseMessage();
+            var response = new PersistChangesResponse();
 
             if (message.EntityEntries == null || message.EntityEntries.Count == 0)
             {
@@ -156,7 +156,7 @@ namespace Kephas.Data.Endpoints
         /// A Task.
         /// </returns>
         protected virtual Task PrePersistChangesAsync(
-            PersistChangesResponseMessage response,
+            PersistChangesResponse response,
             IList<(DtoEntityEntry clientEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)
@@ -175,7 +175,7 @@ namespace Kephas.Data.Endpoints
         /// A Task.
         /// </returns>
         protected virtual async Task PostPersistChangesAsync(
-            PersistChangesResponseMessage response,
+            PersistChangesResponse response,
             IList<(DtoEntityEntry dtoEntityEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)

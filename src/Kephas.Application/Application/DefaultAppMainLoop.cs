@@ -59,7 +59,7 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> Main(CancellationToken cancellationToken)
+        public virtual async Task<MainLoopResult> Main(CancellationToken cancellationToken)
         {
             this.completionSource = new TaskCompletionSource<IOperationResult>();
 
@@ -77,11 +77,12 @@ namespace Kephas.Application
 
                     this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    return (this.GetAttendedResult(result), AppShutdownInstruction.Shutdown);
+                    return new MainLoopResult(this.GetAttendedResult(result), AppShutdownInstruction.Shutdown);
                 }
                 catch (OperationCanceledException)
                 {
-                    return (this.unattendedCompletion
+                    return new MainLoopResult(
+                        this.unattendedCompletion
                             ? this.GetUnattendedResult(result)
                             : this.GetAttendedResult(result),
                         AppShutdownInstruction.Shutdown);
@@ -94,11 +95,11 @@ namespace Kephas.Application
 
                 this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
+                return new MainLoopResult(this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
             }
             catch (OperationCanceledException)
             {
-                return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
+                return new MainLoopResult(this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
             }
         }
 

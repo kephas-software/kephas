@@ -8,102 +8,98 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Authorization.Behaviors
-{
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
+namespace Kephas.Messaging.Authorization.Behaviors;
 
-    using Kephas.Collections;
-    using Kephas.Dynamic;
-    using Kephas.Messaging.Behaviors;
-    using Kephas.Messaging.Behaviors.AttributedModel;
-    using Kephas.Security.Authorization;
-    using Kephas.Security.Permissions.AttributedModel;
-    using Kephas.Services;
-    using Kephas.Threading.Tasks;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Kephas.Collections;
+using Kephas.Messaging.Behaviors;
+using Kephas.Security.Authorization;
+using Kephas.Security.Permissions.AttributedModel;
+using Kephas.Services;
+using Kephas.Threading.Tasks;
+
+/// <summary>
+/// A message processing behavior ensuring that only authorized calls execute the request.
+/// </summary>
+[ProcessingPriority(Priority.Highest + 10)]
+public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage<object?>, object?>
+{
+    private readonly IAuthorizationService authorizationService;
+    private readonly IAuthorizationScopeService authorizationScopeService;
+    private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>> permissionsMap = new ();
 
     /// <summary>
-    /// A message processing behavior ensuring that only authorized calls execute the request.
+    /// Initializes a new instance of the <see cref="EnsureAuthorizedMessageProcessingBehavior"/>
+    /// class.
     /// </summary>
-    [MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
-    [ProcessingPriority(Priority.Highest + 10)]
-    public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage>
+    /// <param name="authorizationService">The authorization service.</param>
+    /// <param name="authorizationScopeService">The authorization scope service.</param>
+    public EnsureAuthorizedMessageProcessingBehavior(
+        IAuthorizationService authorizationService,
+        IAuthorizationScopeService authorizationScopeService)
     {
-        private readonly IAuthorizationService authorizationService;
-        private readonly IAuthorizationScopeService authorizationScopeService;
-        private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>> permissionsMap = new ();
+        authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
+        authorizationScopeService = authorizationScopeService ?? throw new ArgumentNullException(nameof(authorizationScopeService));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnsureAuthorizedMessageProcessingBehavior"/>
-        /// class.
-        /// </summary>
-        /// <param name="authorizationService">The authorization service.</param>
-        /// <param name="authorizationScopeService">The authorization scope service.</param>
-        public EnsureAuthorizedMessageProcessingBehavior(
-            IAuthorizationService authorizationService,
-            IAuthorizationScopeService authorizationScopeService)
+        this.authorizationService = authorizationService;
+        this.authorizationScopeService = authorizationScopeService;
+    }
+
+    /// <summary>
+    /// Interception called before invoking the handler to process the message.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="context">The processing context.</param>
+    /// <param name="token">The cancellation token.</param>
+    /// <returns>A task.</returns>
+    public override async Task BeforeProcessAsync(IMessage<object?> message, IMessagingContext context, CancellationToken token)
+    {
+        var messageType = message.GetType();
+
+        var permissions = this.GetRequiredPermissions(messageType);
+        if ((permissions?.Count ?? 0) > 0)
         {
-            authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
-            authorizationScopeService = authorizationScopeService ?? throw new ArgumentNullException(nameof(authorizationScopeService));
+            var authScope = await this.authorizationScopeService.GetAuthorizationScopeAsync(context, cancellationToken: token).PreserveThreadContext();
+            await this.authorizationService.AuthorizeAsync(context, permissions, authScope, cancellationToken: token).PreserveThreadContext();
+        }
+    }
 
-            this.authorizationService = authorizationService;
-            this.authorizationScopeService = authorizationScopeService;
+    /// <summary>
+    /// Gets the required permissions.
+    /// </summary>
+    /// <param name="messageType">Type of the message.</param>
+    /// <returns>
+    /// The required permissions.
+    /// </returns>
+    private IReadOnlyList<Type> GetRequiredPermissions(Type messageType)
+    {
+        var perms = this.permissionsMap.GetOrAdd(messageType, this.ComputePermissions);
+        return perms;
+    }
+
+    /// <summary>
+    /// Calculates the permissions.
+    /// </summary>
+    /// <param name="messageType">Type of the message.</param>
+    /// <returns>
+    /// The calculated permissions.
+    /// </returns>
+    private IReadOnlyList<Type> ComputePermissions(Type messageType)
+    {
+        var permAttrs = messageType.GetCustomAttributes().OfType<IRequiresPermissionAnnotation>();
+        var permissions = new HashSet<Type>();
+        foreach (var permAttr in permAttrs)
+        {
+            permissions.AddRange(permAttr.PermissionTypes);
         }
 
-        /// <summary>
-        /// Interception called before invoking the handler to process the message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="context">The processing context.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>A task.</returns>
-        public override async Task BeforeProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
-        {
-            var messageType = message.GetType();
-
-            var permissions = this.GetRequiredPermissions(messageType);
-            if ((permissions?.Count ?? 0) > 0)
-            {
-                var authScope = await this.authorizationScopeService.GetAuthorizationScopeAsync(context, cancellationToken: token).PreserveThreadContext();
-                await this.authorizationService.AuthorizeAsync(context, permissions, authScope, cancellationToken: token).PreserveThreadContext();
-            }
-        }
-
-        /// <summary>
-        /// Gets the required permissions.
-        /// </summary>
-        /// <param name="messageType">Type of the message.</param>
-        /// <returns>
-        /// The required permissions.
-        /// </returns>
-        private IReadOnlyList<Type> GetRequiredPermissions(Type messageType)
-        {
-            var perms = this.permissionsMap.GetOrAdd(messageType, this.ComputePermissions);
-            return perms;
-        }
-
-        /// <summary>
-        /// Calculates the permissions.
-        /// </summary>
-        /// <param name="messageType">Type of the message.</param>
-        /// <returns>
-        /// The calculated permissions.
-        /// </returns>
-        private IReadOnlyList<Type> ComputePermissions(Type messageType)
-        {
-            var permAttrs = messageType.GetCustomAttributes().OfType<IRequiresPermissionAnnotation>();
-            var permissions = new HashSet<Type>();
-            foreach (var permAttr in permAttrs)
-            {
-                permissions.AddRange(permAttr.PermissionTypes);
-            }
-
-            return permissions.ToList().AsReadOnly();
-        }
+        return permissions.ToList().AsReadOnly();
     }
 }

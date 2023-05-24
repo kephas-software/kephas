@@ -13,7 +13,6 @@ namespace Kephas.Tests.Application
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Configuration;
-    using Kephas.Injection;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using NSubstitute;
@@ -28,7 +27,7 @@ namespace Kephas.Tests.Application
             var enabledExportFactory = this.GetFeatureExportFactory("enabled", dependencies: new[] { "test" });
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "enabled" }),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory, enabledExportFactory });
@@ -41,7 +40,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "Test" }),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -54,7 +53,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(new[] { "test" }),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -67,7 +66,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test", targetApps: new[] { "test-app" });
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -80,7 +79,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test", targetApps: new[] { "test-app" });
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "non-test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "non-test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -93,7 +92,7 @@ namespace Kephas.Tests.Application
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
-                new StaticAppRuntime(appId: "test-app"),
+                new StaticAppRuntime(new AppRuntimeSettings { AppId = "test-app" }),
                 Substitute.For<IAppContext>(),
                 this.GetAppConfiguration(),
                 new List<Lazy<IFeatureManager, FeatureManagerMetadata>> { exportFactory });
@@ -104,7 +103,7 @@ namespace Kephas.Tests.Application
         private ServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata> GetServiceBehaviorContext(Lazy<IFeatureManager, FeatureManagerMetadata> exportFactory)
         {
             var context = new ServiceBehaviorContext<IFeatureManager, FeatureManagerMetadata>(
-                Substitute.For<IInjector>(),
+                Substitute.For<IServiceProvider>(),
                 () => exportFactory.Value,
                 exportFactory.Metadata);
             return context;

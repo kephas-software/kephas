@@ -20,7 +20,6 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     using Kephas.Application;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
-    using Kephas.Injection;
     using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Queues;
@@ -38,7 +37,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     [TestFixture]
     public class PipesAppMessageRouterTest : PipesMessagingTestBase
     {
-        public override IEnumerable<Type> GetDefaultParts()
+        protected override IEnumerable<Type> GetDefaultParts()
         {
             return new List<Type>(base.GetDefaultParts())
             {
@@ -50,7 +49,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         [Test]
         public void Injection()
         {
-            var container = this.CreateInjector();
+            var container = this.BuildServiceProvider();
             var router = container.ResolveMany<IMessageRouter>().OfType<PipesAppMessageRouter>().SingleOrDefault();
 
             Assert.IsNotNull(router);
@@ -61,24 +60,28 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
-                this.CreateAmbientServices(),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: true,
-                    appId: masterId,
-                    appInstanceId: masterInstanceId));
+            var masterContainer = this.BuildServiceProvider(
+                b => b
+                    .WithStaticAppRuntime(settings =>
+                        {
+                            settings.IsRoot = true;
+                            settings.AppId = masterId;
+                            settings.AppInstanceId = masterInstanceId;
+                        }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
-                this.CreateAmbientServices()
-                    .RegisterAppArgs(slaveArgs),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: false,
-                    appId: slaveId,
-                    appInstanceId: slaveInstanceId));
+            var slaveContainer = this.BuildServiceProvider(
+                b => b
+                    .AddAppArgs(slaveArgs)
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -91,8 +94,8 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 var pingBack = await masterMessageBroker.DispatchAsync(
                     new PingMessage(),
                     ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                              .Timeout(TimeSpan.FromSeconds(2)));
-                Assert.IsInstanceOf<PingBackMessage>(pingBack);
+                        .Timeout(TimeSpan.FromSeconds(2)));
+                Assert.IsInstanceOf<PingBack>(pingBack);
             }
             finally
             {
@@ -107,29 +110,33 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var sbMaster = new StringBuilder();
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
-                this.CreateAmbientServices()
-                    .WithDebugLogManager(sbMaster),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: true,
-                    appId: masterId,
-                    appInstanceId: masterInstanceId)
-                        .OnIsAppAssembly(this.IsNotTestAssembly));
+            var masterContainer = this.BuildServiceProvider(
+                b => b
+                    .WithDebugLogManager(sbMaster)
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = true;
+                        settings.AppId = masterId;
+                        settings.AppInstanceId = masterInstanceId;
+                        settings.IsAppAssembly = this.IsNotTestAssembly;
+                    }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
-                this.CreateAmbientServices()
+            var slaveContainer = this.BuildServiceProvider(
+                b => b
                     .WithDebugLogManager(sbSlave)
-                    .RegisterAppArgs(slaveArgs),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: false,
-                    appId: slaveId,
-                    appInstanceId: slaveInstanceId)
-                        .OnIsAppAssembly(this.IsNotTestAssembly));
+                    .AddAppArgs(slaveArgs)
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                        settings.IsAppAssembly = this.IsNotTestAssembly;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -144,10 +151,10 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                         masterMessageBroker.DispatchAsync(
                             new PingMessage(),
                             ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                                      .Timeout(TimeSpan.FromSeconds(2))));
+                                .Timeout(TimeSpan.FromSeconds(2))));
 
                 var pingBacks = await Task.WhenAll(pingBackTasks);
-                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBackMessage));
+                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBack));
             }
             finally
             {
@@ -161,24 +168,28 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
-                this.CreateAmbientServices(),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: true,
-                    appId: masterId,
-                    appInstanceId: masterInstanceId));
+            var masterContainer = this.BuildServiceProvider(
+                b => b
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = true;
+                        settings.AppId = masterId;
+                        settings.AppInstanceId = masterInstanceId;
+                    }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
-                this.CreateAmbientServices()
-                    .RegisterAppArgs(slaveArgs),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: false,
-                    appId: slaveId,
-                    appInstanceId: slaveInstanceId));
+            var slaveContainer = this.BuildServiceProvider(
+                b => b
+                    .AddAppArgs(slaveArgs)
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -191,8 +202,8 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 var pingBack = await masterMessageBroker.DispatchAsync(
                     new PingMessage(),
                     ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                              .Timeout(TimeSpan.FromSeconds(2)));
-                Assert.IsInstanceOf<PingBackMessage>(pingBack);
+                        .Timeout(TimeSpan.FromSeconds(2)));
+                Assert.IsInstanceOf<PingBack>(pingBack);
             }
             finally
             {
@@ -206,24 +217,28 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
-            var masterContainer = this.CreateInjector(
-                this.CreateAmbientServices(),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: true,
-                    appId: masterId,
-                    appInstanceId: masterInstanceId));
+            var masterContainer = this.BuildServiceProvider(
+                b => b
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = true;
+                        settings.AppId = masterId;
+                        settings.AppInstanceId = masterInstanceId;
+                    }));
             var masterRuntime = masterContainer.Resolve<IAppRuntime>();
 
             var slaveArgs = new AppArgs { [AppArgs.RootArgName] = masterInstanceId };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
-            var slaveContainer = this.CreateInjector(
-                this.CreateAmbientServices()
-                    .RegisterAppArgs(slaveArgs),
-                appRuntime: new StaticAppRuntime(
-                    isRoot: false,
-                    appId: slaveId,
-                    appInstanceId: slaveInstanceId));
+            var slaveContainer = this.BuildServiceProvider(
+                b => b
+                    .AddAppArgs(slaveArgs)
+                    .WithStaticAppRuntime(settings =>
+                    {
+                        settings.IsRoot = false;
+                        settings.AppId = slaveId;
+                        settings.AppInstanceId = slaveInstanceId;
+                    }));
             var slaveRuntime = slaveContainer.Resolve<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
@@ -238,10 +253,10 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                         masterMessageBroker.DispatchAsync(
                             new PingMessage(),
                             ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                                      .Timeout(TimeSpan.FromSeconds(2))));
+                                .Timeout(TimeSpan.FromSeconds(2))));
 
                 var pingBacks = await Task.WhenAll(pingBackTasks);
-                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBackMessage));
+                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBack));
             }
             finally
             {
@@ -250,12 +265,11 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task InitializeAppAsync(IInjector container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
+        private async Task InitializeAppAsync(IServiceProvider container, IAppArgs? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
         {
             var appManager = container.Resolve<IAppManager>();
             var appContext = new AppContext(
-                container.Resolve<IAmbientServices>(),
-                container.Resolve<IAppRuntime>(),
+                container.Resolve<IAppServiceCollection>(),
                 appArgs);
             await appManager.InitializeAsync(appContext);
 
@@ -266,11 +280,11 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task FinalizeAppAsync(IInjector container)
+        private async Task FinalizeAppAsync(IServiceProvider container)
         {
             var appManager = container.Resolve<IAppManager>();
             await appManager.FinalizeAsync(
-                new AppContext(container.Resolve<IAmbientServices>(), container.Resolve<IAppRuntime>()));
+                new AppContext(container.Resolve<IAppServiceCollection>()));
         }
 
         public class PipesSettingsProvider : ISettingsProvider

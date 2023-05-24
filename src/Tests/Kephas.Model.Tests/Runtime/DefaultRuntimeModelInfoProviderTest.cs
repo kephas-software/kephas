@@ -29,7 +29,6 @@ namespace Kephas.Model.Tests.Runtime
     /// Tests for <see cref="DefaultRuntimeModelInfoProvider"/>.
     /// </summary>
     [TestFixture]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultRuntimeModelInfoProviderTest
     {
         private RuntimeTypeRegistry typeRegistry;

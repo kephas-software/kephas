@@ -30,7 +30,7 @@ public abstract class FlowActivityBase : ActivityBase, IOperation, ICloneable
     /// <returns>
     /// An object.
     /// </returns>
-    object? IOperation.Execute(IContext? context) =>
+    object? IOperation.Execute(IContextBase? context) =>
         this.ExecuteAsync(this.GetActivityContext(context)).GetResultNonLocking();
 
     /// <summary>
@@ -41,7 +41,7 @@ public abstract class FlowActivityBase : ActivityBase, IOperation, ICloneable
     /// <returns>
     /// An object.
     /// </returns>
-    Task<object?> IOperation.ExecuteAsync(IContext? context, CancellationToken cancellationToken) =>
+    Task<object?> IOperation.ExecuteAsync(IContextBase? context, CancellationToken cancellationToken) =>
         this.ExecuteAsync(this.GetActivityContext(context), cancellationToken);
 
     /// <summary>
@@ -69,7 +69,7 @@ public abstract class FlowActivityBase : ActivityBase, IOperation, ICloneable
     /// </summary>
     /// <param name="context">The context.</param>
     /// <returns>An <see cref="IActivityContext"/>.</returns>
-    protected virtual IActivityContext GetActivityContext(IContext? context)
+    protected virtual IActivityContext GetActivityContext(IContextBase? context)
     {
         return context as IActivityContext
                ?? throw new InvalidOperationException("Must provide an activity context.");

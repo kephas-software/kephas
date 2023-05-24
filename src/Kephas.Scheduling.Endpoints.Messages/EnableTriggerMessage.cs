@@ -17,7 +17,7 @@ namespace Kephas.Scheduling.Endpoints
     /// An enable trigger message.
     /// </summary>
     [Display(Description = "Enables the specified trigger.")]
-    public class EnableTriggerMessage : IMessage
+    public class EnableTriggerMessage : IActionMessage
     {
     }
 }

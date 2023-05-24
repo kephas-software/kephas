@@ -128,7 +128,7 @@ namespace Kephas.Reflection
         /// Converts to string.
         /// </summary>
         /// <returns>
-        /// A <see cref="String" /> that represents this instance.
+        /// A string that represents this instance.
         /// </returns>
         public override string ToString()
         {

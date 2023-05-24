@@ -15,7 +15,7 @@ namespace Kephas.Model.Elements
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-    using Kephas.Injection;
+    using Kephas.Services;
     using Kephas.Model.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -28,7 +28,7 @@ namespace Kephas.Model.Elements
     public class AppServiceType : ClassifierBase<IAppServiceType>, IAppServiceType
     {
         private readonly IAppServiceInfo appServiceInfo;
-        private readonly IInjector injector;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceType" /> class.
@@ -45,7 +45,7 @@ namespace Kephas.Model.Elements
             appServiceInfo = appServiceInfo ?? throw new System.ArgumentNullException(nameof(appServiceInfo));
 
             this.appServiceInfo = appServiceInfo;
-            this.injector = constructionContext.Injector;
+            this.serviceProvider = constructionContext.ServiceProvider;
             this.ContractType = this.appServiceInfo.ContractType;
             this.MetadataType = this.appServiceInfo.MetadataType;
         }
@@ -132,7 +132,7 @@ namespace Kephas.Model.Elements
             }
 
             // TODO resolve or exception for generic services
-            return this.injector.Resolve(this.ContractType);
+            return this.serviceProvider.Resolve(this.ContractType);
         }
 
         /// <summary>Adds a part to the aggregated element.</summary>

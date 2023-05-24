@@ -23,7 +23,6 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     using Kephas.Messaging.Messages;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -113,7 +112,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         {
             var messageProcessor = Substitute.For<IMessageProcessor>();
             messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => new ResponseMessage { Message = $"Start time: {ci.Arg<NullableParamMessage>().StartTime:s}" });
+                .Returns(ci => new Response { Message = $"Start time: {ci.Arg<NullableParamMessage>().StartTime:s}" });
             var operationInfo = new MessageOperationInfo(
                     this.typeRegistry,
                     this.typeRegistry.GetTypeInfo(typeof(NullableParamMessage)),
@@ -121,9 +120,9 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
 
             var result = await operationInfo.InvokeAsync(null, new object?[] { new Expando { ["starttime"] = "2020-04-19" } });
 
-            Assert.IsInstanceOf<ResponseMessage>(result);
+            Assert.IsInstanceOf<Response>(result);
 
-            var response = (ResponseMessage)result;
+            var response = (Response)result;
             Assert.AreEqual("Start time: 2020-04-19T00:00:00", response.Message);
         }
 
@@ -132,7 +131,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         {
             var messageProcessor = Substitute.For<IMessageProcessor>();
             messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
-                .Returns(ci => (IMessage)null ?? throw new MissingHandlerException("bad"));
+                .Returns(ci => (Response?)null ?? throw new MissingHandlerException("bad"));
             var operationInfo = new MessageOperationInfo(
                     this.typeRegistry,
                     this.typeRegistry.GetTypeInfo(typeof(NullableParamMessage)),
@@ -141,17 +140,17 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             Assert.ThrowsAsync<MissingHandlerException>(() => operationInfo.InvokeAsync(null, new object?[] { new Expando() }));
         }
 
-        public class NullableParamMessage : IMessage
+        public class NullableParamMessage : IMessage<Response>
         {
             public DateTime? StartTime { get; set; }
         }
 
-        public class EnumMessage : IMessage
+        public class EnumMessage : IMessage<object?>
         {
             public LogLevel? LogLevel { get; set; }
         }
 
-        public class UpdateMessage : IMessage
+        public class UpdateMessage : IActionMessage
         {
             [Display(ShortName = "pre", Description = "Includes prerelease.")]
             public bool IncludePrerelease { get; set; }

@@ -8,13 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Reflection
+namespace Kephas.Tests.Reflection
 {
-    using System.Reflection;
-
     using Kephas.Reflection;
     using Kephas.Reflection.Localization;
-    using Kephas.Runtime;
     using NSubstitute;
     using NUnit.Framework;
 

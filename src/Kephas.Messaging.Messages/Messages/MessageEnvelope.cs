@@ -15,31 +15,41 @@ namespace Kephas.Messaging.Messages
     /// <summary>
     /// A message envelope.
     /// </summary>
-    public class MessageEnvelope : IMessageEnvelope
+    public record MessageEnvelope<T> : IMessageEnvelope<T>
+        where T : class
     {
         /// <summary>
-        /// Gets or sets the message.
+        /// Initializes a new instance of the <see cref="MessageEnvelope{T}"/>.
+        /// </summary>
+        public MessageEnvelope()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageEnvelope{T}"/>.
+        /// </summary>
+        /// <param name="message">The native message.</param>
+        public MessageEnvelope(T message)
+        {
+            Content = message ?? throw new ArgumentNullException(nameof(message));
+        }
+        
+        /// <summary>
+        /// Gets or sets the native message.
         /// </summary>
         /// <value>
-        /// The message.
+        /// The native message.
         /// </value>
-        public object? Message { get; set; }
+        public T? Content { get; set; }
 
         /// <summary>
         /// Gets the message.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the message is not set.</exception>
         /// <returns>
-        /// The message.
+        /// The message, or if the message is not set, an <see cref="InvalidOperationException"/> occurs.
         /// </returns>
-        public object GetContent()
-        {
-            if (this.Message == null)
-            {
-                throw new InvalidOperationException("The message is not set in the envelope.");
-            }
-
-            return this.Message;
-        }
+        public object GetContent() =>
+            this.Content ?? throw new InvalidOperationException("The message is not set in the envelope.");
     }
 }

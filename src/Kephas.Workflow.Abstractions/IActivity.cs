@@ -12,8 +12,8 @@ namespace Kephas.Workflow
 {
     using Kephas.Data;
     using Kephas.Dynamic;
-    using Kephas.Injection;
     using Kephas.Operations;
+    using Kephas.Services;
     using Kephas.Workflow.Reflection;
 
     /// <summary>

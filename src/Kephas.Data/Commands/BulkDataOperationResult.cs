@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of a bulk operation.
     /// </summary>
-    public class BulkDataOperationResult : DataCommandResult, IBulkDataOperationResult
+    public record BulkDataOperationResult : DataCommandResult, IBulkDataOperationResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkDataOperationResult"/> class.

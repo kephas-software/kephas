@@ -13,7 +13,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// An entity message.
     /// </summary>
-    public abstract class EntityMessage : IEntityMessage
+    public abstract class EntityMessage<TResponse> : IEntityMessage<TResponse>
     {
         /// <summary>
         /// Gets or sets the type of the entity.

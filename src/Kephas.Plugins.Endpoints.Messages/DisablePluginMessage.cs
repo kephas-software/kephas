@@ -14,6 +14,7 @@ namespace Kephas.Plugins.Endpoints
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Security.Authorization;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
@@ -23,7 +24,7 @@ namespace Kephas.Plugins.Endpoints
     /// </summary>
     [Display(Description = "Disables the indicated plugin.")]
     [RequiresPermission(typeof(AppAdminPermission))]
-    public class DisablePluginMessage : IMessage
+    public class DisablePluginMessage : IMessage<Response>
     {
         /// <summary>
         /// Gets or sets the package ID.
