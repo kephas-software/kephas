@@ -8,13 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Graphs
+namespace Kephas.Collections.Graphs
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Kephas.Collections;
-
     /// <summary>
     /// Extension methods for graphs.
     /// </summary>

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Sets;
+
 namespace Kephas.Application;
 
 using System;
@@ -24,7 +26,6 @@ using Kephas.Logging;
 using Kephas.Resources;
 using Kephas.Services;
 using Kephas.Services.Behaviors;
-using Kephas.Sets;
 using Kephas.Threading.Tasks;
 
 /// <summary>

@@ -5,10 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Graphs;
+using Kephas.Collections.Graphs;
 using NUnit.Framework;
 
-namespace Kephas.Tests.Graphs
+namespace Kephas.Tests.Collections.Graphs
 {
     [TestFixture]
     public class GraphNodeTest

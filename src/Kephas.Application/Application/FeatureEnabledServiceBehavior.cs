@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Sets;
+
 namespace Kephas.Application
 {
     using System;
@@ -17,7 +19,6 @@ namespace Kephas.Application
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Services.Behaviors;
-    using Kephas.Sets;
 
     /// <summary>
     /// A feature enabled service behavior.

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Graphs
+namespace Kephas.Collections.Graphs
 {
     /// <summary>
     /// Defines the contract for a graph edge.

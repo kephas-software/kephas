@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Graphs
+namespace Kephas.Collections.Graphs
 {
     /// <summary>
     /// Defines an unoriented graph.

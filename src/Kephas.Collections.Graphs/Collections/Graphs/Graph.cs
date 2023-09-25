@@ -8,15 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Graphs
+using System.Reflection;
+using Kephas.Resources;
+
+namespace Kephas.Collections.Graphs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    using Kephas.Resources;
-
     /// <summary>
     /// Defines an oriented graph.
     /// </summary>

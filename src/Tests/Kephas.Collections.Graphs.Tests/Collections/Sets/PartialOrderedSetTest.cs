@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Sets;
+using Kephas.Collections.Sets;
 using NUnit.Framework;
 
-namespace Kephas.Tests.Sets
+namespace Kephas.Tests.Collections.Sets
 {
     [TestFixture]
     public class PartialOrderedSetTest

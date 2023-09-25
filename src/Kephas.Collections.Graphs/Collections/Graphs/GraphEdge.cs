@@ -8,10 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Graphs
+namespace Kephas.Collections.Graphs
 {
-    using System;
-
     /// <summary>
     /// Defines a graph edge.
     /// </summary>

@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Graphs;
+
 namespace Kephas.Data.Security.Permissions
 {
     using System;
@@ -13,7 +15,6 @@ namespace Kephas.Data.Security.Permissions
 
     using Kephas.Data.Model.Associations;
     using Kephas.Data.Reflection;
-    using Kephas.Graphs;
     using Kephas.Reflection;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;

@@ -8,16 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Sets
+using System.Collections;
+using Kephas.Collections.Graphs;
+using Kephas.Resources;
+
+namespace Kephas.Collections.Sets
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Kephas.Graphs;
-    using Kephas.Resources;
-
     /// <summary>
     /// A partial ordered set.
     /// </summary>

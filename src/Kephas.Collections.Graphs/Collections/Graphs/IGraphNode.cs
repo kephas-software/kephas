@@ -8,10 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Graphs
+namespace Kephas.Collections.Graphs
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Defines the contract for a graph node.
     /// </summary>

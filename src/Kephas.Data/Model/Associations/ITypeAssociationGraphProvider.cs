@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Graphs;
+
 namespace Kephas.Data.Model.Associations
 {
     using System;
-
-    using Kephas.Graphs;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;

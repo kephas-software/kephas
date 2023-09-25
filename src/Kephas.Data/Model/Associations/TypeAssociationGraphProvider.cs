@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Graphs;
+
 namespace Kephas.Data.Model.Associations
 {
     using System;
@@ -14,7 +16,6 @@ namespace Kephas.Data.Model.Associations
     using Kephas.Data.AttributedModel;
     using Kephas.Data.Reflection;
     using Kephas.Dynamic;
-    using Kephas.Graphs;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Runtime;
