@@ -142,9 +142,6 @@
   <data name="TransitionMonitor_AssertIsNotStarted_Exception" xml:space="preserve">
     <value>The {0} of '{1}' is already started.</value>
   </data>
-  <data name="GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception" xml:space="preserve">
-    <value>Multiple nodes found for value '{0}'.</value>
-  </data>
   <data name="InjectorBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
     <value>The required service of type '{0}' was not provided.</value>
     <comment>The required service of type '{0}' was not provided.</comment>
@@ -189,10 +186,6 @@
     <value>Argument '{0}' must not be null nor empty.</value>
     <comment>Argument '{0}' must not be null nor empty.</comment>
   </data>
-  <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
-    <value>Could not add the item {0} to the concurrent collection.</value>
-    <comment>Could not add the item {0} to the concurrent collection.</comment>
-  </data>
   <data name="RuntimeTypeInfo_NoPublicConstructorDefined_Exception" xml:space="preserve">
     <value>No public constructor defined for '{0}', cannot create instances.</value>
   </data>
@@ -201,10 +194,6 @@
   </data>
   <data name="ExpandoBase_CannotInvokeNonDelegate_Exception" xml:space="preserve">
     <value>Cannot invoke non-delegate value of {0}; it has a type of {1}.</value>
-  </data>
-  <data name="PartialOrderedSet_BadComparer_ProducesCycles_Exception" xml:space="preserve">
-    <value>The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}.</value>
-    <comment>The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}.</comment>
   </data>
   <data name="RuntimeTypeInfo_MemberNotFound_Exception" xml:space="preserve">
     <value>Member {0} not found in {1}.</value>

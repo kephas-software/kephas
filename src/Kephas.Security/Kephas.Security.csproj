@@ -90,6 +90,7 @@
         <ProjectReference Include="..\Kephas.IO\Kephas.IO.csproj" />
         <ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
         <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
+        <ProjectReference Include="..\Kephas.Configuration.Abstractions\Kephas.Configuration.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

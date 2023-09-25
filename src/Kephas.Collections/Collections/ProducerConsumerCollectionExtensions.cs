@@ -43,7 +43,7 @@ namespace Kephas.Collections
             {
                 if (!collection.TryAdd(newItem))
                 {
-                    throw new InvalidOperationException(string.Format(AbstractionStrings.ConcurrentCollection_CannotAddItem_Exception, newItem));
+                    throw new InvalidOperationException(string.Format(CollectionStrings.ConcurrentCollection_CannotAddItem_Exception, newItem));
                 }
             }
 

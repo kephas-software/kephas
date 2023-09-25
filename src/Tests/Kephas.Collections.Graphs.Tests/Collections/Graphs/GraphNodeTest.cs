@@ -5,16 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Graphs
+using Kephas.Graphs;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Graphs
 {
-    using System.Linq;
-
-    using Kephas.Graphs;
-
-    using NSubstitute;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class GraphNodeTest
     {

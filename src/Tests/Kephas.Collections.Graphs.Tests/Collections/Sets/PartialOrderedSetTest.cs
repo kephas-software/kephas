@@ -8,15 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Sets
+using Kephas.Sets;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Sets
 {
-    using System;
-    using System.Linq;
-
-    using Kephas.Sets;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class PartialOrderedSetTest
     {

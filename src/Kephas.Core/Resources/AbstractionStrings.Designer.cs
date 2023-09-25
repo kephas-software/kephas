@@ -132,15 +132,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add the item {0} to the concurrent collection..
-        /// </summary>
-        public static string ConcurrentCollection_CannotAddItem_Exception {
-            get {
-                return ResourceManager.GetString("ConcurrentCollection_CannotAddItem_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The application&apos;s finalize procedure was canceled, at {0:s}..
         /// </summary>
         public static string DefaultAppManager_FinalizeCanceled_Exception {
@@ -294,15 +285,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple nodes found for value &apos;{0}&apos;..
-        /// </summary>
-        public static string GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception {
-            get {
-                return ResourceManager.GetString("GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The injectable type &apos;{0}&apos; must be an instantiable class..
         /// </summary>
         public static string InjectableFactory_Create_InjectableTypeMustBeInstantiable {
@@ -371,15 +353,6 @@ namespace Kephas.Resources {
         public static string NullServiceExceptionMessage {
             get {
                 return ResourceManager.GetString("NullServiceExceptionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}..
-        /// </summary>
-        public static string PartialOrderedSet_BadComparer_ProducesCycles_Exception {
-            get {
-                return ResourceManager.GetString("PartialOrderedSet_BadComparer_ProducesCycles_Exception", resourceCulture);
             }
         }
         

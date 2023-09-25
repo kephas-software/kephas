@@ -147,9 +147,6 @@
   <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
     <value>Die Prioritäten des Dienstes '{0}' können für zwei Instanzen nicht aufgelöst werden: {1} und {2}.</value>
   </data>
-  <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
-    <value>Das Element {0} konnte nicht zur Concurrent-Collection hinzugefügt werden.</value>
-  </data>
   <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
     <value>Der Kontexttyp '{0}' muss eine instanziierbare Klasse sein.</value>
   </data>
@@ -164,9 +161,6 @@
   </data>
   <data name="UnhandledException_Terminating_Message" xml:space="preserve">
     <value>Unbehandelte Ausnahme, die den Prozess beendet.</value>
-  </data>
-  <data name="PartialOrderedSet_BadComparer_ProducesCycles_Exception" xml:space="preserve">
-    <value>Die bereitgestellte Vergleichsfunktion erzeugt Zyklen im sortierten Graph. Dies zeigt an, dass es zyklische Abhängigkeiten gibt, die unterbrochen werden müssen, um eine geordnete Menge zu erzeugen. Überprüfen Sie die folgenden Knoten: {0}.</value>
   </data>
   <data name="Requires_NotNullOrEmpty_EmptyArgument_Exception" xml:space="preserve">
     <value>Das Argument '{0}' darf weder null noch leer sein.</value>

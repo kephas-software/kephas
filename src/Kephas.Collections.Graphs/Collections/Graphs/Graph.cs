@@ -223,7 +223,7 @@ namespace Kephas.Graphs
             var fromNodes = this.FindNodesByValue(fromValue).Take(2).ToList();
             if (fromNodes.Count > 1)
             {
-                throw new AmbiguousMatchException(string.Format(AbstractionStrings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, fromValue));
+                throw new AmbiguousMatchException(string.Format(CollectionGraphsStrings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, fromValue));
             }
 
             var from = fromNodes.Count == 0 ? this.AddNode(fromValue) : fromNodes[0];
@@ -231,7 +231,7 @@ namespace Kephas.Graphs
             var toNodes = this.FindNodesByValue(toValue).Take(2).ToList();
             if (toNodes.Count > 1)
             {
-                throw new AmbiguousMatchException(string.Format(AbstractionStrings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, toValue));
+                throw new AmbiguousMatchException(string.Format(CollectionGraphsStrings.GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception, toValue));
             }
 
             var to = toNodes.Count == 0 ? this.AddNode(toValue) : toNodes[0];

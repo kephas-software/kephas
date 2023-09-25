@@ -5,17 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Graphs
+using Kephas.Collections;
+using Kephas.Graphs;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Graphs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Kephas.Collections;
-    using Kephas.Graphs;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class GraphExtensionsTest
     {

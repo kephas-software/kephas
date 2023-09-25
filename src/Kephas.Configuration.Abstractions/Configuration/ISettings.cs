@@ -8,7 +8,7 @@
 namespace Kephas.Configuration
 {
     /// <summary>
-    /// Marker interface for settings.
+    /// Marker interface for settings discoverable over metadata.
     /// </summary>
     public interface ISettings
     {

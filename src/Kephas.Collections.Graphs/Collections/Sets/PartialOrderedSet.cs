@@ -148,7 +148,7 @@ namespace Kephas.Sets
                     // it means that there are cycles in the graph, which indicate
                     // an unsound graph
                     var badNodes = string.Join(", ", eligibleNodes.Select(n => n.Value));
-                    throw new InvalidOperationException(string.Format(AbstractionStrings.PartialOrderedSet_BadComparer_ProducesCycles_Exception, badNodes));
+                    throw new InvalidOperationException(string.Format(CollectionGraphsStrings.PartialOrderedSet_BadComparer_ProducesCycles_Exception, badNodes));
                 }
 
                 orderedNodes.AddRange(minNodes);

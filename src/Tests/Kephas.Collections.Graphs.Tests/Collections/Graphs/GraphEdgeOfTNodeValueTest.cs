@@ -5,12 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Graphs
+using Kephas.Graphs;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Graphs
 {
-    using Kephas.Graphs;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class GraphEdgeOfTNodeValueTest
     {
