@@ -421,6 +421,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections.Graphs",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections.Graphs.Tests", "Tests\Kephas.Collections.Graphs.Tests\Kephas.Collections.Graphs.Tests.csproj", "{E543863E-2E0A-466A-83A3-78D1CE1FA83C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Abstractions", "Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj", "{4C06E0D8-779A-4560-96AA-30D2570C0477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1099,6 +1101,10 @@ Global
 		{E543863E-2E0A-466A-83A3-78D1CE1FA83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E543863E-2E0A-466A-83A3-78D1CE1FA83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E543863E-2E0A-466A-83A3-78D1CE1FA83C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C06E0D8-779A-4560-96AA-30D2570C0477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C06E0D8-779A-4560-96AA-30D2570C0477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C06E0D8-779A-4560-96AA-30D2570C0477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C06E0D8-779A-4560-96AA-30D2570C0477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1280,6 +1286,7 @@ Global
 		{80866685-1898-4682-9CA0-5E621E14DE0E} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
 		{6CD78F30-C444-4FF2-8062-C5A60C3DE071} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
 		{E543863E-2E0A-466A-83A3-78D1CE1FA83C} = {CF921EF1-DEFC-4081-8B57-9510E4CB22B4}
+		{4C06E0D8-779A-4560-96AA-30D2570C0477} = {89B6E089-4BB5-444A-8C4E-5D8411B94449}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

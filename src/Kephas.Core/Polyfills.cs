@@ -11,12 +11,19 @@
 
 #if NETSTANDARD2_1
 
+// https://stackoverflow.com/questions/64749385/predefined-type-system-runtime-compilerservices-isexternalinit-is-not-defined
+
+namespace System.Runtime.CompilerServices
+{
+    internal static class IsExternalInit {}
+}
+
 namespace Kephas
 {
     using System;
 
     [Flags]
-    public enum DynamicallyAccessedMemberTypes
+    internal enum DynamicallyAccessedMemberTypes
     {
         None = 0,
         PublicParameterlessConstructor = 1,
@@ -57,7 +64,7 @@ namespace Kephas
         AttributeTargets.Field | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter |
         AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Method,
         Inherited = false)]
-    public sealed class DynamicallyAccessedMembersAttribute : Attribute
+    internal sealed class DynamicallyAccessedMembersAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicallyAccessedMembersAttribute"/> class

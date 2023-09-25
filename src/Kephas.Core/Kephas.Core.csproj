@@ -102,6 +102,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
 	  <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj" />
+	  <ProjectReference Include="..\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj" />
 	</ItemGroup>
 
 </Project>
