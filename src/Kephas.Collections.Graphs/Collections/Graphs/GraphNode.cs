@@ -13,12 +13,10 @@ namespace Kephas.Graphs
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Dynamic;
-
     /// <summary>
     /// Defines a graph node.
     /// </summary>
-    public class GraphNode : Expando, IGraphNode
+    public class GraphNode : IGraphNode
     {
         /// <summary>
         /// The incoming edges.
@@ -82,6 +80,14 @@ namespace Kephas.Graphs
         /// The connected nodes.
         /// </value>
         public IReadOnlyCollection<IGraphNode> ConnectedNodes => this.connectedNodes;
+
+        /// <summary>
+        /// Gets or sets the node value.
+        /// </summary>
+        /// <value>
+        /// The node value.
+        /// </value>
+        public object? Value { get; set; }
 
         /// <summary>
         /// Adds an incoming edge.
@@ -174,7 +180,11 @@ namespace Kephas.Graphs
         /// <value>
         /// The node value.
         /// </value>
-        public TValue Value { get; set; } = default!;
+        public new TValue Value
+        {
+            get => (TValue)base.Value!;
+            set => base.Value = value;
+        }
 
         /// <summary>
         /// Returns a string that represents the current object.

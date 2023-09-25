@@ -10,12 +10,10 @@
 
 namespace Kephas.Graphs
 {
-    using Kephas.Dynamic;
-
     /// <summary>
     /// Defines the contract for a graph edge.
     /// </summary>
-    public interface IGraphEdge : IDynamic
+    public interface IGraphEdge
     {
         /// <summary>
         /// Gets the node from which the edge starts.
@@ -32,6 +30,11 @@ namespace Kephas.Graphs
         /// The node where the edge ends.
         /// </value>
         IGraphNode To { get; }
+
+        /// <summary>
+        /// Gets or sets the value associated to edge.
+        /// </summary>
+        object? Value { get; set; }
     }
 
     /// <summary>
@@ -60,6 +63,15 @@ namespace Kephas.Graphs
         /// <summary>
         /// Gets or sets the value of the edge.
         /// </summary>
-        TEdgeValue Value { get; set; }
+        new TEdgeValue Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value associated to edge.
+        /// </summary>
+        object? IGraphEdge.Value
+        {
+            get => Value;
+            set => Value = (TEdgeValue)(object?)value!;
+        }
     }
 }

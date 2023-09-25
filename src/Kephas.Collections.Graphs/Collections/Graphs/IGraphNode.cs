@@ -12,12 +12,10 @@ namespace Kephas.Graphs
 {
     using System.Collections.Generic;
 
-    using Kephas.Dynamic;
-
     /// <summary>
     /// Defines the contract for a graph node.
     /// </summary>
-    public interface IGraphNode : IDynamic
+    public interface IGraphNode
     {
         /// <summary>
         /// Gets the incoming nodes from this node.
@@ -50,6 +48,14 @@ namespace Kephas.Graphs
         /// The connected nodes.
         /// </value>
         IReadOnlyCollection<IGraphNode> ConnectedNodes { get; }
+
+        /// <summary>
+        /// Gets or sets the node value.
+        /// </summary>
+        /// <value>
+        /// The node value.
+        /// </value>
+        object? Value { get; set; }
     }
 
     /// <summary>
@@ -64,6 +70,15 @@ namespace Kephas.Graphs
         /// <value>
         /// The node value.
         /// </value>
-        TValue Value { get; set; }
+        new TValue Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value associated to edge.
+        /// </summary>
+        object? IGraphNode.Value
+        {
+            get => Value;
+            set => Value = (TValue)(object?)value!;
+        }
     }
 }

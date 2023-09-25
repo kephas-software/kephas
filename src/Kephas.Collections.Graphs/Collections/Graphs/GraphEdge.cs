@@ -12,12 +12,10 @@ namespace Kephas.Graphs
 {
     using System;
 
-    using Kephas.Dynamic;
-
     /// <summary>
     /// Defines a graph edge.
     /// </summary>
-    public class GraphEdge : Expando, IGraphEdge
+    public class GraphEdge : IGraphEdge
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphEdge"/> class.
@@ -62,6 +60,11 @@ namespace Kephas.Graphs
         {
             return $"{this.From} -> {this.To}";
         }
+
+        /// <summary>
+        /// Gets or sets the value of the edge.
+        /// </summary>
+        public object? Value { get; set; }
     }
 
     /// <summary>
@@ -100,6 +103,10 @@ namespace Kephas.Graphs
         /// <summary>
         /// Gets or sets the value of the edge.
         /// </summary>
-        public TEdgeValue Value { get; set; } = default!;
+        public new TEdgeValue Value
+        {
+            get => (TEdgeValue)base.Value!;
+            set => base.Value = value;
+        }
     }
 }
