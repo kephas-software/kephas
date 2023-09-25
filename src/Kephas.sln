@@ -375,7 +375,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{356AB34D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflow", "Workflow", "{60298086-813A-484A-B538-265D788E7D71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Contracts", "Kephas.Messaging.Contracts\Kephas.Messaging.Contracts.csproj", "{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Abstractions", "Kephas.Messaging.Abstractions\Kephas.Messaging.Abstractions.csproj", "{AFBCF46B-56A4-4BBD-85F5-B879B7B59CC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Pipelines", "Kephas.Pipelines\Kephas.Pipelines.csproj", "{588B3812-8DC4-4EEF-B090-16775DF50215}"
 EndProject
