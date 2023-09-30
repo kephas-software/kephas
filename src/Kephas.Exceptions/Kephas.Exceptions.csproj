@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -30,7 +30,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas core abstractions</PackageTags>
+        <PackageTags>kephas exceptions</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -54,11 +54,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+        <SupportedPlatform Include="browser"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <None Include="..\Kephas.snk" Link="Kephas.snk"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -73,13 +73,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="release-notes.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
+        <ProjectReference Include="..\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj"/>
     </ItemGroup>
 
 </Project>

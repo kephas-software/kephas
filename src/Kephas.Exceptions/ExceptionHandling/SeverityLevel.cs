@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.ExceptionHandling
 {
-    using Kephas.Logging;
-
     /// <summary>
     /// Values that represent exception severities.
     /// </summary>
@@ -20,7 +20,7 @@ namespace Kephas.ExceptionHandling
         /// <summary>
         /// An enum constant representing the fatal error option.
         /// </summary>
-        Fatal = LogLevel.Fatal,
+        Fatal = LogLevel.Critical,
 
         /// <summary>
         /// An enum constant representing the error option.
@@ -35,6 +35,6 @@ namespace Kephas.ExceptionHandling
         /// <summary>
         /// An enum constant representing the information option.
         /// </summary>
-        Info = LogLevel.Info,
+        Info = LogLevel.Information,
     }
 }

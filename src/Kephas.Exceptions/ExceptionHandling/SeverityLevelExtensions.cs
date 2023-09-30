@@ -19,8 +19,5 @@ public static class SeverityLevelExtensions
     /// <returns>
     /// True if error, false if not.
     /// </returns>
-    public static bool IsError(this SeverityLevel severity)
-    {
-        return severity <= SeverityLevel.Error;
-    }
+    public static bool IsError(this SeverityLevel severity) => severity <= SeverityLevel.Error;
 }

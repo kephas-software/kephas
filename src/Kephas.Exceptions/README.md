@@ -3,6 +3,12 @@
 ## Introduction
 This package provides abstractions for exception handling.
 
+## The `IErrorNotification` interface
+Interface for notifications, providing a message and a severity.
+
+## The `AppException` class
+Generic application exception implementing `IErrorNotification`.
+
 ## Other resources
 
 * [Kephas.Logging.Abstractions](https://www.nuget.org/packages/Kephas.Logging.Abstractions)

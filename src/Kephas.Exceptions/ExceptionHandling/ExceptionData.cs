@@ -15,14 +15,13 @@ namespace Kephas.ExceptionHandling
     /// <summary>
     /// An exception data.
     /// </summary>
-    public class ExceptionData : ISeverityQualifiedNotification
+    public class ExceptionData : IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionData"/> class.
         /// </summary>
         public ExceptionData()
         {
-            this.Severity = SeverityLevel.Error;
         }
 
         /// <summary>
@@ -35,21 +34,11 @@ namespace Kephas.ExceptionHandling
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
-            if (severity == null)
-            {
-                if (exception is ISeverityQualifiedNotification severityQualifiedException)
-                {
-                    severity = severityQualifiedException.Severity;
-                }
-                else
-                {
-                    severity = SeverityLevel.Error;
-                }
-            }
+            severity ??= exception is IErrorNotification notification ? notification.Severity : SeverityLevel.Error;
 
-            this.ExceptionType = exception.GetType().FullName!;
-            this.Message = exception.Message;
-            this.Severity = severity.Value;
+            ExceptionType = exception.GetType().FullName!;
+            Message = exception.Message;
+            Severity = severity.Value;
         }
 
         /// <summary>
@@ -74,7 +63,7 @@ namespace Kephas.ExceptionHandling
         /// <value>
         /// The severity level.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public SeverityLevel Severity { get; set; } = SeverityLevel.Error;
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -82,9 +71,7 @@ namespace Kephas.ExceptionHandling
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return $"{this.Message} ({this.ExceptionType}: {this.Severity})";
-        }
+        public override string ToString() =>
+            $"{Message} ({ExceptionType}: {Severity})";
     }
 }
