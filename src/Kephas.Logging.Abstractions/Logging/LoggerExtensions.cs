@@ -19,7 +19,7 @@ public static class LoggerExtensions
     /// This is calculated to be <see cref="LogLevel.Error"/> if the obj does not implement <see cref="IHasLogLevel"/>,
     /// otherwise the level indicated by the severity level.
     /// </summary>
-    /// <param name="obj">The object .</param>
+    /// <param name="obj">The object.</param>
     /// <returns>
     /// The log level.
     /// </returns>
