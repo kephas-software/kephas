@@ -5,353 +5,129 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Logging
+using Microsoft.Extensions.Logging;
+
+namespace Kephas.Logging;
+
+/// <summary>
+/// Extension methods for <see cref="ILogger"/>.
+/// </summary>
+public static class LoggerExtensions
 {
-    using System;
-    using System.Linq;
+    /// <summary>
+    /// Gets the log level for an object, typically an <see cref="Exception"/> or an error object.
+    /// This is calculated to be <see cref="LogLevel.Error"/> if the obj does not implement <see cref="IHasLogLevel"/>,
+    /// otherwise the level indicated by the severity level.
+    /// </summary>
+    /// <param name="obj">The object .</param>
+    /// <returns>
+    /// The log level.
+    /// </returns>
+    public static LogLevel GetLogLevel(this object obj)
+    {
+        _ = obj ?? throw new ArgumentNullException(nameof(obj));
+
+        return obj switch
+        {
+            IHasLogLevel hasLogLevel => hasLogLevel.LogLevel,
+            Exception => LogLevel.Error,
+            _ => LogLevel.Information,
+        };
+    }
 
     /// <summary>
-    /// Extension methods for <see cref="ILogger"/>.
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Critical"/> level.
     /// </summary>
-    public static class LoggerExtensions
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsCriticalEnabled(this ILogger? logger)
     {
-        /// <summary>
-        /// Merges the loggers into one aggregate.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="loggers">A variable-length parameters list containing loggers.</param>
-        /// <returns>
-        /// An aggregated logger.
-        /// </returns>
-        public static ILogger? Merge(this ILogger? logger, params ILogger?[]? loggers)
-        {
-            var validLoggers = loggers?.Where(l => l != null).ToList();
-            if (validLoggers == null || validLoggers.Count == 0)
-            {
-                return logger;
-            }
+        return logger?.IsEnabled(LogLevel.Critical) ?? false;
+    }
 
-            if (logger == null)
-            {
-                return validLoggers.Count == 1 ? validLoggers[0] : new AggregateLogger(validLoggers!);
-            }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Critical"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsFatalEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Critical) ?? false;
+    }
 
-            validLoggers.Add(logger);
-            return new AggregateLogger(validLoggers!);
-        }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Error"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsErrorEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Error) ?? false;
+    }
 
-        /// <summary>
-        /// Gets the log level for an exception.
-        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="IHasLogLevel"/>,
-        /// otherwise the level indicated by the severity level.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <returns>
-        /// The log level.
-        /// </returns>
-        public static LogLevel GetLogLevel(this Exception? exception)
-        {
-            if (exception is IHasLogLevel loggableException)
-            {
-                return loggableException.LogLevel;
-            }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Warning"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsWarningEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Warning) ?? false;
+    }
 
-            return LogLevel.Error;
-        }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Information"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsInformationEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Information) ?? false;
+    }
 
-        /// <summary>
-        /// Logs the information at the provided level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="level">The logging level.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Log(this ILogger? logger, LogLevel level, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(level, null, messageFormat, args) ?? false;
-        }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Information"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsInfoEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Information) ?? false;
+    }
 
-        /// <summary>
-        /// Logs the exception at the log level indicated be the exception's severity level.
-        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="IHasLogLevel"/>,
-        /// otherwise the level indicated by the severity level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Log(this ILogger? logger, Exception exception)
-        {
-            var logLevel = GetLogLevel(exception);
-            return logger?.Log(logLevel, exception, exception.Message) ?? false;
-        }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Debug"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsDebugEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Debug) ?? false;
+    }
 
-        /// <summary>
-        /// Logs the exception with a formatted message at the log level indicated be the exception's severity level.
-        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="IHasLogLevel"/>,
-        /// otherwise the level indicated by the severity level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Log(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            var logLevel = GetLogLevel(exception);
-            return logger?.Log(logLevel, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs the exception with a formatted message at <see cref="LogLevel.Fatal"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Fatal(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Fatal, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs a formatted message at <see cref="LogLevel.Fatal"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Fatal(this ILogger? logger, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Fatal, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs the exception with a formatted message at <see cref="LogLevel.Error"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Error(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Error, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs a formatted message at <see cref="LogLevel.Error"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Error(this ILogger? logger, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Error, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs the exception with a formatted message at <see cref="LogLevel.Warning"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Warn(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Warning, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs a formatted message at <see cref="LogLevel.Warning"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Warn(this ILogger? logger, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Warning, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs the exception with a formatted message at <see cref="LogLevel.Info"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Info(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Info, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs a formatted message at <see cref="LogLevel.Info"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Info(this ILogger? logger, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Info, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs the exception with a formatted message at <see cref="LogLevel.Debug"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Debug(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Debug, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs a formatted message at <see cref="LogLevel.Debug"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Debug(this ILogger? logger, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Debug, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs the exception with a formatted message at <see cref="LogLevel.Trace"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Trace(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Trace, exception, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Logs a formatted message at <see cref="LogLevel.Trace"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// True if the log operation succeeded, false if it failed.
-        /// </returns>
-        public static bool Trace(this ILogger? logger, string messageFormat, params object?[] args)
-        {
-            return logger?.Log(LogLevel.Trace, messageFormat, args) ?? false;
-        }
-
-        /// <summary>
-        /// Indicates whether logging is enabled at the <see cref="LogLevel.Fatal"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if enabled, <c>false</c> if not.
-        /// </returns>
-        public static bool IsFatalEnabled(this ILogger? logger)
-        {
-            return logger?.IsEnabled(LogLevel.Fatal) ?? false;
-        }
-
-        /// <summary>
-        /// Indicates whether logging is enabled at the <see cref="LogLevel.Error"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if enabled, <c>false</c> if not.
-        /// </returns>
-        public static bool IsErrorEnabled(this ILogger? logger)
-        {
-            return logger?.IsEnabled(LogLevel.Error) ?? false;
-        }
-
-        /// <summary>
-        /// Indicates whether logging is enabled at the <see cref="LogLevel.Warning"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if enabled, <c>false</c> if not.
-        /// </returns>
-        public static bool IsWarningEnabled(this ILogger? logger)
-        {
-            return logger?.IsEnabled(LogLevel.Warning) ?? false;
-        }
-
-        /// <summary>
-        /// Indicates whether logging is enabled at the <see cref="LogLevel.Info"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if enabled, <c>false</c> if not.
-        /// </returns>
-        public static bool IsInfoEnabled(this ILogger? logger)
-        {
-            return logger?.IsEnabled(LogLevel.Info) ?? false;
-        }
-
-        /// <summary>
-        /// Indicates whether logging is enabled at the <see cref="LogLevel.Debug"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if enabled, <c>false</c> if not.
-        /// </returns>
-        public static bool IsDebugEnabled(this ILogger? logger)
-        {
-            return logger?.IsEnabled(LogLevel.Debug) ?? false;
-        }
-
-        /// <summary>
-        /// Indicates whether logging is enabled at the <see cref="LogLevel.Trace"/> level.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <returns>
-        /// <c>true</c> if enabled, <c>false</c> if not.
-        /// </returns>
-        public static bool IsTraceEnabled(this ILogger? logger)
-        {
-            return logger?.IsEnabled(LogLevel.Trace) ?? false;
-        }
+    /// <summary>
+    /// Indicates whether logging is enabled at the <see cref="LogLevel.Trace"/> level.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>
+    /// <c>true</c> if enabled, <c>false</c> if not.
+    /// </returns>
+    public static bool IsTraceEnabled(this ILogger? logger)
+    {
+        return logger?.IsEnabled(LogLevel.Trace) ?? false;
     }
 }

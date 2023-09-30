@@ -4,11 +4,15 @@
 This package provides abstractions for the logging infrastructure.
 
 Typically used areas and classes/interfaces/services:
-* `ILogManager`, `ILogger`.
+* `IHasLogLevel`, `LoggerExtensions`.
+
+## `IHasLogLevel` interface
+
+Provides the `LogLevel` property indicating which logging level is required for this instance.
 
 ## Other resources
 
-* [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)
+* [Kephas.Exceptions](https://www.nuget.org/packages/Kephas.Exceptions)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)

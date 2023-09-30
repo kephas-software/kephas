@@ -5,10 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Logging;
 
 /// <summary>
-/// Provides the <see cref="LogLevel"/> property.
+/// Provides the <see cref="LogLevel"/> property, indicating which log level is required for this instance.
 /// </summary>
 public interface IHasLogLevel
 {
