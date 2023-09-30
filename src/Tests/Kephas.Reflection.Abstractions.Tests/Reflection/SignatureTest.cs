@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+using NUnit.Framework;
+
 namespace Kephas.Tests.Reflection
 {
-    using Kephas.Reflection;
-    using NUnit.Framework;
-
     [TestFixture]
     public class SignatureTest
     {
