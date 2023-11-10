@@ -40,9 +40,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
-
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -55,10 +52,6 @@
 
     <ItemGroup>
         <SupportedPlatform Include="browser" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <Choose>
