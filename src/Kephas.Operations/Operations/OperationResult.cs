@@ -224,7 +224,7 @@ public record OperationResult<TValue> : OperationResult, IOperationResult<TValue
     /// <value>
     /// The return value.
     /// </value>
-    public new TValue Value
+    public new virtual TValue Value
     {
         get => (TValue)base.Value!;
         set => base.Value = value;

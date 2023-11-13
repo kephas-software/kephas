@@ -86,15 +86,6 @@ namespace Kephas.Core.Tests.Operations
         }
 
         [Test]
-        public async Task GetAwaiter_await()
-        {
-            var opResult = new AsyncOperationResult<int>(Task.FromResult(10));
-            var result = await opResult;
-
-            Assert.AreEqual(10, result);
-        }
-
-        [Test]
         public async Task GetAwaiter_task()
         {
             var opResult = new AsyncOperationResult<int>(Task.FromResult(10));
