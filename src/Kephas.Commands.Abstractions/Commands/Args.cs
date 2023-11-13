@@ -19,7 +19,7 @@ namespace Kephas.Commands
     /// <summary>
     /// Arguments used in command line execution.
     /// </summary>
-    public class Args : ExpandoBase<object?>, IArgs
+    public class Args : Dictionary<string, object?>, IDynamic
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Args"/> class.
@@ -54,7 +54,6 @@ namespace Kephas.Commands
         public Args(IDictionary<string, object?> argValues)
             : base(ComputeArgs(argValues))
         {
-            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
         }
 
         /// <summary>
@@ -64,16 +63,6 @@ namespace Kephas.Commands
         public Args(IDynamic args)
             : base(ComputeArgs(args.ToDictionary()))
         {
-            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
-        }
-
-        /// <summary>
-        /// Converts this app arguments list to a list of string arguments for use in command lines.
-        /// </summary>
-        /// <returns>A list of string arguments.</returns>
-        public virtual IEnumerable<string> ToCommandArgs()
-        {
-            return this.ToDictionary().ToCommandArgs();
         }
 
         /// <summary>
@@ -82,10 +71,15 @@ namespace Kephas.Commands
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return string.Join(" ", this.ToCommandArgs());
-        }
+        public override string ToString() =>
+            string.Join(" ", ToCommandArgs());
+
+        /// <summary>
+        /// Converts this app arguments list to a list of string arguments for use in command lines.
+        /// </summary>
+        /// <returns>A list of string arguments.</returns>
+        public virtual IEnumerable<string> ToCommandArgs() =>
+            ((IDictionary<string, object?>)this).ToCommandArgs();
 
         /// <summary>
         /// Calculates the arguments as a dictionary of values.
@@ -210,53 +204,6 @@ namespace Kephas.Commands
             }
 
             return cmdArgs;
-        }
-
-        /// <summary>
-        /// Attempts to set the value with the given key.
-        /// </summary>
-        /// <remarks>
-        /// First of all, it is tried to set the property value to the inner object, if one is set.
-        /// The next try is to set the property value to the expando object itself.
-        /// Lastly, if still a property by the provided name cannot be found, the inner dictionary is used to set the value with the provided key.
-        /// </remarks>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value to set.</param>
-        /// <returns>
-        /// <c>true</c> if the value could be set, <c>false</c> otherwise.
-        /// </returns>
-        protected override bool TrySetValue(string key, object? value)
-        {
-            // check only the dictionary for member
-            if (value == null)
-            {
-                this.InnerDictionary.Remove(key);
-            }
-            else
-            {
-                this.InnerDictionary[key] = value;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Attempts to get the dynamic value with the given key.
-        /// </summary>
-        /// <remarks>
-        /// First of all, it is tried to get a property value from the inner object, if one is set.
-        /// The next try is to retrieve the property value from the expando object itself.
-        /// Lastly, if still a property by the provided name cannot be found, the inner dictionary is searched by the provided key.
-        /// </remarks>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value to get.</param>
-        /// <returns>
-        /// <c>true</c> if a value is found, <c>false</c> otherwise.
-        /// </returns>
-        protected override bool TryGetValue(string key, out object? value)
-        {
-            // check only the dictionary for member
-            return this.InnerDictionary.TryGetValue(key, out value);
         }
 
         private static string Unescape(string value)

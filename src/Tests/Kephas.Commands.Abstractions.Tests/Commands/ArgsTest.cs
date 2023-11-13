@@ -155,20 +155,5 @@ namespace Kephas.Tests.Commands
             Assert.AreEqual("-int", argArray[5]);
             Assert.AreEqual("3", argArray[6]);
         }
-
-        [Test]
-        public void AsArgs_same()
-        {
-            var args = Substitute.For<IArgs>();
-            Assert.AreSame(args, args.AsArgs());
-        }
-
-        [Test]
-        public void AsArgs_different()
-        {
-            var args = new Expando();
-            var appArgs = args.AsArgs();
-            Assert.AreNotSame(args, appArgs);
-        }
     }
 }
