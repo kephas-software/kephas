@@ -5,13 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Analyzers.Application;
-
-using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+
+namespace Kephas.Analyzers.AssemblyInitialization;
 
 [Generator]
 public class ModuleInitializerSourceGenerator : ISourceGenerator
@@ -48,67 +47,71 @@ public class ModuleInitializerSourceGenerator : ISourceGenerator
         var (initializerNamespace, initializerName) = this.GetModuleInitializerClassName(context);
 
         var source = new StringBuilder();
-        source.AppendLine($@"#nullable enable
+        source.AppendLine(
+            $$"""
+            #nullable enable
 
-#if NET6_0_OR_GREATER
+            #if NET6_0_OR_GREATER
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+            using System;
+            using System.Collections.Generic;
+            using System.Diagnostics.CodeAnalysis;
+            using System.Reflection;
+            using System.Runtime.CompilerServices;
 
-using Kephas.Application;
-using Kephas.Runtime;
+            using Kephas.Application;
+            using Kephas.Runtime;
 
-namespace {initializerNamespace}
-{{
-    internal static class {initializerName}
-    {{
-        [ModuleInitializer]
-        internal static void InitializeModule()
-        {{
-            IAssemblyInitializer initializer;");
+            namespace {{initializerNamespace}}
+            {
+                internal static class {{initializerName}}
+                {
+                    [ModuleInitializer]
+                    internal static void InitializeModule()
+                    {
+                        IAssemblyInitializer initializer;
+            """);
 
         foreach (var initializerType in syntaxReceiver.InitializerTypes
-                     .Where(t => ApplicationHelper.IsAssemblyInitializer(t, context)))
+                     .Where(t => AssemblyInitializationHelper.IsAssemblyInitializer(t, context)))
         {
-            source.AppendLine($"            initializer = (IAssemblyInitializer)new {initializerType.GetTypeFullName(syntaxReceiver)}();");
-            source.AppendLine($"            initializer.Initialize();");
+            source.AppendLine(
+            $"""
+                        initializer = (IAssemblyInitializer)new {initializerType.GetTypeFullName(syntaxReceiver)}();
+             """);
+            source.AppendLine(
+            $"""
+                        initializer.Initialize();
+             """);
         }
 
-        source.AppendLine($@"
-            var thisAssembly = Assembly.GetExecutingAssembly();
-            foreach (var attr in thisAssembly.GetCustomAttributes<AssemblyInitializerAttribute>())
-            {{
-                foreach (var initializerType in attr.InitializerTypes)
-                {{
-                    try 
-                    {{
-                        if (initializerType.IsClass && !initializerType.IsAbstract && Activator.CreateInstance(initializerType) is IAssemblyInitializer runtimeInitializer)
-                        {{
-                            runtimeInitializer.Initialize();
-                        }}
-                    }}
-                    catch (Exception ex)
-                    {{
-                        // write exception somewhere...
-                    }}
-                }}
-            }}
-        }}
-    }}
-}}
+        source.AppendLine(
+            $$"""
+                        var thisAssembly = Assembly.GetExecutingAssembly();
+                        foreach (var runtimeInitializer in thisAssembly.GetCustomAttributes<Attribute>().OfType<IAssemblyInitializer>())
+                        {
+                            try 
+                            {
+                                runtimeInitializer.Initialize();
+                            }
+                            catch (Exception ex)
+                            {
+                                // write exception somewhere...
+                            }
+                        }
+                    }
+                }
+            }
 
-#endif
-");
+            #endif
+            """);
 
         context.AddSource("ModuleInitializer.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
     }
 
     private (string typeNamespace, string typeName) GetModuleInitializerClassName(GeneratorExecutionContext context)
     {
-        return ("Kephas.Application.Generated",
+        return ("Kephas.AssemblyInitialization.Generated",
             $"ModuleInitializer_{context.Compilation.Assembly.Name.Replace(".", "_")}");
     }
 

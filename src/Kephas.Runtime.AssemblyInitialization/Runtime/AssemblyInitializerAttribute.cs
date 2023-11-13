@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections;
+
 namespace Kephas.Runtime;
 
 /// <summary>
@@ -15,19 +17,11 @@ namespace Kephas.Runtime;
 /// that are also generated.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public class AssemblyInitializerAttribute : Attribute
+public class AssemblyInitializerAttribute<T> : Attribute, IAssemblyInitializer
+    where T : IAssemblyInitializer, new()
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="AssemblyInitializerAttribute"/> class.
+    /// Initializes the assembly.
     /// </summary>
-    /// <param name="initializerTypes">The initializer types.</param>
-    public AssemblyInitializerAttribute(params Type[] initializerTypes)
-    {
-        this.InitializerTypes = initializerTypes ?? Array.Empty<Type>();
-    }
-
-    /// <summary>
-    /// Gets the initializer types.
-    /// </summary>
-    public Type[] InitializerTypes { get; }
+    public void Initialize() => new T().Initialize();
 }

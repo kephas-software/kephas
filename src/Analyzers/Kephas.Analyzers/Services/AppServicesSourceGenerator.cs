@@ -52,17 +52,19 @@ public class AppServicesSourceGenerator : ISourceGenerator
         var serviceTypeProvider = this.GetServiceTypeProviderClassName(context);
 
         var source = new StringBuilder();
-        source.AppendLine($@"#nullable enable
+        source.AppendLine(
+            $"""
+            #nullable enable
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+            using System;
+            using System.Collections.Generic;
+            using System.Diagnostics.CodeAnalysis;
 
-using Kephas.Services;
+            using Kephas.Services;
 
-[assembly: AppServices(typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}))]
+            [assembly: AppServices<{serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}>]
 
-");
+            """);
         var isProviderGenerated = AnalyzerServiceHelper.AppendAppServicesProviderClass(
             serviceTypeProvider,
             source,

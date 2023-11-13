@@ -5,16 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Analyzers.Tests.Injection
+using System.Reflection;
+using Kephas.Analyzers.TestAssembly;
+using Kephas.Services;
+using NUnit.Framework;
+
+namespace Kephas.Analyzers.Tests.Services
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-
-    using Kephas.Analyzers.TestAssembly;
-    using Kephas.Services;
-    using NUnit.Framework;
-
     [TestFixture]
     public class AppServicesSourceGeneratorTest
     {
@@ -23,10 +20,10 @@ namespace Kephas.Analyzers.Tests.Injection
         {
             var testAssembly = typeof(NoService).Assembly;
 
-            var appServicesAttrs = testAssembly.GetCustomAttributes<AppServicesAttribute>().ToList();
+            var appServicesAttrs = testAssembly.GetCustomAttributes<Attribute>().OfType<IAppServiceInfoProvider>().ToList();
             Assert.AreEqual(1, appServicesAttrs.Count);
 
-            var serviceProviderType = appServicesAttrs[0].ProviderType;
+            var serviceProviderType = appServicesAttrs[0].GetType().GenericTypeArguments[0];
             Assert.AreEqual("Kephas.Services.Generated.AppServices_Kephas_Analyzers_TestAssembly", serviceProviderType.FullName);
         }
 
@@ -35,9 +32,10 @@ namespace Kephas.Analyzers.Tests.Injection
         {
             var testAssembly = typeof(NoService).Assembly;
 
-            var appServicesAttr = testAssembly.GetCustomAttributes<AppServicesAttribute>().Single();
+            var appServicesAttr = testAssembly.GetCustomAttributes<Attribute>().OfType<IAppServiceInfoProvider>().Single();
 
-            var provider = Activator.CreateInstance(appServicesAttr.ProviderType)!;
+            var serviceProviderType = appServicesAttr.GetType().GenericTypeArguments[0];
+            var provider = Activator.CreateInstance(serviceProviderType)!;
             var typesProvider = (IAppServiceInfoProvider)provider;
             var services = typesProvider.GetAppServices();
 

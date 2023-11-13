@@ -8,7 +8,6 @@
 namespace Kephas.Analyzers.Reflection;
 
 using System.Text;
-using Kephas.Analyzers.Application;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -56,36 +55,43 @@ public class RuntimeElementInfoFactorySourceGenerator : ISourceGenerator
         var (initializerNamespace, initializerName) = this.GetAssemblyInitializerClassName(context);
 
         var source = new StringBuilder();
-        source.AppendLine($@"#nullable enable
+        source.AppendLine(
+            $$"""
+            #nullable enable
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+            using System;
+            using System.Collections.Generic;
+            using System.Diagnostics.CodeAnalysis;
+            using System.Reflection;
+            using System.Runtime.CompilerServices;
 
-using Kephas.Application;
-using Kephas.Runtime;
+            using Kephas.Application;
+            using Kephas.Runtime;
 
-[assembly: AssemblyInitializer(typeof({initializerNamespace}.{initializerName}))]
+            [assembly: AssemblyInitializer<{{initializerNamespace}}.{{initializerName}}>]
 
-namespace {initializerNamespace}
-{{
-    public class {initializerName} : IAssemblyInitializer
-    {{
-        public void Initialize()
-        {{
-");
+            namespace {initializerNamespace}
+            {
+                public class {{initializerName}} : IAssemblyInitializer
+                {
+                    public void Initialize()
+                    {
+            """);
+
         foreach (var initializerType in factoryTypes)
         {
-            source.AppendLine($"            RuntimeTypeRegistry.Instance.RegisterFactory(new {initializerType.GetTypeFullName(syntaxReceiver)}());");
+            source.AppendLine(
+                $"""
+                            RuntimeTypeRegistry.Instance.RegisterFactory(new {initializerType.GetTypeFullName(syntaxReceiver)}());
+                 """);
         }
 
-        source.AppendLine($@"
-        }}
-    }}
-}}
-");
+        source.AppendLine(
+            $$"""
+                    }
+                }
+            }
+            """);
 
         context.AddSource("ReflectionInitializer.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
     }
