@@ -70,7 +70,7 @@ public class RuntimeElementInfoFactorySourceGenerator : ISourceGenerator
 
             [assembly: AssemblyInitializer<{{initializerNamespace}}.{{initializerName}}>]
 
-            namespace {initializerNamespace}
+            namespace {{initializerNamespace}}
             {
                 public class {{initializerName}} : IAssemblyInitializer
                 {

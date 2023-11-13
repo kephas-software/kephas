@@ -59,7 +59,6 @@ public class ModuleInitializerSourceGenerator : ISourceGenerator
             using System.Reflection;
             using System.Runtime.CompilerServices;
 
-            using Kephas.Application;
             using Kephas.Runtime;
 
             namespace {{initializerNamespace}}
