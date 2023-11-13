@@ -27,7 +27,7 @@ namespace Kephas.Runtime
         /// The attribute of the provided type.
         /// </returns>
         IEnumerable<TAttribute> GetAttributes<TAttribute>()
-            where TAttribute : Attribute;
+            where TAttribute : class;
 
         /// <summary>
         /// Gets the single attribute of the provided type.
@@ -37,7 +37,7 @@ namespace Kephas.Runtime
         /// The attribute of the provided type.
         /// </returns>
         public TAttribute? GetAttribute<TAttribute>()
-            where TAttribute : Attribute
+            where TAttribute : class
         {
             return this.GetAttributes<TAttribute>().SingleOrDefault();
         }

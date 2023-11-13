@@ -12,17 +12,16 @@ namespace Kephas.Application
 {
     using System;
 
-    using Kephas.Data;
     using Kephas.Versioning;
 
     /// <summary>
     /// An app identity.
     /// </summary>
-    public sealed class AppIdentity : IIdentifiable, IEquatable<AppIdentity>
+    public sealed record AppIdentity
     {
         private const char ItemSeparatorChar = ':';
 
-        private static readonly char[] InvalidChars = new[] { ItemSeparatorChar, ';', ',', '|', '/', '\\', '<', '>', '?', '\'', '"', '*', '@', '#', '$', '^', '`', '[', ']', '{', '}' };
+        private static readonly char[] InvalidChars = { ItemSeparatorChar, ';', ',', '|', '/', '\\', '<', '>', '?', '\'', '"', '*', '@', '#', '$', '^', '`', '[', ']', '{', '}' };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppIdentity"/> class.
@@ -78,14 +77,6 @@ namespace Kephas.Application
         public SemanticVersion? Version { get; }
 
         /// <summary>
-        /// Gets the identifier for this instance.
-        /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
-        object IIdentifiable.Id => this.ToString();
-
-        /// <summary>
         /// Parses a string and returns an instance of <see cref="AppIdentity"/>.
         /// </summary>
         /// <param name="value">The value to parse.</param>
@@ -119,42 +110,6 @@ namespace Kephas.Application
             return other != null
                 && this.Id.Equals(other.Id, StringComparison.OrdinalIgnoreCase)
                 && (this.Version?.Equals(other.Version) ?? true);
-        }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other">other</paramref> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(AppIdentity? other)
-        {
-            return other != null && this.ToString() == other.ToString();
-        }
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        public override bool Equals(object? obj)
-        {
-            return base.Equals(obj) || this.Equals(obj as AppIdentity);
-        }
-
-        /// <summary>
-        /// Serves as the default hash function.
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current object.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return this.Id.ToLower().GetHashCode() + (100 * (this.Version?.GetHashCode() ?? 0));
         }
 
         /// <summary>

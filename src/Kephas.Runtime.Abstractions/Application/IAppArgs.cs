@@ -5,15 +5,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Dynamic;
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Application
 {
-    using Kephas.Commands;
-    using Kephas.Logging;
-
     /// <summary>
     /// Provides the commonly used arguments in applications.
     /// </summary>
-    public interface IAppArgs : IArgs
+    public interface IAppArgs : IDynamic
     {
         /// <summary>
         /// Gets the application ID, if set.
@@ -31,7 +31,7 @@ namespace Kephas.Application
         string? RootAppInstanceId { get; }
 
         /// <summary>
-        /// Gets the log level, if set.
+        /// Gets the minimum log level, if set.
         /// </summary>
         LogLevel? LogLevel { get; }
 

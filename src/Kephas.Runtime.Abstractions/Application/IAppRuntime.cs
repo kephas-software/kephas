@@ -19,7 +19,7 @@ namespace Kephas.Application
     /// <summary>
     /// Interface for abstracting away the runtime for the application.
     /// </summary>
-    public interface IAppRuntime : IExpando
+    public interface IAppRuntime : IDynamic
     {
         /// <summary>
         /// The default configuration folder.
@@ -67,7 +67,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application arguments.
         /// </summary>
-        IAppArgs AppArgs { get; }
+        IDynamic AppArgs { get; }
 
         /// <summary>
         /// Gets the application location (directory where the executing application lies).
@@ -138,7 +138,7 @@ namespace Kephas.Application
         /// <returns>
         /// The version of the application.
         /// </returns>
-        string? GetAppVersion() => this[IAppRuntime.AppVersionKey] as string;
+        string? GetAppVersion() => this[AppVersionKey] as string;
 
         /// <summary>
         /// Gets the application identity.
@@ -146,7 +146,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application identity.
         /// </returns>
-        AppIdentity? GetAppIdentity() => this[IAppRuntime.AppIdentityKey] as AppIdentity;
+        AppIdentity? GetAppIdentity() => this[AppIdentityKey] as AppIdentity;
 
         /// <summary>
         /// Gets the identifier of the application instance.
@@ -154,13 +154,13 @@ namespace Kephas.Application
         /// <returns>
         /// The identifier of the application instance.
         /// </returns>
-        string? GetAppInstanceId() => this[IAppRuntime.AppInstanceIdKey] as string;
+        string? GetAppInstanceId() => this[AppInstanceIdKey] as string;
 
         /// <summary>
         /// Gets the running environment.
         /// </summary>
         /// <returns>The running environment.</returns>
-        string? GetEnvironment() => this[IAppRuntime.EnvKey] as string;
+        string? GetEnvironment() => this[EnvKey] as string;
 
         /// <summary>
         /// Gets a value indicating whether the running environment is development.
