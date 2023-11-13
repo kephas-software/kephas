@@ -18,13 +18,7 @@ public interface IAsyncOperationResult : IOperationResult
     /// <returns>
     /// An asynchronous result.
     /// </returns>
-    Task<object?> AsTask();
-
-    /// <summary>
-    /// Gets the operation awaiter.
-    /// </summary>
-    /// <returns>The operation awaiter.</returns>
-    AsyncOperationResultAwaiter GetAwaiter();
+    Task AsTask();
 }
 
 /// <summary>
@@ -42,20 +36,10 @@ public interface IAsyncOperationResult<TValue> : IAsyncOperationResult, IOperati
     new Task<TValue> AsTask();
 
     /// <summary>
-    /// Gets the operation awaiter.
-    /// </summary>
-    /// <returns>The operation awaiter.</returns>
-    new AsyncOperationResultAwaiter<TValue> GetAwaiter();
-
-    /// <summary>
     /// Converts this object to a task.
     /// </summary>
     /// <returns>
     /// An asynchronous result.
     /// </returns>
-    Task<object?> IAsyncOperationResult.AsTask()
-    {
-        var task = this.AsTask();
-        return task as Task<object?> ?? task.ContinueWith(t => (object?)t.Result);
-    }
+    Task IAsyncOperationResult.AsTask() => AsTask();
 }

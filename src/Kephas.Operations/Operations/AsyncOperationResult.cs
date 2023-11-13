@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Threading.Tasks;
+
 namespace Kephas.Operations;
 
 using Kephas.Collections;
@@ -14,7 +16,7 @@ using Kephas.Collections;
 /// </summary>
 public record AsyncOperationResult : OperationResult, IAsyncOperationResult
 {
-    private AsyncOperationResultAwaiter? awaiter;
+    private readonly Task task;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AsyncOperationResult"/> class.
@@ -22,9 +24,8 @@ public record AsyncOperationResult : OperationResult, IAsyncOperationResult
     /// <param name="task">The task.</param>
     public AsyncOperationResult(Task task)
     {
-        _ = task ?? throw new ArgumentNullException(nameof(task));
-
-        this.SetAwaiter(AsyncOperationResultAwaiter.Create(task, this.UpdateInternalState));
+        this.task = task ?? throw new ArgumentNullException(nameof(task));
+        task.ContinueWith(UpdateInternalState);
     }
 
     /// <summary>
@@ -32,20 +33,8 @@ public record AsyncOperationResult : OperationResult, IAsyncOperationResult
     /// </summary>
     /// <param name="value">The value.</param>
     protected AsyncOperationResult(object? value = null)
-        : base(value)
+        : this(Task.FromResult(value))
     {
-    }
-
-    /// <summary>
-    /// Sets an awaiter.
-    /// </summary>
-    /// <remarks>
-    /// Should not be called outside of the constructor context.
-    /// </remarks>
-    /// <param name="awaiter">The awaiter.</param>
-    protected void SetAwaiter(AsyncOperationResultAwaiter awaiter)
-    {
-        this.awaiter = awaiter;
     }
 
     /// <summary>
@@ -58,27 +47,16 @@ public record AsyncOperationResult : OperationResult, IAsyncOperationResult
     {
         get
         {
-            if (this.awaiter != null)
-            {
-                var awaiterTask = this.awaiter.GetTask();
-                var taskStatus = awaiterTask.Status;
-                return awaiterTask.IsCompleted
-                    ? this.awaiter.GetResult()
-                    : throw new InvalidOperationException(
-                        $"The awaited task did not complete execution (state: {taskStatus}).");
-            }
-
-            return base.Value;
+            var taskStatus = task.Status;
+            return task.IsCompleted
+                ? task.GetResult()
+                : throw new InvalidOperationException(
+                    $"The awaited task did not complete execution (state: {taskStatus}).");
         }
 
         set
         {
-            if (this.awaiter != null)
-            {
-                throw new InvalidOperationException($"Cannot set the return value when awaiting a task.");
-            }
-
-            base.Value = value;
+            throw new InvalidOperationException($"Cannot set the value of an {nameof(AsyncOperationResult)}.");
         }
     }
 
@@ -88,35 +66,7 @@ public record AsyncOperationResult : OperationResult, IAsyncOperationResult
     /// <returns>
     /// An asynchronous result.
     /// </returns>
-    public Task<object?> AsTask()
-    {
-        var task = this.GetUnderlyingTask();
-        return task as Task<object?> ?? task.ContinueWith(t => this.Value);
-    }
-
-    /// <summary>
-    /// Gets the operation awaiter.
-    /// </summary>
-    /// <returns>The operation awaiter.</returns>
-    public AsyncOperationResultAwaiter GetAwaiter() =>
-        this.awaiter ?? throw new InvalidOperationException("The awaiter has not been set.");
-
-    /// <summary>
-    /// Creates the task representing this operation result.
-    /// </summary>
-    /// <returns>
-    /// The task representing this operation result.
-    /// </returns>
-    protected virtual Task CreateTask()
-    {
-        return Task.FromResult(this.Value);
-    }
-
-    /// <summary>
-    /// Gets the underlying task.
-    /// </summary>
-    /// <returns>The underlying task.</returns>
-    protected Task GetUnderlyingTask() => this.awaiter?.GetTask() ?? this.CreateTask();
+    public Task AsTask() => task;
 
     /// <summary>
     /// Updates the internal state described by the provided task.
@@ -162,11 +112,8 @@ public record AsyncOperationResult<TValue> : AsyncOperationResult, IAsyncOperati
     /// </summary>
     /// <param name="task">The task.</param>
     public AsyncOperationResult(Task<TValue> task)
-        : base((TValue)default!)
+        : base(task)
     {
-        _ = task ?? throw new ArgumentNullException(nameof(task));
-
-        this.SetAwaiter(AsyncOperationResultAwaiter.Create(task, this.UpdateInternalState));
     }
 
     /// <summary>
@@ -187,24 +134,6 @@ public record AsyncOperationResult<TValue> : AsyncOperationResult, IAsyncOperati
     /// <returns>
     /// An asynchronous result.
     /// </returns>
-    public new Task<TValue> AsTask()
-    {
-        var task = this.GetUnderlyingTask();
-        return task as Task<TValue> ?? task.ContinueWith(t => this.Value);
-    }
-
-    /// <summary>
-    /// Gets the operation awaiter.
-    /// </summary>
-    /// <returns>The operation awaiter.</returns>
-    public new AsyncOperationResultAwaiter<TValue> GetAwaiter() => (AsyncOperationResultAwaiter<TValue>)base.GetAwaiter();
-
-    /// <summary>
-    /// Creates the task representing this operation result.
-    /// </summary>
-    /// <returns>
-    /// The task representing this operation result.
-    /// </returns>
-    protected override Task CreateTask() => Task.FromResult(this.Value);
+    public new Task<TValue> AsTask() => (Task<TValue>)base.AsTask();
 }
 

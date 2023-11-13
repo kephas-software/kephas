@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Diagnostics
 {
     using System;
@@ -15,7 +17,6 @@ namespace Kephas.Diagnostics
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
-    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Threading.Tasks;
 
@@ -73,7 +74,7 @@ namespace Kephas.Diagnostics
             ILogger? logger = null,
             [CallerMemberName] string? memberName = null)
         {
-            return WithStopwatch(action, logger, LogLevel.Info, memberName);
+            return WithStopwatch(action, logger, LogLevel.Information, memberName);
         }
 
         /// <summary>
@@ -91,7 +92,7 @@ namespace Kephas.Diagnostics
             ILogger? logger = null,
             [CallerMemberName] string? memberName = null)
         {
-            return WithStopwatch(action, logger, LogLevel.Info, memberName);
+            return WithStopwatch(action, logger, LogLevel.Information, memberName);
         }
 
         /// <summary>
@@ -291,7 +292,7 @@ namespace Kephas.Diagnostics
             ILogger? logger = null,
             [CallerMemberName] string? memberName = null)
         {
-            return WithStopwatchAsync(action, logger, LogLevel.Info, memberName);
+            return WithStopwatchAsync(action, logger, LogLevel.Information, memberName);
         }
 
         /// <summary>
@@ -309,7 +310,7 @@ namespace Kephas.Diagnostics
             ILogger? logger = null,
             [CallerMemberName] string? memberName = null)
         {
-            return WithStopwatchAsync(action, logger, LogLevel.Info, memberName);
+            return WithStopwatchAsync(action, logger, LogLevel.Information, memberName);
         }
 
         /// <summary>
@@ -409,7 +410,7 @@ namespace Kephas.Diagnostics
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            await action().PreserveThreadContext();
+            await action();
             stopwatch.Stop();
 
             result
@@ -449,7 +450,7 @@ namespace Kephas.Diagnostics
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            result.Value = await action().PreserveThreadContext();
+            result.Value = await action();
             stopwatch.Stop();
 
             result

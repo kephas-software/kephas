@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Operations
 {
     using System;
@@ -17,7 +19,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Exception for signaling operation errors.
     /// </summary>
-    public class OperationException : Exception, ISeverityQualifiedNotification
+    public class OperationException : Exception, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationException"/> class.
@@ -54,7 +56,7 @@ namespace Kephas.Operations
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public LogLevel Severity { get; set; }
 
         /// <summary>Creates and returns a string representation of the current exception.</summary>
         /// <returns>A string representation of the current exception.</returns>

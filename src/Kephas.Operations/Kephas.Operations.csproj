@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -40,9 +40,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
-
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -55,10 +52,6 @@
 
     <ItemGroup>
         <SupportedPlatform Include="browser" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <ItemGroup>
@@ -92,7 +85,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
         <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj" />
         <ProjectReference Include="..\Kephas.Threading\Kephas.Threading.csproj" />
