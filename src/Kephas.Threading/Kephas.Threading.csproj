@@ -68,10 +68,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
-        <ProjectReference Include="..\Kephas.Runtime.Abstractions\Kephas.Runtime.Abstractions.csproj" />
+      <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
+      <ProjectReference Include="..\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

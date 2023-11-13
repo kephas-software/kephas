@@ -13,8 +13,6 @@ namespace Kephas.Threading.Tasks
     using System;
     using System.Threading.Tasks;
 
-    using Kephas.Resources;
-
     /// <summary>
     /// Exception for signalling task not completed errors.
     /// </summary>
@@ -25,7 +23,7 @@ namespace Kephas.Threading.Tasks
         /// </summary>
         /// <param name="task">The task that is not completed.</param>
         public TaskNotCompletedException(Task task)
-            : base(AbstractionStrings.TaskNotCompletedException_Message)
+            : base("The task is not completed.")
         {
             this.Task = task;
         }

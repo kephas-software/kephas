@@ -11,14 +11,12 @@ namespace Kephas.Threading
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Threading.Tasks;
-
     /// <summary>
     /// Class used for execution synchronization in asynchronous calls.
     /// </summary>
     public sealed class Lock : IDisposable
     {
-        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim semaphore = new(1, 1);
 
         /// <summary>
         /// Enters the lock and ensures that the action is executed within the lock.
