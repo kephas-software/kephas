@@ -36,13 +36,11 @@ public interface IAsyncPipelineBehavior<in TTarget, in TOperationArgs, out TResu
     /// <param name="next">The pipeline continuation delegate.</param>
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
-    /// <param name="context">The operation context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task yielding the invocation result.</returns>
     Task<object?> InvokeAsync(
         Func<Task<object?>> next,
         TTarget target,
         TOperationArgs args,
-        IContext context,
         CancellationToken cancellationToken);
 }

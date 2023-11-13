@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Services.Reflection
 {
     using System;
@@ -27,7 +29,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == AppServiceLifetime.Singleton;
+            return appServiceInfo.Lifetime == ServiceLifetime.Singleton;
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == AppServiceLifetime.Scoped;
+            return appServiceInfo.Lifetime == ServiceLifetime.Scoped;
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == AppServiceLifetime.Transient;
+            return appServiceInfo.Lifetime == ServiceLifetime.Transient;
         }
     }
 }

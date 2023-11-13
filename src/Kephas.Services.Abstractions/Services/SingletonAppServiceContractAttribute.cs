@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Services
 {
     using System;
@@ -24,7 +26,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="SingletonAppServiceContractAttribute"/> class.
         /// </summary>
         public SingletonAppServiceContractAttribute()
-            : base(AppServiceLifetime.Singleton)
+            : base(ServiceLifetime.Singleton)
         {
         }
     }

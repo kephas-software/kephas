@@ -36,11 +36,9 @@ public interface IPipelineBehavior<in TTarget, in TOperationArgs, out TResult> :
     /// <param name="next">The pipeline continuation delegate.</param>
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
-    /// <param name="context">The operation context.</param>
     /// <returns>The invocation result.</returns>
     object? Invoke(
         Func<object?> next,
         TTarget target,
-        TOperationArgs args,
-        IContext context);
+        TOperationArgs args);
 }

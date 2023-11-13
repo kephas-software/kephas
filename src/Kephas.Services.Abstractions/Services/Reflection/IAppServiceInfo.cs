@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Services.Reflection
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-
-    using Kephas.Services;
 
     /// <summary>
     /// Contract interface providing information about an application service.
@@ -28,7 +28,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The application service lifetime.
         /// </value>
-        AppServiceLifetime Lifetime { get; }
+        ServiceLifetime Lifetime { get; }
 
         /// <summary>
         /// Gets a value indicating whether multiple services for this contract are allowed.

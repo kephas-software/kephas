@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Services
 {
     using System;
@@ -24,7 +26,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="ScopedAppServiceContractAttribute"/> class.
         /// </summary>
         public ScopedAppServiceContractAttribute()
-            : base(AppServiceLifetime.Scoped)
+            : base(ServiceLifetime.Scoped)
         {
         }
     }

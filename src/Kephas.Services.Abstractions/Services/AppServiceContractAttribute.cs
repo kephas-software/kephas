@@ -10,6 +10,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Services
 {
     using System;
@@ -29,7 +31,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
         public AppServiceContractAttribute()
-            : this(AppServiceLifetime.Transient)
+            : this(ServiceLifetime.Transient)
         {
         }
 
@@ -37,7 +39,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
         /// <param name="lifetime">The lifetime.</param>
-        protected AppServiceContractAttribute(AppServiceLifetime lifetime)
+        protected AppServiceContractAttribute(ServiceLifetime lifetime)
         {
             this.Lifetime = lifetime;
         }
@@ -48,7 +50,7 @@ namespace Kephas.Services
         /// <value>
         /// The application service lifetime.
         /// </value>
-        public AppServiceLifetime Lifetime { get; }
+        public ServiceLifetime Lifetime { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether multiple services for this contract are allowed.

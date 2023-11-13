@@ -8,7 +8,7 @@
 using Kephas.Logging;
 using Kephas.Resources;
 using Kephas.Services;
-using Kephas.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Kephas.Pipelines;
 
@@ -21,22 +21,18 @@ namespace Kephas.Pipelines;
 [OverridePriority(Priority.Low)]
 public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TTarget, TOperationArgs, TResult>
 {
-    private readonly IExportFactory<PipelineContext> contextFactory;
     private readonly ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors;
     private IReadOnlyList<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>? cachedPipelineBehaviors;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AsyncPipeline{TTarget,TOperationArgs,TResult}"/> class.
     /// </summary>
-    /// <param name="contextFactory">The context factory.</param>
     /// <param name="behaviors">Optional. The behaviors.</param>
     /// <param name="logger">Optional. The logger.</param>
     public AsyncPipeline(
-        IExportFactory<PipelineContext> contextFactory,
         ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors = null,
         ILogger<AsyncPipeline<TTarget, TOperationArgs, TResult>>? logger = null)
     {
-        this.contextFactory = contextFactory;
         this.behaviors = behaviors;
         this.Logger = logger;
     }
@@ -52,93 +48,79 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
     /// </summary>
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
-    /// <param name="context">An optional context for the operation. If not context is provided, one will be created for the scope of the operation.</param>
     /// <param name="operation">The operation to be executed.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task yielding the result.</returns>
     public Task<TResult> ProcessAsync(
         TTarget target,
         TOperationArgs args,
-        IContext? context,
         Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default)
     {
         var pipelineBehaviors = this.GetPipelineBehaviors();
-        var ownsContext = context is null;
-        context ??= contextFactory.CreateExportedValue();
-        try
+        if (pipelineBehaviors?.Count is not > 0)
         {
-            if (pipelineBehaviors?.Count is not > 0)
+            if (this.Logger.IsDebugEnabled())
             {
-                if (this.Logger.IsDebugEnabled())
-                {
-                    this.Logger.Debug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message, typeof(TTarget),
-                        typeof(TOperationArgs), typeof(TResult));
-                }
-
-                var result = operation();
-
-                if (this.Logger.IsDebugEnabled())
-                {
-                    this.Logger.Debug(PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message, typeof(TTarget),
-                        typeof(TOperationArgs), typeof(TResult));
-                }
-
-                return result;
+                this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message, typeof(TTarget),
+                    typeof(TOperationArgs), typeof(TResult));
             }
 
-            using var enumerator = pipelineBehaviors.GetEnumerator();
-            Func<Task<TResult>>? next = null;
-            next = async () =>
+            var result = operation();
+
+            if (this.Logger.IsDebugEnabled())
             {
-                var hasBehavior = enumerator.MoveNext();
-                var behavior = hasBehavior ? enumerator.Current : null;
-                if (this.Logger.IsDebugEnabled())
-                {
-                    if (hasBehavior)
-                    {
-                        this.Logger.Debug(PipelinesStrings.Pipeline_ProcessAsync_InvokingBehavior_Message,
-                            behavior?.GetType(), typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
-                    }
-                    else
-                    {
-                        this.Logger.Debug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
-                            typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
-                    }
-                }
-
-                var result = hasBehavior
-                    ? behavior is not null
-                        ? await behavior.InvokeAsync(ToFuncOfTaskOfObject(next!), target, args, context, cancellationToken).PreserveThreadContext()
-                        : throw new NullReferenceException(PipelinesStrings.Pipeline_ProcessAsync_NullBehavior_Exception)
-                    : await operation().PreserveThreadContext();
-
-                if (this.Logger.IsDebugEnabled())
-                {
-                    if (hasBehavior)
-                    {
-                        this.Logger.Debug(PipelinesStrings.Pipeline_ProcessAsync_InvokedBehavior_Message,
-                            behavior?.GetType(), typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
-                    }
-                    else
-                    {
-                        this.Logger.Debug(PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
-                            typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
-                    }
-                }
-
-                return (TResult)result!;
-            };
-
-            return next();
-        }
-        finally
-        {
-            if (ownsContext)
-            {
-                context.Dispose();
+                this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message, typeof(TTarget),
+                    typeof(TOperationArgs), typeof(TResult));
             }
+
+            return result;
         }
+
+        using var enumerator = pipelineBehaviors.GetEnumerator();
+        Func<Task<TResult>>? next = null;
+        next = async () =>
+        {
+            var hasBehavior = enumerator.MoveNext();
+            var behavior = hasBehavior ? enumerator.Current : null;
+            if (this.Logger.IsDebugEnabled())
+            {
+                if (hasBehavior)
+                {
+                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingBehavior_Message,
+                        behavior?.GetType(), typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                }
+                else
+                {
+                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
+                        typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                }
+            }
+
+            var result = hasBehavior
+                ? behavior is not null
+                    ? await behavior.InvokeAsync(ToFuncOfTaskOfObject(next!), target, args, cancellationToken)
+                    : throw new NullReferenceException(PipelinesStrings.Pipeline_ProcessAsync_NullBehavior_Exception)
+                : await operation();
+
+            if (this.Logger.IsDebugEnabled())
+            {
+                if (hasBehavior)
+                {
+                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokedBehavior_Message,
+                        behavior?.GetType(), typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                }
+                else
+                {
+                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
+                        typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                }
+            }
+
+            return (TResult)result!;
+        };
+
+        return next();
     }
 
     /// <summary>
@@ -158,7 +140,7 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
     {
         return async () =>
         {
-            var result = await func().PreserveThreadContext();
+            var result = await func();
             return result;
         };
     }

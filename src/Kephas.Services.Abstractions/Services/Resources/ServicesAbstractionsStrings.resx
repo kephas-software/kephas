@@ -21,4 +21,7 @@
     <data name="NullServiceExceptionMessage" xml:space="preserve">
         <value>{0} is intended to be replaced by a proper implementation.</value>
     </data>
+    <data name="OrderedServiceFactoryCollection_service_with_requested_criteria_not_found" xml:space="preserve">
+        <value>The service with the requested predicate was not found.</value>
+    </data>
 </root>

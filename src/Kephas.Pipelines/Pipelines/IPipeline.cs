@@ -23,12 +23,10 @@ public interface IPipeline<in TTarget, in TOperationArgs, TResult>
     /// </summary>
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
-    /// <param name="context">An optional context for the operation. If not context is provided, one will be created for the scope of the operation.</param>
     /// <param name="operation">The operation to be executed.</param>
     /// <returns>The execution result.</returns>
     TResult Process(
         TTarget target,
         TOperationArgs args,
-        IContext? context,
         Func<TResult> operation);
 }

@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections;
+
 namespace Kephas.Services;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Kephas.Collections;
-using Kephas.Services;
 
 /// <summary>
 /// Metadata for application services.

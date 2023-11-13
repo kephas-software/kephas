@@ -54,7 +54,7 @@ public static class EnumerableServiceExtensions
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
         var service = lazyServices.TryGetService(predicate);
-        return service ?? throw new InvalidOperationException(Strings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
+        return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
 
     /// <summary>
@@ -97,6 +97,6 @@ public static class EnumerableServiceExtensions
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
         var service = factoryServices.TryGetService(predicate);
-        return service ?? throw new InvalidOperationException(Strings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
+        return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
 }

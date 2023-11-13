@@ -9,6 +9,7 @@ using System.Text;
 using Kephas.Logging;
 using Kephas.Pipelines;
 using Kephas.Services;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -19,7 +20,7 @@ public class PipelineTest
 {
     [Test]
     [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation ({0}/{1}/{2})...Debug: Invoked pipeline operation ({0}/{1}/{2}).")]
-    [TestCase(LogLevel.Info, "")]
+    [TestCase(LogLevel.Information, "")]
     public void Process_no_behaviors(LogLevel logLevel, string log)
     {
         var sb = new StringBuilder();
@@ -28,23 +29,22 @@ public class PipelineTest
             .Returns(ci => ci.Arg<LogLevel>() <= logLevel);
         logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception?>(), Arg.Any<string?>(), Arg.Any<object?[]>()))
             .Do(ci => sb.Append($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()}"));
-        var pipeline = new Pipeline<object?, object, object?>(GetPipelineContextFactory(), logger: logger);
+        var pipeline = new Pipeline<object?, object, object?>(logger: logger);
 
         var target = new object();
         var args = new object();
-        var context = Substitute.For<IContext>();
         var result = new object();
 
         object? Operation() => result;
 
-        var pipelineResult = pipeline.Process(target, args, context, Operation);
+        var pipelineResult = pipeline.Process(target, args, Operation);
         Assert.AreSame(result, pipelineResult);
         Assert.AreEqual(log, sb.ToString());
     }
 
     [Test]
     [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation ({0}/{1}/{2})...Debug: Invoked pipeline operation ({0}/{1}/{2}).")]
-    [TestCase(LogLevel.Info, "")]
+    [TestCase(LogLevel.Information, "")]
     public void Process_no_behaviors_no_context(LogLevel logLevel, string log)
     {
         var sb = new StringBuilder();
@@ -53,7 +53,7 @@ public class PipelineTest
             .Returns(ci => ci.Arg<LogLevel>() <= logLevel);
         logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception?>(), Arg.Any<string?>(), Arg.Any<object?[]>()))
             .Do(ci => sb.Append($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()}"));
-        var pipeline = new Pipeline<object?, object, object?>(GetPipelineContextFactory(), logger: logger);
+        var pipeline = new Pipeline<object?, object, object?>(logger: logger);
 
         var target = new object();
         var args = new object();
@@ -61,7 +61,7 @@ public class PipelineTest
 
         object? Operation() => result;
 
-        var pipelineResult = pipeline.Process(target, args, null, Operation);
+        var pipelineResult = pipeline.Process(target, args, Operation);
         Assert.AreSame(result, pipelineResult);
         Assert.AreEqual(log, sb.ToString());
     }
@@ -71,10 +71,10 @@ public class PipelineTest
     [TestCase(LogLevel.Debug, "b1Test", null, "test", "b1Test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
     [TestCase(LogLevel.Debug, null, "b2Test", "test", "b2Test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b2Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
     [TestCase(LogLevel.Debug, "b1Test", "b2Test", "test", "b1Test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
-    [TestCase(LogLevel.Info, null, null, "test", "test", "b1b2")]
-    [TestCase(LogLevel.Info, "b1Test", null, "test", "b1Test", "b1")]
-    [TestCase(LogLevel.Info, null, "b2Test", "test", "b2Test", "b1b2")]
-    [TestCase(LogLevel.Info, "b1Test", "b2Test", "test", "b1Test", "b1")]
+    [TestCase(LogLevel.Information, null, null, "test", "test", "b1b2")]
+    [TestCase(LogLevel.Information, "b1Test", null, "test", "b1Test", "b1")]
+    [TestCase(LogLevel.Information, null, "b2Test", "test", "b2Test", "b1b2")]
+    [TestCase(LogLevel.Information, "b1Test", "b2Test", "test", "b1Test", "b1")]
     public void Process_with_behaviors(LogLevel logLevel, string? b1Result, string? b2Result, string opResult, string result, string log)
     {
         var sb = new StringBuilder();
@@ -87,20 +87,19 @@ public class PipelineTest
         var b2 = Substitute.For<IPipelineBehavior<object?, object, object?>>();
         var selector = Substitute.For<ILazyEnumerable<IPipelineBehavior, PipelineBehaviorMetadata>>();
         selector.SelectServices(Arg.Any<Func<Lazy<IPipelineBehavior, PipelineBehaviorMetadata>, bool>>()).Returns(new[] { b1, b2 });
-        var pipeline = new Pipeline<object?, object, object?>(GetPipelineContextFactory(), selector, logger);
+        var pipeline = new Pipeline<object?, object, object?>(selector, logger);
 
         var target = new object();
         var args = new object();
-        var context = Substitute.For<IContext>();
 
-        b1.Invoke(Arg.Any<Func<object?>>(), target, args, context)
+        b1.Invoke(Arg.Any<Func<object?>>(), target, args)
             .Returns(ci =>
             {
                 sb.Append("b1");
                 return b1Result ?? ci.Arg<Func<object?, object, object?>>()(target, args);
             });
             
-        b2.Invoke(Arg.Any<Func<object?>>(), target, args, context)
+        b2.Invoke(Arg.Any<Func<object?>>(), target, args)
             .Returns(ci =>
             {
                 sb.Append("b2");
@@ -109,15 +108,8 @@ public class PipelineTest
             
         object? Operation() => opResult;
 
-        var pipelineResult = pipeline.Process(target, args, context, Operation);
+        var pipelineResult = pipeline.Process(target, args, Operation);
         Assert.AreEqual(result, pipelineResult);
         Assert.AreEqual(log, sb.ToString());
-    }
-
-    private IExportFactory<PipelineContext> GetPipelineContextFactory()
-    {
-        var factory = Substitute.For<IExportFactory<PipelineContext>>();
-        factory.CreateExportedValue().Returns(new PipelineContext(Substitute.For<IServiceProvider>()));
-        return factory;
     }
 }

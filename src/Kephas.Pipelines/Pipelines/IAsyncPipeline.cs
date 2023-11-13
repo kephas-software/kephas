@@ -23,14 +23,12 @@ public interface IAsyncPipeline<in TTarget, in TOperationArgs, TResult>
     /// </summary>
     /// <param name="target">The target.</param>
     /// <param name="args">The operation arguments.</param>
-    /// <param name="context">An optional context for the operation. If not context is provided, one will be created for the scope of the operation.</param>
     /// <param name="operation">The operation to be executed.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task yielding the execution result.</returns>
     Task<TResult> ProcessAsync(
         TTarget target,
         TOperationArgs args,
-        IContext? context,
         Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default);
 }

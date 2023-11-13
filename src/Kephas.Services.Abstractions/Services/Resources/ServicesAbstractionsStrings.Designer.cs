@@ -67,5 +67,14 @@ namespace Kephas.Services.Resources {
                 return ResourceManager.GetString("NullServiceExceptionMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service with the requested predicate was not found..
+        /// </summary>
+        internal static string OrderedServiceFactoryCollection_service_with_requested_criteria_not_found {
+            get {
+                return ResourceManager.GetString("OrderedServiceFactoryCollection_service_with_requested_criteria_not_found", resourceCulture);
+            }
+        }
     }
 }
