@@ -32,17 +32,17 @@ namespace Kephas.Dynamic
         object? this[string key] { get; set; }
 
         /// <summary>
-        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// Indicates whether the <paramref name="key"/> is defined in the expando.
         /// </summary>
-        /// <param name="memberName">Name of the member.</param>
+        /// <param name="key">Name of the member.</param>
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        bool HasDynamicMember(string memberName)
+        bool HasKey(string key)
         {
             try
             {
-                var _ = this[memberName];
+                _ = this[key];
             }
             catch (Exception)
             {
@@ -63,12 +63,12 @@ namespace Kephas.Dynamic
         /// </returns>
         IDictionary<string, object?> ToDictionary(
             Func<string, string>? keyFunc = null,
-            Func<object?, object?>? valueFunc = null) => new Dictionary<string, object?>();
+            Func<object?, object?>? valueFunc = null) => GetKeys().ToDictionary(k => k, k => this[k]);
 
         /// <summary>
         /// Gets the dynamic member names of this instance.
         /// </summary>
         /// <returns>An enumeration of member names.</returns>
-        IEnumerable<string> GetDynamicMemberNames() => Array.Empty<string>();
+        IEnumerable<string> GetKeys() => Array.Empty<string>();
     }
 }

@@ -36,8 +36,8 @@ namespace Kephas.Tests.Dynamic
         {
             var expando = new Expandable();
             expando.ToDynamic()["Hi"] = "there";
-            Assert.IsTrue(expando.ToDynamic().HasDynamicMember("Hi"));
-            Assert.IsFalse(expando.ToDynamic().HasDynamicMember("there"));
+            Assert.IsTrue(expando.ToDynamic().HasKey("Hi"));
+            Assert.IsFalse(expando.ToDynamic().HasKey("there"));
         }
 
         [Test]

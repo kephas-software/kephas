@@ -143,18 +143,18 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A sequence that contains dynamic member names.
         /// </returns>
-        public override IEnumerable<string> GetDynamicMemberNames() =>
-            IExpandoMixin.GetDynamicMemberNames(this);
+        public virtual IEnumerable<string> GetKeys() =>
+            IExpandoMixin.GetKeys(this);
 
         /// <summary>
-        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// Indicates whether the <paramref name="key"/> is defined in the expando.
         /// </summary>
-        /// <param name="memberName">Name of the member.</param>
+        /// <param name="key">Name of the member.</param>
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        public virtual bool HasDynamicMember(string memberName) =>
-            IExpandoMixin.HasDynamicMember(this, memberName);
+        public virtual bool HasKey(string key) =>
+            IExpandoMixin.HasKey(this, key);
 
         /// <summary>
         /// Try to retrieve a member by name first from instance properties

@@ -71,21 +71,21 @@ namespace Kephas.Dynamic
             => ToDictionary(this, keyFunc, valueFunc);
 
         /// <summary>
-        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// Indicates whether the <paramref name="key"/> is defined in the expando.
         /// </summary>
-        /// <param name="memberName">Name of the member.</param>
+        /// <param name="key">Name of the member.</param>
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        bool IDynamic.HasDynamicMember(string memberName)
-            => HasDynamicMember(this, memberName);
+        bool IDynamic.HasKey(string key)
+            => HasKey(this, key);
 
         /// <summary>
         /// Gets the dynamic member names of this instance.
         /// </summary>
         /// <returns>An enumeration of member names.</returns>
-        IEnumerable<string> IDynamic.GetDynamicMemberNames()
-            => GetDynamicMemberNames(this);
+        IEnumerable<string> IDynamic.GetKeys()
+            => GetKeys(this);
 
         /// <summary>
         /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
@@ -95,7 +95,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        protected internal static bool HasDynamicMember(IExpandoMixin self, string memberName)
+        protected internal static bool HasKey(IExpandoMixin self, string memberName)
         {
             var binders = self.MemberBinders;
 
@@ -132,7 +132,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A sequence that contains dynamic member names.
         /// </returns>
-        protected internal static IEnumerable<string> GetDynamicMemberNames(IExpandoMixin self)
+        protected internal static IEnumerable<string> GetKeys(IExpandoMixin self)
         {
             var binders = self.MemberBinders;
             var hashSet = self.IgnoreCase ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) : new HashSet<string>();

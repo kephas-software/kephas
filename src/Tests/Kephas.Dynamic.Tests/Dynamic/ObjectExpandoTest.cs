@@ -94,7 +94,7 @@ public class ObjectExpandoTest
     public void HasDynamicMember_Property_existing_in_object()
     {
         var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
-        Assert.IsTrue(expando.HasDynamicMember(nameof(ITestIdentifiable.Id)));
+        Assert.IsTrue(expando.HasKey(nameof(ITestIdentifiable.Id)));
     }
 
     [Test]
@@ -102,14 +102,14 @@ public class ObjectExpandoTest
     {
         var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
         expando["Age"] = 12;
-        Assert.IsTrue(expando.HasDynamicMember("Age"));
+        Assert.IsTrue(expando.HasKey("Age"));
     }
 
     [Test]
     public void HasDynamicMember_Property_non_existing_in_object()
     {
         var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
-        Assert.IsFalse(expando.HasDynamicMember("Age"));
+        Assert.IsFalse(expando.HasKey("Age"));
     }
 
     [Test]
@@ -130,7 +130,7 @@ public class ObjectExpandoTest
         var instance = new ExpandoTest.AgedPerson { Age = 12 };
         IDynamic expando = new ObjectExpando(instance);
 
-        CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetDynamicMemberNames());
+        CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetKeys());
     }
 
     public interface ITestIdentifiable

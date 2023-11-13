@@ -55,17 +55,17 @@ internal class DynamicExpando : IDynamic
     /// Gets the dynamic member names of this instance.
     /// </summary>
     /// <returns>An enumeration of member names.</returns>
-    public IEnumerable<string> GetDynamicMemberNames() =>
+    public IEnumerable<string> GetKeys() =>
         this.obj is DynamicObject dynObject
             ? dynObject.GetDynamicMemberNames()
             : Array.Empty<string>();
 
     /// <summary>
-    /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+    /// Indicates whether the <paramref name="key"/> is defined in the expando.
     /// </summary>
-    /// <param name="memberName">Name of the member.</param>
+    /// <param name="key">Name of the member.</param>
     /// <returns>
     /// True if defined, false if not.
     /// </returns>
-    public bool HasDynamicMember(string memberName) => this.GetDynamicMemberNames().Contains(memberName);
+    public bool HasKey(string key) => this.GetKeys().Contains(key);
 }

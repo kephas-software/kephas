@@ -48,6 +48,6 @@ public class DictionaryExpandoTest
     {
         IDynamic expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
 
-        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
+        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetKeys());
     }
 }

@@ -23,7 +23,7 @@ namespace Kephas.Tests.Dynamic
         {
             var expando = new TestExpando(new Named());
 
-            var members = expando.GetDynamicMemberNames().ToList();
+            var members = expando.GetKeys().ToList();
             Assert.AreEqual(1, members.Count);
             Assert.AreEqual("Name", members[0]);
         }
@@ -35,7 +35,7 @@ namespace Kephas.Tests.Dynamic
             expando["Name"] = "gigi";
             expando["FamilyName"] = "belogea";
 
-            var members = expando.GetDynamicMemberNames().ToList();
+            var members = expando.GetKeys().ToList();
             Assert.AreEqual(1, members.Count);
             Assert.AreEqual("Name", members[0]);
         }
@@ -48,7 +48,7 @@ namespace Kephas.Tests.Dynamic
             expando["Name"] = "gigi";
             expando["FamilyName"] = "belogea";
 
-            var members = expando.GetDynamicMemberNames().ToList();
+            var members = expando.GetKeys().ToList();
             Assert.AreEqual(1, members.Count);
             Assert.AreEqual("Name", members[0]);
         }
@@ -60,7 +60,7 @@ namespace Kephas.Tests.Dynamic
             var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
             expando["FamilyName"] = "belogea";
 
-            var members = expando.GetDynamicMemberNames().ToList();
+            var members = expando.GetKeys().ToList();
             Assert.AreEqual(1, members.Count);
             Assert.AreEqual("FamilyName", members[0]);
         }
@@ -72,8 +72,8 @@ namespace Kephas.Tests.Dynamic
             expando["Name"] = "gigi";
             expando["FamilyName"] = "belogea";
 
-            Assert.IsTrue(expando.HasDynamicMember("Name"));
-            Assert.IsFalse(expando.HasDynamicMember("FamilyName"));
+            Assert.IsTrue(expando.HasKey("Name"));
+            Assert.IsFalse(expando.HasKey("FamilyName"));
         }
 
         [Test]
@@ -84,8 +84,8 @@ namespace Kephas.Tests.Dynamic
             expando["Name"] = "gigi";
             expando["FamilyName"] = "belogea";
 
-            Assert.IsTrue(expando.HasDynamicMember("Name"));
-            Assert.IsFalse(expando.HasDynamicMember("FamilyName"));
+            Assert.IsTrue(expando.HasKey("Name"));
+            Assert.IsFalse(expando.HasKey("FamilyName"));
         }
 
         [Test]
@@ -95,8 +95,8 @@ namespace Kephas.Tests.Dynamic
             var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
             expando["FamilyName"] = "belogea";
 
-            Assert.IsFalse(expando.HasDynamicMember("Name"));
-            Assert.IsTrue(expando.HasDynamicMember("FamilyName"));
+            Assert.IsFalse(expando.HasKey("Name"));
+            Assert.IsTrue(expando.HasKey("FamilyName"));
         }
 
         [Test]

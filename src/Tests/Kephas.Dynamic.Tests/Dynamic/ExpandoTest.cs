@@ -115,20 +115,20 @@ public class ExpandoTest
     {
         var expando = new Expando();
         expando["Age"] = 12;
-        Assert.IsTrue(expando.HasDynamicMember("Age"));
+        Assert.IsTrue(expando.HasKey("Age"));
 
         expando["Age"] = null;
-        Assert.IsFalse(expando.HasDynamicMember("Age"));
+        Assert.IsFalse(expando.HasKey("Age"));
     }
 
     [Test]
     public void Indexer_set_to_null_non_existing_member()
     {
         var expando = new Expando();
-        Assert.IsFalse(expando.HasDynamicMember("Age"));
+        Assert.IsFalse(expando.HasKey("Age"));
 
         expando["Age"] = null;
-        Assert.IsFalse(expando.HasDynamicMember("Age"));
+        Assert.IsFalse(expando.HasKey("Age"));
     }
 
     [Test]
@@ -136,14 +136,14 @@ public class ExpandoTest
     {
         var expando = new Expando();
         expando["Age"] = 12;
-        Assert.IsTrue(expando.HasDynamicMember("Age"));
+        Assert.IsTrue(expando.HasKey("Age"));
     }
 
     [Test]
     public void HasDynamicMember_Property_non_existing()
     {
         var expando = new Expando();
-        Assert.IsFalse(expando.HasDynamicMember("Age"));
+        Assert.IsFalse(expando.HasKey("Age"));
     }
 
     [Test]

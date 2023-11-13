@@ -28,6 +28,6 @@ public class DynamicExpandoTest
         dynamic obj = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
         var expando = new DynamicExpando(obj);
 
-        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
+        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetKeys());
     }
 }

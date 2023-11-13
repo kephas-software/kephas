@@ -26,14 +26,14 @@ internal class DictionaryExpando<T> : ExpandoBase<T>
     /// Gets the dynamic member names of this instance.
     /// </summary>
     /// <returns>An enumeration of member names.</returns>
-    public override IEnumerable<string> GetDynamicMemberNames() => this.InnerDictionary.Keys;
+    public override IEnumerable<string> GetKeys() => this.InnerDictionary.Keys;
 
     /// <summary>
-    /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+    /// Indicates whether the <paramref name="key"/> is defined in the expando.
     /// </summary>
-    /// <param name="memberName">Name of the member.</param>
+    /// <param name="key">Name of the member.</param>
     /// <returns>
     /// True if defined, false if not.
     /// </returns>
-    public override bool HasDynamicMember(string memberName) => this.InnerDictionary.ContainsKey(memberName);
+    public override bool HasKey(string key) => this.InnerDictionary.ContainsKey(key);
 }
