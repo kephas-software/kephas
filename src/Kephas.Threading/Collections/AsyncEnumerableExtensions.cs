@@ -42,7 +42,7 @@ namespace Kephas.Collections
             foreach (var value in values)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                await action(value, cancellationToken).PreserveThreadContext();
+                await action(value, cancellationToken);
             }
         }
 
@@ -66,7 +66,7 @@ namespace Kephas.Collections
         {
             foreach (var value in values)
             {
-                await action(value).PreserveThreadContext();
+                await action(value);
             }
         }
     }

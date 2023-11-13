@@ -207,88 +207,6 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
-        /// Gets a task awaiter preserving the current context upon continuation.
-        /// </summary>
-        /// <remarks>
-        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
-        /// but it can be configured to preserve some thread properties.
-        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
-        /// </remarks>
-        /// <typeparam name="TResult">Type of the result.</typeparam>
-        /// <param name="task">The task.</param>
-        /// <returns>
-        /// A <see cref="ThreadContextAwaiter{TResult}"/>.
-        /// </returns>
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this Task<TResult> task)
-        {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            return new ThreadContextAwaiter<TResult>(task);
-        }
-
-        /// <summary>
-        /// Gets a task awaiter preserving the current context upon continuation.
-        /// </summary>
-        /// <remarks>
-        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
-        /// but it can be configured to preserve some thread properties.
-        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
-        /// </remarks>
-        /// <param name="task">The task.</param>
-        /// <returns>
-        /// A <see cref="ThreadContextAwaiter"/>.
-        /// </returns>
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ThreadContextAwaiter PreserveThreadContext(this Task task)
-        {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            return new ThreadContextAwaiter(task);
-        }
-
-        /// <summary>
-        /// Gets a task awaiter preserving the current context upon continuation.
-        /// </summary>
-        /// <remarks>
-        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
-        /// but it can be configured to preserve some thread properties.
-        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
-        /// </remarks>
-        /// <typeparam name="TResult">Type of the result.</typeparam>
-        /// <param name="task">The task.</param>
-        /// <returns>
-        /// A <see cref="ThreadContextAwaiter{TResult}"/>.
-        /// </returns>
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValueThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this ValueTask<TResult> task)
-        {
-            return new ValueThreadContextAwaiter<TResult>(task);
-        }
-
-        /// <summary>
-        /// Gets a task awaiter preserving the current context upon continuation.
-        /// </summary>
-        /// <remarks>
-        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
-        /// but it can be configured to preserve some thread properties.
-        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
-        /// </remarks>
-        /// <param name="valueTask">The value task.</param>
-        /// <returns>
-        /// A <see cref="ThreadContextAwaiter"/>.
-        /// </returns>
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValueThreadContextAwaiter PreserveThreadContext(this ValueTask valueTask)
-        {
-            return new ValueThreadContextAwaiter(valueTask);
-        }
-
-        /// <summary>
         /// Configures a timeout for the provided task. If the task ends within the indicated time,
         /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
         /// </summary>
@@ -302,7 +220,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static async Task WithTimeout(this Task task, TimeSpan timeout)
         {
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout)).PreserveThreadContext();
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
             if (completedTask == task)
             {
                 EnsureCompletedSuccessfully(task);
@@ -327,7 +245,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static async Task<T> WithTimeout<T>(this Task<T> task, TimeSpan timeout)
         {
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout)).PreserveThreadContext();
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
             if (completedTask == task)
             {
                 EnsureCompletedSuccessfully(task);
@@ -414,7 +332,7 @@ namespace Kephas.Threading.Tasks
             Task? completedTask = null;
             try
             {
-                completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+                completedTask = await AsAsync(task, timeout, cancellationToken);
             }
             catch (TaskCanceledException)
             {
@@ -512,7 +430,7 @@ namespace Kephas.Threading.Tasks
             Task? completedTask = null;
             try
             {
-                completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+                completedTask = await AsAsync(task, timeout, cancellationToken);
             }
             catch (TaskCanceledException)
             {
@@ -629,7 +547,7 @@ namespace Kephas.Threading.Tasks
             using var cts = new CancellationTokenSource();
             using var registration = cancellationToken.Register(() => cts.Cancel());
             var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
-            var completedTask = await Task.WhenAny(task, delayTask).PreserveThreadContext();
+            var completedTask = await Task.WhenAny(task, delayTask);
             if (completedTask == task)
             {
                 return task;

@@ -29,10 +29,10 @@ namespace Kephas.Threading
         {
             action = action ?? throw new ArgumentNullException(nameof(action));
 
-            await this.semaphore.WaitAsync().PreserveThreadContext();
+            await this.semaphore.WaitAsync();
             try
             {
-                await action().PreserveThreadContext();
+                await action();
             }
             finally
             {
@@ -50,10 +50,10 @@ namespace Kephas.Threading
         {
             action = action ?? throw new ArgumentNullException(nameof(action));
 
-            await this.semaphore.WaitAsync(cancellationToken).PreserveThreadContext();
+            await this.semaphore.WaitAsync(cancellationToken);
             try
             {
-                await action(cancellationToken).PreserveThreadContext();
+                await action(cancellationToken);
             }
             finally
             {
@@ -71,10 +71,10 @@ namespace Kephas.Threading
         {
             action = action ?? throw new ArgumentNullException(nameof(action));
 
-            await this.semaphore.WaitAsync().PreserveThreadContext();
+            await this.semaphore.WaitAsync();
             try
             {
-                return await action().PreserveThreadContext();
+                return await action();
             }
             finally
             {
@@ -93,10 +93,10 @@ namespace Kephas.Threading
         {
             action = action ?? throw new ArgumentNullException(nameof(action));
 
-            await this.semaphore.WaitAsync(cancellationToken).PreserveThreadContext();
+            await this.semaphore.WaitAsync(cancellationToken);
             try
             {
-                return await action(cancellationToken).PreserveThreadContext();
+                return await action(cancellationToken);
             }
             finally
             {
