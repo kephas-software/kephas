@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.ExceptionHandling
 {
     using System;
@@ -15,26 +17,19 @@ namespace Kephas.ExceptionHandling
     /// <summary>
     /// An exception data.
     /// </summary>
-    public class ExceptionData : IErrorNotification
+    public record ExceptionData() : IErrorNotification
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionData"/> class.
-        /// </summary>
-        public ExceptionData()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionData"/> class.
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <param name="severity">Optional. The severity level. If this value is set, it overwrites the severity level provided by the exception.</param>
-        public ExceptionData(Exception exception, SeverityLevel? severity = null)
+        public ExceptionData(Exception exception, LogLevel? severity = null)
             : this()
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
-            severity ??= exception is IErrorNotification notification ? notification.Severity : SeverityLevel.Error;
+            severity ??= exception is IErrorNotification notification ? notification.Severity : LogLevel.Error;
 
             ExceptionType = exception.GetType().FullName!;
             Message = exception.Message;
@@ -63,7 +58,7 @@ namespace Kephas.ExceptionHandling
         /// <value>
         /// The severity level.
         /// </value>
-        public SeverityLevel Severity { get; set; } = SeverityLevel.Error;
+        public LogLevel Severity { get; set; } = LogLevel.Error;
 
         /// <summary>
         /// Returns a string that represents the current object.

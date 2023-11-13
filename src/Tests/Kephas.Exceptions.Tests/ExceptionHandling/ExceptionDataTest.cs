@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Tests.ExceptionHandling
 {
     using System;
@@ -26,37 +28,37 @@ namespace Kephas.Tests.ExceptionHandling
 
             Assert.AreEqual("hello", exceptionData.Message);
             Assert.AreEqual(typeof(Exception).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(SeverityLevel.Error, exceptionData.Severity);
+            Assert.AreEqual(LogLevel.Error, exceptionData.Severity);
         }
 
         [Test]
         public void ExceptionData_copy_from_exception_default_with_severity()
         {
-            var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Fatal });
+            var exceptionData = new ExceptionData(new DataException("hello") { Severity = LogLevel.Critical });
 
             Assert.AreEqual("hello", exceptionData.Message);
             Assert.AreEqual(typeof(DataException).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(SeverityLevel.Fatal, exceptionData.Severity);
+            Assert.AreEqual(LogLevel.Critical, exceptionData.Severity);
         }
 
         [Test]
         public void ExceptionData_copy_from_exception_overwrite_severity()
         {
-            var exceptionData = new ExceptionData(new Exception("hello"), SeverityLevel.Warning);
+            var exceptionData = new ExceptionData(new Exception("hello"), LogLevel.Warning);
 
             Assert.AreEqual("hello", exceptionData.Message);
             Assert.AreEqual(typeof(Exception).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(SeverityLevel.Warning, exceptionData.Severity);
+            Assert.AreEqual(LogLevel.Warning, exceptionData.Severity);
         }
 
         [Test]
         public void ExceptionData_copy_from_exception_with_severity_overwrite_severity()
         {
-            var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Fatal }, SeverityLevel.Info);
+            var exceptionData = new ExceptionData(new DataException("hello") { Severity = LogLevel.Critical }, LogLevel.Information);
 
             Assert.AreEqual("hello", exceptionData.Message);
             Assert.AreEqual(typeof(DataException).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(SeverityLevel.Info, exceptionData.Severity);
+            Assert.AreEqual(LogLevel.Information, exceptionData.Severity);
         }
     }
 }

@@ -24,12 +24,12 @@ public interface IErrorNotification : IHasLogLevel
     string? Message { get; }
 
     /// <summary>
-    /// Gets the severity. The default value is <see cref="SeverityLevel.Error"/>.
+    /// Gets the severity. The default value is <see cref="LogLevel.Error"/>.
     /// </summary>
-    SeverityLevel Severity => SeverityLevel.Error;
+    LogLevel Severity => LogLevel.Error;
 
     /// <summary>
     /// Gets the log level.
     /// </summary>
-    LogLevel IHasLogLevel.LogLevel => (LogLevel)Severity;
+    LogLevel IHasLogLevel.LogLevel => Severity;
 }

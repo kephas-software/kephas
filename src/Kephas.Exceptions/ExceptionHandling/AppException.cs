@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.ExceptionHandling;
 
 /// <summary>
@@ -23,7 +25,7 @@ public class AppException : ApplicationException, IErrorNotification
     }
 
     /// <summary>
-    /// Gets the severity. The default value is <see cref="SeverityLevel.Error"/>.
+    /// Gets the severity. The default value is <see cref="LogLevel.Error"/>.
     /// </summary>
-    public SeverityLevel Severity { get; init; } = SeverityLevel.Error;
+    public LogLevel Severity { get; init; } = LogLevel.Error;
 }
