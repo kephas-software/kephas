@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoggerExtensions.cs" company="Kephas Software SRL">
+// <copyright file="LoggingExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,8 +12,17 @@ namespace Kephas.Logging;
 /// <summary>
 /// Extension methods for <see cref="ILogger"/>.
 /// </summary>
-public static class LoggerExtensions
+public static class LoggingExtensions
 {
+    /// <summary>
+    /// Gets a value indicating whether the severity level indicates an error.
+    /// </summary>
+    /// <param name="severity">The severity level.</param>
+    /// <returns>
+    /// True if error, false if not.
+    /// </returns>
+    public static bool IsError(this LogLevel severity) => severity <= LogLevel.Error;
+
     /// <summary>
     /// Gets the log level for an object, typically an <see cref="Exception"/> or an error object.
     /// This is calculated to be <see cref="LogLevel.Error"/> if the obj does not implement <see cref="IHasLogLevel"/>,
