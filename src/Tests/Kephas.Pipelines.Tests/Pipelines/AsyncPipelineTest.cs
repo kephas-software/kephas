@@ -9,6 +9,7 @@ using System.Text;
 using Kephas.Logging;
 using Kephas.Pipelines;
 using Kephas.Services;
+using Kephas.Testing;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
@@ -19,16 +20,11 @@ namespace Kephas.Tests.Pipelines;
 public class AsyncPipelineTest
 {
     [Test]
-    [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation ({0}/{1}/{2})...Debug: Invoked pipeline operation ({0}/{1}/{2}).")]
+    [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation (System.Object/System.Object/System.Object)...\nDebug: Invoked pipeline operation (System.Object/System.Object/System.Object).\n")]
     [TestCase(LogLevel.Information, "")]
     public async Task ProcessAsync_no_behaviors(LogLevel logLevel, string log)
     {
-        var sb = new StringBuilder();
-        var logger = Substitute.For<ILogger<AsyncPipeline<object?, object, object?>>>();
-        logger.IsEnabled(Arg.Any<LogLevel>())
-            .Returns(ci => ci.Arg<LogLevel>() <= logLevel);
-        logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception?>(), Arg.Any<string?>(), Arg.Any<object?[]>()))
-            .Do(ci => sb.Append($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()}"));
+        var logger = Test.GetTestLogger<AsyncPipeline<object?, object, object?>>(logLevel);
         var pipeline = new AsyncPipeline<object?, object, object?>(logger: logger);
 
         var target = new object();
@@ -43,20 +39,15 @@ public class AsyncPipelineTest
 
         var pipelineResult = await pipeline.ProcessAsync(target, args, Operation, token);
         Assert.AreSame(result, pipelineResult);
-        Assert.AreEqual(log, sb.ToString());
+        Assert.AreEqual(log.Replace("\n", Environment.NewLine), logger.ToString());
     }
 
     [Test]
-    [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation ({0}/{1}/{2})...Debug: Invoked pipeline operation ({0}/{1}/{2}).")]
+    [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation (System.Object/System.Object/System.Object)...\nDebug: Invoked pipeline operation (System.Object/System.Object/System.Object).\n")]
     [TestCase(LogLevel.Information, "")]
     public async Task ProcessAsync_no_behaviors_no_context(LogLevel logLevel, string log)
     {
-        var sb = new StringBuilder();
-        var logger = Substitute.For<ILogger<AsyncPipeline<object?, object, object?>>>();
-        logger.IsEnabled(Arg.Any<LogLevel>())
-            .Returns(ci => ci.Arg<LogLevel>() <= logLevel);
-        logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception?>(), Arg.Any<string?>(), Arg.Any<object?[]>()))
-            .Do(ci => sb.Append($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()}"));
+        var logger = Test.GetTestLogger<AsyncPipeline<object?, object, object?>>(logLevel);
         var pipeline = new AsyncPipeline<object?, object, object?>(logger: logger);
 
         var target = new object();
@@ -71,14 +62,14 @@ public class AsyncPipelineTest
 
         var pipelineResult = await pipeline.ProcessAsync(target, args, Operation, token);
         Assert.AreSame(result, pipelineResult);
-        Assert.AreEqual(log, sb.ToString());
+        Assert.AreEqual(log.Replace("\n", Environment.NewLine), logger.ToString());
     }
 
     [Test]
-    [TestCase(LogLevel.Debug, null, null, "test", "test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b2Debug: Invoking pipeline operation ({0}/{1}/{2})...Debug: Invoked pipeline operation ({0}/{1}/{2}).Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
-    [TestCase(LogLevel.Debug, "b1Test", null, "test", "b1Test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
-    [TestCase(LogLevel.Debug, null, "b2Test", "test", "b2Test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b2Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
-    [TestCase(LogLevel.Debug, "b1Test", "b2Test", "test", "b1Test", "Debug: Invoking pipeline behavior ({0}/{1}/{2}/{3})...b1Debug: Invoked pipeline behavior ({0}/{1}/{2}/{3})...")]
+    [TestCase(LogLevel.Debug, null, null, "test", "test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b2Debug: Invoking pipeline operation (System.Object/System.Object/System.Object)...Debug: Invoked pipeline operation (System.Object/System.Object/System.Object).Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
+    [TestCase(LogLevel.Debug, "b1Test", null, "test", "b1Test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
+    [TestCase(LogLevel.Debug, null, "b2Test", "test", "b2Test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b2Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
+    [TestCase(LogLevel.Debug, "b1Test", "b2Test", "test", "b1Test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
     [TestCase(LogLevel.Information, null, null, "test", "test", "b1b2")]
     [TestCase(LogLevel.Information, "b1Test", null, "test", "b1Test", "b1")]
     [TestCase(LogLevel.Information, null, "b2Test", "test", "b2Test", "b1b2")]
@@ -86,11 +77,7 @@ public class AsyncPipelineTest
     public async Task ProcessAsync_with_behaviors(LogLevel logLevel, string? b1Result, string? b2Result, string opResult, string result, string log)
     {
         var sb = new StringBuilder();
-        var logger = Substitute.For<ILogger<AsyncPipeline<object?, object, object?>>>();
-        logger.IsEnabled(Arg.Any<LogLevel>())
-            .Returns(ci => ci.Arg<LogLevel>() <= logLevel);
-        logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception?>(), Arg.Any<string?>(), Arg.Any<object?[]>()))
-            .Do(ci => sb.Append($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()}"));
+        var logger = Test.GetTestLogger<AsyncPipeline<object?, object, object?>>(sb, logLevel);
         var b1 = Substitute.For<IAsyncPipelineBehavior<object?, object, object?>>();
         var b2 = Substitute.For<IAsyncPipelineBehavior<object?, object, object?>>();
         var selector = Substitute.For<ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>>();
