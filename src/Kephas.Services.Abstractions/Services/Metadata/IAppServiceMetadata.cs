@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services;
+namespace Kephas.Services.Metadata;
 
 /// <summary>
 /// Abstraction over the application service metadata.

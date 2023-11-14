@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Services
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Services
     /// Attribute for naming services.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class ServiceNameAttribute : Attribute, IMetadataValue<string>
+    public class ServiceNameAttribute : Attribute, IServiceMetadataValue<string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceNameAttribute"/> class.

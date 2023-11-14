@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Services
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Services
     /// Indicates a processing priority used when more services must be processed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ProcessingPriorityAttribute : Attribute, IMetadataValue<Priority>, IHasProcessingPriority
+    public class ProcessingPriorityAttribute : Attribute, IServiceMetadataValue<Priority>, IHasProcessingPriority
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingPriorityAttribute" /> class.

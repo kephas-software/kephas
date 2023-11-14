@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMetadataValue.cs" company="Kephas Software SRL">
+// <copyright file="IServiceMetadataValue.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,15 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+namespace Kephas.Services.Metadata
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Non-typed contract for metadata values.
     /// </summary>
-    public interface IMetadataValue : IMetadataProvider
+    public interface IServiceMetadataValue : IServiceMetadataProvider
     {
         /// <summary>
         /// The attribute suffix.
@@ -40,7 +37,7 @@ namespace Kephas.Services
         /// Gets the metadata as an enumeration of (name, value) pairs.
         /// </summary>
         /// <returns>An enumeration of (name, value) pairs.</returns>
-        IEnumerable<(string name, object? value)> IMetadataProvider.GetMetadata()
+        IEnumerable<(string name, object? value)> IServiceMetadataProvider.GetMetadata()
         {
             var thisType = this.GetType();
             var name = this.Name ?? (this is Attribute ? GetMetadataNameFromAttributeType(thisType) : thisType.Name);
@@ -63,7 +60,7 @@ namespace Kephas.Services
     /// Contract for metadata values.
     /// </summary>
     /// <typeparam name="TValue">The type of the value.</typeparam>
-    public interface IMetadataValue<out TValue> : IMetadataValue
+    public interface IServiceMetadataValue<out TValue> : IServiceMetadataValue
     {
         /// <summary>
         /// Gets the metadata value.
@@ -71,7 +68,7 @@ namespace Kephas.Services
         /// <value>
         /// The metadata value.
         /// </value>
-        object? IMetadataValue.Value => this.Value;
+        object? IServiceMetadataValue.Value => this.Value;
 
         /// <summary>
         /// Gets the metadata value.

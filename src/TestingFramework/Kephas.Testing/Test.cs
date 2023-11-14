@@ -6,8 +6,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Text;
+using Kephas.Services;
 using Kephas.Testing.Logging;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 
 namespace Kephas.Testing
 {
@@ -27,5 +29,31 @@ namespace Kephas.Testing
         /// </summary>
         /// <returns>The test logger.</returns>
         public static ILogger<T> GetTestLogger<T>(StringBuilder? stringBuilder, LogLevel? minimumLevel = null) => new TestLogger<T>(stringBuilder, minimumLevel: minimumLevel);
+
+        /// <summary>
+        /// Gets the test lazy enumerator.
+        /// </summary>
+        /// <param name="services">The services</param>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <typeparam name="TMetadata">The metadata type.</typeparam>
+        /// <returns>The test <see cref="ILazyEnumerable{TContract,TMetadata}"/>.</returns>
+        public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(params T[] services)
+        {
+            var lazyEnumerable = Substitute.For<ILazyEnumerable<T, TMetadata>>();
+
+            lazyEnumerable.GetEnumerator()
+                .Returns(services
+                    .Select(s => new Lazy<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
+                    .ToList()
+                    .GetEnumerator());
+
+            return lazyEnumerable;
+        }
+
+        private static TMetadata CreateMetadata<TMetadata>(IDictionary<string, object?>? metadata)
+        {
+            var typedMetadata = Activator.CreateInstance(typeof(TMetadata), metadata);
+            return (TMetadata)typedMetadata!;
+        }
     }
 }

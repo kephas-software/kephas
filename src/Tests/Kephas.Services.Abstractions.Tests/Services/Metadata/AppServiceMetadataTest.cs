@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Services
-{
-    using System.Collections.Generic;
-    using Kephas.Services;
-    using NUnit.Framework;
+using Kephas.Services;
+using Kephas.Services.Metadata;
+using NUnit.Framework;
 
+namespace Kephas.Tests.Services.Metadata
+{
     /// <summary>
     /// Test class for <see cref="AppServiceMetadata"/>.
     /// </summary>

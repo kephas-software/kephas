@@ -10,16 +10,12 @@
 
 using Kephas.Collections;
 
-namespace Kephas.Services;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Kephas.Services.Metadata;
 
 /// <summary>
 /// Metadata for application services.
 /// </summary>
-public class AppServiceMetadata : InjectionMetadataBase, IAppServiceMetadata
+public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.

@@ -1,41 +1,18 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMetadataProvider.cs" company="Kephas Software SRL">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GenericTypeServiceMetadataProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+using System.Reflection;
+
+namespace Kephas.Services.Metadata
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
     /// <summary>
-    /// Provides metadata for injection.
+    /// Implementation of a <see cref="IServiceMetadataProvider"/> for generic types.
     /// </summary>
-    public interface IMetadataProvider
-    {
-        /// <summary>
-        /// Gets the metadata as an enumeration of (name, value) pairs.
-        /// </summary>
-        /// <returns>An enumeration of (name, value) pairs.</returns>
-        IEnumerable<(string name, object? value)> GetMetadata();
-
-        /// <summary>
-        /// Gets the <see cref="IMetadataProvider"/> for the <see paramref="genericType"/>.
-        /// </summary>
-        /// <param name="genericType">The generic type.</param>
-        /// <returns>A metadata provider.</returns>
-        public static IMetadataProvider GetGenericTypeMetadataProvider(Type genericType)
-            => GenericTypeMetadataProvider.GetProvider(genericType);
-    }
-
-    /// <summary>
-    /// Implementation of a <see cref="IMetadataProvider"/> for generic types.
-    /// </summary>
-    internal class GenericTypeMetadataProvider : IMetadataProvider
+    internal class GenericTypeServiceMetadataProvider : IServiceMetadataProvider
     {
         /// <summary>
         /// The 'T' prefix in generic type arguments.
@@ -47,10 +24,10 @@ namespace Kephas.Services
         /// </summary>
         private const string TypeSuffix = "Type";
 
-        private static readonly IDictionary<Type, IMetadataProvider> Providers = new Dictionary<Type, IMetadataProvider>();
+        private static readonly IDictionary<Type, IServiceMetadataProvider> Providers = new Dictionary<Type, IServiceMetadataProvider>();
         private readonly Type genericType;
 
-        private GenericTypeMetadataProvider(Type genericType)
+        private GenericTypeServiceMetadataProvider(Type genericType)
         {
             this.genericType = genericType;
         }
@@ -59,12 +36,12 @@ namespace Kephas.Services
         /// Gets the metadata provider for the indicated generic type.
         /// </summary>
         /// <param name="genericType">The generic type.</param>
-        /// <returns>The <see cref="IMetadataProvider"/>.</returns>
-        public static IMetadataProvider GetProvider(Type genericType)
+        /// <returns>The <see cref="IServiceMetadataProvider"/>.</returns>
+        public static IServiceMetadataProvider GetProvider(Type genericType)
         {
             if (!genericType.IsConstructedGenericType)
             {
-                return NullMetadataProvider.Instance;
+                return NullServiceMetadataProvider.Instance;
             }
 
             if (Providers.TryGetValue(genericType, out var provider))
@@ -72,7 +49,7 @@ namespace Kephas.Services
                 return provider;
             }
 
-            provider = new GenericTypeMetadataProvider(genericType);
+            provider = new GenericTypeServiceMetadataProvider(genericType);
             Providers[genericType] = provider;
             return provider;
         }
@@ -120,9 +97,9 @@ namespace Kephas.Services
             return genericArg.IsGenericParameter ? genericArg.BaseType : genericArg;
         }
 
-        private class NullMetadataProvider : IMetadataProvider
+        private class NullServiceMetadataProvider : IServiceMetadataProvider
         {
-            public static readonly IMetadataProvider Instance = new NullMetadataProvider();
+            public static readonly IServiceMetadataProvider Instance = new NullServiceMetadataProvider();
 
             public IEnumerable<(string name, object? value)> GetMetadata() => Enumerable.Empty<(string name, object? value)>();
         }
