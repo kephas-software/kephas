@@ -6,22 +6,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Text;
-using Kephas.Logging;
+using FluentAssertions;
 using Kephas.Pipelines;
-using Kephas.Services;
 using Kephas.Testing;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Pipelines;
 
-[TestFixture]
 public class AsyncPipelineTest
 {
-    [Test]
-    [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation (System.Object/System.Object/System.Object)...\nDebug: Invoked pipeline operation (System.Object/System.Object/System.Object).\n")]
-    [TestCase(LogLevel.Information, "")]
+    [Theory]
+    [InlineData(LogLevel.Debug, "Debug: Invoking pipeline operation ({op-params})...\nDebug: Invoked pipeline operation ({op-params}).\n")]
+    [InlineData(LogLevel.Information, "")]
     public async Task ProcessAsync_no_behaviors(LogLevel logLevel, string log)
     {
         var logger = Test.GetTestLogger<AsyncPipeline<object?, object, object?>>(logLevel);
@@ -38,13 +36,16 @@ public class AsyncPipelineTest
         }
 
         var pipelineResult = await pipeline.ProcessAsync(target, args, Operation, token);
-        Assert.AreSame(result, pipelineResult);
-        Assert.AreEqual(log.Replace("\n", Environment.NewLine), logger.ToString());
+        pipelineResult.Should().BeSameAs(result);
+        var expectedLog = log
+            .Replace("\n", Environment.NewLine)
+            .Replace("{op-params}", $"System.Object/System.Object/System.Object");
+        logger.ToString().Should().Be(expectedLog);
     }
 
-    [Test]
-    [TestCase(LogLevel.Debug, "Debug: Invoking pipeline operation (System.Object/System.Object/System.Object)...\nDebug: Invoked pipeline operation (System.Object/System.Object/System.Object).\n")]
-    [TestCase(LogLevel.Information, "")]
+    [Theory]
+    [InlineData(LogLevel.Debug, "Debug: Invoking pipeline operation ({op-params})...\nDebug: Invoked pipeline operation ({op-params}).\n")]
+    [InlineData(LogLevel.Information, "")]
     public async Task ProcessAsync_no_behaviors_no_context(LogLevel logLevel, string log)
     {
         var logger = Test.GetTestLogger<AsyncPipeline<object?, object, object?>>(logLevel);
@@ -61,27 +62,29 @@ public class AsyncPipelineTest
         }
 
         var pipelineResult = await pipeline.ProcessAsync(target, args, Operation, token);
-        Assert.AreSame(result, pipelineResult);
-        Assert.AreEqual(log.Replace("\n", Environment.NewLine), logger.ToString());
+        pipelineResult.Should().BeSameAs(result);
+        var expectedLog = log
+            .Replace("\n", Environment.NewLine)
+            .Replace("{op-params}", $"System.Object/System.Object/System.Object");
+        logger.ToString().Should().Be(expectedLog);
     }
 
-    [Test]
-    [TestCase(LogLevel.Debug, null, null, "test", "test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b2Debug: Invoking pipeline operation (System.Object/System.Object/System.Object)...Debug: Invoked pipeline operation (System.Object/System.Object/System.Object).Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
-    [TestCase(LogLevel.Debug, "b1Test", null, "test", "b1Test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
-    [TestCase(LogLevel.Debug, null, "b2Test", "test", "b2Test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b2Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
-    [TestCase(LogLevel.Debug, "b1Test", "b2Test", "test", "b1Test", "Debug: Invoking pipeline behavior (System.Object/System.Object/System.Object/{3})...b1Debug: Invoked pipeline behavior (System.Object/System.Object/System.Object/{3})...")]
-    [TestCase(LogLevel.Information, null, null, "test", "test", "b1b2")]
-    [TestCase(LogLevel.Information, "b1Test", null, "test", "b1Test", "b1")]
-    [TestCase(LogLevel.Information, null, "b2Test", "test", "b2Test", "b1b2")]
-    [TestCase(LogLevel.Information, "b1Test", "b2Test", "test", "b1Test", "b1")]
+    [Theory]
+    [InlineData(LogLevel.Debug, null, null, "test", "test", "Debug: Invoking pipeline behavior ({behavior-params})...\nb1Debug: Invoking pipeline behavior ({behavior-params})...\nb2Debug: Invoking pipeline operation ({op-params})...\nDebug: Invoked pipeline operation ({op-params}).\nDebug: Invoked pipeline behavior ({behavior-params}).\nDebug: Invoked pipeline behavior ({behavior-params}).\n")]
+    [InlineData(LogLevel.Debug, "b1Test", null, "test", "b1Test", "Debug: Invoking pipeline behavior ({behavior-params})...\nb1Debug: Invoked pipeline behavior ({behavior-params}).\n")]
+    [InlineData(LogLevel.Debug, null, "b2Test", "test", "b2Test", "Debug: Invoking pipeline behavior ({behavior-params})...\nb1Debug: Invoking pipeline behavior ({behavior-params})...\nb2Debug: Invoked pipeline behavior ({behavior-params}).\nDebug: Invoked pipeline behavior ({behavior-params}).\n")]
+    [InlineData(LogLevel.Debug, "b1Test", "b2Test", "test", "b1Test", "Debug: Invoking pipeline behavior ({behavior-params})...\nb1Debug: Invoked pipeline behavior ({behavior-params}).\n")]
+    [InlineData(LogLevel.Information, null, null, "test", "test", "b1b2")]
+    [InlineData(LogLevel.Information, "b1Test", null, "test", "b1Test", "b1")]
+    [InlineData(LogLevel.Information, null, "b2Test", "test", "b2Test", "b1b2")]
+    [InlineData(LogLevel.Information, "b1Test", "b2Test", "test", "b1Test", "b1")]
     public async Task ProcessAsync_with_behaviors(LogLevel logLevel, string? b1Result, string? b2Result, string opResult, string result, string log)
     {
         var sb = new StringBuilder();
         var logger = Test.GetTestLogger<AsyncPipeline<object?, object, object?>>(sb, logLevel);
         var b1 = Substitute.For<IAsyncPipelineBehavior<object?, object, object?>>();
         var b2 = Substitute.For<IAsyncPipelineBehavior<object?, object, object?>>();
-        var selector = Substitute.For<ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>>();
-        selector.SelectServices(Arg.Any<Func<Lazy<IAsyncPipelineBehavior, PipelineBehaviorMetadata>, bool>>()).Returns(new[] { b1, b2 });
+        var selector = Test.GetTestLazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>(b1, b2);
         var pipeline = new AsyncPipeline<object?, object, object?>(selector, logger);
 
         var target = new object();
@@ -94,7 +97,7 @@ public class AsyncPipelineTest
                 sb.Append("b1");
                 return b1Result is not null
                     ? Task.FromResult<object?>(b1Result)
-                    : ci.Arg<Func<object?, object, CancellationToken, Task<object?>>>()(target, args, token);
+                    : ci.Arg<Func<Task<object?>>>()();
             });
             
         b2.InvokeAsync(Arg.Any<Func<Task<object?>>>(), target, args, token)
@@ -103,7 +106,7 @@ public class AsyncPipelineTest
                 sb.Append("b2");
                 return b2Result is not null
                     ? Task.FromResult<object?>(b2Result)
-                    : ci.Arg<Func<object?, object, CancellationToken, Task<object?>>>()(target, args, token);
+                    : ci.Arg<Func<Task<object?>>>()();
             });
             
         Task<object?> Operation()
@@ -112,7 +115,11 @@ public class AsyncPipelineTest
         }
 
         var pipelineResult = await pipeline.ProcessAsync(target, args, Operation, token);
-        Assert.AreEqual(result, pipelineResult);
-        Assert.AreEqual(log, sb.ToString());
+        pipelineResult.Should().Be(result);
+        var expectedLog = log
+            .Replace("\n", Environment.NewLine)
+            .Replace("{behavior-params}", $"{b1.GetType()}/System.Object/System.Object/System.Object")
+            .Replace("{op-params}", $"System.Object/System.Object/System.Object");
+        sb.ToString().Should().Be(expectedLog);
     }
 }

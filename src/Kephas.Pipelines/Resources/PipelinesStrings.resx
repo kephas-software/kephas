@@ -28,7 +28,7 @@
         <value>Invoking pipeline behavior ({0}/{1}/{2}/{3})...</value>
     </data>
     <data name="Pipeline_ProcessAsync_InvokedBehavior_Message" xml:space="preserve">
-        <value>Invoked pipeline behavior ({0}/{1}/{2}/{3})...</value>
+        <value>Invoked pipeline behavior ({0}/{1}/{2}/{3}).</value>
     </data>
     <data name="Pipeline_ProcessAsync_NullBehavior_Exception" xml:space="preserve">
         <value>The enumeration provided a null behavior.</value>

@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections;
-using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Pipelines;
 

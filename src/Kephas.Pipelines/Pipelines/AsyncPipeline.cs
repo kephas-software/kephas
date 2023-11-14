@@ -62,16 +62,22 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
         {
             if (this.Logger.IsDebugEnabled())
             {
-                this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message, typeof(TTarget),
-                    typeof(TOperationArgs), typeof(TResult));
+                this.Logger?.LogDebug(
+                    PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
+                    typeof(TTarget),
+                    typeof(TOperationArgs),
+                    typeof(TResult));
             }
 
             var result = operation();
 
             if (this.Logger.IsDebugEnabled())
             {
-                this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message, typeof(TTarget),
-                    typeof(TOperationArgs), typeof(TResult));
+                this.Logger?.LogDebug(
+                    PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
+                    typeof(TTarget),
+                    typeof(TOperationArgs),
+                    typeof(TResult));
             }
 
             return result;
@@ -87,13 +93,19 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
             {
                 if (hasBehavior)
                 {
-                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingBehavior_Message,
-                        behavior?.GetType(), typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                    this.Logger?.LogDebug(
+                        PipelinesStrings.Pipeline_ProcessAsync_InvokingBehavior_Message,
+                        behavior?.GetType(),
+                        typeof(TTarget),
+                        typeof(TOperationArgs),
+                        typeof(TResult));
                 }
                 else
                 {
                     this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
-                        typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                        typeof(TTarget),
+                        typeof(TOperationArgs),
+                        typeof(TResult));
                 }
             }
 
@@ -107,13 +119,20 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
             {
                 if (hasBehavior)
                 {
-                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokedBehavior_Message,
-                        behavior?.GetType(), typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                    this.Logger?.LogDebug(
+                        PipelinesStrings.Pipeline_ProcessAsync_InvokedBehavior_Message,
+                        behavior?.GetType(),
+                        typeof(TTarget),
+                        typeof(TOperationArgs),
+                        typeof(TResult));
                 }
                 else
                 {
-                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
-                        typeof(TTarget), typeof(TOperationArgs), typeof(TResult));
+                    this.Logger?.LogDebug(
+                        PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
+                        typeof(TTarget),
+                        typeof(TOperationArgs),
+                        typeof(TResult));
                 }
             }
 

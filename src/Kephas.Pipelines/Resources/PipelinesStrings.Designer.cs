@@ -60,7 +60,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invoked pipeline behavior ({0}/{1}/{2}/{3})....
+        ///   Looks up a localized string similar to Invoked pipeline behavior ({0}/{1}/{2}/{3})..
         /// </summary>
         internal static string Pipeline_ProcessAsync_InvokedBehavior_Message {
             get {
