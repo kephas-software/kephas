@@ -7,8 +7,6 @@
 
 namespace Kephas.Services;
 
-using Kephas.Services;
-
 /// <summary>
 /// Marker interface for classes instantiable through injection, for example using the <see cref="IInjectableFactory"/> service.
 /// </summary>
