@@ -51,8 +51,6 @@ public class ModuleInitializerSourceGenerator : ISourceGenerator
             $$"""
             #nullable enable
 
-            #if NET6_0_OR_GREATER
-
             using System;
             using System.Collections.Generic;
             using System.Diagnostics.CodeAnalysis;
@@ -80,18 +78,18 @@ public class ModuleInitializerSourceGenerator : ISourceGenerator
              """);
             source.AppendLine(
             $"""
-                        initializer.Initialize();
+                        initializer.InitializeAssembly();
              """);
         }
 
         source.AppendLine(
             $$"""
                         var thisAssembly = Assembly.GetExecutingAssembly();
-                        foreach (var runtimeInitializer in thisAssembly.GetCustomAttributes<Attribute>().OfType<IAssemblyInitializer>())
+                        foreach (var assemblyInitializer in thisAssembly.GetCustomAttributes<Attribute>().OfType<IAssemblyInitializer>())
                         {
                             try 
                             {
-                                runtimeInitializer.Initialize();
+                                assemblyInitializer.InitializeAssembly();
                             }
                             catch (Exception ex)
                             {
@@ -101,8 +99,6 @@ public class ModuleInitializerSourceGenerator : ISourceGenerator
                     }
                 }
             }
-
-            #endif
             """);
 
         context.AddSource("ModuleInitializer.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));

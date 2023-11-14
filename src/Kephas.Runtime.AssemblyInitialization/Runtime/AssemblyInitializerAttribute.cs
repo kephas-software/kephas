@@ -23,5 +23,5 @@ public class AssemblyInitializerAttribute<T> : Attribute, IAssemblyInitializer
     /// <summary>
     /// Initializes the assembly.
     /// </summary>
-    public void Initialize() => new T().Initialize();
+    public void InitializeAssembly() => new T().InitializeAssembly();
 }

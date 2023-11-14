@@ -8,7 +8,7 @@
 namespace Kephas.Runtime;
 
 /// <summary>
-/// Interface for components doing assembly initialization.
+/// Interface for components performing assembly initialization.
 /// Initializers implementing this interface must have a parameterless constructor.
 /// </summary>
 public interface IAssemblyInitializer
@@ -16,5 +16,5 @@ public interface IAssemblyInitializer
     /// <summary>
     /// Initializes the assembly.
     /// </summary>
-    void Initialize();
+    void InitializeAssembly();
 }
