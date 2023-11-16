@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Serialization;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas.Operations
@@ -19,7 +20,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Contract for data operation messages.
     /// </summary>
-    public interface IOperationMessage
+    public interface IOperationMessage : ISerializable
     {
         /// <summary>
         /// Gets the message.

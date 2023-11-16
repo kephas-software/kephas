@@ -5,18 +5,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Operations
+using FluentAssertions;
+using Kephas.Operations;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Operations
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Operations;
-    using NUnit.Framework;
-
     [TestFixture]
     public class AsyncOperationResultOfTValueTest
     {
+        [Test]
+        public void AsyncOperationResult_completed_task()
+        {
+            var opResult = new AsyncOperationResult<int>(Task.FromResult(12));
+
+            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
+            Assert.AreEqual(1f, opResult.PercentCompleted);
+            Assert.AreEqual(12, opResult.Value);
+        }
+
         [Test]
         public async Task AsyncOperationResult_task_completion_sets_state()
         {
@@ -47,7 +54,8 @@ namespace Kephas.Core.Tests.Operations
             {
                 Assert.AreEqual(OperationState.Failed, opResult.OperationState);
                 Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
+                var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
+                ex!.InnerException.Should().BeOfType<ArgumentException>();
             });
         }
 
@@ -59,7 +67,8 @@ namespace Kephas.Core.Tests.Operations
             {
                 Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
                 Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<TaskCanceledException>(() => { var _ = opResult.Value; });
+                var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
+                ex!.InnerException.Should().BeOfType<TaskCanceledException>();
             });
         }
 

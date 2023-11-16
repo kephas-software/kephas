@@ -5,15 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Operations
+using FluentAssertions;
+using Kephas.Operations;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Operations
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Operations;
-    using NUnit.Framework;
-
     [TestFixture]
     public class OperationResultOfTValueTest
     {
@@ -33,7 +30,7 @@ namespace Kephas.Core.Tests.Operations
             var opResult = new ArgumentException("arg").ToOperationResult<int>();
             Assert.AreEqual(OperationState.Failed, opResult.OperationState);
             Assert.AreEqual(0f, opResult.PercentCompleted);
-            Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
+            opResult.Value.Should().Be(0);
         }
 
         [Test]

@@ -8,18 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.ExceptionHandling;
+using Kephas.Serialization;
+
 namespace Kephas.Operations
 {
-    using System;
-
-    using Kephas.Data.Formatting;
-    using Kephas.Dynamic;
-    using Kephas.ExceptionHandling;
-
     /// <summary>
     /// An operation message.
     /// </summary>
-    public class OperationMessage : IOperationMessage, IDataFormattable
+    public class OperationMessage : IOperationMessage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationMessage"/> class.
@@ -74,13 +71,12 @@ namespace Kephas.Operations
         /// <summary>
         /// Converts this object to a serialization friendly representation.
         /// </summary>
-        /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        object? IDataFormattable.ToData(object? context)
+        public virtual object? GetObjectData()
         {
             return this.Exception is null
                 ? this.ToString()
-                : new Expando
+                : new Dictionary<string, object?>()
                 {
                     [nameof(this.Timestamp)] = this.Timestamp,
                     [nameof(this.Message)] = this.Message,

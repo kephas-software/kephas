@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Operations
+using Kephas.Operations;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Operations
 {
-    using Kephas.Operations;
-
-    using NUnit.Framework;
-
     [TestFixture]
     public class OperationMessageTest
     {

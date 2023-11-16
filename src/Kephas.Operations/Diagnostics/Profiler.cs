@@ -18,7 +18,6 @@ namespace Kephas.Diagnostics
     using System.Threading.Tasks;
 
     using Kephas.Operations;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Provides operations for profiling the code.

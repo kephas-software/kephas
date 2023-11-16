@@ -5,32 +5,31 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Operations
+namespace Kephas.Operations;
+
+using System;
+
+/// <summary>
+/// Exception for signalling operation aborted errors.
+/// </summary>
+public class OperationAbortedException : OperationException
 {
-    using System;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OperationAbortedException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    public OperationAbortedException(string message)
+        : base(message)
+    {
+    }
 
     /// <summary>
-    /// Exception for signalling operation aborted errors.
+    /// Initializes a new instance of the <see cref="OperationAbortedException"/> class.
     /// </summary>
-    public class OperationAbortedException : OperationException
+    /// <param name="message">The exception message.</param>
+    /// <param name="inner">The inner exception.</param>
+    public OperationAbortedException(string message, Exception inner)
+        : base(message, inner)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OperationAbortedException"/> class.
-        /// </summary>
-        /// <param name="message">The exception message.</param>
-        public OperationAbortedException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OperationAbortedException"/> class.
-        /// </summary>
-        /// <param name="message">The exception message.</param>
-        /// <param name="inner">The inner exception.</param>
-        public OperationAbortedException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
     }
 }

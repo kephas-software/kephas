@@ -8,18 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Serialization;
+
 namespace Kephas.Operations;
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-
-using Kephas.Dynamic;
 
 /// <summary>
 /// Contract for operation results.
 /// </summary>
-public interface IOperationResult : IDynamic, INotifyPropertyChanged
+public interface IOperationResult : ISerializable
 {
     /// <summary>
     /// Gets or sets the return value.

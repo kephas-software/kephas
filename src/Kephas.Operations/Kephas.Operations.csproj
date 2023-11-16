@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -80,10 +80,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Dynamic\Kephas.Dynamic.csproj" />
+        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
         <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj" />
+        <ProjectReference Include="..\Kephas.Serialization.Abstractions\Kephas.Serialization.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Threading\Kephas.Threading.csproj" />
     </ItemGroup>
 

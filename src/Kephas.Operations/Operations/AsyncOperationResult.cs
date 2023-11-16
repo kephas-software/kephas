@@ -6,11 +6,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
+
+using Kephas.Collections;
 using Kephas.Threading.Tasks;
 
 namespace Kephas.Operations;
-
-using Kephas.Collections;
 
 /// <summary>
 /// An asynchronous operation result.
@@ -74,12 +74,10 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
     /// </returns>
     public Task<T> AsTask() => task;
 
-    /// <summary>
-    /// Updates the internal state described by the provided task.
-    /// </summary>
-    /// <param name="t">A Task to process.</param>
-    private void UpdateInternalState(Task t)
+    private T UpdateInternalState(Task<T> t, bool throwOnError)
     {
+        this.Reset();
+
         var opState = t.IsFaulted
             ? OperationState.Failed
             : t.IsCanceled
@@ -90,27 +88,56 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
                         ? OperationState.InProgress
                         : OperationState.NotStarted;
 
-        if (opState == this.OperationState)
+        this.OperationState = opState;
+        var value = default(T);
+        switch (opState)
         {
-            return;
+            case OperationState.Failed:
+                t.Exception!.InnerExceptions.ForEach(ex => this.MergeException(ex));
+                if (throwOnError)
+                {
+                    throw t.Exception?.InnerException ?? new OperationFailedException("Operation failed.");
+                }
+                break;
+            case OperationState.Canceled:
+                this.MergeException(new TaskCanceledException());
+                if (throwOnError)
+                {
+                    throw new TaskCanceledException();
+                }
+                break;
+            case OperationState.Completed:
+                this.PercentCompleted = 1f;
+                value = t.Result;
+                break;
         }
 
-        this.OperationState = opState;
-        if (t.Exception != null)
-        {
-            t.Exception.InnerExceptions.ForEach(ex => this.MergeException(ex));
-        }
-        else if (this.OperationState == OperationState.Completed)
-        {
-            this.PercentCompleted = 1f;
-        }
+        return value!;
+    }
+
+    private void Reset()
+    {
+        this.PercentCompleted = 0f;
+        this.OperationState = OperationState.NotStarted;
+        this.EndedAt = null;
+        this.StartedAt = DateTimeOffset.Now;
+        this.Messages.Clear();
     }
 
     [MemberNotNull(nameof(task))]
-    internal void SetTask(Task<T> task)
+    private void SetTask(Task<T> task)
     {
-        this.task = task ?? throw new ArgumentNullException(nameof(task));
-        task.ContinueWith(UpdateInternalState);
+        ArgumentNullException.ThrowIfNull(task);
+        if (task == this.task) return;
+
+        if (task.IsCompleted)
+        {
+            this.task = task;
+            UpdateInternalState(task, throwOnError: false);
+            return;
+        }
+
+        this.task = task.ContinueWith(t => UpdateInternalState(t, throwOnError: true));
     }
 }
 
@@ -124,12 +151,23 @@ public record AsyncOperationResult : AsyncOperationResult<object?>
     /// </summary>
     /// <param name="task">The task.</param>
     public AsyncOperationResult(Task task)
-        : base(ToTaskOfObject(task))
+        : base(GetTaskOfObject(task))
     {
     }
 
-    private static Task<object?> ToTaskOfObject(Task task) =>
-        (task ?? throw new ArgumentNullException(nameof(task)))
-        .ContinueWith(t => t.GetResult());
+    private static Task<object?> GetTaskOfObject(Task task)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+
+        return task is Task<object?> taskOfObject
+            ? taskOfObject
+            : task.IsCompletedSuccessfully
+                ? Task.FromResult(task.GetResult())
+                : task.IsCanceled
+                    ? Task.FromCanceled<object?>(new CancellationToken(true))
+                    : task.IsFaulted
+                        ? Task.FromException<object?>(task.Exception!.InnerException!)
+                        : task.ContinueWith(t => t.GetResult());
+    }
 }
 

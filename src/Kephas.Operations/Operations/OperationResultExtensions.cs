@@ -12,7 +12,6 @@ namespace Kephas.Operations
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
-
     using Kephas.Collections;
     using Kephas.ExceptionHandling;
     using Kephas.Resources;
@@ -74,14 +73,20 @@ namespace Kephas.Operations
         /// The provided result.
         /// </returns>
         [return: NotNull]
-        public static TResult Complete<TResult>([DisallowNull] this TResult result, TimeSpan? elapsed = null, OperationState? operationState = null)
+        public static TResult Complete<TResult>(
+            [DisallowNull] this TResult result,
+            TimeSpan? elapsed = null,
+            OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
 
             result.Elapsed = result.ComputeElapsed(elapsed);
-            result.PercentCompleted = 1;
-            result.OperationState = operationState ?? Kephas.Operations.OperationState.Completed;
+            result.OperationState = operationState ?? Operations.OperationState.Completed;
+            if (result.OperationState == Operations.OperationState.Completed)
+            {
+                result.PercentCompleted = 1;
+            }
 
             return result;
         }
@@ -98,7 +103,8 @@ namespace Kephas.Operations
         /// The provided result.
         /// </returns>
         [return: NotNull]
-        public static TResult Fail<TResult>([DisallowNull] this TResult result, Exception exception, TimeSpan? elapsed = null, OperationState? operationState = null)
+        public static TResult Fail<TResult>([DisallowNull] this TResult result, Exception exception,
+            TimeSpan? elapsed = null, OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -204,7 +210,8 @@ namespace Kephas.Operations
         /// The provided result.
         /// </returns>
         [return: NotNull]
-        public static TResult MergeMessages<TResult>([DisallowNull] this TResult result, IOperationResult? resultToMerge)
+        public static TResult MergeMessages<TResult>([DisallowNull] this TResult result,
+            IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -229,7 +236,8 @@ namespace Kephas.Operations
         /// The provided result.
         /// </returns>
         [return: NotNull]
-        public static TResult MergeMessages<TResult>([DisallowNull] this TResult result, Task<IOperationResult> asyncResult)
+        public static TResult MergeMessages<TResult>([DisallowNull] this TResult result,
+            Task<IOperationResult> asyncResult)
             where TResult : class, IOperationResult
         {
             result = result ?? throw new ArgumentNullException(nameof(result));
@@ -241,8 +249,8 @@ namespace Kephas.Operations
             }
 
             return asyncResult.Exception == null
-                    ? MergeMessages(result, asyncResult.Result)
-                    : MergeException(result, asyncResult.Exception);
+                ? MergeMessages(result, asyncResult.Result)
+                : MergeException(result, asyncResult.Exception);
         }
 
         /// <summary>
@@ -279,7 +287,8 @@ namespace Kephas.Operations
         /// <returns>
         /// <c>true</c> if the result contains errors, <c>false</c> otherwise.
         /// </returns>
-        public static bool HasErrors(this IOperationResult result) => result?.Messages.Any(m => m.IsError()) is true;
+        public static bool HasErrors(this IOperationResult result) =>
+            result?.Messages.Any(m => m.IsError()) is true;
 
         /// <summary>
         /// Indicates whether the result has warnings.
@@ -288,7 +297,8 @@ namespace Kephas.Operations
         /// <returns>
         /// <c>true</c> if the result contains warnings, <c>false</c> otherwise.
         /// </returns>
-        public static bool HasWarnings(this IOperationResult result) => result?.Messages.Any(m => m.IsWarning()) is true;
+        public static bool HasWarnings(this IOperationResult result) =>
+            result?.Messages.Any(m => m.IsWarning()) is true;
 
         /// <summary>
         /// Gets an enumeration of errors.
@@ -385,7 +395,8 @@ namespace Kephas.Operations
         /// <param name="elapsed">Optional. The elapsed time. If not provided will be set to zero.</param>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <returns>The completed operation result.</returns>
-        public static IAsyncOperationResult<TValue> ToAsyncOperationResult<TValue>(this TValue value, TimeSpan? elapsed = null)
+        public static IAsyncOperationResult<TValue> ToAsyncOperationResult<TValue>(this TValue value,
+            TimeSpan? elapsed = null)
         {
             return new AsyncOperationResult<TValue>(Task.FromResult(value))
                 .Complete(elapsed ?? TimeSpan.Zero, Operations.OperationState.Completed);
@@ -399,7 +410,8 @@ namespace Kephas.Operations
         /// <param name="elapsed">Optional. The elapsed time. If not provided will be set to zero.</param>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <returns>The failed operation result.</returns>
-        public static IOperationResult<TValue> ToOperationResult<TValue>(this Exception exception, TimeSpan? elapsed = null)
+        public static IOperationResult<TValue> ToOperationResult<TValue>(this Exception exception,
+            TimeSpan? elapsed = null)
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
@@ -417,7 +429,8 @@ namespace Kephas.Operations
         /// <param name="elapsed">Optional. The elapsed time. If not provided will be set to zero.</param>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <returns>The failed operation result.</returns>
-        public static IAsyncOperationResult<TValue> ToAsyncOperationResult<TValue>(this Exception exception, TimeSpan? elapsed = null)
+        public static IAsyncOperationResult<TValue> ToAsyncOperationResult<TValue>(this Exception exception,
+            TimeSpan? elapsed = null)
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 

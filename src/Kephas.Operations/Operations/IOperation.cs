@@ -8,44 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Operations
+namespace Kephas.Operations;
+
+/// <summary>
+/// Defines the contract of an executable operation.
+/// </summary>
+public interface IOperation
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Services;
-    using Kephas.Threading.Tasks;
-
     /// <summary>
-    /// Defines the contract of an executable operation.
+    /// Executes the operation in the given context.
     /// </summary>
-    public interface IOperation
-    {
-        /// <summary>
-        /// Executes the operation in the given context.
-        /// </summary>
-        /// <param name="context">Optional. The context.</param>
-        /// <returns>
-        /// An object.
-        /// </returns>
-        object? Execute(IContextBase? context = null)
-        {
-            return this.ExecuteAsync(context).GetResultNonLocking();
-        }
-
-        /// <summary>
-        /// Executes the operation asynchronously in the given context.
-        /// </summary>
-        /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An object.
-        /// </returns>
-        async Task<object?> ExecuteAsync(IContextBase? context = null, CancellationToken cancellationToken = default)
-        {
-            await Task.Yield();
-
-            return this.Execute(context);
-        }
-    }
+    /// <param name="context">Optional. The context.</param>
+    /// <returns>
+    /// An object.
+    /// </returns>
+    object? Execute(object? context = null);
 }

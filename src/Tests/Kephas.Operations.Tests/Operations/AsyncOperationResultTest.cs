@@ -8,15 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Operations
+using FluentAssertions;
+using Kephas.Operations;
+using NUnit.Framework;
+
+namespace Kephas.Tests.Operations
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Operations;
-    using NUnit.Framework;
-
     [TestFixture]
     public class AsyncOperationResultTest
     {
@@ -50,7 +47,8 @@ namespace Kephas.Core.Tests.Operations
             {
                 Assert.AreEqual(OperationState.Failed, opResult.OperationState);
                 Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
+                var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
+                ex!.InnerException.Should().BeOfType<ArgumentException>();
             });
         }
 
@@ -62,7 +60,8 @@ namespace Kephas.Core.Tests.Operations
             {
                 Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
                 Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<TaskCanceledException>(() => { var _ = opResult.Value; });
+                var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
+                ex!.InnerException.Should().BeOfType<TaskCanceledException>();
             });
         }
 
@@ -119,11 +118,11 @@ namespace Kephas.Core.Tests.Operations
         [Test]
         public void Deconstruct()
         {
-            IOperationResult result = new AsyncOperationResult(Task.FromResult("hello")).Complete();
+            IOperationResult result = new AsyncOperationResult(Task.FromResult("hello"));
             var (value, state) = result;
 
-            Assert.AreEqual("hello", value);
-            Assert.AreEqual(OperationState.Completed, state);
+            value.Should().BeNull();
+            state.Should().Be(OperationState.Completed);
         }
     }
 }
