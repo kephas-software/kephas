@@ -1,34 +1,41 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataFormattingExtensions.cs" company="Kephas Software SRL">
+// <copyright file="SerializableExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Formatting
+using System.Diagnostics.CodeAnalysis;
+using Kephas.ExceptionHandling;
+
+namespace Kephas.Serialization
 {
-    using System;
-
-    using Kephas.ExceptionHandling;
-
     /// <summary>
     /// Extension methods for data formatting.
     /// </summary>
-    public static class DataFormattingExtensions
+    public static class SerializableExtensions
     {
         /// <summary>
         /// Converts the object to a serialization friendly representation.
         /// </summary>
         /// <param name="obj">The object to format.</param>
-        /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        public static object? ToData(this object? obj, object? context = null) =>
+        public static object? GetObjectData(this object? obj) =>
             obj switch
             {
                 null => null,
-                IDataFormattable formattable => formattable.ToData(context),
-                Exception ex => (object)new ExceptionData(ex),
+                ISerializable formattable => formattable.GetObjectData(),
+                Exception ex => GetObjectData(ex),
                 _ => obj.ToString(),
             };
+
+        /// <summary>
+        /// Converts the object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="exception">The object to format.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        [return: NotNullIfNotNull(nameof(exception))]
+        public static object? GetObjectData(this Exception? exception) =>
+            exception is null ? null : new ExceptionData(exception);
     }
 }
