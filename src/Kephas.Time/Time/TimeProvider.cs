@@ -15,20 +15,20 @@ public class TimeProvider : ITimeProvider
     /// <summary>
     /// Gets the UTC timestamp.
     /// </summary>
-    public DateTime GetUtcDateTime() => DateTime.UtcNow;
+    public DateTime GetUtcNow() => DateTime.UtcNow;
 
     /// <summary>
     /// Gets the UTC timestamp with time zone.
     /// </summary>
-    public DateTimeOffset GetUtcDateTimeOffset() => DateTimeOffset.UtcNow;
+    public DateTimeOffset GetUtcNowWithOffset() => DateTimeOffset.UtcNow;
 
     /// <summary>
     /// Gets the local timestamp.
     /// </summary>
-    public DateTime GetLocalDateTime() => DateTime.Now;
+    public DateTime GetLocalNow() => DateTime.Now;
 
     /// <summary>
     /// Gets the local timestamp with time zone.
     /// </summary>
-    public DateTimeOffset GetLocalDateTimeOffset() => DateTimeOffset.Now;
+    public DateTimeOffset GetLocalNowWithOffset() => DateTimeOffset.Now;
 }

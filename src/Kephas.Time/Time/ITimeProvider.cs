@@ -18,20 +18,20 @@ public interface ITimeProvider
     /// <summary>
     /// Gets the UTC timestamp.
     /// </summary>
-    DateTime GetUtcDateTime();
+    DateTime GetUtcNow();
 
     /// <summary>
     /// Gets the UTC timestamp with time zone.
     /// </summary>
-    DateTimeOffset GetUtcDateTimeOffset();
+    DateTimeOffset GetUtcNowWithOffset();
 
     /// <summary>
     /// Gets the local timestamp.
     /// </summary>
-    DateTime GetLocalDateTime();
+    DateTime GetLocalNow();
 
     /// <summary>
     /// Gets the local timestamp with time zone.
     /// </summary>
-    DateTimeOffset GetLocalDateTimeOffset();
+    DateTimeOffset GetLocalNowWithOffset();
 }

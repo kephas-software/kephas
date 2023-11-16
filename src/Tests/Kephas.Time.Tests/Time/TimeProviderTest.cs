@@ -14,12 +14,12 @@ namespace Kephas.Tests.Time
     public class TimeProviderTest
     {
         [Fact]
-        public void GetUtcDateTime()
+        public void GetUtcNow()
         {
-            var timeProvider = new TimeProvider();
+            var timeProvider = new Kephas.Time.TimeProvider();
 
             var prevTime = DateTime.UtcNow;
-            var time = timeProvider.GetUtcDateTime();
+            var time = timeProvider.GetUtcNow();
             var nextTime = DateTime.UtcNow;
 
             time.Should().NotBeBefore(prevTime);
@@ -27,12 +27,12 @@ namespace Kephas.Tests.Time
         }
 
         [Fact]
-        public void GetLocalDateTime()
+        public void GetLocalNow()
         {
-            var timeProvider = new TimeProvider();
+            var timeProvider = new Kephas.Time.TimeProvider();
 
             var prevTime = DateTime.Now;
-            var time = timeProvider.GetLocalDateTime();
+            var time = timeProvider.GetLocalNow();
             var nextTime = DateTime.Now;
 
             time.Should().NotBeBefore(prevTime);
@@ -40,12 +40,12 @@ namespace Kephas.Tests.Time
         }
 
         [Fact]
-        public void GetUtcDateTimeOffset()
+        public void GetUtcNowWithOffset()
         {
-            var timeProvider = new TimeProvider();
+            var timeProvider = new Kephas.Time.TimeProvider();
 
             var prevTime = DateTimeOffset.UtcNow;;
-            var time = timeProvider.GetUtcDateTimeOffset();
+            var time = timeProvider.GetUtcNowWithOffset();
             var nextTime = DateTimeOffset.UtcNow;
 
             time.Should().NotBeBefore(prevTime);
@@ -53,12 +53,12 @@ namespace Kephas.Tests.Time
         }
 
         [Fact]
-        public void GetLocalDateTimeOffset()
+        public void GetLocalNowWithOffset()
         {
-            var timeProvider = new TimeProvider();
+            var timeProvider = new Kephas.Time.TimeProvider();
 
             var prevTime = DateTimeOffset.Now;
-            var time = timeProvider.GetLocalDateTimeOffset();
+            var time = timeProvider.GetLocalNowWithOffset();
             var nextTime = DateTimeOffset.Now;
 
             time.Should().NotBeBefore(prevTime);
