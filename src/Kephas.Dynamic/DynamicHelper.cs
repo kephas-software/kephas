@@ -5,17 +5,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas;
 
 using System.Collections.Concurrent;
 using System.Dynamic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+using Kephas.Collections;
 using Kephas.Dynamic;
+using Kephas.Reflection;
+
 using Microsoft.CSharp.RuntimeBinder;
 
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
+
+namespace Kephas;
 
 /// <summary>
 /// Extension methods for dynamic objects.
@@ -43,7 +47,7 @@ public static class DynamicHelper
         return obj switch
         {
             IDictionary<string, object?> dictionary => dictionary,
-            IDynamic expando => expando.ToDictionary(),
+            IDictionaryConvertible expando => expando.ToDictionary(),
             _ => obj.ToDynamic().ToDictionary()
         };
     }
@@ -89,46 +93,6 @@ public static class DynamicHelper
             IDynamicMetaObjectProvider dynamic => new DynamicExpando(dynamic),
             _ => ToDynamicCore(obj),
         };
-    }
-
-    /// <summary>
-    /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
-    /// ensuring in case of an exception that the original exception is thrown.
-    /// </summary>
-    /// <typeparam name="TReturn">The return type.</typeparam>
-    /// <param name="methodInfo">The method information.</param>
-    /// <param name="instance">The instance.</param>
-    /// <param name="arguments">A variable-length parameters list containing arguments.</param>
-    /// <returns>
-    /// The invocation result.
-    /// </returns>
-    public static TReturn Call<TReturn>(this MethodInfo methodInfo, object? instance, params object?[]? arguments)
-    {
-        var returnValue = Call(methodInfo, instance, arguments);
-        return (TReturn)returnValue!;
-    }
-
-    /// <summary>
-    /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
-    /// ensuring in case of an exception that the original exception is thrown.
-    /// </summary>
-    /// <param name="methodInfo">The method information.</param>
-    /// <param name="instance">The instance.</param>
-    /// <param name="arguments">A variable-length parameters list containing arguments.</param>
-    /// <returns>
-    /// The invocation result.
-    /// </returns>
-    public static object? Call(this MethodInfo methodInfo, object? instance, params object?[]? arguments)
-    {
-        try
-        {
-            var result = methodInfo.Invoke(instance, arguments);
-            return result;
-        }
-        catch (TargetInvocationException tie)
-        {
-            throw tie.InnerException!;
-        }
     }
 
     /// <summary>

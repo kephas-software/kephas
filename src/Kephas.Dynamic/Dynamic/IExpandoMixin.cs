@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections;
+
 namespace Kephas.Dynamic
 {
     using System;
@@ -65,7 +67,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        IDictionary<string, object?> IDynamic.ToDictionary(
+        IDictionary<string, object?> IDictionaryConvertible.ToDictionary(
             Func<string, string>? keyFunc,
             Func<object?, object?>? valueFunc)
             => ToDictionary(this, keyFunc, valueFunc);

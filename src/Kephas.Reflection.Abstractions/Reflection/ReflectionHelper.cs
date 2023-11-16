@@ -45,6 +45,46 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
+        /// ensuring in case of an exception that the original exception is thrown.
+        /// </summary>
+        /// <typeparam name="TReturn">The return type.</typeparam>
+        /// <param name="methodInfo">The method information.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="arguments">A variable-length parameters list containing arguments.</param>
+        /// <returns>
+        /// The invocation result.
+        /// </returns>
+        public static TReturn Call<TReturn>(this MethodInfo methodInfo, object? instance, params object?[]? arguments)
+        {
+            var returnValue = Call(methodInfo, instance, arguments);
+            return (TReturn)returnValue!;
+        }
+
+        /// <summary>
+        /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
+        /// ensuring in case of an exception that the original exception is thrown.
+        /// </summary>
+        /// <param name="methodInfo">The method information.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="arguments">A variable-length parameters list containing arguments.</param>
+        /// <returns>
+        /// The invocation result.
+        /// </returns>
+        public static object? Call(this MethodInfo methodInfo, object? instance, params object?[]? arguments)
+        {
+            try
+            {
+                var result = methodInfo.Invoke(instance, arguments);
+                return result;
+            }
+            catch (TargetInvocationException tie)
+            {
+                throw tie.InnerException!;
+            }
+        }
+
+        /// <summary>
         /// Retrieves the property name from a lambda expression.
         /// </summary>
         /// <typeparam name="T">The type from which the property name is extracted.</typeparam>
