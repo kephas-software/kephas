@@ -8,23 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data
+using Kephas.Resources;
+
+namespace Kephas.Collections
 {
-    using System;
-
-    using Kephas.Resources;
-
     /// <summary>
     /// Exception for signalling duplicate key errors.
     /// </summary>
-    public class DuplicateKeyException : DataException
+    public class DuplicateKeyException : ApplicationException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
         /// </summary>
         /// <param name="keyName">The name of the key.</param>
         public DuplicateKeyException(string keyName)
-            : base(AbstractionStrings.DuplicateKeyException_Message)
+            : base(CollectionStrings.DuplicateKeyException_Message)
         {
             keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
 
@@ -66,5 +64,10 @@ namespace Kephas.Data
         /// The name of the key.
         /// </value>
         public string KeyName { get; }
+
+        /// <summary>
+        /// Gets the duplicate item.
+        /// </summary>
+        public object? Item { get; init; }
     }
 }

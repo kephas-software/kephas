@@ -121,4 +121,8 @@
     <value>Could not add the item {0} to the concurrent collection.</value>
     <comment>Could not add the item {0} to the concurrent collection.</comment>
   </data>
+  <data name="DuplicateKeyException_Message" xml:space="preserve">
+    <value>An item with the same key is already added.</value>
+    <comment>An item with the same key is already added.</comment>
+  </data>
 </root>

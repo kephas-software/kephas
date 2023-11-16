@@ -120,4 +120,7 @@
   <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
     <value>Das Element {0} konnte nicht zur Concurrent-Collection hinzugefügt werden.</value>
   </data>
+  <data name="DuplicateKeyException_Message" xml:space="preserve">
+    <value>Ein Item mit demselben Schlüssel wurde bereits hinzugefügt.</value>
+  </data>
 </root>

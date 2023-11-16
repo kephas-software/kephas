@@ -67,5 +67,14 @@ namespace Kephas.Resources {
                 return ResourceManager.GetString("ConcurrentCollection_CannotAddItem_Exception", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An item with the same key is already added..
+        /// </summary>
+        public static string DuplicateKeyException_Message {
+            get {
+                return ResourceManager.GetString("DuplicateKeyException_Message", resourceCulture);
+            }
+        }
     }
 }
