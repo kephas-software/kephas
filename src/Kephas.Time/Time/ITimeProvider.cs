@@ -16,22 +16,25 @@ namespace Kephas.Time;
 public interface ITimeProvider
 {
     /// <summary>
-    /// Gets the UTC timestamp.
-    /// </summary>
-    DateTime GetUtcNow();
-
-    /// <summary>
     /// Gets the UTC timestamp with time zone.
     /// </summary>
-    DateTimeOffset GetUtcNowWithOffset();
-
-    /// <summary>
-    /// Gets the local timestamp.
-    /// </summary>
-    DateTime GetLocalNow();
+    DateTimeOffset GetUtcNow();
 
     /// <summary>
     /// Gets the local timestamp with time zone.
     /// </summary>
-    DateTimeOffset GetLocalNowWithOffset();
+    DateTimeOffset GetLocalNow();
+
+    /// <summary>
+    /// Gets the timestamp.
+    /// </summary>
+    /// <returns>A long value representing the current timestamp.</returns>
+    long GetTimestamp();
+
+    /// <summary>
+    /// Gets the time out of the provided timestamp.
+    /// </summary>
+    /// <param name="timestamp">The timestamp.</param>
+    /// <returns>The corresponding time.</returns>
+    DateTimeOffset GetTime(long timestamp);
 }

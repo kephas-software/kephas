@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace Kephas.Time;
 
 /// <summary>
@@ -13,22 +15,25 @@ namespace Kephas.Time;
 public class TimeProvider : ITimeProvider
 {
     /// <summary>
-    /// Gets the UTC timestamp.
-    /// </summary>
-    public DateTime GetUtcNow() => DateTime.UtcNow;
-
-    /// <summary>
     /// Gets the UTC timestamp with time zone.
     /// </summary>
-    public DateTimeOffset GetUtcNowWithOffset() => DateTimeOffset.UtcNow;
-
-    /// <summary>
-    /// Gets the local timestamp.
-    /// </summary>
-    public DateTime GetLocalNow() => DateTime.Now;
+    public DateTimeOffset GetUtcNow() => DateTimeOffset.UtcNow;
 
     /// <summary>
     /// Gets the local timestamp with time zone.
     /// </summary>
-    public DateTimeOffset GetLocalNowWithOffset() => DateTimeOffset.Now;
+    public DateTimeOffset GetLocalNow() => DateTimeOffset.Now;
+
+    /// <summary>
+    /// Gets the timestamp.
+    /// </summary>
+    /// <returns>A long value representing the current timestamp.</returns>
+    public long GetTimestamp() => Stopwatch.GetTimestamp();
+
+    /// <summary>
+    /// Gets the time out of the provided timestamp.
+    /// </summary>
+    /// <param name="timestamp">The timestamp.</param>
+    /// <returns>The corresponding time.</returns>
+    public DateTimeOffset GetTime(long timestamp) => new(new DateTime(timestamp));
 }
