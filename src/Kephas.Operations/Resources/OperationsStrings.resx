@@ -121,4 +121,7 @@
     <value>Cannot merge the task result, the task is not completed.</value>
     <comment>Cannot merge the task result, the task is not completed.</comment>
   </data>
+  <data name="MaxRetryAttemptsExceededException_Message" xml:space="preserve">
+      <value>The maximum number of retries ({0}) was exceeded.</value>
+  </data>
 </root>

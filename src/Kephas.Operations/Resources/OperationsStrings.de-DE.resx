@@ -120,4 +120,7 @@
   <data name="OperationResult_Merge_TaskNotCompleteException" xml:space="preserve">
     <value>Das Task-Ergebnis kann nicht zusammengeführt werden, die Task ist nicht abgeschlossen.</value>
   </data>
+  <data name="MaxRetryAttemptsExceededException_Message" xml:space="preserve">
+      <value>Die maximale Anzahl von Wiederholungen ({0}) wurde überschritten.</value>
+  </data>
 </root>

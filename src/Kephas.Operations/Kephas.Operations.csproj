@@ -51,7 +51,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+        <SupportedPlatform Include="browser"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -62,27 +62,27 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
+        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="release-notes.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\OperationStrings.Designer.cs">
+        <Compile Update="Resources\OperationsStrings.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
-            <DependentUpon>OperationStrings.resx</DependentUpon>
+            <DependentUpon>OperationsStrings.resx</DependentUpon>
         </Compile>
-        <EmbeddedResource Update="Resources\OperationStrings.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>OperationStrings.Designer.cs</LastGenOutput>
+        <EmbeddedResource Update="Resources\OperationsStrings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>OperationsStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
-        <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj" />
-        <ProjectReference Include="..\Kephas.Threading\Kephas.Threading.csproj" />
+        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj"/>
+        <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj"/>
+        <ProjectReference Include="..\Kephas.Threading\Kephas.Threading.csproj"/>
     </ItemGroup>
 
 </Project>
