@@ -501,6 +501,6 @@ namespace Kephas.Operations
         }
 
         private static Exception ToException(this IOperationMessage m)
-            => m.Exception is not null ? m.Exception! : new OperationException(m.Message);
+            => m.Exception is not null ? m.Exception! : new OperationException(m.Message ?? "");
     }
 }

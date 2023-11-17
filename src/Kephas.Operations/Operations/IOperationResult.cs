@@ -8,17 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Serialization;
-
 namespace Kephas.Operations;
-
-using System;
-using System.Collections.Generic;
 
 /// <summary>
 /// Contract for operation results.
 /// </summary>
-public interface IOperationResult : ISerializable
+public interface IOperationResult
 {
     /// <summary>
     /// Gets or sets the return value.
@@ -77,8 +72,8 @@ public interface IOperationResult : ISerializable
     /// <param name="state">The result state.</param>
     void Deconstruct(out object? value, out OperationState state)
     {
-        value = this.Value;
-        state = this.OperationState;
+        value = Value;
+        state = OperationState;
     }
 }
 
@@ -107,7 +102,7 @@ public interface IOperationResult<TValue> : IOperationResult
     /// <param name="state">The result state.</param>
     void Deconstruct(out TValue value, out OperationState state)
     {
-        value = this.Value;
-        state = this.OperationState;
+        value = Value;
+        state = OperationState;
     }
 }

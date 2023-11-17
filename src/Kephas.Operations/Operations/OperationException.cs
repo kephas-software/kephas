@@ -28,7 +28,7 @@ namespace Kephas.Operations
         public OperationException(string message)
             : base(message)
         {
-            this.Timestamp = DateTimeOffset.Now;
+            Timestamp = DateTimeOffset.Now;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Kephas.Operations
         public OperationException(string message, Exception inner)
             : base(message, inner)
         {
-            this.Timestamp = DateTimeOffset.Now;
+            Timestamp = DateTimeOffset.Now;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Kephas.Operations
         /// <returns>A string representation of the current exception.</returns>
         public override string ToString()
         {
-            return $"{this.Timestamp:s}/{this.Severity} {base.ToString()}";
+            return $"{Timestamp:s}/{Severity} {base.ToString()}";
         }
     }
 }

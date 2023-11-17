@@ -8,9 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Concurrent;
 using Kephas.Collections.Concurrent;
-using Kephas.Serialization;
 
 namespace Kephas.Operations;
 
@@ -28,7 +26,7 @@ public record OperationResult() : IOperationResult
     public OperationResult(object? value)
         : this()
     {
-        this.Value = value;
+        Value = value;
     }
 
     /// <summary>
@@ -58,7 +56,7 @@ public record OperationResult() : IOperationResult
     /// <summary>
     /// Gets or sets the time when the operation started.
     /// </summary>
-    public DateTimeOffset? StartedAt { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset? StartedAt { get; set; }
 
     /// <summary>
     /// Gets or sets the time when the operation ended.
@@ -73,9 +71,9 @@ public record OperationResult() : IOperationResult
     /// </value>
     public virtual TimeSpan Elapsed
     {
-        get => this.elapsed ??
-               (this.StartedAt.HasValue ? DateTimeOffset.Now - this.StartedAt.Value : TimeSpan.Zero);
-        set => this.elapsed = value;
+        get => elapsed ??
+               (StartedAt.HasValue ? DateTimeOffset.Now - StartedAt.Value : TimeSpan.Zero);
+        set => elapsed = value;
     }
 
     /// <summary>
@@ -85,36 +83,6 @@ public record OperationResult() : IOperationResult
     /// The message.
     /// </value>
     public ICollection<IOperationMessage> Messages { get; set; } = new ConcurrentCollection<IOperationMessage>();
-
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>
-    /// A string that represents the current object.
-    /// </returns>
-    public override string ToString()
-    {
-        return $"{this.OperationState} ({this.PercentCompleted:P1})";
-    }
-
-    /// <summary>
-    /// Converts this object to a serialization friendly representation.
-    /// </summary>
-    /// <returns>A serialization friendly object representing this object.</returns>
-    public virtual object? GetObjectData()
-    {
-        return new Dictionary<string, object?>
-        {
-            [nameof(this.OperationState)] = this.OperationState,
-            [nameof(this.Elapsed)] = this.Elapsed,
-            [nameof(this.PercentCompleted)] = this.PercentCompleted,
-            [nameof(this.Messages)] =
-                this.Messages.Count == 0 ? null : this.Messages.Select(m => m.GetObjectData()).ToArray(),
-            [nameof(this.Value)] = this.OperationState == OperationState.Completed
-                ? this.Value.GetObjectData()
-                : null,
-        };
-    }
 }
 
 /// <summary>

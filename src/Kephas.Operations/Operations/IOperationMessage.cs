@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Serialization;
+using Kephas.Logging;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas.Operations
@@ -20,7 +20,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Contract for data operation messages.
     /// </summary>
-    public interface IOperationMessage : ISerializable
+    public interface IOperationMessage : IHasLogLevel
     {
         /// <summary>
         /// Gets the message.
@@ -28,7 +28,7 @@ namespace Kephas.Operations
         /// <value>
         /// The message.
         /// </value>
-        string Message { get; }
+        string? Message { get; }
 
         /// <summary>
         /// Gets the exception, if any.
@@ -38,10 +38,7 @@ namespace Kephas.Operations
         /// <summary>
         /// Gets the timestamp.
         /// </summary>
-        /// <value>
-        /// The timestamp.
-        /// </value>
-        DateTimeOffset Timestamp { get; }
+        long? Timestamp { get; }
 
         /// <summary>
         /// Gets a value indicating whether this message is an error.
@@ -49,7 +46,7 @@ namespace Kephas.Operations
         /// <returns><c>true</c> if this message is an error, <c>false</c> otherwise.</returns>
         bool IsError()
             => this is IErrorNotification { Severity: LogLevel.Error or LogLevel.Critical }
-               || this.Exception is IErrorNotification { Severity: LogLevel.Error or LogLevel.Critical } or { } and not IErrorNotification;
+               || Exception is IErrorNotification { Severity: LogLevel.Error or LogLevel.Critical } or { } and not IErrorNotification;
 
         /// <summary>
         /// Gets a value indicating whether this message is a warning.
@@ -57,6 +54,6 @@ namespace Kephas.Operations
         /// <returns><c>true</c> if this message is a warning, <c>false</c> otherwise.</returns>
         bool IsWarning() =>
             this is IErrorNotification { Severity: LogLevel.Warning }
-            || this.Exception is IErrorNotification { Severity: LogLevel.Warning };
+            || Exception is IErrorNotification { Severity: LogLevel.Warning };
     }
 }

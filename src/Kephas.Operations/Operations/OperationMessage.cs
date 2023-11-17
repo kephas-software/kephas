@@ -8,26 +8,26 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ExceptionHandling;
-using Kephas.Serialization;
+using Kephas.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Kephas.Operations
 {
     /// <summary>
     /// An operation message.
     /// </summary>
-    public class OperationMessage : IOperationMessage
+    public record OperationMessage() : IOperationMessage
     {
+        private readonly Exception? exception;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationMessage"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="exception">Optional. The exception.</param>
-        public OperationMessage(string message, Exception? exception = null)
+        public OperationMessage(string message)
+            : this()
         {
-            this.Message = message;
-            this.Exception = exception;
-            this.Timestamp = DateTimeOffset.Now;
+            Message = message;
         }
 
         /// <summary>
@@ -35,53 +35,49 @@ namespace Kephas.Operations
         /// </summary>
         /// <param name="exception">The exception.</param>
         public OperationMessage(Exception exception)
-            : this(exception?.Message ?? string.Empty, exception ?? throw new ArgumentNullException(nameof(exception)))
+            : this((exception ?? throw new ArgumentNullException(nameof(exception))).Message)
         {
+            Exception = exception;
         }
 
         /// <summary>
         /// Gets the message.
         /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
+        public string? Message { get; init; }
 
         /// <summary>
         /// Gets the exception, if any.
         /// </summary>
-        public Exception? Exception { get; }
+        public Exception? Exception
+        {
+            get => exception;
+            init
+            {
+                exception = value;
+                if (exception is IHasLogLevel logLevelException)
+                {
+                    LogLevel = logLevelException.LogLevel;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the timestamp.
         /// </summary>
-        /// <value>
-        /// The timestamp.
-        /// </value>
-        public DateTimeOffset Timestamp { get; }
+        public long? Timestamp { get; init; }
+
+        /// <summary>
+        /// Gets the log level.
+        /// </summary>
+        public LogLevel LogLevel { get; init; } = LogLevel.Information;
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            var exceptionMessage = this.Exception is null ? null : $" ({this.Exception.GetType()})";
-            return $"[{this.Timestamp:s}] {this.Message}{exceptionMessage}";
-        }
-
-        /// <summary>
-        /// Converts this object to a serialization friendly representation.
-        /// </summary>
-        /// <returns>A serialization friendly object representing this object.</returns>
-        public virtual object? GetObjectData()
-        {
-            return this.Exception is null
-                ? this.ToString()
-                : new Dictionary<string, object?>()
-                {
-                    [nameof(this.Timestamp)] = this.Timestamp,
-                    [nameof(this.Message)] = this.Message,
-                    [nameof(this.Exception)] = new ExceptionData(this.Exception),
-                };
+            var exceptionMessage = Exception is null ? null : $" ({Exception.GetType().Name})";
+            var time = Timestamp is null ? null : $"{new DateTimeOffset(new DateTime(Timestamp.Value)):s} ";
+            return $"[{time}{LogLevel}] {Message}{exceptionMessage}";
         }
     }
 }

@@ -10,50 +10,48 @@
 
 using FluentAssertions;
 using Kephas.Operations;
-using NUnit.Framework;
+using Xunit;
 
-namespace Kephas.Tests.Operations
+namespace Kephas.Tests.Operations;
+
+public class OperationResultTest
 {
-    [TestFixture]
-    public class OperationResultTest
+    [Fact]
+    public void OperationResult_complete()
     {
-        [Test]
-        public void OperationResult_complete()
-        {
-            var opResult = new OperationResult(12).Complete();
+        var opResult = new OperationResult(12).Complete();
 
-            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
-            Assert.AreEqual(1f, opResult.PercentCompleted);
-            Assert.AreEqual(12, opResult.Value);
-        }
+        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(1f, opResult.PercentCompleted);
+        Assert.Equal(12, opResult.Value);
+    }
 
-        [Test]
-        public void OperationResult_complete_exception()
-        {
-            var opResult = new ArgumentException("arg").ToOperationResult<object?>();
-            Assert.AreEqual(OperationState.Failed, opResult.OperationState);
-            Assert.AreEqual(0f, opResult.PercentCompleted);
-            opResult.Value.Should().BeNull();
-        }
+    [Fact]
+    public void OperationResult_complete_exception()
+    {
+        var opResult = new ArgumentException("arg").ToOperationResult<object?>();
+        Assert.Equal(OperationState.Failed, opResult.OperationState);
+        Assert.Equal(0f, opResult.PercentCompleted);
+        opResult.Value.Should().BeNull();
+    }
 
-        [Test]
-        public void Messages_Clear()
-        {
-            var opResult = new OperationResult().MergeException(new InvalidOperationException());
+    [Fact]
+    public void Messages_Clear()
+    {
+        var opResult = new OperationResult().MergeException(new InvalidOperationException());
 
-            CollectionAssert.IsNotEmpty(opResult.Messages);
-            opResult.Messages.Clear();
-            CollectionAssert.IsEmpty(opResult.Messages);
-        }
+        opResult.Messages.Should().NotBeEmpty();
+        opResult.Messages.Clear();
+        opResult.Messages.Should().BeEmpty();
+    }
 
-        [Test]
-        public void Deconstruct()
-        {
-            IOperationResult result = new OperationResult("hello").Complete();
-            var (value, state) = result;
+    [Fact]
+    public void Deconstruct()
+    {
+        IOperationResult result = new OperationResult("hello").Complete();
+        var (value, state) = result;
 
-            Assert.AreEqual("hello", value);
-            Assert.AreEqual(OperationState.Completed, state);
-        }
+        Assert.Equal("hello", value);
+        Assert.Equal(OperationState.Completed, state);
     }
 }

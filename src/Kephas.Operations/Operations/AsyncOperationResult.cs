@@ -76,7 +76,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
 
     private T UpdateInternalState(Task<T> t, bool throwOnError)
     {
-        this.Reset();
+        Reset();
 
         var opState = t.IsFaulted
             ? OperationState.Failed
@@ -88,7 +88,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
                         ? OperationState.InProgress
                         : OperationState.NotStarted;
 
-        this.OperationState = opState;
+        OperationState = opState;
         var value = default(T);
         switch (opState)
         {
@@ -107,7 +107,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
                 }
                 break;
             case OperationState.Completed:
-                this.PercentCompleted = 1f;
+                PercentCompleted = 1f;
                 value = t.Result;
                 break;
         }
@@ -117,11 +117,11 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
 
     private void Reset()
     {
-        this.PercentCompleted = 0f;
-        this.OperationState = OperationState.NotStarted;
-        this.EndedAt = null;
-        this.StartedAt = DateTimeOffset.Now;
-        this.Messages.Clear();
+        PercentCompleted = 0f;
+        OperationState = OperationState.NotStarted;
+        EndedAt = null;
+        StartedAt = DateTimeOffset.Now;
+        Messages.Clear();
     }
 
     [MemberNotNull(nameof(task))]
