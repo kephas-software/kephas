@@ -10,6 +10,7 @@
 
 using Kephas.Services.Configuration;
 using Kephas.Services.Metadata;
+using Kephas.Services.Resources;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas;
@@ -638,6 +639,53 @@ public static class DependencyInjectionExtensions
             .AddScoped(services, serviceFactory)
             .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
     }
+
+    /// <summary>
+    /// Tries to get the service instance from the registered services,
+    /// in case the service was registered using an instance.
+    /// </summary>
+    /// <param name="appServices">The service collection.</param>
+    /// <param name="contractType">The contract type.</param>
+    /// <returns>The service instance or <c>null</c>.</returns>
+    public static object? TryGetServiceInstance(this IServiceCollection appServices, Type contractType)
+    {
+        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+
+        return appServices.LastOrDefault(i => i.ServiceType == contractType && i.ImplementationInstance is not null)?.ImplementationInstance;
+    }
+
+    /// <summary>
+    /// Tries to get the service instance from the registered services
+    /// </summary>
+    /// <typeparam name="T">The contract type.</typeparam>
+    /// <param name="appServices">The service collection.</param>
+    /// <returns>The service instance or <c>null</c>.</returns>
+    public static T? TryGetServiceInstance<T>(this IServiceCollection appServices)
+        where T : class
+        => appServices.TryGetServiceInstance(typeof(T)) as T;
+
+    /// <summary>
+    /// Tries to get the service instance from the registered services,
+    /// in case the service was registered using an instance.
+    /// </summary>
+    /// <param name="appServices">The service collection.</param>
+    /// <param name="contractType">The contract type.</param>
+    /// <returns>The service instance or <c>null</c>.</returns>
+    public static object GetServiceInstance(this IServiceCollection appServices, Type contractType)
+        => appServices.TryGetServiceInstance(contractType)
+           ?? throw new ArgumentException(string.Format(ServicesAbstractionsStrings.ServiceInstanceNotRegistered, contractType), nameof(contractType));
+
+    /// <summary>
+    /// Gets the service instance from the registered services
+    /// </summary>
+    /// <typeparam name="T">The contract type.</typeparam>
+    /// <param name="appServices">The service collection.</param>
+    /// <returns>The service instance or <c>null</c>.</returns>
+    [return: NotNull]
+    public static T GetServiceInstance<T>(this IServiceCollection appServices)
+        where T : class
+        => (T)appServices.GetServiceInstance(typeof(T));
 
     private static IServiceCollection AddServiceFactories<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
