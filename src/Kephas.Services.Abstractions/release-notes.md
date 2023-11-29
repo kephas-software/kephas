@@ -5,3 +5,5 @@
 
 # 12.0.0
 * Initial branch from `Kephas.Abstractions`.
+* Breaking change: removed the `IInjectable` interface. Reason: did not add any benefit.
+* Breaking change: renamed the `IInjectableFactory` to `IServiceFactory`.
