@@ -8,6 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Configuration;
+using Kephas.Services.Metadata;
+using Microsoft.Extensions.Logging;
+
 namespace Kephas;
 
 using System;
@@ -28,43 +32,43 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 /// </summary>
 public static class DependencyInjectionExtensions
 {
-    private static MethodInfo AddServiceFactoriesWithFactoryMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactoriesOfObject<string, string>(null!, null!, null));
-    private static MethodInfo AddServiceFactoriesWithoutMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!));
-    private static MethodInfo AddServiceFactoriesWithMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!, null!));
+    private static readonly MethodInfo AddServiceFactoriesWithFactoryMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactoriesOfObject<string, string>(null!, null!, null));
+    private static readonly MethodInfo AddServiceFactoriesWithoutMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!));
+    private static readonly MethodInfo AddServiceFactoriesWithMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!, null!));
 
     /// <summary>
-    /// Builds the service provider using the service collection.
+    /// Includes the service collection in the composition.
     /// </summary>
-    /// <param name="servicesBuilder">The services builder.</param>
-    /// <param name="builderOptions">Optional. The builder configuration.</param>
-    /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(
-        this IAppServiceCollectionBuilder servicesBuilder,
-        Action<IServiceCollection>? builderOptions = null)
-    {
-        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
-
-        var services = new ServiceCollection();
-        builderOptions?.Invoke(services);
-
-        return servicesBuilder.BuildWithDependencyInjection(services);
-    }
-
-    /// <summary>
-    /// Builds the service provider using the service collection.
-    /// </summary>
-    /// <param name="servicesBuilder">The services builder.</param>
     /// <param name="services">The service collection.</param>
-    /// <returns>The built service provider.</returns>
-    public static IServiceProvider BuildWithDependencyInjection(
-        this IAppServiceCollectionBuilder servicesBuilder,
-        IServiceCollection services)
+    /// <param name="servicesConfig">Optional. The services configuration.</param>
+    /// <param name="settings">Optional. The settings.</param>
+    /// <param name="logger">Optional. The logger.</param>
+    /// <returns>
+    /// The <paramref name="services"></paramref>.
+    /// </returns>
+    public static IServiceCollection AddAppServices(
+        this IServiceCollection services,
+        Action<IAppServiceCollectionBuilder>? servicesConfig = null,
+        AppServicesSettings? settings = null,
+        ILogger? logger = null)
     {
-        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
+        services = services ?? throw new ArgumentNullException(nameof(services));
 
-        services.AddFromServicesBuilder(servicesBuilder);
+        services.AddGenericCollections();
 
-        return services.BuildServiceProvider();
+        settings ??= new AppServicesSettings();
+
+        var servicesBuilder = new AppServiceCollectionBuilder(settings, logger);
+        servicesConfig?.Invoke(servicesBuilder);
+
+        var appServices = servicesBuilder.Build();
+
+        foreach (var appServiceInfo in appServices)
+        {
+            services.AddAppServiceInfo(appServiceInfo);
+        }
+
+        return services;
     }
 
     /// <summary>
@@ -75,7 +79,7 @@ public static class DependencyInjectionExtensions
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddFromServicesBuilder(
+    public static IServiceCollection AddAppServices(
         this IServiceCollection services,
         IAppServiceCollectionBuilder servicesBuilder)
     {
@@ -123,24 +127,24 @@ public static class DependencyInjectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
 
         var metadataType = appServiceInfo.MetadataType ?? typeof(AppServiceMetadata);
-        var contractType = appServiceInfo.ContractType ?? appServiceInfo.InstanceType ?? throw new InvalidOperationException(Strings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet.FormatWith(appServiceInfo));
+        var contractType = appServiceInfo.ContractType ?? appServiceInfo.InstanceType ?? throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet, appServiceInfo));
         var instanceType = appServiceInfo.InstanceType;
         if (appServiceInfo.AsOpenGeneric && instanceType is null)
         {
-            throw new InvalidOperationException(Strings.InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics.FormatWith(appServiceInfo));
+            throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics, appServiceInfo));
         }
 
         return appServiceInfo switch
         {
-            { InstanceType: not null, Lifetime: AppServiceLifetime.Singleton } =>
+            { InstanceType: not null, Lifetime: ServiceLifetime.Singleton } =>
                 services.AddSingleton(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
-            { InstanceType: not null, Lifetime: AppServiceLifetime.Scoped } =>
+            { InstanceType: not null, Lifetime: ServiceLifetime.Scoped } =>
                 services.AddScoped(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
             { InstanceType: not null } =>
                 services.AddTransient(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
-            { InstanceFactory: not null, Lifetime: AppServiceLifetime.Singleton } =>
+            { InstanceFactory: not null, Lifetime: ServiceLifetime.Singleton } =>
                 services.AddSingleton(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
-            { InstanceFactory: not null, Lifetime: AppServiceLifetime.Scoped } =>
+            { InstanceFactory: not null, Lifetime: ServiceLifetime.Scoped } =>
                 services.AddScoped(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
             { InstanceFactory: not null } =>
                 services.AddTransient(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),

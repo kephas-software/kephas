@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Extensions.DependencyInjection;
 
 using Kephas.Services;
@@ -22,7 +24,7 @@ public class LazyService<T, TImplementation> : Lazy<T>
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     public LazyService(IServiceProvider serviceProvider)
-        : base(() => serviceProvider.GetRequiredService<TImplementation>())
+        : base(serviceProvider.GetRequiredService<TImplementation>)
     {
     }
 }

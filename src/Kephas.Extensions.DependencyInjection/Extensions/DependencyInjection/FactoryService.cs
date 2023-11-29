@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Extensions.DependencyInjection;
 
 using Kephas.Services;
@@ -25,7 +27,7 @@ public class FactoryService<T, TImplementation> : IExportFactory<T>
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     public FactoryService(IServiceProvider serviceProvider)
-    : this(() => serviceProvider.GetRequiredService<TImplementation>())
+    : this(serviceProvider.GetRequiredService<TImplementation>)
     {
     }
 
