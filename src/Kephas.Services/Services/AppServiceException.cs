@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionException.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceException.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,30 +15,30 @@ namespace Kephas.Services
     /// <summary>
     /// Exception which occurs on injection errors.
     /// </summary>
-    public class InjectionException : Exception
+    public class AppServiceException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceException"/> class.
         /// </summary>
-        public InjectionException()
+        public AppServiceException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        public InjectionException(string message)
+        public AppServiceException(string message)
             : base(message)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public InjectionException(string message, Exception inner)
+        public AppServiceException(string message, Exception inner)
             : base(message, inner)
         {
         }
