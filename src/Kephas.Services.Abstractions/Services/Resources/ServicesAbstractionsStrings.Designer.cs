@@ -76,5 +76,14 @@ namespace Kephas.Services.Resources {
                 return ResourceManager.GetString("OrderedServiceFactoryCollection_service_with_requested_criteria_not_found", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service {0} is either not registered or it is not registered with an instance..
+        /// </summary>
+        internal static string ServiceInstanceNotRegistered {
+            get {
+                return ResourceManager.GetString("ServiceInstanceNotRegistered", resourceCulture);
+            }
+        }
     }
 }

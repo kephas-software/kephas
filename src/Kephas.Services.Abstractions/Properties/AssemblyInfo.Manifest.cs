@@ -10,5 +10,6 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyMetadata("IsTrimmable", "False")]
 [assembly: InternalsVisibleTo("Kephas.Services")]
+[assembly: InternalsVisibleTo("Kephas.Extensions.DependencyInjection")]
 [assembly: InternalsVisibleTo("Kephas.Analyzers.Tests")]
 [assembly: InternalsVisibleTo("Kephas.Testing")]
