@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectableFactory.cs" company="Kephas Software SRL">
+// <copyright file="IServiceFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 /// Factory of injectable instances.
 /// </summary>
 [AppServiceContract]
-public interface IInjectableFactory
+public interface IServiceFactory
 {
     /// <summary>
     /// Creates an injectable instance.
@@ -26,7 +26,7 @@ public interface IInjectableFactory
     [return: NotNull]
     public T Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(params object?[] args)
         where T : class
-        => (T)this.Create(typeof(T), args);
+        => (T)Create(typeof(T), args);
 
     /// <summary>
     /// Creates an injectable instance.
