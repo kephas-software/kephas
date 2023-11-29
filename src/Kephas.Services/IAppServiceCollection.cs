@@ -5,73 +5,59 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas
-{
-    using System;
-    using System.Collections.Generic;
+using Kephas.Services.Reflection;
 
-    using Kephas.Dynamic;
-    using Kephas.Services.Reflection;
+namespace Kephas;
+
+/// <summary>
+/// Provides a registration container for application services.
+/// </summary>
+public interface IAppServiceCollection : IList<IAppServiceInfo>
+{
+    private static readonly List<Action<IAppServiceCollection>> Collectors = new ();
 
     /// <summary>
-    /// Provides a registration container for application services.
+    /// Gets a value indicating whether the service with the provided contract is registered.
     /// </summary>
-    public interface IAppServiceCollection : IExpando, IEnumerable<IAppServiceInfo>
+    /// <param name="contractType">Type of the service contract.</param>
+    /// <returns>
+    /// <c>true</c> if the service is registered, <c>false</c> if not.
+    /// </returns>
+    public bool Contains(Type contractType)
+        => this.Any(r => r.ContractType == contractType);
+
+    /// <summary>
+    /// Replaces the service with the provided contract.
+    /// </summary>
+    /// <param name="appServiceInfo">The application service registration.</param>
+    /// <returns>
+    /// This <see cref="IAppServiceCollection"/>.
+    /// </returns>
+    public IAppServiceCollection Replace(IAppServiceInfo appServiceInfo);
+
+    /// <summary>
+    /// Adds an collector for <see cref="IAppServiceCollection"/>.
+    /// </summary>
+    /// <param name="collect">The collect callback function.</param>
+    public static void AddAppServicesCollector(Action<IAppServiceCollection> collect)
     {
-        private static readonly List<Action<IAppServiceCollection>> Collectors = new ();
-
-        /// <summary>
-        /// Gets a value indicating whether the service with the provided contract is registered.
-        /// </summary>
-        /// <param name="contractType">Type of the service contract.</param>
-        /// <returns>
-        /// <c>true</c> if the service is registered, <c>false</c> if not.
-        /// </returns>
-        public bool Contains(Type contractType)
-            => this.Any(r => r.ContractType == contractType);
-
-        /// <summary>
-        /// Adds the service.
-        /// </summary>
-        /// <param name="appServiceInfo">The application service registration.</param>
-        /// <returns>
-        /// This <see cref="IAppServiceCollection"/>.
-        /// </returns>
-        public IAppServiceCollection Add(IAppServiceInfo appServiceInfo);
-
-        /// <summary>
-        /// Replaces the service with the provided contract.
-        /// </summary>
-        /// <param name="appServiceInfo">The application service registration.</param>
-        /// <returns>
-        /// This <see cref="IAppServiceCollection"/>.
-        /// </returns>
-        public IAppServiceCollection Replace(IAppServiceInfo appServiceInfo);
-
-        /// <summary>
-        /// Adds an collector for <see cref="IAppServiceCollection"/>.
-        /// </summary>
-        /// <param name="collect">The collect callback function.</param>
-        public static void AddAppServicesCollector(Action<IAppServiceCollection> collect)
+        lock (Collectors)
         {
-            lock (Collectors)
-            {
-                Collectors.Add(collect ?? throw new ArgumentNullException(nameof(collect)));
-            }
+            Collectors.Add(collect ?? throw new ArgumentNullException(nameof(collect)));
         }
+    }
 
-        /// <summary>
-        /// Initializes the app services with the registered collectors.
-        /// </summary>
-        /// <param name="appServices">The application services.</param>
-        public static void RegisterCollectedAppServices(IAppServiceCollection appServices)
+    /// <summary>
+    /// Initializes the app services with the registered collectors.
+    /// </summary>
+    /// <param name="appServices">The application services.</param>
+    public static void RegisterCollectedAppServices(IAppServiceCollection appServices)
+    {
+        lock (Collectors)
         {
-            lock (Collectors)
+            foreach (var collect in Collectors)
             {
-                foreach (var collect in Collectors)
-                {
-                    collect(appServices);
-                }
+                collect(appServices);
             }
         }
     }
