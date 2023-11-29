@@ -687,6 +687,32 @@ public static class DependencyInjectionExtensions
         where T : class
         => (T)appServices.GetServiceInstance(typeof(T));
 
+    /// <summary>
+    /// Builds the service provider based on the services registered in the <see cref="IAppServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The application service collection.</param>
+    /// <returns>The <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildServiceProvider(this IAppServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        return BuildServiceProvider(new AppServiceCollectionBuilder(services));
+    }
+
+    /// <summary>
+    /// Builds the service provider based on the services registered by the <see cref="IAppServiceCollectionBuilder"/>.
+    /// </summary>
+    /// <param name="builder">The application service collection builder.</param>
+    /// <returns>The <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildServiceProvider(this IAppServiceCollectionBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        return new ServiceCollection()
+            .AddAppServices(builder)
+            .BuildServiceProvider();
+    }
+
     private static IServiceCollection AddServiceFactories<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TService,
