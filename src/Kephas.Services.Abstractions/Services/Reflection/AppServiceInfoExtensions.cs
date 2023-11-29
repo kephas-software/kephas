@@ -18,7 +18,7 @@ namespace Kephas.Services.Reflection
     public static class AppServiceInfoExtensions
     {
         /// <summary>
-        /// Gets a value indicating whether the application service is shared.
+        /// Gets a value indicating whether the application service is a singleton.
         /// </summary>
         /// <param name="appServiceInfo">The application service contract information.</param>
         /// <returns>
@@ -60,6 +60,74 @@ namespace Kephas.Services.Reflection
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
             return appServiceInfo.Lifetime == ServiceLifetime.Transient;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether the application service is a singleton.
+        /// </summary>
+        /// <param name="appServiceInfo">The application service contract information.</param>
+        /// <returns>
+        /// The <paramref name="appServiceInfo"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AppServiceInfo Singleton(this AppServiceInfo appServiceInfo)
+        {
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
+
+            appServiceInfo.Lifetime = ServiceLifetime.Singleton;
+
+            return appServiceInfo;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether the application service is shared within a scope.
+        /// </summary>
+        /// <param name="appServiceInfo">The application service contract information.</param>
+        /// <returns>
+        /// The <paramref name="appServiceInfo"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AppServiceInfo Scoped(this AppServiceInfo appServiceInfo)
+        {
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
+
+            appServiceInfo.Lifetime = ServiceLifetime.Scoped;
+
+            return appServiceInfo;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether the application service is instanced per request.
+        /// </summary>
+        /// <param name="appServiceInfo">The application service contract information.</param>
+        /// <returns>
+        /// The <paramref name="appServiceInfo"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AppServiceInfo Transient(this AppServiceInfo appServiceInfo)
+        {
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
+
+            appServiceInfo.Lifetime = ServiceLifetime.Transient;
+
+            return appServiceInfo;
+        }
+
+        /// <summary>
+        /// Sets a value indicating that the service is externally owned and should not be disposed by the container.
+        /// </summary>
+        /// <param name="appServiceInfo">The application service contract information.</param>
+        /// <returns>
+        /// The <paramref name="appServiceInfo"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AppServiceInfo ExternallyOwned(this AppServiceInfo appServiceInfo)
+        {
+            appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
+
+            appServiceInfo.IsExternallyOwned = true;
+
+            return appServiceInfo;
         }
     }
 }

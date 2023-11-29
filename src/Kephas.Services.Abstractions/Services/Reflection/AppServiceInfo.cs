@@ -27,7 +27,7 @@ public class AppServiceInfo : IAppServiceInfo
     ///                             <c>true</c> if the contract should be exported as an open generic;
     ///                             otherwise, <c>false</c>.
     /// </param>
-    public AppServiceInfo(Type contractType, ServiceLifetime lifetime = ServiceLifetime.Singleton, bool asOpenGeneric = false)
+    public AppServiceInfo(Type contractType, ServiceLifetime lifetime = ServiceLifetime.Transient, bool asOpenGeneric = false)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
@@ -77,7 +77,7 @@ public class AppServiceInfo : IAppServiceInfo
     ///                             <c>true</c> if the contract should be exported as an open generic;
     ///                             otherwise, <c>false</c>.
     /// </param>
-    public AppServiceInfo(Type contractType, Type serviceType, ServiceLifetime lifetime = ServiceLifetime.Singleton, bool asOpenGeneric = false)
+    public AppServiceInfo(Type contractType, Type serviceType, ServiceLifetime lifetime = ServiceLifetime.Transient, bool asOpenGeneric = false)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
@@ -145,7 +145,7 @@ public class AppServiceInfo : IAppServiceInfo
     /// <value>
     /// The application service lifetime.
     /// </value>
-    public ServiceLifetime Lifetime { get; private set; }
+    public ServiceLifetime Lifetime { get; internal set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether multiple services for this contract are allowed.
