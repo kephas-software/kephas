@@ -7,30 +7,7 @@
 
 using System.Reflection;
 
-using Kephas.Dynamic;
-
 namespace Kephas.Services.Configuration;
-
-/// <summary>
-/// Strategy for resolving ambiguous service registrations.
-/// </summary>
-public enum AmbiguousServiceResolutionStrategy
-{
-    /// <summary>
-    /// Uses the last registered service.
-    /// </summary>
-    UseLast = 0,
-
-    /// <summary>
-    /// Uses the first registered service.
-    /// </summary>
-    UseFirst = 1,
-
-    /// <summary>
-    /// Forces the use of priority order. If the priority indicate the same value, an exception occurs.
-    /// </summary>
-    ForcePriority = 0x10,
-}
 
 /// <summary>
 /// Stores application services related settings.
@@ -38,17 +15,17 @@ public enum AmbiguousServiceResolutionStrategy
 public record AppServicesSettings
 {
     /// <summary>
-    /// Gets or sets the assembly file name pattern.
+    /// Gets or sets the service assembly file name pattern.
     /// </summary>
     /// <value>
-    /// The assembly file name pattern.
+    /// The service assembly file name pattern.
     /// </value>
-    public string? AssemblyFileNamePattern { get; set; }
+    public string? ServiceAssemblyFileNamePattern { get; set; }
 
     /// <summary>
-    /// Gets or sets a function to retrieve the application assemblies containing service registrations.
+    /// Gets or sets a function to retrieve the assemblies containing service registrations.
     /// </summary>
-    public Func<IEnumerable<Assembly>>? GetAppAssemblies { get; set; }
+    public Func<IEnumerable<Assembly>>? GetServiceAssemblies { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating the resolution strategy for ambiguous registered services.
