@@ -8,48 +8,39 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Builder
-{
-    using System.Collections.Generic;
-    using System.Reflection;
+using System.Reflection;
 
-    using Kephas.Dynamic;
-    using Kephas.Logging;
-    using Kephas.Services;
-    using Kephas.Services.Configuration;
+namespace Kephas.Services.Builder;
+
+/// <summary>
+/// Contract interface for <see cref="IAppServiceCollection"/> builders.
+/// </summary>
+public interface IAppServiceCollectionBuilder
+{
+    /// <summary>
+    /// Adds the <see cref="IAppServiceInfoProvider"/>s.
+    /// </summary>
+    /// <param name="providers">An array of providers.</param>
+    /// <returns>This builder.</returns>
+    IAppServiceCollectionBuilder AddProviders(params IAppServiceInfoProvider[] providers);
 
     /// <summary>
-    /// Contract interface for <see cref="IAppServiceCollection"/> builders.
+    /// Adds the <see cref="Assembly"/>s.
     /// </summary>
-    public interface IAppServiceCollectionBuilder : IDynamic, ILoggable
-    {
-        /// <summary>
-        /// Gets The application services.
-        /// </summary>
-        IAppServiceCollection AppServices { get; }
+    /// <param name="assemblies">An array of assemblies.</param>
+    /// <returns>This builder.</returns>
+    IAppServiceCollectionBuilder AddAssemblies(params Assembly[] assemblies);
 
-        /// <summary>
-        /// Gets the application service information providers.
-        /// </summary>
-        /// <value>
-        /// The application service information providers.
-        /// </value>
-        ICollection<IAppServiceInfoProvider> Providers { get; }
+    /// <summary>
+    /// Adds the <see cref="Type"/>s.
+    /// </summary>
+    /// <param name="types">An array of types.</param>
+    /// <returns>This builder.</returns>
+    IAppServiceCollectionBuilder AddTypes(params Type[] types);
 
-        /// <summary>
-        /// Gets the list of assemblies used in injection.
-        /// </summary>
-        ICollection<Assembly> Assemblies { get; }
-
-        /// <summary>
-        /// Gets the injection settings.
-        /// </summary>
-        AppServicesSettings Settings { get; }
-
-        /// <summary>
-        /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
-        /// </summary>
-        /// <returns>The provided app services.</returns>
-        IAppServiceCollection Build();
-    }
+    /// <summary>
+    /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
+    /// </summary>
+    /// <returns>The provided app services.</returns>
+    IAppServiceCollection Build();
 }

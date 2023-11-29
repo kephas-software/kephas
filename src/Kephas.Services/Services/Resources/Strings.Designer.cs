@@ -96,6 +96,51 @@ namespace Kephas.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple services found for {0}/{1}..
+        /// </summary>
+        internal static string DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception {
+            get {
+                return ResourceManager.GetString("DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No service found for {0}/{1}..
+        /// </summary>
+        internal static string DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The injectable type &apos;{0}&apos; must be an instantiable class..
+        /// </summary>
+        internal static string InjectableFactory_Create_InjectableTypeMustBeInstantiable {
+            get {
+                return ResourceManager.GetString("InjectableFactory_Create_InjectableTypeMustBeInstantiable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arguments may not be null when instantiating injectable of type &apos;{0}&apos;..
+        /// </summary>
+        internal static string InjectableFactory_Create_NonNullArguments {
+            get {
+                return ResourceManager.GetString("InjectableFactory_Create_NonNullArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find a matching constructor for signature {0} in type &apos;{1}&apos;..
+        /// </summary>
+        internal static string InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor {
+            get {
+                return ResourceManager.GetString("InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No contract type provided for {0}..
         /// </summary>
         internal static string InjectorBuilder_RegisterService_InvalidContractType {
@@ -114,20 +159,11 @@ namespace Kephas.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service with the requested predicate was not found..
+        ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
         /// </summary>
-        internal static string OrderedServiceFactoryCollection_service_with_requested_criteria_not_found {
+        internal static string ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception {
             get {
-                return ResourceManager.GetString("OrderedServiceFactoryCollection_service_with_requested_criteria_not_found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The service {0} is either not registered or it is not registered with an instance..
-        /// </summary>
-        internal static string ServiceInstanceNotRegistered {
-            get {
-                return ResourceManager.GetString("ServiceInstanceNotRegistered", resourceCulture);
+                return ResourceManager.GetString("ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
             }
         }
         
