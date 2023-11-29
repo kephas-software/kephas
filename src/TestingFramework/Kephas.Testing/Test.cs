@@ -7,6 +7,7 @@
 
 using System.Text;
 using Kephas.Services;
+using Kephas.Services.Builder;
 using Kephas.Testing.Logging;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -29,6 +30,25 @@ namespace Kephas.Testing
         /// </summary>
         /// <returns>The test logger.</returns>
         public static ILogger<T> GetTestLogger<T>(StringBuilder? stringBuilder, LogLevel? minimumLevel = null) => new TestLogger<T>(stringBuilder, minimumLevel: minimumLevel);
+
+        /// <summary>
+        /// Creates a test instance implementing <see cref="IAppServiceCollection"/>.
+        /// </summary>
+        /// <returns>The <see cref="IAppServiceCollection"/>.</returns>
+        public static IAppServiceCollection CreateTestServices()
+        {
+            return new AppServiceCollection();
+        }
+
+        /// <summary>
+        /// Creates a test instance implementing <see cref="IAppServiceCollectionBuilder"/>.
+        /// </summary>
+        /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
+        /// <returns>The <see cref="IAppServiceCollectionBuilder"/>.</returns>
+        public static IAppServiceCollectionBuilder CreateTestServicesBuilder(IAppServiceCollection? services = null)
+        {
+            return new AppServiceCollectionBuilder(services ?? CreateTestServices());
+        }
 
         /// <summary>
         /// Gets the test lazy enumerator.

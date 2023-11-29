@@ -80,6 +80,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
       <ProjectReference Include="..\..\Kephas.Services.Abstractions\Kephas.Services.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
     </ItemGroup>
 
 </Project>
