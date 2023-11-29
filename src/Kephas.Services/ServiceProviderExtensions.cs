@@ -1,22 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceProviderInjectionExtensions.cs" company="Kephas Software SRL">
+// <copyright file="ServiceProviderExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas;
-
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Kephas.Services;
-using Kephas.Resources;
-using Kephas.Services;
+using Kephas.Services.Metadata;
+using Kephas.Services.Resources;
+
+namespace Kephas;
 
 /// <summary>
 /// Extension methods for <see cref="IServiceProvider"/>.
 /// </summary>
-public static class ServiceProviderInjectionExtensions
+public static class ServiceProviderExtensions
 {
     /// <summary>
     /// Resolves the specified contract type.
@@ -76,7 +77,7 @@ public static class ServiceProviderInjectionExtensions
             0 => default,
             > 1 => throw new AmbiguousMatchException(
                 string.Format(
-                    AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception,
+                    Strings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception,
                     serviceName,
                     typeof(T))),
             _ => exportFactories[0].Value
@@ -99,7 +100,7 @@ public static class ServiceProviderInjectionExtensions
         return service is null
             ? throw new ServiceException(
                 string.Format(
-                    AbstractionStrings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception,
+                    Strings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception,
                     serviceName,
                     typeof(T)))
             : service;
