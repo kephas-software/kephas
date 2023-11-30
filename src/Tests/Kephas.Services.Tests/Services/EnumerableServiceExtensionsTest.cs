@@ -5,7 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Extensions.DependencyInjection;
 using Kephas.Services;
 using NSubstitute;
 using NUnit.Framework;

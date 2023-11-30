@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Tests.Services
 {
     using Kephas.Services;
@@ -23,7 +25,7 @@ namespace Kephas.Tests.Services
         public void Constructor()
         {
             var attr = new AppServiceContractAttribute();
-            Assert.AreEqual(AppServiceLifetime.Transient,  attr.Lifetime);
+            Assert.AreEqual(ServiceLifetime.Transient,  attr.Lifetime);
         }
     }
 }

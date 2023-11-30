@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectableFactoryTest.cs" company="Kephas Software SRL">
+// <copyright file="ServiceFactoryTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,24 +8,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Tests.Services;
 
 using System.Linq;
-using Kephas.Services;
-using Kephas.Logging;
 using Kephas.Services;
 using Kephas.Services.Reflection;
 using NSubstitute;
 using NUnit.Framework;
 
 [TestFixture]
-public class InjectableFactoryTest
+public class ServiceFactoryTest
 {
     [Test]
     public void Create_Context()
     {
-        var (appServices, injector) = this.GetServices();
-        IInjectableFactory factory = new InjectableFactory(injector, appServices, Substitute.For<ILogManager>());
+        var (appServices, injector) = GetServices();
+        IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<Context>();
 
         Assert.AreSame(injector, context.ServiceProvider);
@@ -34,8 +34,8 @@ public class InjectableFactoryTest
     [Test]
     public void Create_TestContext()
     {
-        var (appServices, injector) = this.GetServices();
-        IInjectableFactory factory = new InjectableFactory(injector, appServices, Substitute.For<ILogManager>());
+        var (appServices, injector) = GetServices();
+        IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<TestContext>();
 
         Assert.AreSame(injector, context.ServiceProvider);
@@ -46,9 +46,9 @@ public class InjectableFactoryTest
     {
         var testService = Substitute.For<ITestService>();
 
-        var (appServices, injector) = this.GetServices(new AppServiceInfo(typeof(ITestService), testService));
+        var (appServices, injector) = GetServices(new AppServiceInfo(typeof(ITestService), testService));
         injector.Resolve(typeof(ITestService)).Returns(testService);
-        IInjectableFactory factory = new InjectableFactory(injector, appServices, Substitute.For<ILogManager>());
+        IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<TestContext>(typeof(string));
 
         Assert.AreSame(injector, context.ServiceProvider);
@@ -71,6 +71,16 @@ public class InjectableFactoryTest
         return (appServices, injector);
     }
 
+    public class Context
+    {
+        public Context(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider;
+        }
+
+        public IServiceProvider ServiceProvider { get; }
+    }
+
     public class TestContext : Context
     {
         public TestContext(IServiceProvider serviceProvider)
@@ -83,8 +93,8 @@ public class InjectableFactoryTest
         {
             testService = testService ?? throw new ArgumentNullException(nameof(testService));
 
-            this.TestService = testService;
-            this.MediaType = mediaType;
+            TestService = testService;
+            MediaType = mediaType;
         }
 
         public ITestService TestService { get; }

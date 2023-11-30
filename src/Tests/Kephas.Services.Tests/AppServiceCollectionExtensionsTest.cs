@@ -5,24 +5,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests;
-
-using System.Diagnostics.CodeAnalysis;
-
-using Kephas.Services;
-using Kephas.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+
+namespace Kephas.Tests;
 
 /// <summary>
 /// Test class for <see cref="AppServiceCollectionExtensions"/>.
 /// </summary>
 [TestFixture]
-public class AppServiceCollectionExtensionsTest : TestBase
+public class AppServiceCollectionExtensionsTest
 {
     [Test]
     public void Constructor_register_ambient_services()
     {
-        var appServices = this.CreateAppServices();
+        var appServices = new AppServiceCollection();
 
         Assert.AreSame(appServices, appServices.GetServiceInstance(typeof(IAppServiceCollection)));
     }
@@ -50,7 +47,7 @@ public class AppServiceCollectionExtensionsTest : TestBase
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(service, serviceInfo.Instance);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]
@@ -76,7 +73,7 @@ public class AppServiceCollectionExtensionsTest : TestBase
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(service, serviceInfo.Instance);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]
@@ -100,7 +97,7 @@ public class AppServiceCollectionExtensionsTest : TestBase
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(typeof(Service), serviceInfo.InstanceType);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]
@@ -124,7 +121,7 @@ public class AppServiceCollectionExtensionsTest : TestBase
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(typeof(Service), serviceInfo.InstanceType);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]

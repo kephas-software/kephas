@@ -5,36 +5,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Extensions.DependencyInjection
+using Kephas.Services.Builder;
+using NUnit.Framework;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Kephas.Tests.Extensions.DependencyInjection;
+
+[TestFixture]
+public class AppServiceCollectionTest
 {
-    using Kephas.Logging;
-    using Kephas.Services.Builder;
-    using Kephas.Testing;
-    using NSubstitute;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class AppServiceCollectionTest : TestBase
+    [Test]
+    public void AppServiceCollection_singleton()
     {
-        [Test]
-        public void CustomAppServiceCollection_singleton()
-        {
-            var appServices = CustomAppServiceCollection.CreateAppServices();
-            var container = new AppServiceCollectionBuilder(appServices)
-                .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
-                .BuildWithDependencyInjection();
-            var otherAppServices = container.Resolve<IAppServiceCollection>();
+        var services = new ServiceCollection();
+        var appServices = new AppServiceCollection();
+        var provider = services
+            .AddAppServices(new AppServiceCollectionBuilder(appServices))
+            .BuildServiceProvider();
+        var otherAppServices =  provider.Resolve<IAppServiceCollection>();
 
-            Assert.AreSame(appServices, otherAppServices);
-        }
-
-        public class CustomAppServiceCollection : AppServiceCollection
-        {
-            private CustomAppServiceCollection()
-            {
-            }
-
-            public static CustomAppServiceCollection CreateAppServices() => new();
-        }
+        Assert.AreSame(appServices, otherAppServices);
     }
 }

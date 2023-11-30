@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Configuration;
+
 namespace Kephas.Tests.Extensions.DependencyInjection
 {
-    using Kephas.Application;
     using Kephas.Services;
     using Kephas.Services.Builder;
     using Kephas.Testing;
@@ -15,16 +16,14 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     using NUnit.Framework;
 
     [TestFixture]
-    public class DependencyInjectionExtensionsTest : TestBase
+    public class DependencyInjectionExtensionsTest
     {
         [Test]
         public void BuildWithDependencyInjection_defaults()
         {
-            var appServices = this.CreateAppServices();
+            var appServices = Test.CreateTestServices();
             var builder = new AppServiceCollectionBuilder(appServices);
-            var injector = builder
-                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
-                .BuildWithDependencyInjection();
+            var injector = builder.BuildServiceProvider();
 
             Assert.IsInstanceOf<ServiceProvider>(injector);
         }
@@ -32,11 +31,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void BuildWithDependencyInjection_with_open_generic_override()
         {
-            var appServices = this.CreateAppServices();
+            var appServices = Test.CreateTestServices();
             var builder = new AppServiceCollectionBuilder(appServices)
-                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
-                .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
-            var injector = builder.BuildWithDependencyInjection();
+                .AddTypes(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
+            var injector = builder.BuildServiceProvider();
 
             var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
@@ -45,11 +43,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void BuildWithDependencyInjection_with_open_generic_override_and_dependency()
         {
-            var appServices = this.CreateAppServices();
+            var appServices = Test.CreateTestServices();
             var builder = new AppServiceCollectionBuilder(appServices)
-                .WithDynamicAppRuntime(rt => rt.IsAppAssembly = a => !a.Name.Contains("Test"))
-                .WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
-            var injector = builder.BuildWithDependencyInjection();
+                .AddTypes(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
+            var injector = builder.BuildServiceProvider();
 
             var moreOpen = injector.Resolve<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);

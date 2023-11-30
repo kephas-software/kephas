@@ -8,11 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections;
+using Kephas.Services.Metadata;
+
 namespace Kephas.Tests.Services
 {
     using System;
     using System.Collections.Generic;
-    using Kephas.Data;
     using Kephas.Services;
     using NUnit.Framework;
 
