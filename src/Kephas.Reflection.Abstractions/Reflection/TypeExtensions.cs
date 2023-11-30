@@ -44,7 +44,7 @@ namespace Kephas.Reflection
         {
             rawType = rawType ?? throw new ArgumentNullException(nameof(rawType));
 
-            return rawType.IsConstructedGenericType && rawType.ContainsGenericParameters
+            return rawType is { IsConstructedGenericType: true, ContainsGenericParameters: true }
                 ? rawType.GetGenericTypeDefinition()
                 : rawType;
         }

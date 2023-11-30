@@ -5,10 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Reflection
+namespace Kephas
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Provides the <see cref="CreateInstance"/> method for creating objects based on this prototype.
     /// </summary>
