@@ -102,7 +102,6 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = CreateAutofacServicesBuilderWithStringLogger();
             var container = builder
-                .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .BuildServiceProvider();
 
@@ -116,8 +115,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_AppService_Multiple_Preserve_Order_mixed()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger()
-                .AddAssemblies(typeof(IServiceFactory).Assembly);
+            var builder = CreateAutofacServicesBuilderWithStringLogger();
             var appServices = builder.Build();
             appServices.Add(typeof(ITestMultiAppService), _ => new TestMultiAppService1(), b => b.Transient());
             appServices.Add(Substitute.For<ITestMultiAppService>());
@@ -152,7 +150,6 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = CreateAutofacServicesBuilderWithStringLogger();
             var container = builder
-                .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .BuildServiceProvider();
 
@@ -181,9 +178,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             appServices.Add(new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
             appServices.Add(new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
 
-            var container = builder
-                .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .BuildServiceProvider();
+            var container = builder.BuildServiceProvider();
             var exported = container.GetRequiredService<ExportedClassWithFakeDependency>();
 
             Assert.IsNotNull(exported);
@@ -316,12 +311,11 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var registrar = new TestAppServiceInfoProvider(
                 new List<(Type contractDeclarationType, IAppServiceInfo appServiceInfo)>
                 {
-                    (typeof(string), new AppServiceInfo(typeof(string), injector => "123")),
+                    (typeof(string), new AppServiceInfo(typeof(string), _ => "123")),
                 });
 
             var builder = CreateServicesBuilder(config: ctx => ctx
-                .AddProviders(registrar)
-                .AddAssemblies(typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly));
+                .AddProviders(registrar));
 
             var container = builder.BuildServiceProvider();
 

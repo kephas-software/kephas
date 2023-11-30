@@ -8,14 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services.Configuration;
-using Kephas.Services.Metadata;
-using Kephas.Services.Resources;
-using Microsoft.Extensions.Logging;
-
-namespace Kephas;
-
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -27,6 +19,12 @@ using Kephas.Reflection;
 using Kephas.Services.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Kephas.Services.Configuration;
+using Kephas.Services.Metadata;
+using Kephas.Services.Resources;
+using Microsoft.Extensions.Logging;
+
+namespace Kephas;
 
 /// <summary>
 /// Extension methods for <see cref="IServiceCollection"/>.
@@ -720,8 +718,12 @@ public static class DependencyInjectionExtensions
         where T : class
         where TService : class, T
     {
+        if (typeof(T) != typeof(TService))
+        {
+            services.AddTransientRaw<T>(provider => provider.GetRequiredService<TService>());
+        }
+
         services
-            .AddTransientRaw<T>(provider => provider.GetRequiredService<TService>())
             .AddTransientRaw<Lazy<T>, LazyService<T, TService>>()
             .AddTransientRaw<Lazy<T, TMetadata>, LazyService<T, TService, TMetadata>>()
             .AddTransientRaw<IExportFactory<T>, FactoryService<T, TService>>()
@@ -746,8 +748,12 @@ public static class DependencyInjectionExtensions
         where T : class
         where TService : class, T
     {
+        if (typeof(T) != typeof(TService))
+        {
+            services.AddTransientRaw<T>(provider => provider.GetRequiredService<TService>());
+        }
+
         services
-            .AddTransientRaw<T>(provider => provider.GetRequiredService<TService>())
             .AddTransientRaw<Lazy<T>, LazyService<T, TService>>()
             .AddTransientRaw<Lazy<T, TMetadata>>(provider => new LazyService<T, TService, TMetadata>(provider, metadata))
             .AddTransientRaw<IExportFactory<T>, FactoryService<T, TService>>()

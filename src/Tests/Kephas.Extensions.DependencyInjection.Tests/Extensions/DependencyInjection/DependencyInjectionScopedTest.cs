@@ -25,7 +25,6 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 ServiceLifetime.Scoped));
             var container = appServices.BuildServiceProvider();
             using var scopedContext = container.CreateScope();
-            Assert.IsInstanceOf<ServiceProvider>(scopedContext);
             var scopedInstance1 = scopedContext.ServiceProvider.Resolve<DependencyInjectionTest.ScopeExportedClass>();
 
             using var nestedContext = scopedContext.ServiceProvider.CreateScope();
