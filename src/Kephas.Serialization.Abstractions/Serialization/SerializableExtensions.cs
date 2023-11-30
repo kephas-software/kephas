@@ -24,7 +24,7 @@ namespace Kephas.Serialization
             obj switch
             {
                 null => null,
-                ISerializable formattable => formattable.GetObjectData(),
+                ISerializable serializable => serializable.GetObjectData(),
                 Exception ex => GetObjectData(ex),
                 _ => obj.ToString(),
             };
