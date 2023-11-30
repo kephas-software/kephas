@@ -5,9 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
 using Kephas.Extensions.DependencyInjection;
+using Kephas.Runtime;
 using Kephas.Services;
 using Kephas.Services.Builder;
+using Kephas.Services.Configuration;
 using Kephas.Services.Reflection;
 using NSubstitute;
 using NUnit.Framework;
@@ -41,7 +44,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_Singleton()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestAppService), typeof(TestAppService) })
@@ -56,7 +59,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_Single_Success()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestAppService), typeof(TestAppService) })
@@ -70,7 +73,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_Single_Override_Success()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
@@ -84,7 +87,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_AppService_Multiple_Singleton()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
@@ -100,7 +103,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_AppService_Multiple_Preserve_Order_types()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddTypes(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .BuildServiceProvider();
@@ -115,7 +118,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_AppService_Multiple_Preserve_Order_mixed()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var appServices = builder.Build();
             appServices.Add(typeof(ITestMultiAppService), _ => new TestMultiAppService1(), b => b.Transient());
             appServices.Add(Substitute.For<ITestMultiAppService>());
@@ -133,7 +136,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void ResolveMany_AppService_IExportFactory_Success()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
@@ -148,7 +151,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_generic_export()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddTypes(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .BuildServiceProvider();
@@ -160,7 +163,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_generic_export_with_non_generic_contract()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
@@ -171,11 +174,12 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         }
 
         [Test]
-        public void Resolve_AppService_with_injection_constructor()
+        public void Resolve_AppService_with_injection_default_constructor()
         {
             var appServices = new AppServiceCollection();
-            var builder = CreateAutofacServicesBuilderWithStringLogger(appServices);
-            appServices.Add(new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
+            var builder = CreateServicesBuilderWithStringLogger(
+                appServices,
+                settings: new AppServicesSettings { GetServiceAssemblies = Array.Empty<Assembly> });
             appServices.Add(new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
 
             var container = builder.BuildServiceProvider();
@@ -187,9 +191,27 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         }
 
         [Test]
+        public void Resolve_AppService_with_injection_constructor()
+        {
+            var appServices = new AppServiceCollection();
+            var builder = CreateServicesBuilderWithStringLogger(
+                appServices,
+                settings: new AppServicesSettings { GetServiceAssemblies = Array.Empty<Assembly> });
+            appServices.Add(new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
+            appServices.Add(new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
+
+            var container = builder.BuildServiceProvider();
+            var exported = container.GetRequiredService<ExportedClassWithFakeDependency>();
+
+            Assert.IsNotNull(exported);
+            Assert.IsInstanceOf<ExportedClassWithFakeDependency>(exported);
+            Assert.IsNotNull(exported.Dependency);
+        }
+
+        [Test]
         public void Resolve_ScopedAppService_no_scope()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
@@ -201,7 +223,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_ScopedAppService_export()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(typeof(ITestScopedExport), typeof(TestScopedExport))
@@ -228,7 +250,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_no_constructor()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger()
+            var builder = CreateServicesBuilderWithStringLogger()
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(IConstructorAppService), typeof(NoInjectConstructorAppService) });
             Assert.Throws<InvalidOperationException>(() => builder.Build());
@@ -237,7 +259,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_ambiguous_constructor()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(IConstructorAppService), typeof(AmbiguousInjectConstructorAppService) })
@@ -248,7 +270,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_largest_constructor()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(IConstructorAppService), typeof(LargestInjectConstructorAppService) })
@@ -261,7 +283,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_default_constructor()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
@@ -275,7 +297,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         [Test]
         public void Resolve_AppService_single_constructor()
         {
-            var builder = CreateAutofacServicesBuilderWithStringLogger();
+            var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
                 .AddTypes(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
@@ -295,9 +317,11 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                     (typeof(string), new AppServiceInfo(typeof(string), "123")),
                 });
 
-            var builder = CreateServicesBuilder(config: ctx => ctx
-                .AddProviders(registrar)
-                .AddAssemblies(typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly));
+            var builder = CreateServicesBuilder(
+                settings: new AppServicesSettings { GetServiceAssemblies = Array.Empty<Assembly> },
+                config: ctx => ctx
+                    .AddProviders(registrar)
+                    .AddAssemblies(typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly));
 
             var container = builder.BuildServiceProvider();
 
@@ -335,7 +359,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             public IEnumerable<ContractDeclaration> GetAppServiceContracts() => serviceInfos;
         }
 
-        private IAppServiceCollectionBuilder CreateServicesBuilder(IAppServiceCollection? appServices = null, Action<IAppServiceCollectionBuilder>? config = null)
+        private IAppServiceCollectionBuilder CreateServicesBuilder(
+            IAppServiceCollection? appServices = null,
+            Action<IAppServiceCollectionBuilder>? config = null,
+            AppServicesSettings? settings = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockAppRuntime = Substitute.For<IAppRuntime>();
@@ -344,15 +371,17 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             appServices
                 .Add(mockLoggerManager, b => b.Singleton())
                 .Add(mockAppRuntime, b => b.Singleton());
-            var builder = new AppServiceCollectionBuilder(appServices);
+            var builder = new AppServiceCollectionBuilder(appServices, settings);
             config?.Invoke(builder);
             return builder;
         }
 
-        private IAppServiceCollectionBuilder CreateAutofacServicesBuilderWithStringLogger(IAppServiceCollection? appServices = null)
+        private IAppServiceCollectionBuilder CreateServicesBuilderWithStringLogger(
+            IAppServiceCollection? appServices = null,
+            AppServicesSettings? settings = null)
         {
             appServices ??= new AppServiceCollection();
-            var builder = CreateServicesBuilder(appServices);
+            var builder = CreateServicesBuilder(appServices, settings: settings);
 
             var mockLoggerManager = appServices.GetServiceInstance<ILogManager>();
             mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
