@@ -29,7 +29,7 @@ public static class ServiceProviderExtensions
         serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         loggerName = loggerName ?? throw new ArgumentNullException(nameof(loggerName));
 
-        return serviceProvider.Resolve<ILoggerFactory>().CreateLogger(loggerName);
+        return ((ILoggerFactory)serviceProvider.GetRequiredService(typeof(ILoggerFactory))).CreateLogger(loggerName);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public static class ServiceProviderExtensions
         serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         type = type ?? throw new ArgumentNullException(nameof(type));
 
-        return serviceProvider.Resolve<ILoggerFactory>().CreateLogger(type);
+        return ((ILoggerFactory)serviceProvider.GetRequiredService(typeof(ILoggerFactory))).CreateLogger(type);
     }
 
     /// <summary>
@@ -62,6 +62,6 @@ public static class ServiceProviderExtensions
     {
         serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-        return serviceProvider.Resolve<ILoggerFactory>().CreateLogger<T>();
+        return ((ILoggerFactory)serviceProvider.GetRequiredService(typeof(ILoggerFactory))).CreateLogger<T>();
     }
 }

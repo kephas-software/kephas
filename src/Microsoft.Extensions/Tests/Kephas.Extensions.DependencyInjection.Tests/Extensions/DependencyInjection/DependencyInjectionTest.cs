@@ -38,8 +38,8 @@ public class DependencyInjectionTest
     {
         var appServices = new AppServiceCollection();
         var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
-        var containerExport = container.Resolve(typeof(IAppServiceCollection));
-        var ambientExport = container.Resolve(typeof(IAppServiceCollection));
+        var containerExport = container.GetRequiredService(typeof(IAppServiceCollection));
+        var ambientExport = container.GetRequiredService(typeof(IAppServiceCollection));
 
         Assert.IsNotNull(containerExport);
         Assert.AreSame(ambientExport, containerExport);
@@ -51,8 +51,8 @@ public class DependencyInjectionTest
     {
         var appServices = new AppServiceCollection();
         var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
-        var containerExport = container.Resolve(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
-        var ambientExport = container.Resolve(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
+        var containerExport = container.GetRequiredService(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
+        var ambientExport = container.GetRequiredService(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
 
         Assert.IsNotNull(containerExport);
         Assert.AreSame(ambientExport, containerExport);
@@ -64,8 +64,8 @@ public class DependencyInjectionTest
         var appServices = new AppServiceCollection()
             .Add<ITestTypeLoader, TestTypeLoader>(b => b.Singleton());
         var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
-        var containerExport = container.Resolve(typeof(ITestTypeLoader));
-        var ambientExport = container.Resolve(typeof(ITestTypeLoader));
+        var containerExport = container.GetRequiredService(typeof(ITestTypeLoader));
+        var ambientExport = container.GetRequiredService(typeof(ITestTypeLoader));
 
         Assert.IsNotNull(containerExport);
         Assert.AreSame(ambientExport, containerExport);
@@ -75,7 +75,7 @@ public class DependencyInjectionTest
     public void Resolve_success()
     {
         var container = CreateServiceProvider(typeof(ExportedClass));
-        var exported = container.Resolve(typeof(ExportedClass));
+        var exported = container.GetRequiredService(typeof(ExportedClass));
 
         Assert.IsNotNull(exported);
         Assert.IsInstanceOf<ExportedClass>(exported);
@@ -85,7 +85,7 @@ public class DependencyInjectionTest
     public void TryResolve_success()
     {
         var container = CreateServiceProvider(typeof(ExportedClass));
-        var exported = container.TryResolve(typeof(ExportedClass));
+        var exported = container.GetService(typeof(ExportedClass));
 
         Assert.IsNotNull(exported);
         Assert.IsInstanceOf<ExportedClass>(exported);
@@ -95,7 +95,7 @@ public class DependencyInjectionTest
     public void TryResolve_failure()
     {
         var container = CreateServiceProvider();
-        var exported = container.TryResolve(typeof(ExportedClass));
+        var exported = container.GetService(typeof(ExportedClass));
 
         Assert.IsNull(exported);
     }
@@ -104,7 +104,7 @@ public class DependencyInjectionTest
     public void Resolve_generic_success()
     {
         var container = CreateServiceProvider(typeof(ExportedClass));
-        var exported = container.Resolve<ExportedClass>();
+        var exported = container.GetRequiredService<ExportedClass>();
 
         Assert.IsNotNull(exported);
         Assert.IsInstanceOf<ExportedClass>(exported);
@@ -114,7 +114,7 @@ public class DependencyInjectionTest
     public void TryResolve_generic_success()
     {
         var container = CreateServiceProvider(typeof(ExportedClass));
-        var exported = container.TryResolve<ExportedClass>();
+        var exported = container.GetService<ExportedClass>();
 
         Assert.IsNotNull(exported);
         Assert.IsInstanceOf<ExportedClass>(exported);
@@ -124,7 +124,7 @@ public class DependencyInjectionTest
     public void TryResolve_generic_failure()
     {
         var container = CreateServiceProvider();
-        var exported = container.TryResolve<ExportedClass>();
+        var exported = container.GetService<ExportedClass>();
 
         Assert.IsNull(exported);
     }
@@ -133,14 +133,14 @@ public class DependencyInjectionTest
     public void Resolve_failure()
     {
         var container = CreateServiceProvider();
-        Assert.Throws<InvalidOperationException>(() => container.Resolve(typeof(ExportedClass)));
+        Assert.Throws<InvalidOperationException>(() => container.GetRequiredService(typeof(ExportedClass)));
     }
 
     [Test]
     public void ResolveMany_success()
     {
         var container = CreateServiceProvider(typeof(ExportedClass));
-        var exported = container.ResolveMany(typeof(ExportedClass));
+        var exported = (IEnumerable<object>)container.GetRequiredService(typeof(IEnumerable<ExportedClass>));
 
         Assert.IsNotNull(exported);
         var exportedList = exported.ToList();
@@ -152,7 +152,7 @@ public class DependencyInjectionTest
     public void ResolveMany_empty()
     {
         var container = CreateServiceProvider(typeof(ExportedClass));
-        var exported = container.ResolveMany(typeof(string));
+        var exported = (IEnumerable<object>)container.GetRequiredService(typeof(IEnumerable<string>));
 
         Assert.IsNotNull(exported);
         var exportedList = exported.ToList();
@@ -166,7 +166,7 @@ public class DependencyInjectionTest
             .AddProviders(new MultiFilterAppServiceInfoProvider());
         var container = builder.BuildServiceProvider();
 
-        var filters = container.ResolveMany(typeof(IFilter));
+        var filters = (IEnumerable<object>)container.GetRequiredService(typeof(IEnumerable<IFilter>));
 
         Assert.AreEqual(3, filters.Count());
         Assert.IsTrue(filters.OfType<OneFilter>().Any());
@@ -193,7 +193,7 @@ public class DependencyInjectionTest
     {
         var container = CreateServiceProvider();
         (container as IDisposable)!.Dispose();
-        Assert.Throws<ObjectDisposedException>(() => container.TryResolve<IList<string>>());
+        Assert.Throws<ObjectDisposedException>(() => container.GetService<IList<string>>());
     }
 
     [Test]
@@ -211,18 +211,18 @@ public class DependencyInjectionTest
         appServices.Add(new AppServiceInfo(
             typeof(ScopeExportedClass),
             typeof(ScopeExportedClass),
-            ServiceLifetime.Scoped));
+            AppServiceLifetime.Scoped));
         var builder = Test.CreateTestServicesBuilder(appServices);
         var container = builder.BuildServiceProvider();
 
         using var scopedContext = container.CreateScope();
         using var otherScopedContext = container.CreateScope();
-        var scopedInstance1 = scopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
-        var scopedInstance2 = scopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
+        var scopedInstance1 = scopedContext.ServiceProvider.GetRequiredService<ScopeExportedClass>();
+        var scopedInstance2 = scopedContext.ServiceProvider.GetRequiredService<ScopeExportedClass>();
 
         Assert.AreSame(scopedInstance1, scopedInstance2);
 
-        var otherScopedInstance = otherScopedContext.ServiceProvider.Resolve<ScopeExportedClass>();
+        var otherScopedInstance = otherScopedContext.ServiceProvider.GetRequiredService<ScopeExportedClass>();
         Assert.AreNotSame(scopedInstance1, otherScopedInstance);
     }
 
@@ -235,7 +235,7 @@ public class DependencyInjectionTest
 
         var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
 
-        var actualService = container.Resolve<IAsyncInitializable>();
+        var actualService = container.GetRequiredService<IAsyncInitializable>();
         Assert.AreSame(service, actualService);
     }
 
@@ -247,8 +247,8 @@ public class DependencyInjectionTest
 
         var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
 
-        var service1 = container.Resolve<IAsyncInitializable>();
-        var service2 = container.Resolve<IAsyncInitializable>();
+        var service1 = container.GetRequiredService<IAsyncInitializable>();
+        var service2 = container.GetRequiredService<IAsyncInitializable>();
         Assert.AreNotSame(service1, service2);
     }
 
@@ -258,14 +258,14 @@ public class DependencyInjectionTest
         var appServices = new AppServiceCollection();
         var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
 
-        var service = container.TryResolve<IAsyncInitializable>();
+        var service = container.GetService<IAsyncInitializable>();
         Assert.IsNull(service);
 
         appServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
         // This is null because the injector caches the export providers, and after a first request
         // when the export was not available, will cache the empty export providers.
-        service = container.TryResolve<IAsyncInitializable>();
+        service = container.GetService<IAsyncInitializable>();
         Assert.IsNull(service);
     }
 
@@ -313,8 +313,8 @@ public class DependencyInjectionTest
     {
         public IEnumerable<ContractDeclaration> GetAppServiceContracts()
         {
-            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), ServiceLifetime.Singleton) { AllowMultiple = true });
-            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), ServiceLifetime.Transient) { AllowMultiple = true });
+            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton) { AllowMultiple = true });
+            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient) { AllowMultiple = true });
             yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), Substitute.For<IFilter>()) { AllowMultiple = true });
         }
     }

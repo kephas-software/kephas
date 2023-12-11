@@ -23,7 +23,7 @@ public class DynamicExpandoTest
     }
 
     [Test]
-    public void GetDynamicMemberNames()
+    public void GetKeys()
     {
         dynamic obj = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
         var expando = new DynamicExpando(obj);

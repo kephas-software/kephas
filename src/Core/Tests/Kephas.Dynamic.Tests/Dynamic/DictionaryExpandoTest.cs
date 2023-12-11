@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Dynamic;
+
 namespace Kephas.Tests.Dynamic;
 
 using Kephas.Dynamic;
@@ -44,10 +46,18 @@ public class DictionaryExpandoTest
     }
 
     [Test]
-    public void GetDynamicMemberNames()
+    public void GetKeys()
     {
         IDynamic expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
 
         CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetKeys());
+    }
+
+    [Test]
+    public void GetDynamicMemberNames()
+    {
+        DynamicObject expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
+
+        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
     }
 }

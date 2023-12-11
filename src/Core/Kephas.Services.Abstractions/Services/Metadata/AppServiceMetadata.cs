@@ -39,10 +39,9 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
     /// Initializes a new instance of the <see cref="AppServiceMetadata" /> class.
     /// </summary>
     /// <param name="priority">Optional. The processing priority.</param>
-    /// <param name="overridePriority">Optional. The override priority.</param>
     /// <param name="serviceName">Optional. The name of the service.</param>
     /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
-    public AppServiceMetadata(Priority priority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
+    public AppServiceMetadata(Priority priority = 0, string? serviceName = null, bool isOverride = false)
         : base(new Dictionary<string, object?>())
     {
         this.Priority = priority;

@@ -37,10 +37,10 @@ namespace Kephas.Tests.Services
                     {
                         new Lazy<IInstance, AppServiceMetadata>(
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                         new Lazy<IInstance, AppServiceMetadata>(
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)(-1))),
+                            new AppServiceMetadata(priority: (Priority)(-1))),
                     }).ToList();
 
 
@@ -61,16 +61,16 @@ namespace Kephas.Tests.Services
                     {
                         new Lazy<IInstance, AppServiceMetadata>(
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                         new Lazy<IInstance, AppServiceMetadata>(
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
+                            new AppServiceMetadata(priority: (Priority)2)),
                         new Lazy<IInstance, AppServiceMetadata>(
                             () => instance3,
-                            new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
+                            new AppServiceMetadata(priority: (Priority)3)),
                         new Lazy<IInstance, AppServiceMetadata>(
                             () => instance4,
-                            new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                     }).ToList();
 
 
@@ -93,22 +93,22 @@ namespace Kephas.Tests.Services
                 {
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)
+                        new AppServiceMetadata(priority: (Priority)1)
                             {
                                 ServiceType = typeof(TestDerived),
                             }),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)
+                        new AppServiceMetadata(priority: (Priority)2)
                             {
                                 ServiceType = typeof(Test),
                             }),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
+                        new AppServiceMetadata(priority: (Priority)3)),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1, isOverride: true)
+                        new AppServiceMetadata(priority: (Priority)1, isOverride: true)
                             {
                                 ServiceType = typeof(TestMostDerived),
                             }),
@@ -132,22 +132,22 @@ namespace Kephas.Tests.Services
                 {
                     new (
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1, isOverride: true)
+                        new AppServiceMetadata(priority: (Priority)1, isOverride: true)
                             {
                                 ServiceType = typeof(TestDerived),
                             }),
                     new (
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2, isOverride: true)
+                        new AppServiceMetadata(priority: (Priority)2, isOverride: true)
                             {
                                 ServiceType = typeof(Test),
                             }),
                     new (
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
+                        new AppServiceMetadata(priority: (Priority)3)),
                     new (
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1, isOverride: true)
+                        new AppServiceMetadata(priority: (Priority)1, isOverride: true)
                             {
                                 ServiceType = typeof(TestMostDerived),
                             }),
@@ -167,7 +167,7 @@ namespace Kephas.Tests.Services
                     {
                         new (
                             () => Substitute.For<IInstance>(),
-                            new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
+                            new AppServiceMetadata(priority: Priority.High)),
                     });
 
             Assert.IsNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).TryGetService(m => m.Priority == Priority.Normal));
@@ -181,7 +181,7 @@ namespace Kephas.Tests.Services
                 {
                     new (
                         () => Substitute.For<IInstance>(),
-                        new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
+                        new AppServiceMetadata(priority: Priority.High)),
                 });
 
             Assert.Throws<ArgumentException>(() => ((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.Normal));
@@ -195,7 +195,7 @@ namespace Kephas.Tests.Services
                 {
                     new (
                         () => Substitute.For<IInstance>(),
-                        new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
+                        new AppServiceMetadata(priority: Priority.High)),
                 });
 
             Assert.IsNotNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).TryGetService(m => m.Priority == Priority.High));
@@ -209,7 +209,7 @@ namespace Kephas.Tests.Services
                 {
                     new (
                         () => Substitute.For<IInstance>(),
-                        new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
+                        new AppServiceMetadata(priority: Priority.High)),
                 });
 
             Assert.IsNotNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.High));
@@ -227,16 +227,16 @@ namespace Kephas.Tests.Services
                     {
                         new (
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                         new (
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
+                            new AppServiceMetadata(priority: (Priority)2)),
                         new (
                             () => instance3,
-                            new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
+                            new AppServiceMetadata(priority: (Priority)3)),
                         new (
                             () => instance4,
-                            new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                     }))
                 .TryGetService(m => m.Priority == (Priority)1);
 
@@ -256,16 +256,16 @@ namespace Kephas.Tests.Services
                     {
                         new (
                             () => instance1,
-                            new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                         new (
                             () => instance2,
-                            new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
+                            new AppServiceMetadata(priority: (Priority)2)),
                         new (
                             () => instance3,
-                            new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
+                            new AppServiceMetadata(priority: (Priority)3)),
                         new (
                             () => instance4,
-                            new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
+                            new AppServiceMetadata(priority: (Priority)1)),
                     }))
                 .GetService(m => m.Priority == (Priority)1);
 
@@ -284,16 +284,16 @@ namespace Kephas.Tests.Services
                         {
                             new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance1,
-                                new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
+                                new AppServiceMetadata(priority: (Priority)1)),
                             new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance2,
-                                new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
+                                new AppServiceMetadata(priority: (Priority)2)),
                             new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance3,
-                                new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
+                                new AppServiceMetadata(priority: (Priority)3)),
                             new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance4,
-                                new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
+                                new AppServiceMetadata(priority: (Priority)1)),
                         }))
                 .SelectServices(f => f.Metadata.Priority < (Priority)3)
                 .ToList();

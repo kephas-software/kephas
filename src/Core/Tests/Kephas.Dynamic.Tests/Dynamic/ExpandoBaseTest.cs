@@ -19,7 +19,7 @@ namespace Kephas.Tests.Dynamic
     public class ExpandoBaseTest
     {
         [Test]
-        public void GetDynamicMemberNames_no_duplicates()
+        public void GetKeys_no_duplicates()
         {
             var expando = new TestExpando(new Named());
 
@@ -29,7 +29,7 @@ namespace Kephas.Tests.Dynamic
         }
 
         [Test]
-        public void GetDynamicMemberNames_this_binders()
+        public void GetKeys_this_binders()
         {
             var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
             expando["Name"] = "gigi";
@@ -41,7 +41,7 @@ namespace Kephas.Tests.Dynamic
         }
 
         [Test]
-        public void GetDynamicMemberNames_inner_object_binders()
+        public void GetKeys_inner_object_binders()
         {
             var obj = new Named();
             var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerObject);
@@ -54,7 +54,7 @@ namespace Kephas.Tests.Dynamic
         }
 
         [Test]
-        public void GetDynamicMemberNames_inner_dictionary_binders()
+        public void GetKeys_inner_dictionary_binders()
         {
             var obj = new Named();
             var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
@@ -190,7 +190,7 @@ namespace Kephas.Tests.Dynamic
             dict["Name"] = "gigi";
             expando.Name = "belogea";
 
-            var dictionary = expando.ToDictionary(valueFunc: v => v is string stringValue ? stringValue.ToUpper() : v);
+            var dictionary = expando.ToDictionary(valueGetter: v => v is string stringValue ? stringValue.ToUpper() : v);
             Assert.AreEqual("BELOGEA", dictionary["Name"]);
         }
 

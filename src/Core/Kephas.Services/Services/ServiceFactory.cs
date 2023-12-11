@@ -67,7 +67,7 @@ public class ServiceFactory : IServiceFactory
 
         var signature = new Signature(args.Select(a => a?.GetType())!);
         var typeSignCache = this.signatureCache.GetOrAdd(injectableType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
-        var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(injectableType, signature));
+        var creatorFunc = typeSignCache.GetOrAdd(signature, s => this.GetCreatorFunc(injectableType, s));
         return creatorFunc(args);
     }
 
@@ -75,9 +75,9 @@ public class ServiceFactory : IServiceFactory
     {
         var ctorInfos = this.typeCache.GetOrAdd(
             contextType,
-            _ =>
+            ct =>
             {
-                var ctors = contextType.GetConstructors().Where(c => c.IsPublic).OrderByDescending(c => c.GetParameters().Length).ToList();
+                var ctors = ct.GetConstructors().Where(c => c.IsPublic).OrderByDescending(c => c.GetParameters().Length).ToList();
                 return ctors.Select(c => (c, c.GetParameters())).ToList();
             });
         foreach (var (ctor, paramInfos) in ctorInfos)
@@ -125,7 +125,7 @@ public class ServiceFactory : IServiceFactory
                 if (appServiceInfo != null && !appServiceInfo.AllowMultiple)
                 {
                     argIndexMap.Add(-argResolverMap.Count);
-                    argResolverMap.Add(() => this.serviceProvider.Resolve(paramType));
+                    argResolverMap.Add(() => this.serviceProvider.GetRequiredService(paramType));
                 }
                 else if (paramInfo.HasDefaultValue)
                 {

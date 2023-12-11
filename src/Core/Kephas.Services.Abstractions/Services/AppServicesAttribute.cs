@@ -22,10 +22,10 @@ public sealed class AppServicesAttribute<T> : Attribute, IAppServiceInfoProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="AppServicesAttribute{T}"/> class.
     /// </summary>
-    /// <param name="processingPriority">Adds the processing priority in which the attributes will be processed.</param>
-    public AppServicesAttribute(Priority processingPriority = Priority.Normal)
+    /// <param name="priority">Adds the processing priority in which the attributes will be processed.</param>
+    public AppServicesAttribute(Priority priority = Priority.Normal)
     {
-        this.Priority = processingPriority;
+        this.Priority = priority;
     }
 
     /// <summary>

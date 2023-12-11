@@ -19,7 +19,6 @@ namespace Kephas.Runtime;
 public class AssemblyLoader : IAssemblyLoader
 {
     private readonly ILogger? logger;
-    private IEnumerable<Assembly>? assemblyCache;
 
     /// <summary>
     /// Gets the static instance of this <see cref="AssemblyLoader"/>.

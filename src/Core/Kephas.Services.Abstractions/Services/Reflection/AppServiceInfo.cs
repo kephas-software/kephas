@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Kephas.Services.Reflection;
 
 /// <summary>

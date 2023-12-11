@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Dynamic;
+
 namespace Kephas.Tests.Dynamic;
 
 using Kephas.Dynamic;
@@ -125,12 +127,21 @@ public class ObjectExpandoTest
     }
 
     [Test]
-    public void GetDynamicMemberNames()
+    public void GetKeys()
     {
         var instance = new ExpandoTest.AgedPerson { Age = 12 };
         IDynamic expando = new ObjectExpando(instance);
 
         CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetKeys());
+    }
+
+    [Test]
+    public void GetDynamicMemberNames()
+    {
+        var instance = new ExpandoTest.AgedPerson { Age = 12 };
+        DynamicObject expando = new ObjectExpando(instance);
+
+        CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetDynamicMemberNames());
     }
 
     public interface ITestIdentifiable

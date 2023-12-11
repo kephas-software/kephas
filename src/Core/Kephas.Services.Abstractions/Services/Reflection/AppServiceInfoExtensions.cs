@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Kephas.Services.Reflection
 {
     using System;

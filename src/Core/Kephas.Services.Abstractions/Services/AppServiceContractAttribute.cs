@@ -10,21 +10,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services;
-
-using System;
 using Kephas.Services.Reflection;
 
+namespace Kephas.Services;
+
 /// <summary>
-/// Marks an interface or class to be an application service contract.
-/// Application services are automatically identified by the composition
-/// and added to the container.
+/// Marks an interface or a class to be a transient application service contract, declared at assembly level.
+/// This is useful when the service to be annotated is not accessible for modification.
 /// </summary>
-[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
-public class AppServiceContractAttribute<T> : AppServiceContractAttribute, IAppServiceInfo
+/// <typeparam name="TContractDeclaration">The typed annotated as a contract declaration.</typeparam>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class AppServiceContractAttribute<TContractDeclaration> : AppServiceContractAttribute, IAppServiceInfo
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
+    /// Initializes a new instance of the <see cref="AppServiceContractAttribute{TContractDeclaration}"/> class.
     /// </summary>
     public AppServiceContractAttribute()
     {
@@ -49,14 +48,12 @@ public class AppServiceContractAttribute<T> : AppServiceContractAttribute, IAppS
     /// <value>
     /// The type declaring the contract type.
     /// </value>
-    Type? IAppServiceInfo.ContractDeclarationType => typeof(T);
+    Type? IAppServiceInfo.ContractDeclarationType => typeof(TContractDeclaration);
 }
 
 
 /// <summary>
-/// Marks an interface or class to be an application service contract.
-/// Application services are automatically identified by the composition
-/// and added to the container.
+/// Marks an interface or a class to be a transient application service contract.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 public class AppServiceContractAttribute : Attribute, IAppServiceInfo

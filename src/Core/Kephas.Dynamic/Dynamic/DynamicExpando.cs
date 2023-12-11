@@ -56,9 +56,12 @@ internal class DynamicExpando : IDynamic
     /// </summary>
     /// <returns>An enumeration of member names.</returns>
     public IEnumerable<string> GetKeys() =>
-        this.obj is DynamicObject dynObject
-            ? dynObject.GetDynamicMemberNames()
-            : Array.Empty<string>();
+        this.obj switch
+        {
+            IDynamic dynamic => dynamic.GetKeys(),
+            DynamicObject dynObject => dynObject.GetDynamicMemberNames(),
+            _ => Array.Empty<string>(),
+        };
 
     /// <summary>
     /// Indicates whether the <paramref name="key"/> is defined in the expando.
@@ -67,5 +70,11 @@ internal class DynamicExpando : IDynamic
     /// <returns>
     /// True if defined, false if not.
     /// </returns>
-    public bool HasKey(string key) => this.GetKeys().Contains(key);
+    public bool HasKey(string key) =>
+        this.obj switch
+        {
+            IDynamic dynamic => dynamic.HasKey(key),
+            DynamicObject dynObject => dynObject.GetDynamicMemberNames().Contains(key),
+            _ => false,
+        };
 }

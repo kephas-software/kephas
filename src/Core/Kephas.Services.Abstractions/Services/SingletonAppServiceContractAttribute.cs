@@ -8,26 +8,35 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
+namespace Kephas.Services;
 
-namespace Kephas.Services
+/// <summary>
+/// Marks an interface or a class to be a singleton application service contract.
+/// </summary>
+/// <typeparam name="TContractDeclaration">The typed annotated as a contract declaration.</typeparam>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class SingletonAppServiceContractAttribute<TContractDeclaration> : AppServiceContractAttribute<TContractDeclaration>
 {
-    using System;
-
     /// <summary>
-    /// Marks an interface to be a contract for singleton application services.
-    /// Application services are automatically identified by the composition
-    /// and added to the container.
+    /// Initializes a new instance of the <see cref="SingletonAppServiceContractAttribute{TContractDeclaration}"/> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SingletonAppServiceContractAttribute : AppServiceContractAttribute
+    public SingletonAppServiceContractAttribute()
+        : base(AppServiceLifetime.Singleton)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingletonAppServiceContractAttribute"/> class.
-        /// </summary>
-        public SingletonAppServiceContractAttribute()
-            : base(AppServiceLifetime.Singleton)
-        {
-        }
+    }
+}
+
+/// <summary>
+/// Marks an interface or a class to be a singleton application service contract.
+/// </summary>
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+public class SingletonAppServiceContractAttribute : AppServiceContractAttribute
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SingletonAppServiceContractAttribute"/> class.
+    /// </summary>
+    public SingletonAppServiceContractAttribute()
+        : base(AppServiceLifetime.Singleton)
+    {
     }
 }

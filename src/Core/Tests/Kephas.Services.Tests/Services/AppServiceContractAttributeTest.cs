@@ -25,7 +25,7 @@ namespace Kephas.Tests.Services
         public void Constructor()
         {
             var attr = new AppServiceContractAttribute();
-            Assert.AreEqual(ServiceLifetime.Transient,  attr.Lifetime);
+            Assert.AreEqual(AppServiceLifetime.Transient,  attr.Lifetime);
         }
     }
 }

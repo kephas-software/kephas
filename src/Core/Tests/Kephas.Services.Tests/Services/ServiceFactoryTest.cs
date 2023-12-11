@@ -47,7 +47,7 @@ public class ServiceFactoryTest
         var testService = Substitute.For<ITestService>();
 
         var (appServices, injector) = GetServices(new AppServiceInfo(typeof(ITestService), testService));
-        injector.Resolve(typeof(ITestService)).Returns(testService);
+        injector.GetService(typeof(ITestService)).Returns(testService);
         IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<TestContext>(typeof(string));
 
@@ -63,10 +63,8 @@ public class ServiceFactoryTest
 
         appServices.GetEnumerator().Returns(appServiceInfos.GetEnumerator());
 
-        injector.Resolve(typeof(IAppServiceCollection)).Returns(appServices);
-        injector.Resolve<IAppServiceCollection>().Returns(appServices);
-        injector.Resolve(typeof(IServiceProvider)).Returns(injector);
-        injector.Resolve<IServiceProvider>().Returns(injector);
+        injector.GetService(typeof(IAppServiceCollection)).Returns(appServices);
+        injector.GetService(typeof(IServiceProvider)).Returns(injector);
 
         return (appServices, injector);
     }

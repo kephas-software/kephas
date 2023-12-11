@@ -8,26 +8,36 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
+namespace Kephas.Services;
 
-namespace Kephas.Services
+/// <summary>
+/// Marks an interface or a class to be a scoped application service contract, declared at assembly level.
+/// This is useful when the service to be annotated is not accessible for modification.
+/// </summary>
+/// <typeparam name="TContractDeclaration">The typed annotated as a contract declaration.</typeparam>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class ScopedAppServiceContractAttribute<TContractDeclaration> : AppServiceContractAttribute<TContractDeclaration>
 {
-    using System;
-
     /// <summary>
-    /// Marks an interface to be contract for singleton application services within a specific scope.
-    /// Application services are automatically identified by the composition
-    /// and added to the container.
+    /// Initializes a new instance of the <see cref="ScopedAppServiceContractAttribute{TContractDeclaration}"/> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class ScopedAppServiceContractAttribute : AppServiceContractAttribute
+    public ScopedAppServiceContractAttribute()
+        : base(AppServiceLifetime.Scoped)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopedAppServiceContractAttribute"/> class.
-        /// </summary>
-        public ScopedAppServiceContractAttribute()
-            : base(AppServiceLifetime.Scoped)
-        {
-        }
+    }
+}
+
+/// <summary>
+/// Marks an interface or a class to be a scoped application service contract.
+/// </summary>
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+public class ScopedAppServiceContractAttribute : AppServiceContractAttribute
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScopedAppServiceContractAttribute"/> class.
+    /// </summary>
+    public ScopedAppServiceContractAttribute()
+        : base(AppServiceLifetime.Scoped)
+    {
     }
 }

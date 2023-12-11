@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -47,7 +48,7 @@ public class AppServiceCollectionExtensionsTest
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(service, serviceInfo.Instance);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]
@@ -73,7 +74,7 @@ public class AppServiceCollectionExtensionsTest
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(service, serviceInfo.Instance);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]
@@ -97,7 +98,7 @@ public class AppServiceCollectionExtensionsTest
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(typeof(Service), serviceInfo.InstanceType);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]
@@ -121,7 +122,7 @@ public class AppServiceCollectionExtensionsTest
         var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
         Assert.AreSame(typeof(Service), serviceInfo.InstanceType);
         Assert.AreEqual("value", serviceInfo.Metadata?["test"]);
-        Assert.AreEqual(ServiceLifetime.Singleton, serviceInfo.Lifetime);
+        Assert.AreEqual(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
 
     [Test]

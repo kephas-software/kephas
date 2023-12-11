@@ -36,7 +36,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 .AddTypes(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
             var injector = builder.BuildServiceProvider();
 
-            var moreOpen = injector.Resolve<IOpen<int>>();
+            var moreOpen = injector.GetRequiredService<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
         }
 
@@ -48,7 +48,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
                 .AddTypes(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
             var injector = builder.BuildServiceProvider();
 
-            var moreOpen = injector.Resolve<IOpen<int>>();
+            var moreOpen = injector.GetRequiredService<IOpen<int>>();
             Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);
         }
 
@@ -62,7 +62,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 
             using (var container = conventions.BuildServiceProvider())
             {
-                var myService = container.Resolve(typeof(IOpen<object>));
+                var myService = container.GetRequiredService(typeof(IOpen<object>));
                 Assert.IsInstanceOf<MoreOpenWithDependency<object>>(myService);
             }
         }

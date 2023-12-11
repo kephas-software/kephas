@@ -22,7 +22,7 @@ public class AppServiceCollectionTest
         var provider = services
             .AddAppServices(new AppServiceCollectionBuilder(appServices))
             .BuildServiceProvider();
-        var otherAppServices =  provider.Resolve<IAppServiceCollection>();
+        var otherAppServices =  provider.GetRequiredService<IAppServiceCollection>();
 
         Assert.AreSame(appServices, otherAppServices);
     }

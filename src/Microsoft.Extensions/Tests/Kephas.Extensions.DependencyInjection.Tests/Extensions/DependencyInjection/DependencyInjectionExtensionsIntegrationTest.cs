@@ -7,17 +7,15 @@
 
 using System.Reflection;
 using Kephas.Extensions.DependencyInjection;
-using Kephas.Runtime;
 using Kephas.Services;
 using Kephas.Services.Builder;
 using Kephas.Services.Configuration;
-using Kephas.Services.Reflection;
-using NSubstitute;
-using NUnit.Framework;
-
 using Kephas.Services.Metadata;
+using Kephas.Services.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace Kephas.Tests.Extensions.DependencyInjection
 {
@@ -28,16 +26,16 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         public void CreateInjector_simple_ambient_services_exported_no_assemblies()
         {
             var services = new AppServiceCollection()
-                .Add<ILogManager>(() => Substitute.For<ILogManager>(), b => b.Singleton())
-                .Add<IAppRuntime>(() => Substitute.For<IAppRuntime>(), b => b.Singleton());
+                .Add(() => Substitute.For<ILogManager>(), b => b.Singleton())
+                .Add(() => Substitute.For<IAppRuntime>(), b => b.Singleton());
             var container = CreateServicesBuilder(services)
                 .AddAssemblies(typeof(AppServiceCollection).Assembly)
                 .BuildServiceProvider();
 
-            var loggerManager = container.Resolve<ILogManager>();
+            var loggerManager = container.GetRequiredService<ILogManager>();
             Assert.AreEqual(services.GetServiceInstance<ILogManager>(), loggerManager);
 
-            var appRuntime = container.Resolve<IAppRuntime>();
+            var appRuntime = container.GetRequiredService<IAppRuntime>();
             Assert.AreEqual(services.GetServiceInstance<IAppRuntime>(), appRuntime);
         }
 
@@ -47,11 +45,11 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestAppService), typeof(TestAppService) })
+                .AddTypes(typeof(ITestAppService), typeof(TestAppService))
                 .BuildServiceProvider();
 
-            var exported = container.Resolve<ITestAppService>();
-            var secondExported = container.Resolve<ITestAppService>();
+            var exported = container.GetRequiredService<ITestAppService>();
+            var secondExported = container.GetRequiredService<ITestAppService>();
 
             Assert.AreSame(exported, secondExported);
         }
@@ -62,10 +60,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestAppService), typeof(TestAppService) })
+                .AddTypes(typeof(ITestAppService), typeof(TestAppService))
                 .BuildServiceProvider();
 
-            var exported = container.Resolve<ITestAppService>();
+            var exported = container.GetRequiredService<ITestAppService>();
 
             Assert.IsInstanceOf<TestAppService>(exported);
         }
@@ -76,10 +74,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
+                .AddTypes(typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService))
                 .BuildServiceProvider();
 
-            var exported = container.Resolve<ITestAppService>();
+            var exported = container.GetRequiredService<ITestAppService>();
 
             Assert.IsInstanceOf<TestOverrideAppService>(exported);
         }
@@ -90,11 +88,11 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
+                .AddTypes(typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2))
                 .BuildServiceProvider();
 
-            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
-            var exports2 = container.ResolveMany<ITestMultiAppService>().ToList();
+            var exports = container.GetRequiredService<IEnumerable<ITestMultiAppService>>().ToList();
+            var exports2 = container.GetRequiredService<IEnumerable<ITestMultiAppService>>().ToList();
 
             Assert.AreSame(exports[0], exports2[0]);
             Assert.AreSame(exports[1], exports2[1]);
@@ -105,10 +103,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
-                .AddTypes(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
+                .AddTypes(typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2))
                 .BuildServiceProvider();
 
-            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
+            var exports = container.GetRequiredService<IEnumerable<ITestMultiAppService>>().ToList();
 
             Assert.AreEqual(2, exports.Count);
             Assert.IsInstanceOf<TestMultiAppService1>(exports[0]);
@@ -125,7 +123,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             appServices.Add(typeof(ITestMultiAppService), typeof(TestMultiAppService2));
             var container = appServices.BuildServiceProvider();
 
-            var exports = container.ResolveMany<ITestMultiAppService>().ToList();
+            var exports = container.GetRequiredService<IEnumerable<ITestMultiAppService>>().ToList();
 
             Assert.AreEqual(3, exports.Count);
             Assert.IsInstanceOf<TestMultiAppService1>(exports[0]);
@@ -139,10 +137,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
+                .AddTypes(typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer))
                 .BuildServiceProvider();
 
-            var export = (TestMultiAppServiceConsumer)container.Resolve<ITestMultiAppServiceConsumer>();
+            var export = (TestMultiAppServiceConsumer)container.GetRequiredService<ITestMultiAppServiceConsumer>();
 
             Assert.AreEqual(2, export.Factories.Count());
             Assert.AreEqual(2, export.MetadataFactories.Count());
@@ -153,10 +151,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
-                .AddTypes(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
+                .AddTypes(typeof(ITestGenericExport<>), typeof(TestGenericExport))
                 .BuildServiceProvider();
 
-            var export = container.Resolve<ITestGenericExport<string>>();
+            var export = container.GetRequiredService<ITestGenericExport<string>>();
             Assert.IsInstanceOf<TestGenericExport>(export);
         }
 
@@ -166,10 +164,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
+                .AddTypes(typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport))
                 .BuildServiceProvider();
 
-            var export = container.Resolve<ITestGenericWithNonGenericExport>();
+            var export = container.GetRequiredService<ITestGenericWithNonGenericExport>();
             Assert.IsInstanceOf<TestGenericWithNonGenericExport>(export);
         }
 
@@ -214,10 +212,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
+                .AddTypes(typeof(ITestScopedExport), typeof(TestScopedExport))
                 .BuildServiceProvider();
 
-            Assert.IsInstanceOf<TestScopedExport>(container.Resolve<ITestScopedExport>());
+            Assert.IsInstanceOf<TestScopedExport>(container.GetRequiredService<ITestScopedExport>());
         }
 
         [Test]
@@ -233,16 +231,16 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             ITestScopedExport exportScope1;
             using (var scopedContext = lifetimeScope.CreateScope())
             {
-                exportScope1 = scopedContext.ServiceProvider.Resolve<ITestScopedExport>();
+                exportScope1 = scopedContext.ServiceProvider.GetRequiredService<ITestScopedExport>();
                 Assert.IsInstanceOf<TestScopedExport>(exportScope1);
 
-                var export = scopedContext.ServiceProvider.Resolve<ITestScopedExport>();
+                var export = scopedContext.ServiceProvider.GetRequiredService<ITestScopedExport>();
                 Assert.AreSame(exportScope1, export);
             }
 
             using (var scopedContext2 = lifetimeScope.CreateScope())
             {
-                var export2 = scopedContext2.ServiceProvider.Resolve<ITestScopedExport>();
+                var export2 = scopedContext2.ServiceProvider.GetRequiredService<ITestScopedExport>();
                 Assert.AreNotSame(exportScope1, export2);
             }
         }
@@ -252,7 +250,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
         {
             var builder = CreateServicesBuilderWithStringLogger()
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(IConstructorAppService), typeof(NoInjectConstructorAppService) });
+                .AddTypes(typeof(IConstructorAppService), typeof(NoInjectConstructorAppService));
             Assert.Throws<InvalidOperationException>(() => builder.Build());
         }
 
@@ -262,9 +260,9 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(IConstructorAppService), typeof(AmbiguousInjectConstructorAppService) })
+                .AddTypes(typeof(IConstructorAppService), typeof(AmbiguousInjectConstructorAppService))
                 .BuildServiceProvider();
-            Assert.Throws<InvalidOperationException>(() => container.Resolve<IConstructorAppService>());
+            Assert.Throws<InvalidOperationException>(() => container.GetRequiredService<IConstructorAppService>());
         }
 
         [Test]
@@ -273,10 +271,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(IConstructorAppService), typeof(LargestInjectConstructorAppService) })
+                .AddTypes(typeof(IConstructorAppService), typeof(LargestInjectConstructorAppService))
                 .BuildServiceProvider();
 
-            var component = container.Resolve<IConstructorAppService>();
+            var component = container.GetRequiredService<IConstructorAppService>();
             Assert.IsNotNull(component);
         }
 
@@ -286,10 +284,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
+                .AddTypes(typeof(IConstructorAppService), typeof(DefaultConstructorAppService))
                 .BuildServiceProvider();
 
-            var export = container.Resolve<IConstructorAppService>();
+            var export = container.GetRequiredService<IConstructorAppService>();
 
             Assert.IsInstanceOf<DefaultConstructorAppService>(export);
         }
@@ -300,10 +298,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var builder = CreateServicesBuilderWithStringLogger();
             var container = builder
                 .AddAssemblies(typeof(IServiceFactory).Assembly)
-                .AddTypes(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
+                .AddTypes(typeof(IConstructorAppService), typeof(SingleConstructorAppService))
                 .BuildServiceProvider();
 
-            var export = container.Resolve<IConstructorAppService>();
+            var export = container.GetRequiredService<IConstructorAppService>();
 
             Assert.IsInstanceOf<SingleConstructorAppService>(export);
         }
@@ -325,7 +323,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 
             var container = builder.BuildServiceProvider();
 
-            var instance = container.Resolve<string>();
+            var instance = container.GetRequiredService<string>();
             Assert.AreEqual("123", instance);
         }
 
@@ -343,7 +341,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 
             var container = builder.BuildServiceProvider();
 
-            var instance = container.Resolve<string>();
+            var instance = container.GetRequiredService<string>();
             Assert.AreEqual("123", instance);
         }
 
@@ -454,7 +452,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
 
         public class SecondStringToIntConverter : IConverter<string, int> { }
 
-        [ScopedAppServiceContract()]
+        [ScopedAppServiceContract]
         public interface ITestMyScopedExport { }
 
         public class TestMyScopedExport : ITestMyScopedExport { }

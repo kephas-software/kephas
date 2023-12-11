@@ -53,7 +53,7 @@ namespace Kephas.Dynamic;
 /// </para>
 /// </summary>
 /// <typeparam name="T">The inner dictionary item type.</typeparam>
-public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin, IDynamic
+public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
 {
     private IDictionary<string, T>? innerDictionary;
     private WeakReference<object>? innerObjectRef;
@@ -136,6 +136,10 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin, I
         get => this.TryGetValue(key, out var value) ? value : null;
         set => this.TrySetValue(key, value);
     }
+
+    /// <summary>Returns the enumeration of all dynamic member names.</summary>
+    /// <returns>A sequence that contains dynamic member names.</returns>
+    public override IEnumerable<string> GetDynamicMemberNames() => GetKeys();
 
     /// <summary>
     /// Returns the enumeration of all dynamic member names.
@@ -286,15 +290,15 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin, I
     /// Converts the expando to a dictionary having as keys the property names and as values the
     /// respective properties' values.
     /// </summary>
-    /// <param name="keyFunc">Optional. The key transformation function.</param>
-    /// <param name="valueFunc">Optional. The value transformation function.</param>
+    /// <param name="keyGetter">Optional. The key transformation function.</param>
+    /// <param name="valueGetter">Optional. The value transformation function.</param>
     /// <returns>
     /// A dictionary of property values with their associated names.
     /// </returns>
     public virtual IDictionary<string, object?> ToDictionary(
-        Func<string, string>? keyFunc = null,
-        Func<object?, object?>? valueFunc = null)
-        => IExpandoMixin.ToDictionary(this, keyFunc, valueFunc);
+        Func<string, string>? keyGetter = null,
+        Func<object?, object?>? valueGetter = null)
+        => IExpandoMixin.ToDictionary(this, keyGetter, valueGetter);
 
     /// <summary>
     /// Attempts to get the dynamic value with the given key.
