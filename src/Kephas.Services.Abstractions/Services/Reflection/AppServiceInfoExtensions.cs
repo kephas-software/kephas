@@ -29,7 +29,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == ServiceLifetime.Singleton;
+            return appServiceInfo.Lifetime == AppServiceLifetime.Singleton;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == ServiceLifetime.Scoped;
+            return appServiceInfo.Lifetime == AppServiceLifetime.Scoped;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == ServiceLifetime.Transient;
+            return appServiceInfo.Lifetime == AppServiceLifetime.Transient;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            appServiceInfo.Lifetime = ServiceLifetime.Singleton;
+            appServiceInfo.Lifetime = AppServiceLifetime.Singleton;
 
             return appServiceInfo;
         }
@@ -91,7 +91,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            appServiceInfo.Lifetime = ServiceLifetime.Scoped;
+            appServiceInfo.Lifetime = AppServiceLifetime.Scoped;
 
             return appServiceInfo;
         }
@@ -108,7 +108,7 @@ namespace Kephas.Services.Reflection
         {
             appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-            appServiceInfo.Lifetime = ServiceLifetime.Transient;
+            appServiceInfo.Lifetime = AppServiceLifetime.Transient;
 
             return appServiceInfo;
         }

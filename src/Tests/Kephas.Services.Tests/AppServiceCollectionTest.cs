@@ -21,11 +21,6 @@ namespace Kephas.Tests;
 
 public class AppServiceCollectionTest
 {
-    private IServiceProvider BuildServiceProvider(IAppServiceCollection appServices)
-    {
-        return Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
-    }
-
     [Test]
     public void Register_circular_dependency_singleton()
     {
@@ -33,9 +28,11 @@ public class AppServiceCollectionTest
         appServices.Add<CircularDependency1, CircularDependency1>();
         appServices.Add<CircularDependency2, CircularDependency2>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
 
-        Assert.Throws<CircularDependencyException>(() => container.GetService<CircularDependency1>());
+        container.Invoking(c => c.GetService<CircularDependency1>())
+            .Should().Throw<InvalidOperationException>()
+            .And.Message.Should().StartWith("A circular dependency was detected for the service of type");
     }
 
     [Test]
@@ -45,9 +42,11 @@ public class AppServiceCollectionTest
         appServices.Add<CircularDependency1, CircularDependency1>(b => b.Transient());
         appServices.Add<CircularDependency2, CircularDependency2>(b => b.Transient());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
 
-        Assert.Throws<CircularDependencyException>(() => container.GetService<CircularDependency1>());
+        container.Invoking(c => c.GetService<CircularDependency1>())
+            .Should().Throw<InvalidOperationException>()
+            .And.Message.Should().StartWith("A circular dependency was detected for the service of type");
     }
 
     [Test]
@@ -71,7 +70,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(ILogManager), logManager);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         Assert.AreSame(logManager, container.GetService(typeof(ILogManager)));
     }
 
@@ -83,7 +82,7 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(IService), typeof(DependentService));
         appServices.Add(typeof(IDependency), dependency);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = (DependentService)container.GetService(typeof(IService));
         Assert.AreSame(dependency, service.Dependency);
     }
@@ -96,7 +95,7 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(IService), typeof(OptionalDependentService));
         appServices.Add(typeof(IDependency), dependency);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = (OptionalDependentService)container.GetService(typeof(IService));
         Assert.AreSame(dependency, service.Dependency);
     }
@@ -107,7 +106,7 @@ public class AppServiceCollectionTest
         var appServices = Test.CreateTestServices();
         appServices.Add(typeof(IService), typeof(OptionalDependentService));
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = (OptionalDependentService)container.GetService(typeof(IService));
         Assert.IsNull(service.Dependency);
     }
@@ -120,8 +119,11 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(IDependency), Substitute.For<IDependency>());
         appServices.Add(typeof(IAnotherDependency), Substitute.For<IAnotherDependency>());
 
-        var container = BuildServiceProvider(appServices);
-        Assert.Throws<AmbiguousMatchException>(() => container.GetService(typeof(IService)));
+        var container = appServices.BuildServiceProvider();
+        Action getService = (() => container.GetService(typeof(IService)));
+        getService.Should().Throw<InvalidOperationException>()
+            .And.Message.Should()
+            .StartWith("Unable to activate type 'Kephas.Tests.AppServiceCollectionTest+AmbiguousDependentService'. The following constructors are ambiguous");
     }
 
     [Test]
@@ -131,7 +133,7 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(IService), typeof(AmbiguousDependentService));
         appServices.Add(typeof(IDependency), Substitute.For<IDependency>());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = (AmbiguousDependentService)container.GetService(typeof(IService));
         Assert.IsNotNull(service.Dependency);
         Assert.IsNull(service.AnotherDependency);
@@ -144,7 +146,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(IService), typeof(SimpleService));
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
 
         var service = container.GetService(typeof(IService));
         Assert.IsInstanceOf<SimpleService>(service);
@@ -160,7 +162,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(IService), typeof(SimpleService), b => b.Transient());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
 
         var service = container.GetService(typeof(IService));
         Assert.IsInstanceOf<SimpleService>(service);
@@ -174,7 +176,8 @@ public class AppServiceCollectionTest
     {
         var appServices = Test.CreateTestServices();
         appServices.Add<IService>(typeof(SimpleService));
-        Assert.Throws<InvalidOperationException>(() => appServices.Add<IService, DependentService>(b => b.AllowMultiple = true));
+        appServices.Add<IService, DependentService>(b => b.AllowMultiple = true);
+        Assert.Throws<InvalidOperationException>(() => appServices.BuildServiceProvider());
     }
 
     [Test]
@@ -192,7 +195,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(ILogManager), () => logManager);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         Assert.AreSame(logManager, container.GetService(typeof(ILogManager)));
     }
 
@@ -202,7 +205,7 @@ public class AppServiceCollectionTest
         var appServices = Test.CreateTestServices();
         appServices.Add(typeof(ILogManager), () => Substitute.For<ILogManager>(), b => b.Transient());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var logManager1 = container.GetService(typeof(ILogManager));
         var logManager2 = container.GetService(typeof(ILogManager));
         Assert.AreNotSame(logManager1, logManager2);
@@ -220,7 +223,7 @@ public class AppServiceCollectionTest
             },
             b => b.Transient());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
 
         var tasks = new List<Task>();
         for (var i = 0; i < 20; i++)
@@ -243,7 +246,7 @@ public class AppServiceCollectionTest
             },
             b => b.Singleton());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
 
         var tasks = new List<Task>();
         for (var i = 0; i < 20; i++)
@@ -261,7 +264,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService(typeof(OpenGenericService<string, int>));
         Assert.IsInstanceOf<OpenGenericService<string, int>>(service);
     }
@@ -274,7 +277,7 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(OpenGenericService<,>), typeof(OpenGenericService<,>));
         appServices.Add<OpenGenericDependency, OpenGenericDependency>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<OpenGenericDependency>();
         Assert.IsNotNull(service.ServiceIntString);
         Assert.IsNotNull(service.ServiceStringDouble);
@@ -287,7 +290,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(ILogManager), logManager);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var logManagerFactory = container.GetService<IExportFactory<ILogManager>>();
         Assert.AreSame(logManager, logManagerFactory.CreateExportedValue());
     }
@@ -299,7 +302,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(ILogManager), logManager);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var logManagerFactory = container.GetService<Lazy<ILogManager>>();
         Assert.AreSame(logManager, logManagerFactory.Value);
     }
@@ -311,7 +314,7 @@ public class AppServiceCollectionTest
         appServices.Add<IService, SimpleService>();
         appServices.Add<DependentCollectionService, DependentCollectionService>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var dependent = container.GetService<DependentCollectionService>();
         Assert.IsNotNull(dependent.Factories);
         Assert.IsInstanceOf<SimpleService>(dependent.Factories.Single().CreateExportedValue());
@@ -324,7 +327,7 @@ public class AppServiceCollectionTest
         appServices.Add<IService, SimpleService>();
         appServices.Add<DependentCollectionService, DependentCollectionService>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var factories = container.GetService<IEnumerable<Lazy<IService>>>();
         Assert.IsInstanceOf<SimpleService>(factories.Single().Value);
     }
@@ -336,7 +339,7 @@ public class AppServiceCollectionTest
         appServices.Add<IService, SimpleService>();
         appServices.Add<DependentEnumerationService, DependentEnumerationService>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var dependent = container.GetService<DependentEnumerationService>();
         Assert.IsNotNull(dependent.Factories);
         Assert.IsInstanceOf<SimpleService>(dependent.Factories.Single().CreateExportedValue());
@@ -350,7 +353,7 @@ public class AppServiceCollectionTest
         appServices.Add<IService, OptionalDependentService>(b => b.AllowMultiple = true);
         appServices.Add<DependentEnumerationService, DependentEnumerationService>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var dependent = container.GetService<DependentEnumerationService>();
         Assert.IsNotNull(dependent.Factories);
         var factories = dependent.Factories.ToList();
@@ -371,7 +374,7 @@ public class AppServiceCollectionTest
                 .AddMetadata("OverridePriority", Priority.AboveNormal)
                 .AddMetadata("IsOverride", true));
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IDependency, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
         Assert.AreEqual(Priority.Low, service.Metadata.ProcessingPriority);
@@ -385,7 +388,7 @@ public class AppServiceCollectionTest
         var appServices = Test.CreateTestServices();
         appServices.Add<IService, DependentService>();
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetRequiredService<IExportFactory<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
         Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
@@ -402,7 +405,7 @@ public class AppServiceCollectionTest
             typeof(IService<,>),
             typeof(GenericService)));
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
         Assert.IsNotNull(service.Metadata);
         Assert.AreSame(typeof(string), service.Metadata["ValueType"]);
@@ -416,7 +419,7 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(IService), typeof(DependentService));
         appServices.Add<IDependency>(Substitute.For<IDependency>());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
         Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
@@ -430,7 +433,7 @@ public class AppServiceCollectionTest
         appServices.Add<IService, DependentService>();
         appServices.Add<IDependency>(Substitute.For<IDependency>());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
         Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
@@ -447,7 +450,7 @@ public class AppServiceCollectionTest
             typeof(IService<,>),
             typeof(GenericService)));
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
         Assert.AreSame(typeof(string), service.Metadata["ValueType"]);
@@ -462,7 +465,7 @@ public class AppServiceCollectionTest
         appServices.Add<IDependency, DependencyWithDependency>();
         appServices.Add<IAnotherDependency>(Substitute.For<IAnotherDependency>());
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var service = container.GetService<IService>();
         Assert.IsNotNull(((DependencyWithDependency)((DependentService)service).Dependency).AnotherDependency);
     }
@@ -474,7 +477,7 @@ public class AppServiceCollectionTest
         var logManager = Substitute.For<ILogManager>();
         appServices.Add(typeof(ILogManager), logManager);
 
-        var container = BuildServiceProvider(appServices);
+        var container = appServices.BuildServiceProvider();
         var logManagerCollection = container.GetService<IEnumerable<ILogManager>>();
         Assert.AreSame(logManager, logManagerCollection.Single());
     }

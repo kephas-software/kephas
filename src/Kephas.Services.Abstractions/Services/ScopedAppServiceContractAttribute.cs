@@ -26,7 +26,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="ScopedAppServiceContractAttribute"/> class.
         /// </summary>
         public ScopedAppServiceContractAttribute()
-            : base(ServiceLifetime.Scoped)
+            : base(AppServiceLifetime.Scoped)
         {
         }
     }

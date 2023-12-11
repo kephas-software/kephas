@@ -26,7 +26,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="SingletonAppServiceContractAttribute"/> class.
         /// </summary>
         public SingletonAppServiceContractAttribute()
-            : base(ServiceLifetime.Singleton)
+            : base(AppServiceLifetime.Singleton)
         {
         }
     }

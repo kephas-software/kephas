@@ -27,7 +27,7 @@ public class AppServiceInfo : IAppServiceInfo
     ///                             <c>true</c> if the contract should be exported as an open generic;
     ///                             otherwise, <c>false</c>.
     /// </param>
-    public AppServiceInfo(Type contractType, ServiceLifetime lifetime = ServiceLifetime.Transient, bool asOpenGeneric = false)
+    public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Transient, bool asOpenGeneric = false)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
@@ -48,7 +48,7 @@ public class AppServiceInfo : IAppServiceInfo
 
         this.SetContractType(contractType);
         this.InstancingStrategy = serviceInstance;
-        this.SetLifetime(ServiceLifetime.Singleton);
+        this.SetLifetime(AppServiceLifetime.Singleton);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class AppServiceInfo : IAppServiceInfo
     /// <param name="contractType">The contract type of the export.</param>
     /// <param name="serviceInstanceFactory">The service instance factory.</param>
     /// <param name="lifetime">Optional. The application service lifetime.</param>
-    public AppServiceInfo(Type contractType, Func<IServiceProvider, object> serviceInstanceFactory, ServiceLifetime lifetime = ServiceLifetime.Transient)
+    public AppServiceInfo(Type contractType, Func<IServiceProvider, object> serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceInstanceFactory = serviceInstanceFactory ?? throw new ArgumentNullException(nameof(serviceInstanceFactory));
@@ -77,7 +77,7 @@ public class AppServiceInfo : IAppServiceInfo
     ///                             <c>true</c> if the contract should be exported as an open generic;
     ///                             otherwise, <c>false</c>.
     /// </param>
-    public AppServiceInfo(Type contractType, Type serviceType, ServiceLifetime lifetime = ServiceLifetime.Transient, bool asOpenGeneric = false)
+    public AppServiceInfo(Type contractType, Type serviceType, AppServiceLifetime lifetime = AppServiceLifetime.Transient, bool asOpenGeneric = false)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
@@ -126,7 +126,7 @@ public class AppServiceInfo : IAppServiceInfo
     ///                             otherwise, <c>false</c>.
     /// </param>
     /// <param name="metadata">The metadata.</param>
-    internal AppServiceInfo(Type contractType, Type? contractDeclarationType, object? instancingStrategy, ServiceLifetime lifetime, bool asOpenGeneric, IDictionary<string, object?>? metadata)
+    internal AppServiceInfo(Type contractType, Type? contractDeclarationType, object? instancingStrategy, AppServiceLifetime lifetime, bool asOpenGeneric, IDictionary<string, object?>? metadata)
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
@@ -145,7 +145,7 @@ public class AppServiceInfo : IAppServiceInfo
     /// <value>
     /// The application service lifetime.
     /// </value>
-    public ServiceLifetime Lifetime { get; internal set; }
+    public AppServiceLifetime Lifetime { get; internal set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether multiple services for this contract are allowed.
@@ -246,7 +246,7 @@ public class AppServiceInfo : IAppServiceInfo
         }
     }
 
-    private void SetLifetime(ServiceLifetime lifetime)
+    private void SetLifetime(AppServiceLifetime lifetime)
     {
         this.Lifetime = lifetime;
     }
