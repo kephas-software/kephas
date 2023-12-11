@@ -29,19 +29,11 @@ namespace Kephas.Tests.Services.Metadata
         }
 
         [Test]
-        public void Constructor_OverridePriority()
+        public void Constructor_Priority()
         {
-            var metadata = new Dictionary<string, object> { { "OverridePriority", Priority.High } };
+            var metadata = new Dictionary<string, object> { { "Priority", Priority.Low } };
             var appServiceMetadata = new AppServiceMetadata(metadata);
-            Assert.AreEqual(Priority.High, appServiceMetadata.OverridePriority);
-        }
-
-        [Test]
-        public void Constructor_ProcessingPriority()
-        {
-            var metadata = new Dictionary<string, object> { { "ProcessingPriority", Priority.Low } };
-            var appServiceMetadata = new AppServiceMetadata(metadata);
-            Assert.AreEqual(Priority.Low, appServiceMetadata.ProcessingPriority);
+            Assert.AreEqual(Priority.Low, appServiceMetadata.Priority);
         }
 
         [Test]

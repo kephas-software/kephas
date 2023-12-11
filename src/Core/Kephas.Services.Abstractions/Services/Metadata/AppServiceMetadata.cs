@@ -29,8 +29,7 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
             return;
         }
 
-        this.ProcessingPriority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(this.ProcessingPriority), Priority.Normal)!, typeof(int));
-        this.OverridePriority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(this.OverridePriority), Priority.Normal)!, typeof(int));
+        this.Priority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(this.Priority), Priority.Normal)!, typeof(int));
         this.ServiceName = (string?)metadata.TryGetValue(nameof(this.ServiceName));
         this.IsOverride = (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!;
         this.ServiceType = (Type?)metadata.TryGetValue(nameof(this.ServiceType));
@@ -39,15 +38,14 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
     /// <summary>
     /// Initializes a new instance of the <see cref="AppServiceMetadata" /> class.
     /// </summary>
-    /// <param name="processingPriority">Optional. The processing priority.</param>
+    /// <param name="priority">Optional. The processing priority.</param>
     /// <param name="overridePriority">Optional. The override priority.</param>
     /// <param name="serviceName">Optional. The name of the service.</param>
     /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
-    public AppServiceMetadata(Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
+    public AppServiceMetadata(Priority priority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
         : base(new Dictionary<string, object?>())
     {
-        this.ProcessingPriority = processingPriority;
-        this.OverridePriority = overridePriority;
+        this.Priority = priority;
         this.ServiceName = serviceName;
         this.IsOverride = isOverride;
     }
@@ -58,15 +56,7 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
     /// <value>
     /// The processing priority.
     /// </value>
-    public Priority ProcessingPriority { get; }
-
-    /// <summary>
-    /// Gets the priority of the service in the override chain.
-    /// </summary>
-    /// <value>
-    /// The override priority.
-    /// </value>
-    public Priority OverridePriority { get; }
+    public Priority Priority { get; }
 
     /// <summary>
     /// Gets a value indicating whether the service overrides the
@@ -110,6 +100,6 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
     public override string ToString()
     {
         var serviceName = string.IsNullOrEmpty(this.ServiceName) ? string.Empty : $"Name: {this.ServiceName}, ";
-        return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}Impl: {this.ServiceType}";
+        return $"Priority: {this.Priority}, {serviceName}Impl: {this.ServiceType}";
     }
 }

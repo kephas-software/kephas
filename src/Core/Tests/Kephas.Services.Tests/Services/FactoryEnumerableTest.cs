@@ -39,10 +39,10 @@ public class FactoryEnumerableTest
             {
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance1,
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance2,
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)(-1))),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)(-1))),
             }).ToList();
 
 
@@ -63,16 +63,16 @@ public class FactoryEnumerableTest
             {
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance1,
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance2,
-                    new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
+                    new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance3,
-                    new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
+                    new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance4,
-                    new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
+                    new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
             }).ToList();
 
 
@@ -95,22 +95,22 @@ public class FactoryEnumerableTest
             {
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance1,
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)
                     {
                         ServiceType = typeof(TestDerived),
                     }),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance2,
-                    new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)
+                    new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)
                     {
                         ServiceType = typeof(Test),
                     }),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance3,
-                    new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
+                    new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance4,
-                    new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1, isOverride: true)
+                    new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1, isOverride: true)
                     {
                         ServiceType = typeof(TestMostDerived),
                     }),
@@ -135,22 +135,22 @@ public class FactoryEnumerableTest
             {
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance1,
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1, isOverride: true)
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1, isOverride: true)
                     {
                         ServiceType = typeof(TestDerived),
                     }),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance2,
-                    new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2, isOverride: true)
+                    new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2, isOverride: true)
                     {
                         ServiceType = typeof(Test),
                     }),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance3,
-                    new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
+                    new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
                 new ExportFactory<IInstance, AppServiceMetadata>(
                     () => instance4,
-                    new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1, isOverride: true)
+                    new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1, isOverride: true)
                     {
                         ServiceType = typeof(TestMostDerived),
                     }),
@@ -170,10 +170,10 @@ public class FactoryEnumerableTest
             {
                 new (
                     () => Substitute.For<IInstance>(),
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: Priority.High)),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
             });
 
-        Assert.IsNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.ProcessingPriority == Priority.Normal));
+        Assert.IsNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.Normal));
     }
 
     [Test]
@@ -184,10 +184,10 @@ public class FactoryEnumerableTest
             {
                 new (
                     () => Substitute.For<IInstance>(),
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: Priority.High)),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
             });
 
-        Assert.Throws<ArgumentException>(() => ((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).GetService(m => m.ProcessingPriority == Priority.Normal));
+        Assert.Throws<ArgumentException>(() => ((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).GetService(m => m.Priority == Priority.Normal));
     }
 
     [Test]
@@ -198,10 +198,10 @@ public class FactoryEnumerableTest
             {
                 new (
                     () => Substitute.For<IInstance>(),
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: Priority.High)),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
             });
 
-        Assert.IsNotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.ProcessingPriority == Priority.High));
+        Assert.IsNotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
     }
 
     [Test]
@@ -212,10 +212,10 @@ public class FactoryEnumerableTest
             {
                 new (
                     () => Substitute.For<IInstance>(),
-                    new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: Priority.High)),
+                    new AppServiceMetadata(overridePriority: (Priority)3, priority: Priority.High)),
             });
 
-        Assert.IsNotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.ProcessingPriority == Priority.High));
+        Assert.IsNotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
     }
 
     [Test]
@@ -230,18 +230,18 @@ public class FactoryEnumerableTest
                 {
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
+                        new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
+                        new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
                 }))
-            .TryGetService(m => m.ProcessingPriority == (Priority)1);
+            .TryGetService(m => m.Priority == (Priority)1);
 
         Assert.AreSame(instance4, instance);
     }
@@ -258,18 +258,18 @@ public class FactoryEnumerableTest
                 {
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
+                        new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
+                        new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
                 }))
-            .GetService(m => m.ProcessingPriority == (Priority)1);
+            .GetService(m => m.Priority == (Priority)1);
 
         Assert.AreSame(instance4, instance);
     }
@@ -286,18 +286,18 @@ public class FactoryEnumerableTest
                 {
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance1,
-                        new AppServiceMetadata(overridePriority: (Priority)3, processingPriority: (Priority)1)),
+                        new AppServiceMetadata(overridePriority: (Priority)3, priority: (Priority)1)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance2,
-                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)2)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)2)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance3,
-                        new AppServiceMetadata(overridePriority: (Priority)2, processingPriority: (Priority)3)),
+                        new AppServiceMetadata(overridePriority: (Priority)2, priority: (Priority)3)),
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance4,
-                        new AppServiceMetadata(overridePriority: (Priority)1, processingPriority: (Priority)1)),
+                        new AppServiceMetadata(overridePriority: (Priority)1, priority: (Priority)1)),
                 }))
-            .SelectServices(f => f.Metadata.OverridePriority < (Priority)3)
+            .SelectServices(f => f.Metadata.Priority < (Priority)3)
             .ToList();
 
 

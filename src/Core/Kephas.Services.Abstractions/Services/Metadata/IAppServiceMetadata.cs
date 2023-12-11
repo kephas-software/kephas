@@ -10,7 +10,7 @@ namespace Kephas.Services.Metadata;
 /// <summary>
 /// Abstraction over the application service metadata.
 /// </summary>
-public interface IAppServiceMetadata : IHasProcessingPriority, IHasOverridePriority
+public interface IAppServiceMetadata : IHasPriority
 {
     /// <summary>
     /// Gets a value indicating whether the service overrides the

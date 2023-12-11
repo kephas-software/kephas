@@ -1,11 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OverridePriorityAttribute.cs" company="Kephas Software SRL">
+// <copyright file="PriorityAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Indicates an override priority for services when more service implementations are defined for the same contract.
-//   The service with the highest priority defined will be used.
+//   Indicates a processing priority used when more services must be processed.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,26 +17,25 @@ namespace Kephas.Services
     using Kephas.Services;
 
     /// <summary>
-    /// Indicates an override priority for services when more service implementations are defined for the same contract.
-    /// The service with the highest priority defined will be used.
+    /// Indicates a processing priority used when more services must be processed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class OverridePriorityAttribute : Attribute, IServiceMetadataValue<Priority>, IHasOverridePriority
+    public class PriorityAttribute : Attribute, IServiceMetadataValue<Priority>, IHasPriority
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OverridePriorityAttribute" /> class.
+        /// Initializes a new instance of the <see cref="PriorityAttribute" /> class.
         /// </summary>
-        /// <param name="priority">The override priority.</param>
-        public OverridePriorityAttribute(int priority)
+        /// <param name="priority">The processing priority.</param>
+        public PriorityAttribute(int priority)
         {
             this.Value = (Priority)priority;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OverridePriorityAttribute" /> class.
+        /// Initializes a new instance of the <see cref="PriorityAttribute" /> class.
         /// </summary>
-        /// <param name="priority">The override priority.</param>
-        public OverridePriorityAttribute(Priority priority)
+        /// <param name="priority">The processing priority.</param>
+        public PriorityAttribute(Priority priority)
         {
             this.Value = priority;
         }
@@ -51,11 +49,11 @@ namespace Kephas.Services
         public Priority Value { get; }
 
         /// <summary>
-        /// Gets the override priority.
+        /// Gets the processing priority.
         /// </summary>
         /// <value>
-        /// The override priority.
+        /// The processing priority.
         /// </value>
-        Priority IHasOverridePriority.OverridePriority => this.Value;
+        Priority IHasPriority.Priority => this.Value;
     }
 }

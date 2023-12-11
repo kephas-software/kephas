@@ -242,7 +242,6 @@ public static class ServiceEnumerableExtensions
 
     private static bool HasSamePriority<TMetadata>(TMetadata metadata1, TMetadata metadata2)
     {
-        return ((metadata1 as IHasOverridePriority)?.OverridePriority ?? Priority.Normal) == ((metadata2 as IHasOverridePriority)?.OverridePriority ?? Priority.Normal)
-               && ((metadata1 as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal) == ((metadata2 as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal);
+        return ((metadata1 as IHasPriority)?.Priority ?? Priority.Normal) == ((metadata2 as IHasPriority)?.Priority ?? Priority.Normal);
     }
 }

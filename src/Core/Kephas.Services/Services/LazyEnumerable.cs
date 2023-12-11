@@ -18,7 +18,7 @@ namespace Kephas.Services;
 /// </summary>
 /// <typeparam name="TContract">Type of the service contract.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, TMetadata>
 {
     private readonly ICollection<Lazy<TContract, TMetadata>> serviceFactories;
@@ -62,8 +62,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
         }
 
         var orderedFactories = serviceFactories
-            .OrderBy(f => (f.Metadata as IHasOverridePriority)?.OverridePriority ?? Priority.Normal)
-            .ThenBy(f => (f.Metadata as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
+            .OrderBy(f => (f.Metadata as IHasPriority)?.Priority ?? Priority.Normal)
             .ToList();
 
         // get the overridden services which should be eliminated

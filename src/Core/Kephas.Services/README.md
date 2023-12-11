@@ -4,7 +4,7 @@
 This package provides support for application services and dependency injection.
 
 Typically used areas and classes/interfaces/services:
-- Services: `IAppServiceInfo`, `IAppServiceInfoProvider`, `SingletonAppServiceContractAttribute`, `AppServiceContractAttribute`, `OverridePriorityAttribute`, ProcessingPriorityAttribute.
+- Services: `IAppServiceInfo`, `IAppServiceInfoProvider`, `SingletonAppServiceContractAttribute`, `AppServiceContractAttribute`, `PriorityAttribute`.
 - Services.Builder: `IAppServiceCollectionBuilder`, `AppServiceCollectionBuilder`. 
 - `IAppServiceCollection`, `AppServiceCollection`.
 
@@ -82,7 +82,7 @@ Services are collected using an `AppServiceCollectionBuilder`. During this proce
   * If not set, it tries to identify the `IAppRuntime` service within the `IAppServices` collection, from which it calls `GetAppAssemblies()`.
   * Otherwise it will not use any assemblies, instead only the manually registered services will be used.
 * After identifying the services assemblies, the system assemblies are excluded (those starting with `System` or `Microsoft`) and, additionally, the search filter specified in the settings is applied.
-* Using the selected assemblies, all the assembly attributes implementing `IAppServiceInfoProvider` are collected in the order of their `ProcessingPriority` (if their type implements `IHasProcessingPriority`).
+* Using the selected assemblies, all the assembly attributes implementing `IAppServiceInfoProvider` are collected in the order of their `Priority` (if their type implements `IHasPriority`).
 * These providers are then merged with the providers provided in settings.
 * The providers are used to collect the service registrations, which are added to the collection.
 
@@ -118,7 +118,7 @@ var logger = appServices.Resolve<ILogger<MyComponent>>();
 For the semantics of each of the attributes, please see below.
 * Implement one or more application services based on the contract defined in the step above.
   * Note: for contracts not allowing multiple service implementations, it is a recommended practice to decorate the service implementation
-with the `[OverridePriority]` attribute. See more on this feature below.
+with the `[Priority]` attribute. See more on this feature below.
 * Consume the service.
 
 ## Consuming application services
@@ -282,8 +282,7 @@ and `PropertyName` is the name of the annotated property holding the value.
 
 #### Built-in metadata attributes
 The metadata attributes indicated below are predefined by the infrastructure and do not need to be specified by the service implementations.
-* `ProcessingPriority`
-* `OverridePriority`
+* `Priority`
 * `ServiceName`
 
 ## Configuring the application service implementations
@@ -293,7 +292,7 @@ The metadata attributes indicated below are predefined by the infrastructure and
 Let’s take the case when there is need for a service declared in single mode, but, for specialization reasons,
 there are multiple service implementations defined in different application layers.
 Such a scenario is not supported by default, because choosing one service implementation would be not deterministic.
-To overcome this issue, Kephas allows declaring an `OverridePriority` at the service implementation level,
+To overcome this issue, Kephas allows declaring a `Priority` at the service implementation level,
 so that the injection infrastructure can make use of this information for detecting the implementation with the highest priority,
 which will be used as the one implementation of its declaring contract.
 
@@ -322,7 +321,7 @@ The accepted values are `Lowest`, `Low`, `BelowNormal`, `Normal` (default value)
     /// <summary>
     /// Provides the default implementation of the <see cref="IRequestProcessor"/> application service contract.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultRequestProcessor : IRequestProcessor
     {
         //...
@@ -331,15 +330,15 @@ The accepted values are `Lowest`, `Low`, `BelowNormal`, `Normal` (default value)
     //... 
 	
     // the following service is defined at the domain application layer.
-    // note that even if an OverridePriority would have not been specified,
+    // note that even if a Priority would have not been specified,
     // the CustomRequestProcessor would have been elected as implementation
-    // for the IRequestProcessor contract, because in this case the OverridePriority
+    // for the IRequestProcessor contract, because in this case the Priority
     // is Normal, which is higher than Low.
 
     /// <summary>
     /// Provides a custom implementation of the <see cref="IRequestProcessor"/> application service contract.
     /// </summary>
-    [OverridePriority(Priority.High)]
+    [Priority(Priority.High)]
     public class CustomRequestProcessor : IRequestProcessor
     {
         //...
@@ -360,7 +359,7 @@ Such a case may be a list of converters between two types, where they must be ap
     {
     }
 
-    [ProcessingPriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     public class BeforeUserToUserViewModelConverter : IConverter<IUser, IUserViewModel>
     {
         //...
@@ -373,7 +372,7 @@ Such a case may be a list of converters between two types, where they must be ap
     }
 
     // can also use integer values.
-    [ProcessingPriority(100)]
+    [Priority(100)]
     public class AfterUserToUserViewModelConverter : IConverter<IUser, IUserViewModel>
     {
         //...
@@ -386,8 +385,8 @@ Such a case may be a list of converters between two types, where they must be ap
         public DefaultConversionService(IList<IExportFactory<IConverter, ConverterMetadata>> lazyConverters)
         {
             this.converters = (from b in lazyConverters ?? new List<IExportFactory<IConverter, ConverterMetadata>>()
-                              orderby b.Metadata.ProcessingPriority
-                              select b.CreateExport().Value).ToList();
+                              orderby b.Metadata.Priority
+                              select b.CreateExportedValue()).ToList();
         }
     }
 ```
@@ -593,7 +592,7 @@ It aggregates the enabled rule services and applies them to each of the service 
 
 ```C#
 
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultAppManager : IAppManager
     {
         /// <summary>

@@ -18,7 +18,7 @@ namespace Kephas.Services;
 /// <summary>
 /// A context factory.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class ServiceFactory : IServiceFactory
 {
     private const int AppServicesIndex = -1;

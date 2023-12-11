@@ -315,11 +315,11 @@ namespace Kephas.Tests.Services
             var explicitMetadata = explicitBuilderEntry.Metadata!;
 
             Assert.AreEqual(1, nullMetadata.Count);
-            Assert.IsFalse(nullMetadata.ContainsKey(nameof(AppServiceMetadata.ProcessingPriority)));
+            Assert.IsFalse(nullMetadata.ContainsKey(nameof(AppServiceMetadata.Priority)));
 
             Assert.AreEqual(2, explicitMetadata.Count);
-            Assert.IsTrue(explicitMetadata.ContainsKey(nameof(AppServiceMetadata.ProcessingPriority)));
-            Assert.AreEqual((Priority)100, explicitMetadata[nameof(AppServiceMetadata.ProcessingPriority)]);
+            Assert.IsTrue(explicitMetadata.ContainsKey(nameof(AppServiceMetadata.Priority)));
+            Assert.AreEqual((Priority)100, explicitMetadata[nameof(AppServiceMetadata.Priority)]);
         }
 
         [Test]
@@ -444,7 +444,7 @@ namespace Kephas.Tests.Services
 
         public class SingleTestService : ISingleTestAppService { }
 
-        [OverridePriority(Priority.High)]
+        [Priority(Priority.High)]
         public class SingleOverrideTestService : ISingleTestAppService { }
 
         public class SingleSameOverrideTestService : ISingleTestAppService { }
@@ -564,7 +564,7 @@ namespace Kephas.Tests.Services
         [SingletonAppServiceContract(AllowMultiple = true)]
         public interface IExplicitMetadataAppService { }
 
-        [ProcessingPriority(100)]
+        [Priority(100)]
         public class ExplicitMetadataAppService : IExplicitMetadataAppService { }
 
         public class NullExplicitMetadataAppService : IExplicitMetadataAppService { }

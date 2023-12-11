@@ -49,13 +49,13 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                 };
@@ -75,13 +75,13 @@ namespace Kephas.Tests.Services
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one")),
                 new Lazy<string, AppServiceMetadata>(
                     () => "two service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)0,
                         serviceName: "two")),
             };
@@ -101,25 +101,25 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service 2",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)(-1),
                                             serviceName: "one")),
                                 };
@@ -139,25 +139,25 @@ namespace Kephas.Tests.Services
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "one service 2",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)(-1),
                                             serviceName: "one")),
                                 };
@@ -177,25 +177,25 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "One")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service 2",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "oNe")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)(-1),
                                             serviceName: "onE")),
                                 };
@@ -215,25 +215,25 @@ namespace Kephas.Tests.Services
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "One")),
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "one service 2",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "oNe")),
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                     new Lazy<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)(-1),
                                             serviceName: "onE")),
                                 };
@@ -253,19 +253,19 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                 };
@@ -281,19 +281,19 @@ namespace Kephas.Tests.Services
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one")),
                 new Lazy<string, AppServiceMetadata>(
                     () => "two service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)0,
                         serviceName: "two")),
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service reloaded",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one")),
             };
@@ -309,19 +309,19 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two")),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one")),
                                 };
@@ -337,19 +337,19 @@ namespace Kephas.Tests.Services
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one")),
                 new Lazy<string, AppServiceMetadata>(
                     () => "two service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)0,
                         serviceName: "two")),
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service reloaded",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one")),
             };
@@ -365,19 +365,19 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one") { ["Key"] = typeof(int) }),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two") { ["Key"] = typeof(string) }),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)(-1),
                                             serviceName: "one") { ["Key"] = typeof(int) }),
                                 };
@@ -397,19 +397,19 @@ namespace Kephas.Tests.Services
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one") { ["Key"] = typeof(int) }),
                 new Lazy<string, AppServiceMetadata>(
                     () => "two service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)0,
                         serviceName: "two") { ["Key"] = typeof(string) }),
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service reloaded",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)(-1),
                         serviceName: "one") { ["Key"] = typeof(int) }),
             };
@@ -429,19 +429,19 @@ namespace Kephas.Tests.Services
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)2,
+                                            priority: (Priority)2,
                                             overridePriority: (Priority)1,
                                             serviceName: "one") { ["Key"] = typeof(int) }),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "two service",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)0,
                                             serviceName: "two") { ["Key"] = typeof(string) }),
                                     new ExportFactory<string, AppServiceMetadata>(
                                         () => "one service reloaded",
                                         new AppServiceMetadata(
-                                            processingPriority: (Priority)5,
+                                            priority: (Priority)5,
                                             overridePriority: (Priority)(-1),
                                             serviceName: "one") { ["Key"] = typeof(int) }),
                                 };
@@ -461,19 +461,19 @@ namespace Kephas.Tests.Services
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)2,
+                        priority: (Priority)2,
                         overridePriority: (Priority)1,
                         serviceName: "one") { ["Key"] = typeof(int) }),
                 new Lazy<string, AppServiceMetadata>(
                     () => "two service",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)0,
                         serviceName: "two") { ["Key"] = typeof(string) }),
                 new Lazy<string, AppServiceMetadata>(
                     () => "one service reloaded",
                     new AppServiceMetadata(
-                        processingPriority: (Priority)5,
+                        priority: (Priority)5,
                         overridePriority: (Priority)(-1),
                         serviceName: "one") { ["Key"] = typeof(int) }),
             };

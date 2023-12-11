@@ -18,7 +18,7 @@ namespace Kephas.Pipelines;
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TTarget, TOperationArgs, TResult>
 {
     private readonly ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors;

@@ -18,7 +18,7 @@ namespace Kephas.Services;
 /// </summary>
 /// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<TTargetContract, TMetadata>
 {
     private readonly ICollection<IExportFactory<TTargetContract, TMetadata>> serviceFactories;
@@ -62,8 +62,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
         }
 
         var orderedFactories = serviceFactories
-            .OrderBy(f => (f.Metadata as IHasOverridePriority)?.OverridePriority ?? Priority.Normal)
-            .ThenBy(f => (f.Metadata as IHasProcessingPriority)?.ProcessingPriority ?? Priority.Normal)
+            .OrderBy(f => (f.Metadata as IHasPriority)?.Priority ?? Priority.Normal)
             .ToList();
 
         // get the overridden services which should be eliminated

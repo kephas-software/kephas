@@ -16,7 +16,45 @@ using System;
 using Kephas.Services.Reflection;
 
 /// <summary>
-/// Marks an interface to be an application service contract.
+/// Marks an interface or class to be an application service contract.
+/// Application services are automatically identified by the composition
+/// and added to the container.
+/// </summary>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+public class AppServiceContractAttribute<T> : AppServiceContractAttribute, IAppServiceInfo
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
+    /// </summary>
+    public AppServiceContractAttribute()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
+    /// </summary>
+    /// <param name="lifetime">The lifetime.</param>
+    protected AppServiceContractAttribute(AppServiceLifetime lifetime)
+        : base(lifetime)
+    {
+    }
+
+    /// <summary>
+    /// Gets the type declaring the contract type.
+    /// </summary>
+    /// <remarks>
+    /// This is the type annotated with the [AppServiceContract] attribute, but which declares a base contract type.
+    /// Typically this is a generic type used for collecting metadata, redirecting to the non-generic contract type.
+    /// </remarks>
+    /// <value>
+    /// The type declaring the contract type.
+    /// </value>
+    Type? IAppServiceInfo.ContractDeclarationType => typeof(T);
+}
+
+
+/// <summary>
+/// Marks an interface or class to be an application service contract.
 /// Application services are automatically identified by the composition
 /// and added to the container.
 /// </summary>

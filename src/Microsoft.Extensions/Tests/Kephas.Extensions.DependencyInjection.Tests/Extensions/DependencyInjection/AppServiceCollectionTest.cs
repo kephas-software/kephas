@@ -1,0 +1,29 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AppServiceCollectionTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using Kephas.Services.Builder;
+using NUnit.Framework;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Kephas.Tests.Extensions.DependencyInjection;
+
+[TestFixture]
+public class AppServiceCollectionTest
+{
+    [Test]
+    public void AppServiceCollection_singleton()
+    {
+        var services = new ServiceCollection();
+        var appServices = new AppServiceCollection();
+        var provider = services
+            .AddAppServices(new AppServiceCollectionBuilder(appServices))
+            .BuildServiceProvider();
+        var otherAppServices =  provider.Resolve<IAppServiceCollection>();
+
+        Assert.AreSame(appServices, otherAppServices);
+    }
+}

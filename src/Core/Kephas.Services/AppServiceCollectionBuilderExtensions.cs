@@ -198,7 +198,7 @@ internal static class AppServiceCollectionBuilderExtensions
         // leave the implementation with the runtime type info
         // so that it may be possible to use runtime added attributes
         var overrideChain = appServiceInfos
-            .Select(si => (appServiceInfo: si, overridePriority: (Priority)(si.Metadata?.TryGetValue(nameof(AppServiceMetadata.OverridePriority)) ?? Priority.Normal)))
+            .Select(si => (appServiceInfo: si, overridePriority: (Priority)(si.Metadata?.TryGetValue(nameof(AppServiceMetadata.Priority)) ?? Priority.Normal)))
             .OrderBy(item => item.overridePriority)
             .ToList();
 

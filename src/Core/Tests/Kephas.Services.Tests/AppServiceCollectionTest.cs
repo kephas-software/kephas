@@ -370,15 +370,13 @@ public class AppServiceCollectionTest
             typeof(IDependency),
             () => Substitute.For<IDependency>(),
             b => b
-                .AddMetadata("ProcessingPriority", Priority.Low)
-                .AddMetadata("OverridePriority", Priority.AboveNormal)
+                .AddMetadata("Priority", Priority.Low)
                 .AddMetadata("IsOverride", true));
 
         var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IDependency, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
-        Assert.AreEqual(Priority.Low, service.Metadata.ProcessingPriority);
-        Assert.AreEqual(Priority.AboveNormal, service.Metadata.OverridePriority);
+        Assert.AreEqual(Priority.Low, service.Metadata.Priority);
         Assert.IsTrue(service.Metadata.IsOverride);
     }
 
@@ -391,7 +389,7 @@ public class AppServiceCollectionTest
         var container = appServices.BuildServiceProvider();
         var service = container.GetRequiredService<IExportFactory<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
-        Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
+        Assert.AreEqual(Priority.High, service.Metadata.Priority);
         Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
     }
 
@@ -422,7 +420,7 @@ public class AppServiceCollectionTest
         var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
-        Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
+        Assert.AreEqual(Priority.High, service.Metadata.Priority);
         Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
     }
 
@@ -436,7 +434,7 @@ public class AppServiceCollectionTest
         var container = appServices.BuildServiceProvider();
         var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
         Assert.IsNotNull(service.Metadata);
-        Assert.AreEqual(Priority.High, service.Metadata.OverridePriority);
+        Assert.AreEqual(Priority.High, service.Metadata.Priority);
         Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
     }
 
@@ -537,7 +535,7 @@ public class AppServiceCollectionTest
 
     public class SimpleService : IService { }
 
-    [OverridePriority(Priority.High)]
+    [Priority(Priority.High)]
     public class DependentService : IService
     {
         public IDependency Dependency { get; }

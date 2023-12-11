@@ -205,7 +205,7 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
 
         var providers = appAssemblies
             .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfoProvider>())
-            .OrderBy(a => a is IHasProcessingPriority hasPriority ? hasPriority.ProcessingPriority : Priority.Normal);
+            .OrderBy(a => a is IHasPriority hasPriority ? hasPriority.Priority : Priority.Normal);
 
         return providers;
     }

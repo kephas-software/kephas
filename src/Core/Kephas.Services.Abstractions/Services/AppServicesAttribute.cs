@@ -16,7 +16,7 @@ using System.Linq;
 /// </summary>
 /// <typeparam name="T">The type providing the application services.</typeparam>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class AppServicesAttribute<T> : Attribute, IAppServiceInfoProvider, IHasProcessingPriority
+public sealed class AppServicesAttribute<T> : Attribute, IAppServiceInfoProvider, IHasPriority
     where T : IAppServiceInfoProvider, new()
 {
     /// <summary>
@@ -25,13 +25,13 @@ public sealed class AppServicesAttribute<T> : Attribute, IAppServiceInfoProvider
     /// <param name="processingPriority">Adds the processing priority in which the attributes will be processed.</param>
     public AppServicesAttribute(Priority processingPriority = Priority.Normal)
     {
-        this.ProcessingPriority = processingPriority;
+        this.Priority = processingPriority;
     }
 
     /// <summary>
     /// Gets the processing priority.
     /// </summary>
-    public Priority ProcessingPriority { get; }
+    public Priority Priority { get; }
 
     /// <summary>
     /// Gets an enumeration of application service information objects and their contract declaration type.
@@ -81,6 +81,6 @@ public sealed class AppServicesAttribute<T> : Attribute, IAppServiceInfoProvider
     /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.ToString?view=netstandard-2.1">`Object.ToString` on docs.microsoft.com</a></footer>
     public override string ToString()
     {
-        return $"AppServices/{typeof(T)}/{this.ProcessingPriority}";
+        return $"AppServices/{typeof(T)}/{this.Priority}";
     }
 }
