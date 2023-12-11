@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+
+        <RootNamespace>Kephas.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="5.1.0" />
+        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Microsoft.Extensions\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
+        <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
+        <ProjectReference Include="..\..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+    </ItemGroup>
+
+</Project>
