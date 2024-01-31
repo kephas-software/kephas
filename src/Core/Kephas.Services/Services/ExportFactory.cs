@@ -39,7 +39,7 @@ namespace Kephas.Services
         /// <returns>
         /// The exported value.
         /// </returns>
-        public TContract CreateExportedValue() => this.factory();
+        public TContract CreateExportedValue() => factory();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -78,7 +78,7 @@ namespace Kephas.Services
         public ExportFactory(Func<TContract> factory, TMetadata metadata)
             : base(factory)
         {
-            this.Metadata = metadata;
+            Metadata = metadata;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Services
         /// </returns>
         public override string ToString()
         {
-            return $"Export factory of {typeof(TContract).Name} with {this.Metadata}.";
+            return $"Export factory of {typeof(TContract).Name} with {Metadata}.";
         }
     }
 }

@@ -29,7 +29,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
     /// <param name="serviceFactories">The service factories.</param>
     public FactoryEnumerable(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories = null)
     {
-        this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
+        this.serviceFactories = ComputeServiceFactories(serviceFactories);
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
     /// </returns>
     public IEnumerator<IExportFactory<TTargetContract, TMetadata>> GetEnumerator()
     {
-        return this.serviceFactories.GetEnumerator();
+        return serviceFactories.GetEnumerator();
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.GetEnumerator();
+        return GetEnumerator();
     }
 
     private ICollection<IExportFactory<TTargetContract, TMetadata>> ComputeServiceFactories(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories)
@@ -67,7 +67,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
 
         // get the overridden services which should be eliminated
         var overriddenTypes = orderedFactories
-            .Where(f => f.Metadata is IAppServiceMetadata { IsOverride: true, ServiceType.BaseType: { } })
+            .Where(f => f.Metadata is IAppServiceMetadata { IsOverride: true, ServiceType.BaseType: not null })
             .Select(f => (f.Metadata as IAppServiceMetadata)?.ServiceType?.BaseType)
             .ToList();
         if (overriddenTypes.Count == 0)

@@ -29,7 +29,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// <param name="serviceFactories">The service factories.</param>
     public LazyEnumerable(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories = null)
     {
-        this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
+        this.serviceFactories = ComputeServiceFactories(serviceFactories);
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// </returns>
     public IEnumerator<Lazy<TContract, TMetadata>> GetEnumerator()
     {
-        return this.serviceFactories.GetEnumerator();
+        return serviceFactories.GetEnumerator();
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.GetEnumerator();
+        return GetEnumerator();
     }
 
     private ICollection<Lazy<TContract, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories)

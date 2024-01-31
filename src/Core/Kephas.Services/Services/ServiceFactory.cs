@@ -66,14 +66,14 @@ public class ServiceFactory : IServiceFactory
         // }
 
         var signature = new Signature(args.Select(a => a?.GetType())!);
-        var typeSignCache = this.signatureCache.GetOrAdd(injectableType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
-        var creatorFunc = typeSignCache.GetOrAdd(signature, s => this.GetCreatorFunc(injectableType, s));
+        var typeSignCache = signatureCache.GetOrAdd(injectableType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
+        var creatorFunc = typeSignCache.GetOrAdd(signature, s => GetCreatorFunc(injectableType, s));
         return creatorFunc(args);
     }
 
     private Func<object?[], object> GetCreatorFunc(Type contextType, Signature signature)
     {
-        var ctorInfos = this.typeCache.GetOrAdd(
+        var ctorInfos = typeCache.GetOrAdd(
             contextType,
             ct =>
             {
@@ -82,7 +82,7 @@ public class ServiceFactory : IServiceFactory
             });
         foreach (var (ctor, paramInfos) in ctorInfos)
         {
-            var (argIndexMap, argResolverMap) = this.GetSignatureMaps(signature, paramInfos);
+            var (argIndexMap, argResolverMap) = GetSignatureMaps(signature, paramInfos);
             if (argIndexMap != null)
             {
                 return args =>
@@ -101,31 +101,31 @@ public class ServiceFactory : IServiceFactory
         var argResolverMap = new List<Func<object?>?>
         {
             null,
-            () => this.appServices,
-            () => this.serviceProvider,
-            () => this.loggerFactory,
+            () => appServices,
+            () => serviceProvider,
+            () => loggerFactory,
         };
         foreach (var paramInfo in paramInfos)
         {
             var paramType = paramInfo.ParameterType;
-            var argIndex = this.GetArgIndex(signature, paramType);
+            var argIndex = GetArgIndex(signature, paramType);
             if (argIndex.HasValue)
             {
                 argIndexMap.Add(argIndex.Value);
             }
             else
             {
-                var appServiceInfo = this.appServices.FirstOrDefault(i => i.ContractDeclarationType == paramType);
+                var appServiceInfo = appServices.FirstOrDefault(i => i.ContractDeclarationType == paramType);
                 if (appServiceInfo == null && paramType.IsGenericType)
                 {
                     var genericDefParamType = paramType.GetGenericTypeDefinition();
-                    appServiceInfo = this.appServices.FirstOrDefault(i => i.ContractDeclarationType == genericDefParamType);
+                    appServiceInfo = appServices.FirstOrDefault(i => i.ContractDeclarationType == genericDefParamType);
                 }
 
                 if (appServiceInfo != null && !appServiceInfo.AllowMultiple)
                 {
                     argIndexMap.Add(-argResolverMap.Count);
-                    argResolverMap.Add(() => this.serviceProvider.GetRequiredService(paramType));
+                    argResolverMap.Add(() => serviceProvider.GetRequiredService(paramType));
                 }
                 else if (paramInfo.HasDefaultValue)
                 {
