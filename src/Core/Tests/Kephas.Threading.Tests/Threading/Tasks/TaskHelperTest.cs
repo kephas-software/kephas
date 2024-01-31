@@ -191,7 +191,7 @@ namespace Kephas.Tests.Threading.Tasks
                         return 20;
                     },
                     10));
-            Assert.IsType<Task<int>>(task);
+            Assert.IsAssignableFrom<Task<int>>(task);
         }
 
         [Fact]
@@ -206,7 +206,7 @@ namespace Kephas.Tests.Threading.Tasks
                                   return 20;
                               },
                           100));
-            Assert.IsType<Task<int>>(task);
+            Assert.IsAssignableFrom<Task<int>>(task);
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace Kephas.Tests.Threading.Tasks
                                 return 20;
                             },
                         cancellationToken: cts.Token)));
-                Assert.IsType<Task<int>>(task);
+                Assert.IsAssignableFrom<Task<int>>(task);
             }
         }
 

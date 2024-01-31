@@ -83,7 +83,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj"/>
         <ProjectReference Include="..\Kephas.Runtime.AssemblyInitialization\Kephas.Runtime.AssemblyInitialization.csproj"/>
     </ItemGroup>

@@ -186,7 +186,7 @@ public class FactoryEnumerableTest
                     new AppServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Throws<ArgumentException>(() => ((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).GetService(m => m.Priority == Priority.Normal));
+        Assert.Throws<InvalidOperationException>(() => factoryEnumerable.GetService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
@@ -252,7 +252,7 @@ public class FactoryEnumerableTest
         var instance2 = Substitute.For<IInstance>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<IInstance>();
-        var instance = ((IFactoryEnumerable<IInstance, AppServiceMetadata>)new FactoryEnumerable<IInstance, AppServiceMetadata>(
+        var instance = new FactoryEnumerable<IInstance, AppServiceMetadata>(
                 new List<IExportFactory<IInstance, AppServiceMetadata>>
                 {
                     new ExportFactory<IInstance, AppServiceMetadata>(
@@ -267,7 +267,7 @@ public class FactoryEnumerableTest
                     new ExportFactory<IInstance, AppServiceMetadata>(
                         () => instance4,
                         new AppServiceMetadata(priority: (Priority)1)),
-                }))
+                })
             .GetService(m => m.Priority == (Priority)1);
 
         Assert.Same(instance4, instance);

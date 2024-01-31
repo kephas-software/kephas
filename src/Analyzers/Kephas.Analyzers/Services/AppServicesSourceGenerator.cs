@@ -42,7 +42,7 @@ public class AppServicesSourceGenerator : IncrementalGeneratorBase<TypeDeclarati
 
             using Kephas.Services;
 
-            [assembly: AppServices<{serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}>]
+            [assembly: AppServices(typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}))]
 
             """);
         var isProviderGenerated = AnalyzerServiceHelper.AppendAppServicesProviderClass(
