@@ -10,7 +10,7 @@ namespace Kephas.Analyzers.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-public static class AnalyzerReflectionHelper
+internal static class AnalyzerReflectionHelper
 {
     private sealed record FactoryTypeInfo(string Name, bool IsGeneric);
 
@@ -20,12 +20,12 @@ public static class AnalyzerReflectionHelper
         new ("IRuntimeTypeInfoFactory", false),
     };
 
-    public static bool IsFactoryInterface(INamedTypeSymbol type)
+    public static bool IsFactoryInterface(this INamedTypeSymbol type)
     {
         return factoryInterfaceIdentifiers.Any(i => i.Name == type.Name && (i.IsGeneric ? type.TypeParameters.Length > 0 : type.TypeParameters.Length == 0));
     }
 
-    public static bool IsFactory(ClassDeclarationSyntax type, ISourceContext<ClassDeclarationSyntax> context)
+    public static bool IsFactory(this ClassDeclarationSyntax type, ISourceContext<ClassDeclarationSyntax> context)
     {
         var semanticModel = context.Compilation.GetSemanticModel(type.SyntaxTree);
         var classSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(type)!;
@@ -46,7 +46,8 @@ public static class AnalyzerReflectionHelper
             return false;
         }
 
-        if (classSymbol.AllInterfaces.Any(IsFactoryInterface))
+        if (Enumerable.Any(classSymbol.AllInterfaces, IsFactoryInterface) ||
+            classSymbol.BaseType?.IsFactoryInterface() is true)
         {
             context.SourceProductionContext.ReportDiagnostic(
                 Diagnostic.Create("KEPREF102", "SourceGenerator",

@@ -15,10 +15,14 @@ using Microsoft.CodeAnalysis.Text;
 [Generator]
 public class RuntimeElementInfoFactorySourceGenerator : IncrementalGeneratorBase<ClassDeclarationSyntax>
 {
+    /// <summary>
+    /// The code to be executed upon building.
+    /// </summary>
+    /// <param name="context">The source compilation context.</param>
     protected override void Execute(ISourceContext<ClassDeclarationSyntax> context)
     {
         var factoryTypes = context.Nodes
-            .Where(t => AnalyzerReflectionHelper.IsFactory(t, context))
+            .Where(t => t.IsFactory(context))
             .ToList();
         if (factoryTypes is { Count: 0 })
         {
@@ -38,9 +42,9 @@ public class RuntimeElementInfoFactorySourceGenerator : IncrementalGeneratorBase
             using System.Reflection;
             using System.Runtime.CompilerServices;
 
-            using Kephas.Application;
             using Kephas.Runtime;
-
+            using Kephas.Runtime.Factories;
+            
             [assembly: AssemblyInitializer<{{initializerNamespace}}.{{initializerName}}>]
 
             namespace {{initializerNamespace}}

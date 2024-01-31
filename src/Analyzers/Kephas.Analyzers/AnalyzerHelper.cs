@@ -10,7 +10,7 @@ namespace Kephas.Analyzers;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-public static class AnalyzerHelper
+internal static class AnalyzerHelper
 {
     public static string GetTypeFullName(this TypeDeclarationSyntax typeSyntax, ICompilationContext compilationContext)
     {

@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Kephas.Analyzers
 {
-    internal class SourceContext<T>(((Compilation, ImmutableArray<T>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>) output, SourceProductionContext productionContext) : ISourceContext<T>
+    public class SourceContext<T>(((Compilation, ImmutableArray<T>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>) output, SourceProductionContext productionContext) : ISourceContext<T>
         where T : SyntaxNode
     {
         private IDictionary<string, FileScopedNamespaceDeclarationSyntax>? fileScopedNamespaces;

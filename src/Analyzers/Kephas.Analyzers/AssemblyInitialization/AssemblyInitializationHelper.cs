@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Kephas.Analyzers.AssemblyInitialization;
 
-public static class AssemblyInitializationHelper
+internal static class AssemblyInitializationHelper
 {
     private static IEnumerable<string> assemblyInitializerInterfaceIdentifiers = new[]
     {
@@ -38,6 +38,7 @@ public static class AssemblyInitializationHelper
             return false;
         }
 
-        return Enumerable.Any(classSymbol.AllInterfaces, IsAssemblyInitializerInterface);
+        return Enumerable.Any(classSymbol.AllInterfaces, IsAssemblyInitializerInterface) ||
+               classSymbol.BaseType?.IsAssemblyInitializerInterface() is true;
     }
 }

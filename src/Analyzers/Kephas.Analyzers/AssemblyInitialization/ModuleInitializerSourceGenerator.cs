@@ -60,11 +60,11 @@ public class ModuleInitializerSourceGenerator : IncrementalGeneratorBase<ClassDe
         {
             source.AppendLine(
             $"""
-                        initializer = (IAssemblyInitializer)new {initializerType.GetTypeFullName(context)}();
+                         initializer = (IAssemblyInitializer)new {initializerType.GetTypeFullName(context)}();
              """);
             source.AppendLine(
             $"""
-                        initializer.InitializeAssembly();
+                         initializer.InitializeAssembly();
              """);
         }
 

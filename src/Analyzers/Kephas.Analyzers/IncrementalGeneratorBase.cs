@@ -42,7 +42,7 @@ public abstract class IncrementalGeneratorBase<T>(Func<T, bool>? filter = null) 
         IncrementalValueProvider<((Compilation, ImmutableArray<T>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>)> compilationAndAttributes
             = context.CompilationProvider.Combine(nodes.Collect()).Combine(fileScopedNamespaces.Collect());
 
-        context.RegisterSourceOutput(compilationAndAttributes, (spc, source) => Execute(new SourceContext<T>(source, spc)));
+        context.RegisterSourceOutput(compilationAndAttributes, (spc, source) => Execute(CreateSourceContext(source, spc)));
     }
 
     /// <summary>
@@ -50,4 +50,15 @@ public abstract class IncrementalGeneratorBase<T>(Func<T, bool>? filter = null) 
     /// </summary>
     /// <param name="context">The source compilation context.</param>
     protected abstract void Execute(ISourceContext<T> context);
+
+    /// <summary>
+    /// Creates the source context.
+    /// </summary>
+    /// <param name="source">The filtered syntax nodes.</param>
+    /// <param name="spc">The source production context.</param>
+    /// <returns>The source context.</returns>
+    protected virtual ISourceContext<T> CreateSourceContext(
+        ((Compilation, ImmutableArray<T>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>) source,
+        SourceProductionContext spc) =>
+        new SourceContext<T>(source, spc);
 }

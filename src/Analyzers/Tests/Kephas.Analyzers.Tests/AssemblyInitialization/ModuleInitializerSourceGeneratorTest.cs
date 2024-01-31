@@ -5,29 +5,66 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using Kephas.Analyzers.TestAssembly;
-using NUnit.Framework;
+using FluentAssertions;
+using Kephas.Analyzers.AssemblyInitialization;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Xunit;
 
-namespace Kephas.Analyzers.Tests.AssemblyInitialization
+namespace Kephas.Analyzers.Tests.AssemblyInitialization;
+
+public class ModuleInitializerSourceGeneratorTest
 {
-    [TestFixture]
-    public class ModuleInitializerSourceGeneratorTest
+    [Fact]
+    public void Generate_MyAssemblyInitializer()
     {
-        [Test]
-        public void Execute_generated_ModuleInitializer()
-        {
-            var testAssembly = typeof(NoService).Assembly;
+        var compilation = CSharpCompilation.Create(
+            "TestProject",
+            new[]
+            {
+                CSharpSyntaxTree.ParseText(
+                    """
 
-            var moduleInitializerType = testAssembly.GetTypes().SingleOrDefault(t => t.Name == "ModuleInitializer_Kephas_Analyzers_TestAssembly");
-            Assert.NotNull(moduleInitializerType);
-            Assert.AreEqual("Kephas.AssemblyInitialization.Generated", moduleInitializerType!.Namespace);
+                    using System;
+                    using Kephas.Runtime;
 
-            var initializeMethod = moduleInitializerType.GetMethod("InitializeModule");
-            Assert.NotNull(initializeMethod);
-            Assert.IsTrue(initializeMethod!.IsStatic);
-            Assert.NotNull(initializeMethod!.GetCustomAttribute<ModuleInitializerAttribute>());
-        }
+                    namespace Kephas.Sample;
+
+                    public class MyAssemblyInitializer : IAssemblyInitializer
+                    {
+                        public void InitializeAssembly() { }
+                    }
+
+                    """)
+            },
+            Basic.Reference.Assemblies.Net80.References.All,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        var generator = new ModuleInitializerSourceGenerator();
+        var sourceGenerator = generator.AsSourceGenerator();
+
+        // trackIncrementalGeneratorSteps allows to report info about each step of the generator
+        GeneratorDriver driver = CSharpGeneratorDriver.Create(
+            generators: new[] { sourceGenerator },
+            driverOptions: new GeneratorDriverOptions(default, trackIncrementalGeneratorSteps: true));
+
+        // Run the generator
+        driver = driver.RunGenerators(compilation);
+
+        // Assert the driver doesn't recompute the output
+        var result = driver.GetRunResult().Results.Single();
+
+        // Assert the driver use the cached result from AssemblyName and Syntax
+        Assert.Collection(
+            result.GeneratedSources,
+            source =>
+            {
+                source.HintName.Should().Be("ModuleInitializer.g.cs");
+                var stringSource = source.SourceText.ToString();
+                stringSource.Should().Contain("[ModuleInitializer]");
+                stringSource.Should().Contain("internal static class ModuleInitializer_TestProject");
+                stringSource.Should().Contain("initializer = (IAssemblyInitializer)new MyAssemblyInitializer();");
+                stringSource.Should().Contain("initializer.InitializeAssembly();");
+            });
     }
 }
