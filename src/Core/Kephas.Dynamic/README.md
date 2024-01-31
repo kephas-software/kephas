@@ -28,7 +28,7 @@ A ready-to-use expando class is `Expando`. Upon initialization, a flag controls 
 dynamic expando = new Expando();
 
 expando.Property = "value";
-Assert.AreEqual("value", expando.Property);
+Assert.Equal("value", expando.Property);
 ```
 
 * Expando over a dictionary
@@ -38,7 +38,7 @@ var dictionary = new Dictionary<string, object>();
 dynamic expando = dictionary.ToDynamic();
 
 expando.Property = "value";
-Assert.AreEqual("value", dictionary["Property"]);
+Assert.Equal("value", dictionary["Property"]);
 ```
 
 * Access over API, dynamic, or indexer
@@ -56,13 +56,13 @@ person.Age = 30;     // the age is set through the class API
 
 dynamic dynPerson = person;
 dynPerson.Age = 23;  // the age is set through the dynamic features
-Assert.AreEqual(23, person.Age);
+Assert.Equal(23, person.Age);
 
 person["Age"] = 40;
-Assert.AreEqual(40, person.Age);
+Assert.Equal(40, person.Age);
 
 dynPerson.IsOld = true;
-Assert.IsTrue(person["IsOld"]);
+Assert.True(person["IsOld"]);
 ```
 
 * Expose non-dynamic objects as dynamic
@@ -79,7 +79,7 @@ var contact = new Contact();
 dynamic dynContact = contact.ToDynamic();
 
 dynContact.Name = "John";
-Assert.AreEqual("John", contact.Name);
+Assert.Equal("John", contact.Name);
 ```
 
 ### Usage

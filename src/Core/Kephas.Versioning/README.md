@@ -15,12 +15,12 @@ This package implements the specification [SemVer 2.0](https://semver.org).
 ```csharp
 var version = SemanticVersion.Parse("2.1.4-dev.12+1234");
 
-Assert.AreEqual(2, version.Major);
-Assert.AreEqual(1, version.Minor);
-Assert.AreEqual(4, version.Patch);
-Assert.AreEqual("dev", version.ReleaseLabels.First());
-Assert.AreEqual("12", version.ReleaseLabels.Skip(1).First());
-Assert.AreEqual("1234", version.Metadata);
+Assert.Equal(2, version.Major);
+Assert.Equal(1, version.Minor);
+Assert.Equal(4, version.Patch);
+Assert.Equal("dev", version.ReleaseLabels.First());
+Assert.Equal("12", version.ReleaseLabels.Skip(1).First());
+Assert.Equal("1234", version.Metadata);
 ```
 
 ### VersionRange
@@ -28,9 +28,9 @@ Assert.AreEqual("1234", version.Metadata);
 ```csharp
 var range = VersionRange.Parse("2.*:");
 
-Assert.IsNull(range.MaxVersion);
-Assert.IsNotNull(range.MinVersion);
-Assert.AreEqual(range.MinVersion, SemanticVersion.Parse("2.0.0"));
+Assert.Null(range.MaxVersion);
+Assert.NotNull(range.MinVersion);
+Assert.Equal(range.MinVersion, SemanticVersion.Parse("2.0.0"));
 ```
 
 ## Other resources
