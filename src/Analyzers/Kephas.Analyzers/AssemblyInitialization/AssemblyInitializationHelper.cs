@@ -18,19 +18,19 @@ public static class AssemblyInitializationHelper
         "Kephas.Runtime.IAssemblyInitializer",
     };
 
-    public static bool IsAssemblyInitializerInterface(TypeDeclarationSyntax type)
+    public static bool IsAssemblyInitializerInterface(this TypeDeclarationSyntax type)
     {
         return assemblyInitializerInterfaceIdentifiers.Contains(type.Identifier.Text);
     }
 
-    public static bool IsAssemblyInitializerInterface(INamedTypeSymbol type)
+    public static bool IsAssemblyInitializerInterface(this INamedTypeSymbol type)
     {
         return assemblyInitializerInterfaceIdentifiers.Contains(type.Name);
     }
 
-    public static bool IsAssemblyInitializer(ClassDeclarationSyntax type, GeneratorExecutionContext context)
+    public static bool IsAssemblyInitializer(this ClassDeclarationSyntax type, Compilation compilation)
     {
-        var semanticModel = context.Compilation.GetSemanticModel(type.SyntaxTree);
+        var semanticModel = compilation.GetSemanticModel(type.SyntaxTree);
         var classSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(type)!;
 
         if (type.BaseList == null)
@@ -38,14 +38,6 @@ public static class AssemblyInitializationHelper
             return false;
         }
 
-        foreach (var baseInterface in classSymbol.AllInterfaces)
-        {
-            if (IsAssemblyInitializerInterface(baseInterface))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return Enumerable.Any(classSymbol.AllInterfaces, IsAssemblyInitializerInterface);
     }
 }
