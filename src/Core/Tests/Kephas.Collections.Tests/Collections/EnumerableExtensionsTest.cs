@@ -5,21 +5,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Collections;
-
 using System.Text;
 using Kephas.Collections;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
+namespace Kephas.Tests.Collections;
+
 public class EnumerableExtensionsTest
 {
-    [Test]
+    [Fact]
     public void ForEach_sync()
     {
         var sb = new StringBuilder();
         new[] { 1, 2, 3 }.ForEach(v => sb.Append(v));
 
-        Assert.AreEqual("123", sb.ToString());
+        Assert.Equal("123", sb.ToString());
     }
 }

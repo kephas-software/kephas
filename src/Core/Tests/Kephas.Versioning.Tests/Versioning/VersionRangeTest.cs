@@ -8,39 +8,38 @@
 namespace Kephas.Tests.Versioning
 {
     using Kephas.Versioning;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class VersionRangeTest
+        public class VersionRangeTest
     {
-        [Test]
+        [Fact]
         public void Parse_missing_max()
         {
             var range = VersionRange.Parse("2.*:");
 
-            Assert.IsNull(range.MaxVersion);
-            Assert.IsNotNull(range.MinVersion);
-            Assert.AreEqual(range.MinVersion, SemanticVersion.Parse("2.0.0"));
+            Assert.Null(range.MaxVersion);
+            Assert.NotNull(range.MinVersion);
+            Assert.Equal(range.MinVersion, SemanticVersion.Parse("2.0.0"));
         }
 
-        [Test]
+        [Fact]
         public void Parse_missing_min()
         {
             var range = VersionRange.Parse(":2.*");
 
-            Assert.IsNull(range.MinVersion);
-            Assert.IsNotNull(range.MaxVersion);
-            Assert.AreEqual(range.MaxVersion, SemanticVersion.Parse($"2.{short.MaxValue}.{short.MaxValue}"));
+            Assert.Null(range.MinVersion);
+            Assert.NotNull(range.MaxVersion);
+            Assert.Equal(range.MaxVersion, SemanticVersion.Parse($"2.{short.MaxValue}.{short.MaxValue}"));
         }
 
-        [Test]
+        [Fact]
         public void Parse_star_min()
         {
             var range = VersionRange.Parse("*:2.*");
 
-            Assert.IsNull(range.MinVersion);
-            Assert.IsNotNull(range.MaxVersion);
-            Assert.AreEqual(range.MaxVersion, SemanticVersion.Parse($"2.{short.MaxValue}.{short.MaxValue}"));
+            Assert.Null(range.MinVersion);
+            Assert.NotNull(range.MaxVersion);
+            Assert.Equal(range.MaxVersion, SemanticVersion.Parse($"2.{short.MaxValue}.{short.MaxValue}"));
         }
     }
 }

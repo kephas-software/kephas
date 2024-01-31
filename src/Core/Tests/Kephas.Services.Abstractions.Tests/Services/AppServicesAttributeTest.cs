@@ -12,28 +12,27 @@ namespace Kephas.Tests.Services
     using System.Linq;
 
     using Kephas.Services;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class AppServicesAttributeTest
+        public class AppServicesAttributeTest
     {
-        [Test]
+        [Fact]
         public void Constructor_null_provider()
         {
             var attr = new AppServicesAttribute<NullAppServicesProvider>();
 
-            CollectionAssert.IsEmpty(attr.GetAppServiceContracts());
-            CollectionAssert.IsEmpty(attr.GetAppServices());
+            Assert.Empty(attr.GetAppServiceContracts());
+            Assert.Empty(attr.GetAppServices());
         }
 
-        [Test]
+        [Fact]
         public void Constructor_infos_provider()
         {
             var attr = new AppServicesAttribute<AppServicesProvider>();
 
             var serviceInfos = attr.GetAppServiceContracts();
-            CollectionAssert.AreEqual(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.ContractDeclarationType).ToArray());
-            CollectionAssert.IsEmpty(attr.GetAppServices());
+            Assert.Equal(new[] { typeof(AppServicesProvider.IService) }, serviceInfos.Select(i => i.ContractDeclarationType).ToArray());
+            Assert.Empty(attr.GetAppServices());
         }
 
         private class NullAppServicesProvider : IAppServiceInfoProvider

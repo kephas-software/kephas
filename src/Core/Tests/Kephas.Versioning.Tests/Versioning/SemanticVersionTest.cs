@@ -12,128 +12,127 @@ namespace Kephas.Tests.Versioning
 {
     using System.Linq;
     using Kephas.Versioning;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class SemanticVersionTest
+        public class SemanticVersionTest
     {
-        [Test]
+        [Fact]
         public void Parse_complete()
         {
             var version = SemanticVersion.Parse("2.1.4-dev.12+1234");
 
-            Assert.AreEqual(2, version.Major);
-            Assert.AreEqual(1, version.Minor);
-            Assert.AreEqual(4, version.Patch);
-            Assert.AreEqual("dev", version.ReleaseLabels.First());
-            Assert.AreEqual("12", version.ReleaseLabels.Skip(1).First());
-            Assert.AreEqual("1234", version.Metadata);
+            Assert.Equal(2, version.Major);
+            Assert.Equal(1, version.Minor);
+            Assert.Equal(4, version.Patch);
+            Assert.Equal("dev", version.ReleaseLabels.First());
+            Assert.Equal("12", version.ReleaseLabels.Skip(1).First());
+            Assert.Equal("1234", version.Metadata);
         }
 
-        [Test]
+        [Fact]
         public void Parse_hotfix_version_success()
         {
             var version = SemanticVersion.Parse("2.1.4.0");
 
-            Assert.AreEqual(2, version.Major);
-            Assert.AreEqual(1, version.Minor);
-            Assert.AreEqual(4, version.Patch);
-            Assert.IsNull(version.Hotfix);
-            Assert.AreEqual("2.1.4", version.ToString());
+            Assert.Equal(2, version.Major);
+            Assert.Equal(1, version.Minor);
+            Assert.Equal(4, version.Patch);
+            Assert.Null(version.Hotfix);
+            Assert.Equal("2.1.4", version.ToString());
         }
 
-        [Test]
+        [Fact]
         public void TryParse_hotfix_version_success()
         {
             var parsed = SemanticVersion.TryParse("2.1.4.0", out var version);
 
-            Assert.IsTrue(parsed);
-            Assert.IsNotNull(version);
-            Assert.AreEqual(2, version.Major);
-            Assert.AreEqual(1, version.Minor);
-            Assert.AreEqual(4, version.Patch);
-            Assert.IsNull(version.Hotfix);
-            Assert.AreEqual("2.1.4", version.ToString());
+            Assert.True(parsed);
+            Assert.NotNull(version);
+            Assert.Equal(2, version.Major);
+            Assert.Equal(1, version.Minor);
+            Assert.Equal(4, version.Patch);
+            Assert.Null(version.Hotfix);
+            Assert.Equal("2.1.4", version.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Parse_hotfix_version_non_null()
         {
             var version = SemanticVersion.Parse("2.1.4.5");
 
-            Assert.AreEqual(2, version.Major);
-            Assert.AreEqual(1, version.Minor);
-            Assert.AreEqual(4, version.Patch);
-            Assert.AreEqual(5, version.Hotfix);
-            Assert.AreEqual("2.1.4.5", version.ToString());
+            Assert.Equal(2, version.Major);
+            Assert.Equal(1, version.Minor);
+            Assert.Equal(4, version.Patch);
+            Assert.Equal(5, version.Hotfix);
+            Assert.Equal("2.1.4.5", version.ToString());
         }
 
-        [Test]
+        [Fact]
         public void TryParse_hotfix_version_non_null()
         {
             var parsed = SemanticVersion.TryParse("2.1.4.5", out var version);
 
-            Assert.IsTrue(parsed);
-            Assert.IsNotNull(version);
-            Assert.AreEqual(2, version.Major);
-            Assert.AreEqual(1, version.Minor);
-            Assert.AreEqual(4, version.Patch);
-            Assert.AreEqual(5, version.Hotfix);
-            Assert.AreEqual("2.1.4.5", version.ToString());
+            Assert.True(parsed);
+            Assert.NotNull(version);
+            Assert.Equal(2, version.Major);
+            Assert.Equal(1, version.Minor);
+            Assert.Equal(4, version.Patch);
+            Assert.Equal(5, version.Hotfix);
+            Assert.Equal("2.1.4.5", version.ToString());
         }
 
-        [Test]
+        [Fact]
         public void CompareTo_release_greater()
         {
             var version = SemanticVersion.Parse("2.1.4-dev.122");
             var version2 = SemanticVersion.Parse("2.1.4-dev.21");
 
-            Assert.IsTrue(version.CompareTo(version2) > 0);
+            Assert.True(version.CompareTo(version2) > 0);
         }
 
-        [Test]
+        [Fact]
         public void GreaterThan_release()
         {
             var version = SemanticVersion.Parse("2.1.4-dev.122");
             var version2 = SemanticVersion.Parse("2.1.4-dev.21");
 
-            Assert.IsTrue(version > version2);
+            Assert.True(version > version2);
         }
 
-        [Test]
+        [Fact]
         public void GreaterThan_hotfix()
         {
             var version = SemanticVersion.Parse("2.1.4.5");
             var version2 = SemanticVersion.Parse("2.1.4");
 
-            Assert.IsTrue(version > version2);
+            Assert.True(version > version2);
         }
 
-        [Test]
+        [Fact]
         public void LessThan_release()
         {
             var version = SemanticVersion.Parse("2.1.4-dev.122");
             var version2 = SemanticVersion.Parse("2.1.4-dev.21");
 
-            Assert.IsTrue(version2 < version);
+            Assert.True(version2 < version);
         }
 
-        [Test]
+        [Fact]
         public void LessThan_hotfix()
         {
             var version = SemanticVersion.Parse("2.1.4.5-dev.122");
             var version2 = SemanticVersion.Parse("2.1.4-dev.222");
 
-            Assert.IsTrue(version2 < version);
+            Assert.True(version2 < version);
         }
 
-        [Test]
+        [Fact]
         public void Equals_hotfix()
         {
             var version = SemanticVersion.Parse("2.1.4");
             var version2 = SemanticVersion.Parse("2.1.4.0");
 
-            Assert.IsTrue(version2 == version);
+            Assert.True(version2 == version);
         }
     }
 }

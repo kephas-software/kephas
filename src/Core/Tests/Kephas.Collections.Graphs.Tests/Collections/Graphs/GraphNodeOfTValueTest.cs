@@ -6,19 +6,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections.Graphs;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Collections.Graphs
 {
-    [TestFixture]
-    public class GraphNodeOfTValueTest
+        public class GraphNodeOfTValueTest
     {
-        [Test]
+        [Fact]
         public void ToString_success()
         {
             var node = new GraphNode<int> { Value = 3 };
             var toString = node.ToString();
-            Assert.AreEqual("{3}", toString);
+            Assert.Equal("{3}", toString);
         }
     }
 }

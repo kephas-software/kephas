@@ -13,26 +13,25 @@ namespace Kephas.Tests.Dynamic
     using System;
 
     using Kephas.Dynamic;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class LazyExpandoTest
+        public class LazyExpandoTest
     {
-        [Test]
+        [Fact]
         public void Indexer_get()
         {
             var expando = new LazyExpando(s => s);
-            Assert.AreEqual("hello", expando["hello"]);
+            Assert.Equal("hello", expando["hello"]);
         }
 
-        [Test]
+        [Fact]
         public void Indexer_get_no_value_resolver()
         {
             var expando = new LazyExpando();
-            Assert.IsNull(expando["hello"]);
+            Assert.Null(expando["hello"]);
         }
 
-        [Test]
+        [Fact]
         public void Indexer_circular_reference_exception()
         {
             var expando = new CircularExpando();
@@ -45,7 +44,7 @@ namespace Kephas.Tests.Dynamic
                 });
         }
 
-        [Test]
+        [Fact]
         public void Indexer_circular_reference_exception_ensure_not_locked()
         {
             var expando = new CircularExpando();
@@ -58,7 +57,7 @@ namespace Kephas.Tests.Dynamic
                 });
 
             expando.ValueResolver = s => "hello";
-            Assert.AreEqual("hello", expando["a"]);
+            Assert.Equal("hello", expando["a"]);
         }
 
         public class CircularExpando : LazyExpando

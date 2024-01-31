@@ -11,42 +11,41 @@ namespace Kephas.Tests.Dynamic;
 
 using Kephas.Dynamic;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class ObjectExpandoTest
 {
-    [Test]
+    [Fact]
     public void Constructor_instance()
     {
         var instance = new ExpandoTest.TestClass();
         dynamic expando = new ObjectExpando(instance);
     }
 
-    [Test]
+    [Fact]
     public void PublicProperty_instance()
     {
         var instance = new ExpandoTest.TestClass();
         dynamic expando = new ObjectExpando(instance);
 
         expando.Name = "John";
-        Assert.AreEqual("John", expando.Name);
-        Assert.AreEqual("John", instance.Name);
+        Assert.Equal("John", expando.Name);
+        Assert.Equal("John", instance.Name);
     }
 
-    [Test]
+    [Fact]
     public void ReadOnlyProperty_instance_getter()
     {
         var instance = new ExpandoTest.TestClass();
         dynamic expando = new ObjectExpando(instance);
 
         expando.Name = "John";
-        Assert.AreEqual(" John", expando.ReadOnlyFullName);
-        Assert.AreEqual(" John", instance.ReadOnlyFullName);
+        Assert.Equal(" John", expando.ReadOnlyFullName);
+        Assert.Equal(" John", instance.ReadOnlyFullName);
     }
 
 
-    [Test]
+    [Fact]
     public void ReadOnlyProperty_instance_setter()
     {
         var instance = new ExpandoTest.TestClass();
@@ -55,7 +54,7 @@ public class ObjectExpandoTest
         Assert.Throws<MemberAccessException>(() => expando.ReadOnlyFullName = "John Doe");
     }
 
-    [Test]
+    [Fact]
     public void PrivateProperty_instance_getter()
     {
         var instance = new ExpandoTest.TestClass();
@@ -64,11 +63,11 @@ public class ObjectExpandoTest
         instance.SetPrivateAge(10);
         var objValue = instance.GetPrivateAge();
 
-        Assert.AreEqual(10, objValue);
-        Assert.AreEqual(null, value);
+        Assert.Equal(10, objValue);
+        Assert.Equal(null, value);
     }
 
-    [Test]
+    [Fact]
     public void PrivateProperty_instance_setter()
     {
         var instance = new ExpandoTest.TestClass();
@@ -77,71 +76,71 @@ public class ObjectExpandoTest
         expando.PrivateAge = 10;
         var objValue = instance.GetPrivateAge();
 
-        Assert.AreNotEqual(value, objValue);
-        Assert.AreEqual(10, expando.PrivateAge);
-        Assert.AreEqual(0, instance.GetPrivateAge());
+        Assert.NotEqual(value, objValue);
+        Assert.Equal(10, expando.PrivateAge);
+        Assert.Equal(0, instance.GetPrivateAge());
     }
 
-    [Test]
+    [Fact]
     public void TryInvokeMember_Func_property_with_instance()
     {
         dynamic instance = new ObjectExpando(new ExpandoTest.TestClass());
         instance.GetName = (Func<int, string>)(age => $"John Doe: {age}");
 
         var name = instance.GetName(30);
-        Assert.AreEqual("John Doe: 30", name);
+        Assert.Equal("John Doe: 30", name);
     }
 
-    [Test]
+    [Fact]
     public void HasDynamicMember_Property_existing_in_object()
     {
         var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
-        Assert.IsTrue(expando.HasKey(nameof(ITestIdentifiable.Id)));
+        Assert.True(expando.HasKey(nameof(ITestIdentifiable.Id)));
     }
 
-    [Test]
+    [Fact]
     public void HasDynamicMember_Property_existing_in_dictionary_not_object()
     {
         var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
         expando["Age"] = 12;
-        Assert.IsTrue(expando.HasKey("Age"));
+        Assert.True(expando.HasKey("Age"));
     }
 
-    [Test]
+    [Fact]
     public void HasDynamicMember_Property_non_existing_in_object()
     {
         var expando = new ObjectExpando(Substitute.For<ITestIdentifiable>());
-        Assert.IsFalse(expando.HasKey("Age"));
+        Assert.False(expando.HasKey("Age"));
     }
 
-    [Test]
-    [TestCase(12, ExpectedResult = false)]
-    [TestCase(80, ExpectedResult = true)]
-    public bool TryInvokeMember_Method_with_instance(int age)
+    [Theory]
+    [InlineData(12, false)]
+    [InlineData(80, true)]
+    public void TryInvokeMember_Method_with_instance(int age, bool expectedResult)
     {
         var instance = new ExpandoTest.AgedPerson { Age = age };
         dynamic expando = new ObjectExpando(instance);
 
         var isOld = expando.IsOld();
-        return isOld;
+        isOld.Should().Be(expectedResult);
     }
 
-    [Test]
+    [Fact]
     public void GetKeys()
     {
         var instance = new ExpandoTest.AgedPerson { Age = 12 };
         IDynamic expando = new ObjectExpando(instance);
 
-        CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetKeys());
+        Assert.Equivalent(new[] { "Age" }, expando.GetKeys());
     }
 
-    [Test]
+    [Fact]
     public void GetDynamicMemberNames()
     {
         var instance = new ExpandoTest.AgedPerson { Age = 12 };
         DynamicObject expando = new ObjectExpando(instance);
 
-        CollectionAssert.AreEquivalent(new[] { "Age" }, expando.GetDynamicMemberNames());
+        Assert.Equivalent(new[] { "Age" }, expando.GetDynamicMemberNames());
     }
 
     public interface ITestIdentifiable

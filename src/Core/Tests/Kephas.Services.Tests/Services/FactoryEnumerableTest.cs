@@ -16,20 +16,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Kephas.Services;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class FactoryEnumerableTest
 {
-    [Test]
+    [Fact]
     public void FactoryEnumerable_null()
     {
         var ordered = new FactoryEnumerable<IInstance, AppServiceMetadata>(null);
 
-        Assert.AreEqual(0, ordered.Count());
+        Assert.Equal(0, ordered.Count());
     }
 
-    [Test]
+    [Fact]
     public void FactoryEnumerable_proper_order_same_override_priority()
     {
         var instance1 = Substitute.For<IInstance>();
@@ -46,12 +45,12 @@ public class FactoryEnumerableTest
             }).ToList();
 
 
-        Assert.AreEqual(2, orderedList.Count);
-        Assert.AreSame(instance2, orderedList[0].CreateExportedValue());
-        Assert.AreSame(instance1, orderedList[1].CreateExportedValue());
+        Assert.Equal(2, orderedList.Count);
+        Assert.Same(instance2, orderedList[0].CreateExportedValue());
+        Assert.Same(instance1, orderedList[1].CreateExportedValue());
     }
 
-    [Test]
+    [Fact]
     public void FactoryEnumerable_proper_order()
     {
         var instance1 = Substitute.For<IInstance>();
@@ -76,14 +75,14 @@ public class FactoryEnumerableTest
             }).ToList();
 
 
-        Assert.AreEqual(4, orderedList.Count);
-        Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
-        Assert.AreSame(instance2, orderedList[1].CreateExportedValue());
-        Assert.AreSame(instance3, orderedList[2].CreateExportedValue());
-        Assert.AreSame(instance1, orderedList[3].CreateExportedValue());
+        Assert.Equal(4, orderedList.Count);
+        Assert.Same(instance4, orderedList[0].CreateExportedValue());
+        Assert.Same(instance2, orderedList[1].CreateExportedValue());
+        Assert.Same(instance3, orderedList[2].CreateExportedValue());
+        Assert.Same(instance1, orderedList[3].CreateExportedValue());
     }
 
-    [Test]
+    [Fact]
     public void FactoryEnumerable_proper_order_with_override()
     {
         var instance1 = Substitute.For<TestDerived>();
@@ -117,13 +116,13 @@ public class FactoryEnumerableTest
             }).ToList();
 
 
-        Assert.AreEqual(3, orderedList.Count);
-        Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
-        Assert.AreSame(instance2, orderedList[1].CreateExportedValue());
-        Assert.AreSame(instance3, orderedList[2].CreateExportedValue());
+        Assert.Equal(3, orderedList.Count);
+        Assert.Same(instance4, orderedList[0].CreateExportedValue());
+        Assert.Same(instance2, orderedList[1].CreateExportedValue());
+        Assert.Same(instance3, orderedList[2].CreateExportedValue());
     }
 
-    [Test]
+    [Fact]
     public void FactoryEnumerable_proper_order_with_override_chain()
     {
         var instance1 = Substitute.For<TestDerived>();
@@ -157,12 +156,12 @@ public class FactoryEnumerableTest
             }).ToList();
 
 
-        Assert.AreEqual(2, orderedList.Count);
-        Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
-        Assert.AreSame(instance3, orderedList[1].CreateExportedValue());
+        Assert.Equal(2, orderedList.Count);
+        Assert.Same(instance4, orderedList[0].CreateExportedValue());
+        Assert.Same(instance3, orderedList[1].CreateExportedValue());
     }
 
-    [Test]
+    [Fact]
     public void TryGetService_not_found()
     {
         var factoryEnumerable = new FactoryEnumerable<IInstance, AppServiceMetadata>(
@@ -173,10 +172,10 @@ public class FactoryEnumerableTest
                     new AppServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.IsNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.Normal));
+        Assert.Null(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.Normal));
     }
 
-    [Test]
+    [Fact]
     public void GetService_not_found()
     {
         var factoryEnumerable = new FactoryEnumerable<IInstance, AppServiceMetadata>(
@@ -190,7 +189,7 @@ public class FactoryEnumerableTest
         Assert.Throws<ArgumentException>(() => ((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).GetService(m => m.Priority == Priority.Normal));
     }
 
-    [Test]
+    [Fact]
     public void TryGetService_found()
     {
         var factoryEnumerable = new FactoryEnumerable<IInstance, AppServiceMetadata>(
@@ -201,10 +200,10 @@ public class FactoryEnumerableTest
                     new AppServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.IsNotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
+        Assert.NotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
     }
 
-    [Test]
+    [Fact]
     public void GetService_found()
     {
         var factoryEnumerable = new FactoryEnumerable<IInstance, AppServiceMetadata>(
@@ -215,10 +214,10 @@ public class FactoryEnumerableTest
                     new AppServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.IsNotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
+        Assert.NotNull(((IFactoryEnumerable<IInstance, AppServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
     }
 
-    [Test]
+    [Fact]
     public void TryGetService_matches_order()
     {
         var instance1 = Substitute.For<IInstance>();
@@ -243,10 +242,10 @@ public class FactoryEnumerableTest
                 }))
             .TryGetService(m => m.Priority == (Priority)1);
 
-        Assert.AreSame(instance4, instance);
+        Assert.Same(instance4, instance);
     }
 
-    [Test]
+    [Fact]
     public void GetService_matches_order()
     {
         var instance1 = Substitute.For<IInstance>();
@@ -271,10 +270,10 @@ public class FactoryEnumerableTest
                 }))
             .GetService(m => m.Priority == (Priority)1);
 
-        Assert.AreSame(instance4, instance);
+        Assert.Same(instance4, instance);
     }
 
-    [Test]
+    [Fact]
     public void SelectServices_filter()
     {
         var instance1 = Substitute.For<IInstance>();
@@ -301,10 +300,10 @@ public class FactoryEnumerableTest
             .ToList();
 
 
-        Assert.AreEqual(3, orderedList.Count);
-        Assert.AreSame(instance4, orderedList[0]);
-        Assert.AreSame(instance2, orderedList[1]);
-        Assert.AreSame(instance3, orderedList[2]);
+        Assert.Equal(3, orderedList.Count);
+        Assert.Same(instance4, orderedList[0]);
+        Assert.Same(instance2, orderedList[1]);
+        Assert.Same(instance3, orderedList[2]);
     }
 
     public class TestMostDerived : TestDerived {}

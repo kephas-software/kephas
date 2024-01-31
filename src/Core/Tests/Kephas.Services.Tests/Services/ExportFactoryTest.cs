@@ -14,12 +14,11 @@ namespace Kephas.Tests.Services
     using System.Threading.Tasks;
     using Kephas.Services;
     using NSubstitute;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class ExportFactoryTest
+        public class ExportFactoryTest
     {
-        [Test]
+        [Fact]
         public void CreateExportedValue()
         {
             var service = Substitute.For<ITestService>();
@@ -27,7 +26,7 @@ namespace Kephas.Tests.Services
 
             var exportedValue = factory.CreateExportedValue();
 
-            Assert.AreSame(service, exportedValue);
+            Assert.Same(service, exportedValue);
         }
 
         public interface ITestService {}

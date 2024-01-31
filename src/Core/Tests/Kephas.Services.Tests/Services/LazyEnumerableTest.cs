@@ -14,20 +14,19 @@ namespace Kephas.Tests.Services
     using System.Linq;
     using Kephas.Services;
     using NSubstitute;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class LazyEnumerableTest
+        public class LazyEnumerableTest
     {
-        [Test]
+        [Fact]
         public void LazyEnumerable_null()
         {
             var ordered = new LazyEnumerable<IInstance, AppServiceMetadata>(null);
 
-            Assert.AreEqual(0, ordered.Count());
+            Assert.Equal(0, ordered.Count());
         }
 
-        [Test]
+        [Fact]
         public void LazyEnumerable_proper_order_same_override_priority()
         {
             var instance1 = Substitute.For<IInstance>();
@@ -44,12 +43,12 @@ namespace Kephas.Tests.Services
                     }).ToList();
 
 
-            Assert.AreEqual(2, orderedList.Count);
-            Assert.AreSame(instance2, orderedList[0].Value);
-            Assert.AreSame(instance1, orderedList[1].Value);
+            Assert.Equal(2, orderedList.Count);
+            Assert.Same(instance2, orderedList[0].Value);
+            Assert.Same(instance1, orderedList[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void LazyEnumerable_proper_order()
         {
             var instance1 = Substitute.For<IInstance>();
@@ -74,14 +73,14 @@ namespace Kephas.Tests.Services
                     }).ToList();
 
 
-            Assert.AreEqual(4, orderedList.Count);
-            Assert.AreSame(instance4, orderedList[0].Value);
-            Assert.AreSame(instance2, orderedList[1].Value);
-            Assert.AreSame(instance3, orderedList[2].Value);
-            Assert.AreSame(instance1, orderedList[3].Value);
+            Assert.Equal(4, orderedList.Count);
+            Assert.Same(instance4, orderedList[0].Value);
+            Assert.Same(instance2, orderedList[1].Value);
+            Assert.Same(instance3, orderedList[2].Value);
+            Assert.Same(instance1, orderedList[3].Value);
         }
 
-        [Test]
+        [Fact]
         public void LazyEnumerable_proper_order_with_override()
         {
             var instance1 = Substitute.For<TestDerived>();
@@ -114,13 +113,13 @@ namespace Kephas.Tests.Services
                             }),
                 }).ToList();
 
-            Assert.AreEqual(3, orderedList.Count);
-            Assert.AreSame(instance4, orderedList[0].Value);
-            Assert.AreSame(instance2, orderedList[1].Value);
-            Assert.AreSame(instance3, orderedList[2].Value);
+            Assert.Equal(3, orderedList.Count);
+            Assert.Same(instance4, orderedList[0].Value);
+            Assert.Same(instance2, orderedList[1].Value);
+            Assert.Same(instance3, orderedList[2].Value);
         }
 
-        [Test]
+        [Fact]
         public void LazyEnumerable_proper_order_with_override_chain()
         {
             var instance1 = Substitute.For<TestDerived>();
@@ -154,12 +153,12 @@ namespace Kephas.Tests.Services
                 }).ToList();
 
 
-            Assert.AreEqual(2, orderedList.Count);
-            Assert.AreSame(instance4, orderedList[0].Value);
-            Assert.AreSame(instance3, orderedList[1].Value);
+            Assert.Equal(2, orderedList.Count);
+            Assert.Same(instance4, orderedList[0].Value);
+            Assert.Same(instance3, orderedList[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void TryGetService_not_found()
         {
             var lazyEnumerable = new LazyEnumerable<IInstance, AppServiceMetadata>(
@@ -170,10 +169,10 @@ namespace Kephas.Tests.Services
                             new AppServiceMetadata(priority: Priority.High)),
                     });
 
-            Assert.IsNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).TryGetService(m => m.Priority == Priority.Normal));
+            Assert.Null(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).TryGetService(m => m.Priority == Priority.Normal));
         }
 
-        [Test]
+        [Fact]
         public void GetService_not_found()
         {
             var lazyEnumerable = new LazyEnumerable<IInstance, AppServiceMetadata>(
@@ -187,7 +186,7 @@ namespace Kephas.Tests.Services
             Assert.Throws<ArgumentException>(() => ((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.Normal));
         }
 
-        [Test]
+        [Fact]
         public void TryGetService_found()
         {
             var lazyEnumerable = new LazyEnumerable<IInstance, AppServiceMetadata>(
@@ -198,10 +197,10 @@ namespace Kephas.Tests.Services
                         new AppServiceMetadata(priority: Priority.High)),
                 });
 
-            Assert.IsNotNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).TryGetService(m => m.Priority == Priority.High));
+            Assert.NotNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).TryGetService(m => m.Priority == Priority.High));
         }
 
-        [Test]
+        [Fact]
         public void GetService_found()
         {
             var lazyEnumerable = new LazyEnumerable<IInstance, AppServiceMetadata>(
@@ -212,10 +211,10 @@ namespace Kephas.Tests.Services
                         new AppServiceMetadata(priority: Priority.High)),
                 });
 
-            Assert.IsNotNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.High));
+            Assert.NotNull(((ILazyEnumerable<IInstance, AppServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.High));
         }
 
-        [Test]
+        [Fact]
         public void TryGetService_matches_order()
         {
             var instance1 = Substitute.For<IInstance>();
@@ -241,10 +240,10 @@ namespace Kephas.Tests.Services
                 .TryGetService(m => m.Priority == (Priority)1);
 
 
-            Assert.AreSame(instance4, instance);
+            Assert.Same(instance4, instance);
         }
 
-        [Test]
+        [Fact]
         public void GetService_matches_order()
         {
             var instance1 = Substitute.For<IInstance>();
@@ -269,10 +268,10 @@ namespace Kephas.Tests.Services
                     }))
                 .GetService(m => m.Priority == (Priority)1);
 
-            Assert.AreSame(instance4, instance);
+            Assert.Same(instance4, instance);
         }
 
-        [Test]
+        [Fact]
         public void SelectServices_filter()
         {
             var instance1 = Substitute.For<IInstance>();
@@ -299,10 +298,10 @@ namespace Kephas.Tests.Services
                 .ToList();
 
 
-            Assert.AreEqual(3, orderedList.Count);
-            Assert.AreSame(instance4, orderedList[0]);
-            Assert.AreSame(instance2, orderedList[1]);
-            Assert.AreSame(instance3, orderedList[2]);
+            Assert.Equal(3, orderedList.Count);
+            Assert.Same(instance4, orderedList[0]);
+            Assert.Same(instance2, orderedList[1]);
+            Assert.Same(instance3, orderedList[2]);
         }
 
         public class TestMostDerived : TestDerived {}

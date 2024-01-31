@@ -7,14 +7,13 @@
 
 using Kephas.Collections;
 using Kephas.Collections.Graphs;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Collections.Graphs
 {
-    [TestFixture]
-    public class GraphExtensionsTest
+        public class GraphExtensionsTest
     {
-        [Test]
+        [Fact]
         public void Merge_simple()
         {
             var graph = this.CreateGraph(new[]
@@ -31,12 +30,12 @@ namespace Kephas.Tests.Collections.Graphs
 
             var merged = graph.Merge(sourceGraph);
 
-            Assert.AreSame(merged, graph);
-            Assert.AreEqual(7, merged.Nodes.Count);
-            Assert.AreEqual(4, merged.Edges.Count);
+            Assert.Same(merged, graph);
+            Assert.Equal(7, merged.Nodes.Count);
+            Assert.Equal(4, merged.Edges.Count);
         }
 
-        [Test]
+        [Fact]
         public void GetConnectedSubgraphs_cyclic_simple()
         {
             var orderedGraph = this.CreateGraph<TestGraph, int>(new[]
@@ -45,17 +44,17 @@ namespace Kephas.Tests.Collections.Graphs
                                             Tuple.Create(1, 2)
                                         });
             var subgraphs = orderedGraph.GetConnectedSubgraphs().ToList();
-            Assert.AreEqual(1, subgraphs.Count);
+            Assert.Equal(1, subgraphs.Count);
 
-            Assert.AreEqual(2, subgraphs[0].Nodes.Count);
-            Assert.AreEqual(2, subgraphs[0].Edges.Count);
-            Assert.AreSame(subgraphs[0].Nodes[0], orderedGraph.Nodes[0]);
-            Assert.AreSame(subgraphs[0].Nodes[1], orderedGraph.Nodes[1]);
-            Assert.AreSame(subgraphs[0].Edges[0], orderedGraph.Edges[0]);
-            Assert.AreSame(subgraphs[0].Edges[1], orderedGraph.Edges[1]);
+            Assert.Equal(2, subgraphs[0].Nodes.Count);
+            Assert.Equal(2, subgraphs[0].Edges.Count);
+            Assert.Same(subgraphs[0].Nodes[0], orderedGraph.Nodes[0]);
+            Assert.Same(subgraphs[0].Nodes[1], orderedGraph.Nodes[1]);
+            Assert.Same(subgraphs[0].Edges[0], orderedGraph.Edges[0]);
+            Assert.Same(subgraphs[0].Edges[1], orderedGraph.Edges[1]);
         }
 
-        [Test]
+        [Fact]
         public void GetConnectedSubgraphs_two_not_connected_edges()
         {
             var orderedGraph = this.CreateGraph<TestGraph, int>(new[]
@@ -64,22 +63,22 @@ namespace Kephas.Tests.Collections.Graphs
                                             Tuple.Create(4, 3)
                                         });
             var subgraphs = orderedGraph.GetConnectedSubgraphs().ToList();
-            Assert.AreEqual(2, subgraphs.Count);
+            Assert.Equal(2, subgraphs.Count);
 
-            Assert.AreEqual(2, subgraphs[0].Nodes.Count);
-            Assert.AreEqual(1, subgraphs[0].Edges.Count);
-            Assert.AreSame(subgraphs[0].Nodes[0], orderedGraph.Nodes[0]);
-            Assert.AreSame(subgraphs[0].Nodes[1], orderedGraph.Nodes[1]);
-            Assert.AreSame(subgraphs[0].Edges[0], orderedGraph.Edges[0]);
+            Assert.Equal(2, subgraphs[0].Nodes.Count);
+            Assert.Equal(1, subgraphs[0].Edges.Count);
+            Assert.Same(subgraphs[0].Nodes[0], orderedGraph.Nodes[0]);
+            Assert.Same(subgraphs[0].Nodes[1], orderedGraph.Nodes[1]);
+            Assert.Same(subgraphs[0].Edges[0], orderedGraph.Edges[0]);
 
-            Assert.AreEqual(2, subgraphs[1].Nodes.Count);
-            Assert.AreEqual(1, subgraphs[1].Edges.Count);
-            Assert.AreSame(subgraphs[1].Nodes[0], orderedGraph.Nodes[2]);
-            Assert.AreSame(subgraphs[1].Nodes[1], orderedGraph.Nodes[3]);
-            Assert.AreSame(subgraphs[1].Edges[0], orderedGraph.Edges[1]);
+            Assert.Equal(2, subgraphs[1].Nodes.Count);
+            Assert.Equal(1, subgraphs[1].Edges.Count);
+            Assert.Same(subgraphs[1].Nodes[0], orderedGraph.Nodes[2]);
+            Assert.Same(subgraphs[1].Nodes[1], orderedGraph.Nodes[3]);
+            Assert.Same(subgraphs[1].Edges[0], orderedGraph.Edges[1]);
         }
 
-        [Test]
+        [Fact]
         public void GetConnectedSubgraphs_three_connected_edges()
         {
             var orderedGraph = this.CreateGraph<TestGraph, int>(new[]
@@ -89,17 +88,17 @@ namespace Kephas.Tests.Collections.Graphs
                                             Tuple.Create(2, 3),
                                         });
             var subgraphs = orderedGraph.GetConnectedSubgraphs().ToList();
-            Assert.AreEqual(1, subgraphs.Count);
+            Assert.Equal(1, subgraphs.Count);
 
-            Assert.AreEqual(4, subgraphs[0].Nodes.Count);
-            Assert.AreEqual(3, subgraphs[0].Edges.Count);
-            Assert.AreSame(subgraphs[0].Nodes[0], orderedGraph.Nodes[0]);
-            Assert.AreSame(subgraphs[0].Nodes[1], orderedGraph.Nodes[1]);
-            Assert.AreSame(subgraphs[0].Nodes[2], orderedGraph.Nodes[3]);
-            Assert.AreSame(subgraphs[0].Nodes[3], orderedGraph.Nodes[2]);
-            Assert.AreSame(subgraphs[0].Edges[0], orderedGraph.Edges[0]);
-            Assert.AreSame(subgraphs[0].Edges[1], orderedGraph.Edges[2]);
-            Assert.AreSame(subgraphs[0].Edges[2], orderedGraph.Edges[1]);
+            Assert.Equal(4, subgraphs[0].Nodes.Count);
+            Assert.Equal(3, subgraphs[0].Edges.Count);
+            Assert.Same(subgraphs[0].Nodes[0], orderedGraph.Nodes[0]);
+            Assert.Same(subgraphs[0].Nodes[1], orderedGraph.Nodes[1]);
+            Assert.Same(subgraphs[0].Nodes[2], orderedGraph.Nodes[3]);
+            Assert.Same(subgraphs[0].Nodes[3], orderedGraph.Nodes[2]);
+            Assert.Same(subgraphs[0].Edges[0], orderedGraph.Edges[0]);
+            Assert.Same(subgraphs[0].Edges[1], orderedGraph.Edges[2]);
+            Assert.Same(subgraphs[0].Edges[2], orderedGraph.Edges[1]);
         }
 
         private Graph<TItem, object> CreateGraph<TItem>(IEnumerable<Tuple<TItem, TItem>> edges)

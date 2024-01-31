@@ -7,14 +7,13 @@
 
 using Kephas.Services;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Services
 {
-    [TestFixture]
-    public class EnumerableServiceExtensionsTest
+        public class EnumerableServiceExtensionsTest
     {
-        [Test]
+        [Fact]
         public void SelectServices_lazy_no_predicate()
         {
             var services = new Lazy<string, string>[]
@@ -23,13 +22,13 @@ namespace Kephas.Tests.Services
                 new(() => "123", "y"),
             };
             
-            CollectionAssert.AreEqual(new[] { "abc", "123" }, services.SelectServices());
+            Assert.Equal(new[] { "abc", "123" }, services.SelectServices());
         }
 
-        [Test]
-        [TestCase("a", new[] { "abc", "a123" })]
-        [TestCase("ab", new[] { "abc" })]
-        [TestCase("x", new string[0])]
+        [Theory]
+        [InlineData("a", new[] { "abc", "a123" })]
+        [InlineData("ab", new[] { "abc" })]
+        [InlineData("x", new string[0])]
         public void SelectServices_lazy_predicate(string start, string[] result)
         {
             var services = new Lazy<string, string>[]
@@ -38,13 +37,13 @@ namespace Kephas.Tests.Services
                 new(() => "a123", "y"),
             };
             
-            CollectionAssert.AreEqual(result, services.SelectServices(s => s.Value.StartsWith(start)));
+            Assert.Equal(result, services.SelectServices(s => s.Value.StartsWith(start)));
         }
 
-        [Test]
-        [TestCase("m-a", "abc")]
-        [TestCase("m-a1", "a123")]
-        [TestCase("x", null)]
+        [Theory]
+        [InlineData("m-a", "abc")]
+        [InlineData("m-a1", "a123")]
+        [InlineData("x", null)]
         public void TryGetService_lazy_predicate(string start, string? result)
         {
             var services = new Lazy<string, string>[]
@@ -53,12 +52,12 @@ namespace Kephas.Tests.Services
                 new(() => "a123", "m-a123"),
             };
             
-            Assert.AreEqual(result, services.TryGetService(m => m.StartsWith(start)));
+            Assert.Equal(result, services.TryGetService(m => m.StartsWith(start)));
         }
 
-        [Test]
-        [TestCase("m-a", "abc")]
-        [TestCase("m-a1", "a123")]
+        [Theory]
+        [InlineData("m-a", "abc")]
+        [InlineData("m-a1", "a123")]
         public void GetService_lazy_predicate_found(string start, string? result)
         {
             var services = new Lazy<string, string>[]
@@ -67,10 +66,10 @@ namespace Kephas.Tests.Services
                 new(() => "a123", "m-a123"),
             };
             
-            Assert.AreEqual(result, services.GetService(m => m.StartsWith(start)));
+            Assert.Equal(result, services.GetService(m => m.StartsWith(start)));
         }
 
-        [Test]
+        [Fact]
         public void GetService_lazy_predicate_notfound()
         {
             var services = Array.Empty<Lazy<string, string>>();
@@ -79,7 +78,7 @@ namespace Kephas.Tests.Services
             Assert.Throws<InvalidOperationException>(() => services.GetService(m => m.StartsWith("x")));
         }
 
-        [Test]
+        [Fact]
         public void SelectServices_factory_no_predicate()
         {
             var f1 = Substitute.For<IExportFactory<string, string>>();
@@ -89,14 +88,14 @@ namespace Kephas.Tests.Services
 
             var services = new[] { f1, f2 };
             
-            CollectionAssert.AreEqual(new[] { "a", "1" }, services.SelectServices());
-            CollectionAssert.AreEqual(new[] { "b", "2" }, services.SelectServices());
+            Assert.Equal(new[] { "a", "1" }, services.SelectServices());
+            Assert.Equal(new[] { "b", "2" }, services.SelectServices());
         }
 
-        [Test]
-        [TestCase(new[] { "abc", "a123" }, "m-a", new[] { "abc", "a123" })]
-        [TestCase(new[] { "abc", "a123" }, "m-ab", new[] { "abc" })]
-        [TestCase(new[] { "abc", "a123" }, "m-x", new string[0])]
+        [Theory]
+        [InlineData(new[] { "abc", "a123" }, "m-a", new[] { "abc", "a123" })]
+        [InlineData(new[] { "abc", "a123" }, "m-ab", new[] { "abc" })]
+        [InlineData(new[] { "abc", "a123" }, "m-x", new string[0])]
         public void SelectServices_factory_predicate(string[] values, string start, string[] result)
         {
             var services = values.Select(v =>
@@ -107,14 +106,14 @@ namespace Kephas.Tests.Services
                 return f;
             }).ToList();
             
-            CollectionAssert.AreEqual(result, services.SelectServices(s => s.Metadata.StartsWith(start)));
-            CollectionAssert.AreEqual(result.Select(v => v + "-2"), services.SelectServices(s => s.Metadata.StartsWith(start)));
+            Assert.Equal(result, services.SelectServices(s => s.Metadata.StartsWith(start)));
+            Assert.Equal(result.Select(v => v + "-2"), services.SelectServices(s => s.Metadata.StartsWith(start)));
         }
 
-        [Test]
-        [TestCase(new[] { "abc", "a123" }, "m-a", "abc")]
-        [TestCase(new[] { "abc", "a123" }, "m-a1", "a123")]
-        [TestCase(new[] { "abc", "a123" }, "m-x", null)]
+        [Theory]
+        [InlineData(new[] { "abc", "a123" }, "m-a", "abc")]
+        [InlineData(new[] { "abc", "a123" }, "m-a1", "a123")]
+        [InlineData(new[] { "abc", "a123" }, "m-x", null)]
         public void TryGetService_factory_predicate(string[] values, string start, string? result)
         {
             var services = values.Select(v =>
@@ -125,13 +124,13 @@ namespace Kephas.Tests.Services
                 return f;
             }).ToList();
             
-            Assert.AreEqual(result, services.TryGetService(m => m.StartsWith(start)));
-            Assert.AreEqual(result is null ? null : result + "-2", services.TryGetService(m => m.StartsWith(start)));
+            Assert.Equal(result, services.TryGetService(m => m.StartsWith(start)));
+            Assert.Equal(result is null ? null : result + "-2", services.TryGetService(m => m.StartsWith(start)));
         }
 
-        [Test]
-        [TestCase(new[] { "abc", "a123" }, "m-a", "abc")]
-        [TestCase(new[] { "abc", "a123" }, "m-a1", "a123")]
+        [Theory]
+        [InlineData(new[] { "abc", "a123" }, "m-a", "abc")]
+        [InlineData(new[] { "abc", "a123" }, "m-a1", "a123")]
         public void GetService_factory_predicate_found(string[] values, string start, string? result)
         {
             var services = values.Select(v =>
@@ -142,11 +141,11 @@ namespace Kephas.Tests.Services
                 return f;
             }).ToList();
             
-            Assert.AreEqual(result, services.GetService(m => m.StartsWith(start)));
-            Assert.AreEqual(result is null ? null : result + "-2", services.GetService(m => m.StartsWith(start)));
+            Assert.Equal(result, services.GetService(m => m.StartsWith(start)));
+            Assert.Equal(result is null ? null : result + "-2", services.GetService(m => m.StartsWith(start)));
         }
 
-        [Test]
+        [Fact]
         public void GetService_factory_predicate_notfound()
         {
             var services = Array.Empty<IExportFactory<string, string>>();

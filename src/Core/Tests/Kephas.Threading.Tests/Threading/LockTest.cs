@@ -12,12 +12,11 @@ namespace Kephas.Tests.Threading
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Threading;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class LockTest
+        public class LockTest
     {
-        [Test]
+        [Fact]
         public async Task LockAsync_task_single()
         {
             var sync = new Dictionary<int, object>();
@@ -25,7 +24,7 @@ namespace Kephas.Tests.Threading
             await l.EnterAsync(() => this.ForTaskAsync(sync));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_multiple()
         {
             var sync = new Dictionary<int, object>();
@@ -36,7 +35,7 @@ namespace Kephas.Tests.Threading
                 l.EnterAsync(() => this.ForTaskAsync(sync)));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_single_token()
         {
             var sync = new Dictionary<int, object>();
@@ -44,7 +43,7 @@ namespace Kephas.Tests.Threading
             await l.EnterAsync(ct => this.ForTaskAsync(sync));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_multiple_token()
         {
             var sync = new Dictionary<int, object>();
@@ -55,7 +54,7 @@ namespace Kephas.Tests.Threading
                 l.EnterAsync(ct => this.ForTaskAsync(sync)));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_of_int_single()
         {
             var sync = new Dictionary<int, object>();
@@ -63,7 +62,7 @@ namespace Kephas.Tests.Threading
             await l.EnterAsync(() => this.ForTaskOfIntAsync(sync));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_of_int_multiple()
         {
             var sync = new Dictionary<int, object>();
@@ -74,7 +73,7 @@ namespace Kephas.Tests.Threading
                 l.EnterAsync(() => this.ForTaskOfIntAsync(sync)));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_of_int_single_token()
         {
             var sync = new Dictionary<int, object>();
@@ -82,7 +81,7 @@ namespace Kephas.Tests.Threading
             await l.EnterAsync(ct => this.ForTaskOfIntAsync(sync));
         }
 
-        [Test]
+        [Fact]
         public async Task LockAsync_task_of_int_multiple_token()
         {
             var sync = new Dictionary<int, object>();

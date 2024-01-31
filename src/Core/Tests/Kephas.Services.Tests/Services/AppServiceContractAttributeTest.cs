@@ -13,19 +13,18 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Kephas.Tests.Services
 {
     using Kephas.Services;
-    using NUnit.Framework;
+    using Xunit;
 
     /// <summary>
     /// An application service contract attribute test.
     /// </summary>
-    [TestFixture]
-    public class AppServiceContractAttributeTest
+        public class AppServiceContractAttributeTest
     {
-        [Test]
+        [Fact]
         public void Constructor()
         {
             var attr = new AppServiceContractAttribute();
-            Assert.AreEqual(AppServiceLifetime.Transient,  attr.Lifetime);
+            Assert.Equal(AppServiceLifetime.Transient,  attr.Lifetime);
         }
     }
 }

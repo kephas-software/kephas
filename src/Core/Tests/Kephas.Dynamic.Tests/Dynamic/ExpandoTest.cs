@@ -16,64 +16,63 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Kephas.Dynamic;
-using NUnit.Framework;
+using Xunit;
 
 /// <summary>
 /// Test class for <see cref="Expando"/>
 /// </summary>
-[TestFixture]
 public class ExpandoTest
 {
-    [Test]
+    [Fact]
     public void Constructor_default()
     {
         dynamic expando = new Expando();
     }
 
-    [Test]
+    [Fact]
     public void PublicProperty_default()
     {
         dynamic expando = new Expando();
 
         expando.Property = "value";
-        Assert.AreEqual("value", expando.Property);
+        Assert.Equal("value", expando.Property);
     }
 
-    [Test]
+    [Fact]
     public void PublicProperty_derived_expando()
     {
         dynamic derived = new DerivedExpando();
         derived.Age = 23;
 
-        Assert.AreEqual(23, derived.Age);
+        Assert.Equal(23, derived.Age);
 
         var typedDerived = (DerivedExpando)derived;
-        Assert.AreEqual(23, typedDerived.Age);
+        Assert.Equal(23, typedDerived.Age);
     }
 
-    [Test]
+    [Fact]
     public void TryInvokeMember_Func_property()
     {
         dynamic instance = new Expando();
         instance.GetName = (Func<int, string>)(age => $"John Doe: {age}");
 
         var name = instance.GetName(30);
-        Assert.AreEqual("John Doe: 30", name);
+        Assert.Equal("John Doe: 30", name);
     }
 
-    [Test]
-    [TestCase(12)]
-    [TestCase(15.3)]
-    [TestCase("23.45")]
+    [Theory]
+    [InlineData(12)]
+    [InlineData(15.3)]
+    [InlineData("23.45")]
     public void Dynamic_Property(object age)
     {
         dynamic expando = new Expando();
         expando.Age = age;
 
-        Assert.AreEqual(age, expando.Age);
+        Assert.Equal(age, expando.Age);
     }
 
-    [Test]
+    [Fact]
     public async Task Dynamic_Property_concurrent()
     {
         dynamic expando = new Expando(isThreadSafe: true);
@@ -94,97 +93,97 @@ public class ExpandoTest
         await Task.WhenAll(tasks);
     }
 
-    [Test]
+    [Fact]
     public void Dynamic_Property_non_existing()
     {
         dynamic expando = new Expando();
         var age = expando.Age;
-        Assert.IsNull(age);
+        Assert.Null(age);
     }
 
-    [Test]
+    [Fact]
     public void Indexer_Property_non_existing()
     {
         var expando = new Expando();
         var age = expando["Age"];
-        Assert.IsNull(age);
+        Assert.Null(age);
     }
 
-    [Test]
+    [Fact]
     public void Indexer_set_to_null_removes_member()
     {
         var expando = new Expando();
         expando["Age"] = 12;
-        Assert.IsTrue(expando.HasKey("Age"));
+        Assert.True(expando.HasKey("Age"));
 
         expando["Age"] = null;
-        Assert.IsFalse(expando.HasKey("Age"));
+        Assert.False(expando.HasKey("Age"));
     }
 
-    [Test]
+    [Fact]
     public void Indexer_set_to_null_non_existing_member()
     {
         var expando = new Expando();
-        Assert.IsFalse(expando.HasKey("Age"));
+        Assert.False(expando.HasKey("Age"));
 
         expando["Age"] = null;
-        Assert.IsFalse(expando.HasKey("Age"));
+        Assert.False(expando.HasKey("Age"));
     }
 
-    [Test]
+    [Fact]
     public void HasDynamicMember_Property_existing_in_dictionary()
     {
         var expando = new Expando();
         expando["Age"] = 12;
-        Assert.IsTrue(expando.HasKey("Age"));
+        Assert.True(expando.HasKey("Age"));
     }
 
-    [Test]
+    [Fact]
     public void HasDynamicMember_Property_non_existing()
     {
         var expando = new Expando();
-        Assert.IsFalse(expando.HasKey("Age"));
+        Assert.False(expando.HasKey("Age"));
     }
 
-    [Test]
-    [TestCase(12, ExpectedResult = false)]
-    [TestCase(80, ExpectedResult = true)]
-    public bool TryInvokeMember_Method(int age)
+    [Theory]
+    [InlineData(12, false)]
+    [InlineData(80, true)]
+    public void TryInvokeMember_Method(int age, bool expectedResult)
     {
         var instance = new DerivedExpando { Age = age };
         var expando = instance.ToDynamicObject();
 
         var isOld = expando.IsOld();
-        return isOld;
+        isOld.Should().Be(expectedResult);
     }
 
-    [Test]
-    [TestCase(12, ExpectedResult = false)]
-    [TestCase(80, ExpectedResult = true)]
-    public bool TryInvokeMember_Method_with_instance(int age)
+    [Theory]
+    [InlineData(12, false)]
+    [InlineData(80, true)]
+    public void TryInvokeMember_Method_with_instance(int age, bool expectedResult)
     {
         dynamic instance = new DerivedExpando { Age = age };
 
         var isOld = instance.IsOld();
-        return isOld;
+        isOld.Should().Be(expectedResult);
     }
 
-    [Test]
+    [Fact]
     public void ToDictionary_wrapped()
     {
         var instance = new WrapperExpando(new TestClass());
         var dictionary = instance.ToDictionary();
-        Assert.AreEqual(3, dictionary.Count);
-        Assert.IsTrue((bool)dictionary[nameof(WrapperExpando.HasWrappedObject)]);
+        Assert.Equal(3, dictionary.Count);
+        Assert.True((bool)dictionary[nameof(WrapperExpando.HasWrappedObject)]);
     }
 
-    [Test]
+    [Fact]
     public void ToDictionary_non_wrapped()
     {
         var instance = new WrapperExpando();
         var dictionary = instance.ToDictionary();
-        Assert.AreEqual(1, dictionary.Count);
-        Assert.IsFalse((bool)dictionary[nameof(WrapperExpando.HasWrappedObject)]);
+        Assert.Equal(1, dictionary.Count);
+        Assert.False((bool)dictionary[nameof(WrapperExpando.HasWrappedObject)]);
     }
 
     public class TestClass

@@ -9,70 +9,69 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Reflection;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Reflection
 {
-    [TestFixture]
-    public class SignatureTest
+        public class SignatureTest
     {
-        [Test]
+        [Fact]
         public void Equals_this()
         {
             var s = new Signature();
-            Assert.IsTrue(s.Equals(s));
+            Assert.True(s.Equals(s));
         }
 
-        [Test]
+        [Fact]
         public void Equals_empty()
         {
             var s = new Signature();
             var s2 = new Signature();
-            Assert.IsTrue(s.Equals(s2));
+            Assert.True(s.Equals(s2));
         }
 
-        [Test]
+        [Fact]
         public void Equals_same_types()
         {
             var s = new Signature(typeof(string), typeof(int));
             var s2 = new Signature(typeof(string), typeof(int));
-            Assert.IsTrue(s.Equals(s2));
+            Assert.True(s.Equals(s2));
         }
 
-        [Test]
+        [Fact]
         public void Equals_different_types()
         {
             var s = new Signature(typeof(string), typeof(long));
             var s2 = new Signature(typeof(string), typeof(int));
-            Assert.IsFalse(s.Equals(s2));
+            Assert.False(s.Equals(s2));
         }
 
-        [Test]
+        [Fact]
         public void ToString_int_string()
         {
             var s = new Signature(typeof(int), typeof(string));
-            Assert.AreEqual("(Int32, String)", s.ToString());
+            Assert.Equal("(Int32, String)", s.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ToString_Signature_nullablelong_null()
         {
             var s = new Signature(typeof(Signature), typeof(long?), null);
-            Assert.AreEqual("(Signature, Int64?, )", s.ToString());
+            Assert.Equal("(Signature, Int64?, )", s.ToString());
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_type()
         {
             var s = new Signature(typeof(Signature), typeof(bool), typeof(int?));
             var e = s.GetEnumerator();
             e.MoveNext();
-            Assert.AreSame(typeof(Signature), e.Current);
+            Assert.Same(typeof(Signature), e.Current);
             e.MoveNext();
-            Assert.AreSame(typeof(bool), e.Current);
+            Assert.Same(typeof(bool), e.Current);
             e.MoveNext();
-            Assert.AreSame(typeof(int?), e.Current);
-            Assert.IsFalse(e.MoveNext());
+            Assert.Same(typeof(int?), e.Current);
+            Assert.False(e.MoveNext());
         }
     }
 }

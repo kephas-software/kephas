@@ -16,32 +16,31 @@ namespace Kephas.Tests.Services
     using System;
     using System.Collections.Generic;
     using Kephas.Services;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class ServiceEnumerableExtensionsTest
+        public class ServiceEnumerableExtensionsTest
     {
-        [Test]
+        [Fact]
         public void OrderAsDictionary_empty()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>();
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.CreateExportedValue());
 
-            Assert.AreEqual(0, dict.Count);
+            Assert.Equal(0, dict.Count);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_empty()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>();
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.Value);
 
-            Assert.AreEqual(0, dict.Count);
+            Assert.Equal(0, dict.Count);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_ordered()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -60,12 +59,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.CreateExportedValue());
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service", dict["one"]);
-            Assert.AreEqual("two service", dict["two"]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service", dict["one"]);
+            Assert.Equal("two service", dict["two"]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_ordered()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -84,12 +83,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.Value);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service", dict["one"]);
-            Assert.AreEqual("two service", dict["two"]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service", dict["one"]);
+            Assert.Equal("two service", dict["two"]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_override_non_deterministic_siblings()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -118,12 +117,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.CreateExportedValue());
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict["one"]);
-            Assert.AreEqual("two service", dict["two"]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict["one"]);
+            Assert.Equal("two service", dict["two"]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_override_non_deterministic_siblings()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -152,12 +151,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.Value);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict["one"]);
-            Assert.AreEqual("two service", dict["two"]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict["one"]);
+            Assert.Equal("two service", dict["two"]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_override_non_deterministic_siblings_with_key_comparer()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -186,12 +185,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.CreateExportedValue(), StringComparer.OrdinalIgnoreCase);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict["one"]);
-            Assert.AreEqual("two service", dict["two"]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict["one"]);
+            Assert.Equal("two service", dict["two"]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_override_non_deterministic_siblings_with_key_comparer()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -220,12 +219,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.Value, StringComparer.OrdinalIgnoreCase);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict["one"]);
-            Assert.AreEqual("two service", dict["two"]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict["one"]);
+            Assert.Equal("two service", dict["two"]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_override_non_deterministic_exception()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -250,7 +249,7 @@ namespace Kephas.Tests.Services
             Assert.Throws<DuplicateKeyException>(() => factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.CreateExportedValue()));
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_override_non_deterministic_exception()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -275,7 +274,7 @@ namespace Kephas.Tests.Services
             Assert.Throws<DuplicateKeyException>(() => factories.OrderAsDictionary(f => f.Metadata.ServiceName, f => f.Value));
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_export_factory_override_non_deterministic_exception()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -300,7 +299,7 @@ namespace Kephas.Tests.Services
             Assert.Throws<DuplicateKeyException>(() => factories.OrderAsDictionary(f => f.Metadata.ServiceName));
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_export_factory_override_non_deterministic_exception()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -325,7 +324,7 @@ namespace Kephas.Tests.Services
             Assert.Throws<DuplicateKeyException>(() => factories.OrderAsDictionary(f => f.Metadata.ServiceName));
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_override_non_sortable_keys()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -349,12 +348,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => (Type)f.Metadata["Key"], f => f.CreateExportedValue());
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict[typeof(int)]);
-            Assert.AreEqual("two service", dict[typeof(string)]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict[typeof(int)]);
+            Assert.Equal("two service", dict[typeof(string)]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_override_non_sortable_keys()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -378,12 +377,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => (Type)f.Metadata["Key"], f => f.Value);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict[typeof(int)]);
-            Assert.AreEqual("two service", dict[typeof(string)]);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict[typeof(int)]);
+            Assert.Equal("two service", dict[typeof(string)]);
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_export_factory_override_non_sortable_keys()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
@@ -407,12 +406,12 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => (Type)f.Metadata["Key"]);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict[typeof(int)].CreateExportedValue());
-            Assert.AreEqual("two service", dict[typeof(string)].CreateExportedValue());
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict[typeof(int)].CreateExportedValue());
+            Assert.Equal("two service", dict[typeof(string)].CreateExportedValue());
         }
 
-        [Test]
+        [Fact]
         public void OrderAsDictionary_lazy_export_factory_override_non_sortable_keys()
         {
             var factories = new List<Lazy<string, AppServiceMetadata>>()
@@ -436,9 +435,9 @@ namespace Kephas.Tests.Services
 
             var dict = factories.OrderAsDictionary(f => (Type)f.Metadata["Key"]);
 
-            Assert.AreEqual(2, dict.Count);
-            Assert.AreEqual("one service reloaded", dict[typeof(int)].Value);
-            Assert.AreEqual("two service", dict[typeof(string)].Value);
+            Assert.Equal(2, dict.Count);
+            Assert.Equal("one service reloaded", dict[typeof(int)].Value);
+            Assert.Equal("two service", dict[typeof(string)].Value);
         }
     }
 }

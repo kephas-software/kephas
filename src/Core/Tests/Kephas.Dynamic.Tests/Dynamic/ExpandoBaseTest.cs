@@ -13,22 +13,21 @@ namespace Kephas.Tests.Dynamic
     using System.Collections.Generic;
     using System.Linq;
     using Kephas.Dynamic;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class ExpandoBaseTest
+        public class ExpandoBaseTest
     {
-        [Test]
+        [Fact]
         public void GetKeys_no_duplicates()
         {
             var expando = new TestExpando(new Named());
 
             var members = expando.GetKeys().ToList();
-            Assert.AreEqual(1, members.Count);
-            Assert.AreEqual("Name", members[0]);
+            Assert.Equal(1, members.Count);
+            Assert.Equal("Name", members[0]);
         }
 
-        [Test]
+        [Fact]
         public void GetKeys_this_binders()
         {
             var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
@@ -36,11 +35,11 @@ namespace Kephas.Tests.Dynamic
             expando["FamilyName"] = "belogea";
 
             var members = expando.GetKeys().ToList();
-            Assert.AreEqual(1, members.Count);
-            Assert.AreEqual("Name", members[0]);
+            Assert.Equal(1, members.Count);
+            Assert.Equal("Name", members[0]);
         }
 
-        [Test]
+        [Fact]
         public void GetKeys_inner_object_binders()
         {
             var obj = new Named();
@@ -49,11 +48,11 @@ namespace Kephas.Tests.Dynamic
             expando["FamilyName"] = "belogea";
 
             var members = expando.GetKeys().ToList();
-            Assert.AreEqual(1, members.Count);
-            Assert.AreEqual("Name", members[0]);
+            Assert.Equal(1, members.Count);
+            Assert.Equal("Name", members[0]);
         }
 
-        [Test]
+        [Fact]
         public void GetKeys_inner_dictionary_binders()
         {
             var obj = new Named();
@@ -61,22 +60,22 @@ namespace Kephas.Tests.Dynamic
             expando["FamilyName"] = "belogea";
 
             var members = expando.GetKeys().ToList();
-            Assert.AreEqual(1, members.Count);
-            Assert.AreEqual("FamilyName", members[0]);
+            Assert.Equal(1, members.Count);
+            Assert.Equal("FamilyName", members[0]);
         }
 
-        [Test]
+        [Fact]
         public void HasDynamicMember_this_binders()
         {
             var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
             expando["Name"] = "gigi";
             expando["FamilyName"] = "belogea";
 
-            Assert.IsTrue(expando.HasKey("Name"));
-            Assert.IsFalse(expando.HasKey("FamilyName"));
+            Assert.True(expando.HasKey("Name"));
+            Assert.False(expando.HasKey("FamilyName"));
         }
 
-        [Test]
+        [Fact]
         public void HasDynamicMember_inner_object_binders()
         {
             var obj = new Named();
@@ -84,22 +83,22 @@ namespace Kephas.Tests.Dynamic
             expando["Name"] = "gigi";
             expando["FamilyName"] = "belogea";
 
-            Assert.IsTrue(expando.HasKey("Name"));
-            Assert.IsFalse(expando.HasKey("FamilyName"));
+            Assert.True(expando.HasKey("Name"));
+            Assert.False(expando.HasKey("FamilyName"));
         }
 
-        [Test]
+        [Fact]
         public void HasDynamicMember_inner_dictionary_binders()
         {
             var obj = new Named();
             var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
             expando["FamilyName"] = "belogea";
 
-            Assert.IsFalse(expando.HasKey("Name"));
-            Assert.IsTrue(expando.HasKey("FamilyName"));
+            Assert.False(expando.HasKey("Name"));
+            Assert.True(expando.HasKey("FamilyName"));
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_this_binders()
         {
             var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
@@ -107,13 +106,13 @@ namespace Kephas.Tests.Dynamic
             expando["FamilyName"] = "belogea";
 
             var dictionary = expando.ToDictionary();
-            Assert.AreEqual(1, dictionary.Count);
-            Assert.AreEqual("gigi", dictionary["Name"]);
-            Assert.AreEqual("gigi", expando.Name);
-            Assert.IsFalse(expando.GetInnerDictionary().ContainsKey("Name"));
+            Assert.Single(dictionary);
+            Assert.Equal("gigi", dictionary["Name"]);
+            Assert.Equal("gigi", expando.Name);
+            Assert.False(expando.GetInnerDictionary().ContainsKey("Name"));
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_inner_object_binders()
         {
             var obj = new Named();
@@ -122,13 +121,13 @@ namespace Kephas.Tests.Dynamic
             expando["FamilyName"] = "belogea";
 
             var dictionary = expando.ToDictionary();
-            Assert.AreEqual(1, dictionary.Count);
-            Assert.AreEqual("gigi", dictionary["Name"]);
-            Assert.AreEqual("gigi", obj.Name);
-            Assert.IsNull(expando.Name);
+            Assert.Equal(1, dictionary.Count);
+            Assert.Equal("gigi", dictionary["Name"]);
+            Assert.Equal("gigi", obj.Name);
+            Assert.Null(expando.Name);
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_inner_dictionary_binders()
         {
             var obj = new Named();
@@ -137,14 +136,14 @@ namespace Kephas.Tests.Dynamic
             expando["FamilyName"] = "belogea";
 
             var dictionary = expando.ToDictionary();
-            Assert.AreEqual(2, dictionary.Count);
-            Assert.AreEqual("gigi", dictionary["Name"]);
-            Assert.AreEqual("belogea", dictionary["FamilyName"]);
-            Assert.IsNull(obj.Name);
-            Assert.IsNull(expando.Name);
+            Assert.Equal(2, dictionary.Count);
+            Assert.Equal("gigi", dictionary["Name"]);
+            Assert.Equal("belogea", dictionary["FamilyName"]);
+            Assert.Null(obj.Name);
+            Assert.Null(expando.Name);
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_duplicated_property()
         {
             var dict = new Dictionary<string, object>();
@@ -153,10 +152,10 @@ namespace Kephas.Tests.Dynamic
             expando.Name = "belogea";
 
             var dictionary = expando.ToDictionary();
-            Assert.AreEqual("belogea", dictionary["Name"]);
+            Assert.Equal("belogea", dictionary["Name"]);
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_wrapped_duplicated_property()
         {
             var dict = new Dictionary<string, object>();
@@ -167,10 +166,10 @@ namespace Kephas.Tests.Dynamic
             obj.Name = "rules";
 
             var dictionary = expando.ToDictionary();
-            Assert.AreEqual("belogea", dictionary["Name"]);
+            Assert.Equal("belogea", dictionary["Name"]);
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_transformed_key()
         {
             var dict = new Dictionary<string, object>();
@@ -179,10 +178,10 @@ namespace Kephas.Tests.Dynamic
             expando.Name = "belogea";
 
             var dictionary = expando.ToDictionary(k => k.ToLower());
-            Assert.AreEqual("belogea", dictionary["name"]);
+            Assert.Equal("belogea", dictionary["name"]);
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_transformed_value()
         {
             var dict = new Dictionary<string, object>();
@@ -191,10 +190,10 @@ namespace Kephas.Tests.Dynamic
             expando.Name = "belogea";
 
             var dictionary = expando.ToDictionary(valueGetter: v => v is string stringValue ? stringValue.ToUpper() : v);
-            Assert.AreEqual("BELOGEA", dictionary["Name"]);
+            Assert.Equal("BELOGEA", dictionary["Name"]);
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary_transformed_key_and_value()
         {
             var dict = new Dictionary<string, object>();
@@ -203,17 +202,17 @@ namespace Kephas.Tests.Dynamic
             expando.Name = "belogea";
 
             var dictionary = expando.ToDictionary(k => k.ToLower(), v => v is string stringValue ? stringValue.ToUpper() : v);
-            Assert.AreEqual("BELOGEA", dictionary["name"]);
+            Assert.Equal("BELOGEA", dictionary["name"]);
         }
 
-        [Test]
+        [Fact]
         public void Indexer_non_conflicting_with_constant()
         {
             var dict = new Dictionary<string, object>();
             var expando = new TestExpandoWithConstants(dict);
             expando[nameof(TestExpandoWithConstants.Constant)] = "something";
 
-            Assert.AreEqual("something", expando[nameof(TestExpandoWithConstants.Constant)]);
+            Assert.Equal("something", expando[nameof(TestExpandoWithConstants.Constant)]);
         }
     }
 
@@ -255,6 +254,6 @@ namespace Kephas.Tests.Dynamic
 
     public class Named
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

@@ -9,44 +9,43 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections.Sets;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Collections.Sets
 {
-    [TestFixture]
-    public class PartialOrderedSetTest
+        public class PartialOrderedSetTest
     {
-        [Test]
+        [Fact]
         public void GetEnumerator_fully_ordered()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => i1 - i2);
             var orderedValues = orderedSet.ToList();
-            Assert.AreEqual(1, orderedValues[0]);
-            Assert.AreEqual(2, orderedValues[1]);
-            Assert.AreEqual(3, orderedValues[2]);
+            Assert.Equal(1, orderedValues[0]);
+            Assert.Equal(2, orderedValues[1]);
+            Assert.Equal(3, orderedValues[2]);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_not_ordered()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => null);
             var orderedValues = orderedSet.ToList();
-            Assert.AreEqual(2, orderedValues[0]);
-            Assert.AreEqual(3, orderedValues[1]);
-            Assert.AreEqual(1, orderedValues[2]);
+            Assert.Equal(2, orderedValues[0]);
+            Assert.Equal(3, orderedValues[1]);
+            Assert.Equal(1, orderedValues[2]);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_partially_ordered()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => i1 + i2 == 5 ? (int?)i2 - i1 : null);
             var orderedValues = orderedSet.ToList();
-            Assert.AreEqual(3, orderedValues[0]);
-            Assert.AreEqual(2, orderedValues[1]);
-            Assert.AreEqual(1, orderedValues[2]);
+            Assert.Equal(3, orderedValues[0]);
+            Assert.Equal(2, orderedValues[1]);
+            Assert.Equal(1, orderedValues[2]);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_cyclic_graph_exception()
         {
             Assert.Throws<InvalidOperationException>(
@@ -56,7 +55,7 @@ namespace Kephas.Tests.Collections.Sets
                     });
         }
 
-        [Test]
+        [Fact]
         public void Compare_direct_comparable()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) =>
@@ -69,12 +68,12 @@ namespace Kephas.Tests.Collections.Sets
                     return null;
                 });
 
-            Assert.AreEqual(0, orderedSet.Compare(2, 2));
-            Assert.AreEqual(-1, orderedSet.Compare(1, 2));
-            Assert.AreEqual(1, orderedSet.Compare(3, 2));
+            Assert.Equal(0, orderedSet.Compare(2, 2));
+            Assert.Equal(-1, orderedSet.Compare(1, 2));
+            Assert.Equal(1, orderedSet.Compare(3, 2));
         }
 
-        [Test]
+        [Fact]
         public void Compare_indirect_comparable()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) =>
@@ -87,12 +86,12 @@ namespace Kephas.Tests.Collections.Sets
                     return null;
                 });
 
-            Assert.AreEqual(0, orderedSet.Compare(2, 2));
-            Assert.AreEqual(-1, orderedSet.Compare(1, 3));
-            Assert.AreEqual(1, orderedSet.Compare(3, 1));
+            Assert.Equal(0, orderedSet.Compare(2, 2));
+            Assert.Equal(-1, orderedSet.Compare(1, 3));
+            Assert.Equal(1, orderedSet.Compare(3, 1));
         }
 
-        [Test]
+        [Fact]
         public void Compare_not_comparable()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) =>
@@ -105,16 +104,16 @@ namespace Kephas.Tests.Collections.Sets
                     return null;
                 });
 
-            Assert.IsNull(orderedSet.Compare(1, 3));
-            Assert.IsNull(orderedSet.Compare(2, 3));
+            Assert.Null(orderedSet.Compare(1, 3));
+            Assert.Null(orderedSet.Compare(2, 3));
         }
 
-        [Test]
+        [Fact]
         public void Compare_value_not_contained()
         {
             var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => i1 - i2);
 
-            Assert.IsNull(orderedSet.Compare(1, 4));
+            Assert.Null(orderedSet.Compare(1, 4));
         }
     }
 }

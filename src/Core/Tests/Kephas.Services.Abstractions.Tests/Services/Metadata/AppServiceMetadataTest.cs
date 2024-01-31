@@ -10,38 +10,37 @@
 
 using Kephas.Services;
 using Kephas.Services.Metadata;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Services.Metadata
 {
     /// <summary>
     /// Test class for <see cref="AppServiceMetadata"/>.
     /// </summary>
-    [TestFixture]
-    public class AppServiceMetadataTest
+        public class AppServiceMetadataTest
     {
-        [Test]
+        [Fact]
         public void Constructor_IsOverride()
         {
             var metadata = new Dictionary<string, object> { { "IsOverride", true } };
             var appServiceMetadata = new AppServiceMetadata(metadata);
-            Assert.IsTrue(appServiceMetadata.IsOverride);
+            Assert.True(appServiceMetadata.IsOverride);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_Priority()
         {
             var metadata = new Dictionary<string, object> { { "Priority", Priority.Low } };
             var appServiceMetadata = new AppServiceMetadata(metadata);
-            Assert.AreEqual(Priority.Low, appServiceMetadata.Priority);
+            Assert.Equal(Priority.Low, appServiceMetadata.Priority);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_ServiceName()
         {
             var metadata = new Dictionary<string, object> { { "ServiceName", "John Doe" } };
             var appServiceMetadata = new AppServiceMetadata(metadata);
-            Assert.AreEqual("John Doe", appServiceMetadata.ServiceName);
+            Assert.Equal("John Doe", appServiceMetadata.ServiceName);
         }
     }
 }

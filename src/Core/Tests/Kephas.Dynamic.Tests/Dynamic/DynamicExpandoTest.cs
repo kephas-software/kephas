@@ -8,26 +8,25 @@
 namespace Kephas.Tests.Dynamic;
 
 using Kephas.Dynamic;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class DynamicExpandoTest
 {
-    [Test]
+    [Fact]
     public void Indexer()
     {
         dynamic obj = new DictionaryExpando<object?>(new Dictionary<string, object?> { { "name", "John Doe" } });
         var expando = new DynamicExpando(obj);
 
-        Assert.AreEqual("John Doe", expando["name"]);
+        Assert.Equal("John Doe", expando["name"]);
     }
 
-    [Test]
+    [Fact]
     public void GetKeys()
     {
         dynamic obj = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
         var expando = new DynamicExpando(obj);
 
-        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetKeys());
+        Assert.Equivalent(new[] { "Hi" }, expando.GetKeys());
     }
 }

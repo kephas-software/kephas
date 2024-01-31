@@ -16,32 +16,31 @@ using System.Linq;
 using Kephas.Services;
 using Kephas.Services.Reflection;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class ServiceFactoryTest
 {
-    [Test]
+    [Fact]
     public void Create_Context()
     {
         var (appServices, injector) = GetServices();
         IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<Context>();
 
-        Assert.AreSame(injector, context.ServiceProvider);
+        Assert.Same(injector, context.ServiceProvider);
     }
 
-    [Test]
+    [Fact]
     public void Create_TestContext()
     {
         var (appServices, injector) = GetServices();
         IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<TestContext>();
 
-        Assert.AreSame(injector, context.ServiceProvider);
+        Assert.Same(injector, context.ServiceProvider);
     }
 
-    [Test]
+    [Fact]
     public void Create_TestContext_with_params()
     {
         var testService = Substitute.For<ITestService>();
@@ -51,9 +50,9 @@ public class ServiceFactoryTest
         IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<TestContext>(typeof(string));
 
-        Assert.AreSame(injector, context.ServiceProvider);
-        Assert.AreSame(testService, context.TestService);
-        Assert.AreSame(typeof(string), context.MediaType);
+        Assert.Same(injector, context.ServiceProvider);
+        Assert.Same(testService, context.TestService);
+        Assert.Same(typeof(string), context.MediaType);
     }
 
     private (IAppServiceCollection appServices, IServiceProvider injector) GetServices(params IAppServiceInfo[] appServiceInfos)

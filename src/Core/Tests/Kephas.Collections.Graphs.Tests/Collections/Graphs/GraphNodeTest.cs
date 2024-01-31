@@ -6,14 +6,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections.Graphs;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Collections.Graphs
 {
-    [TestFixture]
-    public class GraphNodeTest
+        public class GraphNodeTest
     {
-        [Test]
+        [Fact]
         public void AddIncomingEdge_success()
         {
             var node = new GraphNode();
@@ -22,17 +21,17 @@ namespace Kephas.Tests.Collections.Graphs
             // AddIncomingEdge called implicitely
             var edge = new GraphEdge(fromNode, node);
 
-            Assert.AreEqual(1, node.IncomingEdges.Count);
-            Assert.AreEqual(edge, node.IncomingEdges.First());
-            Assert.AreEqual(0, node.OutgoingEdges.Count);
-            Assert.AreEqual(1, node.ConnectedEdges.Count);
-            Assert.AreEqual(edge, node.ConnectedEdges.First());
+            Assert.Equal(1, node.IncomingEdges.Count);
+            Assert.Equal(edge, node.IncomingEdges.First());
+            Assert.Equal(0, node.OutgoingEdges.Count);
+            Assert.Equal(1, node.ConnectedEdges.Count);
+            Assert.Equal(edge, node.ConnectedEdges.First());
 
-            Assert.AreEqual(1, node.ConnectedNodes.Count);
-            Assert.AreEqual(fromNode, node.ConnectedNodes.First());
+            Assert.Equal(1, node.ConnectedNodes.Count);
+            Assert.Equal(fromNode, node.ConnectedNodes.First());
         }
 
-        [Test]
+        [Fact]
         public void AddOutgoingEdge_success()
         {
             var node = new GraphNode();
@@ -41,14 +40,14 @@ namespace Kephas.Tests.Collections.Graphs
             // AddOutgoingEdge called implicitely
             var edge = new GraphEdge(node, toNode);
 
-            Assert.AreEqual(0, node.IncomingEdges.Count);
-            Assert.AreEqual(1, node.OutgoingEdges.Count);
-            Assert.AreEqual(edge, node.OutgoingEdges.First());
-            Assert.AreEqual(1, node.ConnectedEdges.Count);
-            Assert.AreEqual(edge, node.ConnectedEdges.First());
+            Assert.Equal(0, node.IncomingEdges.Count);
+            Assert.Equal(1, node.OutgoingEdges.Count);
+            Assert.Equal(edge, node.OutgoingEdges.First());
+            Assert.Equal(1, node.ConnectedEdges.Count);
+            Assert.Equal(edge, node.ConnectedEdges.First());
 
-            Assert.AreEqual(1, node.ConnectedNodes.Count);
-            Assert.AreEqual(toNode, node.ConnectedNodes.First());
+            Assert.Equal(1, node.ConnectedNodes.Count);
+            Assert.Equal(toNode, node.ConnectedNodes.First());
         }
     }
 }

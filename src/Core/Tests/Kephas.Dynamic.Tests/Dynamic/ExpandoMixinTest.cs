@@ -9,46 +9,45 @@ namespace Kephas.Tests.Dynamic
 {
     using System.Collections.Generic;
     using Kephas.Dynamic;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class ExpandoMixinTest
+        public class ExpandoMixinTest
     {
-        [Test]
+        [Fact]
         public void Indexer_from_dictionary()
         {
             var expando = new Expandable();
             expando.ToDynamic()["Hi"] = "there";
-            Assert.AreEqual("there", expando.ToDynamic()["Hi"]);
+            Assert.Equal("there", expando.ToDynamic()["Hi"]);
         }
 
-        [Test]
+        [Fact]
         public void Indexer_from_member()
         {
             var expando = new Expandable();
             expando.ToDynamic()["Name"] = "John Doe";
-            Assert.AreEqual("John Doe", expando.ToDynamic()["Name"]);
-            Assert.AreEqual("John Doe", expando.Name);
+            Assert.Equal("John Doe", expando.ToDynamic()["Name"]);
+            Assert.Equal("John Doe", expando.Name);
         }
 
-        [Test]
+        [Fact]
         public void HasDynamicMember()
         {
             var expando = new Expandable();
             expando.ToDynamic()["Hi"] = "there";
-            Assert.IsTrue(expando.ToDynamic().HasKey("Hi"));
-            Assert.IsFalse(expando.ToDynamic().HasKey("there"));
+            Assert.True(expando.ToDynamic().HasKey("Hi"));
+            Assert.False(expando.ToDynamic().HasKey("there"));
         }
 
-        [Test]
+        [Fact]
         public void ToDictionary()
         {
             var expando = new Expandable();
             expando.ToDynamic()["Hi"] = "there";
 
             var dict = expando.ToDynamic().ToDictionary();
-            Assert.IsTrue(dict.ContainsKey("Hi"));
-            Assert.IsFalse(dict.ContainsKey("there"));
+            Assert.True(dict.ContainsKey("Hi"));
+            Assert.False(dict.ContainsKey("there"));
         }
 
         public class Expandable : IExpandoMixin

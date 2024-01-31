@@ -10,12 +10,11 @@ using System.Dynamic;
 namespace Kephas.Tests.Dynamic;
 
 using Kephas.Dynamic;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class DictionaryExpandoTest
 {
-    [Test]
+    [Fact]
     public void Constructor_object_dictionary()
     {
         var dict = new Dictionary<string, object?>();
@@ -23,10 +22,10 @@ public class DictionaryExpandoTest
 
         expando.Hi = "there";
 
-        Assert.AreEqual("there", dict["Hi"]);
+        Assert.Equal("there", dict["Hi"]);
     }
 
-    [Test]
+    [Fact]
     public void Constructor_string_dictionary()
     {
         var dict = new Dictionary<string, string>();
@@ -34,30 +33,30 @@ public class DictionaryExpandoTest
 
         expando.Hi = "there";
 
-        Assert.AreEqual("there", dict["Hi"]);
+        Assert.Equal("there", dict["Hi"]);
     }
 
-    [Test]
+    [Fact]
     public void Dynamic_by_key()
     {
         dynamic expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
 
-        Assert.AreEqual("there", expando.Hi);
+        Assert.Equal("there", expando.Hi);
     }
 
-    [Test]
+    [Fact]
     public void GetKeys()
     {
         IDynamic expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
 
-        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetKeys());
+        Assert.Equivalent(new[] { "Hi" }, expando.GetKeys());
     }
 
-    [Test]
+    [Fact]
     public void GetDynamicMemberNames()
     {
         DynamicObject expando = new DictionaryExpando<string>(new Dictionary<string, string> { { "Hi", "there" } });
 
-        CollectionAssert.AreEquivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
+        Assert.Equivalent(new[] { "Hi" }, expando.GetDynamicMemberNames());
     }
 }

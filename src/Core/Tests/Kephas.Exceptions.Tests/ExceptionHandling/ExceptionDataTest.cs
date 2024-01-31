@@ -15,49 +15,48 @@ namespace Kephas.Tests.ExceptionHandling
     using System;
 
     using Kephas.ExceptionHandling;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class ExceptionDataTest
+        public class ExceptionDataTest
     {
-        [Test]
+        [Fact]
         public void ExceptionData_copy_from_exception_default()
         {
             var exceptionData = new ExceptionData(new Exception("hello"));
 
-            Assert.AreEqual("hello", exceptionData.Message);
-            Assert.AreEqual(typeof(Exception).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(LogLevel.Error, exceptionData.Severity);
+            Assert.Equal("hello", exceptionData.Message);
+            Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
+            Assert.Equal(LogLevel.Error, exceptionData.Severity);
         }
 
-        [Test]
+        [Fact]
         public void ExceptionData_copy_from_exception_default_with_severity()
         {
             var exceptionData = new ExceptionData(new DataException("hello") { Severity = LogLevel.Critical });
 
-            Assert.AreEqual("hello", exceptionData.Message);
-            Assert.AreEqual(typeof(DataException).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(LogLevel.Critical, exceptionData.Severity);
+            Assert.Equal("hello", exceptionData.Message);
+            Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
+            Assert.Equal(LogLevel.Critical, exceptionData.Severity);
         }
 
-        [Test]
+        [Fact]
         public void ExceptionData_copy_from_exception_overwrite_severity()
         {
             var exceptionData = new ExceptionData(new Exception("hello"), LogLevel.Warning);
 
-            Assert.AreEqual("hello", exceptionData.Message);
-            Assert.AreEqual(typeof(Exception).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(LogLevel.Warning, exceptionData.Severity);
+            Assert.Equal("hello", exceptionData.Message);
+            Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
+            Assert.Equal(LogLevel.Warning, exceptionData.Severity);
         }
 
-        [Test]
+        [Fact]
         public void ExceptionData_copy_from_exception_with_severity_overwrite_severity()
         {
             var exceptionData = new ExceptionData(new DataException("hello") { Severity = LogLevel.Critical }, LogLevel.Information);
 
-            Assert.AreEqual("hello", exceptionData.Message);
-            Assert.AreEqual(typeof(DataException).FullName, exceptionData.ExceptionType);
-            Assert.AreEqual(LogLevel.Information, exceptionData.Severity);
+            Assert.Equal("hello", exceptionData.Message);
+            Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
+            Assert.Equal(LogLevel.Information, exceptionData.Severity);
         }
     }
 
