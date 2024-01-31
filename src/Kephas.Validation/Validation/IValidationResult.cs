@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Validation
 {
     using Kephas.ExceptionHandling;
@@ -24,6 +26,6 @@ namespace Kephas.Validation
         /// <returns>
         /// An enumeration of errors.
         /// </returns>
-        IEnumerable<IValidationMessage> GetErrors() => this.Where(i => i.Severity == SeverityLevel.Error);
+        IEnumerable<IValidationMessage> GetErrors() => this.Where(i => i.Severity == LogLevel.Error);
     }
 }

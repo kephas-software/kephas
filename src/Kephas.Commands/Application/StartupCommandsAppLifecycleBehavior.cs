@@ -20,7 +20,7 @@ namespace Kephas.Commands.Application
     /// <summary>
     /// Application lifecycle behavior executing startup commands.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class StartupCommandsAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly ICommandProcessor commandProcessor;
@@ -67,7 +67,7 @@ namespace Kephas.Commands.Application
 
             var result = await this.commandProcessor
                 .ProcessAsync(command.Name, command.Args, signal.ExecutionContext, cancellationToken)
-                .PreserveThreadContext();
+                ;
 
             throw new InterruptSignal(result: result);
         }

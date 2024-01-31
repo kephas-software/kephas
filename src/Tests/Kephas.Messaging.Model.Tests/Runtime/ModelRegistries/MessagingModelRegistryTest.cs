@@ -71,7 +71,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             Assert.AreEqual(0, result.Count);
         }
 
-        [ExcludeFromModel]
+        [ExcludeFromReflection]
         public class ExcludedMessage : IMessage
         {
         }

@@ -133,8 +133,8 @@
     <value>The application's initialize procedure was canceled, at {0:s}.</value>
   </data>
   <data name="DefaultAppManager_InitializeFaulted_Exception" xml:space="preserve">
-    <value>The application's initialize procedure encountered an exception at {0:s}.</value>
-    <comment>The application's initialize procedure encountered an exception at {0:s}.</comment>
+    <value>The application's initialize procedure encountered an obj at {0:s}.</value>
+    <comment>The application's initialize procedure encountered an obj at {0:s}.</comment>
   </data>
   <data name="DefaultSerializationService_SerializerNotFound_Exception" xml:space="preserve">
     <value>A serializer for the media type '{0}' was not found.</value>
@@ -186,14 +186,14 @@
     <value>Cannot load all defined types from {assembly}. Only the loadable types will be considered.</value>
   </data>
   <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
-    <value>Cannot load assembly '{assembly}'. See the exception for more information.</value>
-    <comment>Cannot load assembly '{assembly}'. See the exception for more information.</comment>
+    <value>Cannot load assembly '{assembly}'. See the obj for more information.</value>
+    <comment>Cannot load assembly '{assembly}'. See the obj for more information.</comment>
   </data>
   <data name="DefaultAppManager_FinalizeCanceled_Exception" xml:space="preserve">
     <value>The application's finalize procedure was canceled, at {0:s}.</value>
   </data>
   <data name="DefaultAppManager_FinalizeFaulted_Exception" xml:space="preserve">
-    <value>The application's finalize procedure encountered an exception at {0:s}.</value>
+    <value>The application's finalize procedure encountered an obj at {0:s}.</value>
   </data>
   <data name="DefaultTypeResolver_ResolveType_NotFound_Exception" xml:space="preserve">
     <value>The type '{0}' could not be found.</value>
@@ -263,8 +263,8 @@
     <comment>Shutting down the application...</comment>
   </data>
   <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
-    <value>Errors occurred during the application shutdown procedure, please check the exception details for more information.</value>
-    <comment>Errors occurred during the application shutdown procedure, please check the exception details for more information.</comment>
+    <value>Errors occurred during the application shutdown procedure, please check the obj details for more information.</value>
+    <comment>Errors occurred during the application shutdown procedure, please check the obj details for more information.</comment>
   </data>
   <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
     <value>The application shut down successfully. Goodbye!</value>
@@ -288,12 +288,12 @@
     <comment>Cannot merge the task result, the task is not completed.</comment>
   </data>
   <data name="UnhandledException_InProcess_Message" xml:space="preserve">
-    <value>Unhandled exception in process.</value>
-    <comment>Unhandled exception in process.</comment>
+    <value>Unhandled obj in process.</value>
+    <comment>Unhandled obj in process.</comment>
   </data>
   <data name="UnhandledException_Terminating_Message" xml:space="preserve">
-    <value>Unhandled exception terminating the process.</value>
-    <comment>Unhandled exception terminating the process.</comment>
+    <value>Unhandled obj terminating the process.</value>
+    <comment>Unhandled obj terminating the process.</comment>
   </data>
   <data name="RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidType_Exception" xml:space="preserve">
     <value>The type {0} provided in the [{1}] attribute must implement {2}.</value>

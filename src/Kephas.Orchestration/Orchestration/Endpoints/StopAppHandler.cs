@@ -74,7 +74,7 @@ namespace Kephas.Orchestration.Endpoints
                 await this.eventHub.PublishAsync<InteractionContext>(
                     new ShutdownSignal("Handle stop app instance."),
                     ctx => ctx.Impersonate(context).OneWay().WithDelay(TimeSpan.FromSeconds(2)),
-                    token).PreserveThreadContext();
+                    token);
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Shutdown request received. Good bye!";
             }
             else
@@ -83,7 +83,7 @@ namespace Kephas.Orchestration.Endpoints
                     message,
                     new Endpoint(appId: message.AppId, appInstanceId: message.AppInstanceId),
                     ctx => ctx.Impersonate(context),
-                    cancellationToken: token).PreserveThreadContext();
+                    cancellationToken: token);
 
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Shutdown request received, but it is addressed to another application instance(s). Delegated to {message.AppId}/{message.AppInstanceId}.";
             }

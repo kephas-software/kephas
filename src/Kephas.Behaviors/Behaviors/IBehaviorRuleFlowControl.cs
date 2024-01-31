@@ -15,7 +15,7 @@ namespace Kephas.Behaviors
     /// <summary>
     /// Contract for controlling the flow of behavior rules.
     /// </summary>
-    public interface IBehaviorRuleFlowControl : IHasProcessingPriority
+    public interface IBehaviorRuleFlowControl : IHasPriority
     {
         /// <summary>
         /// Gets a value indicating whether this rule ends the processing flow.

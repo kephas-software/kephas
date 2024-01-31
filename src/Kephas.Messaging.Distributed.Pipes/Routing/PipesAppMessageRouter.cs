@@ -35,7 +35,7 @@ namespace Kephas.Messaging.Pipes.Routing
     /// A message router over named pipes.
     /// </summary>
     [Override]
-    [ProcessingPriority(Priority.Low + 1000)]
+    [Priority(Priority.Low + 1000)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class PipesAppMessageRouter : DefaultAppMessageRouter
     {
@@ -56,7 +56,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="PipesAppMessageRouter"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="queueStore">The message queue store.</param>
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <param name="eventHub">The event hub.</param>
         /// <param name="lazyOrchestrationManager">The lazy orchestration manager.</param>
         public PipesAppMessageRouter(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
             IMessageQueueStore queueStore,
@@ -73,7 +73,7 @@ namespace Kephas.Messaging.Pipes.Routing
             ISerializationService serializationService,
             IEventHub eventHub,
             Lazy<IOrchestrationManager> lazyOrchestrationManager)
-            : base(injectableFactory, appRuntime, messageProcessor, queueStore)
+            : base(serviceFactory, appRuntime, messageProcessor, queueStore)
         {
             this.pipesConfiguration = pipesConfiguration;
             this.serializationService = serializationService;
@@ -91,7 +91,7 @@ namespace Kephas.Messaging.Pipes.Routing
         /// </returns>
         protected override async Task InitializeCoreAsync(IContext? context, CancellationToken cancellationToken)
         {
-            await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
+            await base.InitializeCoreAsync(context, cancellationToken);
 
             this.appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(
                 async (e, ctx, token) =>
@@ -103,7 +103,7 @@ namespace Kephas.Messaging.Pipes.Routing
 
                     this.appStoppedSubscription = this.eventHub.Subscribe<AppStoppedEvent>(this.HandleAppStoppedEvent);
 
-                    await this.InitializeChannelsAsync(cancellationToken).PreserveThreadContext();
+                    await this.InitializeChannelsAsync(cancellationToken);
 
                     this.appStartedSubscription?.Dispose();
                     this.appStartedSubscription = null;
@@ -133,7 +133,7 @@ namespace Kephas.Messaging.Pipes.Routing
                 var (rootOutChannel, _) = this.EnsureOutChannel(this.lazyOrchestrationManager.Value.GetRootAppInstanceId());
 
                 // send a join message
-                await this.PublishAsync(new JoinPeerMessage { AppInstanceId = this.AppRuntime.GetAppInstanceId()! }, rootOutChannel, cancellationToken).PreserveThreadContext();
+                await this.PublishAsync(new JoinPeerMessage { AppInstanceId = this.AppRuntime.GetAppInstanceId()! }, rootOutChannel, cancellationToken);
             }
 
             this.channelsInitialized = true;
@@ -165,7 +165,7 @@ namespace Kephas.Messaging.Pipes.Routing
 
             if (!this.channelsInitialized)
             {
-                return await base.RouteOutputAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                return await base.RouteOutputAsync(brokeredMessage, context, cancellationToken);
             }
 
             var msgRecipients = brokeredMessage.Recipients ?? Enumerable.Empty<IEndpoint>();
@@ -183,13 +183,13 @@ namespace Kephas.Messaging.Pipes.Routing
             if (groups.Count == 1)
             {
                 return await this.PublishAsync(brokeredMessage, context, groups[0].appInstanceId, cancellationToken)
-                    .PreserveThreadContext();
+                    ;
             }
 
             foreach (var (appInstanceId, recipients) in groups)
             {
                 await this.PublishAsync(brokeredMessage.Clone(recipients), context, appInstanceId, cancellationToken)
-                    .PreserveThreadContext();
+                    ;
             }
 
             return (RoutingInstruction.None, null);
@@ -267,13 +267,13 @@ namespace Kephas.Messaging.Pipes.Routing
             var (clientChannel, _) = this.EnsureOutChannel(appInstanceId);
             if (clientChannel.IsSelf)
             {
-                return await base.RouteOutputAsync(message, context, cancellationToken).PreserveThreadContext();
+                return await base.RouteOutputAsync(message, context, cancellationToken);
             }
 
             var serializedMessage = await this.serializationService
                 .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
-                .PreserveThreadContext();
-            await clientChannel.WriteAsync(serializedMessage!, cancellationToken).PreserveThreadContext();
+                ;
+            await clientChannel.WriteAsync(serializedMessage!, cancellationToken);
 
             return (RoutingInstruction.None, null);
         }
@@ -282,32 +282,32 @@ namespace Kephas.Messaging.Pipes.Routing
         {
             var messageString = await this.serializationService
                 .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
-                .PreserveThreadContext();
-            await clientChannel.WriteAsync(messageString!, cancellationToken).PreserveThreadContext();
+                ;
+            await clientChannel.WriteAsync(messageString!, cancellationToken);
         }
 
         private async Task OnMessageReceivedAsync(ServerChannel channel, string messageString, CancellationToken cancellationToken)
         {
             var message = await this.serializationService
                 .DeserializeAsync(messageString, cancellationToken: cancellationToken)
-                .PreserveThreadContext();
+                ;
 
             switch (message)
             {
                 case JoinPeerMessage joinPeerMessage:
                     await this.HandleJoinPeerMessageAsync(joinPeerMessage, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
                     break;
                 case PeersChangedMessage peersChangedMessage:
                     await this.HandlePeersChangedMessageAsync(peersChangedMessage, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
                     break;
                 case IBrokeredMessage brokeredMessage:
                     await this.HandleBrokeredMessageAsync(brokeredMessage, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
                     break;
                 default:
-                    this.Logger.Warn("Unsupported message '{message}'.", messageString);
+                    this.Logger.LogWarning("Unsupported message '{message}'.", messageString);
                     break;
             }
         }
@@ -335,14 +335,14 @@ namespace Kephas.Messaging.Pipes.Routing
         {
             try
             {
-                this.Logger.Trace("Received brokered message: '{message}'.", brokeredMessage);
+                this.Logger.LogTrace("Received brokered message: '{message}'.", brokeredMessage);
 
                 await this.RouteInputAsync(brokeredMessage, this.AppContext, cancellationToken)
-                    .PreserveThreadContext();
+                    ;
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while routing message: '{message}'.", brokeredMessage);
+                this.Logger.LogError(ex, "Error while routing message: '{message}'.", brokeredMessage);
             }
         }
 
@@ -361,15 +361,15 @@ namespace Kephas.Messaging.Pipes.Routing
                         AppInstanceId = this.AppRuntime.GetAppInstanceId()!,
                         Apps = (await this.lazyOrchestrationManager.Value
                                 .GetLiveAppsAsync(cancellationToken: cancellationToken)
-                                .PreserveThreadContext())
+                                )
                             .ToArray(),
                     },
                     peerChannel,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
             catch (Exception ex)
             {
-                this.Logger.Error(
+                this.Logger.LogError(
                     ex,
                     "Error responding to initialize peer message from '{peer}'.",
                     joinPeerMessage.AppInstanceId);
@@ -387,7 +387,7 @@ namespace Kephas.Messaging.Pipes.Routing
 
             if (!this.outChannels.TryRemove(peerAppInstanceId, out var peerOutChannel))
             {
-                this.Logger.Warn("Peer output channel not found for {peer}.", peerAppInstanceId);
+                this.Logger.LogWarning("Peer output channel not found for {peer}.", peerAppInstanceId);
             }
         }
 

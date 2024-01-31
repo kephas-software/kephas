@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Model.Runtime.Construction
 {
     using System;

@@ -26,7 +26,7 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("other", "2SmKENGwc1g33EvYXaxkGw887yekfl1TpU8vP1svz/o=")]
         public void Hash(string value, string hash)
         {
-            var hashingService = new Sha256HashingService(Substitute.For<IInjectableFactory>());
+            var hashingService = new Sha256HashingService(Substitute.For<IServiceFactory>());
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var hashBytes = hashingService.Hash(valueBytes);
             var hashString = Convert.ToBase64String(hashBytes);

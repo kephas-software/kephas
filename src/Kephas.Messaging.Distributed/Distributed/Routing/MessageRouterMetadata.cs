@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Messaging.Distributed.Routing
 {
     using System;

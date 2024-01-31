@@ -27,7 +27,7 @@ namespace Kephas.Commands.Messaging
     /// <summary>
     /// A command registry for messages.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class MessagingCommandRegistry : ICommandRegistry
     {
         private IList<IOperationInfo>? commandTypes;
@@ -102,6 +102,6 @@ namespace Kephas.Commands.Messaging
         private bool IsMessageType(Type type) => !type.IsAbstract
                                                  && typeof(IMessageBase).IsAssignableFrom(type)
                                                  && !typeof(IMessageEnvelopeBase).IsAssignableFrom(type)
-                                                 && type.GetCustomAttribute<ExcludeFromModelAttribute>() == null;
+                                                 && type.GetCustomAttribute<ExcludeFromReflectionAttribute>() == null;
     }
 }

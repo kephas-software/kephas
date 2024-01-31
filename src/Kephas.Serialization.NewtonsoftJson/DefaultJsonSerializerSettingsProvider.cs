@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Serialization.Json
 {
     using System;
@@ -48,7 +50,7 @@ namespace Kephas.Serialization.Json
         public DefaultJsonSerializerSettingsProvider(
             ITypeResolver typeResolver,
             IRuntimeTypeRegistry typeRegistry,
-            IInjectableFactory? injectableFactory,
+            IServiceFactory? injectableFactory,
             ILogManager? logManager = null,
             ICollection<Lazy<IJsonConverter, AppServiceMetadata>>? jsonConverters = null)
             : base(logManager)
@@ -58,7 +60,7 @@ namespace Kephas.Serialization.Json
 
             this.TypeResolver = typeResolver;
             this.TypeRegistry = typeRegistry;
-            this.InjectableFactory = injectableFactory ?? new ActivatorInjectableFactory();
+            this.ServiceFactory = injectableFactory ?? new ActivatorServiceFactory();
             this.logManager = logManager;
             this.lazyJsonConverters = new Lazy<ICollection<JsonConverter>>(() => this.ComputeJsonConverters(jsonConverters));
             this.lazyCamelCaseResolver = new Lazy<IContractResolver>(() => new CamelCaseContractResolver(this.lazyJsonConverters.Value));
@@ -86,7 +88,7 @@ namespace Kephas.Serialization.Json
         /// </summary>
         protected IRuntimeTypeRegistry TypeRegistry { get; }
 
-        public IInjectableFactory InjectableFactory { get; }
+        public IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Configures the provided json serializer settings.
@@ -108,9 +110,9 @@ namespace Kephas.Serialization.Json
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRegistry">The runtime type registry.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <returns>The default JSON converters.</returns>
-        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver, IRuntimeTypeRegistry typeRegistry, IInjectableFactory injectableFactory)
+        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver, IRuntimeTypeRegistry typeRegistry, IServiceFactory serviceFactory)
         {
             // The order in this list is important, as generic collections should be processed last.
             return new List<JsonConverter>
@@ -119,12 +121,12 @@ namespace Kephas.Serialization.Json
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
-                new DynamicTypeRegistryJsonConverter(typeRegistry, typeResolver, injectableFactory),
-                new AppServiceMetadataJsonConverter(typeRegistry, typeResolver, injectableFactory),
+                new DynamicTypeRegistryJsonConverter(typeRegistry, typeResolver, serviceFactory),
+                new AppServiceMetadataJsonConverter(typeRegistry, typeResolver, serviceFactory),
                 new AppServiceInfoJsonConverter(typeRegistry, typeResolver),
-                new ExpandoJsonConverter(typeRegistry, typeResolver, injectableFactory),
+                new ExpandoJsonConverter(typeRegistry, typeResolver, serviceFactory),
                 new DictionaryJsonConverter(typeRegistry, typeResolver),
-                new InjectableConverter(typeRegistry, typeResolver, injectableFactory),
+                new InjectableConverter(typeRegistry, typeResolver, serviceFactory),
                 new AnonymousClassJsonConverter(typeRegistry),
                 new ArrayJsonConverter(),
                 new CollectionJsonConverter(typeRegistry),
@@ -197,7 +199,7 @@ namespace Kephas.Serialization.Json
         /// <param name="args">The <see cref="ErrorEventArgs"/> instance containing the event data.</param>
         protected virtual void HandleJsonSerializationError(object sender, ErrorEventArgs args)
         {
-            this.Logger.Error(
+            this.Logger.LogError(
                 args.ErrorContext.Error,
                 Strings.DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage,
                 args.CurrentObject?.GetType());
@@ -218,7 +220,7 @@ namespace Kephas.Serialization.Json
                              ?? new List<JsonConverter>();
             if (converters.Count == 0)
             {
-                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver, this.TypeRegistry, this.InjectableFactory));
+                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver, this.TypeRegistry, this.ServiceFactory));
             }
 
             return converters;
@@ -233,12 +235,12 @@ namespace Kephas.Serialization.Json
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), RuntimeTypeRegistry.Instance, new ActivatorInjectableFactory(), LoggingHelper.DefaultLogManager);
+                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), RuntimeTypeRegistry.Instance, new ActivatorServiceFactory(), LoggingHelper.DefaultLogManager);
 
             return defaultInstance;
         }
 
-        private class ActivatorInjectableFactory : IInjectableFactory
+        private class ActivatorServiceFactory : IServiceFactory
         {
             public object Create(Type type, params object?[] args)
             {

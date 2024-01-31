@@ -32,13 +32,13 @@ namespace Kephas.Reflection
             var result = operationInfo.Invoke(instance, args);
             if (result is Task taskResult)
             {
-                await taskResult.PreserveThreadContext();
+                await taskResult;
                 result = taskResult.GetResult();
             }
             else if (result is ValueTask valueTaskResult)
             {
                 taskResult = valueTaskResult.AsTask();
-                await taskResult.PreserveThreadContext();
+                await taskResult;
                 result = taskResult.GetResult();
             }
 

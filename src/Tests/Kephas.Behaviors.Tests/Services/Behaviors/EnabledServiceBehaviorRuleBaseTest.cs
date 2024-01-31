@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Behaviors.Tests.Services.Behaviors
 {
     using Kephas.Behaviors;

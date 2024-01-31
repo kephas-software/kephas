@@ -46,15 +46,15 @@ namespace Kephas.Scheduling.Endpoints
             if (message.Job == null) throw new ArgumentNullException(nameof(message.Job));
 
             var result = await this.scheduler.DisableScheduledJobAsync(message.Job!, cancellationToken: token)
-                .PreserveThreadContext();
+                ;
 
             return new Response
             {
                 Severity = result.HasErrors()
-                    ? SeverityLevel.Error
+                    ? LogLevel.Error
                     : result.HasWarnings()
-                        ? SeverityLevel.Warning
-                        : SeverityLevel.Info,
+                        ? LogLevel.Warning
+                        : LogLevel.Information,
                 Message = result.HasErrors()
                     ? string.Join(Environment.NewLine, result.Errors().Select(ex => ex.Message))
                     : result.HasWarnings()

@@ -22,7 +22,7 @@ namespace Kephas.Data.Conversion.TargetResolvers
     /// <summary>
     /// An identifier data conversion target resolver.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class IdDataConversionTargetResolver : IDataConversionTargetResolver<object, object>
     {
         /// <summary>
@@ -48,7 +48,7 @@ namespace Kephas.Data.Conversion.TargetResolvers
             {
                 var target = await targetDataContext.FindAsync(
                                  new FindContext(targetDataContext, targetType.AsType(), sourceId, throwIfNotFound: false),
-                                 cancellationToken).PreserveThreadContext();
+                                 cancellationToken);
                 return target;
             }
 

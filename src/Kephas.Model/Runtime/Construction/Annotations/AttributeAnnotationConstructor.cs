@@ -21,7 +21,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
     /// <summary>
     /// A default runtime factory for annotation information.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class AttributeAnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
     {
         /// <summary>

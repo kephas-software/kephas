@@ -49,7 +49,7 @@ public interface IMessageProcessor
 
         var processAsync = ProcessAsyncMethod.MakeGenericMethod(messageType, responseType);
         var task = processAsync.Call<Task>(this, typedMessage, optionsConfig, token);
-        await task.PreserveThreadContext();
+        await task;
         return task.GetResult();
     }
 

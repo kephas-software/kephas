@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DefaultMessageProcessor_AmbiguousHandler_Exception" xml:space="preserve">
-    <value>Multiple handlers found for the '{0}' message type: {1}. Please disambiguate by using the [OverridePriority] attribute on them.</value>
+    <value>Multiple handlers found for the '{0}' message type: {1}. Please disambiguate by using the [Priority] attribute on them.</value>
   </data>
   <data name="DefaultMessageProcessor_MissingHandler_Exception" xml:space="preserve">
     <value>Could not find a handler for the '{0}' message type.</value>
@@ -139,7 +139,7 @@
     <value>The maximum allotted time of {0} expired for {1}.</value>
   </data>
   <data name="MessageRouterBase_Reply_Exception" xml:space="preserve">
-    <value>An error occurred while sending the reply to '{0}'. Please check the exception details for more information.</value>
+    <value>An error occurred while sending the reply to '{0}'. Please check the obj details for more information.</value>
   </data>
   <data name="BrokeredMessageHandler_ProcessAndRespond_Exception" xml:space="preserve">
     <value>The response processing is faulted.</value>
@@ -172,7 +172,7 @@
     <value>There is no message router to handle messages without recipients.</value>
   </data>
   <data name="MessageRouterBase_ProcessOneWay_Exception" xml:space="preserve">
-    <value>An error occurred while processing the one-way request '{0}'. Please check the exception details for more information.</value>
+    <value>An error occurred while processing the one-way request '{0}'. Please check the obj details for more information.</value>
   </data>
   <data name="DefaultMessageBroker_ErrorsOccurredWhileSending_Exception" xml:space="preserve">
     <value>Errors occurred while sending message '{message}'.</value>

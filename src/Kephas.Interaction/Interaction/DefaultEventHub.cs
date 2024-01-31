@@ -27,21 +27,21 @@ namespace Kephas.Interaction
     /// <summary>
     /// The default implementation of the <see cref="IEventHub"/> service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultEventHub : Loggable, IEventHub, IDisposable
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IList<EventSubscription> subscriptions = new List<EventSubscription>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public DefaultEventHub(IInjectableFactory injectableFactory, ILogManager? logManager = null)
+        public DefaultEventHub(IServiceFactory serviceFactory, ILogManager? logManager = null)
             : base(logManager)
         {
-            this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            this.serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Kephas.Interaction
 #pragma warning restore 4014
             }
 
-            return await this.PublishCoreAsync(@event, context, delay, cancellationToken).PreserveThreadContext();
+            return await this.PublishCoreAsync(@event, context, delay, cancellationToken);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Kephas.Interaction
         public Task<IOperationResult<IEnumerable<object?>>> PublishAsync<TContext>(object @event, Action<TContext> options, CancellationToken cancellationToken = default)
             where TContext : class, IContext
         {
-            var context = this.injectableFactory.Create<TContext>().Merge(options);
+            var context = this.serviceFactory.Create<TContext>().Merge(options);
             return this.PublishAsync(@event, context, cancellationToken);
         }
 
@@ -198,7 +198,7 @@ namespace Kephas.Interaction
 
             if (delay > TimeSpan.Zero)
             {
-                await Task.Delay(delay, cancellationToken).PreserveThreadContext();
+                await Task.Delay(delay, cancellationToken);
             }
 
             IList<EventSubscription> subscriptionsCopy;
@@ -220,7 +220,7 @@ namespace Kephas.Interaction
                     var task = subscription.Callback?.Invoke(this.GetEventContent(@event), context, cancellationToken);
                     if (task != null)
                     {
-                        await task.PreserveThreadContext();
+                        await task;
                         resultList.Add(task.GetResult());
                     }
                 }
@@ -228,14 +228,14 @@ namespace Kephas.Interaction
                 {
                     switch (interruption.Severity)
                     {
-                        case SeverityLevel.Info:
+                        case LogLevel.Information:
                             resultList.Add(interruption.Result);
                             result.Complete();
                             break;
-                        case SeverityLevel.Warning:
+                        case LogLevel.Warning:
                             resultList.Add(interruption.Result);
                             result.Complete(operationState: OperationState.Warning);
-                            this.Logger.Warn(
+                            this.Logger.LogWarning(
                                 interruption.InnerException ?? interruption,
                                 "A warning interruption occurred when invoking subscription callback for '{event}'.",
                                 @event);
@@ -255,7 +255,7 @@ namespace Kephas.Interaction
                 catch (Exception ex)
                 {
                     result.Fail(ex);
-                    this.Logger.Error(ex, AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
+                    this.Logger.LogError(ex, AbstractionStrings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
                 }
             }
 

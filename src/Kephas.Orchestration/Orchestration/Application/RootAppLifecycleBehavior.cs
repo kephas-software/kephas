@@ -34,7 +34,7 @@ namespace Kephas.Orchestration.Application
     /// Lifecycle behavior for the root microservice. It should be processed as the latest of
     /// all the microservices in the system.
     /// </summary>
-    [ProcessingPriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class RootAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private Timer? supervisorTimer;
@@ -129,7 +129,7 @@ namespace Kephas.Orchestration.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+            await this.StartWorkerProcessesAsync(appContext, cancellationToken);
             this.restartSubscription = this.EventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, appContext, token));
             return true.ToOperationResult();
         }
@@ -153,7 +153,7 @@ namespace Kephas.Orchestration.Application
             this.restartSubscription?.Dispose();
             this.restartSubscription = null;
 
-            await this.StopWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+            await this.StopWorkerProcessesAsync(appContext, cancellationToken);
             return true.ToOperationResult();
         }
 
@@ -172,7 +172,7 @@ namespace Kephas.Orchestration.Application
             this.setupQuerySubscription?.Dispose();
             this.setupQuerySubscription = null;
 
-            await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+            await base.AfterAppFinalizeAsync(appContext, cancellationToken);
             return true.ToOperationResult();
         }
 
@@ -191,7 +191,7 @@ namespace Kephas.Orchestration.Application
 
             var liveApps =
                 (await this.OrchestrationManager.GetLiveAppsAsync(cancellationToken: cancellationToken)
-                    .PreserveThreadContext())
+                    )
                 .ToList();
             var startTasks = new List<Task<IProcessStartResult>>();
             this.Logger.Info("Starting worker application instances...");
@@ -219,7 +219,7 @@ namespace Kephas.Orchestration.Application
                 startTasks.Add(this.StartWorkerProcessAsync(appInfo, appSettings, appContext, cancellationToken));
             }
 
-            this.WorkerProcesses = (await Task.WhenAll(startTasks).PreserveThreadContext()).ToList();
+            this.WorkerProcesses = (await Task.WhenAll(startTasks)).ToList();
 
             foreach (var processStartResult in this.WorkerProcesses.Where(processStartResult => processStartResult.StartException != null))
             {
@@ -265,7 +265,7 @@ namespace Kephas.Orchestration.Application
 
             if (this.supervisorTimer != null)
             {
-                await this.supervisorTimer.DisposeAsync().PreserveThreadContext();
+                await this.supervisorTimer.DisposeAsync();
                 this.supervisorTimer = null;
             }
 
@@ -278,7 +278,7 @@ namespace Kephas.Orchestration.Application
             var logger = appContext.Logger ?? this.Logger;
             var liveApps =
                 (await this.OrchestrationManager.GetLiveAppsAsync(ctx => ctx.Impersonate(appContext), cancellationToken)
-                    .PreserveThreadContext())
+                    )
                 .ToList();
 
             this.Logger.Info($"Stopping worker application instances: {string.Join(", ", liveApps.Select(r => r.AppInstanceId))}");
@@ -296,7 +296,7 @@ namespace Kephas.Orchestration.Application
                 stopTasks.Add(this.StopWorkerProcessAsync(runtimeAppInfo, appContext, cancellationToken));
             }
 
-            var acknowledgedProcesses = (await Task.WhenAll(stopTasks).PreserveThreadContext())
+            var acknowledgedProcesses = (await Task.WhenAll(stopTasks))
                                             .Select(m => m?.ProcessId)
                                             .Where(id => id.HasValue)
                                             .Select(id => id.Value)
@@ -315,7 +315,7 @@ namespace Kephas.Orchestration.Application
                 {
                     if (!acknowledgedProcesses.Contains(workerProcess.Id))
                     {
-                        logger.Warn($"Worker application process '{workerProcessInfo}' (#{workerProcess.Id}) did not respond to the stop command, trying to kill it.");
+                        logger.LogWarning($"Worker application process '{workerProcessInfo}' (#{workerProcess.Id}) did not respond to the stop command, trying to kill it.");
                     }
 
                     var secondsToWait = this.WaitForExit(workerProcess);
@@ -325,13 +325,13 @@ namespace Kephas.Orchestration.Application
                     }
                     else
                     {
-                        logger.Warn($"Worker process '{workerProcessInfo}' (#{workerProcess.Id}) did not exit in the first {secondsToWait}s, killing it.");
+                        logger.LogWarning($"Worker process '{workerProcessInfo}' (#{workerProcess.Id}) did not exit in the first {secondsToWait}s, killing it.");
                         workerProcess.Kill();
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"Errors occurred when trying to kill worker application process '${workerProcessInfo}' (#{workerProcess.Id}).");
+                    logger.LogError(ex, $"Errors occurred when trying to kill worker application process '${workerProcessInfo}' (#{workerProcess.Id}).");
                 }
 
                 workerProcessResult.Dispose();
@@ -384,13 +384,13 @@ namespace Kephas.Orchestration.Application
                 }
 
                 // TODO localization
-                this.Logger.Error("The worker application instance {app} exited prematurely. Trying to restart it...", appInfo.Identity.Id);
+                this.Logger.LogError("The worker application instance {app} exited prematurely. Trying to restart it...", appInfo.Identity.Id);
 
                 try
                 {
                     this.WorkerProcesses.Remove(processStartResult);
                     var appSettings = appInfo[nameof(AppSettings)] as AppSettings;
-                    var newProcessStartResult = await this.StartWorkerProcessAsync(appInfo, appSettings, appContext, CancellationToken.None).PreserveThreadContext();
+                    var newProcessStartResult = await this.StartWorkerProcessAsync(appInfo, appSettings, appContext, CancellationToken.None);
                     this.WorkerProcesses.Add(newProcessStartResult);
 
                     if (newProcessStartResult.StartException != null)
@@ -404,12 +404,12 @@ namespace Kephas.Orchestration.Application
                 }
                 catch (OperationCanceledException)
                 {
-                    this.Logger.Warn("Cancellation received while trying to restart {app}.", appInfo.Identity.Id);
+                    this.Logger.LogWarning("Cancellation received while trying to restart {app}.", appInfo.Identity.Id);
                     return;
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Error while trying to restart {app}.", appInfo.Identity.Id);
+                    this.Logger.LogError(ex, "Error while trying to restart {app}.", appInfo.Identity.Id);
                 }
             }
         }
@@ -430,7 +430,7 @@ namespace Kephas.Orchestration.Application
         {
             return (IProcessStartResult)await this.OrchestrationManager
                 .StartAppAsync(appInfo, appSettings?.Args ?? new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
-                .PreserveThreadContext();
+                ;
         }
 
         /// <summary>
@@ -452,12 +452,12 @@ namespace Kephas.Orchestration.Application
             var workerProcess = this.WorkerProcesses.FirstOrDefault(p => this.TryGetProcessId(p) == runtimeAppInfo.ProcessId);
             if (workerProcess?.Process.HasExited ?? true)
             {
-                this.Logger.Warn($"Worker process '${runtimeAppInfo.AppId}/{runtimeAppInfo.AppInstanceId}' (#{runtimeAppInfo.ProcessId}) exited prematurely or not started by the root.");
+                this.Logger.LogWarning($"Worker process '${runtimeAppInfo.AppId}/{runtimeAppInfo.AppInstanceId}' (#{runtimeAppInfo.ProcessId}) exited prematurely or not started by the root.");
             }
 
             var result = await this.OrchestrationManager
                 .StopAppAsync(runtimeAppInfo, ctx => ctx.Impersonate(appContext), cancellationToken)
-                .PreserveThreadContext();
+                ;
 
             var message = result[nameof(StopAppResponse)] as StopAppResponse;
             return message!;
@@ -465,33 +465,33 @@ namespace Kephas.Orchestration.Application
 
         private async Task HandleRestartSignalAsync(RestartSignal restartSignal, IAppContext appContext, CancellationToken cancellationToken)
         {
-            this.Logger.Warn("Restarting the worker application instances...");
+            this.Logger.LogWarning("Restarting the worker application instances...");
             try
             {
-                await this.StopWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.StopWorkerProcessesAsync(appContext, cancellationToken);
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while stopping the worker application instances.");
+                this.Logger.LogError(ex, "Error while stopping the worker application instances.");
             }
 
             try
             {
-                await this.AppSetupService.SetupAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.AppSetupService.SetupAsync(appContext, cancellationToken);
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while setting up the application during the restart procedure.");
+                this.Logger.LogError(ex, "Error while setting up the application during the restart procedure.");
             }
 
             try
             {
-                await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.StartWorkerProcessesAsync(appContext, cancellationToken);
                 this.Logger.Info("Worker application instances restarted successfully.");
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while restarting the worker application instances.");
+                this.Logger.LogError(ex, "Error while restarting the worker application instances.");
             }
         }
 

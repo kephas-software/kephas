@@ -24,7 +24,7 @@ namespace Kephas.Data.IO.DataStreams
     /// <summary>
     /// A data stream writer.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DataStreamWriter : IDataStreamWriter
     {
         private readonly ISerializationService serializationService;
@@ -81,11 +81,11 @@ namespace Kephas.Data.IO.DataStreams
                 };
 
             using var writer = this.CreateEncodedStreamWriter(dataStream);
-            var rawResult = await this.serializationService.SerializeAsync(data, serializationConfig, cancellationToken).PreserveThreadContext();
+            var rawResult = await this.serializationService.SerializeAsync(data, serializationConfig, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            await writer.WriteAsync(rawResult).PreserveThreadContext();
+            await writer.WriteAsync(rawResult);
 
             cancellationToken.ThrowIfCancellationRequested();
         }

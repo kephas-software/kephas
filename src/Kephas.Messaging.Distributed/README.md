@@ -6,14 +6,14 @@ Using the messaging infrastructure is a little more elaborate:
 
 ```C#
     // ensure the message has been sent
-    await messageBroker.DispatchAsync(new RefreshCacheEvent { Key = "Users" }, ctx => ctx.OneWay()).PreserveThreadContext();   
+    await messageBroker.DispatchAsync(new RefreshCacheEvent { Key = "Users" }, ctx => ctx.OneWay());   
 ```
 
 This can be achieved in a simpler way, using the provided extension methods:
 
 ```C#
     // ensure the message has been sent
-    await messageBroker.PublishAsync(new RefreshCacheEvent { Key = "Users" }).PreserveThreadContext();   
+    await messageBroker.PublishAsync(new RefreshCacheEvent { Key = "Users" });   
 ```
 
 # The distributed messaging flow

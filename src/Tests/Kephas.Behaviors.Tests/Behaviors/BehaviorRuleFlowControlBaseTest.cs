@@ -21,14 +21,14 @@ namespace Kephas.Behaviors.Tests.Behaviors
         public void PriorityOrder_default()
         {
             var behavior = new DefaultBehaviorRuleFlowControl();
-            Assert.AreEqual((Priority)0, behavior.ProcessingPriority);
+            Assert.AreEqual((Priority)0, behavior.Priority);
         }
 
         [Test]
         public void PriorityOrder_attribute()
         {
             var behavior = new PriorityBehaviorRuleFlowControl();
-            Assert.AreEqual((Priority)12, behavior.ProcessingPriority);
+            Assert.AreEqual((Priority)12, behavior.Priority);
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace Kephas.Behaviors.Tests.Behaviors
         {
         }
 
-        [ProcessingPriority(12)]
+        [Priority(12)]
         private class PriorityBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
         {
         }

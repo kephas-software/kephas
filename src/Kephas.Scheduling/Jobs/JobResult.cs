@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Scheduling.Jobs
 {
     using System;
@@ -134,9 +136,8 @@ namespace Kephas.Scheduling.Jobs
         /// <summary>
         /// Converts this object to a serialization friendly representation.
         /// </summary>
-        /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        public override object ToData(object? context = null)
+        public override object? GetObjectData()
         {
             var expando = base.ToData(context).ToDynamic();
             expando[nameof(this.ScheduledJobId)] = this.ScheduledJobId;

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Configuration.Providers
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Configuration.Providers
     /// Attribute for settings type.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SettingsTypeAttribute : Attribute, IMetadataValue<Type>
+    public class SettingsTypeAttribute : Attribute, IServiceMetadataValue<Type>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsTypeAttribute"/> class.

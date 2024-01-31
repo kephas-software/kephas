@@ -28,7 +28,7 @@ namespace Kephas.Model
     /// <summary>
     /// The default implementation of a model space provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultModelSpaceProvider : Loggable, IModelSpaceProvider
     {
         /// <summary>
@@ -49,20 +49,20 @@ namespace Kephas.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="modelInfoProviders">The model information providers.</param>
         /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
         public DefaultModelSpaceProvider(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             ICollection<IModelInfoProvider> modelInfoProviders,
             IRuntimeModelElementFactory runtimeModelElementFactory)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             runtimeModelElementFactory = runtimeModelElementFactory ?? throw new System.ArgumentNullException(nameof(runtimeModelElementFactory));
             modelInfoProviders = modelInfoProviders ?? throw new System.ArgumentNullException(nameof(modelInfoProviders));
 
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
             this.ModelInfoProviders = modelInfoProviders;
             this.runtimeModelElementFactory = runtimeModelElementFactory;
         }
@@ -73,7 +73,7 @@ namespace Kephas.Model
         /// <value>
         /// The context factory.
         /// </value>
-        public IInjectableFactory InjectableFactory { get; }
+        public IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Gets the model information providers.
@@ -115,7 +115,7 @@ namespace Kephas.Model
             try
             {
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(constructionContext, cancellationToken)));
-                var elementInfos = (await elementInfosCollectorTask.PreserveThreadContext()).SelectMany(e => e).ToList();
+                var elementInfos = (await elementInfosCollectorTask).SelectMany(e => e).ToList();
 
                 constructionContext.ElementInfos = elementInfos;
                 var constructibleModelSpace = (IConstructibleElement)modelSpace;
@@ -145,7 +145,7 @@ namespace Kephas.Model
         /// </returns>
         protected virtual ModelConstructionContext CreateModelConstructionContext(IContext? parentContext)
         {
-            var constructionContext = this.InjectableFactory.Create<ModelConstructionContext>(parentContext);
+            var constructionContext = this.ServiceFactory.Create<ModelConstructionContext>(parentContext);
             constructionContext.RuntimeModelElementFactory = this.runtimeModelElementFactory;
 
             constructionContext.TryGetModelElementInfo =

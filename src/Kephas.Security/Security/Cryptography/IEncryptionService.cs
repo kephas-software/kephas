@@ -117,7 +117,7 @@ public static class EncryptionServiceExtensions
         CancellationToken cancellationToken = default)
     {
         var bytes = await EncryptAsync(encryptionService, Encoding.UTF8.GetBytes(input), optionsConfig, cancellationToken)
-            .PreserveThreadContext();
+            ;
         return Convert.ToBase64String(bytes);
     }
 
@@ -142,7 +142,7 @@ public static class EncryptionServiceExtensions
         await using var inputStream = new MemoryStream(input);
         await using var outputStream = new MemoryStream();
 
-        await encryptionService.EncryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
+        await encryptionService.EncryptAsync(inputStream, outputStream, optionsConfig, cancellationToken);
         var outputBytes = outputStream.ToArray();
         return outputBytes;
     }
@@ -209,7 +209,7 @@ public static class EncryptionServiceExtensions
             encryptionService,
             Convert.FromBase64String(input),
             optionsConfig,
-            cancellationToken).PreserveThreadContext();
+            cancellationToken);
 
         return Encoding.UTF8.GetString(bytes);
     }
@@ -235,7 +235,7 @@ public static class EncryptionServiceExtensions
         await using var inputStream = new MemoryStream(input);
         await using var outputStream = new MemoryStream();
 
-        await encryptionService.DecryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
+        await encryptionService.DecryptAsync(inputStream, outputStream, optionsConfig, cancellationToken);
         var outputBytes = outputStream.ToArray();
         return outputBytes;
     }

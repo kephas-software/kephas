@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application.AspNetCore.Hosting
 {
     using System;
@@ -88,7 +90,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             var servicesBuilder = this.ServicesBuilder;
             servicesBuilder.Replace(this.AppArgs);
 
-            services.AddFromServicesBuilder(servicesBuilder);
+            services.AddAppServices(servicesBuilder);
 
             this.BeforeAppManagerInitialize(this.AppArgs);
         }
@@ -121,7 +123,7 @@ namespace Kephas.Application.AspNetCore.Hosting
                     throw new ApplicationException("The bootstrap task is not initialized!");
                 }
 
-                await this.bootstrapTask.PreserveThreadContext();
+                await this.bootstrapTask;
                 await next.Invoke();
             });
 
@@ -230,9 +232,9 @@ namespace Kephas.Application.AspNetCore.Hosting
         {
             return c =>
             {
-                this.Logger.Debug($"Configuring middleware by {s.GetType()}...");
+                this.Logger.LogDebug($"Configuring middleware by {s.GetType()}...");
                 s.Configure(c);
-                this.Logger.Debug($"Middleware configured by {s.GetType()}.");
+                this.Logger.LogDebug($"Middleware configured by {s.GetType()}.");
             };
         }
     }

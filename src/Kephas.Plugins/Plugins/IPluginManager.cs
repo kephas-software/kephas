@@ -166,7 +166,7 @@ namespace Kephas.Plugins
                         .PluginIdentity(pluginIdentity)
                         .IncludePrerelease(includePrerelease)
                         .Take(2),
-                    cancellationToken).PreserveThreadContext()).Value
+                    cancellationToken)).Value
                 .OrderByDescending(p => p.Identity.Version)
                 .FirstOrDefault();
         }

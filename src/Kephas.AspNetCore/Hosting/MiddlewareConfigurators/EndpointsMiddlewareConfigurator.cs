@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application.AspNetCore.Hosting.MiddlewareConfigurators
 {
     using System;
@@ -20,7 +22,7 @@ namespace Kephas.Application.AspNetCore.Hosting.MiddlewareConfigurators
     /// <summary>
     /// Middleware configurator for endpoints.
     /// </summary>
-    [ProcessingPriority(ProcessingPriority)]
+    [Priority(ProcessingPriority)]
     public class EndpointsMiddlewareConfigurator : Loggable, IMiddlewareConfigurator
     {
         /// <summary>

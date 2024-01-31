@@ -51,7 +51,7 @@ namespace Kephas.Commands.Endpoints
             await this.eventHub.PublishAsync<InteractionContext>(
                 new ShutdownSignal("Shutdown triggered by user"),
                 ctx => ctx.Impersonate(context).OneWay().WithDelay(TimeSpan.FromSeconds(2)),
-                token).PreserveThreadContext();
+                token);
         }
     }
 }

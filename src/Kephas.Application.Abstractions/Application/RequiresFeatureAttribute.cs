@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Application
     /// Attribute declaring that the annotated entity requires a specific feature.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-    public class RequiresFeatureAttribute : Attribute, IMetadataValue<string>
+    public class RequiresFeatureAttribute : Attribute, IServiceMetadataValue<string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RequiresFeatureAttribute"/> class.

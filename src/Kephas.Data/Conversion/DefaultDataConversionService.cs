@@ -30,7 +30,7 @@ namespace Kephas.Data.Conversion
     /// <summary>
     /// A default data conversion service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataConversionService : Loggable, IDataConversionService
     {
         /// <summary>
@@ -188,7 +188,7 @@ namespace Kephas.Data.Conversion
 
             var result = this.CreateDataConversionResult();
 
-            target = await this.EnsureTargetEntity(source, target, targetType, conversionContext, cancellationToken).PreserveThreadContext();
+            target = await this.EnsureTargetEntity(source, target, targetType, conversionContext, cancellationToken);
 
             result.Target = target;
             result.Complete();
@@ -201,13 +201,13 @@ namespace Kephas.Data.Conversion
             IList<IDataConversionResult>? convertersResult = null;
             if (conversionContext.ThrowOnError)
             {
-                convertersResult = await this.InvokeConvertersAsync(matchingConverters, source, target, conversionContext, cancellationToken).PreserveThreadContext();
+                convertersResult = await this.InvokeConvertersAsync(matchingConverters, source, target, conversionContext, cancellationToken);
             }
             else
             {
                 try
                 {
-                    convertersResult = await this.InvokeConvertersAsync(matchingConverters, source, target, conversionContext, cancellationToken).PreserveThreadContext();
+                    convertersResult = await this.InvokeConvertersAsync(matchingConverters, source, target, conversionContext, cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -254,7 +254,7 @@ namespace Kephas.Data.Conversion
                          targetType,
                          source,
                          sourceEntityEntry,
-                         cancellationToken: cancellationToken).PreserveThreadContext();
+                         cancellationToken: cancellationToken);
             if (target != null)
             {
                 return target;
@@ -262,7 +262,7 @@ namespace Kephas.Data.Conversion
 
             if (sourceChangeState == ChangeState.Added || sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
             {
-                target = await this.CreateTargetEntityAsync(targetDataContext, targetType, conversionContext, cancellationToken).PreserveThreadContext();
+                target = await this.CreateTargetEntityAsync(targetDataContext, targetType, conversionContext, cancellationToken);
             }
             else
             {
@@ -297,7 +297,7 @@ namespace Kephas.Data.Conversion
                                  targetType,
                                  sourceEntity,
                                  sourceEntityEntry,
-                                 cancellationToken).PreserveThreadContext();
+                                 cancellationToken);
                 if (target != null)
                 {
                     return target;
@@ -324,7 +324,7 @@ namespace Kephas.Data.Conversion
                              {
                                  EntityType = targetType.AsType()
                              },
-                             cancellationToken).PreserveThreadContext();
+                             cancellationToken);
             return target;
         }
 
@@ -344,7 +344,7 @@ namespace Kephas.Data.Conversion
             var converterResults = new List<IDataConversionResult>();
             foreach (var converter in matchingConverters)
             {
-                var converterResult = await converter.ConvertAsync(source, target, conversionContext, cancellationToken).PreserveThreadContext();
+                var converterResult = await converter.ConvertAsync(source, target, conversionContext, cancellationToken);
                 converterResults.Add(converterResult);
             }
 
@@ -391,7 +391,7 @@ namespace Kephas.Data.Conversion
 
             if (matchingConverters.Count == 0)
             {
-                this.Logger.Warn(Strings.DataConverterNotFound_Exception, sourceType, targetType);
+                this.Logger.LogWarning(Strings.DataConverterNotFound_Exception, sourceType, targetType);
             }
 
             return matchingConverters;
@@ -415,7 +415,7 @@ namespace Kephas.Data.Conversion
 
             if (matchingConverters.Count == 0)
             {
-                this.Logger.Warn(Strings.DataConverterNotFound_Exception, sourceType, targetType);
+                this.Logger.LogWarning(Strings.DataConverterNotFound_Exception, sourceType, targetType);
             }
 
             return matchingConverters;

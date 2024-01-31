@@ -104,7 +104,7 @@ namespace Kephas.Tests.Plugins
             public TestPluginManager(
                 PluginsTestContext ctx,
                 IAppRuntime appRuntime,
-                IInjectableFactory injectableFactory,
+                IServiceFactory serviceFactory,
                 IEventHub eventHub,
                 IPluginStore pluginStore,
                 ILogManager? logManager = null,
@@ -115,7 +115,7 @@ namespace Kephas.Tests.Plugins
                 Func<PluginData, IPluginContext, bool>? canUninitialize = null,
                 Func<PluginData, IPluginContext, bool>? canEnable = null,
                 Func<PluginData, IPluginContext, bool>? canDisable = null)
-                : base(appRuntime, injectableFactory, eventHub, pluginStore, logManager)
+                : base(appRuntime, serviceFactory, eventHub, pluginStore, logManager)
             {
                 this.ctx = ctx;
                 this.onInstall = onInstall;

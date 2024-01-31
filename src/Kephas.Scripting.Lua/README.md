@@ -22,7 +22,7 @@ var script = new LuaStringScript(
 end
 
 return Power(value) + 3");
-var result = await processor.ExecuteAsync(script), new { value = 5 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(script), new { value = 5 }));
 Assert.Equals(28, result);
 ```
 
@@ -37,10 +37,10 @@ If this is not the case, make sure you specify the language explicitly when crea
 var processor = injector.Resolve<IScriptProcessor>();
 
 // LUA scripts ending with *.lua
-var result = await processor.ExecuteAsync(new FileScript("myscript.lua"), new { value = 5 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new FileScript("myscript.lua"), new { value = 5 }));
 Assert.Equals(28, result);
 
 // LUA scripts not ending with *.lua
-var result = await processor.ExecuteAsync(new FileScript("myscript.txt", LuaLanguageService.Language), new { value = 5 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new FileScript("myscript.txt", LuaLanguageService.Language), new { value = 5 }));
 Assert.Equals(28, result);
 ```

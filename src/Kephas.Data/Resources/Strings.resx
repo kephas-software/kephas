@@ -157,7 +157,7 @@
     <value>No data context with type '{0}' was found for data store '{1}'.</value>
   </data>
   <data name="DefaultDataContextProvider_AmbiguousDataContext_Exception" xml:space="preserve">
-    <value>Ambiguous data context for data store '{0}': at least '{1}' and '{2}' found. Please provide a proper [ProcessingPriority] attribute on the implementation DataContext classes to be able to disambiguate.</value>
+    <value>Ambiguous data context for data store '{0}': at least '{1}' and '{2}' found. Please provide a proper [Priority] attribute on the implementation DataContext classes to be able to disambiguate.</value>
   </data>
   <data name="DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception" xml:space="preserve">
     <value>No data context was found for data store '{0}' of target '{1}'.</value>

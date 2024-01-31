@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Messaging;
 
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Kephas.Services.AttributedModel;
 
 /// <summary>
 /// A function message handler.

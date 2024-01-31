@@ -8,10 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Services.Behaviors
 {
     using Kephas.Behaviors;
-    using Kephas.Logging;
 
     /// <summary>
     /// Base class for behavior rules controlling the enabled state of services.
@@ -25,9 +26,9 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TContract, TMetadata}"/> class.
         /// </summary>
-        /// <param name="logManager">Optional. The log manager.</param>
-        protected EnabledServiceBehaviorRuleBase(ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        protected EnabledServiceBehaviorRuleBase(ILogger<EnabledServiceBehaviorRuleBase<TContract, TMetadata>> logger)
+            : base(logger)
         {
         }
 
@@ -70,9 +71,9 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TContract, TMetadata, TService}"/> class.
         /// </summary>
-        /// <param name="logManager">Optional. The log manager.</param>
-        protected EnabledServiceBehaviorRuleBase(ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        protected EnabledServiceBehaviorRuleBase(ILogger<EnabledServiceBehaviorRuleBase<TContract, TMetadata, TService>> logger)
+            : base(logger)
         {
         }
 

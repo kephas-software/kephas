@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Validation
 {
     using Kephas.ExceptionHandling;
@@ -24,7 +26,7 @@ namespace Kephas.Validation
         /// <param name="message">The exception.</param>
         /// <param name="memberName">Optional. the member name.</param>
         /// <param name="severity">Optional. the severity.</param>
-        public ValidationMessage(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        public ValidationMessage(string message, string? memberName = null, LogLevel severity = LogLevel.Error)
             : base(message ?? throw new ArgumentNullException(nameof(message)))
         {
             this.MemberName = memberName;
@@ -37,7 +39,7 @@ namespace Kephas.Validation
         /// <param name="exception">The exception.</param>
         /// <param name="memberName">Optional. the member name.</param>
         /// <param name="severity">Optional. the severity.</param>
-        public ValidationMessage(Exception exception, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        public ValidationMessage(Exception exception, string? memberName = null, LogLevel severity = LogLevel.Error)
             : base(exception ?? throw new ArgumentNullException(nameof(exception)))
         {
             this.MemberName = memberName;
@@ -50,7 +52,7 @@ namespace Kephas.Validation
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; }
+        public LogLevel Severity { get; }
 
         /// <summary>
         /// Gets the name of the member.

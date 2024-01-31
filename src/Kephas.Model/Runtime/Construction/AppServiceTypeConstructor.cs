@@ -33,7 +33,7 @@ namespace Kephas.Model.Runtime.Construction
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             return runtimeElement.Annotations.OfType<IAppServiceInfo>().Any()
-                   || runtimeElement.HasDynamicMember(AppServicesModelRegistry.AppServiceKey);
+                   || runtimeElement.HasKey(AppServicesModelRegistry.AppServiceKey);
         }
 
         /// <summary>

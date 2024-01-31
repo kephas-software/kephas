@@ -215,7 +215,7 @@ Even if we are ready with the new command, it is not very handy to use it. Here 
                            Criteria = criteria,
                            ThrowIfNotFound = false,
                       }
-    var result = await command.ExecuteAsync(findContext).PreserveThreadContext();
+    var result = await command.ExecuteAsync(findContext);
     var foundEntity = result.Entity;
     // yupee, got the entity! but it was a loooong way to get there :(.
 ```
@@ -239,7 +239,7 @@ So, to achieve the simplicity of simply calling the command on the data context,
 
             var findOneContext = new FindOneContext<T>(dataContext, criteria, throwIfNotFound);
             var command = (IFindOneCommand)dataContext.CreateCommand(typeof(IFindOneCommand));
-            var result = await command.ExecuteAsync(findOneContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(findOneContext, cancellationToken);
             return (T)result.Entity;
         }
     }
@@ -249,7 +249,7 @@ Now we can use the defined command as if it was a method of the data context:
 ```C#
     var foundEntity = await dataContext.FindOneAsync<Customer>(
                           c => c.Name == "John" && c.FamilyName == "Doe",
-                          throwIfNotFound: false).PreserveThreadContext();
+                          throwIfNotFound: false);
     // way better :)
 ```
 

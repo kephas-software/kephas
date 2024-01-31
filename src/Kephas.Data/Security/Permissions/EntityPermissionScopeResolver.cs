@@ -14,7 +14,7 @@ namespace Kephas.Data.Security.Permissions
     /// <summary>
     /// Permission scope resolver for entities.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class EntityPermissionScopeResolver : EntityPermissionScopeResolverBase
     {
         /// <summary>
@@ -22,12 +22,12 @@ namespace Kephas.Data.Security.Permissions
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="associationGraphProvider">The association graph provider.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         public EntityPermissionScopeResolver(
             IRuntimeTypeRegistry typeRegistry,
             ITypeAssociationGraphProvider associationGraphProvider,
-            IInjectableFactory injectableFactory)
-            : base(typeRegistry, associationGraphProvider, injectableFactory)
+            IServiceFactory serviceFactory)
+            : base(typeRegistry, associationGraphProvider, serviceFactory)
         {
         }
     }

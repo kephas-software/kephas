@@ -42,13 +42,13 @@ namespace Kephas.Data.IO.Tests.Setup
             private readonly IEnumerable<string> uninstallFilePaths;
 
             public DataInstaller(
-                IInjectableFactory injectableFactory,
+                IServiceFactory serviceFactory,
                 IDataImportService dataImportService = null,
                 IDataSpace dataSpace = null,
                 IEnumerable<string> installFilePaths = null,
                 IEnumerable<string> uninstallFilePaths = null)
                 : base(
-                    injectableFactory,
+                    serviceFactory,
                     dataImportService ?? Substitute.For<IDataImportService>(),
                     new ExportFactory<IDataSpace>(() => dataSpace ?? Substitute.For<IDataSpace>()))
             {

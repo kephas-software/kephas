@@ -58,7 +58,7 @@ namespace Kephas.Scheduling.Endpoints
                     .Impersonate(context)
                     .Activity(message.Target, message.Arguments, message.Options)
                     .Trigger(message.Trigger),
-                token).PreserveThreadContext();
+                token);
 
             result.ThrowIfHasErrors();
 

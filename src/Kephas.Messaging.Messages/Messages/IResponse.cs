@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Messaging.Messages
 {
     using Kephas.ExceptionHandling;
@@ -23,7 +25,7 @@ namespace Kephas.Messaging.Messages
         /// <value>
         /// The severity.
         /// </value>
-        SeverityLevel Severity { get; set; }
+        LogLevel Severity { get; set; }
 
         /// <summary>
         /// Gets or sets the informational message.

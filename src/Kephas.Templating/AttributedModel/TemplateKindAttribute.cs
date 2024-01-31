@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Templating.AttributedModel;
 
 using System;
@@ -18,7 +20,7 @@ using Kephas.Services;
 /// Indicates the supported template kind.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class TemplateKindAttribute : Attribute, IMetadataValue<string[]>
+public class TemplateKindAttribute : Attribute, IServiceMetadataValue<string[]>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="TemplateKindAttribute"/> class.

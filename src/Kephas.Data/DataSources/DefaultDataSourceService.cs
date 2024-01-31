@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Data.DataSources
 {
@@ -22,7 +22,7 @@ namespace Kephas.Data.DataSources
     /// <summary>
     /// A default data source service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataSourceService : IDataSourceService
     {
         /// <summary>

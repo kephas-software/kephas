@@ -19,7 +19,7 @@ namespace Kephas.Messaging.Authorization
     /// <summary>
     /// Default implementation of an authorization scope provider for messages.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class MessagingAuthorizationScopeProvider : IAuthorizationScopeProvider
     {
         /// <summary>

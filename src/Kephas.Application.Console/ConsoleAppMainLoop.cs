@@ -20,7 +20,7 @@ namespace Kephas.Application.Console
     /// <summary>
     /// A console application shutdown awaiter.
     /// </summary>
-    [OverridePriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class ConsoleAppMainLoop : DefaultAppMainLoop, IInitializable
     {
         private readonly ICommandShell shell;

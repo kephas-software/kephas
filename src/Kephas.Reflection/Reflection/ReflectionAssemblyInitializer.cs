@@ -7,7 +7,6 @@
 
 namespace Kephas.Reflection;
 
-using Kephas.Application;
 using Kephas.Runtime;
 
 /// <summary>
@@ -18,7 +17,7 @@ public class ReflectionAssemblyInitializer : IAssemblyInitializer
     /// <summary>
     /// Initializes the assembly.
     /// </summary>
-    public void Initialize()
+    public void InitializeAssembly()
     {
         IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<ITypeLoader, DefaultTypeLoader>());
         IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<IRuntimeTypeRegistry>(RuntimeTypeRegistry.Instance, b => b.ExternallyOwned()));

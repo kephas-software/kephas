@@ -24,7 +24,7 @@ namespace Kephas.Orchestration.Diagnostics
     /// <summary>
     /// Factory service for process starters.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class ProcessStarterFactory : IProcessStarterFactory
     {
         private readonly ProcessStartInfo processStartInfo = new ProcessStartInfo();

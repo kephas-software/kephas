@@ -15,7 +15,6 @@ namespace Kephas.Plugins.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Plugins;
     using Kephas.Threading.Tasks;
@@ -58,7 +57,7 @@ namespace Kephas.Plugins.Endpoints
                       .IncludePrerelease(message.IncludePrerelease)
                       .Skip(message.Skip)
                       .Take(message.Take),
-                cancellationToken: token).PreserveThreadContext();
+                cancellationToken: token);
             var plugins = result.Value;
 
             var searchTerm = string.IsNullOrEmpty(message.SearchTerm)

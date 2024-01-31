@@ -94,11 +94,11 @@ The value in the ``MongoSettings.EntityNamespaceConventions`` controls to which 
 ### Extensibility
 To add a new conventions provider:
 * define a class implementing ``IMongoConventionsProvider``.
-  * control the order in which it is registered by providing a ``[ProcessingPriority]`` attribute.
+  * control the order in which it is registered by providing a ``[Priority]`` attribute.
 
 ```csharp
 // define the conventions provider and register it with the high priority
-[ProcessingPriority(Priority.High)]
+[Priority(Priority.High)]
 public class MyMongoConventionsProvider : IMongoConventionsProvider
 {
     public MongoConventions GetConventions() =>

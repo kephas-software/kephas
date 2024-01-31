@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Connectivity.AttributedModel;
 
 using System;
@@ -15,7 +17,7 @@ using Kephas.Services;
 /// Indicates the supported connection kind.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class ConnectionKindAttribute : Attribute, IMetadataValue<string[]>
+public class ConnectionKindAttribute : Attribute, IServiceMetadataValue<string[]>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ConnectionKindAttribute"/> class.

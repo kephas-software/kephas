@@ -26,24 +26,24 @@ namespace Kephas.Serialization
     /// <summary>
     /// A default serialization service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultSerializationService : ISerializationService
     {
         private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories;
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
-        public DefaultSerializationService(IInjectableFactory injectableFactory, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        public DefaultSerializationService(IServiceFactory serviceFactory, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             serializerFactories = serializerFactories ?? throw new ArgumentNullException(nameof(serializerFactories));
 
             this.serializerFactories = serializerFactories.OrderAsDictionary(f => f.Metadata.MediaType!);
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Kephas.Serialization
 
             using var context = this.CreateSerializationContext(optionsConfig);
             var serializer = this.GetSerializer(context);
-            await serializer.SerializeAsync(obj, textWriter, context, cancellationToken).PreserveThreadContext();
+            await serializer.SerializeAsync(obj, textWriter, context, cancellationToken);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Kephas.Serialization
         {
             using var context = this.CreateSerializationContext(optionsConfig);
             var serializer = this.GetSerializer(context);
-            return await serializer.SerializeAsync(obj, context, cancellationToken).PreserveThreadContext();
+            return await serializer.SerializeAsync(obj, context, cancellationToken);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Kephas.Serialization
         {
             using var context = this.CreateSerializationContext(optionsConfig);
             var serializer = this.GetSerializer(context);
-            return await serializer.DeserializeAsync(textReader, context, cancellationToken).PreserveThreadContext();
+            return await serializer.DeserializeAsync(textReader, context, cancellationToken);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Kephas.Serialization
 
             using var context = this.CreateSerializationContext(optionsConfig);
             var serializer = this.GetSerializer(context);
-            return await serializer.DeserializeAsync(serializedObj, context, cancellationToken).PreserveThreadContext();
+            return await serializer.DeserializeAsync(serializedObj, context, cancellationToken);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Kephas.Serialization
         /// </returns>
         protected virtual ISerializationContext CreateSerializationContext(Action<ISerializationContext>? optionsConfig = null)
         {
-            var context = this.injectableFactory.Create<SerializationContext>(this);
+            var context = this.serviceFactory.Create<SerializationContext>(this);
             optionsConfig?.Invoke(context);
             if (context.MediaType == null)
             {

@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Serialization.Json.Tests.Converters
 {
     using System.Threading.Tasks;
@@ -42,8 +44,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.IsInstanceOf<AppServiceMetadata>(obj);
             var expando = (AppServiceMetadata)obj;
             Assert.AreEqual("gigi", expando.ServiceName);
-            Assert.AreEqual((Priority)12, expando.ProcessingPriority);
-            Assert.AreEqual((Priority)24, expando.OverridePriority);
+            Assert.AreEqual((Priority)12, expando.Priority);
             Assert.AreEqual(typeof(int), expando.ServiceType);
             Assert.IsTrue(expando.IsOverride);
         }
@@ -68,14 +69,13 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             var obj = await serializer.DeserializeAsync(
-                @"{""$type"":""Kephas.Serialization.SerializerMetadata"",""mediaType"":""Kephas.Net.Mime.XmlMediaType"",""processingPriority"":12,""overridePriority"":24,""isOverride"":true,""serviceName"":""gigi"",""serviceType"":""System.Int32"",""dependencies"":[]}",
+                @"{""$type"":""Kephas.Serialization.SerializerMetadata"",""mediaType"":""Kephas.Net.Mime.XmlMediaType"",""priority"":12,""isOverride"":true,""serviceName"":""gigi"",""serviceType"":""System.Int32"",""dependencies"":[]}",
                 GetSerializationContext(typeof(SerializerMetadata)));
 
             Assert.IsInstanceOf<SerializerMetadata>(obj);
             var expando = (SerializerMetadata)obj;
             Assert.AreEqual("gigi", expando.ServiceName);
-            Assert.AreEqual((Priority)12, expando.ProcessingPriority);
-            Assert.AreEqual((Priority)24, expando.OverridePriority);
+            Assert.AreEqual((Priority)12, expando.Priority);
             Assert.AreEqual(typeof(int), expando.ServiceType);
             Assert.IsTrue(expando.IsOverride);
         }

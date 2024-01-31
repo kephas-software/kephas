@@ -59,7 +59,7 @@ namespace Kephas.Data.IO.DataStreams
             context = context ?? throw new ArgumentNullException(nameof(context));
 
             context.RootObjectType(typeof(TRootObject));
-            var result = (TRootObject)await dataStreamReadService.ReadAsync(dataStream, context, cancellationToken).PreserveThreadContext();
+            var result = (TRootObject)await dataStreamReadService.ReadAsync(dataStream, context, cancellationToken);
             return result;
         }
     }

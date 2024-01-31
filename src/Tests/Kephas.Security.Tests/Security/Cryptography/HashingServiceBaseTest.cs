@@ -35,8 +35,8 @@ namespace Kephas.Core.Tests.Cryptography
 
         public class TestHashingService : HashingServiceBase
         {
-            public TestHashingService(IInjectableFactory injectableFactory)
-                : base(injectableFactory)
+            public TestHashingService(IServiceFactory serviceFactory)
+                : base(serviceFactory)
             {
             }
 

@@ -25,7 +25,7 @@ namespace Kephas.AspNetCore.SignalR.Hosting.EndpointConfigurators
     /// <summary>
     /// SignalR endpoint configurator registering all declared hubs.
     /// </summary>
-    [ProcessingPriority(ProcessingPriority)]
+    [Priority(ProcessingPriority)]
     public class SignalREndpointConfigurator : IEndpointConfigurator
     {
         /// <summary>

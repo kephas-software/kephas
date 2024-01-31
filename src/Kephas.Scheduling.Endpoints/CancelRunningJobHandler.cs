@@ -52,7 +52,7 @@ namespace Kephas.Scheduling.Endpoints
             var result = await this.scheduler.CancelRunningJobAsync(
                 message.RunningJob ?? message.RunningJobId,
                 ctx => ctx.Impersonate(context),
-                token).PreserveThreadContext();
+                token);
 
             result.ThrowIfHasErrors();
 

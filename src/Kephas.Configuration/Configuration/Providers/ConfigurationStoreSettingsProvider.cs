@@ -19,7 +19,7 @@ namespace Kephas.Configuration.Providers
     /// <summary>
     /// A configuration store settings provider.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class ConfigurationStoreSettingsProvider : ISettingsProvider
     {
         private readonly IConfigurationStore configurationStore;

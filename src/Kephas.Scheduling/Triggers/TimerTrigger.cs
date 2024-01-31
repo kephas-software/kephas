@@ -13,15 +13,13 @@ namespace Kephas.Scheduling.Triggers
     using System;
     using System.Runtime.CompilerServices;
     using System.Threading;
-
-    using Kephas.Data.Formatting;
     using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
     /// A timer trigger.
     /// </summary>
-    public class TimerTrigger : TriggerBase, ITimerTrigger, IDataFormattable
+    public class TimerTrigger : TriggerBase, ITimerTrigger, ISerializable
     {
         private Timer? timer;
         private int firedCount = 0;

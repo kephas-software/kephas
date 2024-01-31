@@ -21,7 +21,7 @@ namespace Kephas.Model.Application
     /// <summary>
     /// Feature manager for the model.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class ModelAppLifecycleBehavior : IAppLifecycleBehavior
     {
         /// <summary>
@@ -51,7 +51,7 @@ namespace Kephas.Model.Application
             CancellationToken cancellationToken = default)
         {
             var result = new OperationResult(true);
-            await this.modelSpaceProvider.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+            await this.modelSpaceProvider.InitializeAsync(appContext, cancellationToken);
             return result.Complete();
         }
     }

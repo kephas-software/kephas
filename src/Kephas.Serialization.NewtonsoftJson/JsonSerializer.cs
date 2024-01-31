@@ -23,7 +23,7 @@ namespace Kephas.Serialization.Json
     /// <summary>
     /// JSON serializer.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class JsonSerializer : ISerializer<JsonMediaType>
     {
         /// <summary>

@@ -22,7 +22,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// Runtime factory for model dimension information.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class ModelDimensionConstructor : ModelElementConstructorBase<ModelDimension, IModelDimension, IRuntimeTypeInfo>
     {
         /// <summary>

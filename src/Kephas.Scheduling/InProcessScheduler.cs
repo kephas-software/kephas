@@ -33,10 +33,10 @@ namespace Kephas.Scheduling
     /// <summary>
     /// A scheduler processing jobs in the executing process.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class InProcessScheduler : Loggable, IScheduler
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IWorkflowProcessor workflowProcessor;
         private readonly IJobStore jobStore;
         private readonly IAppRuntime appRuntime;
@@ -49,20 +49,20 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessScheduler"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="jobStore">The job store.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="logManager">The log manager.</param>
         public InProcessScheduler(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IWorkflowProcessor workflowProcessor,
             IJobStore jobStore,
             IAppRuntime appRuntime,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.workflowProcessor = workflowProcessor;
             this.jobStore = jobStore;
             this.appRuntime = appRuntime;
@@ -82,7 +82,7 @@ namespace Kephas.Scheduling
         {
             this.initializationMonitor.Start();
 
-            await ServiceHelper.InitializeAsync(this.jobStore, context, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.jobStore, context, cancellationToken);
 
             this.initializationMonitor.Complete();
         }
@@ -105,7 +105,7 @@ namespace Kephas.Scheduling
                 var (triggerKey, _) = this.activeTriggers.FirstOrDefault();
                 if (triggerKey != null)
                 {
-                    await this.CancelTriggerAsync(triggerKey, ctx => ctx.Impersonate(context), cancellationToken).PreserveThreadContext();
+                    await this.CancelTriggerAsync(triggerKey, ctx => ctx.Impersonate(context), cancellationToken);
                 }
             }
 
@@ -116,17 +116,17 @@ namespace Kephas.Scheduling
                 await this.CancelRunningJobAsync(
                     runningJob,
                     ctx => ctx.Impersonate(context),
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
 
             // cancel scheduled jobs, if any.
             var scheduledJobs = this.jobStore.GetScheduledJobs().ToList();
             foreach (var scheduledJob in scheduledJobs)
             {
-                await this.CancelScheduledJobAsync(scheduledJob, ctx => ctx.Impersonate(context), cancellationToken).PreserveThreadContext();
+                await this.CancelScheduledJobAsync(scheduledJob, ctx => ctx.Impersonate(context), cancellationToken);
             }
 
-            await ServiceHelper.FinalizeAsync(this.jobStore, context, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.jobStore, context, cancellationToken);
 
             this.finalizationMonitor.Complete();
         }
@@ -199,7 +199,7 @@ namespace Kephas.Scheduling
             this.Logger.Info("Cancelling jobs and triggers based on scheduled job '{scheduledJob}'...", scheduledJob);
 
             var jobInfo = scheduledJob as IJobInfo
-                          ?? await this.jobStore.GetScheduledJobAsync(scheduledJob!, false, cancellationToken).PreserveThreadContext();
+                          ?? await this.jobStore.GetScheduledJobAsync(scheduledJob!, false, cancellationToken);
 
             if (jobInfo == null)
             {
@@ -212,7 +212,7 @@ namespace Kephas.Scheduling
             // make a copy of the Triggers collection as CancelTriggerAsync removes it from the collection.
             foreach (var trigger in jobInfo.Triggers.ToArray())
             {
-                await this.CancelTriggerAsync(trigger.Id, options, cancellationToken).PreserveThreadContext();
+                await this.CancelTriggerAsync(trigger.Id, options, cancellationToken);
             }
 
             // ...then all matching running jobs...
@@ -229,12 +229,12 @@ namespace Kephas.Scheduling
             {
                 foreach (var job in matchingRunningJobs)
                 {
-                    await this.CancelRunningJobAsync(job, options, cancellationToken).PreserveThreadContext();
+                    await this.CancelRunningJobAsync(job, options, cancellationToken);
                 }
             }
 
             // ... and last remove the scheduled job.
-            await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id, cancellationToken).PreserveThreadContext();
+            await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id, cancellationToken);
             return jobInfo.ToOperationResult()!;
         }
 
@@ -254,7 +254,7 @@ namespace Kephas.Scheduling
         {
             var job = runningJob as IJobResult
                       ?? await this.jobStore.GetRunningJobAsync(runningJob, false, cancellationToken)
-                          .PreserveThreadContext();
+                          ;
 
             if (job == null)
             {
@@ -264,8 +264,8 @@ namespace Kephas.Scheduling
 
             this.Logger.Info("Cancelling running job '{job}'...", job);
 
-            await job.Cancel().AsTask().PreserveThreadContext();
-            await this.jobStore.RemoveRunningJobAsync(job.RunningJobId!, cancellationToken).PreserveThreadContext();
+            await job.Cancel().AsTask();
+            await this.jobStore.RemoveRunningJobAsync(job.RunningJobId!, cancellationToken);
 
             this.Logger.Info("Job '{job}' was removed from the list of running jobs and was signaled for cancellation.", job);
             return job.ToOperationResult()
@@ -293,14 +293,14 @@ namespace Kephas.Scheduling
             var triggerId = trigger is ITrigger triggerInstance ? triggerInstance.Id : trigger;
             if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
             {
-                this.Logger.Warn("Trigger '{trigger}' was already removed from the list of active triggers.", trigger);
+                this.Logger.LogWarning("Trigger '{trigger}' was already removed from the list of active triggers.", trigger);
                 return ((ITrigger?)null).ToOperationResult()
                     .Fail(new SchedulingException($"Trigger '{trigger}' was already removed from the list of active triggers."));
             }
 
-            await this.jobStore.SetTriggerEnabledAsync(tuple.trigger, false, cancellationToken).PreserveThreadContext();
+            await this.jobStore.SetTriggerEnabledAsync(tuple.trigger, false, cancellationToken);
             tuple.trigger.Dispose();
-            await this.jobStore.RemoveTriggerAsync(tuple.trigger.Id, cancellationToken).PreserveThreadContext();
+            await this.jobStore.RemoveTriggerAsync(tuple.trigger.Id, cancellationToken);
 
             this.Logger.Info("Trigger '{trigger}' was removed from the list of active triggers and was canceled.", tuple.trigger);
             return tuple.trigger.ToOperationResult()
@@ -328,24 +328,24 @@ namespace Kephas.Scheduling
 
             if (!this.finalizationMonitor.IsNotStarted)
             {
-                this.Logger.Warn("Finalization is started, enqueue requests are rejected.");
+                this.Logger.LogWarning("Finalization is started, enqueue requests are rejected.");
                 return jobInfo.ToOperationResult()
                     .Fail(new InvalidOperationException("Finalization is started, enqueue requests are rejected."))!;
             }
 
             var schedulingContext = this.CreateSchedulingContext(options);
 
-            await this.jobStore.AddScheduledJobAsync(jobInfo, cancellationToken).PreserveThreadContext();
+            await this.jobStore.AddScheduledJobAsync(jobInfo, cancellationToken);
             var trigger = schedulingContext.Trigger()
                           ?? new TimerTrigger(Guid.NewGuid());
 
-            await this.jobStore.AddTriggerAsync(trigger, jobInfo, cancellationToken).PreserveThreadContext();
+            await this.jobStore.AddTriggerAsync(trigger, jobInfo, cancellationToken);
 
             if (!this.activeTriggers.TryAdd(
                 trigger.Id,
                 (trigger, cts => this.StartJob(jobInfo, schedulingContext.ActivityTarget, schedulingContext.ActivityArguments, schedulingContext.ActivityOptions, cts))))
             {
-                this.Logger.Warn("Cannot enqueue trigger '{trigger}' ({triggerId}).", trigger, trigger.Id);
+                this.Logger.LogWarning("Cannot enqueue trigger '{trigger}' ({triggerId}).", trigger, trigger.Id);
                 return jobInfo.ToOperationResult()
                     .Fail(new SchedulingException($"Cannot enqueue trigger '{trigger}' ({trigger.Id})."))!;
             }
@@ -355,20 +355,20 @@ namespace Kephas.Scheduling
                 var triggerId = trigger.Id;
                 if (!this.activeTriggers.TryGetValue(triggerId, out var tuple))
                 {
-                    this.Logger.Warn("Trigger with ID {triggerId} not found.", triggerId);
+                    this.Logger.LogWarning("Trigger with ID {triggerId} not found.", triggerId);
                     return;
                 }
 
                 var cancellationSource = new CancellationTokenSource();
                 var runningJob = tuple.triggerAction(cancellationSource);
                 var startedAt = runningJob.StartedAt ?? DateTimeOffset.Now;
-                await this.jobStore.AddRunningJobAsync(runningJob).PreserveThreadContext();
+                await this.jobStore.AddRunningJobAsync(runningJob);
 
                 // upon completion, remove the job from the running collection.
                 var runningJobTask = runningJob.AsTask();
                 try
                 {
-                    await runningJobTask.PreserveThreadContext();
+                    await runningJobTask;
 
                     var endedAt = DateTimeOffset.Now;
                     runningJob.Elapsed = endedAt - startedAt;
@@ -381,19 +381,19 @@ namespace Kephas.Scheduling
                 }
                 catch (Exception ex)
                 {
-                    (runningJob.Logger ?? this.Logger).Error(ex, $"Errors occurred while running job '{runningJob}'");
+                    (runningJob.Logger ?? this.Logger).LogError(ex, $"Errors occurred while running job '{runningJob}'");
                     runningJob.Fail(ex, DateTimeOffset.Now - startedAt);
                 }
 
                 try
                 {
                     // also, upon completion, remove the running job from the store and added to the completed collection.
-                    await this.jobStore.RemoveRunningJobAsync(runningJob.RunningJobId!).PreserveThreadContext();
-                    await this.jobStore.AddCompletedJobResultAsync(runningJob).PreserveThreadContext();
+                    await this.jobStore.RemoveRunningJobAsync(runningJob.RunningJobId!);
+                    await this.jobStore.AddCompletedJobResultAsync(runningJob);
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Errors occured while moving the job result from the running to completed collection.");
+                    this.Logger.LogError(ex, "Errors occured while moving the job result from the running to completed collection.");
                 }
 
                 try
@@ -402,7 +402,7 @@ namespace Kephas.Scheduling
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Errors occured while invoking the callback.");
+                    this.Logger.LogError(ex, "Errors occured while invoking the callback.");
                 }
             }
 
@@ -420,10 +420,10 @@ namespace Kephas.Scheduling
                 {
                     trigger.Fire -= OnTriggerOnFire;
                     trigger.Disposed -= OnTriggerOnDisposed;
-                    await this.jobStore.RemoveTriggerAsync(triggerId).PreserveThreadContext();
+                    await this.jobStore.RemoveTriggerAsync(triggerId);
                     if (!jobInfo!.Triggers.Any())
                     {
-                        await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id).PreserveThreadContext();
+                        await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id);
                     }
                 }
 
@@ -442,7 +442,7 @@ namespace Kephas.Scheduling
 
             this.Logger.Info("Enqueued job '{scheduledJob}' with trigger '{trigger}'.", jobInfo, trigger);
 
-            await ServiceHelper.InitializeAsync(trigger, cancellationToken: cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(trigger, cancellationToken: cancellationToken);
             return jobInfo.ToOperationResult()!;
         }
 
@@ -468,7 +468,7 @@ namespace Kephas.Scheduling
             cancellationToken.ThrowIfCancellationRequested();
 
             var jobInfo = scheduledJob as IJobInfo
-                          ?? await this.jobStore.GetScheduledJobAsync(scheduledJob!, false, cancellationToken).PreserveThreadContext();
+                          ?? await this.jobStore.GetScheduledJobAsync(scheduledJob!, false, cancellationToken);
 
             if (jobInfo == null)
             {
@@ -478,7 +478,7 @@ namespace Kephas.Scheduling
 
             foreach (var trigger in jobInfo.Triggers.ToArray())
             {
-                await this.jobStore.SetTriggerEnabledAsync(trigger, enabled, cancellationToken).PreserveThreadContext();
+                await this.jobStore.SetTriggerEnabledAsync(trigger, enabled, cancellationToken);
             }
 
             var enableString = enabled ? "enabled" : "disabled";
@@ -530,7 +530,7 @@ namespace Kephas.Scheduling
         /// </returns>
         protected virtual ISchedulingContext CreateSchedulingContext(Action<ISchedulingContext>? options = null)
         {
-            return this.injectableFactory.Create<SchedulingContext>().Merge(options);
+            return this.serviceFactory.Create<SchedulingContext>().Merge(options);
         }
     }
 }

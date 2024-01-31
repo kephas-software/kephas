@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Model.Runtime
 {
     using System;
@@ -31,7 +33,7 @@ namespace Kephas.Model.Runtime
     /// <summary>
     /// Model provider based on the .NET runtime and the type system.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase<DefaultRuntimeModelInfoProvider>
     {
         private readonly ICollection<IRuntimeModelRegistry> modelRegistries;
@@ -95,7 +97,7 @@ namespace Kephas.Model.Runtime
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var runtimeElements = await this.GetRuntimeElementInfosAsync(cancellationToken).PreserveThreadContext();
+            var runtimeElements = await this.GetRuntimeElementInfosAsync(cancellationToken);
 
             constructionContext.RuntimeModelElementFactory = this.RuntimeModelElementFactory;
             var elementInfos = new List<INamedElement>();
@@ -110,7 +112,7 @@ namespace Kephas.Model.Runtime
                 var elementInfo = this.RuntimeModelElementFactory.TryCreateModelElement(constructionContext, runtimeElement);
                 if (elementInfo == null)
                 {
-                    this.Logger.Warn(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());
+                    this.Logger.LogWarning(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());
                     continue;
                 }
 
@@ -134,7 +136,7 @@ namespace Kephas.Model.Runtime
             var runtimeElements = new HashSet<IRuntimeTypeInfo>();
             foreach (var modelRegistry in this.modelRegistries)
             {
-                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).PreserveThreadContext();
+                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken);
                 runtimeElements.AddRange(registryElements.Select(this.ToRuntimeTypeInfo));
 
                 cancellationToken.ThrowIfCancellationRequested();

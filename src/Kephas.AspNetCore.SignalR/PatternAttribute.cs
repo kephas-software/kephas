@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.AspNetCore.SignalR
 {
     using System;
@@ -14,7 +16,7 @@ namespace Kephas.AspNetCore.SignalR
     /// Attribute for hub pattern.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class PatternAttribute : Attribute, IMetadataValue<string>
+    public class PatternAttribute : Attribute, IServiceMetadataValue<string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternAttribute"/> class.

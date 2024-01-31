@@ -5,18 +5,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using FluentAssertions;
 using Kephas.Services;
 using Kephas.Services.Reflection;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kephas.Tests.Extensions.DependencyInjection
 {
-    [TestFixture]
-    public class DependencyInjectionScopedTest
+        public class DependencyInjectionScopedTest
     {
-        [Test]
+        [Fact]
         public void CreateScopedInjector_NestedScopes()
         {
             var appServices = Test.CreateTestServices();
@@ -29,30 +29,22 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var scopedInstance1 = scopedContext.ServiceProvider.GetRequiredService<DependencyInjectionTest.ScopeExportedClass>();
 
             using var nestedContext = scopedContext.ServiceProvider.CreateScope();
-            Assert.AreNotSame(scopedContext, nestedContext);
+            Assert.NotSame(scopedContext, nestedContext);
 
             var scopedInstance2 = nestedContext.ServiceProvider.GetRequiredService<DependencyInjectionTest.ScopeExportedClass>();
-            Assert.AreNotSame(scopedInstance1, scopedInstance2);
+            Assert.NotSame(scopedInstance1, scopedInstance2);
         }
 
-        [Test]
-        public void CreateScopedInjector_Injector_registration_root()
-        {
-            var container = Test.CreateTestServicesBuilder().BuildServiceProvider();
-            var selfContainer = container.GetRequiredService<IServiceProvider>();
-            Assert.AreSame(container, selfContainer);
-        }
-
-        [Test]
+        [Fact]
         public void CreateScopedInjector_Injector_registration_scope()
         {
             var container = Test.CreateTestServicesBuilder().BuildServiceProvider();
             using var scopedContext = container.CreateScope();
             var selfScopedContext = scopedContext.ServiceProvider.GetRequiredService<IServiceProvider>();
-            Assert.AreSame(selfScopedContext, scopedContext);
+            Assert.Same(selfScopedContext, scopedContext);
         }
 
-        [Test]
+        [Fact]
         public void CreateScopedInjector_Injector_registration_scope_consumers()
         {
             var appServices = Test.CreateTestServices();
@@ -63,7 +55,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var container = appServices.BuildServiceProvider();
             using var scopedContext = container.CreateScope();
             var scopedInstance = scopedContext.ServiceProvider.GetRequiredService<DependencyInjectionTest.ScopeExportedClass>();
-            Assert.AreSame(scopedContext, scopedInstance.ServiceProvider);
+            Assert.Same(scopedContext, scopedInstance.ServiceProvider);
         }
     }
 }

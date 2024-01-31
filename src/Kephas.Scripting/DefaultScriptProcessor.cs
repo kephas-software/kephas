@@ -27,7 +27,7 @@ namespace Kephas.Scripting
     /// <summary>
     /// The default script processor.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultScriptProcessor : Loggable, IScriptProcessor
     {
         /// <summary>
@@ -45,20 +45,20 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultScriptProcessor"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="languageServiceFactories">The language service factories.</param>
         /// <param name="scriptingBehaviorFactories">The scripting behavior factories.</param>
         public DefaultScriptProcessor(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             ICollection<Lazy<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
             ICollection<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             languageServiceFactories = languageServiceFactories ?? throw new ArgumentNullException(nameof(languageServiceFactories));
             scriptingBehaviorFactories = scriptingBehaviorFactories ?? throw new ArgumentNullException(nameof(scriptingBehaviorFactories));
 
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
 
             languageServiceFactories
                 .Order()
@@ -101,7 +101,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The context factory.
         /// </value>
-        public IInjectableFactory InjectableFactory { get; }
+        public IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Executes the expression asynchronously.
@@ -134,14 +134,14 @@ namespace Kephas.Scripting
 
             foreach (var behavior in behaviors)
             {
-                await behavior.BeforeExecuteAsync(scriptingContext, cancellationToken).PreserveThreadContext();
+                await behavior.BeforeExecuteAsync(scriptingContext, cancellationToken);
             }
 
             try
             {
                 var result = await languageServiceFactory.Value
                                  .ExecuteAsync(script, scriptingContext.ScriptGlobals, scriptArgs, scriptingContext.ExecutionContext, cancellationToken)
-                                 .PreserveThreadContext();
+                                 ;
                 scriptingContext.Result = result;
             }
             catch (Exception ex)
@@ -153,7 +153,7 @@ namespace Kephas.Scripting
 
             foreach (var behavior in behaviors)
             {
-                await behavior.AfterExecuteAsync(scriptingContext, cancellationToken).PreserveThreadContext();
+                await behavior.AfterExecuteAsync(scriptingContext, cancellationToken);
             }
 
             if (scriptingContext.Exception != null)
@@ -178,7 +178,7 @@ namespace Kephas.Scripting
             IDynamic args,
             Action<IScriptingContext>? optionsConfig = null)
         {
-            var scriptingContext = this.InjectableFactory.Create<ScriptingContext>();
+            var scriptingContext = this.ServiceFactory.Create<ScriptingContext>();
             scriptingContext.Script = script;
             scriptingContext.Args = args;
             var scriptGlobals = new ScriptGlobals();

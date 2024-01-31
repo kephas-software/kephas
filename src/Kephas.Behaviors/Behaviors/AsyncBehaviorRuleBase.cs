@@ -8,12 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Behaviors
 {
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Logging;
 
     /// <summary>
     /// Base class for asynchronous behavior rules.
@@ -25,9 +25,9 @@ namespace Kephas.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncBehaviorRuleBase{TContext, TValue}"/> class.
         /// </summary>
-        /// <param name="logManager">Optional. The log manager.</param>
-        protected AsyncBehaviorRuleBase(ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        protected AsyncBehaviorRuleBase(ILogger<AsyncBehaviorRuleBase<TContext, TValue>> logger)
+            : base(logger)
         {
         }
 

@@ -23,7 +23,7 @@ namespace Kephas.Net.Mime
     /// <summary>
     /// A default format provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultMediaTypeProvider : IMediaTypeProvider
     {
         /// <summary>
@@ -38,7 +38,7 @@ namespace Kephas.Net.Mime
         public DefaultMediaTypeProvider(ICollection<IExportFactory<IMediaType, MediaTypeMetadata>> formatFactories)
         {
             this.mediaTypeDictionary = new Dictionary<string, Type>();
-            foreach (var factory in formatFactories.OrderBy(f => f.Metadata.ProcessingPriority))
+            foreach (var factory in formatFactories.OrderBy(f => f.Metadata.Priority))
             {
                 var metadata = factory.Metadata;
                 foreach (var mediaType in metadata.SupportedMediaTypes)

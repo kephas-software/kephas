@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Messaging.AttributedModel;
 
@@ -16,7 +17,7 @@ namespace Kephas.Messaging.AttributedModel;
 /// Adds message matching criteria for <see cref="IMessageHandler"/> services.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class MessageHandlerAttribute : Attribute, IMetadataProvider
+public class MessageHandlerAttribute : Attribute, IServiceMetadataProvider
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="MessageHandlerAttribute"/> class.

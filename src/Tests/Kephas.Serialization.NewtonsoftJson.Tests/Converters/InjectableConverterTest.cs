@@ -8,7 +8,6 @@
 namespace Kephas.Serialization.Json.Tests.Converters;
 
 using Kephas.Services;
-using Kephas.Services;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -18,7 +17,7 @@ public class InjectableConverterTest : SerializationTestBase
     [Test]
     public async Task DeserializeAsync_Injectable()
     {
-        var injectableFactory = Substitute.For<IInjectableFactory>();
+        var injectableFactory = Substitute.For<IServiceFactory>();
         injectableFactory.Create(typeof(TestInjectable)).Returns(new TestInjectable("Test"));
         var settingsProvider = GetJsonSerializerSettingsProvider(injectableFactory);
         var serializer = new JsonSerializer(settingsProvider);

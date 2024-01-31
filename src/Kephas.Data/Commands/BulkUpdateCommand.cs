@@ -62,7 +62,7 @@ namespace Kephas.Data.Commands
 
             var opAsync = BulkUpdateAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IBulkDataOperationResult>)opAsync.Call(this, operationContext, cancellationToken);
-            var result = await asyncResult.PreserveThreadContext();
+            var result = await asyncResult;
             return result;
         }
 
@@ -99,7 +99,7 @@ namespace Kephas.Data.Commands
                 localCacheCount = toUpdateFromCache.Count;
             }
 
-            var count = await this.BulkUpdateCoreAsync(bulkUpdateContext, criteria, values, cancellationToken).PreserveThreadContext();
+            var count = await this.BulkUpdateCoreAsync(bulkUpdateContext, criteria, values, cancellationToken);
             return this.GetBulkOperationResult(bulkUpdateContext, count, localCacheCount, criteria);
         }
 

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Security.Permissions.AttributedModel
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Security.Permissions.AttributedModel
     /// Attribute indicating that the permission to access/execute/use the decorated element is granted.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
-    public class GrantsPermissionAttribute : Attribute, IGrantsPermissionAnnotation, IMetadataValue<Type[]>
+    public class GrantsPermissionAttribute : Attribute, IGrantsPermissionAnnotation, IServiceMetadataValue<Type[]>
     {
         /// <summary>
         /// The permission types metadata key.
@@ -45,7 +47,7 @@ namespace Kephas.Security.Permissions.AttributedModel
         /// <summary>
         /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
         /// </summary>
-        string? IMetadataValue.Name => PermissionTypesMetadataKey;
+        string? IServiceMetadataValue.Name => PermissionTypesMetadataKey;
 
         /// <summary>
         /// Gets the metadata value.
@@ -53,6 +55,6 @@ namespace Kephas.Security.Permissions.AttributedModel
         /// <value>
         /// The metadata value.
         /// </value>
-        Type[] IMetadataValue<Type[]>.Value => this.PermissionTypes;
+        Type[] IServiceMetadataValue<Type[]>.Value => this.PermissionTypes;
     }
 }

@@ -13,8 +13,6 @@ namespace Kephas.Reflection.Dynamic
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;
@@ -134,8 +132,8 @@ namespace Kephas.Reflection.Dynamic
                 Guid id => this.types.FirstOrDefault(t => id.Equals((t as IIdentifiable)?.Id)),
                 string name => this.types.FirstOrDefault(t => t.FullName == name)
                                ?? this.types.FirstOrDefault(t => t.Name == name)
-                               ?? await this.ResolveTypeInfoAsync(name, throwOnNotFound, cancellationToken).PreserveThreadContext(),
-                Type type => await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken).PreserveThreadContext(),
+                               ?? await this.ResolveTypeInfoAsync(name, throwOnNotFound, cancellationToken),
+                Type type => await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken),
                 _ => null,
             };
 
@@ -191,7 +189,7 @@ namespace Kephas.Reflection.Dynamic
             }
 
             var type = this.typeResolver.ResolveType(typeName, throwOnNotFound);
-            return type == null ? null : await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken).PreserveThreadContext();
+            return type == null ? null : await this.runtimeTypeRegistry.GetTypeInfoAsync(type, throwOnNotFound, cancellationToken);
         }
     }
 }

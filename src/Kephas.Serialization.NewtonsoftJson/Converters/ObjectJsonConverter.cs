@@ -16,7 +16,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <summary>
     /// JSON converter for untyped objects.
     /// </summary>
-    [ProcessingPriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class ObjectJsonConverter : JsonConverterBase
     {
         /// <summary>

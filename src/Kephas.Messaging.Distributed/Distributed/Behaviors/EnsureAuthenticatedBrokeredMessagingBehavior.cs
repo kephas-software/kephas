@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
     /// <summary>
     /// A distributed message processing behavior ensuring that the bearer token is transformed to an .
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class EnsureAuthenticatedBrokeredMessagingBehavior : MessagingBehaviorBase<IBrokeredMessage, object?>
     {
         /// <summary>
@@ -60,7 +60,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
             }
 
             var identity = await this.authenticationService.GetIdentityAsync(message.BearerToken, ctx => ctx.Merge(context), token)
-                               .PreserveThreadContext();
+                               ;
             context.Identity = identity;
         }
     }

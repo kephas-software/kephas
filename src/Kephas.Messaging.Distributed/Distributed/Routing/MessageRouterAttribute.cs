@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Messaging.Distributed.Routing
 {
     using System;
@@ -19,7 +21,7 @@ namespace Kephas.Messaging.Distributed.Routing
     /// Attribute for message router.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MessageRouterAttribute : Attribute, IMetadataProvider
+    public class MessageRouterAttribute : Attribute, IServiceMetadataProvider
     {
         /// <summary>
         /// Gets or sets the receiver URL regular expression.

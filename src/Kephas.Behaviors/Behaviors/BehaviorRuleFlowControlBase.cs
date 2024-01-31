@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Behaviors
 {
     using System.Collections.Generic;
@@ -15,25 +18,23 @@ namespace Kephas.Behaviors
 
     using Kephas.Collections;
     using Kephas.Services;
-    using Kephas.Logging;
-    using Kephas.Services;
 
     /// <summary>
     /// Base class controlling the flow of a behavior rule.
     /// </summary>
-    public abstract class BehaviorRuleFlowControlBase : Loggable, IBehaviorRuleFlowControl
+    public abstract class BehaviorRuleFlowControlBase : IBehaviorRuleFlowControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BehaviorRuleFlowControlBase"/> class.
         /// </summary>
-        /// <param name="logManager">Optional. The log manager.</param>
-        protected BehaviorRuleFlowControlBase(ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        protected BehaviorRuleFlowControlBase(ILogger<BehaviorRuleFlowControlBase> logger)
         {
             // ReSharper disable VirtualMemberCallInConstructor
             var metadata = this.ComputeMetadata();
-            this.ProcessingPriority = (Priority)metadata.TryGetValue(nameof(IHasProcessingPriority.ProcessingPriority), Priority.Normal)!;
+            this.Priority = (Priority)metadata.TryGetValue(nameof(IHasPriority.Priority), Priority.Normal)!;
             this.IsEndRule = (bool)metadata.TryGetValue(nameof(IBehaviorRuleFlowControl.IsEndRule), false)!;
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace Kephas.Behaviors
         /// <value>
         /// The processing priority.
         /// </value>
-        public Priority ProcessingPriority { get; protected set; }
+        public Priority Priority { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this rule ends the processing flow.
@@ -51,6 +52,11 @@ namespace Kephas.Behaviors
         /// <c>true</c> if this rule ends the processing flow, <c>false</c> if not.
         /// </value>
         public bool IsEndRule { get; protected set; }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger Logger { get; private set; }
 
         /// <summary>
         /// Calculates the value of the <see cref="IsEndRule"/> property.
@@ -62,7 +68,7 @@ namespace Kephas.Behaviors
         {
             var metadata = new Dictionary<string, object?>();
             this.GetType().GetCustomAttributes(inherit: true)
-                .OfType<IMetadataProvider>()
+                .OfType<IServiceMetadataProvider>()
                 .SelectMany(p => p.GetMetadata())
                 .ForEach(kv => metadata[kv.name] = kv.value);
             return metadata;

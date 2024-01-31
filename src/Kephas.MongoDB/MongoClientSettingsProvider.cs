@@ -12,12 +12,11 @@ using System.Security.Authentication;
 using global::MongoDB.Driver;
 using Kephas.Services;
 using Kephas.MongoDB.Diagnostics;
-using Kephas.Services;
 
 /// <summary>
 /// The default implementation of <see cref="IMongoClientSettingsProvider"/>.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class MongoClientSettingsProvider : IMongoClientSettingsProvider
 {
     private readonly IServiceProvider serviceProvider;

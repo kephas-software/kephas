@@ -25,7 +25,7 @@ namespace Kephas.Security.Cryptography.X509Certificates
     /// <summary>
     /// The default certificate provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultCertificateProvider : Loggable, ICertificateProvider
     {
         // We need to cast the underlying int value of the EphemeralKeySet to X509KeyStorageFlags
@@ -92,7 +92,7 @@ namespace Kephas.Security.Cryptography.X509Certificates
             if (cert == null)
             {
                 var validString = certificateInfo.ValidOnly ? "valid " : string.Empty;
-                this.Logger.Warn(
+                this.Logger.LogWarning(
                     $"No {validString}certificate with {itemName} '{{{itemName}}}' could be found in {{store}}.",
                     itemValue,
                     $"{certificateInfo.StoreLocation}/{certificateInfo.StoreName}");

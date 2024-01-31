@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Core.Endpoints.Tests
 {
     using System.Collections.Generic;
@@ -43,11 +45,11 @@ namespace Kephas.Core.Endpoints.Tests
             default);
 
         var svcInfo = result.ServiceInfos.Single(si => si.ContractType == typeof(ILogManager));
-        Assert.AreEqual(AppServiceLifetime.Singleton, svcInfo.Lifetime);
+        Assert.AreEqual(ServiceLifetime.Singleton, svcInfo.Lifetime);
         Assert.IsFalse(svcInfo.AsOpenGeneric);
 
         svcInfo = result.ServiceInfos.Single(si => si.ContractType == typeof(ILogger<>));
-        Assert.AreEqual(AppServiceLifetime.Singleton, svcInfo.Lifetime);
+        Assert.AreEqual(ServiceLifetime.Singleton, svcInfo.Lifetime);
         Assert.IsTrue(svcInfo.AsOpenGeneric);
     }
 

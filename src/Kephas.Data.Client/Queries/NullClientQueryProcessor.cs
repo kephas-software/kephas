@@ -20,7 +20,7 @@ namespace Kephas.Data.Client.Queries
     /// <summary>
     /// A null client query processor.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullClientQueryProcessor : IClientQueryProcessor
     {
         /// <summary>

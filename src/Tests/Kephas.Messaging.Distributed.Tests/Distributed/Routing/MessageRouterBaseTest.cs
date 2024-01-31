@@ -83,7 +83,7 @@ public class MessageRouterBaseTest : MessagingTestBase
         Assert.IsNull(receivedReply);
     }
 
-    private IInjectableFactory CreateMessagingInjectableFactory()
+    private IServiceFactory CreateMessagingInjectableFactory()
     {
         return this.CreateInjectableFactoryMock(
             args => new DispatchingContext(
@@ -97,8 +97,8 @@ public class MessageRouterBaseTest : MessagingTestBase
 
     public class TestMessageRouter : MessageRouterBase
     {
-        public TestMessageRouter(IInjectableFactory injectableFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-            : base(injectableFactory, appRuntime, messageProcessor)
+        public TestMessageRouter(IServiceFactory serviceFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+            : base(serviceFactory, appRuntime, messageProcessor)
         {
         }
 

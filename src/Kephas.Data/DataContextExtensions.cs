@@ -120,7 +120,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             var operationContext = new CreateEntityContext<T>(dataContext);
-            return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
 
-            return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
-            return (T)await FindCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
+            return (T)await FindCoreAsync(dataContext, findContext, cancellationToken);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
-            return (T)await FindCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
+            return (T)await FindCoreAsync(dataContext, findContext, cancellationToken);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
-            return await FindOneCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
+            return await FindOneCoreAsync(dataContext, findContext, cancellationToken);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
-            return (T)await FindOneCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
+            return (T)await FindOneCoreAsync(dataContext, findContext, cancellationToken);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Kephas.Data
             criteria = criteria ?? throw new ArgumentNullException(nameof(criteria));
 
             var findOneContext = new FindOneContext<T>(dataContext, criteria, throwIfNotFound);
-            return (T)await FindOneCoreAsync(dataContext, findOneContext, cancellationToken).PreserveThreadContext();
+            return (T)await FindOneCoreAsync(dataContext, findOneContext, cancellationToken);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace Kephas.Data
             }
 
             var command = (IPersistChangesCommand)dataContext.CreateCommand(typeof(IPersistChangesCommand));
-            var result = await command.ExecuteAsync(persistContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(persistContext, cancellationToken);
             return result;
         }
 
@@ -401,7 +401,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             bulkDeleteContext = bulkDeleteContext ?? throw new System.ArgumentNullException(nameof(bulkDeleteContext));
 
-            return await BulkDeleteCoreAsync(dataContext, bulkDeleteContext, cancellationToken).PreserveThreadContext();
+            return await BulkDeleteCoreAsync(dataContext, bulkDeleteContext, cancellationToken);
         }
 
         /// <summary>
@@ -483,7 +483,7 @@ namespace Kephas.Data
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             bulkUpdateContext = bulkUpdateContext ?? throw new System.ArgumentNullException(nameof(bulkUpdateContext));
 
-            return await BulkUpdateCoreAsync(dataContext, bulkUpdateContext, cancellationToken).PreserveThreadContext();
+            return await BulkUpdateCoreAsync(dataContext, bulkUpdateContext, cancellationToken);
         }
 
         /// <summary>
@@ -503,7 +503,7 @@ namespace Kephas.Data
             var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
             var executeContext = new ExecuteContext(dataContext) { CommandText = commandText };
 
-            var commandResult = await command.ExecuteAsync(executeContext, cancellationToken).PreserveThreadContext();
+            var commandResult = await command.ExecuteAsync(executeContext, cancellationToken);
             return commandResult.Value;
         }
 
@@ -529,7 +529,7 @@ namespace Kephas.Data
 
             var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
 
-            var commandResult = await command.ExecuteAsync(executeContext, cancellationToken).PreserveThreadContext();
+            var commandResult = await command.ExecuteAsync(executeContext, cancellationToken);
             return commandResult.Value;
         }
 
@@ -548,7 +548,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken)
         {
             var command = (ICreateEntityCommand)dataContext.CreateCommand(typeof(ICreateEntityCommand));
-            var result = await command.ExecuteAsync(operationContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(operationContext, cancellationToken);
             return result.Entity;
         }
 
@@ -567,7 +567,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken)
         {
             var command = (IFindCommand)dataContext.CreateCommand(typeof(IFindCommand));
-            var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(findContext, cancellationToken);
             return result.Entity;
         }
 
@@ -586,7 +586,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken)
         {
             var command = (IFindOneCommand)dataContext.CreateCommand(typeof(IFindOneCommand));
-            var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(findContext, cancellationToken);
             return result.Entity;
         }
 
@@ -608,7 +608,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken)
         {
             var command = (IBulkDeleteCommand)dataContext.CreateCommand(typeof(IBulkDeleteCommand));
-            var result = await command.ExecuteAsync(bulkDeleteContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(bulkDeleteContext, cancellationToken);
 
             return result.Count;
         }
@@ -631,7 +631,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken)
         {
             var command = (IBulkUpdateCommand)dataContext.CreateCommand(typeof(IBulkUpdateCommand));
-            var result = await command.ExecuteAsync(bulkUpdateContext, cancellationToken).PreserveThreadContext();
+            var result = await command.ExecuteAsync(bulkUpdateContext, cancellationToken);
 
             return result.Count;
         }

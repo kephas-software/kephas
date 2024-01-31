@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis;
 /// <summary>
 /// The default implementation of the <see cref="IMetadataReferenceManager"/>.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultMetadataReferenceManager : IMetadataReferenceManager
 {
     /// <summary>

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Scripting
 {
     using System;
@@ -17,7 +19,7 @@ namespace Kephas.Scripting
     /// <summary>
     /// Exception for signalling scripting errors.
     /// </summary>
-    public class ScriptingException : Exception, ISeverityQualifiedNotification
+    public class ScriptingException : Exception, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingException"/> class.
@@ -28,7 +30,7 @@ namespace Kephas.Scripting
         public ScriptingException(string message, int errorCode = 0, int lineNumber = 0)
             : base(message)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
             this.ErrorCode = errorCode;
             this.LineNumber = lineNumber;
         }
@@ -44,7 +46,7 @@ namespace Kephas.Scripting
         public ScriptingException(string message, Exception inner, int errorCode = 0, int lineNumber = 0)
             : base(message, inner)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
             this.ErrorCode = errorCode;
             this.LineNumber = lineNumber;
         }
@@ -55,7 +57,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public LogLevel Severity { get; set; }
 
         /// <summary>
         /// Gets the error code.

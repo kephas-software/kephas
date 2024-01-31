@@ -22,7 +22,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
     /// <summary>
     /// A null OCR processor.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullOcrProcessor : IOcrProcessor
     {
         /// <summary>

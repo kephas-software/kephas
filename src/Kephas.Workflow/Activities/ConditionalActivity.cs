@@ -52,7 +52,7 @@ public class ConditionalActivity : FlowActivityBase
                 context,
                 this.Target,
                 this.Arguments,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
         var boolValue = conditionValue != null && Convert.ToBoolean(conditionValue);
         var activity = boolValue ? this.Then : this.Else;
         return activity == null
@@ -62,7 +62,7 @@ public class ConditionalActivity : FlowActivityBase
                 context,
                 this.Target,
                 this.Arguments,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
     }
 
     /// <summary>Creates a new object that is a copy of the current instance.</summary>

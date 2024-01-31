@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Commands
 {
     using System;
@@ -21,7 +23,7 @@ namespace Kephas.Commands
     /// <summary>
     /// The default implementation of a command resolver.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultCommandResolver : ICommandResolver
     {
         private readonly ICollection<ICommandRegistry> registries;

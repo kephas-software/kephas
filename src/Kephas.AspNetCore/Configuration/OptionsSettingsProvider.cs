@@ -17,7 +17,7 @@ namespace Kephas.Application.AspNetCore.Configuration
     /// <summary>
     /// Settings provider based on the <see cref="IOptions{TOptions}"/> service.
     /// </summary>
-    [OverridePriority(Priority.Normal)]
+    [Priority(Priority.Normal)]
     public class OptionsSettingsProvider : OptionsSettingsProviderBase
     {
         /// <summary>

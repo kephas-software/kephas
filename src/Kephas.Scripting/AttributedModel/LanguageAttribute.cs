@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Scripting.AttributedModel;
 
 using System;
@@ -18,7 +20,7 @@ using Kephas.Services;
 /// Indicates the supported language.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class LanguageAttribute : Attribute, IMetadataValue<string[]>
+public class LanguageAttribute : Attribute, IServiceMetadataValue<string[]>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="LanguageAttribute"/> class.

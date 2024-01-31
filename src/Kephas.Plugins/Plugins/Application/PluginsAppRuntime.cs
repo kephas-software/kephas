@@ -19,7 +19,6 @@ namespace Kephas.Plugins.Application
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Logging;
     using Kephas.Plugins.Resources;
     using Kephas.Services;
 
@@ -127,7 +126,7 @@ namespace Kephas.Plugins.Application
                 appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadEmbeddedPluginBinaries));
             }
 
-            this.Logger.Debug(
+            this.Logger.LogDebug(
                 Strings.PluginsAppRuntime_LoadingApplicationFolders_Message,
                 appDirectories,
                 this.EnablePlugins ? "enabled" : "disabled");
@@ -230,7 +229,7 @@ namespace Kephas.Plugins.Application
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while reading the plugin data for {plugin}.", pluginIdentity);
+                this.Logger.LogError(ex, "Error while reading the plugin data for {plugin}.", pluginIdentity);
                 return false;
             }
 
@@ -239,7 +238,7 @@ namespace Kephas.Plugins.Application
                 var licenseState = this.CheckLicense(pluginIdentity, null);
                 if (!licenseState.Value)
                 {
-                    this.Logger.Warn(
+                    this.Logger.LogWarning(
                         "Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.",
                         pluginIdentity,
                         licenseState.Messages.Select(m => m.Message).ToArray());
@@ -249,7 +248,7 @@ namespace Kephas.Plugins.Application
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while checking the license for plugin {plugin}.", pluginIdentity);
+                this.Logger.LogError(ex, "Error while checking the license for plugin {plugin}.", pluginIdentity);
                 return false;
             }
         }

@@ -23,7 +23,7 @@ namespace Kephas.Scheduling.JobStore
     /// <summary>
     /// Provides the in-memory implementation of the <see cref="IJobStore"/>.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class InMemoryJobStore : Loggable, IJobStore
     {
         private readonly ConcurrentQueue<IJobResult> completedJobs = new ();
@@ -175,12 +175,12 @@ namespace Kephas.Scheduling.JobStore
 
             if (!this.activeTriggers.TryAdd(trigger.Id, (trigger, scheduledJob)))
             {
-                this.Logger.Warn("Cannot add trigger with ID {triggerId}.", trigger.Id);
+                this.Logger.LogWarning("Cannot add trigger with ID {triggerId}.", trigger.Id);
             }
 
             if (!scheduledJob.AddTrigger(trigger))
             {
-                this.Logger.Warn("Could not add trigger '{trigger}' to scheduled job '{scheduledJob}'", trigger, scheduledJob);
+                this.Logger.LogWarning("Could not add trigger '{trigger}' to scheduled job '{scheduledJob}'", trigger, scheduledJob);
             }
 
             return Task.CompletedTask;
@@ -198,13 +198,13 @@ namespace Kephas.Scheduling.JobStore
 
             if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
             {
-                this.Logger.Warn("Could not remove trigger with ID '{triggerId}'", triggerId);
+                this.Logger.LogWarning("Could not remove trigger with ID '{triggerId}'", triggerId);
                 return Task.CompletedTask;
             }
 
             if (!tuple.scheduledJob.RemoveTrigger(tuple.trigger))
             {
-                this.Logger.Warn("Could not remove trigger '{trigger}' from scheduled job '{scheduledJob}'", tuple.trigger, tuple.scheduledJob);
+                this.Logger.LogWarning("Could not remove trigger '{trigger}' from scheduled job '{scheduledJob}'", tuple.trigger, tuple.scheduledJob);
             }
 
             return Task.CompletedTask;

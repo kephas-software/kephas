@@ -16,7 +16,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
     /// <summary>
     /// A null trigger factory.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullTriggerFactory : ITriggerFactory
     {
         /// <summary>

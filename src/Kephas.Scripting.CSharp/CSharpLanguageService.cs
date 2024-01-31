@@ -78,14 +78,14 @@ namespace Kephas.Scripting
 
             var (globalsSection, refSection, assemblies) = this.GetGlobalsScript(scriptGlobals);
 
-            var source = await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext();
+            var source = await script.GetSourceCodeAsync(cancellationToken);
 
             var state = await CSharpScript.RunAsync(
                 MergeSections(globalsSection, refSection, source),
                 options: this.GetScriptOptions(assemblies),
                 globals: new Globals { __g = scriptGlobals },
                 cancellationToken: cancellationToken)
-                .PreserveThreadContext();
+                ;
             return state.ReturnValue;
         }
 

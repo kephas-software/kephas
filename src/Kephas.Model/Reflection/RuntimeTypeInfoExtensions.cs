@@ -55,7 +55,7 @@ namespace Kephas.Model.Reflection
         /// </returns>
         public static bool IsExcludedFromModel(this Type typeInfo)
         {
-            return typeInfo == null || typeInfo.GetCustomAttribute<ExcludeFromModelAttribute>() != null;
+            return typeInfo == null || typeInfo.GetCustomAttribute<ExcludeFromReflectionAttribute>() != null;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Kephas.Model.Reflection
         /// </returns>
         public static bool IsExcludedFromModel(this TypeInfo typeInfo)
         {
-            return typeInfo == null || typeInfo.GetCustomAttribute<ExcludeFromModelAttribute>() != null;
+            return typeInfo == null || typeInfo.GetCustomAttribute<ExcludeFromReflectionAttribute>() != null;
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Kephas.Model.Reflection
         /// </returns>
         public static bool IsExcludedFromModel(this MemberInfo memberInfo)
         {
-            return memberInfo == null || memberInfo.GetCustomAttribute<ExcludeFromModelAttribute>() != null;
+            return memberInfo == null || memberInfo.GetCustomAttribute<ExcludeFromReflectionAttribute>() != null;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Kephas.Model.Reflection
         /// </returns>
         public static bool IsExcludedFromModel(this IAttributeProvider memberInfo)
         {
-            return memberInfo == null || memberInfo.GetAttribute<ExcludeFromModelAttribute>() != null;
+            return memberInfo == null || memberInfo.GetAttribute<ExcludeFromReflectionAttribute>() != null;
         }
 
         /// <summary>

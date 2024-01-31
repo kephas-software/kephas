@@ -39,7 +39,7 @@ public class SequenceActivity : BlockActivityBase
         foreach (var activity in this.Activities)
         {
             result = await this.ExecuteChildActivityAsync(activity, context, this.Target, this.Arguments, cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
 
         return result;

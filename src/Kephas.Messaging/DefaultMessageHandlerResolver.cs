@@ -13,7 +13,7 @@ namespace Kephas.Messaging;
 /// <summary>
 /// The default implementation of the <see cref="IMessageHandlerResolver"/> service.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultMessageHandlerResolver : IMessageHandlerResolver
 {
     private readonly IFactoryEnumerable<IMessageHandler, MessageHandlerMetadata> handlerFactories;

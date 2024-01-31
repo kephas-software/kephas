@@ -15,7 +15,6 @@ namespace Kephas.Application.Console
     using System.Threading.Tasks;
 
     using Kephas.Commands;
-    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Serialization;
     using Kephas.Services;
@@ -24,7 +23,7 @@ namespace Kephas.Application.Console
     /// <summary>
     /// A default command shell.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class DefaultCommandShell : Loggable, ICommandShell
     {
         private readonly ICommandProcessor commandProcessor;
@@ -88,7 +87,7 @@ namespace Kephas.Application.Console
                 string? commandLine = null;
                 try
                 {
-                    commandLine = await this.ReadCommandLineAsync(cancellationToken).PreserveThreadContext();
+                    commandLine = await this.ReadCommandLineAsync(cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -96,7 +95,7 @@ namespace Kephas.Application.Console
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Error while reading from the console.");
+                    this.Logger.LogError(ex, "Error while reading from the console.");
                     continue;
                 }
 
@@ -112,8 +111,8 @@ namespace Kephas.Application.Console
                     cancellationToken.ThrowIfCancellationRequested();
 
                     var command = this.ParseCommandLine(commandLine);
-                    var result = await this.commandProcessor.ProcessAsync(command.Name, command.Args, context, cancellationToken).PreserveThreadContext();
-                    await this.WriteCommandOutputAsync(result, cancellationToken).PreserveThreadContext();
+                    var result = await this.commandProcessor.ProcessAsync(command.Name, command.Args, context, cancellationToken);
+                    await this.WriteCommandOutputAsync(result, cancellationToken);
 
                     cancellationToken.ThrowIfCancellationRequested();
                 }
@@ -138,7 +137,7 @@ namespace Kephas.Application.Console
         protected virtual async Task<string> ReadCommandLineAsync(CancellationToken cancellationToken)
         {
             Func<string> consoleReadLine = this.Console.ReadLine;
-            var command = await consoleReadLine.AsAsync(cancellationToken).PreserveThreadContext();
+            var command = await consoleReadLine.AsAsync(cancellationToken);
             return command;
         }
 
@@ -181,7 +180,7 @@ namespace Kephas.Application.Console
             var serializedResult = await this.serializationService.JsonSerializeAsync(
                                        result,
                                        ctx => ctx.Indent(true).IncludeTypeInfo(false),
-                                       cancellationToken: cancellationToken).PreserveThreadContext();
+                                       cancellationToken: cancellationToken);
             this.Console.WriteLine(serializedResult);
         }
     }

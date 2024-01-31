@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
     using Kephas.Services;

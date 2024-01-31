@@ -52,7 +52,7 @@ namespace Kephas.Templating.Razor
             };
 
             this.ViewContext = new TemplateViewContext(this.ViewData, writer);
-            await this.ExecuteAsync().PreserveThreadContext();
+            await this.ExecuteAsync();
         }
 
         private class TemplateViewContext : ViewContext

@@ -123,7 +123,7 @@ namespace Kephas.Data
 
             var dataContext = dataSpace[typeof(T)];
             var operationContext = new CreateEntityContext<T>(dataContext);
-            return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Kephas.Data
             operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));
 
             var dataContext = dataSpace[typeof(T)];
-            return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Kephas.Data
             findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[typeof(T)];
-            return (T)await dataContext.FindCoreAsync(findContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.FindCoreAsync(findContext, cancellationToken);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Kephas.Data
 
             var dataContext = dataSpace[typeof(T)];
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
-            return (T)await dataContext.FindCoreAsync(findContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.FindCoreAsync(findContext, cancellationToken);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace Kephas.Data
             findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[findContext.EntityType];
-            return await dataContext.FindOneCoreAsync(findContext, cancellationToken).PreserveThreadContext();
+            return await dataContext.FindOneCoreAsync(findContext, cancellationToken);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Kephas.Data
             findContext = findContext ?? throw new ArgumentNullException(nameof(findContext));
 
             var dataContext = dataSpace[typeof(T)];
-            return (T)await dataContext.FindOneCoreAsync(findContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.FindOneCoreAsync(findContext, cancellationToken);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace Kephas.Data
 
             var dataContext = dataSpace[typeof(T)];
             var findOneContext = new FindOneContext<T>(dataContext, criteria, throwIfNotFound);
-            return (T)await dataContext.FindOneCoreAsync(findOneContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.FindOneCoreAsync(findOneContext, cancellationToken);
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace Kephas.Data
             var results = new List<IOperationResult>();
             foreach (var dataContext in dataSpace)
             {
-                results.Add(await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext());
+                results.Add(await dataContext.PersistChangesAsync(cancellationToken: cancellationToken));
             }
 
             return results;

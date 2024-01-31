@@ -14,8 +14,6 @@ namespace Kephas.Scheduling.Reflection
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Triggers;

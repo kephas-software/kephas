@@ -13,7 +13,6 @@ namespace Kephas.TextProcessing;
 using System;
 
 using Kephas.Services;
-using Kephas.Services;
 
 /// <summary>
 /// A tokenizer context.

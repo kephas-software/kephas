@@ -8,7 +8,6 @@
 namespace Kephas.MongoDB;
 
 using Kephas.Services;
-using Kephas.Services;
 
 /// <summary>
 /// The implementation of the <see cref="IMongoContext"/>.

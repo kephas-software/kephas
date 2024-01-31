@@ -13,7 +13,6 @@ namespace Kephas.Activation
     using System.Collections.Generic;
 
     using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// Contract for a service used for object instantiation based on <see cref="ITypeInfo"/>.

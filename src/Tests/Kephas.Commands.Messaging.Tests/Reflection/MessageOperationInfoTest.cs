@@ -18,7 +18,6 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     using Kephas.Commands.Messaging.Reflection;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Dynamic;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Reflection;

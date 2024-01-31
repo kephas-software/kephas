@@ -12,8 +12,6 @@ namespace Kephas.Plugins.Endpoints
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
-    using Kephas.Application;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;

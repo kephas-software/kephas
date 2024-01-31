@@ -232,7 +232,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         /// <summary>
         /// Called by the QuartzScheduler before the <see cref="T:Quartz.Spi.IJobStore" /> is used, in
-        /// order to give the it a chance to Initialize.
+        /// order to give the it a chance to InitializeAssembly.
         /// </summary>
         /// <param name="loadHelper">The load helper.</param>
         /// <param name="signaler">The signaler.</param>
@@ -247,13 +247,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             this.schedulerSignaler = signaler;
 
-            this.Logger.Trace($"Scheduler {this} is initializing...");
+            this.Logger.LogTrace($"Scheduler {this} is initializing...");
 
             this.lockManager = new LockManager(this.InstanceName);
 
             this.triggerRepository = new TriggerRepository(this, this.LogManager);
 
-            this.Logger.Trace($"Scheduler {this} is initialized.");
+            this.Logger.LogTrace($"Scheduler {this} is initialized.");
 
             return Task.FromResult(0);
         }
@@ -270,14 +270,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public async Task SchedulerStarted(CancellationToken cancellationToken = default)
         {
-            this.Logger.Trace($"Scheduler {this} started.");
+            this.Logger.LogTrace($"Scheduler {this} started.");
             using (var dataContext = this.DataContextFactory(null))
             {
-                await dataContext.AddScheduler(this.InstanceName, this.InstanceId, cancellationToken).PreserveThreadContext();
+                await dataContext.AddScheduler(this.InstanceName, this.InstanceId, cancellationToken);
 
                 try
                 {
-                    await this.RecoverJobs(dataContext, cancellationToken).PreserveThreadContext();
+                    await this.RecoverJobs(dataContext, cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -296,7 +296,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </summary>
         public async Task SchedulerPaused(CancellationToken cancellationToken = default)
         {
-            this.Logger.Trace($"Scheduler {this} paused.");
+            this.Logger.LogTrace($"Scheduler {this} paused.");
 
             using (var dataContext = this.DataContextFactory(null))
             {
@@ -304,7 +304,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     this.InstanceName,
                     this.InstanceId,
                     SchedulerState.Paused,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
 
             this.schedulerRunning = false;
@@ -316,14 +316,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </summary>
         public async Task SchedulerResumed(CancellationToken cancellationToken = default)
         {
-            this.Logger.Trace($"Scheduler {this} resumed.");
+            this.Logger.LogTrace($"Scheduler {this} resumed.");
             using (var dataContext = this.DataContextFactory(null))
             {
                 await dataContext.UpdateSchedulerState(
                     this.InstanceName,
                     this.InstanceId,
                     SchedulerState.Resumed,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
 
             this.schedulerRunning = true;
@@ -336,7 +336,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </summary>
         public async Task Shutdown(CancellationToken cancellationToken = default)
         {
-            this.Logger.Trace($"Scheduler {this} shutdown");
+            this.Logger.LogTrace($"Scheduler {this} shutdown");
             if (this.misfireHandler != null)
             {
                 this.misfireHandler.Shutdown();
@@ -351,7 +351,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             using (var dataContext = this.DataContextFactory(null))
             {
-                await dataContext.DeleteScheduler(this.InstanceName, this.InstanceId, cancellationToken).PreserveThreadContext();
+                await dataContext.DeleteScheduler(this.InstanceName, this.InstanceId, cancellationToken);
             }
         }
 
@@ -370,9 +370,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.StoreJobInternal(dataContext, newJob, false, cancellationToken).PreserveThreadContext();
+                    await this.StoreJobInternal(dataContext, newJob, false, cancellationToken);
                     await this.StoreTriggerInternal(
                         dataContext,
                         newTrigger,
@@ -381,7 +381,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         Model.TriggerState.Waiting,
                         false,
                         false,
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
                 }
             }
             catch (AggregateException ex)
@@ -432,9 +432,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.StoreJobInternal(dataContext, newJob, replaceExisting, cancellationToken).PreserveThreadContext();
+                    await this.StoreJobInternal(dataContext, newJob, replaceExisting, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -451,11 +451,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
                     foreach (var job in triggersAndJobs.Keys)
                     {
-                        await this.StoreJobInternal(dataContext, job, replace, cancellationToken).PreserveThreadContext();
+                        await this.StoreJobInternal(dataContext, job, replace, cancellationToken);
                         foreach (var trigger in triggersAndJobs[job])
                         {
                             await this.StoreTriggerInternal(
@@ -466,7 +466,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                                 Model.TriggerState.Waiting,
                                 false,
                                 false,
-                                cancellationToken).PreserveThreadContext();
+                                cancellationToken);
                         }
                     }
                 }
@@ -500,9 +500,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.RemoveJobInternal(dataContext, jobKey, cancellationToken).PreserveThreadContext();
+                    return await this.RemoveJobInternal(dataContext, jobKey, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -516,11 +516,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
                     var results =
                         await Task.WhenAll(jobKeys.Select(jobKey => this.RemoveJobInternal(dataContext, jobKey, cancellationToken)))
-                            .PreserveThreadContext();
+                            ;
                     return results.Aggregate(true, (current, result) => current && result);
                 }
             }
@@ -542,7 +542,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             using (var dataContext = this.DataContextFactory(null))
             {
                 return await dataContext.GetJobDetail(this.InstanceName, jobKey, cancellationToken)
-                           .PreserveThreadContext();
+                           ;
             }
         }
 
@@ -561,7 +561,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             CancellationToken cancellationToken = default)
         {
             using (var dataContext = this.DataContextFactory(null))
-            using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+            using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
             {
                 await this.StoreTriggerInternal(
                     dataContext,
@@ -571,7 +571,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     Model.TriggerState.Waiting,
                     false,
                     false,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
         }
 
@@ -599,9 +599,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.RemoveTriggerInternal(dataContext, triggerKey, cancellationToken: cancellationToken).PreserveThreadContext();
+                    return await this.RemoveTriggerInternal(dataContext, triggerKey, cancellationToken: cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -615,14 +615,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
                     var results = await Task.WhenAll(
                         triggerKeys.Select(
                             triggerKey => this.RemoveTriggerInternal(
                                 dataContext,
                                 triggerKey,
-                                cancellationToken: cancellationToken))).PreserveThreadContext();
+                                cancellationToken: cancellationToken)));
 
                     return results.Aggregate(true,
                         (current, result) => current && result);
@@ -654,9 +654,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.ReplaceTriggerInternal(dataContext, triggerKey, newTrigger, cancellationToken).PreserveThreadContext();
+                    return await this.ReplaceTriggerInternal(dataContext, triggerKey, newTrigger, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -674,7 +674,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public async Task<IOperableTrigger> RetrieveTrigger(TriggerKey triggerKey, CancellationToken cancellationToken = default)
         {
-            var result = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken).PreserveThreadContext();
+            var result = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken);
             return result?.GetTrigger() as IOperableTrigger;
         }
 
@@ -691,7 +691,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             {
                 return await dataContext
                            .CalendarExists(this.InstanceName, calName, cancellationToken: cancellationToken)
-                           .PreserveThreadContext();
+                           ;
             }
         }
 
@@ -710,7 +710,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             {
                 return await dataContext
                            .JobExists(this.InstanceName, jobKey, cancellationToken: cancellationToken)
-                           .PreserveThreadContext();
+                           ;
             }
         }
 
@@ -737,14 +737,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await dataContext.BulkDeleteAsync<Model.ICalendar>(c => true, cancellationToken: cancellationToken).PreserveThreadContext();
-                    await dataContext.BulkDeleteAsync<Model.IFiredTrigger>(c => true, cancellationToken: cancellationToken).PreserveThreadContext();
-                    await dataContext.BulkDeleteAsync<Model.IJobDetail>(c => true, cancellationToken: cancellationToken).PreserveThreadContext();
-                    await dataContext.BulkDeleteAsync<Model.IPausedTriggerGroup>(c => true, cancellationToken: cancellationToken).PreserveThreadContext();
-                    await dataContext.BulkDeleteAsync<Model.IScheduler>(c => true, cancellationToken: cancellationToken).PreserveThreadContext();
-                    await dataContext.BulkDeleteAsync<Model.ITrigger>(c => true, cancellationToken: cancellationToken).PreserveThreadContext();
+                    await dataContext.BulkDeleteAsync<Model.ICalendar>(c => true, cancellationToken: cancellationToken);
+                    await dataContext.BulkDeleteAsync<Model.IFiredTrigger>(c => true, cancellationToken: cancellationToken);
+                    await dataContext.BulkDeleteAsync<Model.IJobDetail>(c => true, cancellationToken: cancellationToken);
+                    await dataContext.BulkDeleteAsync<Model.IPausedTriggerGroup>(c => true, cancellationToken: cancellationToken);
+                    await dataContext.BulkDeleteAsync<Model.IScheduler>(c => true, cancellationToken: cancellationToken);
+                    await dataContext.BulkDeleteAsync<Model.ITrigger>(c => true, cancellationToken: cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -777,9 +777,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.StoreCalendarInternal(dataContext, name, calendar, replaceExisting, updateTriggers, cancellationToken).PreserveThreadContext();
+                    await this.StoreCalendarInternal(dataContext, name, calendar, replaceExisting, updateTriggers, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -808,9 +808,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.RemoveCalendarInternal(dataContext, calName, cancellationToken).PreserveThreadContext();
+                    return await this.RemoveCalendarInternal(dataContext, calName, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -832,7 +832,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             using (var dataContext = this.DataContextFactory(null))
             {
-                return await dataContext.GetCalendar(this.InstanceName, calName, cancellationToken).PreserveThreadContext();
+                return await dataContext.GetCalendar(this.InstanceName, calName, cancellationToken);
             }
         }
 
@@ -849,7 +849,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 return await dataContext.Query<Model.IJobDetail>()
                            .Where(j => j.InstanceName == this.InstanceName)
                            .CountAsync(cancellationToken)
-                           .PreserveThreadContext();
+                           ;
             }
         }
 
@@ -863,7 +863,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             using (var dataContext = this.DataContextFactory(null))
             {
-                return (int)await this.triggerRepository.GetCount(dataContext, cancellationToken).PreserveThreadContext();
+                return (int)await this.triggerRepository.GetCount(dataContext, cancellationToken);
             }
         }
 
@@ -876,7 +876,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             using (var dataContext = this.DataContextFactory(null))
             {
-                return await dataContext.Query<Model.ICalendar>().CountAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                return await dataContext.Query<Model.ICalendar>().CountAsync(cancellationToken: cancellationToken);
             }
         }
 
@@ -896,7 +896,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             using (var dataContext = this.DataContextFactory(null))
             {
                 return (IReadOnlyCollection<JobKey>)new HashSet<JobKey>(
-                    await dataContext.GetJobsKeys(this.InstanceName, matcher, cancellationToken).PreserveThreadContext());
+                    await dataContext.GetJobsKeys(this.InstanceName, matcher, cancellationToken));
             }
         }
 
@@ -911,7 +911,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         public async Task<IReadOnlyCollection<TriggerKey>> GetTriggerKeys(GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
         {
             return (IReadOnlyCollection<TriggerKey>)new HashSet<TriggerKey>(await this.triggerRepository
-                                                                                 .GetTriggerKeys(matcher, cancellationToken).PreserveThreadContext());
+                                                                                 .GetTriggerKeys(matcher, cancellationToken));
         }
 
         /// <summary>
@@ -926,7 +926,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             using (var dataContext = this.DataContextFactory(null))
             {
-                return (IReadOnlyCollection<string>)await dataContext.GetJobGroupNames(this.InstanceName, cancellationToken).PreserveThreadContext();
+                return (IReadOnlyCollection<string>)await dataContext.GetJobGroupNames(this.InstanceName, cancellationToken);
             }
         }
 
@@ -942,7 +942,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             using (var dataContext = this.DataContextFactory(null))
             {
-                return (await this.triggerRepository.GetTriggerGroupNames(dataContext, cancellationToken).PreserveThreadContext())
+                return (await this.triggerRepository.GetTriggerGroupNames(dataContext, cancellationToken))
                     .ToList();
             }
         }
@@ -973,7 +973,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             using (var dataContext = this.DataContextFactory(null))
             {
-                var result = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken).PreserveThreadContext();
+                var result = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken);
                 return result.Select(trigger => trigger.GetTrigger())
                     .Cast<IOperableTrigger>()
                     .ToList();
@@ -986,7 +986,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// <seealso cref="T:Quartz.TriggerState" />
         public async Task<global::Quartz.TriggerState> GetTriggerState(TriggerKey triggerKey, CancellationToken cancellationToken = default)
         {
-            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken).PreserveThreadContext();
+            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken);
 
             if (trigger == null)
             {
@@ -1019,9 +1019,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.PauseTriggerInternal(dataContext, triggerKey, cancellationToken).PreserveThreadContext();
+                    await this.PauseTriggerInternal(dataContext, triggerKey, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1044,9 +1044,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.PauseTriggerGroupInternal(dataContext, matcher, cancellationToken).PreserveThreadContext();
+                    return await this.PauseTriggerGroupInternal(dataContext, matcher, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1064,12 +1064,12 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
                     var triggers = await GetTriggersForJob(jobKey, cancellationToken);
                     foreach (var operableTrigger in triggers)
                     {
-                        await this.PauseTriggerInternal(dataContext, operableTrigger.Key, cancellationToken).PreserveThreadContext();
+                        await this.PauseTriggerInternal(dataContext, operableTrigger.Key, cancellationToken);
                     }
                 }
             }
@@ -1095,15 +1095,15 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    var jobKeys = await dataContext.GetJobsKeys(this.InstanceName, matcher, cancellationToken).PreserveThreadContext();
+                    var jobKeys = await dataContext.GetJobsKeys(this.InstanceName, matcher, cancellationToken);
                     foreach (var jobKey in jobKeys)
                     {
-                        var triggers = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken).PreserveThreadContext();
+                        var triggers = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken);
                         foreach (var trigger in triggers)
                         {
-                            await this.PauseTriggerInternal(dataContext, trigger.GetTrigger().Key, cancellationToken).PreserveThreadContext();
+                            await this.PauseTriggerInternal(dataContext, trigger.GetTrigger().Key, cancellationToken);
                         }
                     }
 
@@ -1131,9 +1131,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.ResumeTriggerInternal(dataContext, triggerKey, cancellationToken).PreserveThreadContext();
+                    await this.ResumeTriggerInternal(dataContext, triggerKey, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1155,9 +1155,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.ResumeTriggersInternal(dataContext, matcher, cancellationToken).PreserveThreadContext();
+                    return await this.ResumeTriggersInternal(dataContext, matcher, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1174,7 +1174,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             {
                 return (IReadOnlyCollection<string>)new HashSet<string>(
                     await dataContext.GetPausedTriggerGroups(this.InstanceName, cancellationToken: cancellationToken)
-                        .PreserveThreadContext());
+                        );
             }
         }
 
@@ -1192,11 +1192,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    var triggers = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken).PreserveThreadContext();
+                    var triggers = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken);
                     await Task.WhenAll(triggers.Select(trigger =>
-                        this.ResumeTriggerInternal(dataContext, trigger.GetTrigger().Key, cancellationToken))).PreserveThreadContext();
+                        this.ResumeTriggerInternal(dataContext, trigger.GetTrigger().Key, cancellationToken)));
                 }
             }
             catch (AggregateException ex)
@@ -1223,14 +1223,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    var jobKeys = await dataContext.GetJobsKeys(this.InstanceName, matcher, cancellationToken).PreserveThreadContext();
+                    var jobKeys = await dataContext.GetJobsKeys(this.InstanceName, matcher, cancellationToken);
                     foreach (var jobKey in jobKeys)
                     {
-                        var triggers = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken).PreserveThreadContext();
+                        var triggers = await this.triggerRepository.GetTriggers(dataContext, jobKey, cancellationToken);
                         await Task.WhenAll(triggers.Select(trigger =>
-                            this.ResumeTriggerInternal(dataContext, trigger.GetTrigger().Key, cancellationToken))).PreserveThreadContext();
+                            this.ResumeTriggerInternal(dataContext, trigger.GetTrigger().Key, cancellationToken)));
                     }
 
                     return (IReadOnlyCollection<string>)new HashSet<string>(jobKeys.Select(key => key.Group));
@@ -1260,9 +1260,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.PauseAllInternal(dataContext, cancellationToken).PreserveThreadContext();
+                    await this.PauseAllInternal(dataContext, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1285,9 +1285,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.ResumeAllInternal(dataContext, cancellationToken).PreserveThreadContext();
+                    await this.ResumeAllInternal(dataContext, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1318,9 +1318,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    return await this.AcquireNextTriggersInternal(dataContext, noLaterThan, maxCount, timeWindow, cancellationToken).PreserveThreadContext();
+                    return await this.AcquireNextTriggersInternal(dataContext, noLaterThan, maxCount, timeWindow, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1339,11 +1339,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
                     await this.triggerRepository.UpdateTriggerState(dataContext, trigger.Key, Model.TriggerState.Waiting,
-                        Model.TriggerState.Acquired, cancellationToken).PreserveThreadContext();
-                    await dataContext.DeleteFiredTrigger(this.InstanceName, trigger.FireInstanceId, cancellationToken: cancellationToken).PreserveThreadContext();
+                        Model.TriggerState.Acquired, cancellationToken);
+                    await dataContext.DeleteFiredTrigger(this.InstanceName, trigger.FireInstanceId, cancellationToken: cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -1382,7 +1382,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.Error(ex, $"Error during triggering.");
+                            this.Logger.LogError(ex, $"Error during triggering.");
                             result = new TriggerFiredResult(ex);
                         }
 
@@ -1414,9 +1414,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             try
             {
                 using (var dataContext = this.DataContextFactory(null))
-                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                 {
-                    await this.TriggeredJobCompleteInternal(dataContext, trigger, jobDetail, triggerInstCode, cancellationToken).PreserveThreadContext();
+                    await this.TriggeredJobCompleteInternal(dataContext, trigger, jobDetail, triggerInstCode, cancellationToken);
                 }
 
                 var sigTime = this.ClearAndGetSignalSchedulingChangeOnTxCompletion();
@@ -1439,16 +1439,16 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
                 using (var dataContext = this.DataContextFactory(null))
                 {
-                    var misfireCount = await this.triggerRepository.GetMisfireCount(dataContext, this.MisfireTime.UtcDateTime, cancellationToken).PreserveThreadContext();
+                    var misfireCount = await this.triggerRepository.GetMisfireCount(dataContext, this.MisfireTime.UtcDateTime, cancellationToken);
                     if (misfireCount == 0)
                     {
-                        this.Logger.Debug("Found 0 triggers that missed their scheduled fire-time.");
+                        this.Logger.LogDebug("Found 0 triggers that missed their scheduled fire-time.");
                     }
                     else
                     {
-                        using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+                        using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
                         {
-                            result = await this.RecoverMisfiredJobsInternal(dataContext, false, cancellationToken).PreserveThreadContext();
+                            result = await this.RecoverMisfiredJobsInternal(dataContext, false, cancellationToken);
                         }
                     }
                 }
@@ -1463,9 +1463,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task RecoverJobs(IDataContext dataContext, CancellationToken cancellationToken)
         {
-            using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken).PreserveThreadContext())
+            using (await this.lockManager.AcquireLock(dataContext, LockType.TriggerAccess, this.InstanceId, cancellationToken))
             {
-                await this.RecoverJobsInternal(dataContext, cancellationToken).PreserveThreadContext();
+                await this.RecoverJobsInternal(dataContext, cancellationToken);
             }
         }
 
@@ -1474,7 +1474,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             TriggerKey triggerKey,
             CancellationToken cancellationToken)
         {
-            var trigger = await this.triggerRepository.GetTrigger(dataContext, triggerKey, cancellationToken).PreserveThreadContext();
+            var trigger = await this.triggerRepository.GetTrigger(dataContext, triggerKey, cancellationToken);
             switch (trigger.State)
             {
                 case Model.TriggerState.Waiting:
@@ -1483,14 +1483,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         dataContext,
                         triggerKey,
                         Model.TriggerState.Paused,
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
                     break;
                 case Model.TriggerState.Blocked:
                     await this.triggerRepository.UpdateTriggerState(
                         dataContext,
                         triggerKey,
                         Model.TriggerState.PausedBlocked,
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
                     break;
             }
         }
@@ -1505,15 +1505,15 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 matcher,
                 Model.TriggerState.Paused,
                 new[] { Model.TriggerState.Acquired, Model.TriggerState.Waiting },
-                token).PreserveThreadContext();
+                token);
             await this.triggerRepository.UpdateTriggersStatesAsync(
                 dataContext,
                 matcher,
                 Model.TriggerState.PausedBlocked,
                 new[] { Model.TriggerState.Blocked },
-                token).PreserveThreadContext();
+                token);
 
-            var triggerGroups = await this.triggerRepository.GetTriggerGroupNames(dataContext, matcher, token).PreserveThreadContext();
+            var triggerGroups = await this.triggerRepository.GetTriggerGroupNames(dataContext, matcher, token);
 
             // make sure to account for an exact group match for a group that doesn't yet exist
             var op = matcher.CompareWithOperator;
@@ -1523,9 +1523,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             }
 
             foreach (var triggerGroup in triggerGroups)
-                if (!await dataContext.IsTriggerGroupPaused(this.InstanceName, triggerGroup, cancellationToken: token).PreserveThreadContext())
+                if (!await dataContext.IsTriggerGroupPaused(this.InstanceName, triggerGroup, cancellationToken: token))
                 {
-                    await dataContext.AddPausedTriggerGroup(this.InstanceName, triggerGroup, cancellationToken: token).PreserveThreadContext();
+                    await dataContext.AddPausedTriggerGroup(this.InstanceName, triggerGroup, cancellationToken: token);
                 }
 
             return new HashSet<string>(triggerGroups).ToList();
@@ -1533,14 +1533,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task PauseAllInternal(IDataContext dataContext, CancellationToken cancellationToken = default)
         {
-            var groupNames = await this.triggerRepository.GetTriggerGroupNames(dataContext, cancellationToken).PreserveThreadContext();
+            var groupNames = await this.triggerRepository.GetTriggerGroupNames(dataContext, cancellationToken);
 
             await Task.WhenAll(groupNames.Select(groupName =>
-                this.PauseTriggerGroupInternal(dataContext, GroupMatcher<TriggerKey>.GroupEquals(groupName), cancellationToken))).PreserveThreadContext();
+                this.PauseTriggerGroupInternal(dataContext, GroupMatcher<TriggerKey>.GroupEquals(groupName), cancellationToken)));
 
-            if (!await dataContext.IsTriggerGroupPaused(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken).PreserveThreadContext())
+            if (!await dataContext.IsTriggerGroupPaused(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken))
             {
-                await dataContext.AddPausedTriggerGroup(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken).PreserveThreadContext();
+                await dataContext.AddPausedTriggerGroup(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken);
             }
         }
 
@@ -1550,8 +1550,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
             IOperableTrigger newTrigger,
             CancellationToken cancellationToken)
         {
-            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken).PreserveThreadContext();
-            var job = await dataContext.GetJobDetail(this.InstanceName, trigger.GetJobKey(), cancellationToken).PreserveThreadContext();
+            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken);
+            var job = await dataContext.GetJobDetail(this.InstanceName, trigger.GetJobKey(), cancellationToken);
 
             if (job == null)
             {
@@ -1563,8 +1563,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 throw new JobPersistenceException("New trigger is not related to the same job as the old trigger.");
             }
 
-            var removedTrigger = await this.triggerRepository.DeleteTriggerAsync(dataContext, triggerKey, cancellationToken).PreserveThreadContext();
-            await this.StoreTriggerInternal(dataContext, newTrigger, job, false, Model.TriggerState.Waiting, false, false, cancellationToken).PreserveThreadContext();
+            var removedTrigger = await this.triggerRepository.DeleteTriggerAsync(dataContext, triggerKey, cancellationToken);
+            await this.StoreTriggerInternal(dataContext, newTrigger, job, false, Model.TriggerState.Waiting, false, false, cancellationToken);
             return removedTrigger > 0;
         }
 
@@ -1573,8 +1573,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
             JobKey jobKey,
             CancellationToken cancellationToken)
         {
-            await this.triggerRepository.DeleteTriggersAsync(dataContext, jobKey, cancellationToken).PreserveThreadContext();
-            var result = await dataContext.DeleteJob(this.InstanceName, jobKey, cancellationToken).PreserveThreadContext();
+            await this.triggerRepository.DeleteTriggersAsync(dataContext, jobKey, cancellationToken);
+            var result = await dataContext.DeleteJob(this.InstanceName, jobKey, cancellationToken);
             return result > 0;
         }
 
@@ -1584,7 +1584,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             global::Quartz.IJobDetail job = null,
             CancellationToken cancellationToken = default)
         {
-            var trigger = await this.triggerRepository.GetTrigger(key, cancellationToken).PreserveThreadContext();
+            var trigger = await this.triggerRepository.GetTrigger(key, cancellationToken);
             if (trigger == null)
             {
                 return false;
@@ -1592,18 +1592,18 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             if (job == null)
             {
-                job = await dataContext.GetJobDetail(this.InstanceName, trigger.GetJobKey(), cancellationToken).PreserveThreadContext();
+                job = await dataContext.GetJobDetail(this.InstanceName, trigger.GetJobKey(), cancellationToken);
             }
 
-            var removedTrigger = await this.triggerRepository.DeleteTriggerAsync(dataContext, key, cancellationToken).PreserveThreadContext() > 0;
+            var removedTrigger = await this.triggerRepository.DeleteTriggerAsync(dataContext, key, cancellationToken) > 0;
 
             if (job != null && !job.Durable)
             {
-                if (await this.triggerRepository.GetCount(dataContext, job.Key, cancellationToken).PreserveThreadContext() == 0)
+                if (await this.triggerRepository.GetCount(dataContext, job.Key, cancellationToken) == 0)
                 {
-                    if (await this.RemoveJobInternal(dataContext, job.Key, cancellationToken).PreserveThreadContext())
+                    if (await this.RemoveJobInternal(dataContext, job.Key, cancellationToken))
                     {
-                        await this.schedulerSignaler.NotifySchedulerListenersJobDeleted(job.Key, cancellationToken).PreserveThreadContext();
+                        await this.schedulerSignaler.NotifySchedulerListenersJobDeleted(job.Key, cancellationToken);
                     }
                 }
             }
@@ -1613,12 +1613,12 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task<bool> RemoveCalendarInternal(IDataContext dataContext, string calendarName, CancellationToken cancellationToken)
         {
-            if (await this.triggerRepository.TriggersExists(calendarName, cancellationToken).PreserveThreadContext())
+            if (await this.triggerRepository.TriggersExists(calendarName, cancellationToken))
             {
                 throw new JobPersistenceException("Calender cannot be removed if it referenced by a trigger!");
             }
 
-            return await dataContext.DeleteCalendar(this.InstanceName, calendarName, cancellationToken: cancellationToken).PreserveThreadContext() > 0;
+            return await dataContext.DeleteCalendar(this.InstanceName, calendarName, cancellationToken: cancellationToken) > 0;
         }
 
         private async Task ResumeTriggerInternal(
@@ -1626,25 +1626,25 @@ namespace Kephas.Scheduling.Quartz.JobStore
             TriggerKey triggerKey,
             CancellationToken cancellationToken = default)
         {
-            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken).PreserveThreadContext();
+            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken);
             if (trigger?.NextFireTime == null || trigger.NextFireTime == DateTime.MinValue)
             {
                 return;
             }
 
             var blocked = trigger.State == Model.TriggerState.PausedBlocked;
-            var newState = await this.CheckBlockedState(dataContext, trigger.GetJobKey(), Model.TriggerState.Waiting, cancellationToken).PreserveThreadContext();
+            var newState = await this.CheckBlockedState(dataContext, trigger.GetJobKey(), Model.TriggerState.Waiting, cancellationToken);
             var misfired = false;
 
             if (this.schedulerRunning && trigger.NextFireTime < DateTime.UtcNow)
             {
-                misfired = await UpdateMisfiredTrigger(dataContext, triggerKey, newState, true, cancellationToken).PreserveThreadContext();
+                misfired = await UpdateMisfiredTrigger(dataContext, triggerKey, newState, true, cancellationToken);
             }
 
             if (!misfired)
             {
                 await this.triggerRepository.UpdateTriggerState(dataContext, triggerKey, newState,
-                    blocked ? Model.TriggerState.PausedBlocked : Model.TriggerState.Paused, cancellationToken).PreserveThreadContext();
+                    blocked ? Model.TriggerState.PausedBlocked : Model.TriggerState.Paused, cancellationToken);
             }
         }
 
@@ -1653,13 +1653,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
             GroupMatcher<TriggerKey> matcher,
             CancellationToken token = default)
         {
-            await dataContext.DeletePausedTriggerGroup(this.InstanceName, matcher, cancellationToken: token).PreserveThreadContext();
+            await dataContext.DeletePausedTriggerGroup(this.InstanceName, matcher, cancellationToken: token);
             var groups = new HashSet<string>();
 
-            var keys = await this.triggerRepository.GetTriggerKeys(matcher, token).PreserveThreadContext();
+            var keys = await this.triggerRepository.GetTriggerKeys(matcher, token);
             foreach (var triggerKey in keys)
             {
-                await this.ResumeTriggerInternal(dataContext, triggerKey, token).PreserveThreadContext();
+                await this.ResumeTriggerInternal(dataContext, triggerKey, token);
                 groups.Add(triggerKey.Group);
             }
 
@@ -1668,17 +1668,17 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task ResumeAllInternal(IDataContext dataContext, CancellationToken cancellationToken = default)
         {
-            var groupNames = await this.triggerRepository.GetTriggerGroupNames(dataContext, cancellationToken).PreserveThreadContext();
+            var groupNames = await this.triggerRepository.GetTriggerGroupNames(dataContext, cancellationToken);
             await Task.WhenAll(groupNames.Select(groupName =>
-                this.ResumeTriggersInternal(dataContext, GroupMatcher<TriggerKey>.GroupEquals(groupName), cancellationToken))).PreserveThreadContext();
-            await dataContext.DeletePausedTriggerGroup(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken).PreserveThreadContext();
+                this.ResumeTriggersInternal(dataContext, GroupMatcher<TriggerKey>.GroupEquals(groupName), cancellationToken)));
+            await dataContext.DeletePausedTriggerGroup(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken);
         }
 
         private async Task StoreCalendarInternal(
             IDataContext dataContext, string calName, global::Quartz.ICalendar calendar, bool replaceExisting,
             bool updateTriggers, CancellationToken token = default)
         {
-            var existingCal = await dataContext.CalendarExists(this.InstanceName, calName, cancellationToken: token).PreserveThreadContext();
+            var existingCal = await dataContext.CalendarExists(this.InstanceName, calName, cancellationToken: token);
             if (existingCal && !replaceExisting)
             {
                 throw new ObjectAlreadyExistsException("Calendar with name '" + calName + "' already exists.");
@@ -1693,7 +1693,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
                 if (updateTriggers)
                 {
-                    var triggers = await this.triggerRepository.GetTriggers(calName, token).PreserveThreadContext();
+                    var triggers = await this.triggerRepository.GetTriggers(calName, token);
                     foreach (var trigger in triggers)
                     {
                         var quartzTrigger = (IOperableTrigger)trigger.GetTrigger();
@@ -1701,13 +1701,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         await this.StoreTriggerInternal(
                             dataContext,
                             quartzTrigger, null, true, Model.TriggerState.Waiting, false, false,
-                            token).PreserveThreadContext();
+                            token);
                     }
                 }
             }
             else
             {
-                await dataContext.AddCalendar(calName, calendar, cancellationToken: token).PreserveThreadContext();
+                await dataContext.AddCalendar(calName, calendar, cancellationToken: token);
             }
         }
 
@@ -1717,7 +1717,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             bool replaceExisting,
             CancellationToken cancellationToken)
         {
-            var existingJob = await dataContext.JobExists(this.InstanceName, newJob.Key, cancellationToken: cancellationToken).PreserveThreadContext();
+            var existingJob = await dataContext.JobExists(this.InstanceName, newJob.Key, cancellationToken: cancellationToken);
 
             if (existingJob)
             {
@@ -1726,11 +1726,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     throw new ObjectAlreadyExistsException(newJob);
                 }
 
-                await dataContext.UpdateJob(this.InstanceName, newJob, true, cancellationToken: cancellationToken).PreserveThreadContext();
+                await dataContext.UpdateJob(this.InstanceName, newJob, true, cancellationToken: cancellationToken);
             }
             else
             {
-                await dataContext.AddJob(this.InstanceName, newJob, cancellationToken: cancellationToken).PreserveThreadContext();
+                await dataContext.AddJob(this.InstanceName, newJob, cancellationToken: cancellationToken);
             }
         }
 
@@ -1744,7 +1744,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             bool recovering,
             CancellationToken token = default)
         {
-            var existingTrigger = await this.triggerRepository.TriggerExists(newTrigger.Key, token).PreserveThreadContext();
+            var existingTrigger = await this.triggerRepository.TriggerExists(newTrigger.Key, token);
 
             if (existingTrigger && !replaceExisting)
             {
@@ -1753,14 +1753,14 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             if (!forceState)
             {
-                var shouldBePaused = await dataContext.IsTriggerGroupPaused(this.InstanceName, newTrigger.Key.Group, token).PreserveThreadContext();
+                var shouldBePaused = await dataContext.IsTriggerGroupPaused(this.InstanceName, newTrigger.Key.Group, token);
 
                 if (!shouldBePaused)
                 {
-                    shouldBePaused = await dataContext.IsTriggerGroupPaused(this.InstanceName, AllGroupsPaused, cancellationToken: token).PreserveThreadContext();
+                    shouldBePaused = await dataContext.IsTriggerGroupPaused(this.InstanceName, AllGroupsPaused, cancellationToken: token);
                     if (shouldBePaused)
                     {
-                        await dataContext.AddPausedTriggerGroup(this.InstanceName, newTrigger.Key.Group, cancellationToken: token).PreserveThreadContext();
+                        await dataContext.AddPausedTriggerGroup(this.InstanceName, newTrigger.Key.Group, cancellationToken: token);
                     }
                 }
 
@@ -1772,7 +1772,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             if (job == null)
             {
-                job = await dataContext.GetJobDetail(this.InstanceName, newTrigger.JobKey, token).PreserveThreadContext();
+                job = await dataContext.GetJobDetail(this.InstanceName, newTrigger.JobKey, token);
             }
 
             if (job == null)
@@ -1783,16 +1783,16 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             if (job.ConcurrentExecutionDisallowed && !recovering)
             {
-                state = await this.CheckBlockedState(dataContext, job.Key, state, token).PreserveThreadContext();
+                state = await this.CheckBlockedState(dataContext, job.Key, state, token);
             }
 
             if (existingTrigger)
             {
-                await this.UpdateTrigger(dataContext, newTrigger, state, token).PreserveThreadContext();
+                await this.UpdateTrigger(dataContext, newTrigger, state, token);
             }
             else
             {
-                await this.AddTrigger(dataContext, newTrigger, state, token).PreserveThreadContext();
+                await this.AddTrigger(dataContext, newTrigger, state, token);
             }
         }
 
@@ -1800,7 +1800,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             var modelTrigger = this.triggerFactory.CreateTrigger(trigger, state, this.InstanceName);
             dataContext.Attach(modelTrigger).ChangeState = ChangeState.Added;
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         private async Task UpdateTrigger(IDataContext dataContext, global::Quartz.ITrigger trigger, Model.TriggerState state, CancellationToken cancellationToken = default)
@@ -1809,9 +1809,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
                                        t => t.InstanceName == this.InstanceName && t.Group == trigger.Key.Group
                                                                                 && t.Name == trigger.Key.Name,
                                        cancellationToken: cancellationToken)
-                                   .PreserveThreadContext();
+                                   ;
             modelTrigger.Initialize(trigger, state, this.InstanceName);
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         private async Task<Model.TriggerState> CheckBlockedState(
@@ -1825,7 +1825,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 return currentState;
             }
 
-            var firedTrigger = (await dataContext.GetFiredTriggers(this.InstanceName, jobKey, cancellationToken: cancellationToken).PreserveThreadContext())
+            var firedTrigger = (await dataContext.GetFiredTriggers(this.InstanceName, jobKey, cancellationToken: cancellationToken))
                 .FirstOrDefault();
             if (firedTrigger != null)
             {
@@ -1842,13 +1842,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task<TriggerFiredBundle> TriggerFiredInternal(IDataContext dataContext, IOperableTrigger trigger, CancellationToken cancellationToken = default)
         {
-            var state = await dataContext.GetTriggerState(this.InstanceName, trigger.Key, cancellationToken).PreserveThreadContext();
+            var state = await dataContext.GetTriggerState(this.InstanceName, trigger.Key, cancellationToken);
             if (state != Model.TriggerState.Acquired)
             {
                 return null;
             }
 
-            var job = await dataContext.GetJob(this.InstanceName, trigger.JobKey, cancellationToken).PreserveThreadContext();
+            var job = await dataContext.GetJob(this.InstanceName, trigger.JobKey, cancellationToken);
             if (job == null)
             {
                 return null;
@@ -1860,7 +1860,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 calendar = await dataContext.GetCalendar(
                                this.InstanceName,
                                trigger.CalendarName,
-                               cancellationToken: cancellationToken).PreserveThreadContext();
+                               cancellationToken: cancellationToken);
                 if (calendar == null)
                 {
                     return null;
@@ -1873,7 +1873,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 trigger.FireInstanceId,
                 this.triggerFactory.CreateTrigger(trigger, Model.TriggerState.Executing, this.InstanceName),
                 job,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
 
             var prevFireTime = trigger.GetPreviousFireTimeUtc();
             trigger.Triggered(calendar);
@@ -1890,19 +1890,19 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     trigger.JobKey,
                     Model.TriggerState.Blocked,
                     Model.TriggerState.Waiting,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
                 await this.triggerRepository.UpdateTriggersStatesAsync(
                     dataContext,
                     trigger.JobKey,
                     Model.TriggerState.Blocked,
                     Model.TriggerState.Acquired,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
                 await this.triggerRepository.UpdateTriggersStatesAsync(
                     dataContext,
                     trigger.JobKey,
                     Model.TriggerState.PausedBlocked,
                     Model.TriggerState.Paused,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
 
             if (!trigger.GetNextFireTimeUtc().HasValue)
@@ -1912,7 +1912,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             }
 
             var jobDetail = job.GetJobDetail();
-            await this.StoreTriggerInternal(dataContext, trigger, jobDetail, true, state, force, force, cancellationToken).PreserveThreadContext();
+            await this.StoreTriggerInternal(dataContext, trigger, jobDetail, true, state, force, force, cancellationToken);
 
             jobDetail.JobDataMap.ClearDirtyFlag();
 
@@ -1933,7 +1933,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             bool forceState,
             CancellationToken cancellationToken = default)
         {
-            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken).PreserveThreadContext();
+            var trigger = await this.triggerRepository.GetTrigger(triggerKey, cancellationToken);
             var misfireTime = DateTime.Now;
             if (MisfireThreshold > TimeSpan.Zero)
             {
@@ -1951,7 +1951,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 forceState,
                 newStateIfNotComplete,
                 false,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
 
             return true;
         }
@@ -1967,10 +1967,10 @@ namespace Kephas.Scheduling.Quartz.JobStore
             global::Quartz.ICalendar cal = null;
             if (trigger.CalendarName != null)
             {
-                cal = await dataContext.GetCalendar(this.InstanceName, trigger.CalendarName, cancellationToken).PreserveThreadContext();
+                cal = await dataContext.GetCalendar(this.InstanceName, trigger.CalendarName, cancellationToken);
             }
 
-            await this.schedulerSignaler.NotifyTriggerListenersMisfired(operableTrigger, cancellationToken).PreserveThreadContext();
+            await this.schedulerSignaler.NotifyTriggerListenersMisfired(operableTrigger, cancellationToken);
             operableTrigger.UpdateAfterMisfire(cal);
 
             if (!operableTrigger.GetNextFireTimeUtc().HasValue)
@@ -1983,8 +1983,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     Model.TriggerState.Complete,
                     forceState,
                     recovering,
-                    cancellationToken).PreserveThreadContext();
-                await this.schedulerSignaler.NotifySchedulerListenersFinalized(operableTrigger, cancellationToken).PreserveThreadContext();
+                    cancellationToken);
+                await this.schedulerSignaler.NotifySchedulerListenersFinalized(operableTrigger, cancellationToken);
             }
             else
             {
@@ -1996,7 +1996,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     newStateIfNotComplete,
                     forceState,
                     false,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
         }
 
@@ -2026,7 +2026,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                                noLaterThan + timeWindow,
                                this.MisfireTime,
                                maxCount,
-                               cancellationToken).PreserveThreadContext();
+                               cancellationToken);
 
                 if (!keys.Any())
                 {
@@ -2037,7 +2037,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 {
                     var nextTrigger = await this.triggerRepository
                                           .GetTrigger(dataContext, triggerKey, cancellationToken)
-                                          .PreserveThreadContext();
+                                          ;
                     if (nextTrigger == null)
                     {
                         continue;
@@ -2047,7 +2047,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     Model.IJobDetail jobDetail;
                     try
                     {
-                        jobDetail = await dataContext.GetJob(this.InstanceName, jobKey, cancellationToken).PreserveThreadContext();
+                        jobDetail = await dataContext.GetJob(this.InstanceName, jobKey, cancellationToken);
                     }
                     catch (Exception)
                     {
@@ -2055,7 +2055,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                             dataContext,
                             triggerKey,
                             Model.TriggerState.Error,
-                            cancellationToken).PreserveThreadContext();
+                            cancellationToken);
                         continue;
                     }
 
@@ -2070,7 +2070,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     }
 
                     var result = await this.triggerRepository.UpdateTriggerState(dataContext, triggerKey, Model.TriggerState.Acquired,
-                        Model.TriggerState.Waiting, cancellationToken).PreserveThreadContext();
+                        Model.TriggerState.Waiting, cancellationToken);
                     if (result <= 0)
                     {
                         continue;
@@ -2084,7 +2084,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         this.InstanceId,
                         nextTrigger,
                         null,
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
 
                     acquiredTriggers.Add(operableTrigger);
                 }
@@ -2120,15 +2120,15 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     case SchedulerInstruction.DeleteTrigger:
                         if (!trigger.GetNextFireTimeUtc().HasValue)
                         {
-                            var trig = await this.triggerRepository.GetTrigger(trigger.Key, token).PreserveThreadContext();
+                            var trig = await this.triggerRepository.GetTrigger(trigger.Key, token);
                             if (trig != null && !trig.NextFireTime.HasValue)
                             {
-                                await this.RemoveTriggerInternal(dataContext, trigger.Key, jobDetail, token).PreserveThreadContext();
+                                await this.RemoveTriggerInternal(dataContext, trigger.Key, jobDetail, token);
                             }
                         }
                         else
                         {
-                            await this.RemoveTriggerInternal(dataContext, trigger.Key, jobDetail, token).PreserveThreadContext();
+                            await this.RemoveTriggerInternal(dataContext, trigger.Key, jobDetail, token);
                             SignalSchedulingChangeOnTxCompletion(SchedulingSignalDateTime);
                         }
 
@@ -2138,7 +2138,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                             dataContext,
                             trigger.Key,
                             Model.TriggerState.Complete,
-                            token).PreserveThreadContext();
+                            token);
                         SignalSchedulingChangeOnTxCompletion(SchedulingSignalDateTime);
                         break;
                     case SchedulerInstruction.SetTriggerError:
@@ -2147,7 +2147,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                             dataContext,
                             trigger.Key,
                             Model.TriggerState.Error,
-                            token).PreserveThreadContext();
+                            token);
                         SignalSchedulingChangeOnTxCompletion(SchedulingSignalDateTime);
                         break;
                     case SchedulerInstruction.SetAllJobTriggersComplete:
@@ -2155,7 +2155,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                             dataContext,
                             trigger.JobKey,
                             Model.TriggerState.Complete,
-                            token).PreserveThreadContext();
+                            token);
                         SignalSchedulingChangeOnTxCompletion(SchedulingSignalDateTime);
                         break;
                     case SchedulerInstruction.SetAllJobTriggersError:
@@ -2164,7 +2164,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                             dataContext,
                             trigger.JobKey,
                             Model.TriggerState.Error,
-                            token).PreserveThreadContext();
+                            token);
                         SignalSchedulingChangeOnTxCompletion(SchedulingSignalDateTime);
                         break;
                 }
@@ -2176,19 +2176,19 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         jobDetail.Key,
                         Model.TriggerState.Waiting,
                         Model.TriggerState.Blocked,
-                        token).PreserveThreadContext();
+                        token);
                     await this.triggerRepository.UpdateTriggersStatesAsync(
                         dataContext,
                         jobDetail.Key,
                         Model.TriggerState.Paused,
                         Model.TriggerState.PausedBlocked,
-                        token).PreserveThreadContext();
+                        token);
                     SignalSchedulingChangeOnTxCompletion(SchedulingSignalDateTime);
                 }
 
                 if (jobDetail.PersistJobDataAfterExecution && jobDetail.JobDataMap.Dirty)
                 {
-                    await dataContext.UpdateJobData(this.InstanceName, jobDetail.Key, jobDetail.JobDataMap, cancellationToken: token).PreserveThreadContext();
+                    await dataContext.UpdateJobData(this.InstanceName, jobDetail.Key, jobDetail.JobDataMap, cancellationToken: token);
                 }
             }
             catch (Exception ex)
@@ -2198,7 +2198,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             try
             {
-                await dataContext.DeleteFiredTrigger(this.InstanceName, trigger.FireInstanceId, cancellationToken: token).PreserveThreadContext();
+                await dataContext.DeleteFiredTrigger(this.InstanceName, trigger.FireInstanceId, cancellationToken: token);
             }
             catch (Exception ex)
             {
@@ -2240,20 +2240,20 @@ namespace Kephas.Scheduling.Quartz.JobStore
                              dataContext,
                              Model.TriggerState.Waiting,
                              new[] { Model.TriggerState.Acquired, Model.TriggerState.Blocked },
-                             cancellationToken).PreserveThreadContext();
+                             cancellationToken);
             result += await this.triggerRepository.UpdateTriggersStatesAsync(
                           dataContext,
                           Model.TriggerState.Paused,
                           new[] { Model.TriggerState.PausedBlocked },
-                          cancellationToken).PreserveThreadContext();
+                          cancellationToken);
 
             this.Logger.Info("Freed " + result + " triggers from 'acquired' / 'blocked' state.");
 
-            await this.RecoverMisfiredJobsInternal(dataContext, true, cancellationToken).PreserveThreadContext();
+            await this.RecoverMisfiredJobsInternal(dataContext, true, cancellationToken);
 
-            var results = (await dataContext.GetRecoverableFiredTriggers(this.InstanceName, this.InstanceId, cancellationToken: cancellationToken).PreserveThreadContext())
+            var results = (await dataContext.GetRecoverableFiredTriggers(this.InstanceName, this.InstanceId, cancellationToken: cancellationToken))
                 .Select(async trigger =>
-                    trigger.GetRecoveryTrigger(await dataContext.GetTriggerJobDataMap(this.InstanceName, trigger.GetTriggerKey(), cancellationToken: cancellationToken).PreserveThreadContext()));
+                    trigger.GetRecoveryTrigger(await dataContext.GetTriggerJobDataMap(this.InstanceName, trigger.GetTriggerKey(), cancellationToken: cancellationToken)));
             var recoveringJobTriggers = (await Task.WhenAll(results)).ToList();
 
             this.Logger.Info("Recovering " + recoveringJobTriggers.Count +
@@ -2261,7 +2261,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             foreach (var recoveringJobTrigger in recoveringJobTriggers)
             {
-                if (await dataContext.JobExists(this.InstanceName, recoveringJobTrigger.JobKey, cancellationToken: cancellationToken).PreserveThreadContext())
+                if (await dataContext.JobExists(this.InstanceName, recoveringJobTrigger.JobKey, cancellationToken: cancellationToken))
                 {
                     recoveringJobTrigger.ComputeFirstFireTimeUtc(null);
                     await this.StoreTriggerInternal(
@@ -2272,16 +2272,16 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         Model.TriggerState.Waiting,
                         false,
                         true,
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
                 }
             }
 
             this.Logger.Info("Recovery complete");
 
-            var completedTriggers = await this.triggerRepository.GetTriggerKeys(Model.TriggerState.Complete, cancellationToken).PreserveThreadContext();
+            var completedTriggers = await this.triggerRepository.GetTriggerKeys(Model.TriggerState.Complete, cancellationToken);
             foreach (var completedTrigger in completedTriggers)
             {
-                await this.RemoveTriggerInternal(dataContext, completedTrigger, cancellationToken: cancellationToken).PreserveThreadContext();
+                await this.RemoveTriggerInternal(dataContext, completedTrigger, cancellationToken: cancellationToken);
             }
 
             this.Logger.Info($"Removed {completedTriggers.Count} 'complete' triggers.");
@@ -2289,7 +2289,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             result = await dataContext.DeleteFiredTriggersByInstanceId(
                          this.InstanceName,
                          this.InstanceId,
-                         cancellationToken: cancellationToken).PreserveThreadContext();
+                         cancellationToken: cancellationToken);
             this.Logger.Info("Removed " + result + " stale fired job entries.");
         }
 
@@ -2302,7 +2302,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 dataContext,
                 this.MisfireTime.UtcDateTime,
                 maxMisfiresToHandleAtTime,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
             var hasMoreMisfiredTriggers = misfiredTriggers.Count > 0;
             if (hasMoreMisfiredTriggers)
             {
@@ -2319,13 +2319,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
             }
             else
             {
-                this.Logger.Debug("Found 0 triggers that missed their scheduled fire-time.");
+                this.Logger.LogDebug("Found 0 triggers that missed their scheduled fire-time.");
                 return RecoverMisfiredJobsResult.NoOp;
             }
 
             foreach (var misfiredTrigger in misfiredTriggers)
             {
-                var trigger = await this.triggerRepository.GetTrigger(misfiredTrigger, cancellationToken).PreserveThreadContext();
+                var trigger = await this.triggerRepository.GetTrigger(misfiredTrigger, cancellationToken);
 
                 if (trigger == null)
                 {
@@ -2338,7 +2338,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     false,
                     Model.TriggerState.Waiting,
                     recovering,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
 
                 var nextTime = trigger.NextFireTime;
                 if (nextTime.HasValue && nextTime.Value < earliestNewTime)

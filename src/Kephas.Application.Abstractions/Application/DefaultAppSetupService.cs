@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application
 {
     using System;
@@ -22,7 +24,7 @@ namespace Kephas.Application
     /// <summary>
     /// The default service for the <see cref="IAppSetupService"/> contract.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultAppSetupService : Loggable, IAppSetupService
     {
         private readonly IList<Lazy<IAppSetupHandler, AppServiceMetadata>> lazyHandlers;
@@ -55,7 +57,7 @@ namespace Kephas.Application
                         () => this.SetupAsync(lazyHandler.Value, appContext, cancellationToken),
                         this.Logger,
                         lazyHandler.Metadata.ServiceName ?? lazyHandler.Metadata.ServiceType?.Name)
-                    .PreserveThreadContext();
+                    ;
                 result.Elapsed += wrappedResult.Elapsed;
                 result.MergeMessages(wrappedResult.Value);
             }
@@ -74,7 +76,7 @@ namespace Kephas.Application
         {
             try
             {
-                return await setupHandler.SetupAsync(appContext, cancellationToken).PreserveThreadContext();
+                return await setupHandler.SetupAsync(appContext, cancellationToken);
             }
             catch (Exception ex)
             {

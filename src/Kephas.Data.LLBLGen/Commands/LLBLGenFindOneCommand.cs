@@ -90,7 +90,7 @@ namespace Kephas.Data.LLBLGen.Commands
             }
 
             var query = dataContext.Query<T>().Where(criteria).Take(2);
-            result = await query.ToListAsync(cancellationToken).PreserveThreadContext();
+            result = await query.ToListAsync(cancellationToken);
             return this.GetFindResult(findContext, result, criteria);
         }
     }

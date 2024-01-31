@@ -16,7 +16,6 @@ namespace Kephas.Plugins
     using Kephas;
     using Kephas.Application;
     using Kephas.Application.Reflection;
-    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Plugins.Reflection;
     using Kephas.Reflection;
@@ -153,10 +152,10 @@ namespace Kephas.Plugins
         /// <returns>
         /// A sequence that contains dynamic member names.
         /// </returns>
-        public override IEnumerable<string> GetDynamicMemberNames()
+        public override IEnumerable<string> GetKeys()
         {
             var keyHash = new HashSet<string>();
-            foreach (var name in base.GetDynamicMemberNames())
+            foreach (var name in base.GetKeys())
             {
                 keyHash.Add(name);
                 yield return name;

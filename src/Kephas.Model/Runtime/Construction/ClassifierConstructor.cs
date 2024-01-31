@@ -18,7 +18,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// A constructor for generic classifiers. This class cannot be inherited.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public sealed class ClassifierConstructor : ClassifierConstructorBase<Classifier, IClassifier>
     {
         /// <summary>

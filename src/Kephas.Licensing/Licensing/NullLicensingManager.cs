@@ -21,7 +21,7 @@ namespace Kephas.Licensing
     /// <summary>
     /// A null licensing manager.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullLicensingManager : ILicensingManager
     {
         /// <summary>

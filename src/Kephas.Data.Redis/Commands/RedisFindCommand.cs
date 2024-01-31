@@ -69,7 +69,7 @@ public class RedisFindCommand : FindCommand
             return this.GetFindResult(findContext, Array.Empty<T>(), e => ((IIdentifiable)e).Id.Equals(findContext.Id));
         }
 
-        var entity = await this.serializationService.JsonDeserializeAsync<T>(entityString, cancellationToken: cancellationToken).PreserveThreadContext();
+        var entity = await this.serializationService.JsonDeserializeAsync<T>(entityString, cancellationToken: cancellationToken);
         var entityInfo = dataContext.Attach(entity);
         return this.GetFindResult(findContext, new T[] { entity }, e => ((IIdentifiable)e).Id.Equals(findContext.Id));
     }

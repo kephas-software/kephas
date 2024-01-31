@@ -17,15 +17,15 @@ namespace Kephas.Cryptography
     /// <summary>
     /// A SHA-256 hashing service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class Sha256HashingService : HashingServiceBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Sha256HashingService"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        public Sha256HashingService(IInjectableFactory injectableFactory)
-            : base(injectableFactory)
+        /// <param name="serviceFactory">The injectable factory.</param>
+        public Sha256HashingService(IServiceFactory serviceFactory)
+            : base(serviceFactory)
         {
         }
 

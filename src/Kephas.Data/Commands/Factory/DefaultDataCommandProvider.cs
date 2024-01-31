@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data.Commands.Factory
 {
     using System;
@@ -21,7 +19,7 @@ namespace Kephas.Data.Commands.Factory
     /// <summary>
     /// A default data command provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataCommandProvider : IDataCommandProvider
     {
         private readonly IServiceProvider serviceProvider;

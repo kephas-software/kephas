@@ -21,7 +21,7 @@ namespace Kephas.Messaging.HandlerProviders
     /// <summary>
     /// Strategy service for selecting message handlers for events.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class EventMessageHandlerResolveBehavior : IMessageHandlerResolveBehavior
     {
         /// <summary>

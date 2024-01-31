@@ -16,7 +16,7 @@ namespace Kephas.AspNetCore.InteractiveTests6.ServicesConfigurators
     /// <summary>
     /// Configuration for Razor services.
     /// </summary>
-    [OverridePriority(Priority.High)]
+    [Priority(Priority.High)]
     public class RazorServicesConfiguration : IServicesConfigurator
     {
         /// <summary>

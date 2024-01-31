@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections.Sets;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Application;
 
@@ -31,7 +32,7 @@ using Kephas.Threading.Tasks;
 /// <summary>
 /// The default application manager.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultAppManager : Loggable, IAppManager
 {
     private readonly Lazy<ICollection<Lazy<IAppLifecycleBehavior, AppServiceMetadata>>> lazyAppLifecycleBehaviorFactories;
@@ -137,7 +138,7 @@ public class DefaultAppManager : Loggable, IAppManager
                     var orderedBehaviors = this.AppLifecycleBehaviorFactories
                         .ToList();
 
-                    await this.BeforeAppInitializeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
+                    await this.BeforeAppInitializeAsync(orderedBehaviors, appContext, cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
 
                     // set the features in the app manifest.
@@ -146,22 +147,22 @@ public class DefaultAppManager : Loggable, IAppManager
                         .ToList();
                     this.SetAppRuntimeFeatures(features);
 
-                    await this.InitializeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
+                    await this.InitializeFeaturesAsync(appContext, cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    await this.AfterAppInitializeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
+                    await this.AfterAppInitializeAsync(orderedBehaviors, appContext, cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
                 },
-                this.Logger).PreserveThreadContext();
+                this.Logger);
         }
         catch (OperationCanceledException)
         {
-            this.Logger.Error(AbstractionStrings.DefaultAppManager_InitializeCanceled_Exception, DateTimeOffset.Now);
+            this.Logger.LogError(AbstractionStrings.DefaultAppManager_InitializeCanceled_Exception, DateTimeOffset.Now);
             throw;
         }
         catch (Exception ex)
         {
-            this.Logger.Error(ex, AbstractionStrings.DefaultAppManager_InitializeFaulted_Exception, DateTimeOffset.Now);
+            this.Logger.LogError(ex, AbstractionStrings.DefaultAppManager_InitializeFaulted_Exception, DateTimeOffset.Now);
             throw;
         }
     }
@@ -189,25 +190,25 @@ public class DefaultAppManager : Loggable, IAppManager
                         .Reverse()
                         .ToList();
 
-                    await this.BeforeAppFinalizeAsync(reversedOrderBehaviors, appContext, cancellationToken).PreserveThreadContext();
+                    await this.BeforeAppFinalizeAsync(reversedOrderBehaviors, appContext, cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    await this.FinalizeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
+                    await this.FinalizeFeaturesAsync(appContext, cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    await this.AfterAppFinalizeAsync(reversedOrderBehaviors, appContext, cancellationToken).PreserveThreadContext();
+                    await this.AfterAppFinalizeAsync(reversedOrderBehaviors, appContext, cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
                 },
-                this.Logger).PreserveThreadContext();
+                this.Logger);
         }
         catch (OperationCanceledException)
         {
-            this.Logger.Error(AbstractionStrings.DefaultAppManager_FinalizeCanceled_Exception, DateTimeOffset.Now);
+            this.Logger.LogError(AbstractionStrings.DefaultAppManager_FinalizeCanceled_Exception, DateTimeOffset.Now);
             throw;
         }
         catch (Exception ex)
         {
-            this.Logger.Error(ex, AbstractionStrings.DefaultAppManager_FinalizeFaulted_Exception, DateTimeOffset.Now);
+            this.Logger.LogError(ex, AbstractionStrings.DefaultAppManager_FinalizeFaulted_Exception, DateTimeOffset.Now);
             throw;
         }
     }
@@ -231,7 +232,7 @@ public class DefaultAppManager : Loggable, IAppManager
             await Profiler.WithTraceStopwatchAsync(
                 () => behavior.Value.BeforeAppInitializeAsync(appContext, cancellationToken),
                 this.Logger,
-                this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                this.GetBehaviorInfo(behavior.Metadata));
         }
     }
 
@@ -254,7 +255,7 @@ public class DefaultAppManager : Loggable, IAppManager
             await Profiler.WithTraceStopwatchAsync(
                 () => behavior.Value.AfterAppInitializeAsync(appContext, cancellationToken),
                 this.Logger,
-                this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                this.GetBehaviorInfo(behavior.Metadata));
         }
     }
 
@@ -289,23 +290,23 @@ public class DefaultAppManager : Loggable, IAppManager
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>
                     {
-                        await this.BeforeFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
-                        await this.InitializeFeatureAsync(featureManager, appContext, cancellationToken).PreserveThreadContext();
-                        await this.AfterFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                        await this.BeforeFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken);
+                        await this.InitializeFeatureAsync(featureManager, appContext, cancellationToken);
+                        await this.AfterFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken);
                     },
                     this.Logger,
-                    "Initialize feature " + featureIdentifier).PreserveThreadContext();
+                    "Initialize feature " + featureIdentifier);
             }
             catch (OperationCanceledException cex)
             {
-                this.Logger.Error(cex, "{feature} was canceled during initialization. The current operation will be interrupted.", featureIdentifier);
+                this.Logger.LogError(cex, "{feature} was canceled during initialization. The current operation will be interrupted.", featureIdentifier);
                 throw;
             }
             catch (Exception ex)
             {
                 var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
                 var featureKind = isRequiredFeature ? "required" : "optional";
-                this.Logger.Error(ex, "{feature} ({featureKind}) failed to initialize. See the inner exception for more details.", featureIdentifier, featureKind);
+                this.Logger.LogError(ex, "{feature} ({featureKind}) failed to initialize. See the inner exception for more details.", featureIdentifier, featureKind);
 
                 // interrupt the initialization if a required feature manager failed to initialize.
                 if (isRequiredFeature)
@@ -362,7 +363,7 @@ public class DefaultAppManager : Loggable, IAppManager
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.BeforeInitializeAsync(appContext, appServiceMetadata, cancellationToken),
                     this.Logger,
-                    this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior.Metadata));
             }
         }
     }
@@ -391,7 +392,7 @@ public class DefaultAppManager : Loggable, IAppManager
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken),
                     this.Logger,
-                    this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior.Metadata));
             }
         }
     }
@@ -415,7 +416,7 @@ public class DefaultAppManager : Loggable, IAppManager
             await Profiler.WithTraceStopwatchAsync(
                 () => behavior.Value.BeforeAppFinalizeAsync(appContext, cancellationToken),
                 this.Logger,
-                this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                this.GetBehaviorInfo(behavior.Metadata));
         }
     }
 
@@ -438,7 +439,7 @@ public class DefaultAppManager : Loggable, IAppManager
             await Profiler.WithTraceStopwatchAsync(
                 () => behavior.Value.AfterAppFinalizeAsync(appContext, cancellationToken),
                 this.Logger,
-                this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                this.GetBehaviorInfo(behavior.Metadata));
         }
     }
 
@@ -476,23 +477,23 @@ public class DefaultAppManager : Loggable, IAppManager
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>
                     {
-                        await this.BeforeFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
-                        await this.FinalizeFeatureAsync(featureManager, appContext, cancellationToken).PreserveThreadContext();
-                        await this.AfterFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                        await this.BeforeFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken);
+                        await this.FinalizeFeatureAsync(featureManager, appContext, cancellationToken);
+                        await this.AfterFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken);
                     },
                     this.Logger,
-                    "Finalize feature " + featureIdentifier).PreserveThreadContext();
+                    "Finalize feature " + featureIdentifier);
             }
             catch (OperationCanceledException cex)
             {
-                this.Logger.Error(cex, "{feature} was canceled during finalization. The current operation will be interrupted.", featureIdentifier);
+                this.Logger.LogError(cex, "{feature} was canceled during finalization. The current operation will be interrupted.", featureIdentifier);
                 throw;
             }
             catch (Exception ex)
             {
                 var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
                 var featureKind = isRequiredFeature ? "required" : "optional";
-                this.Logger.Error(ex, "{feature} ({featureKind}) failed to finalize. See the inner exception for more details.", featureIdentifier, featureKind);
+                this.Logger.LogError(ex, "{feature} ({featureKind}) failed to finalize. See the inner exception for more details.", featureIdentifier, featureKind);
 
                 // interrupt the finalization if a required feature manager failed to finalize.
                 if (isRequiredFeature)
@@ -546,7 +547,7 @@ public class DefaultAppManager : Loggable, IAppManager
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken),
                     this.Logger,
-                    this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior.Metadata));
             }
         }
     }
@@ -575,7 +576,7 @@ public class DefaultAppManager : Loggable, IAppManager
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken),
                     this.Logger,
-                    this.GetBehaviorInfo(behavior.Metadata)).PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior.Metadata));
             }
         }
     }
@@ -640,12 +641,12 @@ public class DefaultAppManager : Loggable, IAppManager
         // Note: do not perform arithmetic operations because this will probably end
         // in overflows, taking into consideration that we can have int.MinValue and int.MaxValue values
         // and therefore in bad comparisons.
-        if (fm1.Metadata.ProcessingPriority < fm2.Metadata.ProcessingPriority)
+        if (fm1.Metadata.Priority < fm2.Metadata.Priority)
         {
             return -1;
         }
 
-        if (fm1.Metadata.ProcessingPriority > fm2.Metadata.ProcessingPriority)
+        if (fm1.Metadata.Priority > fm2.Metadata.Priority)
         {
             return 1;
         }
@@ -656,13 +657,13 @@ public class DefaultAppManager : Loggable, IAppManager
     private (string featureIdentifier, Type featureType) GetFeatureInfo(IFeatureManager featureManager, FeatureManagerMetadata featureManagerMetadata)
     {
         var featureType = featureManager.GetType();
-        var featureIdentifier = $"'{featureManagerMetadata.FeatureInfo!.Name}' ({featureType}, #{featureManagerMetadata.ProcessingPriority})";
+        var featureIdentifier = $"'{featureManagerMetadata.FeatureInfo!.Name}' ({featureType}, #{featureManagerMetadata.Priority})";
         return (featureIdentifier, featureType);
     }
 
     private string GetBehaviorInfo<TMetadata>(TMetadata behaviorMetadata, [CallerMemberName] string operation = "operation")
         where TMetadata : notnull, AppServiceMetadata
     {
-        return $"{operation} -> {behaviorMetadata.ServiceType}. (#{behaviorMetadata.ProcessingPriority})";
+        return $"{operation} -> {behaviorMetadata.ServiceType}. (#{behaviorMetadata.Priority})";
     }
 }

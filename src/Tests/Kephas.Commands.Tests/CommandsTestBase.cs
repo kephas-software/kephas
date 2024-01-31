@@ -16,7 +16,6 @@ namespace Kephas.Commands.Tests
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Logging;
     using Kephas.Services.Builder;
     using Kephas.Testing;
     using Kephas.Testing.Services;

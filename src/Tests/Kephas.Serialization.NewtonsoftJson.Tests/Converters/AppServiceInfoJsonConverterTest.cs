@@ -5,10 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Serialization.Json.Tests.Converters
 {
     using System.Threading.Tasks;
-    using Kephas.Services;
     using Kephas.Services.Reflection;
     using NSubstitute;
     using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
-            var obj = new AppServiceInfo(typeof(string), AppServiceLifetime.Transient);
+            var obj = new AppServiceInfo(typeof(string), ServiceLifetime.Transient);
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""ContractType"":""System.String"",""Lifetime"":""Transient"",""AllowMultiple"":false,""AsOpenGeneric"":false}", serializedObj);
@@ -39,7 +40,7 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.IsInstanceOf<AppServiceInfo>(obj);
             var appServiceInfo = (IAppServiceInfo)obj!;
             Assert.AreEqual(typeof(string), appServiceInfo.ContractType);
-            Assert.AreEqual(AppServiceLifetime.Transient, appServiceInfo.Lifetime);
+            Assert.AreEqual(ServiceLifetime.Transient, appServiceInfo.Lifetime);
             Assert.IsFalse(appServiceInfo.AllowMultiple);
             Assert.IsNull(appServiceInfo.InstanceType);
         }

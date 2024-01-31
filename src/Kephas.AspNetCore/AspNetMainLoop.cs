@@ -24,7 +24,7 @@ namespace Kephas.Application.AspNetCore
     /// The main loop service of an ASP.NET Core application.
     /// </summary>
     [Override]
-    [ProcessingPriority(Priority.AboveNormal - 100)]
+    [Priority(Priority.AboveNormal - 100)]
     public class AspNetMainLoop : IAppMainLoop
     {
         private readonly IEventSubscription? shutdownSubscription;
@@ -87,7 +87,7 @@ namespace Kephas.Application.AspNetCore
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while stopping the application");
+                this.Logger.LogError(ex, "Error while stopping the application");
             }
         }
     }

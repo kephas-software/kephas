@@ -61,7 +61,7 @@ namespace Kephas.Plugins.Endpoints
         protected virtual async Task<bool> CanSetupPluginsAsync(IContext context, CancellationToken cancellationToken)
         {
             var setupEvent = new AppSetupQueryEvent { SetupEnabled = true };
-            await this.EventHub.PublishAsync(setupEvent, context, cancellationToken).PreserveThreadContext();
+            await this.EventHub.PublishAsync(setupEvent, context, cancellationToken);
             return setupEvent.SetupEnabled;
         }
 

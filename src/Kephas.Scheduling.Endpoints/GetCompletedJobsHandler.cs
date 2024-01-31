@@ -10,8 +10,6 @@ namespace Kephas.Scheduling.Endpoints
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Data.Formatting;
     using Kephas.Messaging;
     using Kephas.Operations;
     using Kephas.Scheduling.Jobs;

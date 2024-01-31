@@ -17,7 +17,6 @@ namespace Kephas.Reflection
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
@@ -25,7 +24,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// A default service implementation of the <see cref="ITypeResolver"/> service contract.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultTypeResolver : Loggable, ITypeResolver
     {
         private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
@@ -121,7 +120,7 @@ namespace Kephas.Reflection
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, ReflectionStrings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName);
+                this.Logger.LogWarning(ex, ReflectionStrings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName);
                 return null;
             }
         }

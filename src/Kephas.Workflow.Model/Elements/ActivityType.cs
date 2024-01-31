@@ -112,7 +112,7 @@ namespace Kephas.Workflow.Model.Elements
 
             if (activity is IOperation operation)
             {
-                return await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+                return await operation.ExecuteAsync(context, cancellationToken);
             }
 
             // TODO localization

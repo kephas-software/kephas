@@ -17,7 +17,7 @@ using Kephas.Services;
 /// <remarks>
 /// If no namespace conventions are provided in the mongoConfiguration, consider that all types are eligible.
 /// </remarks>
-[ProcessingPriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultMongoConventionsProvider : IMongoConventionsProvider
 {
     private readonly IConfiguration<MongoSettings> mongoConfiguration;

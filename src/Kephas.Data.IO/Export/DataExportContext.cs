@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data.IO.Export
 {
     using System;
@@ -17,7 +15,6 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO;
     using Kephas.Data.IO.DataStreams;
-    using Kephas.Services;
 
     /// <summary>
     /// A data export context.

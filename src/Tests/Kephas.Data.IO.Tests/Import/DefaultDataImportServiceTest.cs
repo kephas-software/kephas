@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Data.IO.Tests.Import
 {

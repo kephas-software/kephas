@@ -34,7 +34,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     /// <summary>
     /// A default client query converter.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultClientQueryConverter : Loggable, IClientQueryConverter
     {
         private static readonly MethodInfo DataContextQueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<string>(null));
@@ -201,7 +201,7 @@ namespace Kephas.Data.Client.Queries.Conversion
                     return (o, LinqExpression.Lambda(body, lambdaArg));
                 }
 
-                this.Logger.Warn($"'{arg}' got converted to a <null> expression.");
+                this.Logger.LogWarning($"'{arg}' got converted to a <null> expression.");
                 return null;
             }
 

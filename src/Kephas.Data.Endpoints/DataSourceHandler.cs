@@ -104,7 +104,7 @@ namespace Kephas.Data.Endpoints
             var dataSource = await this.dataSourceService.GetDataSourceAsync(
                 property,
                 dataSourceContext,
-                token).PreserveThreadContext();
+                token);
 
             return new DataSourceResponse
             {

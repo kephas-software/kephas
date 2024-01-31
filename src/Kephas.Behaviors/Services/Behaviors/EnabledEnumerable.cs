@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Services.Behaviors
 {
     using System;
@@ -16,7 +18,7 @@ namespace Kephas.Services.Behaviors
     /// Service for filtering enabled services collections.
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class EnabledEnumerable<TContract> : EnabledEnumerableBase<TContract, AppServiceMetadata>, IEnabledEnumerable<TContract>
         where TContract : class
     {
@@ -26,13 +28,13 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="EnabledEnumerable{TContract}"/> class.
         /// </summary>
         /// <param name="services">The services to filter.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public EnabledEnumerable(
             ILazyEnumerable<TContract, AppServiceMetadata> services,
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             ILazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>? behaviorFactories = null)
-            : base(injectableFactory, behaviorFactories)
+            : base(serviceFactory, behaviorFactories)
         {
             this.services = services;
         }

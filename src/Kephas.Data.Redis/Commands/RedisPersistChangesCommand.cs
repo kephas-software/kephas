@@ -108,7 +108,7 @@ public class RedisPersistChangesCommand : PersistChangesCommand
                     }
                 }
 
-                var serializedEntity = await this.serializationService.JsonSerializeAsync(entry.Entity, cancellationToken: cancellationToken).PreserveThreadContext();
+                var serializedEntity = await this.serializationService.JsonSerializeAsync(entry.Entity, cancellationToken: cancellationToken);
                 entityHash.Add(entityKey, serializedEntity);
             }
             //            });

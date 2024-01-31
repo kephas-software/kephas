@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+
 namespace Kephas.Messaging.Events
 {
     using Kephas.Dynamic;
@@ -16,7 +18,7 @@ namespace Kephas.Messaging.Events
     /// <summary>
     /// Default implementation of an identifiable event.
     /// </summary>
-    [ExcludeFromModel]
+    [ExcludeFromReflection]
     public class IdentifiableEvent : IIdentifiableEvent
     {
         /// <summary>

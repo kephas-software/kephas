@@ -38,7 +38,7 @@ public class SetActivity : FlowActivityBase, IParentScopeModifierActivity
             throw new WorkflowException("The variable name cannot be empty.");
         }
 
-        var varValue = this.Expression is null ? null : await this.ExecuteChildActivityAsync(this.Expression, context, this.Target, this.Arguments, cancellationToken).PreserveThreadContext();
+        var varValue = this.Expression is null ? null : await this.ExecuteChildActivityAsync(this.Expression, context, this.Target, this.Arguments, cancellationToken);
         context.Scope[this.Variable] = varValue;
         return varValue;
     }

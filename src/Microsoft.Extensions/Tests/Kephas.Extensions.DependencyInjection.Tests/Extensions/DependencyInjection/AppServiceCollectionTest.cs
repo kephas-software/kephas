@@ -6,15 +6,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Services.Builder;
-using NUnit.Framework;
+using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kephas.Tests.Extensions.DependencyInjection;
 
-[TestFixture]
 public class AppServiceCollectionTest
 {
-    [Test]
+    [Fact]
     public void AppServiceCollection_singleton()
     {
         var services = new ServiceCollection();
@@ -24,6 +23,6 @@ public class AppServiceCollectionTest
             .BuildServiceProvider();
         var otherAppServices =  provider.GetRequiredService<IAppServiceCollection>();
 
-        Assert.AreSame(appServices, otherAppServices);
+        Assert.Same(appServices, otherAppServices);
     }
 }

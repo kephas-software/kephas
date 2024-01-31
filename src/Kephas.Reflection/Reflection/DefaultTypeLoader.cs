@@ -75,18 +75,18 @@ namespace Kephas.Reflection
                     }
                     catch (ReflectionTypeLoadException e)
                     {
-                        this.Logger.Error(e, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+                        this.Logger.LogError(e, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
                         return e.Types.Where(t => t != null)!;
                     }
                     catch (TypeLoadException tle)
                     {
-                        this.Logger.Error(tle, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
+                        this.Logger.LogError(tle, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
 
                         return this.GetLoadableDefinedTypes(assembly);
                     }
                     catch (Exception e)
                     {
-                        this.Logger.Error(e, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+                        this.Logger.LogError(e, ReflectionStrings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
 
                         return this.GetLoadableDefinedTypes(assembly);
                     }
@@ -108,7 +108,7 @@ namespace Kephas.Reflection
             }
             catch (ReflectionTypeLoadException e)
             {
-                this.Logger.Error(e, ReflectionStrings.DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly);
+                this.Logger.LogError(e, ReflectionStrings.DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly);
                 return e.Types.Where(t => t != null)!;
             }
         }

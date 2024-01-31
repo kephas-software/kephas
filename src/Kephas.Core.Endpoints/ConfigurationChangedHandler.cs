@@ -54,7 +54,7 @@ namespace Kephas.Core.Endpoints
             var signal = message.GetContent();
             if (this.appRuntime.GetAppInstanceId() == signal.SourceAppInstanceId)
             {
-                this.logger.Debug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
+                this.logger.LogDebug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
                 return new Response
                 {
                     Message = $"Ignore {nameof(ConfigurationChangedSignal)} for {signal.SettingsType}, sent from the same app instance {signal.SourceAppInstanceId}.",
@@ -63,7 +63,7 @@ namespace Kephas.Core.Endpoints
 
             this.logger.Info($"Received {nameof(ConfigurationChangedSignal)} for {{settingsType}} from app instance {{app}}.", signal.SettingsType, signal.SourceAppInstanceId);
 
-            await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+            await this.eventHub.PublishAsync(signal, context, token);
 
             return new Response
             {

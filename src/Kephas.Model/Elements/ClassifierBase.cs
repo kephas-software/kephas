@@ -22,7 +22,6 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// Base abstract class for classifiers.

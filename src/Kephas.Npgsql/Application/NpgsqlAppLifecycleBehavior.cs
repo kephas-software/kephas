@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 
 using global::Npgsql.Logging;
 using Kephas.Application;
-using Kephas.Logging;
 using Kephas.Npgsql.Logging;
 using Kephas.Operations;
 

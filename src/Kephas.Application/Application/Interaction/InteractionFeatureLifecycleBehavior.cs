@@ -23,7 +23,7 @@ namespace Kephas.Application.Interaction
     /// <summary>
     /// An interaction feature lifecycle behavior notifying about <see cref="FeatureStartingEvent"/>, <see cref="FeatureStartedEvent"/>, <see cref="FeatureStoppingEvent"/>, and <see cref="FeatureStoppedEvent"/>.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class InteractionFeatureLifecycleBehavior : FeatureLifecycleBehaviorBase
     {
         private readonly IEventHub eventHub;
@@ -52,7 +52,7 @@ namespace Kephas.Application.Interaction
         public override async Task<IOperationResult> BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
             return await this.eventHub.PublishAsync(new FeatureStartingEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Kephas.Application.Interaction
         public override async Task<IOperationResult> AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
             return await this.eventHub.PublishAsync(new FeatureStartedEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Kephas.Application.Interaction
         public override async Task<IOperationResult> BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
             return await this.eventHub.PublishAsync(new FeatureStoppingEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Application.Interaction
         public override async Task<IOperationResult> AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
             return await this.eventHub.PublishAsync(new FeatureStoppedEvent(serviceMetadata.FeatureInfo!), appContext, cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
     }
 }

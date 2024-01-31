@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Serialization.Json.Converters
 {
     using System;
@@ -22,7 +24,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// <see cref="AppServiceInfo"/> should be processed before expandos, that's why the higher priority.
     /// </remarks>
-    [ProcessingPriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     public class AppServiceInfoJsonConverter : JsonConverterBase
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
@@ -125,7 +127,7 @@ namespace Kephas.Serialization.Json.Converters
 
             var contractType = (Type?)expando[nameof(IAppServiceInfo.ContractType)];
             var instanceType = (Type?)expando[nameof(IAppServiceInfo.InstanceType)];
-            var lifetime = (AppServiceLifetime?)expando[nameof(IAppServiceInfo.Lifetime)];
+            var lifetime = (ServiceLifetime?)expando[nameof(IAppServiceInfo.Lifetime)];
             var allowMultiple = (bool?)expando[nameof(IAppServiceInfo.AllowMultiple)];
             var asOpenGeneric = (bool?)expando[nameof(IAppServiceInfo.AsOpenGeneric)];
 
@@ -137,8 +139,8 @@ namespace Kephas.Serialization.Json.Converters
                 }
 
                 var appServiceInfo = instanceType == null
-                    ? new AppServiceInfo(contractType, lifetime ?? AppServiceLifetime.Singleton, asOpenGeneric ?? false)
-                    : new AppServiceInfo(contractType, instanceType, lifetime ?? AppServiceLifetime.Singleton, asOpenGeneric ?? false);
+                    ? new AppServiceInfo(contractType, lifetime ?? ServiceLifetime.Singleton, asOpenGeneric ?? false)
+                    : new AppServiceInfo(contractType, instanceType, lifetime ?? ServiceLifetime.Singleton, asOpenGeneric ?? false);
 
                 if (allowMultiple != null)
                 {

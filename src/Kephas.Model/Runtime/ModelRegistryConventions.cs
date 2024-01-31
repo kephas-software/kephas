@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Model.Runtime
 {
     using System;

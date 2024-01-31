@@ -21,7 +21,6 @@ namespace Kephas.Data.Endpoints
     using Kephas.Services;
     using Kephas.Messaging;
     using Kephas.Model;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -99,7 +98,7 @@ namespace Kephas.Data.Endpoints
                         using (var conversionContext = new DataConversionContext(dataSpace, this.dataConversionService)
                                     .RootTargetType(domainEntityType))
                         {
-                            var result = await this.dataConversionService.ConvertAsync(dtoEntity, (object)null, conversionContext, token).PreserveThreadContext();
+                            var result = await this.dataConversionService.ConvertAsync(dtoEntity, (object)null, conversionContext, token);
                             mappings.Add((dtoEntry: dtoEntityEntry, result.Target));
 
                             // deleted entities are marked as deleted
@@ -128,13 +127,13 @@ namespace Kephas.Data.Endpoints
                 }
 
                 // prepare the persistence
-                await this.PrePersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();
+                await this.PrePersistChangesAsync(response, mappings, dataSpace, cancellationToken: token);
 
                 // save changes
-                await dataSpace.PersistChangesAsync(cancellationToken: token).PreserveThreadContext();
+                await dataSpace.PersistChangesAsync(cancellationToken: token);
 
                 // finalize the persistence
-                await this.PostPersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();
+                await this.PostPersistChangesAsync(response, mappings, dataSpace, cancellationToken: token);
             }
 
             foreach (var entry in response.EntityEntries)
@@ -186,7 +185,7 @@ namespace Kephas.Data.Endpoints
                 if (dtoEntityEntry.ChangeState != ChangeState.Deleted && dtoEntityEntry.Entity != entity)
                 {
                     var conversionContext = this.CreateDataConversionContextForResponse(dataSpace);
-                    var result = await this.dataConversionService.ConvertAsync(entity, dtoEntityEntry.Entity, conversionContext, cancellationToken).PreserveThreadContext();
+                    var result = await this.dataConversionService.ConvertAsync(entity, dtoEntityEntry.Entity, conversionContext, cancellationToken);
                 }
             }
         }

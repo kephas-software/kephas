@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Application
     /// Attribute for indicating the feature for which a behavior apply.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class TargetFeatureAttribute : Attribute, IMetadataValue<FeatureRef>
+    public class TargetFeatureAttribute : Attribute, IServiceMetadataValue<FeatureRef>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetFeatureAttribute"/> class.
@@ -41,6 +43,6 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
         /// </summary>
-        string? IMetadataValue.Name => nameof(FeatureLifecycleBehaviorMetadata.Target);
+        string? IServiceMetadataValue.Name => nameof(FeatureLifecycleBehaviorMetadata.Target);
     }
 }

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Data.IO.Import
 {
     using System;
@@ -32,40 +34,40 @@ namespace Kephas.Data.IO.Import
     /// <summary>
     /// A default data import service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataImportService : Loggable, IDataImportService
     {
         private readonly IProjectedTypeResolver projectedTypeResolver;
         private readonly ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories;
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IDataStreamReadService dataStreamReadService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataImportService"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="dataStreamReadService">The data source read service.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
         /// <param name="behaviorFactories">Optional. The behavior factories (optional).</param>
         public DefaultDataImportService(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
             IProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>>? behaviorFactories = null)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             dataStreamReadService = dataStreamReadService ?? throw new System.ArgumentNullException(nameof(dataStreamReadService));
             conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
             projectedTypeResolver = projectedTypeResolver ?? throw new System.ArgumentNullException(nameof(projectedTypeResolver));
 
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.dataStreamReadService = dataStreamReadService;
             this.projectedTypeResolver = projectedTypeResolver;
             this.behaviorFactories = (behaviorFactories ?? new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>>())
-                                        .OrderBy(f => f.Metadata.ProcessingPriority)
+                                        .OrderBy(f => f.Metadata.Priority)
                                         .ToList();
             this.ConversionService = conversionService;
         }
@@ -108,7 +110,7 @@ namespace Kephas.Data.IO.Import
         /// </returns>
         protected virtual IDataImportContext CreateDataImportContext(Action<IDataImportContext>? optionsConfig = null)
         {
-            var context = this.injectableFactory.Create<DataImportContext>();
+            var context = this.serviceFactory.Create<DataImportContext>();
             optionsConfig?.Invoke(context);
             return context;
         }
@@ -168,11 +170,11 @@ namespace Kephas.Data.IO.Import
                 foreach (var behavior in behaviors)
                 {
                     await behavior.BeforeReadDataSourceAsync(this.dataSource, this.Context, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
-                var readResult = await this.dataSourceReader.ReadAsync(this.dataSource, this.Context, cancellationToken).PreserveThreadContext();
+                var readResult = await this.dataSourceReader.ReadAsync(this.dataSource, this.Context, cancellationToken);
                 if (!readResult.GetType().IsCollection())
                 {
                     readResult = new List<object> { readResult };
@@ -184,11 +186,11 @@ namespace Kephas.Data.IO.Import
                 foreach (var behavior in reversedBehaviors)
                 {
                     await behavior.AfterReadDataSourceAsync(this.dataSource, this.Context, sourceEntities, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.ImportAsManyAsPossibleAsync(sourceEntities, behaviors, reversedBehaviors, cancellationToken).PreserveThreadContext();
+                await this.ImportAsManyAsPossibleAsync(sourceEntities, behaviors, reversedBehaviors, cancellationToken);
 
                 return this.Result;
             }
@@ -220,11 +222,11 @@ namespace Kephas.Data.IO.Import
                         foreach (var behavior in behaviors)
                         {
                             await behavior.BeforeConvertEntityAsync(importEntityEntry, this.Context, cancellationToken)
-                                .PreserveThreadContext();
+                                ;
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
-                        var targetEntry = await this.ConvertEntityAsync(importEntityEntry, cancellationToken).PreserveThreadContext();
+                        var targetEntry = await this.ConvertEntityAsync(importEntityEntry, cancellationToken);
                         targetDataContext = targetEntry.DataContext ?? this.dataSpace[targetEntry.Entity.GetType()];
 
                         // Persist the converted entity
@@ -232,13 +234,13 @@ namespace Kephas.Data.IO.Import
                         foreach (var behavior in behaviors)
                         {
                             await behavior.BeforePersistEntityAsync(importEntityEntry, targetEntry, this.Context, cancellationToken)
-                                .PreserveThreadContext();
+                                ;
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
                         var persistContext = new PersistChangesContext(targetDataContext);
                         this.Context.PersistChangesConfig?.Invoke(persistContext);
-                        await targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
+                        await targetDataContext.PersistChangesAsync(persistContext, cancellationToken);
 
                         importEntityEntry.AcceptChanges();
                         this.Result.MergeMessage(new ImportEntitySuccessfulMessage(importEntityEntry.Entity));
@@ -248,7 +250,7 @@ namespace Kephas.Data.IO.Import
                         foreach (var behavior in reversedBehaviors)
                         {
                             await behavior.AfterPersistEntityAsync(importEntityEntry, targetEntry, this.Context, cancellationToken)
-                                .PreserveThreadContext();
+                                ;
                         }
                     }
                     catch (OperationCanceledException)
@@ -318,7 +320,7 @@ namespace Kephas.Data.IO.Import
 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var conversionResult = await this.conversionService.ConvertAsync(sourceEntity, (object?)null, conversionContext, cancellationToken).PreserveThreadContext();
+                var conversionResult = await this.conversionService.ConvertAsync(sourceEntity, (object?)null, conversionContext, cancellationToken);
 
                 cancellationToken.ThrowIfCancellationRequested();
 

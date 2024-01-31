@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Core.Endpoints.Tests
 {
     using System;

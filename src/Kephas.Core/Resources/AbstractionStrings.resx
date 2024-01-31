@@ -166,10 +166,6 @@
   <data name="DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all defined types from {assembly}. Only the loadable types will be considered.</value>
   </data>
-  <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
-    <value>Cannot load assembly '{assembly}'. See the exception for more information.</value>
-    <comment>Cannot load assembly '{assembly}'. See the exception for more information.</comment>
-  </data>
   <data name="DefaultAppManager_FinalizeCanceled_Exception" xml:space="preserve">
     <value>The application's finalize procedure was canceled, at {0:s}.</value>
   </data>
@@ -213,12 +209,6 @@
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{type}'.</value>
   </data>
-  <data name="DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception" xml:space="preserve">
-    <value>No service found for {0}/{1}.</value>
-  </data>
-  <data name="DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception" xml:space="preserve">
-    <value>Multiple services found for {0}/{1}.</value>
-  </data>
   <data name="UnhandledException_InProcess_Message" xml:space="preserve">
     <value>Unhandled exception in process.</value>
     <comment>Unhandled exception in process.</comment>
@@ -236,14 +226,6 @@
   <data name="TaskNotCompletedException_Message" xml:space="preserve">
     <value>The task is not completed.</value>
     <comment>The task is not completed.</comment>
-  </data>
-  <data name="DuplicateKeyException_Message" xml:space="preserve">
-    <value>An item with the same key is already added.</value>
-    <comment>An item with the same key is already added.</comment>
-  </data>
-  <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
-    <value>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</value>
-    <comment>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</comment>
   </data>
   <data name="AmbientServices_ServiceTypeAndImplementationMismatch_Exception" xml:space="preserve">
     <value>The provided service implementation '{0}' is not convertible to the service type '{1}'.</value>
@@ -280,18 +262,6 @@
   </data>
   <data name="SettingsProviderSelector_NoProviderFoundForSettingsType" xml:space="preserve">
     <value>No provider found for settings type '{settingsType}'.</value>
-  </data>
-  <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
-    <value>The injectable type '{0}' must be an instantiable class.</value>
-    <comment>The injectable type '{0}' must be an instantiable class.</comment>
-  </data>
-  <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
-    <value>Arguments may not be null when instantiating injectable of type '{0}'.</value>
-    <comment>Arguments may not be null when instantiating injectable of type '{0}'.</comment>
-  </data>
-  <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
-    <value>Cannot find a matching constructor for signature {0} in type '{1}'.</value>
-    <comment>Cannot find a matching constructor for signature {0} in type '{1}'.</comment>
   </data>
   <data name="SerializationExtensions_GetContextFactory_CannotGetContextFactory" xml:space="preserve">
     <value>The type {0} should export a public property {1}: {2} to be able to create a serialization context.</value>

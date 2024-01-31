@@ -19,7 +19,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// <summary>
     /// A default model assembly attribute provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultModelAssemblyAttributeProvider : IModelAssemblyAttributeProvider
     {
         /// <summary>

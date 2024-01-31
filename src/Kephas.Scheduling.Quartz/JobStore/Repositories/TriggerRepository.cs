@@ -73,7 +73,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                trigger => trigger.InstanceName == this.InstanceName
                                           && trigger.Name == key.Name
                                           && trigger.Group == key.Group)
-                           .AnyAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                           .AnyAsync(cancellationToken: cancellationToken);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                 return await dataContext.Query<Model.ITrigger>().Where(
                                trigger => trigger.InstanceName == this.InstanceName
                                           && trigger.CalendarName == calendarName)
-                           .AnyAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                           .AnyAsync(cancellationToken: cancellationToken);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         {
             using (var dataContext = this.jobStore.DataContextFactory(null))
             {
-                return await this.GetTrigger(dataContext, key, cancellationToken).PreserveThreadContext();
+                return await this.GetTrigger(dataContext, key, cancellationToken);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             {
                 return await dataContext.Query<Model.ITrigger>().Where(
                            t => t.InstanceName == this.InstanceName && t.CalendarName == calendarName)
-                           .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                           .ToListAsync(cancellationToken: cancellationToken);
             }
         }
 
@@ -177,7 +177,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                 var triggers = await dataContext.Query<Model.ITrigger>()
                     .Where(t => t.InstanceName == this.InstanceName)
                     .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
-                    .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                    .ToListAsync(cancellationToken: cancellationToken);
                 return triggers.Select(t => t.GetTriggerKey()).ToList();
             }
         }
@@ -196,7 +196,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             {
                 var triggers = await dataContext.Query<Model.ITrigger>()
                                    .Where(t => t.InstanceName == this.InstanceName && t.State == state)
-                                   .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                                   .ToListAsync(cancellationToken: cancellationToken);
                 return triggers.Select(t => t.GetTriggerKey()).ToList();
             }
         }
@@ -217,7 +217,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                              .Where(t => t.InstanceName == this.InstanceName)
                              .Select(t => t.Group)
                              .Distinct()
-                             .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                             .ToListAsync(cancellationToken: cancellationToken);
             return groups;
         }
 
@@ -237,7 +237,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
                                .Select(t => t.Group)
                                .Distinct()
-                               .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                               .ToListAsync(cancellationToken: cancellationToken);
             return groups;
         }
 
@@ -272,7 +272,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                .OrderBy(trigger => trigger.NextFireTime)
                                .ThenByDescending(trigger => trigger.Priority)
                                .Take(maxCount)
-                               .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                               .ToListAsync(cancellationToken: cancellationToken);
 
             return triggers.Select(trigger => trigger.GetTriggerKey()).ToList();
         }
@@ -343,14 +343,14 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                                                            && t.Name == triggerKey.Name,
                                   throwIfNotFound: false,
                                   cancellationToken: cancellationToken)
-                              .PreserveThreadContext();
+                              ;
             if (trigger == null)
             {
                 return 0;
             }
 
             trigger.State = state;
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
             return 1;
         }
 
@@ -373,14 +373,14 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                                                            && t.State == oldState,
                                   throwIfNotFound: false,
                                   cancellationToken: cancellationToken)
-                              .PreserveThreadContext();
+                              ;
             if (trigger == null)
             {
                 return 0;
             }
 
             trigger.State = newState;
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
             return 1;
         }
 
@@ -422,7 +422,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                           [nameof(Model.ITrigger.State)] = newState,
                                       },
                                   cancellationToken: cancellationToken)
-                              .PreserveThreadContext();
+                              ;
 
             return results;
         }
@@ -454,7 +454,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                          [nameof(Model.ITrigger.State)] = newState,
                                      },
                                  cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
             return result;
         }
 
@@ -482,7 +482,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                          [nameof(Model.ITrigger.State)] = newState,
                                      },
                                  cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
             return result;
         }
 
@@ -510,7 +510,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                          [nameof(Model.ITrigger.State)] = newState,
                                      },
                                  cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
             return result;
         }
 
@@ -532,7 +532,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                  t => t.InstanceName == this.InstanceName && t.Group == triggerKey.Group
                                                                           && t.Name == triggerKey.Name,
                                  cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
 
             return result;
         }
@@ -555,7 +555,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                  t => t.InstanceName == this.InstanceName && t.JobGroup == jobKey.Group
                                                                           && t.JobName == jobKey.Name,
                                  cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
 
             return result;
         }
@@ -584,7 +584,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                               trigger.State == Model.TriggerState.Waiting
                         orderby trigger.NextFireTime, trigger.Priority descending
                         select trigger;
-            var results = await query.Take(maxResults).ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var results = await query.Take(maxResults).ToListAsync(cancellationToken: cancellationToken);
             return results.Select(t => t.GetTriggerKey()).ToList();
         }
     }

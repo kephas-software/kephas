@@ -13,10 +13,8 @@ namespace Kephas.Model.Construction
     using System;
     using System.Collections.Generic;
     using Kephas.Services;
-    using Kephas.Logging;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// A model construction context.

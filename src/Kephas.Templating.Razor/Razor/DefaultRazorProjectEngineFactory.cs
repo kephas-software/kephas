@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Razor.Language.Extensions;
 /// The default implementation of the <see cref="IRazorProjectEngineFactory"/>.
 /// </summary>
 /// <seealso cref="IRazorProjectEngineFactory" />
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultRazorProjectEngineFactory : IRazorProjectEngineFactory
 {
     /// <summary>

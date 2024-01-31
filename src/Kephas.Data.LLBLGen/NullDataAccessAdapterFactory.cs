@@ -19,7 +19,7 @@ namespace Kephas.Data.LLBLGen
     /// <summary>
     /// A null LLBLGen data access adapter factory.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullDataAccessAdapterFactory : IDataAccessAdapterFactory
     {
         /// <summary>

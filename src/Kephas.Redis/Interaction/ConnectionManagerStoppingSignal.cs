@@ -23,7 +23,7 @@ public class ConnectionManagerStoppingSignal : SignalBase
     /// </summary>
     /// <param name="message">Optional. The message.</param>
     /// <param name="severity">Optional. The severity.</param>
-    public ConnectionManagerStoppingSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+    public ConnectionManagerStoppingSignal(string? message = null, LogLevel severity = LogLevel.Information)
         : base(message ?? "The Redis connection manager is stopping.", severity)
     {
     }

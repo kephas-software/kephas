@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Application
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Application
     /// <summary>
     /// Exception for signalling bootstrap errors.
     /// </summary>
-    public class BootstrapException : ApplicationException, ISeverityQualifiedNotification
+    public class BootstrapException : ApplicationException, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BootstrapException"/> class.
@@ -29,7 +31,7 @@ namespace Kephas.Application
             : base(message)
         {
             this.ServicesBuilder = servicesBuilder;
-            this.Severity = SeverityLevel.Fatal;
+            this.Severity = LogLevel.Critical;
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace Kephas.Application
             : base(message, inner)
         {
             this.ServicesBuilder = servicesBuilder;
-            this.Severity = SeverityLevel.Fatal;
+            this.Severity = LogLevel.Critical;
         }
 
         /// <summary>
@@ -51,7 +53,7 @@ namespace Kephas.Application
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public LogLevel Severity { get; set; }
 
         /// <summary>
         /// Gets or sets a context for the application.

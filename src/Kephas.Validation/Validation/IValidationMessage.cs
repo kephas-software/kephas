@@ -16,7 +16,7 @@ namespace Kephas.Validation
     /// <summary>
     /// Interface for validation result item.
     /// </summary>
-    public interface IValidationMessage : IOperationMessage, ISeverityQualifiedNotification
+    public interface IValidationMessage : IOperationMessage, IErrorNotification
     {
         /// <summary>
         /// Gets the message.
@@ -40,7 +40,7 @@ namespace Kephas.Validation
         /// <value>
         /// The message.
         /// </value>
-        string ISeverityQualifiedNotification.Message => this.Message;
+        string IErrorNotification.Message => this.Message;
 
         /// <summary>
         /// Gets the name of the member.

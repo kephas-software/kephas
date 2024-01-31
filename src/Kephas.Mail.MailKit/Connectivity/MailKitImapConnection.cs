@@ -72,7 +72,7 @@ public class MailKitImapConnection : IConnection, IAdapter<ImapClient>
         var port = context.Host.IsDefaultPort ? 993 : context.Host.Port;
         var serverName = context.Host.Host;
 
-        await this.imapClient.ConnectAsync(serverName, port, useSsl: true, cancellationToken).PreserveThreadContext();
+        await this.imapClient.ConnectAsync(serverName, port, useSsl: true, cancellationToken);
         await this.imapClient.AuthenticateAsync(clearTextCredentials.UserName, clearTextCredentials.ClearTextPassword, cancellationToken);
     }
 

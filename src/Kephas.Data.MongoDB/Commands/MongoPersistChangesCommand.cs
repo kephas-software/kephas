@@ -89,7 +89,7 @@ namespace Kephas.Data.MongoDB.Commands
                      changeSet,
                      collectionName,
                      cancellationToken))
-                    .PreserveThreadContext();
+                    ;
             }
         }
 
@@ -117,7 +117,7 @@ namespace Kephas.Data.MongoDB.Commands
 
             var writeRequests = this.GetBulkWriteRequests<T>(operationContext, eligibleModifiedEntries);
 
-            await this.NativeBulkWriteAsync(operationContext, collection, writeRequests, cancellationToken).PreserveThreadContext();
+            await this.NativeBulkWriteAsync(operationContext, collection, writeRequests, cancellationToken);
         }
 
         /// <summary>
@@ -146,18 +146,18 @@ namespace Kephas.Data.MongoDB.Commands
             {
                 try
                 {
-                    saveResult = await collection.BulkWriteAsync(writeRequests, cancellationToken: cancellationToken).PreserveThreadContext();
+                    saveResult = await collection.BulkWriteAsync(writeRequests, cancellationToken: cancellationToken);
                 }
                 catch (Exception ex)
                 {
                     exception = ex;
                 }
-            }).PreserveThreadContext();
+            });
 
             // log exceptions and other important data.
             if (exception != null)
             {
-                this.Logger.Error(
+                this.Logger.LogError(
                     exception,
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}.",
                     $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
@@ -169,7 +169,7 @@ namespace Kephas.Data.MongoDB.Commands
 
             if (opResult.Elapsed.TotalMilliseconds > 1000)
             {
-                this.Logger.Warn(
+                this.Logger.LogWarning(
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, inserted: {inserted}, modified: {modified}, deleted: {deleted}.",
                     $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
                     "Elapsed time more than 1s",
@@ -183,7 +183,7 @@ namespace Kephas.Data.MongoDB.Commands
             {
                 if (this.Logger.IsDebugEnabled())
                 {
-                    this.Logger.Debug(
+                    this.Logger.LogDebug(
                         "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, inserted: {inserted}, modified: {modified}, deleted: {deleted}.",
                         $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
                         "Success",

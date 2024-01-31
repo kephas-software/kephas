@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data.Client.Queries
 {
     using System;

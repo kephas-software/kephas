@@ -17,35 +17,16 @@ namespace Kephas.Model
     /// <summary>
     /// Exception for signalling model errors.
     /// </summary>
-    public class ModelException : Exception, ISeverityQualifiedNotification
+    public class ModelException : AppException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public ModelException(string message)
-            : base(message)
+        /// <param name="innerException">Optional. The inner exception.</param>
+        public ModelException(string message, Exception? innerException = null)
+            : base(message, innerException)
         {
-            this.Severity = SeverityLevel.Error;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner exception.</param>
-        public ModelException(string message, Exception inner)
-            : base(message, inner)
-        {
-            this.Severity = SeverityLevel.Error;
-        }
-
-        /// <summary>
-        /// Gets or sets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public SeverityLevel Severity { get; set; }
     }
 }

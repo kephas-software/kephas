@@ -110,7 +110,7 @@ namespace Kephas.Scheduling.Tests.Timers
                 var actualDelta = diffMillis - milliseconds;
                 if (actualDelta > delta || actualDelta < -delta)
                 {
-                    Assert.Warn($"Expected an interval of {milliseconds} but got {diffMillis}.");
+                    Assert.LogWarning($"Expected an interval of {milliseconds} but got {diffMillis}.");
                 }
 
                 prevtick = fires[i];

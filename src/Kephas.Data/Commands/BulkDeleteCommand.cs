@@ -59,7 +59,7 @@ namespace Kephas.Data.Commands
 
             var opAsync = BulkDeleteAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IBulkDataOperationResult>)opAsync.Call(this, operationContext, cancellationToken);
-            var result = await asyncResult.PreserveThreadContext();
+            var result = await asyncResult;
             return result;
         }
 
@@ -90,7 +90,7 @@ namespace Kephas.Data.Commands
                 localCacheCount = toDeleteFromCache.Count;
             }
 
-            var count = await this.BulkDeleteCoreAsync(bulkDeleteContext, criteria, cancellationToken).PreserveThreadContext();
+            var count = await this.BulkDeleteCoreAsync(bulkDeleteContext, criteria, cancellationToken);
             return this.GetBulkOperationResult(bulkDeleteContext, count, localCacheCount, criteria);
         }
 

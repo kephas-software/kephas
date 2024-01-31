@@ -13,22 +13,21 @@ namespace Kephas.Tests.Extensions.DependencyInjection
     using Kephas.Services.Builder;
     using Kephas.Testing;
     using Microsoft.Extensions.DependencyInjection;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    public class DependencyInjectionExtensionsTest
+        public class DependencyInjectionExtensionsTest
     {
-        [Test]
+        [Fact]
         public void BuildWithDependencyInjection_defaults()
         {
             var appServices = Test.CreateTestServices();
             var builder = new AppServiceCollectionBuilder(appServices);
             var injector = builder.BuildServiceProvider();
 
-            Assert.IsInstanceOf<ServiceProvider>(injector);
+            Assert.IsType<ServiceProvider>(injector);
         }
 
-        [Test]
+        [Fact]
         public void BuildWithDependencyInjection_with_open_generic_override()
         {
             var appServices = Test.CreateTestServices();
@@ -37,10 +36,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var injector = builder.BuildServiceProvider();
 
             var moreOpen = injector.GetRequiredService<IOpen<int>>();
-            Assert.IsInstanceOf<MoreOpen<int>>(moreOpen);
+            Assert.IsType<MoreOpen<int>>(moreOpen);
         }
 
-        [Test]
+        [Fact]
         public void BuildWithDependencyInjection_with_open_generic_override_and_dependency()
         {
             var appServices = Test.CreateTestServices();
@@ -49,10 +48,10 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             var injector = builder.BuildServiceProvider();
 
             var moreOpen = injector.GetRequiredService<IOpen<int>>();
-            Assert.IsInstanceOf<MoreOpenWithDependency<int>>(moreOpen);
+            Assert.IsType<MoreOpenWithDependency<int>>(moreOpen);
         }
 
-        [Test]
+        [Fact]
         public void Autofac_generic_export_with_ctor_dependency()
         {
             var conventions = new ServiceCollection();
@@ -63,7 +62,7 @@ namespace Kephas.Tests.Extensions.DependencyInjection
             using (var container = conventions.BuildServiceProvider())
             {
                 var myService = container.GetRequiredService(typeof(IOpen<object>));
-                Assert.IsInstanceOf<MoreOpenWithDependency<object>>(myService);
+                Assert.IsType<MoreOpenWithDependency<object>>(myService);
             }
         }
 

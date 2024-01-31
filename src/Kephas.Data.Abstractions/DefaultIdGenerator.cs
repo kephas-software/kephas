@@ -13,13 +13,12 @@ namespace Kephas.Data;
 using System;
 
 using Kephas.Configuration;
-using Kephas.Services.AttributedModel;
 using Kephas.Services;
 
 /// <summary>
 /// The default implementation of an identifier generator.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultIdGenerator : IIdGenerator
 {
     /// <summary>

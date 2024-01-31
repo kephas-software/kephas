@@ -9,7 +9,6 @@ namespace Kephas.Connectivity;
 
 using Kephas.Services;
 using Kephas.Security.Authentication;
-using Kephas.Services;
 
 /// <summary>
 /// A context for creating connections.

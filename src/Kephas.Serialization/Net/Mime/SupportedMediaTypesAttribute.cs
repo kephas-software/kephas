@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Net.Mime
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Net.Mime
     /// Indicates the supported data formats for data stream readers and writers.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SupportedMediaTypesAttribute : Attribute, IMetadataValue<string[]>
+    public class SupportedMediaTypesAttribute : Attribute, IServiceMetadataValue<string[]>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SupportedMediaTypesAttribute" /> class.

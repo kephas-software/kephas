@@ -17,7 +17,6 @@ namespace Kephas.Application
     using Kephas.Application.Reflection;
     using Kephas.Behaviors;
     using Kephas.Configuration;
-    using Kephas.Logging;
     using Kephas.Services.Behaviors;
 
     /// <summary>
@@ -74,7 +73,7 @@ namespace Kephas.Application
             if (appSettings is null)
             {
                 // TODO localization
-                this.Logger.Warn("Cannot identify the application information for '{app}', therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
+                this.Logger.LogWarning("Cannot identify the application information for '{app}', therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
                 return BehaviorValue.True;
             }
 

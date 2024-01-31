@@ -1,4 +1,6 @@
-﻿namespace Kephas.Messaging.Tests;
+﻿using Kephas.Services.Metadata;
+
+namespace Kephas.Messaging.Tests;
 
 using System.Reflection;
 using Kephas.Application;
@@ -574,7 +576,7 @@ public abstract class DefaultMessageProcessorTestBase : TestBase
                                // new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => new DefaultMessageHandlerProvider(mms), new AppServiceMetadata()),
                            };
 
-        var contextFactory = Substitute.For<IInjectableFactory>();
+        var contextFactory = Substitute.For<IServiceFactory>();
         var processor = new TestMessageProcessor(
             contextFactory,
             mms,
@@ -624,10 +626,10 @@ public class TestMessageProcessor : DefaultMessageProcessor
 {
     public Func<IMessage, Action<IMessagingContext>, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
-    public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageMatchService messageMatchService,
+    public TestMessageProcessor(IServiceFactory serviceFactory, IMessageMatchService messageMatchService,
         IMessageHandlerRegistry handlerResolver,
         IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-        : base(injectableFactory, handlerResolver, behaviorFactories)
+        : base(serviceFactory, handlerResolver, behaviorFactories)
     {
     }
 

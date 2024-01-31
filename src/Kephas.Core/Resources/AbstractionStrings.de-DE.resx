@@ -135,26 +135,11 @@
   <data name="AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception" xml:space="preserve">
     <value>Der Servicetyp '{0}' muss ein Supertyp des Contract-Typs '{1}' sein.</value>
   </data>
-  <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
-    <value>Assembly '{Assembly}' kann nicht geladen werden. Weitere Informationen finden Sie in der Ausnahme.</value>
-  </data>
   <data name="AppServiceMultipleInjectConstructors" xml:space="preserve">
     <value>Mehrere mit {0} gekennzeichnete Konstruktoren werden für die Service-Implementierung '{1}' mit dem Contract '{2}' deklariert.</value>
   </data>
   <data name="InjectorBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
     <value>Der erforderliche Dienst vom Typ '{0}' wurde nicht bereitgestellt.</value>
-  </data>
-  <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
-    <value>Die Prioritäten des Dienstes '{0}' können für zwei Instanzen nicht aufgelöst werden: {1} und {2}.</value>
-  </data>
-  <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
-    <value>Der Kontexttyp '{0}' muss eine instanziierbare Klasse sein.</value>
-  </data>
-  <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
-    <value>Argumente dürfen nicht null sein, wenn ein Kontext vom Typ '{0}' instanziiert wird.</value>
-  </data>
-  <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
-    <value>Es kann kein passender Konstruktor für die Signatur {0} vom Typ '{1}' gefunden werden.</value>
   </data>
   <data name="UnhandledException_InProcess_Message" xml:space="preserve">
     <value>Unbehandelte Ausnahme in der Prozess.</value>
@@ -170,9 +155,6 @@
   </data>
   <data name="DefaultAppManager_InitializeFaulted_Exception" xml:space="preserve">
     <value>Bei der Initialisierungsprozedur der Anwendung ist um {0: s} eine Ausnahme aufgetreten.</value>
-  </data>
-  <data name="DuplicateKeyException_Message" xml:space="preserve">
-    <value>Ein Item mit demselben Schlüssel wurde bereits hinzugefügt.</value>
   </data>
   <data name="TaskNotCompletedException_Message" xml:space="preserve">
     <value>Die Task ist nicht abgeschlossen.</value>

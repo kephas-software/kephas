@@ -17,7 +17,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// A default message handler registry.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultMessageHandlerRegistry : IMessageHandlerRegistry
     {
         private readonly ConcurrentBag<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerRegistry = new();

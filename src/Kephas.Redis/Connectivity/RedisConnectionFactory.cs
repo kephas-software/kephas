@@ -34,7 +34,7 @@ using StackExchange.Redis;
 /// <seealso cref="IAsyncInitializable" />
 /// <seealso cref="IAsyncFinalizable" />
 [ConnectionKind(ConnectionKind)]
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitializable, IAsyncFinalizable
 {
     /// <summary>
@@ -110,16 +110,16 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
             this.initMonitor.Complete();
 
             await this.eventHub.PublishAsync(new ConnectionManagerStartedSignal(), context, cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
         catch (Exception ex)
         {
             this.initMonitor.Fault(ex);
 
             await this.eventHub.PublishAsync(
-                new ConnectionManagerStartedSignal(ex.Message, SeverityLevel.Error),
+                new ConnectionManagerStartedSignal(ex.Message, LogLevel.Error),
                 context,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
         }
     }
 
@@ -140,7 +140,7 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
         try
         {
             await this.eventHub.PublishAsync(new ConnectionManagerStoppingSignal(), context, cancellationToken)
-                .PreserveThreadContext();
+                ;
 
             foreach (var (key, nativeConnection) in this.nativeConnections)
             {
@@ -155,9 +155,9 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
             this.finMonitor.Fault(ex);
 
             await this.eventHub.PublishAsync(
-                new ConnectionManagerStoppingSignal(ex.Message, SeverityLevel.Error),
+                new ConnectionManagerStoppingSignal(ex.Message, LogLevel.Error),
                 context,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
         }
         finally
         {
@@ -166,7 +166,7 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
             await this.eventHub.PublishAsync(
                 new ConnectionManagerStoppedSignal(),
                 context,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
         }
     }
 
@@ -180,7 +180,7 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
         connection.Close(allowCommandsToComplete: true);
         connection.Dispose();
 
-        this.Logger.Debug("Redis connection '{redisConnection}' disposed.", clientName);
+        this.Logger.LogDebug("Redis connection '{redisConnection}' disposed.", clientName);
     }
 
     /// <summary>
@@ -216,13 +216,13 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
                 connection.ConnectionRestored += this.HandleConnectionRestored;
                 connection.InternalError += this.HandleInternalError;
 
-                this.Logger.Debug("Redis connection '{redisConnection}' to '{redisHost}' created.", connection.ClientName, host.Authority);
+                this.Logger.LogDebug("Redis connection '{redisConnection}' to '{redisHost}' created.", connection.ClientName, host.Authority);
                 return connection;
             });
         }
         catch (Exception ex)
         {
-            this.Logger.Error(ex, "Could not connect to Redis server {redisHost}.", host.Authority);
+            this.Logger.LogError(ex, "Could not connect to Redis server {redisHost}.", host.Authority);
             throw;
         }
     }
@@ -321,7 +321,7 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
     protected virtual void HandleInternalError(object? sender, InternalErrorEventArgs eventArgs)
     {
         var connection = sender as IConnectionMultiplexer;
-        this.Logger.Warn(eventArgs.Exception, "Redis connection '{redisConnection}' internal error.", connection?.ClientName);
+        this.Logger.LogWarning(eventArgs.Exception, "Redis connection '{redisConnection}' internal error.", connection?.ClientName);
     }
 
     /// <summary>
@@ -332,7 +332,7 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
     protected virtual void HandleConnectionFailed(object? sender, ConnectionFailedEventArgs eventArgs)
     {
         var connection = sender as IConnectionMultiplexer;
-        this.Logger.Warn("Redis connection '{redisConnection}' failed.", connection?.ClientName);
+        this.Logger.LogWarning("Redis connection '{redisConnection}' failed.", connection?.ClientName);
     }
 
     /// <summary>
@@ -343,6 +343,6 @@ public class RedisConnectionFactory : Loggable, IConnectionFactory, IAsyncInitia
     protected virtual void HandleConnectionRestored(object? sender, ConnectionFailedEventArgs eventArgs)
     {
         var connection = sender as IConnectionMultiplexer;
-        this.Logger.Warn("Redis connection '{redisConnection}' restored.", connection?.ClientName);
+        this.Logger.LogWarning("Redis connection '{redisConnection}' restored.", connection?.ClientName);
     }
 }

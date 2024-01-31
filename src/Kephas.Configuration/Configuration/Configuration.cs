@@ -107,7 +107,7 @@ namespace Kephas.Configuration
             {
                 this.Logger.Info("Updating {settingsType}...", typeof(TSettings));
 
-                await settingsProvider.UpdateSettingsAsync(settings!, context, cancellationToken).PreserveThreadContext();
+                await settingsProvider.UpdateSettingsAsync(settings!, context, cancellationToken);
                 this.cachedSettings = settings;
 
                 await this.lazyEventHub.Value.PublishAsync(
@@ -118,7 +118,7 @@ namespace Kephas.Configuration
                         SourceAppInstanceId = this.appRuntime.GetAppInstanceId(),
                     },
                     context!,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
 
                 this.Logger.Info("{settingsType} updated...", typeof(TSettings));
 

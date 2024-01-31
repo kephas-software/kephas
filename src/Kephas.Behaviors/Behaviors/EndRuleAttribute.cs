@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Behaviors
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Behaviors
     /// Indicates an end rule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class EndRuleAttribute : Attribute, IMetadataValue<bool>
+    public class EndRuleAttribute : Attribute, IServiceMetadataValue<bool>
     {
         /// <summary>
         /// Gets a value indicating whether the rule is an end rule.
@@ -31,6 +33,6 @@ namespace Kephas.Behaviors
         /// <summary>
         /// Gets the metadata name. If the name is not provided, it is inferred from the attribute type name.
         /// </summary>
-        string? IMetadataValue.Name => nameof(IBehaviorRuleFlowControl.IsEndRule);
+        string? IServiceMetadataValue.Name => nameof(IBehaviorRuleFlowControl.IsEndRule);
     }
 }

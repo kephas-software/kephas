@@ -18,15 +18,15 @@ namespace Kephas.Cryptography
     /// <summary>
     /// The AES encryption service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class AesEncryptionService : SymmetricEncryptionServiceBase<Aes>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        public AesEncryptionService(IInjectableFactory injectableFactory)
-            : base(() => injectableFactory.Create<EncryptionContext>(), ctx => new AesManaged())
+        /// <param name="serviceFactory">The injectable factory.</param>
+        public AesEncryptionService(IServiceFactory serviceFactory)
+            : base(() => serviceFactory.Create<EncryptionContext>(), ctx => new AesManaged())
         {
         }
 

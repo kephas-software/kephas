@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -15,7 +13,6 @@ namespace Kephas.Core.Endpoints
     using System.Threading.Tasks;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
@@ -91,7 +88,7 @@ namespace Kephas.Core.Endpoints
                 settings = (await this.serializationService.JsonDeserializeAsync(
                     settingsString,
                     ctx => ctx.RootObjectType(settingsType),
-                    cancellationToken: token).PreserveThreadContext())!;
+                    cancellationToken: token))!;
             }
             else
             {
@@ -103,7 +100,7 @@ namespace Kephas.Core.Endpoints
             var configuration = this.serviceProvider.Resolve(configurationType);
             var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
                 .GetMember(nameof(IConfiguration<NullLogManager>.UpdateSettingsAsync));
-            var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }).PreserveThreadContext());
+            var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }));
             return new Response
             {
                 Message = result.HasErrors()
@@ -112,10 +109,10 @@ namespace Kephas.Core.Endpoints
                         ? "Update successful"
                         : (result.Messages.FirstOrDefault()?.Message ?? "Update did not complete successfully."),
                 Severity = result.OperationState == OperationState.Completed
-                    ? SeverityLevel.Info
+                    ? LogLevel.Information
                     : result.OperationState == OperationState.Warning
-                        ? SeverityLevel.Warning
-                        : SeverityLevel.Info,
+                        ? LogLevel.Warning
+                        : LogLevel.Information,
             };
         }
     }

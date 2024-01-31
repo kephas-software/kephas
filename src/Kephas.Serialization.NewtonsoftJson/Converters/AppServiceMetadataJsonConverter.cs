@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Serialization.Json.Converters
 {
     using Kephas.Dynamic;
@@ -18,7 +20,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// <see cref="AppServiceMetadata"/> should be processed before expandos, that's why the higher priority.
     /// </remarks>
-    [ProcessingPriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     public class AppServiceMetadataJsonConverter : ExpandoJsonConverter
     {
         /// <summary>
@@ -26,9 +28,9 @@ namespace Kephas.Serialization.Json.Converters
         /// </summary>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        public AppServiceMetadataJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
-            : base(typeRegistry, typeResolver, injectableFactory, typeof(AppServiceMetadata), typeof(AppServiceMetadata))
+        /// <param name="serviceFactory">The injectable factory.</param>
+        public AppServiceMetadataJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IServiceFactory serviceFactory)
+            : base(typeRegistry, typeResolver, serviceFactory, typeof(AppServiceMetadata), typeof(AppServiceMetadata))
         {
         }
 

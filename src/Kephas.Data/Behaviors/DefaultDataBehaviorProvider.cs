@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data.Behaviors
 {
     using System;
@@ -23,7 +21,7 @@ namespace Kephas.Data.Behaviors
     /// <summary>
     /// A default data behavior provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataBehaviorProvider : IDataBehaviorProvider
     {
         /// <summary>
@@ -83,7 +81,7 @@ namespace Kephas.Data.Behaviors
                                  where
                                      entityType.IsAssignableFrom(type)
                                      && behaviorType.IsAssignableFrom(serviceType)
-                                 orderby f.Metadata.ProcessingPriority
+                                 orderby f.Metadata.Priority
                                  select f.CreateExportedValue())
                              .Cast<TBehavior>()
                              .ToList();

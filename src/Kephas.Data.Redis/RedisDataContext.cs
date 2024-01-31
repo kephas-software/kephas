@@ -22,7 +22,6 @@ using Kephas.Services;
 using Kephas.Redis;
 using Kephas.Redis.Connectivity;
 using Kephas.Serialization;
-using Kephas.Services;
 using StackExchange.Redis;
 
 /// <summary>

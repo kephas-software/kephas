@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Templating
 {
     using System;
@@ -15,7 +17,7 @@ namespace Kephas.Templating
     /// <summary>
     /// Exception for signalling template processing errors.
     /// </summary>
-    public class TemplatingException : Exception, ISeverityQualifiedNotification
+    public class TemplatingException : Exception, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplatingException"/> class.
@@ -26,7 +28,7 @@ namespace Kephas.Templating
         public TemplatingException(string message, ITemplate? template = null, IOperationResult? processingResult = null)
             : base(message)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
             this.Template = template;
             this.ProcessingResult = processingResult;
         }
@@ -42,7 +44,7 @@ namespace Kephas.Templating
         public TemplatingException(string message, Exception inner, ITemplate? template = null, IOperationResult? processingResult = null)
             : base(message, inner)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
             this.Template = template;
             this.ProcessingResult = processingResult;
         }
@@ -63,6 +65,6 @@ namespace Kephas.Templating
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public LogLevel Severity { get; set; }
     }
 }

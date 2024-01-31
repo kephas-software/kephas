@@ -22,7 +22,7 @@ Typically used areas and classes/interfaces/services:
 // normally you would get the processor injected into the service constructor.
 var provider = injector.Resolve<IConnectionProvider>();
 using var connection = await provider.CreateConnection(new Uri("imap://my.server.com:993/john.doe"), new UserClearTextPasswordCredentials("john", "doe"));
-await connection.OpenAsync().PreserveThreadContext();
+await connection.OpenAsync();
 
 // do somethig with the IMAP connection to the email account.
 // ...

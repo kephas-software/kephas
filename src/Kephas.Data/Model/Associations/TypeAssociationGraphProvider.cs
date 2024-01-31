@@ -24,22 +24,22 @@ namespace Kephas.Data.Model.Associations
     /// <summary>
     /// Provides a graph of associations.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class TypeAssociationGraphProvider : ITypeAssociationGraphProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeAssociationGraphProvider"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        public TypeAssociationGraphProvider(IInjectableFactory injectableFactory)
+        /// <param name="serviceFactory">The injectable factory.</param>
+        public TypeAssociationGraphProvider(IServiceFactory serviceFactory)
         {
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
         }
 
         /// <summary>
         /// Gets the context factory.
         /// </summary>
-        protected IInjectableFactory InjectableFactory { get; }
+        protected IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Gets an operation result yielding a graph of <see cref="ITypeInfo"/>.
@@ -105,7 +105,7 @@ namespace Kephas.Data.Model.Associations
         /// <returns>A new instance implementing <see cref="IAssociationContext"/>.</returns>
         protected virtual IAssociationContext CreateAssociationContext(Action<IAssociationContext>? options)
         {
-            return this.InjectableFactory.Create<AssociationContext>().Merge(options);
+            return this.ServiceFactory.Create<AssociationContext>().Merge(options);
         }
 
         /// <summary>

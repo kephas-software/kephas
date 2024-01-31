@@ -10,7 +10,6 @@
 
 namespace Kephas.Validation;
 
-using Kephas.Data;
 using Kephas.Resources;
 
 /// <summary>

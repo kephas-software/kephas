@@ -16,7 +16,7 @@ namespace Kephas.Security.Permissions
     /// <summary>
     /// Permission scope resolver returning only the first level in scope.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullPermissionScopeResolver : IPermissionScopeResolver
     {
         /// <summary>

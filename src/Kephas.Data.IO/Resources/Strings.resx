@@ -127,7 +127,7 @@
     <value>No cancellation token source could be identified in the data I/O context.</value>
   </data>
   <data name="ImportDataSourceException_Message" xml:space="preserve">
-    <value>Error importing data source {0}. See the inner exception for more information.</value>
+    <value>Error importing data source {0}. See the inner obj for more information.</value>
   </data>
   <data name="ImportEntityException_Message" xml:space="preserve">
     <value>Error importing {0} with value {1}. Reason: {2}</value>

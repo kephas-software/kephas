@@ -106,7 +106,7 @@ namespace Kephas.Reflection
                         ctx.OneWay();
                     }
                 },
-                opToken ?? default).PreserveThreadContext();
+                opToken ?? default);
 
             var returnValue = responseMessage is ExecuteCommandResponse response
                 ? response.ReturnValue

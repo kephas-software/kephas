@@ -31,29 +31,29 @@ namespace Kephas.Data.IO.Export
     /// <summary>
     /// A default data export service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataExportService : IDataExportService
     {
         private readonly IClientQueryProcessor clientQueryExecutor;
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IDataStreamWriteService dataStreamWriteService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataExportService"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="dataStreamWriteService">The data source write service.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public DefaultDataExportService(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IDataStreamWriteService dataStreamWriteService,
             IClientQueryProcessor clientQueryExecutor)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             dataStreamWriteService = dataStreamWriteService ?? throw new System.ArgumentNullException(nameof(dataStreamWriteService));
             clientQueryExecutor = clientQueryExecutor ?? throw new System.ArgumentNullException(nameof(clientQueryExecutor));
 
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.dataStreamWriteService = dataStreamWriteService;
             this.clientQueryExecutor = clientQueryExecutor;
         }
@@ -85,7 +85,7 @@ namespace Kephas.Data.IO.Export
         /// </returns>
         protected virtual IDataExportContext CreateDataExportContext(Action<IDataExportContext>? optionsConfig = null)
         {
-            var context = this.injectableFactory.Create<DataExportContext>();
+            var context = this.serviceFactory.Create<DataExportContext>();
             optionsConfig?.Invoke(context);
             return context;
         }
@@ -125,14 +125,14 @@ namespace Kephas.Data.IO.Export
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var data = await this.GetDataAsync(this.Context, cancellationToken).PreserveThreadContext();
+                var data = await this.GetDataAsync(this.Context, cancellationToken);
                 this.Result.PercentCompleted += 0.5f;
 
                 cancellationToken.ThrowIfCancellationRequested();
 
                 try
                 {
-                    await this.dataStreamWriteService.WriteAsync(data, this.Context.Output, this.Context, cancellationToken).PreserveThreadContext();
+                    await this.dataStreamWriteService.WriteAsync(data, this.Context.Output, this.Context, cancellationToken);
                     this.Result.MergeMessage(string.Format(Strings.DefaultDataExportService_ExportDataAsync_SuccessMessage, this.Context.Output.Name));
                     this.Result.PercentCompleted = 1f;
                 }
@@ -163,13 +163,13 @@ namespace Kephas.Data.IO.Export
                             ctx.Merge(context);
                             context.QueryExecutionConfig?.Invoke(ctx);
                         },
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
                 }
 
                 var data = context.Data;
                 if (context.ThrowOnNotFound && (data == null || !data.Any()))
                 {
-                    throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException) { Severity = SeverityLevel.Warning };
+                    throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException) { Severity = LogLevel.Warning };
                 }
 
                 return data;

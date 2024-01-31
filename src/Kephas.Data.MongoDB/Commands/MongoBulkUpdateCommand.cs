@@ -65,7 +65,7 @@ namespace Kephas.Data.MongoDB.Commands
             var dataContext = (MongoDataContext)bulkDeleteContext.DataContext;
             var collectionName = this.namingStrategy.GetCollectionName(typeof(T));
             var collection = dataContext.Database.GetCollection<T>(collectionName);
-            var result = await collection.UpdateManyAsync(criteria, this.GetUpdateDefinition<T>(values), cancellationToken: cancellationToken).PreserveThreadContext();
+            var result = await collection.UpdateManyAsync(criteria, this.GetUpdateDefinition<T>(values), cancellationToken: cancellationToken);
             return result.ModifiedCount;
         }
 

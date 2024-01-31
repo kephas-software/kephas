@@ -19,7 +19,7 @@ namespace Kephas.Configuration
     /// <summary>
     /// A default configuration store.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultConfigurationStore : ConfigurationStoreBase
     {
         /// <summary>

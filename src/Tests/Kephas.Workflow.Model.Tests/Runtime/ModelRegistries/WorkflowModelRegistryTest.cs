@@ -67,7 +67,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
             Assert.AreEqual(0, result.Count);
         }
 
-        [ExcludeFromModel]
+        [ExcludeFromReflection]
         public class ExcludedActivity : ActivityBase, IActivity
         {
         }

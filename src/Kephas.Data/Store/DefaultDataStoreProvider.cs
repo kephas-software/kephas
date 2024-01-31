@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Data.Store
 {
@@ -21,7 +22,7 @@ namespace Kephas.Data.Store
     /// <summary>
     /// A data store provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataStoreProvider : IDataStoreProvider
     {
         /// <summary>

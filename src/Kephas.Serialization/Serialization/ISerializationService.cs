@@ -107,7 +107,7 @@ namespace Kephas.Serialization
                 optionsConfig?.Invoke(ctx);
             }
 
-            var result = await this.DeserializeAsync(serializedObj, Config, cancellationToken).PreserveThreadContext();
+            var result = await this.DeserializeAsync(serializedObj, Config, cancellationToken);
             return (TRootObject?)result;
         }
 

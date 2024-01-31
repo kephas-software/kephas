@@ -22,7 +22,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// Runtime provider for model dimension element information.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class ModelDimensionElementConstructor : ModelElementConstructorBase<ModelDimensionElement, IModelDimensionElement, IRuntimeTypeInfo>
     {
         /// <summary>

@@ -137,7 +137,7 @@ namespace Kephas.Tests.Interaction
             var hub = this.CreateEventHub();
             using (hub.Subscribe(
                 e => e is string,
-                (e, ctx, token) => Task.FromException(new InterruptSignal(severity: SeverityLevel.Error))))
+                (e, ctx, token) => Task.FromException(new InterruptSignal(severity: LogLevel.Error))))
             using (hub.Subscribe(
                 e => e is string,
                 (e, ctx, token) => Task.FromResult(24)))
@@ -260,9 +260,9 @@ namespace Kephas.Tests.Interaction
             }
         }
 
-        private DefaultEventHub CreateEventHub(IInjectableFactory? injectableFactory = null)
+        private DefaultEventHub CreateEventHub(IServiceFactory? injectableFactory = null)
         {
-            return new DefaultEventHub(injectableFactory ?? Substitute.For<IInjectableFactory>());
+            return new DefaultEventHub(injectableFactory ?? Substitute.For<IServiceFactory>());
         }
     }
 }

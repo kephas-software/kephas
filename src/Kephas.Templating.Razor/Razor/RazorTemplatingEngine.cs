@@ -19,7 +19,7 @@ using Kephas.Threading.Tasks;
 /// </summary>
 /// <seealso cref="Kephas.Templating.ITemplatingEngine" />
 [TemplateKind(Cshtml)]
-[ProcessingPriority(Priority.Low)]
+[Priority(Priority.Low)]
 [ServiceName("Razor")]
 public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 {
@@ -66,7 +66,7 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 
         IOperationResult result = new OperationResult();
         var compiledPageResult = await this.pageCompiler
-            .CompileTemplateAsync<T>(template, processingContext, cancellationToken).PreserveThreadContext();
+            .CompileTemplateAsync<T>(template, processingContext, cancellationToken);
         result.MergeMessages(compiledPageResult);
         if (result.HasErrors())
         {
@@ -75,7 +75,7 @@ public class RazorTemplatingEngine : Loggable, ITemplatingEngine
 
         var compiledPage = compiledPageResult.Value;
 
-        await compiledPage.RenderAsync(model, textWriter, cancellationToken).PreserveThreadContext();
+        await compiledPage.RenderAsync(model, textWriter, cancellationToken);
 
         return result.Complete();
     }

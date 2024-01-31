@@ -73,7 +73,7 @@ namespace Kephas.Data.IO.Tests.Setup
             Assert.Throws<ArgumentException>(() => handler.CreateDataSource("Kephas.Data.IO.Tests.Data.my-data.json"));
         }
 
-        private IInjectableFactory GetInjectableFactory()
+        private IServiceFactory GetInjectableFactory()
         {
             return this.CreateInjectableFactoryMock(() => new DataSetupContext(Substitute.For<IServiceProvider>()));
         }
@@ -85,13 +85,13 @@ namespace Kephas.Data.IO.Tests.Setup
             private readonly IEnumerable<string> uninstallFileNames;
 
             public TestAssemblyEmbeddedResourcesDataInstaller(
-                IInjectableFactory injectableFactory,
+                IServiceFactory serviceFactory,
                 IDataImportService dataImportService = null,
                 IDataSpace dataSpace = null,
                 IEnumerable<string> installFileNames = null,
                 IEnumerable<string> uninstallFileNames = null)
                 : base(
-                    injectableFactory,
+                    serviceFactory,
                     dataImportService ?? Substitute.For<IDataImportService>(),
                     new ExportFactory<IDataSpace>(() => dataSpace ?? GetDataSpace()))
             {

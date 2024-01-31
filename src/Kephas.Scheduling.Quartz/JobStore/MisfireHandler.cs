@@ -88,8 +88,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             try
             {
-                this.Log.Debug("Scanning for misfires...");
-                var result = await this.jobStore.DoRecoverMisfires(cancellationToken).PreserveThreadContext();
+                this.Log.LogDebug("Scanning for misfires...");
+                var result = await this.jobStore.DoRecoverMisfires(cancellationToken);
                 this.numFails = 0;
                 return result;
             }
@@ -97,7 +97,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             {
                 if (this.numFails % this.jobStore.RetryableActionErrorLogThreshold == 0)
                 {
-                    this.Log.Error(ex, "Error handling misfires.");
+                    this.Log.LogError(ex, "Error handling misfires.");
                 }
 
                 this.numFails++;

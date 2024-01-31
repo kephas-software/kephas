@@ -29,30 +29,30 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionsRuntimeModelRegistryBase"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="options">Optional. The configuration options.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         protected ConventionsRuntimeModelRegistryBase(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             ITypeLoader? typeLoader = null,
             Action<ModelRegistryConventions>? options = null,
             ILogManager? logManager = null)
-            : this(injectableFactory, () => ResolveTypes(appRuntime, typeLoader ?? DefaultTypeLoader.Instance), options, logManager)
+            : this(serviceFactory, () => ResolveTypes(appRuntime, typeLoader ?? DefaultTypeLoader.Instance), options, logManager)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionsRuntimeModelRegistryBase"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="options">Optional. The configuration options.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         protected ConventionsRuntimeModelRegistryBase(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             Func<IEnumerable<Type>> typeResolver,
             Action<ModelRegistryConventions>? options = null,
             ILogManager? logManager = null)
@@ -61,7 +61,7 @@ namespace Kephas.Model.Runtime
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
             this.TypeResolver = typeResolver;
 
-            this.Conventions = injectableFactory.Create<ModelRegistryConventions>();
+            this.Conventions = serviceFactory.Create<ModelRegistryConventions>();
             options?.Invoke(this.Conventions);
         }
 

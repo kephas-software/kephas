@@ -55,7 +55,7 @@ namespace Kephas.Scheduling.Endpoints
             var result = await this.scheduler.CancelTriggerAsync(
                 message.Trigger ?? message.TriggerId,
                 ctx => ctx.Impersonate(context),
-                token).PreserveThreadContext();
+                token);
 
             result.ThrowIfHasErrors();
 

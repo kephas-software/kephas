@@ -14,7 +14,7 @@ namespace Kephas.Security.Permissions
     /// <summary>
     /// Default implementation of <see cref="IPermissionService"/>.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultPermissionService : PermissionServiceBase
     {
         /// <summary>

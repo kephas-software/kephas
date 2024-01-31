@@ -31,7 +31,7 @@ namespace Kephas.Configuration.Providers
     /// <summary>
     /// A file settings provider.
     /// </summary>
-    [ProcessingPriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     [ServiceName(ServiceName)]
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
@@ -97,7 +97,7 @@ namespace Kephas.Configuration.Providers
                 return null;
             }
 
-            this.Logger.Debug(result.Messages.First().Message);
+            this.Logger.LogDebug(result.Messages.First().Message);
             var settingsContent = File.ReadAllText(filePath);
             var settings = this.SerializationService.Deserialize(settingsContent, ctx => ctx.RootObjectType(settingsType).MediaType(mediaType!));
 
@@ -121,11 +121,11 @@ namespace Kephas.Configuration.Providers
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
-                this.Logger.Warn(result.Errors().First().Message);
+                this.Logger.LogWarning(result.Errors().First().Message);
                 return;
             }
 
-            this.Logger.Debug(result.Messages.First().Message);
+            this.Logger.LogDebug(result.Messages.First().Message);
 
             var settingsString = await this.SerializationService.SerializeAsync(
                 settings,
@@ -135,8 +135,8 @@ namespace Kephas.Configuration.Providers
                     .IncludeTypeInfo(false)
                     .IncludeNullValues(false),
                 cancellationToken: cancellationToken)
-                .PreserveThreadContext();
-            await File.WriteAllTextAsync(filePath, settingsString, cancellationToken).PreserveThreadContext();
+                ;
+            await File.WriteAllTextAsync(filePath, settingsString, cancellationToken);
 
             this.Logger.Info("Settings '{settingsType}' updated.", settingsType);
         }
@@ -190,7 +190,7 @@ namespace Kephas.Configuration.Providers
                 new OperationException(
                     $"Configuration files: '{probingFilesString}' could not be found in any of the following folders: '{string.Join("', '", probingFolders)}'.")
                 {
-                    Severity = SeverityLevel.Warning,
+                    Severity = LogLevel.Warning,
                 });
 
             return (null, result, null);

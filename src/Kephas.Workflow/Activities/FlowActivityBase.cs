@@ -98,7 +98,7 @@ public abstract class FlowActivityBase : ActivityBase, IOperation, ICloneable
                     .AddResource(new CopyScopeBack(parentContext, ctx, this.ShouldCopyAllScopeFromChild(childActivity, parentContext)))
                     .Scope.Merge(parentContext.Scope),
                 cancellationToken)
-            .PreserveThreadContext();
+            ;
         return result;
     }
 

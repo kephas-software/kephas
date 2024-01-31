@@ -33,9 +33,9 @@ namespace Kephas.Serialization.Json.Logging
         /// <summary>
         /// Gets the <see cref="T:System.Diagnostics.TraceLevel" /> that will be used to filter the trace
         /// messages passed to the writer. For example a filter level of
-        /// <see cref="F:System.Diagnostics.TraceLevel.Info" /> will exclude
+        /// <see cref="F:System.Diagnostics.TraceLevel.Information" /> will exclude
         /// <see cref="F:System.Diagnostics.TraceLevel.Verbose" /> messages and include
-        /// <see cref="F:System.Diagnostics.TraceLevel.Info" />,
+        /// <see cref="F:System.Diagnostics.TraceLevel.Information" />,
         /// <see cref="F:System.Diagnostics.TraceLevel.Warning" /> and
         /// <see cref="F:System.Diagnostics.TraceLevel.Error" /> messages.
         /// </summary>

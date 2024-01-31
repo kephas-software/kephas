@@ -17,7 +17,6 @@ namespace Kephas.Extensions.Hosting.Application
 
     using Kephas.Application;
     using Kephas.Interaction;
-    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services.Builder;
     using Kephas.Threading.Tasks;
@@ -136,7 +135,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>The service provider.</returns>
         protected override IServiceProvider BuildServiceProvider(IAppServiceCollectionBuilder servicesBuilder)
         {
-            this.HostBuilder.ConfigureServices((context, services) => services.AddFromServicesBuilder(servicesBuilder));
+            this.HostBuilder.ConfigureServices((context, services) => services.AddAppServices(servicesBuilder));
 
             this.Host ??= this.HostBuilder.Build();
             return this.Host.Services;
@@ -184,7 +183,7 @@ namespace Kephas.Extensions.Hosting.Application
             IHost host, CancellationToken stoppingToken)
         {
             var opResult = new OperationResult<bool>(true);
-            await host.RunAsync(stoppingToken).PreserveThreadContext();
+            await host.RunAsync(stoppingToken);
             return new MainLoopResult(opResult.Complete(), AppShutdownInstruction.Shutdown);
         }
     }

@@ -22,17 +22,17 @@ namespace Kephas.Model.Security.Permissions.Runtime.ModelRegistries
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionsModelRegistry"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public PermissionsModelRegistry(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             ITypeLoader? typeLoader = null,
             ILogManager? logManager = null)
             : base(
-                injectableFactory,
+                serviceFactory,
                 appRuntime,
                 typeLoader,
                 context =>

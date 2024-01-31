@@ -15,7 +15,6 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.Logging;
     using Kephas.Plugins.Application;
     using Kephas.Services.Builder;
 

@@ -84,26 +84,26 @@ namespace Kephas.Messaging.Pipes
 
             var bytes = Encoding.UTF8.GetBytes(message);
 
-            using var stream = await this.OpenAsync(cancellationToken).PreserveThreadContext();
+            using var stream = await this.OpenAsync(cancellationToken);
 
             try
             {
-                this.Logger.Trace("Writing message ({messageLength}) to {channel}...", bytes.Length, this.ChannelName);
+                this.Logger.LogTrace("Writing message ({messageLength}) to {channel}...", bytes.Length, this.ChannelName);
 
                 if (!stream.IsConnected)
                 {
                     throw new PipesMessagingException($"{this.ChannelName} disconnected from server.");
                 }
 
-                await stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
-                await stream.FlushAsync(cancellationToken).PreserveThreadContext();
+                await stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken);
+                await stream.FlushAsync(cancellationToken);
                 stream.WaitForPipeDrain();
 
-                this.Logger.Trace("Written message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
+                this.Logger.LogTrace("Written message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while writing message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
+                this.Logger.LogError(ex, "Error while writing message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
                 throw;
             }
         }
@@ -123,17 +123,17 @@ namespace Kephas.Messaging.Pipes
 
             try
             {
-                this.Logger.Debug("Connecting to pipe {server}/{channel} (client mode)...", this.ServerName, this.ChannelName);
+                this.Logger.LogDebug("Connecting to pipe {server}/{channel} (client mode)...", this.ServerName, this.ChannelName);
 
-                await stream.ConnectAsync((int)this.pipesConfiguration.GetSettings(this.context).ConnectionTimeout.TotalMilliseconds, cancellationToken).PreserveThreadContext();
+                await stream.ConnectAsync((int)this.pipesConfiguration.GetSettings(this.context).ConnectionTimeout.TotalMilliseconds, cancellationToken);
                 stream.ReadMode = PipeTransmissionMode.Message;
 
-                this.Logger.Debug("Connected to pipe {server}/{channel} (client mode).", this.ServerName, this.ChannelName);
+                this.Logger.LogDebug("Connected to pipe {server}/{channel} (client mode).", this.ServerName, this.ChannelName);
                 return stream;
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while connecting to {server}/{channel} (client mode).", this.ServerName, this.ChannelName);
+                this.Logger.LogError(ex, "Error while connecting to {server}/{channel} (client mode).", this.ServerName, this.ChannelName);
                 throw;
             }
         }

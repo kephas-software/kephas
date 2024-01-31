@@ -90,7 +90,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             Assert.AreEqual(0, types.Count);
         }
 
-        [ExcludeFromModel]
+        [ExcludeFromReflection]
         public class ExcludedType
         {
         }

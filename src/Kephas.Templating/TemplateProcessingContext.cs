@@ -11,7 +11,6 @@ namespace Kephas.Templating
 
     using Kephas.Services;
     using Kephas.Operations;
-    using Kephas.Services;
 
     /// <summary>
     /// A context for processing templates.

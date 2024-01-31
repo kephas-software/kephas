@@ -20,7 +20,7 @@ var script = new CSharpStringScript(
 @"int Power(int a) => a * a;
 return Power((int)value) + 3;
 ");
-var result = await processor.ExecuteAsync(script), new { value = 5 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(script), new { value = 5 }));
 Assert.Equals(28, result);
 ```
 
@@ -35,10 +35,10 @@ If this is not the case, make sure you specify the language explicitly when crea
 var processor = injector.Resolve<IScriptProcessor>();
 
 // C# scripts ending with *.csx
-var result = await processor.ExecuteAsync(new FileScript("myscript.csx"), new { value = 5 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new FileScript("myscript.csx"), new { value = 5 }));
 Assert.Equals(28, result);
 
 // C# scripts not ending with *.csx or *.cs
-var result = await processor.ExecuteAsync(new FileScript("myscript.txt", CSharpLanguageService.Language), new { value = 5 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new FileScript("myscript.txt", CSharpLanguageService.Language), new { value = 5 }));
 Assert.Equals(28, result);
 ```

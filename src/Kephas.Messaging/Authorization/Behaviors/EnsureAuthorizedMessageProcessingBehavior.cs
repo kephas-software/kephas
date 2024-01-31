@@ -28,7 +28,7 @@ using Kephas.Threading.Tasks;
 /// <summary>
 /// A message processing behavior ensuring that only authorized calls execute the request.
 /// </summary>
-[ProcessingPriority(Priority.Highest + 10)]
+[Priority(Priority.Highest + 10)]
 public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage<object?>, object?>
 {
     private readonly IAuthorizationService authorizationService;
@@ -66,8 +66,8 @@ public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<I
         var permissions = this.GetRequiredPermissions(messageType);
         if ((permissions?.Count ?? 0) > 0)
         {
-            var authScope = await this.authorizationScopeService.GetAuthorizationScopeAsync(context, cancellationToken: token).PreserveThreadContext();
-            await this.authorizationService.AuthorizeAsync(context, permissions, authScope, cancellationToken: token).PreserveThreadContext();
+            var authScope = await this.authorizationScopeService.GetAuthorizationScopeAsync(context, cancellationToken: token);
+            await this.authorizationService.AuthorizeAsync(context, permissions, authScope, cancellationToken: token);
         }
     }
 

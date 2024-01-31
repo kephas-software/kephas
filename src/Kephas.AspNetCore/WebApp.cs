@@ -68,7 +68,7 @@ namespace Kephas.Application.AspNetCore
 
             this.Configure(app, app.Lifetime);
 
-            await app.RunAsync().PreserveThreadContext();
+            await app.RunAsync();
             return new AppRunResult(this.AppContext, AppShutdownInstruction.Shutdown);
         }
 

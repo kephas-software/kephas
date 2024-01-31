@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application.AspNetCore
 {
     using System;
@@ -22,7 +24,7 @@ namespace Kephas.Application.AspNetCore
     /// <summary>
     /// An OWIN application manager.
     /// </summary>
-    [OverridePriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class AspNetAppManager : DefaultAppManager
     {
         /// <summary>

@@ -17,7 +17,7 @@ public class ConfigurationAssemblyInitializer : IAssemblyInitializer
     /// <summary>
     /// Initializes the assembly.
     /// </summary>
-    public void Initialize()
+    public void InitializeAssembly()
     {
         IAppServiceCollection.AddAppServicesCollector(ambient => ambient.Add<IConfigurationStore, DefaultConfigurationStore>());
     }

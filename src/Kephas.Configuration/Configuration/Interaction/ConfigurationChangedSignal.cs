@@ -28,7 +28,7 @@ namespace Kephas.Configuration.Interaction
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public ConfigurationChangedSignal(string message, SeverityLevel severity = SeverityLevel.Info)
+        public ConfigurationChangedSignal(string message, LogLevel severity = LogLevel.Information)
             : base(message, severity)
         {
         }

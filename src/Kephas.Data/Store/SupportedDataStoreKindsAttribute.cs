@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Data.Store
 {
     using System;
@@ -19,7 +21,7 @@ namespace Kephas.Data.Store
     /// Metadata attribute for supported data store kinds.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SupportedDataStoreKindsAttribute : Attribute, IMetadataValue<IEnumerable<string>>
+    public class SupportedDataStoreKindsAttribute : Attribute, IServiceMetadataValue<IEnumerable<string>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SupportedDataStoreKindsAttribute"/> class.

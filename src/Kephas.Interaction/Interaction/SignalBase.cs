@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Interaction
 {
     using Kephas.ExceptionHandling;
@@ -19,7 +21,7 @@ namespace Kephas.Interaction
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="severity">The severity.</param>
-        protected SignalBase(string message, SeverityLevel severity = SeverityLevel.Info)
+        protected SignalBase(string message, LogLevel severity = LogLevel.Information)
         {
             this.Message = message;
             this.Severity = severity;
@@ -39,6 +41,6 @@ namespace Kephas.Interaction
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; }
+        public LogLevel Severity { get; }
     }
 }
