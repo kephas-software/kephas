@@ -60,7 +60,7 @@ namespace Kephas.Diagnostics
         }
 
         /// <summary>
-        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Info"/> level.
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Information"/> level.
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="logger">The logger.</param>
@@ -77,7 +77,7 @@ namespace Kephas.Diagnostics
         }
 
         /// <summary>
-        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Info"/> level.
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Information"/> level.
         /// </summary>
         /// <typeparam name="T">The operation return type.</typeparam>
         /// <param name="action">The action.</param>
@@ -278,7 +278,7 @@ namespace Kephas.Diagnostics
         }
 
         /// <summary>
-        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Info"/> level.
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Information"/> level.
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="logger">The logger.</param>
@@ -295,7 +295,7 @@ namespace Kephas.Diagnostics
         }
 
         /// <summary>
-        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Info"/> level.
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Information"/> level.
         /// </summary>
         /// <typeparam name="T">The operation return type.</typeparam>
         /// <param name="action">The action.</param>

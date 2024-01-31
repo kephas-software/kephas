@@ -280,7 +280,7 @@ namespace Kephas.Reflection
         /// <example>
         /// <code>
         /// var type = typeof(string).GetBaseConstructedGenericOf(typeof(IEnumerable&lt;&gt;));
-        /// Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;));
+        /// Assert.Same(type, typeof(IEnumerable&lt;char&gt;));
         /// </code>
         /// </example>
         public static Type? GetBaseConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
